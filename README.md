@@ -1,30 +1,66 @@
-# React + TypeScript + Vite
+# Project for Ocean Current Redevelopment
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to our project, aimed at redefining the user experience and accessibility of ocean current. This project is part of a broader initiative to enhance the [Ocean Current](https://oceancurrent.aodn.org.au/) website, focusing on modern UI/UX design, streamlined data download processes, and improved visualization features.
 
-Currently, two official plugins are available:
+## Project Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Objective:** To enhance the user experience and accessibility of oceanographic data visualization, aligning with modern UI/UX standards, and improving the efficiency of data downloads and the quality of visualization.
+- **Scope:** This includes a UI/UX redesign, transitioning Matlab processing to Python, and upgrading data visualization and download capabilities.
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+To set up this project locally, follow these steps using Yarn and Vite for a smooth development experience.
 
-- Configure the top-level `parserOptions` property like this:
+### Prerequisites
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+- Node.js installed on your system with version 18.19.1 or superior (you can use [nvm](https://github.com/nvm-sh/nvm) for changing the node version).
+- Yarn 4.1.0
+
+### Installation
+
+1. **Clone the repository:**
+```bash
+git clone <repository-url>
 ```
+2. **Navigate to the project directory:**
+```bash
+cd <project-name>
+```
+3. **Navigate to the project directory:**
+```bash
+yarn install
+```
+4. **Navigate to the project directory:**
+```bash
+yarn dev
+```
+This will start the project on a local server, typically http://localhost:5173/, and you can begin exploring the enhanced data visualization features.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### Dependencies
+List of primary dependencies:
+
+- React
+- Vite
+- Tailwind CSS
+- ESLint
+- Prettier
+- Husky
+- Vitest
+
+### Configuration 
+- .eslintrc.js for linting rules
+- tailwind.config.js for Tailwind CSS configuration
+- vite.config.ts for Vite build tool configuration
+- tsconfig.json for TypeScript configuration
+
+### Branching name 
+
+- `hotfix/`:	for quickly fixing critical issues,
+- `usually/`: with a temporary solution
+- `bugfix/`:	for fixing a bug
+- `feature/`:	for adding, removing or modifying a feature
+- `test/`:	for experimenting something which is not an issue
+- `wip/`:	for a work in progress
+
+And add the issue id after an `/` followed with an explanation of the task.
+Example feature/5348-create-react-app
