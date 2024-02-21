@@ -9,5 +9,10 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
+    coverage: {
+      reporter: ['text', 'json', 'html'],
+      include: ['src/**/*.?(c|m)[jt]s?(x)'],
+      exclude: ['src/styles', '**/*.d.ts'],
+    },
   },
 });
