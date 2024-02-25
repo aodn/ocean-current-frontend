@@ -19,24 +19,33 @@ To set up this project locally, follow these steps using Yarn and Vite for a smo
 ### Installation
 
 1. **Clone the repository:**
+
 ```bash
 git clone <repository-url>
 ```
+
 2. **Navigate to the project directory:**
+
 ```bash
 cd <project-name>
 ```
+
 3. **Navigate to the project directory:**
+
 ```bash
 yarn install
 ```
+
 4. **Navigate to the project directory:**
+
 ```bash
 yarn dev
 ```
+
 This will start the project on a local server, typically http://localhost:5173/, and you can begin exploring the enhanced data visualization features.
 
 ### Dependencies
+
 List of primary dependencies:
 
 - React
@@ -47,20 +56,21 @@ List of primary dependencies:
 - Husky
 - Vitest
 
-### Configuration 
+### Configuration
+
 - .eslintrc.js for linting rules
 - tailwind.config.js for Tailwind CSS configuration
 - vite.config.ts for Vite build tool configuration
 - tsconfig.json for TypeScript configuration
 
-### Branching name 
+### Branching name
 
-- `hotfix/`:	for quickly fixing critical issues,
+- `hotfix/`: for quickly fixing critical issues,
 - `usually/`: with a temporary solution
-- `bugfix/`:	for fixing a bug
-- `feature/`:	for adding, removing or modifying a feature
-- `test/`:	for experimenting something which is not an issue
-- `wip/`:	for a work in progress
+- `bugfix/`: for fixing a bug
+- `feature/`: for adding, removing or modifying a feature
+- `test/`: for experimenting something which is not an issue
+- `wip/`: for a work in progress
 
 And add the issue id after an `/` followed with an explanation of the task.
 Example feature/5348-create-react-app
