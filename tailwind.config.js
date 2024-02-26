@@ -24,6 +24,9 @@ export default {
       fontFamily: {
         helvetica: ['Helvetica Neue', 'Arial', 'sans-serif'],
       },
+      maxWidth: {
+        '8xl': '90rem',
+      },
     },
   },
   plugins: [],
