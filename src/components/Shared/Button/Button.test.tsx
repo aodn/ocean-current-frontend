@@ -1,7 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Button, { BorderRadius } from './Button';
+import Button from './Button';
+import { BorderRadius } from './Button.types';
 
 describe('Button Component', () => {
   it('renders without crashing', () => {
