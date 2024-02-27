@@ -1,12 +1,11 @@
 import type { RouteObject } from 'react-router-dom';
-import { Home, MapView, News, NotFound } from '@/pages';
-import RootLayout from '@/layouts/RootLayout';
-import GuidedTour from '@/pages/GuidedTour';
+import { Home, MapView, News, NotFound, GuidedTour } from '@/pages';
+import MainLayout from '@/layouts/MainLayout';
 
 const routes: RouteObject[] = [
   {
     path: '/',
-    element: <RootLayout />,
+    element: <MainLayout />,
     children: [
       {
         index: true,

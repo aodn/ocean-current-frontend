@@ -1,6 +1,7 @@
-import MapArea from '@/components/pages/MapViewPage/MapArea';
-import SideNavBar from '@/components/pages/MapViewPage/SideNavBar';
 import React from 'react';
+
+import MapArea from '@/components/MapArea/MapArea';
+import SideNavBar from '@/components/SideNavbar/SideNavBar';
 
 const MapView: React.FC = () => {
   return (
