@@ -22,7 +22,8 @@ export default {
         h0: ['32pt', { lineHeight: '38.4pt' }],
       },
       fontFamily: {
-        helvetica: ['Helvetica Neue', 'Arial', 'sans-serif'],
+        noto: ['NotoSans', 'sans-serif'],
+        lexed: ['Lexed', 'sans-serif'],
       },
       maxWidth: {
         '8xl': '90rem',
