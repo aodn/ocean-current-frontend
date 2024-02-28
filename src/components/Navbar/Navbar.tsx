@@ -12,10 +12,12 @@ const Navbar: React.FC = () => {
   const [menuItems] = useState<LinkItem[]>(linksData);
   const menuItemRefs = useRef<(HTMLElement | null)[]>([]);
 
-  const handleMouseEnter = (index: number, element: HTMLElement) => {
+  const setPositionNavbar = (index: number, element: HTMLElement) => {
     setHoverIndex(index);
     setPopoverPosition({ left: element.offsetLeft });
   };
+
+  const closeNavbarMenu = () => setHoverIndex(null);
 
   const shouldDisplayNavbarMenu = (index: number | null): boolean => {
     if (index === null) return false;
@@ -26,7 +28,7 @@ const Navbar: React.FC = () => {
     );
   };
   return (
-    <div>
+    <nav>
       <div className="w-full flex py-9 ">
         <img src={logo} alt="IMOS logo" />
         <div className="h-auto bg-[#356183] w-px mx-7"></div>
@@ -37,12 +39,15 @@ const Navbar: React.FC = () => {
       </div>
 
       <div className="flex text-black capitalize max-md:flex-wrap items-center justify-center">
-        <div className="flex relative gap-20 justify-between self-start mt-6 text-base max-md:flex-wrap max-md:max-w-full">
+        <div
+          onMouseLeave={() => closeNavbarMenu()}
+          className="flex relative  gap-20 justify-between self-start mt-6 text-base max-md:flex-wrap max-md:max-w-full"
+        >
           {menuItems.map((item, index) => (
             <span
               key={item.title}
-              onMouseEnter={(event) => handleMouseEnter(index, event.currentTarget)}
-              className="cursor-pointer text-black"
+              onMouseEnter={(event) => setPositionNavbar(index, event.currentTarget)}
+              className="cursor-pointer text-black pb-4"
               ref={(el) => (menuItemRefs.current[index] = el)}
             >
               {item.title}
@@ -62,7 +67,7 @@ const Navbar: React.FC = () => {
           )}
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 
