@@ -13,6 +13,7 @@ export default {
         'imos-accent-orange': '#e36f1e',
         'imos-sand': '#d9d7bd',
         'imos-mid-grey': '#3c3c3c',
+        'imos-title-blue': '#356183',
       },
       fontSize: {
         body: ['10pt', { lineHeight: '12pt' }],

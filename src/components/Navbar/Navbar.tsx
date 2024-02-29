@@ -31,8 +31,8 @@ const Navbar: React.FC = () => {
     <nav>
       <div className="w-full flex py-9 ">
         <img src={logo} alt="IMOS logo" />
-        <div className="h-auto bg-[#356183] w-px mx-7"></div>
-        <div className="text-[#356183] flex flex-col justify-center font-light text-xl ">
+        <div className="h-auto bg-imos-title-blue w-px mx-7"></div>
+        <div className="text-imos-title-blue flex flex-col justify-center font-light text-xl ">
           <p>Imos Ocean Current</p>
           <p>Surface Currents and Temperature</p>
         </div>
