@@ -13,6 +13,7 @@ export default {
         'imos-accent-orange': '#e36f1e',
         'imos-sand': '#d9d7bd',
         'imos-mid-grey': '#3c3c3c',
+        'imos-title-blue': '#356183',
       },
       fontSize: {
         body: ['10pt', { lineHeight: '12pt' }],
@@ -22,7 +23,8 @@ export default {
         h0: ['32pt', { lineHeight: '38.4pt' }],
       },
       fontFamily: {
-        helvetica: ['Helvetica Neue', 'Arial', 'sans-serif'],
+        noto: ['NotoSans', 'sans-serif'],
+        lexed: ['Lexed', 'sans-serif'],
       },
       maxWidth: {
         '8xl': '90rem',
