@@ -27,16 +27,22 @@ git clone <repository-url>
 2. **Navigate to the project directory:**
 
 ```bash
-cd <project-name>
+cd ocean-current-frontend
 ```
 
-3. **Navigate to the project directory:**
+3. **Duplicate `.env.local.example` file and rename to `.env.local` (some environment variables are not required, change them according to personal preference):**
+
+```bash
+cp .env.local.example .env.local
+```
+
+4. **Install the project dependencies:**
 
 ```bash
 yarn install
 ```
 
-4. **Navigate to the project directory:**
+5. **Run the app in dev mode:**
 
 ```bash
 yarn dev
