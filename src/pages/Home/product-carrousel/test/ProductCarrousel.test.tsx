@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import ProductCarrouselCard from '../ProductCarrouselCard';
 
 describe('ProductCarrouselCard', () => {
-  it('debería renderizar la información del producto', () => {
+  it('should render the product information', () => {
     render(
       <ProductCarrouselCard
         title="Test Product"
@@ -18,7 +18,7 @@ describe('ProductCarrouselCard', () => {
     expect(screen.getByAltText('test-product map')).toHaveAttribute('src', 'test.jpg');
   });
 
-  it('debería aplicar el estilo de borde seleccionado cuando selected es true', () => {
+  it('should apply the selected border style when selected is true', () => {
     render(
       <ProductCarrouselCard
         title="Test Product"
