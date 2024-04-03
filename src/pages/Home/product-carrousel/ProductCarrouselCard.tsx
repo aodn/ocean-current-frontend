@@ -7,6 +7,7 @@ const ProductCarrouselCard: React.FC<ProductData> = ({ title, description, selec
 
   return (
     <div
+      data-testid={`product-card-${id}`}
       className={`mb-5 flex h-40 items-stretch justify-between rounded-xl bg-[#F3F3F3] font-noto shadow ${selected ? selectedBorderStyle : nonSelectedBorderStyle}`}
     >
       <div className="flex flex-col p-4">
