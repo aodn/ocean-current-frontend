@@ -11,7 +11,6 @@ module.exports = {
     'plugin:import/recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:@typescript-eslint/recommended',
-    'eslint-config-prettier',
     'prettier',
   ],
   parser: '@typescript-eslint/parser',
