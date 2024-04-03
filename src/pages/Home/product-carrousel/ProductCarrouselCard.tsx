@@ -1,0 +1,21 @@
+import React from 'react';
+import { ProductData } from './types/ProductCarrousel.types';
+
+const ProductCarrouselCard: React.FC<ProductData> = ({ title, description, selected, imageUrl, id }) => {
+  const selectedBorderStyle = 'border-4 border-blue-500';
+  const nonSelectedBorderStyle = 'border-4 border-transparent';
+
+  return (
+    <div
+      className={`mb-5 flex h-40 items-stretch justify-between rounded-xl bg-[#F3F3F3] font-noto shadow ${selected ? selectedBorderStyle : nonSelectedBorderStyle}`}
+    >
+      <div className="flex flex-col p-4">
+        <div className="text-xl font-medium text-[#555555]">{title}</div>
+        <div className="text-sm font-normal text-[#858585]">{description}</div>
+      </div>
+      <img alt={`${id} map`} src={imageUrl} className="w-1/3 rounded-br-xl rounded-tr-xl object-cover" />
+    </div>
+  );
+};
+
+export default ProductCarrouselCard;
