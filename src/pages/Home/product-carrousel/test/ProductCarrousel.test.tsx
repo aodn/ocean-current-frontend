@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import ProductCarrouselCard from '../ProductCarrouselCard';
+import ProductCarrouselCard from '../components/ProductCarrouselCard';
 
 describe('ProductCarrouselCard', () => {
   it('should render the product information', () => {

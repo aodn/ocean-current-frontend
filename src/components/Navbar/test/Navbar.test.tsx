@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, fireEvent, RenderResult } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import Navbar from './Navbar';
-import NavbarMenu from './components/NavbarMenu';
+import Navbar from '../Navbar';
+import NavbarMenu from '../components/NavbarMenu';
 
 describe('Navbar component', () => {
   let component: RenderResult;
