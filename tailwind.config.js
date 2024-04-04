@@ -24,7 +24,7 @@ export default {
       },
       fontFamily: {
         noto: ['NotoSans', 'sans-serif'],
-        lexed: ['Lexed', 'sans-serif'],
+        lexend: ['Lexend', 'sans-serif'],
       },
       maxWidth: {
         '8xl': '90rem',

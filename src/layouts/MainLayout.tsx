@@ -4,19 +4,19 @@ import { Footer, Navbar } from '@/components';
 
 const MainLayout: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col font-lexed ">
+    <div className="flex flex-col font-lexend ">
       <div className="bg-white">
-        <div className="max-w-6xl mx-auto ">
-          <Navbar></Navbar>
+        <div className="mx-auto w-full max-w-7xl ">
+          <Navbar />
         </div>
       </div>
       <div className="flex grow">
-        <div className="w-full max-w-6xl mx-auto">
+        <div className="mx-auto w-full max-w-7xl">
           <Outlet />
         </div>
       </div>
-      <div className="bg-footer-gradient">
-        <div className="max-w-6xl mx-auto">
+      <div className="bg-white">
+        <div className="mx-auto w-full max-w-7xl">
           <Footer />
         </div>
       </div>
