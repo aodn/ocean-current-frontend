@@ -1,10 +1,13 @@
 import React from 'react';
+import ProductsCarrousel from './product-carrousel/ProductCarrousel';
 
 const Home: React.FC = () => {
   return (
-    <>
-      <h1 className="underline text-rose-500 text-h1 text-center bg-imos-deep-blue p-4">Hello world!</h1>
-    </>
+    <section>
+      <div className="w-1/3">
+        <ProductsCarrousel />
+      </div>
+    </section>
   );
 };
 
