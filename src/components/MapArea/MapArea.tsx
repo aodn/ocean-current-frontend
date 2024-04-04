@@ -2,7 +2,7 @@ import React from 'react';
 
 const MapArea: React.FC = () => {
   return (
-    <div className="w-full h-full border-2 border-black">
+    <div className="h-full w-full border-2 border-black">
       <img
         src="https://oceancurrent.aodn.org.au/SST_entry/latest.gif"
         style={{
