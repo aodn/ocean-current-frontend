@@ -3,16 +3,15 @@ import { News } from '../../types';
 import Title from './components/Title';
 import Content from './components/Content';
 
-interface HorizontalLayoutProps {
+interface HorizontalProps {
   news: News;
 }
-
-const HorizontalLayout: React.FC<HorizontalLayoutProps> = ({ news }) => {
+const Horizontal: React.FC<HorizontalProps> = ({ news }) => {
   const { title, content, imageUrl } = news;
   return (
     <div className="flex h-full w-full divide-x overflow-hidden rounded-xl border">
       <div className="w-2/5">
-        <img src={imageUrl} alt="news" className="h-full object-fill" />
+        <img src={imageUrl} alt="news profile" className="h-full object-fill" />
       </div>
       <div className="flex w-3/5 flex-col justify-between p-7">
         <Title title={title} />
@@ -27,4 +26,4 @@ const HorizontalLayout: React.FC<HorizontalLayoutProps> = ({ news }) => {
   );
 };
 
-export default HorizontalLayout;
+export default Horizontal;
