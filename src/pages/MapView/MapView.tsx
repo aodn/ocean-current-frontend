@@ -5,7 +5,7 @@ import SideNavBar from '@/components/SideNavbar/SideNavBar';
 
 const MapView: React.FC = () => {
   return (
-    <div className="h-full bg-blue-200 border flex flex-col">
+    <div className="flex h-full flex-col border bg-blue-200">
       <h2 className="mb-4">MapData Page</h2>
       <div className="flex grow">
         <div className="w-80">
