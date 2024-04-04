@@ -50,6 +50,11 @@ yarn dev
 
 This will start the project on a local server, typically http://localhost:5173/, and you can begin exploring the enhanced data visualization features.
 
+### ADR
+
+An architecture decision record (ADR) is a document that captures an important architecture decision made along with its context and consequences.
+If you want more info about this you can check [this link](https://github.com/joelparkerhenderson/architecture-decision-record?tab=readme-ov-file).
+
 ### Dependencies
 
 List of primary dependencies:
