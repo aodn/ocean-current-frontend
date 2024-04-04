@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import NavbarMenu from './components/NavbarMenu';
 import { linksData } from './data/LinksData';
-import { LinkItem, SectionLinks } from './Navbar.types';
+import { LinkItem, SectionLinks } from './types/Navbar.types';
 import logo from '@/assets/images/imos-logo.png';
 
 const isSectionLink = (item: LinkItem): item is SectionLinks => 'leftLinks' in item || 'rightLinks' in item;
@@ -28,26 +28,25 @@ const Navbar: React.FC = () => {
     );
   };
   return (
-    <nav>
-      <div className="w-full flex py-9 ">
+    <nav className="flex items-center justify-between">
+      <div className=" flex py-9 ">
         <img src={logo} alt="IMOS logo" />
-        <div className="h-auto bg-imos-title-blue w-px mx-7"></div>
-        <div className="text-imos-title-blue flex flex-col justify-center font-light text-xl ">
-          <p>Imos Ocean Current</p>
-          <p>Surface Currents and Temperature</p>
+        <div className="mx-7 h-auto w-px bg-imos-title-blue"></div>
+        <div className="flex flex-col justify-center text-xl font-light text-imos-title-blue ">
+          <p>Ocean Current</p>
         </div>
       </div>
 
-      <div className="flex text-black capitalize max-md:flex-wrap items-center justify-center">
+      <div className="flex items-center justify-center capitalize text-black max-md:flex-wrap">
         <div
           onMouseLeave={() => closeNavbarMenu()}
-          className="flex relative  gap-20 justify-between self-start mt-6 text-base max-md:flex-wrap max-md:max-w-full"
+          className="relative mt-6  flex justify-between gap-20 self-start text-base max-md:max-w-full max-md:flex-wrap"
         >
           {menuItems.map((item, index) => (
             <span
               key={item.title}
               onMouseEnter={(event) => setPositionNavbar(index, event.currentTarget)}
-              className="cursor-pointer text-black pb-4"
+              className="cursor-pointer pb-4 text-black"
               ref={(el) => (menuItemRefs.current[index] = el)}
             >
               {item.title}
@@ -57,7 +56,7 @@ const Navbar: React.FC = () => {
             <div
               onMouseLeave={() => setHoverIndex(null)}
               style={{ left: popoverPosition?.left || 0 }}
-              className="absolute p-6 top-10 bg-white rounded-md shadow-lg transition duration-300 ease-in-out"
+              className="absolute top-10 rounded-md bg-white p-6 shadow-lg transition duration-300 ease-in-out"
             >
               <NavbarMenu
                 itemsLeft={menuItems[hoverIndex].leftLinks || []}

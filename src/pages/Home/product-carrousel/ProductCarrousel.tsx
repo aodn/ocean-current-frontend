@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { productsData } from './data/ProductsData';
-import ProductCarrouselCard from './ProductCarrouselCard';
+import ProductCarrouselCard from './components/ProductCarrouselCard';
 
 const ProductCarrousel: React.FC = () => {
   const [products, setProducts] = useState(productsData);
