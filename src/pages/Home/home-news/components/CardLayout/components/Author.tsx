@@ -4,7 +4,11 @@ interface AuthorProps {
   author: string;
 }
 const Author: React.FC<AuthorProps> = ({ author }) => {
-  return <p className="italic text-[#818181]">{author}</p>;
+  return (
+    <p data-testid="news-author-card" className="italic text-imos-grey">
+      {author}
+    </p>
+  );
 };
 
 export default Author;

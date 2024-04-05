@@ -13,7 +13,12 @@ const Content: React.FC<ContentProps> = ({ content, lineClamp = 4 }) => {
   };
 
   return (
-    <p className={`${lineClampMap[lineClamp]} overflow-hidden text-ellipsis text-[13px] text-[#858585]`}>{content}</p>
+    <p
+      data-testid="news-content-card"
+      className={`${lineClampMap[lineClamp]} overflow-hidden text-ellipsis text-base text-imos-grey`}
+    >
+      {content}
+    </p>
   );
 };
 
