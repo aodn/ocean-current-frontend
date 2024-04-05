@@ -1,9 +1,4 @@
-interface Product {
-  title: string;
-  value: string;
-  path: string;
-  children?: Product[];
-}
+import { Product } from '@/types/product';
 
 export const OC_PRODUCTS: Product[] = [
   {
