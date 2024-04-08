@@ -22,7 +22,7 @@ describe('Button Component', () => {
 
     // Act
     render(
-      <Button type="primary" borderRadius="medium" hasIcon={true} icon={icon}>
+      <Button type="primary" borderRadius="medium" icon={icon}>
         Launch
       </Button>,
     );
