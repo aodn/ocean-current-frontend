@@ -1,5 +1,5 @@
 import React from 'react';
-import { News } from '../../types';
+import { News } from '../../types/HomeNews.types';
 import Title from './components/Title';
 import Content from './components/Content';
 import { Button } from '@/components/Shared';
@@ -7,8 +7,7 @@ import { Button } from '@/components/Shared';
 interface HorizontalProps {
   news: News;
 }
-const Horizontal: React.FC<HorizontalProps> = ({ news }) => {
-  const { title, content, imageUrl } = news;
+const Horizontal: React.FC<HorizontalProps> = ({ news: { title, content, imageUrl } }) => {
   return (
     <div className="flex h-full w-full overflow-hidden rounded-xl border">
       <div className="w-2/5">
@@ -18,7 +17,9 @@ const Horizontal: React.FC<HorizontalProps> = ({ news }) => {
         <Title title={title} />
         <Content content={content} lineClamp={5} />
         <div className="flex justify-end">
-          <Button type="tertiary">Details</Button>
+          <Button dataTestId="news-button-card" type="tertiary">
+            Details
+          </Button>
         </div>
       </div>
     </div>

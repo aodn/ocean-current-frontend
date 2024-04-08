@@ -2,7 +2,7 @@ import React from 'react';
 import Title from './components/Title';
 import Author from './components/Author';
 import Content from './components/Content';
-import { News } from '../../types';
+import { News } from '../../types/HomeNews.types';
 import Date from './components/Date';
 
 interface DateTitleContentProps {

@@ -1,9 +1,7 @@
 import React from 'react';
+import { News } from '../../../types/HomeNews.types';
 
-interface TitleProps {
-  title: string;
-}
-const Title: React.FC<TitleProps> = ({ title }) => {
+const Title: React.FC<Pick<News, 'title'>> = ({ title }) => {
   return (
     <h3 data-testid="news-title-card" className="text-xl text-imos-black">
       {title}

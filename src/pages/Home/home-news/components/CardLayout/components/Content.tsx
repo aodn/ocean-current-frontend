@@ -1,9 +1,10 @@
 import React from 'react';
+import { News } from '../../../types/HomeNews.types';
 
-interface ContentProps {
-  content: string;
+interface ContentProps extends Pick<News, 'content'> {
   lineClamp?: number;
 }
+
 const Content: React.FC<ContentProps> = ({ content, lineClamp = 4 }) => {
   const lineClampMap: Record<number, string> = {
     3: 'line-clamp-3',

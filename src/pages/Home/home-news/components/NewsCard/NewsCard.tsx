@@ -1,27 +1,26 @@
-import React, { ReactNode } from 'react';
-import Horizontal from '../CardLayout/Horizontal';
-import DateTitleContent from '../CardLayout/DateTitleContent';
-import { NewsCardLayout, News } from '../../types';
+import React from 'react';
+import { News, NewsCardLayout } from '../../types/HomeNews.types';
+import HorizontalLayout from '../CardLayout/Horizontal';
+import DateTitleContentLayout from '../CardLayout/DateTitleContent';
 
 interface NewsCardProps {
   news: News;
   layout?: NewsCardLayout;
 }
+
 const NewsCard: React.FC<NewsCardProps> = ({ news, layout = 'date-title-content' }) => {
-  const layoutMap: Record<NewsCardLayout, () => ReactNode> = {
-    horizontal: () => <Horizontal news={news} />,
-    'date-title-content': () => <DateTitleContent news={news} />,
-    'title-content-date': () => null,
-    'title-image-content': () => null,
-    'image-title-content': () => null,
-  };
-
   const renderLayout = () => {
-    const layoutComponent = layoutMap[layout];
-    return layoutComponent();
+    switch (layout) {
+      case 'horizontal':
+        return <HorizontalLayout news={news} />;
+      case 'date-title-content':
+        return <DateTitleContentLayout news={news} />;
+      default:
+        return null;
+    }
   };
 
-  return renderLayout();
+  return <>{renderLayout()}</>;
 };
 
 export default NewsCard;

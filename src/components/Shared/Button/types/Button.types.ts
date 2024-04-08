@@ -14,7 +14,7 @@ export enum BorderRadius {
 export interface ButtonProps {
   type: keyof typeof ButtonType;
   borderRadius?: keyof typeof BorderRadius;
-  hasIcon?: boolean;
+  dataTestId?: string;
   icon?: JSX.Element;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   children: React.ReactNode;

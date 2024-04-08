@@ -1,9 +1,7 @@
 import React from 'react';
+import { News } from '../../../types/HomeNews.types';
 
-interface AuthorProps {
-  author: string;
-}
-const Author: React.FC<AuthorProps> = ({ author }) => {
+const Author: React.FC<Pick<News, 'author'>> = ({ author }) => {
   return (
     <p data-testid="news-author-card" className="italic text-imos-grey">
       {author}
