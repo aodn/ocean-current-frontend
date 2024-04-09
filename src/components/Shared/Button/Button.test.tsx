@@ -16,7 +16,7 @@ describe('Button Component', () => {
     expect(screen.getByText('Click me')).toBeInTheDocument();
   });
 
-  it('renders the icon when hasIcon is true', () => {
+  it('renders the icon when is passed', () => {
     // Arrange
     const icon = <span>🚀</span>;
 
