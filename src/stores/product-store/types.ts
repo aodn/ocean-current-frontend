@@ -1,3 +1,5 @@
+import { RegionScope } from '@/constants/region';
+
 export type State = {
   mainProduct: string;
   subProduct: string;
