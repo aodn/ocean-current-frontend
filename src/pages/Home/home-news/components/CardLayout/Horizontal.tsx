@@ -1,25 +1,25 @@
 import React from 'react';
-import { News } from '../../types';
+import { News } from '../../types/HomeNews.types';
 import Title from './components/Title';
 import Content from './components/Content';
+import { Button } from '@/components/Shared';
 
 interface HorizontalProps {
   news: News;
 }
-const Horizontal: React.FC<HorizontalProps> = ({ news }) => {
-  const { title, content, imageUrl } = news;
+const Horizontal: React.FC<HorizontalProps> = ({ news: { title, content, imageUrl } }) => {
   return (
-    <div className="flex h-full w-full divide-x overflow-hidden rounded-xl border">
+    <div className="flex h-full w-full overflow-hidden rounded-xl border">
       <div className="w-2/5">
-        <img src={imageUrl} alt="news profile" className="h-full object-fill" />
+        <img data-testid="news-img-card" src={imageUrl} alt={`${title} news img`} className="h-full object-fill" />
       </div>
-      <div className="flex w-3/5 flex-col justify-between p-7">
+      <div className="flex w-3/5 flex-col justify-between p-6">
         <Title title={title} />
         <Content content={content} lineClamp={5} />
         <div className="flex justify-end">
-          <button className="flex h-8 w-32 items-center justify-center rounded-3xl border-[1.28px] border-[#929292] bg-transparent px-12 text-[18px] text-[#6f6f6f]">
+          <Button dataTestId="news-button-card" type="tertiary">
             Details
-          </button>
+          </Button>
         </div>
       </div>
     </div>

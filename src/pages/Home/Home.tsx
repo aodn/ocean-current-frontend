@@ -12,7 +12,7 @@ const Home: React.FC = () => {
           <ProductsCarrousel />
         </div>
       </section>
-      <section className="pb-8">
+      <section className="py-28">
         <HomeNews />
       </section>
     </>

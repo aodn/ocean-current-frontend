@@ -14,13 +14,15 @@ export default {
         'imos-sand': '#d9d7bd',
         'imos-mid-grey': '#3c3c3c',
         'imos-title-blue': '#356183',
+        'imos-grey': '#8C8C8C',
+        'imos-black': '#555555',
       },
       fontSize: {
         body: ['10pt', { lineHeight: '12pt' }],
         h3: ['13pt', { lineHeight: '15.6pt' }],
         h2: ['18pt', { lineHeight: '21.6pt' }],
         h1: ['24pt', { lineHeight: '28.8pt' }],
-        h0: ['32pt', { lineHeight: '38.4pt' }],
+        h0: ['8rem', { lineHeight: '1.75rem' }],
       },
       fontFamily: {
         noto: ['NotoSans', 'sans-serif'],

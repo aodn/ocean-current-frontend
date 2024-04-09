@@ -1,10 +1,12 @@
 import React from 'react';
+import { News } from '../../../types/HomeNews.types';
 
-interface AuthorProps {
-  author: string;
-}
-const Author: React.FC<AuthorProps> = ({ author }) => {
-  return <p className="italic text-[#818181]">{author}</p>;
+const Author: React.FC<Pick<News, 'author'>> = ({ author }) => {
+  return (
+    <p data-testid="news-author-card" className="italic text-imos-grey">
+      {author}
+    </p>
+  );
 };
 
 export default Author;

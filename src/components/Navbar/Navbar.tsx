@@ -28,13 +28,12 @@ const Navbar: React.FC = () => {
     );
   };
   return (
-    <nav>
-      <div className="flex w-full py-9 ">
+    <nav className="flex items-center justify-between">
+      <div className="flex py-9 ">
         <img src={logo} alt="IMOS logo" />
         <div className="mx-7 h-auto w-px bg-imos-title-blue"></div>
         <div className="flex flex-col justify-center text-xl font-light text-imos-title-blue ">
-          <p>Imos Ocean Current</p>
-          <p>Surface Currents and Temperature</p>
+          <p>Ocean Current</p>
         </div>
       </div>
 

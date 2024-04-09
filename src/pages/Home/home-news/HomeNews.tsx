@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { mockNews } from './data/news';
+import { mockNews } from './data/HomeNewsData';
 import NewsCard from './components/NewsCard/NewsCard';
 
 const HomeNews: React.FC = () => {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h2 className="p-4 text-center text-h2">News</h2>
-        <button className="bg-transparent text-center text-lg">View more &rarr;</button>
+        <h2 className="py-4 text-center text-2xl text-imos-black">OceanCurrent News</h2>
+        <button className="bg-transparent text-center text-lg text-imos-grey">View more &rarr;</button>
       </div>
       <div className="grid grid-cols-3 gap-8">
         {mockNews.map((news, index) => (

@@ -1,9 +1,10 @@
 import React from 'react';
+import { News } from '../../../types/HomeNews.types';
 
-interface ContentProps {
-  content: string;
+interface ContentProps extends Pick<News, 'content'> {
   lineClamp?: number;
 }
+
 const Content: React.FC<ContentProps> = ({ content, lineClamp = 4 }) => {
   const lineClampMap: Record<number, string> = {
     3: 'line-clamp-3',
@@ -13,7 +14,12 @@ const Content: React.FC<ContentProps> = ({ content, lineClamp = 4 }) => {
   };
 
   return (
-    <p className={`${lineClampMap[lineClamp]} overflow-hidden text-ellipsis text-[13px] text-[#858585]`}>{content}</p>
+    <p
+      data-testid="news-content-card"
+      className={`${lineClampMap[lineClamp]} overflow-hidden text-ellipsis text-base text-imos-grey`}
+    >
+      {content}
+    </p>
   );
 };
 

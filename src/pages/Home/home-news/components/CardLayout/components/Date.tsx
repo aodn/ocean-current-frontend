@@ -1,10 +1,12 @@
 import React from 'react';
+import { News } from '../../../types/HomeNews.types';
 
-interface DateProps {
-  date: string;
-}
-const Date: React.FC<DateProps> = ({ date }) => {
-  return <p className="text-[#909090]">{date}</p>;
+const Date: React.FC<Pick<News, 'date'>> = ({ date }) => {
+  return (
+    <p data-testid="news-date-card" className="mb-4 text-imos-grey">
+      {date}
+    </p>
+  );
 };
 
 export default Date;
