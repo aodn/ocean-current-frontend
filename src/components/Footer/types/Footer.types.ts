@@ -1,16 +1,16 @@
-interface Link {
+interface FooterLink {
   name: string;
   url: string;
 }
 
-export interface Icon {
+export interface FooterIcon {
   alt: string;
   src: string;
   url: string;
 }
 
-export interface FooterLinks {
+export interface FooterSection {
   title: string;
-  links: Link[];
-  icons?: Icon[];
+  links: FooterLink[];
+  icons?: FooterIcon[];
 }
