@@ -62,12 +62,5 @@
       "prettier --write --ignore-unknown"
     ]
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-push": "yarn test"
-    }
-  },
   "packageManager": "yarn@4.1.0"
 }
