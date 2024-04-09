@@ -15,8 +15,12 @@ const NewsCard: React.FC<NewsCardProps> = ({ news, layout = 'date-title-content'
         return <HorizontalLayout news={news} />;
       case 'date-title-content':
         return <DateTitleContentLayout news={news} />;
-      default:
+      case 'title-content-date':
+      case 'title-image-content':
+      case 'image-title-content':
         return null;
+      default:
+        ((_: never) => {})(layout);
     }
   };
 
