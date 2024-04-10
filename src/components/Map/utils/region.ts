@@ -1,0 +1,31 @@
+export const calculateAreaFromCoords = (coords: number[]) => {
+  const [west, east, south, north] = coords;
+  if (west > east || Math.abs(north) > Math.abs(south)) {
+    throw new Error('Invalid coordinates');
+  }
+  return Math.abs(east - west) * Math.abs(south - north);
+  // return Promise.resolve(Math.abs(east - west) * Math.abs(north - south));
+};
+
+type GeoJsonPolygon = number[][][];
+/**
+ * Converts a list of four coordinates representing the corners of a bounding box
+ * into a GeoJSON Polygon representation.
+ *
+ * @param coords An array of four numbers representing the coordinates
+ * of the bounding box in the order [west, east, south, north].
+ * @returns {GeoJsonPolygon} A GeoJSON Polygon object as an array of arrays, representing
+ * the bounding box defined by the input coordinates.
+ */
+export const convertAreaCoordsToGeoJsonCoordinates = (coords: number[]): GeoJsonPolygon => {
+  const [west, east, south, north] = coords;
+  return [
+    [
+      [west, north],
+      [east, north],
+      [east, south],
+      [west, south],
+      [west, north],
+    ],
+  ];
+};
