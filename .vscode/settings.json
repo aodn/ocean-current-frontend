@@ -5,6 +5,7 @@
   },
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.insertFinalNewline": true,
   "cSpell.words": ["imos", "lexend", "noto", "testid"],
   "cSpell.ignoreWords": ["Bonney"]
 }
