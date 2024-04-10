@@ -10,7 +10,7 @@ const Home: React.FC = () => {
       <section>
         <HomeTitle />
       </section>
-      <section className="flex">
+      <section className="flex gap-8">
         <div className="w-1/3">
           <ProductsCarrousel />
         </div>

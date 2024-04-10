@@ -56,6 +56,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
       mapStyle={mapStyle}
       projection={{ name: 'equirectangular' }}
       reuseMaps
+      attributionControl={false}
     >
       {children}
       <FullscreenControl position="top-left" />
