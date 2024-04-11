@@ -1,10 +1,10 @@
-import { FooterLinks } from '../types/Footer.types';
+import { FooterSection } from '../types/Footer.types';
 import facebookIcon from '../../../assets/icons/facebook-icon.svg';
 import instagramIcon from '../../../assets/icons/instagram-icon.svg';
 import linkedinIcon from '../../../assets/icons/linkedin-icon.svg';
 import twitterIcon from '../../../assets/icons/twitter-icon.svg';
 
-export const footerData: FooterLinks[] = [
+export const footerData: FooterSection[] = [
   {
     title: 'Contact us',
     links: [
