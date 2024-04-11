@@ -48,6 +48,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
   return (
     <Map
       id={id}
+      data-testid={id}
       mapboxAccessToken={mapConfig.accessToken}
       {...viewState}
       onMove={handleMove}

@@ -7,7 +7,6 @@ export const calculateAreaFromCoords = (coords: number[]) => {
     throw new Error('Invalid coordinates, north coordinate is greater than south coordinate in absolute value.');
   }
   return Math.abs(east - west) * Math.abs(south - north);
-  // return Promise.resolve(Math.abs(east - west) * Math.abs(north - south));
 };
 
 type GeoJsonPolygon = number[][][];
