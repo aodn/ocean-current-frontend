@@ -1,7 +1,10 @@
 export const calculateAreaFromCoords = (coords: number[]) => {
   const [west, east, south, north] = coords;
-  if (west > east || Math.abs(north) > Math.abs(south)) {
-    throw new Error('Invalid coordinates');
+  if (west > east) {
+    throw new Error('Invalid coordinates, west coordinate is greater than east coordinate.');
+  }
+  if (Math.abs(north) > Math.abs(south)) {
+    throw new Error('Invalid coordinates, north coordinate is greater than south coordinate in absolute value.');
   }
   return Math.abs(east - west) * Math.abs(south - north);
   // return Promise.resolve(Math.abs(east - west) * Math.abs(north - south));
