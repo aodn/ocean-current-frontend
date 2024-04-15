@@ -8,11 +8,11 @@ const Home: React.FC = () => {
     <>
       <section>
         <HomeTitle />
-        <div className="w-1/3">
+        <div className="w-full md:w-1/3">
           <ProductsCarrousel />
         </div>
       </section>
-      <section className="py-28">
+      <section className="py-10 md:py-28">
         <HomeNews />
       </section>
     </>
