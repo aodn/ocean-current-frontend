@@ -1,16 +1,16 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import NavbarBurgerMenu from './NavbarBurgerMenu';
-import { linksData } from '../Navbar/data/LinksData';
+import { linksData } from '../../data/linksData';
 
 describe('NavbarBurgerMenu', () => {
   const renderComponent = () =>
     render(
-      <Router>
+      <MemoryRouter>
         <NavbarBurgerMenu />
-      </Router>,
+      </MemoryRouter>,
     );
 
   it('renders the component', async () => {

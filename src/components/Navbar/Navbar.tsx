@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import NavbarMenu from './components/NavbarMenu';
-import { linksData } from './data/LinksData';
-import { LinkItem, SectionLinks } from './types/Navbar.types';
+import { linksData } from '../../data/linksData';
+import { LinkItem, SectionLinks } from '../../types/navbar';
 import logo from '@/assets/images/imos-logo.png';
 
 const Navbar: React.FC = () => {
