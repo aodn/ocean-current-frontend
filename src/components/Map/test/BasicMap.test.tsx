@@ -1,9 +1,9 @@
-import { calculateAreaFromCoords, convertAreaCoordsToGeoJsonCoordinates } from '../utils/region';
 import { render, screen, renderHook } from '@testing-library/react';
-import BasicMap from '../BasicMap';
 import { mapConfig } from '@/configs/map';
-import useRegionData from '../hooks/useRegionData';
 import useMapStore from '@/stores/map-store/mapStore';
+import { calculateAreaFromCoords, convertAreaCoordsToGeoJsonCoordinates } from '../utils/region';
+import BasicMap from '../BasicMap';
+import useRegionData from '../hooks/useRegionData';
 
 describe('Map utils', () => {
   describe('calculateAreaFromCoords', () => {
@@ -70,6 +70,9 @@ vi.mock('../layers/RegionPolygonLayer/RegionPolygonLayer', () => {
 
 describe('BasicMap Component', () => {
   it('renders correctly with default props', () => {
+    //Arrange
+    mapConfig.accessToken = 'test-api-key';
+
     // Act
     render(<BasicMap />);
 

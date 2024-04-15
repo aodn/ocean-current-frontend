@@ -1,5 +1,4 @@
 import React from 'react';
-
 import MapArea from '@/components/MapArea/MapArea';
 import SideNavBar from '@/components/SideNavbar/SideNavBar';
 

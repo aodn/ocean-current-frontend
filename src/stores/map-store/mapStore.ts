@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { State, Actions } from './map.types';
 import { devtools } from 'zustand/middleware';
+import { State, Actions } from './map.types';
 
 const useMapStore = create<State & Actions>()(
   devtools((set) => ({

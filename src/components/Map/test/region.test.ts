@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
-import useRegionData from '../hooks/useRegionData';
 import useMapStore from '@/stores/map-store/mapStore';
+import useRegionData from '../hooks/useRegionData';
 
 const mockRegions = [
   { region: 'SE', title: 'South East', coords: [145, 162.5, -45, -24.5] },

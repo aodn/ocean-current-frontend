@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import ErrorBoundary from './ErrorBoundary';
 import { describe, it, expect, vi } from 'vitest';
+import ErrorBoundary from './ErrorBoundary';
 
 const ProblematicComponent = () => {
   throw new Error('I crashed!');

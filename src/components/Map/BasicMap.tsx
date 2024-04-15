@@ -1,8 +1,8 @@
 import React, { PropsWithChildren, useState } from 'react';
 import Map, { FullscreenControl, MapStyle, NavigationControl, ViewState, ViewStateChangeEvent } from 'react-map-gl';
 import { mapConfig } from '@/configs/map';
-import RegionPolygonLayer from './layers/RegionPolygonLayer/RegionPolygonLayer';
 import { setZoom } from '@/stores/map-store/mapStore';
+import RegionPolygonLayer from './layers/RegionPolygonLayer/RegionPolygonLayer';
 import MAP_STYLE from './data/map-style.basic-v8.json';
 
 interface BasicMapOptionalProps {

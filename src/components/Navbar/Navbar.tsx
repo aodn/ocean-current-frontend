@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
-import NavbarMenu from './components/NavbarMenu';
+import logo from '@/assets/images/imos-logo.png';
 import { linksData } from '../../data/linksData';
 import { LinkItem, SectionLinks } from '../../types/navbar';
-import logo from '@/assets/images/imos-logo.png';
+import NavbarMenu from './components/NavbarMenu';
 
 const Navbar: React.FC = () => {
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
