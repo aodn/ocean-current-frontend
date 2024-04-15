@@ -1,5 +1,5 @@
 import { forwardRef, ForwardedRef } from 'react';
-import { DetailedLink } from '../types/Navbar.types';
+import { DetailedLink } from '../../../types/navbar';
 import { Link } from 'react-router-dom';
 
 const NavbarMenu = forwardRef(

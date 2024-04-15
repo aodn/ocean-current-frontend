@@ -11,14 +11,14 @@ const Home: React.FC = () => {
         <HomeTitle />
       </section>
       <section className="flex gap-8">
-        <div className="w-1/3">
+        <div className="w-full md:w-1/3">
           <ProductsCarrousel />
         </div>
         <div className="flex-1">
           <HomeMap />
         </div>
       </section>
-      <section className="py-28">
+      <section className="py-10 md:py-28">
         <HomeNews />
       </section>
     </>
