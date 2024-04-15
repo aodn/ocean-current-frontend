@@ -4,8 +4,6 @@ import { linksData } from './data/LinksData';
 import { LinkItem, SectionLinks } from './types/Navbar.types';
 import logo from '@/assets/images/imos-logo.png';
 
-const isSectionLink = (item: LinkItem): item is SectionLinks => 'leftLinks' in item || 'rightLinks' in item;
-
 const Navbar: React.FC = () => {
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [popoverPosition, setPopoverPosition] = useState<{ left: number } | null>(null);
@@ -17,6 +15,8 @@ const Navbar: React.FC = () => {
     setPopoverPosition({ left: element.offsetLeft });
   };
 
+  const isSectionLink = (item: LinkItem): item is SectionLinks => 'leftLinks' in item || 'rightLinks' in item;
+
   const closeNavbarMenu = () => setHoverIndex(null);
 
   const shouldDisplayNavbarMenu = (index: number | null): boolean => {
@@ -27,6 +27,7 @@ const Navbar: React.FC = () => {
       ((!!item.leftLinks && item.leftLinks.length > 0) || (!!item.rightLinks && item.rightLinks.length > 0))
     );
   };
+
   return (
     <nav className="flex items-center justify-between">
       <div className="flex py-9 ">
