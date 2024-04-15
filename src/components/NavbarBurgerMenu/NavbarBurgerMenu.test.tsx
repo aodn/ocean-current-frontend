@@ -1,12 +1,21 @@
 import { describe, it, expect } from 'vitest';
-import { render, fireEvent, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
 import NavbarBurgerMenu from './NavbarBurgerMenu';
 import { linksData } from '../Navbar/data/LinksData';
 
 describe('NavbarBurgerMenu', () => {
+  const renderComponent = () =>
+    render(
+      <Router>
+        <NavbarBurgerMenu />
+      </Router>,
+    );
+
   it('renders the component', async () => {
     // Arrange
-    render(<NavbarBurgerMenu />);
+    renderComponent();
 
     // Assert
     const logo = screen.getByAltText('IMOS logo navbar');
@@ -17,33 +26,31 @@ describe('NavbarBurgerMenu', () => {
 
   it('toggles menu visibility when SVG is clicked', async () => {
     // Arrange
-    render(<NavbarBurgerMenu />);
+    renderComponent();
     const toggleButton = screen.getByTestId('svg-toggle');
     const menu = screen.getByTestId('burger-menu');
 
     // Assert initial state
-    expect(menu).toHaveClass('hidden');
+    expect(menu.classList.contains('hidden')).toBe(true);
 
     // Act
-    fireEvent.click(toggleButton);
+    userEvent.click(toggleButton);
 
-    // Assert
-    expect(menu).not.toHaveClass('hidden');
+    await waitFor(() => expect(menu.classList.contains('hidden')).toBe(false));
 
     // Act
-    fireEvent.click(toggleButton);
+    userEvent.click(toggleButton);
 
-    // Assert
-    expect(menu).toHaveClass('hidden');
+    await waitFor(() => expect(menu.classList.contains('hidden')).toBe(true));
   });
 
   it('displays all the links when menu is open', async () => {
     // Arrange
-    render(<NavbarBurgerMenu />);
+    renderComponent();
     const svgToggle = screen.getByTestId('svg-toggle');
 
     // Act
-    fireEvent.click(svgToggle);
+    userEvent.click(svgToggle);
 
     // Assert
     await waitFor(() => {

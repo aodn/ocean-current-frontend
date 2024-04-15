@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { linksData } from '../Navbar/data/LinksData';
-
+import { Link } from 'react-router-dom';
 import logo from '@/assets/images/imos-logo.png';
+import burgerMenu from '@/assets/icons/burger-menu-icon.svg';
+import cross from '@/assets/icons/cross-icon.svg';
 
 const NavbarBurgerMenu: React.FC = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -13,35 +15,25 @@ const NavbarBurgerMenu: React.FC = () => {
   return (
     <div>
       <nav className="flex items-center justify-between px-6 py-6">
-        <a className="mr-auto" href="/">
+        <Link className="mr-auto" to={'/'}>
           <img className="h-8 " src={logo} alt="IMOS logo navbar" />
-        </a>
-        <svg
-          onClick={toggleMenu}
+        </Link>
+        <img
           data-testid="svg-toggle"
-          className="block h-6 w-6 fill-current text-gray-400"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-        </svg>
+          onClick={toggleMenu}
+          className="block h-6 w-6 "
+          alt="burger-menu"
+          src={burgerMenu}
+          aria-hidden="true"
+        />
       </nav>
       <div data-testid="burger-menu" className={`z-50 ${isMenuOpen ? 'visible' : 'hidden'}`}>
         <nav className="fixed bottom-0 left-0 top-0 flex w-full flex-col overflow-y-auto border-r bg-white px-12 py-6">
           <div className="mb-8 flex items-center">
-            <a className="mr-auto" href="/">
+            <Link className="mr-auto" to={'/'}>
               <img className="h-8 " src={logo} alt="IMOS logo" />
-            </a>
-            <svg
-              onClick={toggleMenu}
-              className="h-8 cursor-pointer text-gray-400"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
+            </Link>
+            <img onClick={toggleMenu} className="h-8" alt="cross" src={cross} aria-hidden="true" />
           </div>
           {linksData.map((link) => (
             <div key={link.title}>
@@ -49,14 +41,14 @@ const NavbarBurgerMenu: React.FC = () => {
               {link.leftLinks && link.rightLinks && (
                 <div className="ml-4">
                   {link.leftLinks.map((subLink) => (
-                    <a key={subLink.id} className="block text-gray-400" href={subLink.url}>
+                    <Link key={subLink.id} className="mr-auto block text-gray-400" to={subLink.url}>
                       {subLink.title}
-                    </a>
+                    </Link>
                   ))}
                   {link.rightLinks.map((subLink) => (
-                    <a key={subLink.id} className="block text-gray-400" href={subLink.url}>
+                    <Link key={subLink.id} className="mr-auto block text-gray-400" to={subLink.url}>
                       {subLink.title}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               )}

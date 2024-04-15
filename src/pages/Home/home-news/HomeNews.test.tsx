@@ -64,7 +64,7 @@ describe('NewsCard Component', () => {
       'src',
       'https://oceancurrent.aodn.org.au/news/20240202/Bonney2.png',
     );
-    expect(screen.getByTestId('news-img-card')).toHaveAttribute('alt', 'Test News Title 2 news img');
+    expect(screen.getByTestId('news-img-card')).toHaveAttribute('alt', 'Test News Title 2 news');
     expect(screen.getByTestId('news-button-card')).toHaveTextContent('Details');
   });
 });
