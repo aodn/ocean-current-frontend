@@ -1,4 +1,4 @@
-import { LocalTitle, StateTitle } from '@/types/region';
+import { LocalKey, StateKey } from '@/types/region';
 import { pickRandomElements } from '@/utils/math';
 import { fullLocalList, fullStateList } from './regionList';
 
@@ -10,8 +10,8 @@ import { fullLocalList, fullStateList } from './regionList';
 type RegionException = {
   // TODO: this key type should be valid product key
   [key: string]: {
-    localException: LocalTitle[];
-    stateException: StateTitle[];
+    localException: LocalKey[];
+    stateException: StateKey[];
   };
 };
 
@@ -29,11 +29,11 @@ export const regionException: RegionException = {
     stateException: [...fullStateList], // fourHour product is not available for all state level
   },
   adjSeaLevelAnom: {
-    localException: pickRandomElements<LocalTitle>([...fullLocalList], 5), // TODO: this is fake data, need to be updated
-    stateException: pickRandomElements<StateTitle>([...fullStateList], 3), // TODO: this is fake data, need to be updated
+    localException: pickRandomElements<LocalKey>([...fullLocalList], 5), // TODO: this is fake data, need to be updated
+    stateException: pickRandomElements<StateKey>([...fullStateList], 3), // TODO: this is fake data, need to be updated
   },
   oceanColor: {
-    localException: pickRandomElements<LocalTitle>([...fullLocalList], 5), // TODO: this is fake data, need to be updated
-    stateException: pickRandomElements<StateTitle>([...fullStateList], 3), // TODO: this is fake data, need to be updated
+    localException: pickRandomElements<LocalKey>([...fullLocalList], 5), // TODO: this is fake data, need to be updated
+    stateException: pickRandomElements<StateKey>([...fullStateList], 3), // TODO: this is fake data, need to be updated
   },
 };

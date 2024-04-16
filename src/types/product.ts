@@ -12,7 +12,7 @@ export interface Product extends SubProduct {
 
 export interface CombinedProduct {
   mainProduct: BaseProduct;
-  subProduct: BaseProduct | null; // 'null' indicates no sub-product is present
+  subProduct: BaseProduct | null;
   combinedTitle: string;
   fullKey: string;
   fullPath: string;

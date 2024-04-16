@@ -1,8 +1,8 @@
-import { Region } from '@/types/map';
+import { LocalRegion, NationRegion, Region, StateRegion } from '@/types/map';
 
-const nationRegions: Region[] = [{ region: 'Au', title: 'Australia/NZ', coords: [100.5, 179.5, -49, -5.5] }];
+const nationRegions: NationRegion[] = [{ region: 'Au', title: 'Australia/NZ', coords: [100.5, 179.5, -49, -5.5] }];
 
-const stateRegions: Region[] = [
+const stateRegions: StateRegion[] = [
   { region: 'SE', title: 'South East', coords: [145, 162.5, -45, -24.5] },
   { region: 'SW', title: 'South West', coords: [101, 125, -40, -20] },
   { region: 'NE', title: 'North East', coords: [142, 160, -27, -7] },
@@ -12,7 +12,7 @@ const stateRegions: Region[] = [
   { region: 'NZ', title: 'New Zealand', coords: [160, 180, -50, -30] },
 ];
 
-const localRegions: Region[] = [
+const localRegions: LocalRegion[] = [
   { region: 'Fiji', title: 'Fiji', coords: [176.0, 180.0, -20.0, -15.0] },
   { region: 'JBGulf', title: 'JBGulf', coords: [127.0, 133.0, -15.6, -10.0] },
   { region: 'RowleyAtolls', title: 'RowleyAtolls', coords: [118.5, 120.5, -18.5, -16.5] },
@@ -62,5 +62,5 @@ const localRegions: Region[] = [
   { region: 'NZSI', title: 'New Zealand South', coords: [164.0, 177.0, -48.0, -39.0] },
 ];
 
-const allRegions = [...nationRegions, ...stateRegions, ...localRegions];
+const allRegions: Region[] = [...nationRegions, ...stateRegions, ...localRegions];
 export { allRegions };

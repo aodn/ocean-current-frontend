@@ -1,5 +1,5 @@
 import { fullLocalList, fullNationList, fullStateList } from '@/data/regionList';
 
-export type NationTitle = (typeof fullNationList)[number];
-export type StateTitle = (typeof fullStateList)[number];
-export type LocalTitle = (typeof fullLocalList)[number];
+export type NationKey = (typeof fullNationList)[number];
+export type StateKey = (typeof fullStateList)[number];
+export type LocalKey = (typeof fullLocalList)[number];

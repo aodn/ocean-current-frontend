@@ -6,7 +6,7 @@ export const combineProducts = (products: Product[]): CombinedProduct[] => {
     if (!product.children) {
       return {
         mainProduct: { title: product.title, key: product.key, path: product.path },
-        subProduct: null, // No sub-product
+        subProduct: null,
         combinedTitle: product.title,
         fullKey: product.key,
         fullPath: product.path,
@@ -29,21 +29,11 @@ const combinedProducts = combineProducts(OC_PRODUCTS);
 
 export type ValidProductIdentifier = (typeof combinedProducts)[number]['fullKey'];
 
-interface TargetDataEntry {
-  identifier: ValidProductIdentifier;
-  info: string;
-}
-
 export const validIdentifiers = new Set(combinedProducts.map((product) => product.fullKey));
 
-export const validateProductIdentifier = (identifier: string): boolean => validIdentifiers.has(identifier);
-
-export const createTargetDataEntry = (identifier: string, info: string): TargetDataEntry | null => {
-  // Runtime check against the dynamic set of valid identifiers
+export const validateProductIdentifier = (identifier: string): boolean => {
   if (!validIdentifiers.has(identifier)) {
-    console.error(`Invalid identifier at runtime: ${identifier}`);
-    // throw new Error(`Invalid identifier at runtime: ${identifier}`);
-    return null;
+    throw new Error(`Invalid identifier at runtime: ${identifier}`);
   }
-  return { identifier: identifier as ValidProductIdentifier, info };
+  return true;
 };
