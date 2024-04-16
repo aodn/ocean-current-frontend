@@ -9,13 +9,16 @@ export default {
     extend: {
       colors: {
         'imos-deep-blue': '#3b6e8f',
-        'imos-sea-blue': '#54bceb',
+        'imos-sea-blue': '#52BDEC',
         'imos-accent-orange': '#e36f1e',
         'imos-sand': '#d9d7bd',
         'imos-mid-grey': '#3c3c3c',
         'imos-title-blue': '#356183',
         'imos-grey': '#8C8C8C',
         'imos-black': '#555555',
+      },
+      backgroundImage: {
+        'background-gradient': 'linear-gradient(180deg, #DCDCDC 0%, rgba(217, 217, 217, 0.34) 100%)',
       },
       fontSize: {
         body: ['10pt', { lineHeight: '12pt' }],

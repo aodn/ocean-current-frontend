@@ -6,6 +6,7 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "files.insertFinalNewline": true,
-  "cSpell.words": ["imos", "lexend", "noto", "testid"],
-  "cSpell.ignoreWords": ["Bonney"]
+  "cSpell.words": ["colour", "imos", "lexend", "noto", "testid"],
+  "cSpell.ignoreWords": ["Bonney"],
+  "cSpell.ignorePaths": ["package.json"]
 }
