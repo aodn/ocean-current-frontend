@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { mockNews } from './data/HomeNewsData';
 import NewsCard from './components/NewsCard/NewsCard';
 
