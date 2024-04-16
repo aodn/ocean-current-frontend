@@ -3,98 +3,98 @@ import { Product } from '@/types/product';
 export const OC_PRODUCTS: Product[] = [
   {
     title: 'Snapshot SST',
-    value: 'snapshotSst',
+    key: 'snapshotSst',
     path: 'snapshot-sst',
   },
   {
     title: 'Four hour SST',
     path: 'four-hour-sst',
-    value: 'fourHourSst',
+    key: 'fourHourSst',
     children: [
       {
         title: 'SST Filled',
-        value: 'sstFilled',
+        key: 'fourHourSst-sstFilled',
         path: 'sst-filled',
       },
       {
         title: 'SST',
-        value: 'sst',
-        path: 'sst',
+        key: 'fourHourSst-Sst',
+        path: 'four-hour-sst',
       },
       {
         title: 'SST Age',
-        value: 'sstAge',
+        key: 'fourHourSst-sstAge',
         path: 'sst-age',
       },
       {
         title: 'Wind Speed',
-        value: 'windSpeed',
+        key: 'fourHourSst-windSpeed',
         path: 'wind-speed',
       },
     ],
   },
   {
     title: '6-Day SST & Centiles',
-    value: '6DaySstCentiles',
+    key: '6DaySstCentiles',
     path: '6-day-sst-centiles',
     children: [
       {
         title: 'SST',
-        value: 'sst',
+        key: '6DaySstCentiles-sst',
         path: 'sst',
       },
       {
         title: 'SST Anomaly',
-        value: 'sstAnomaly',
+        key: '6DaySstCentiles-sstAnomaly',
         path: 'sst-anomaly',
       },
       {
         title: 'Centiles',
-        value: 'centiles',
+        key: '6DaySstCentiles-centiles',
         path: 'centiles',
       },
     ],
   },
   {
     title: 'Climatology',
-    value: 'climatology',
+    key: 'climatology',
     path: 'climatology',
     children: [
       {
         title: 'SST',
-        value: 'sst',
+        key: 'climatology-sst',
         path: 'sst',
       },
       {
         title: 'Date Count',
-        value: 'dateCount',
+        key: 'climatology-dateCount',
         path: 'date-count',
       },
     ],
   },
   {
     title: 'SST Anom vs Time',
-    value: 'sstAnomVsTime',
+    key: 'sstAnomVsTime',
     path: 'sst-anom-vs-time',
   },
   {
     title: 'Snapshot Chlorophyll-a',
-    value: 'snapshotChlorophyllA',
+    key: 'snapshotChlorophyllA',
     path: 'snapshot-chlorophyll-a',
   },
   {
     title: 'Adj. Sea Level Anom.',
-    value: 'adjSeaLevelAnom',
+    key: 'adjSeaLevelAnom',
     path: 'adj-sea-level-anom',
   },
   {
     title: 'Non-Tidal Sea Level Anom.',
-    value: 'nonTidalSeaLevelAnom',
+    key: 'nonTidalSeaLevelAnom',
     path: 'non-tidal-sea-level-anom',
   },
   {
     title: 'Argo',
-    value: 'argo',
+    key: 'argo',
     path: 'argo',
   },
-];
+] as const;
