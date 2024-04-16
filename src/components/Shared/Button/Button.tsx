@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { BorderRadius, ButtonType, ButtonProps } from './types/Button.types';
 
 const Button: React.FC<ButtonProps> = ({

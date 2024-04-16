@@ -44,5 +44,19 @@ module.exports = {
     ],
     quotes: ['error', 'single', { avoidEscape: true }],
     'no-undef': 'off',
+    'import/order': [
+      'warn',
+      {
+        'newlines-between': 'never',
+        pathGroups: [
+          {
+            pattern: '@/**',
+            group: 'parent',
+            position: 'before',
+          },
+        ],
+      },
+    ],
+    'import/newline-after-import': 'error',
   },
 };

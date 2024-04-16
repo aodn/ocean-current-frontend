@@ -1,7 +1,7 @@
-import { RegionScope } from '@/constants/region';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { Actions, State } from './types';
+import { RegionScope } from '@/constants/region';
+import { Actions, State } from './product.types';
 
 const useProductStore = create<State & Actions>()(
   devtools((set) => ({
