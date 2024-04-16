@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { DropdownElement, DropdownProps } from './types/dropdown.types';
 
 const Dropdown: React.FC<DropdownProps> = ({ elements, initialSelectedId }: DropdownProps) => {
@@ -10,14 +10,17 @@ const Dropdown: React.FC<DropdownProps> = ({ elements, initialSelectedId }: Drop
     setDropdownOpen(!isDropdownOpen);
   };
 
-  const selectElement = (id: string): void => {
-    const element = elements.find((element) => element.id === id);
-    if (element) setSelectedElement(element);
-  };
+  const selectElement = useCallback(
+    (id: string): void => {
+      const element = elements.find((element) => element.id === id);
+      if (element) setSelectedElement(element);
+    },
+    [elements],
+  );
 
   useEffect(() => {
     if (!selectedElement && initialSelectedId) selectElement(initialSelectedId);
-  }, [elements, initialSelectedId]);
+  }, [isDropdownOpen, selectElement, selectedElement, initialSelectedId]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

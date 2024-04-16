@@ -8,6 +8,7 @@
   "files.insertFinalNewline": true,
   "cSpell.words": ["Anom", "equirectangular", "Geolocate", "imos", "lexend", "noto", "testid"],
   "cSpell.ignoreWords": ["Bonney"],
+  "cSpell.ignorePaths": ["package.json"],
   "git.branchProtection": ["main"],
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#82cef0",
@@ -28,5 +29,5 @@
     "titleBar.inactiveBackground": "#54bceb99",
     "titleBar.inactiveForeground": "#15202b99"
   },
-  "cSpell.ignorePaths": ["package.json"]
+  "peacock.color": "#54bceb"
 }
