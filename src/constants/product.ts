@@ -93,6 +93,11 @@ export const OC_PRODUCTS: Product[] = [
     path: 'non-tidal-sea-level-anom',
   },
   {
+    title: 'Ocean Color',
+    key: 'oceanColor',
+    path: 'ocean-color',
+  },
+  {
     title: 'Argo',
     key: 'argo',
     path: 'argo',
