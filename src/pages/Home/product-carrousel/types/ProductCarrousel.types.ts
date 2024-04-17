@@ -3,5 +3,4 @@ export interface ProductData {
   id: string;
   description: string;
   imageUrl: string;
-  selected: boolean;
 }

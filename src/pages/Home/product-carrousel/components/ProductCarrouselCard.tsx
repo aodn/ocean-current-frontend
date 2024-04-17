@@ -1,7 +1,10 @@
 import React from 'react';
 import { ProductData } from '../types/ProductCarrousel.types';
 
-const ProductCarrouselCard: React.FC<ProductData> = ({ title, description, selected, imageUrl, id }) => {
+interface ProductCarrouselCardProps extends ProductData {
+  selected: boolean;
+}
+const ProductCarrouselCard: React.FC<ProductCarrouselCardProps> = ({ title, description, selected, imageUrl, id }) => {
   const selectedBorderStyle = 'border-4 border-blue-500';
   const nonSelectedBorderStyle = 'border-4 border';
 

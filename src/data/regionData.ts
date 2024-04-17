@@ -63,4 +63,5 @@ const localRegions: LocalRegion[] = [
 ];
 
 const allRegions: Region[] = [...nationRegions, ...stateRegions, ...localRegions];
-export { allRegions };
+
+export { nationRegions, stateRegions, localRegions, allRegions };

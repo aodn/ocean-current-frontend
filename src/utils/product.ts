@@ -17,7 +17,7 @@ export const combineProducts = (products: Product[]): CombinedProduct[] => {
           mainProduct: { title: product.title, key: product.key, path: product.path },
           subProduct: { title: child.title, key: child.key, path: child.path },
           combinedTitle: `${product.title} + ${child.title}`,
-          fullKey: `${product.key}-${child.key}`,
+          fullKey: child.key,
           fullPath: `${product.path}/${child.path}`,
         } as CombinedProduct;
       });
@@ -25,7 +25,7 @@ export const combineProducts = (products: Product[]): CombinedProduct[] => {
   });
 };
 
-const combinedProducts = combineProducts(OC_PRODUCTS);
+export const combinedProducts = combineProducts(OC_PRODUCTS);
 
 export type ValidProductIdentifier = (typeof combinedProducts)[number]['fullKey'];
 
