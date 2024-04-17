@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
   return (
     <div className="py-6 md:py-20">
       <div className="text-2xl font-medium leading-7 text-imos-black">IMOS OceanCurrent</div>
-      <div className="flex flex-col items-center justify-center md:flex md:flex-row">
+      <div className="flex flex-col justify-center md:flex md:flex-row">
         {footerData.map(({ title, links, icons }) => (
           <div key={title} className="w-full md:mr-4 md:w-1/4">
             <div className="mt-11 text-base font-semibold leading-6 max-md:mt-10">{title}</div>
