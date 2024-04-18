@@ -1,15 +1,17 @@
 import { Layer, Source } from 'react-map-gl';
 import useRegionData from '../../hooks/useRegionData';
 
+const SOURCE_ID = 'trackingRect';
+
 const RegionPolygonLayer = () => {
   const { regionData } = useRegionData();
 
   return (
-    <Source id="trackingRect" type="geojson" data={regionData}>
+    <Source id={SOURCE_ID} type="geojson" data={regionData}>
       <Layer
         id="trackingRectLayer"
         type="fill"
-        source="trackingRect"
+        source={SOURCE_ID}
         paint={{
           'fill-color': [
             'case',

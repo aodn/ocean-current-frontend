@@ -13,7 +13,7 @@ const ProductCarrousel: React.FC = () => {
       setSelectedProductIndex((preSelectedIndex) => (preSelectedIndex + 1) % productsData.length);
     };
 
-    const intervalIndex = setInterval(switchSelectedProduct, 5000);
+    const intervalIndex = setInterval(switchSelectedProduct, 2500);
 
     return () => clearInterval(intervalIndex);
   }, []);
@@ -23,18 +23,19 @@ const ProductCarrousel: React.FC = () => {
   }, [selectedProduct.id]);
 
   return (
-    <div>
+    <ul>
       {productsData.map((product) => (
-        <ProductCarrouselCard
-          key={product.id}
-          title={product.title}
-          description={product.description}
-          selected={selectedProduct.id === product.id}
-          imageUrl={product.imageUrl}
-          id={product.id}
-        />
+        <li className="[&:not(:last-child)]:mb-5" key={product.id}>
+          <ProductCarrouselCard
+            title={product.title}
+            description={product.description}
+            selected={selectedProduct.id === product.id}
+            imageUrl={product.imageUrl}
+            id={product.id}
+          />
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };
 
