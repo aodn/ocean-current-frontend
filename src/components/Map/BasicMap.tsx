@@ -2,7 +2,8 @@ import React, { PropsWithChildren, useState } from 'react';
 import Map, { FullscreenControl, MapStyle, NavigationControl, ViewState, ViewStateChangeEvent } from 'react-map-gl';
 import { mapConfig } from '@/configs/map';
 import { setZoom } from '@/stores/map-store/mapStore';
-import RegionPolygonLayer from './layers/RegionPolygonLayer/RegionPolygonLayer';
+import useProductStore from '@/stores/product-store/productStore';
+import { RegionPolygonLayer, ArgoAsProductLayer } from './layers';
 import MAP_STYLE from './data/map-style.basic-v8.json';
 
 interface BasicMapOptionalProps {
@@ -29,6 +30,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
   children,
 }) => {
   const [viewState, setViewState] = useState<Partial<ViewState>>(initialViewState);
+  const useMainProduct = useProductStore((state) => state.mainProduct);
 
   const handleMove = ({ viewState }: ViewStateChangeEvent) => setViewState(viewState);
 
@@ -55,14 +57,15 @@ const BasicMap: React.FC<BasicMapProps> = ({
       onZoom={handleZoom}
       style={{ width: '100%', height: '100%', ...style }}
       mapStyle={mapStyle}
-      projection={{ name: 'equirectangular' }}
+      projection={{ name: 'mercator' }}
       reuseMaps
       attributionControl={false}
     >
       {children}
       <FullscreenControl position="top-left" />
       <NavigationControl position="top-left" />
-      <RegionPolygonLayer />
+      {useMainProduct !== 'argo' && <RegionPolygonLayer />}
+      {useMainProduct === 'argo' && <ArgoAsProductLayer />}
     </Map>
   );
 };

@@ -20,6 +20,13 @@ export default ({ mode }) => {
     server: {
       port: Number(process.env.VITE_PORT),
       open: Boolean(process.env.VITE_OPEN_BROWSER),
+      proxy: {
+        '/api': {
+          target: 'https://oceancurrent.aodn.org.au',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ''),
+        },
+      },
     },
     test: {
       globals: true,
