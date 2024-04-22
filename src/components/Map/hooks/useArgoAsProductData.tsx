@@ -24,10 +24,12 @@ const useArgoAsProductData = () => {
           const newDate = dayjs(date).subtract(1, 'day').format('YYYYMMDD');
           fetchData(newDate);
         }
+        // TODO: Handle error, return error to UI, render notification/warning
       }
     };
 
     fetchData(useDate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
