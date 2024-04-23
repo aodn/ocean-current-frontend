@@ -1,34 +1,38 @@
-import React, { PropsWithChildren, useState } from 'react';
+import React, { useState } from 'react';
 import Map, { FullscreenControl, MapStyle, NavigationControl, ViewState, ViewStateChangeEvent } from 'react-map-gl';
 import { mapConfig } from '@/configs/map';
 import { setZoom } from '@/stores/map-store/mapStore';
 import RegionPolygonLayer from './layers/RegionPolygonLayer/RegionPolygonLayer';
 import MAP_STYLE from './data/map-style.basic-v8.json';
 
-interface BasicMapOptionalProps {
+interface BasicMapProps {
+  children?: React.ReactNode;
   id?: string;
   initialViewState?: Partial<ViewState>;
   mapStyle?: string;
   style?: React.CSSProperties;
+  fullScreenControl?: boolean;
+  navigationControl?: boolean;
 }
 
-interface BasicMapProps extends BasicMapOptionalProps, PropsWithChildren {
-  fullScreenControl?: boolean;
-}
 const BasicMap: React.FC<BasicMapProps> = ({
   id = 'landing-oc-map',
   mapStyle = MAP_STYLE as MapStyle,
-  initialViewState = {
+  initialViewState,
+  style,
+  children,
+  fullScreenControl = true,
+  navigationControl = true,
+}) => {
+  const defaultState = {
     latitude: -25.824806,
     longitude: 140.265399,
     bearing: 0,
     pitch: 0,
     zoom: 2.6,
-  },
-  style,
-  children,
-}) => {
-  const [viewState, setViewState] = useState<Partial<ViewState>>(initialViewState);
+    ...initialViewState,
+  };
+  const [viewState, setViewState] = useState<Partial<ViewState>>(defaultState);
 
   const handleMove = ({ viewState }: ViewStateChangeEvent) => setViewState(viewState);
 
@@ -60,8 +64,9 @@ const BasicMap: React.FC<BasicMapProps> = ({
       attributionControl={false}
     >
       {children}
-      <FullscreenControl position="top-left" />
-      <NavigationControl position="top-left" />
+      {fullScreenControl && <FullscreenControl position="top-left" />}
+      {navigationControl && <NavigationControl position="top-left" />}
+
       <RegionPolygonLayer />
     </Map>
   );

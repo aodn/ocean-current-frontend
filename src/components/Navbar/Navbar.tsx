@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '@/assets/images/imos-logo.png';
-import { linksData } from '../../data/linksData';
-import { LinkItem, SectionLinks } from '../../types/navbar';
+import { linksData } from '@/data/linksData';
+import { LinkItem, SectionLinks } from '@/types/navbar';
 import NavbarMenu from './components/NavbarMenu';
 
 const Navbar: React.FC = () => {

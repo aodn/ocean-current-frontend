@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
-import { linksData } from '../../data/linksData';
+import { linksData } from '@/data/linksData';
 import NavbarBurgerMenu from './NavbarBurgerMenu';
 
 describe('NavbarBurgerMenu', () => {

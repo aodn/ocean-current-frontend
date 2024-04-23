@@ -1,15 +1,19 @@
 import React from 'react';
 import MapNavbar from '@/components/MapNavbar/MapNavbar';
+import MapSidebar from '@/components/MapSidebar/MapSidebar';
 
 const MapView: React.FC = () => {
   return (
     <div className="my-9">
       <MapNavbar />
       <div className="flex p-4">
-        <div className="w-1/3 bg-white">Sidebar</div>
-        <div className="w-2/3">Map</div>
+        <div className="mx-2 w-1/3">
+          <MapSidebar />
+        </div>
+        <div className="w-2/3">
+          <img src="https://oceancurrent.aodn.org.au/profiles/5904654/20240420_5904654_311.gif" alt="" />
+        </div>
       </div>
-      <div className="bg-white p-4">Time</div>
     </div>
   );
 };

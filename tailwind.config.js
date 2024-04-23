@@ -19,6 +19,8 @@ export default {
       },
       backgroundImage: {
         'background-gradient': 'linear-gradient(180deg, #DCDCDC 0%, rgba(217, 217, 217, 0.34) 100%)',
+        'background-argo-gradient':
+          'linear-gradient(to right, rgba(82, 77, 171, 1), rgba(94, 216, 233, 1), rgba(125, 232, 149, 1), rgba(253, 215, 104, 1), rgba(202, 112, 92, 1))',
       },
       fontSize: {
         body: ['10pt', { lineHeight: '12pt' }],

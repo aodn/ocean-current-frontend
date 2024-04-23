@@ -126,69 +126,6 @@ export const linksData = [
     ],
   },
   {
-    title: 'Ocean Toolkit',
-    leftLinks: [
-      {
-        id: 'follow-el-nino',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
-        title: 'Follow El Niño with SLA',
-        description: 'Autonomous underwater vehicles',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
-      },
-      {
-        id: 'google-earth-view',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
-        title: 'Google Earth View',
-        description: 'Interactive Google Earth Mapping',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
-      },
-      {
-        id: 'meters',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
-        title: 'Meters',
-        description: 'Measurement Instruments',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
-      },
-      {
-        id: 'ead-mooring-array',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
-        title: 'EAD Mooring Array',
-        description: 'Eastern Australian Dynamic Monitoring Network',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
-      },
-    ],
-    rightLinks: [
-      {
-        id: 'my-ocean-current',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
-        title: 'MyOceanCurrent',
-        description: 'Real-Time SST Visualization',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
-      },
-      {
-        id: 'animations',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
-        title: 'Animations',
-        description: 'Dynamic Visualization Tools',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
-      },
-      {
-        id: 'current',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
-        title: 'Current',
-        description: 'Ocean Flow Analysis',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
-      },
-    ],
-  },
-  {
     title: 'News',
     url: 'https://oceancurrent.aodn.org.au/news.php',
   },
