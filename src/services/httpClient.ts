@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { apiConfig } from '@/configs/api';
 
 const httpClient = axios.create({
-  baseURL: import.meta.env.VUE_APP_BASE_API || '/api',
+  baseURL: apiConfig.baseURL,
   timeout: 5000,
 });
 

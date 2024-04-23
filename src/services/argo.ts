@@ -1,8 +1,7 @@
 import dayjs from 'dayjs';
-import httpClient from '@/utils/httpClient';
+import httpClient from '@/services/httpClient';
 import { ContentType } from '@/constants/request';
 
-// https://oceancurrent.aodn.org.au/profiles/map/20240418
 const getArgoProfilesByDate = async (date: string) => {
   const validatedDate = dayjs(date);
   if (validatedDate.isValid()) {
