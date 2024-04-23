@@ -1,14 +1,17 @@
 import React from 'react';
 import { ProductData } from '../types/ProductCarrousel.types';
 
-const ProductCarrouselCard: React.FC<ProductData> = ({ title, description, selected, imageUrl, id }) => {
+interface ProductCarrouselCardProps extends ProductData {
+  selected: boolean;
+}
+const ProductCarrouselCard: React.FC<ProductCarrouselCardProps> = ({ title, description, selected, imageUrl, id }) => {
   const selectedBorderStyle = 'border-4 border-blue-500';
   const nonSelectedBorderStyle = 'border-4 border';
 
   return (
     <div
       data-testid={`product-card-${id}`}
-      className={`flex h-auto cursor-pointer items-stretch justify-between rounded-xl bg-white font-noto shadow md:h-40 [&:not(:last-child)]:mb-5 ${selected ? selectedBorderStyle : nonSelectedBorderStyle}`}
+      className={`flex h-auto cursor-pointer items-stretch justify-between rounded-xl bg-white font-noto shadow md:h-40 ${selected ? selectedBorderStyle : nonSelectedBorderStyle}`}
     >
       <div className="flex flex-col justify-between p-4">
         <div className="text-lg font-semibold text-imos-black">{title}</div>

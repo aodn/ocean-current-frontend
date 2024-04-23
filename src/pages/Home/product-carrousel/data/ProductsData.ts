@@ -3,30 +3,26 @@ import { ProductData } from '../types/ProductCarrousel.types';
 export const productsData: ProductData[] = [
   {
     title: 'Sea Surface Temperature',
-    id: 'sea-surface-temperature',
+    id: 'fourHourSst-Sst',
     description: 'It provides a nationally consistent set of the available mapping data, was created by UTAS.',
     imageUrl: 'https://oceancurrent.aodn.org.au/SST_entry/latest.gif',
-    selected: true,
   },
   {
     title: 'Ocean Colour',
-    id: 'surface-waves',
+    id: 'oceanColor',
     description: 'It provides a nationally consistent set of the available mapping data, was created by UTAS.',
     imageUrl: 'https://oceancurrent.aodn.org.au/chla_entry/latest.gif',
-    selected: false,
   },
   {
     title: 'Adjusted Sea Level Anomaly',
-    id: 'adjusted-sea-level-anomaly',
+    id: 'adjSeaLevelAnom',
     description: 'It provides a nationally consistent set of the available mapping data, was created by UTAS.',
     imageUrl: 'https://oceancurrent.aodn.org.au/GSLA_entry/latest.gif',
-    selected: false,
   },
   {
     title: 'Argo',
     id: 'argo',
     description: 'It provides a nationally consistent set of the available mapping data, was created by UTAS.',
     imageUrl: 'https://oceancurrent.aodn.org.au/profiles/map/20240403.gif',
-    selected: false,
   },
 ];

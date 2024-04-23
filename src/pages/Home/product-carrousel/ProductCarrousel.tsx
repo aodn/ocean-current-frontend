@@ -1,40 +1,41 @@
 import { useState, useEffect } from 'react';
+import { setProductKey } from '@/stores/product-store/productStore';
 import { productsData } from './data/ProductsData';
 import ProductCarrouselCard from './components/ProductCarrouselCard';
 
 const ProductCarrousel: React.FC = () => {
-  const [products, setProducts] = useState(productsData);
+  const [selectedProductIndex, setSelectedProductIndex] = useState<number>(0);
+
+  const selectedProduct = productsData[selectedProductIndex];
 
   useEffect(() => {
     const switchSelectedProduct = () => {
-      setProducts((currentProducts) => {
-        return currentProducts.map((product, index, array) => {
-          return {
-            ...product,
-            selected: index === (array.findIndex((p) => p.selected) + 1) % array.length,
-          };
-        });
-      });
+      setSelectedProductIndex((preSelectedIndex) => (preSelectedIndex + 1) % productsData.length);
     };
 
-    const intervalId = setInterval(switchSelectedProduct, 5000);
+    const intervalIndex = setInterval(switchSelectedProduct, 2500);
 
-    return () => clearInterval(intervalId);
+    return () => clearInterval(intervalIndex);
   }, []);
 
+  useEffect(() => {
+    setProductKey(selectedProduct.id);
+  }, [selectedProduct.id]);
+
   return (
-    <div>
-      {products.map((product) => (
-        <ProductCarrouselCard
-          key={product.id}
-          title={product.title}
-          description={product.description}
-          selected={product.selected}
-          imageUrl={product.imageUrl}
-          id={product.id}
-        />
+    <ul>
+      {productsData.map((product) => (
+        <li className="[&:not(:last-child)]:mb-5" key={product.id}>
+          <ProductCarrouselCard
+            title={product.title}
+            description={product.description}
+            selected={selectedProduct.id === product.id}
+            imageUrl={product.imageUrl}
+            id={product.id}
+          />
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };
 

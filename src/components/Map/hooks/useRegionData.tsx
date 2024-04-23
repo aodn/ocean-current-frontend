@@ -1,12 +1,13 @@
 import useMapStore from '@/stores/map-store/mapStore';
-import { allRegions } from '@/data/regionData';
 import { calculateAreaFromCoords, convertAreaCoordsToGeoJsonCoordinates } from '../utils/region';
 import { Region } from '../types/map.types';
+import useRegionFromProduct from './useRegionFromProduct';
 
 const useRegionData = () => {
   const useZoom = useMapStore((state) => state.zoom);
+  const { regions } = useRegionFromProduct();
 
-  const sortedRegions = allRegions.sort((a, b) => {
+  const sortedRegions = regions.sort((a, b) => {
     const areaA = calculateAreaFromCoords(a.coords);
     const areaB = calculateAreaFromCoords(b.coords);
     // TODO: larger regions should be selected by mouse hover, check which order is correct

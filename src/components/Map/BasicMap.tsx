@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import Map, { FullscreenControl, MapStyle, NavigationControl, ViewState, ViewStateChangeEvent } from 'react-map-gl';
 import { mapConfig } from '@/configs/map';
 import { setZoom } from '@/stores/map-store/mapStore';
-import RegionPolygonLayer from './layers/RegionPolygonLayer/RegionPolygonLayer';
+import useProductStore from '@/stores/product-store/productStore';
+import { RegionPolygonLayer, ArgoAsProductLayer } from './layers';
 import MAP_STYLE from './data/map-style.basic-v8.json';
 
 interface BasicMapProps {
@@ -24,7 +25,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
   fullScreenControl = true,
   navigationControl = true,
 }) => {
-  const defaultState = {
+  const defaultViewState = {
     latitude: -25.824806,
     longitude: 140.265399,
     bearing: 0,
@@ -32,7 +33,8 @@ const BasicMap: React.FC<BasicMapProps> = ({
     zoom: 2.6,
     ...initialViewState,
   };
-  const [viewState, setViewState] = useState<Partial<ViewState>>(defaultState);
+  const [viewState, setViewState] = useState<Partial<ViewState>>(defaultViewState);
+  const useMainProduct = useProductStore((state) => state.mainProduct);
 
   const handleMove = ({ viewState }: ViewStateChangeEvent) => setViewState(viewState);
 
@@ -59,7 +61,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
       onZoom={handleZoom}
       style={{ width: '100%', height: '100%', ...style }}
       mapStyle={mapStyle}
-      projection={{ name: 'equirectangular' }}
+      projection={{ name: 'mercator' }}
       reuseMaps
       attributionControl={false}
     >
@@ -67,7 +69,8 @@ const BasicMap: React.FC<BasicMapProps> = ({
       {fullScreenControl && <FullscreenControl position="top-left" />}
       {navigationControl && <NavigationControl position="top-left" />}
 
-      <RegionPolygonLayer />
+      {useMainProduct !== 'argo' && <RegionPolygonLayer />}
+      {useMainProduct === 'argo' && <ArgoAsProductLayer />}
     </Map>
   );
 };
