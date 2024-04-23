@@ -13,7 +13,7 @@ const ArgoAsProductLayer = () => {
         type="circle"
         source={SOURCE_ID}
         paint={{
-          'circle-radius': 10,
+          'circle-radius': 5,
           'circle-color': '#524DAB',
         }}
       />

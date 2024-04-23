@@ -6,7 +6,7 @@ export type State = {
   productKey: string;
   regionScope: RegionScope;
   regionName: string;
-  date: Date;
+  date: string;
 };
 
 export type Actions = {
@@ -16,6 +16,6 @@ export type Actions = {
     setProductKey: (productKey: string) => void;
     setRegionScope: (regionScope: RegionScope) => void;
     setRegionName: (regionName: string) => void;
-    setDate: (date: Date) => void;
+    setDate: (date: string) => void;
   };
 };

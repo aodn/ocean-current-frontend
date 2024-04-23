@@ -6,7 +6,7 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "files.insertFinalNewline": true,
-  "cSpell.words": ["Anom", "equirectangular", "Geolocate", "imos", "lexend", "mapbox", "noto", "testid"],
+  "cSpell.words": ["Anom", "equirectangular", "Geolocate", "imos", "lexend", "mapbox", "noto", "testid", "wmoid"],
   "cSpell.ignoreWords": ["Bonney"],
   "git.branchProtection": ["main"],
   "workbench.colorCustomizations": {

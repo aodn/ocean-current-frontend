@@ -11,7 +11,7 @@ const useProductStore = create<State & Actions>()(
     productKey: '',
     regionScope: RegionScope.State,
     regionName: '',
-    date: new Date(),
+    date: new Date().toLocaleString(),
     actions: {
       setMainProduct: (product) => set({ mainProduct: product }, false, 'setMainProduct'),
       setSubProduct: (subProduct) => set({ subProduct }, false, 'setSubProduct'),
@@ -29,7 +29,7 @@ const useProductStore = create<State & Actions>()(
       },
       setRegionScope: (regionScope) => set({ regionScope }),
       setRegionName: (regionName) => set({ regionName }),
-      setDate: (date) => set({ date }),
+      setDate: (date) => set({ date }, false, 'setDate'),
     },
   })),
 );
