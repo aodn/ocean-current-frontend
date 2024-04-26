@@ -12,7 +12,7 @@ const routes: RouteObject[] = [
         element: <Home />,
       },
       {
-        path: '/map-view',
+        path: '/product',
         element: <MapView />,
         children: [
           {
@@ -26,6 +26,10 @@ const routes: RouteObject[] = [
             ],
           },
         ],
+      },
+      {
+        path: '/map',
+        element: <MapView />,
       },
       {
         path: '/news',

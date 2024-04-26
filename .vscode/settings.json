@@ -14,9 +14,10 @@
     "lexend",
     "mapbox",
     "noto",
+    "Permlink",
     "testid",
     "wmoid",
-    "Permlink"
+    "zustand"
   ],
   "cSpell.ignoreWords": ["Bonney"],
   "cSpell.ignorePaths": ["package.json"],

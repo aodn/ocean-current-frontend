@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import ArgoIcon from '@/assets/icons/argo-icon.svg';
 import ArgoIdIcon from '@/assets/icons/argo-id-icon.svg';
+import useArgoStore, { setArgoDepth, subtractOneDay, addOneDay } from '@/stores/argo-store/argoStore';
+import { updatePositionAndZoom } from '@/stores/map-store/mapStore';
 import { Button } from '../Shared';
 import BasicMap from '../Map/BasicMap';
+import { MapSidebarProps } from './types/mapSidebar';
 
-const MapSidebar: React.FC = () => {
-  const miniMapViewState = { zoom: 4, latitude: 26.587363418374622, longitude: 106.75139404079925 };
-  const [currentDate, setCurrentDate] = useState(new Date(2024, 2, 23));
+const MapSidebar: React.FC<MapSidebarProps> = ({ onDateChange, onDepthChange }) => {
+  const argoParams = useArgoStore((state) => state.argoParams);
+  const argoMetaData = useArgoStore((state) => state.argoMetaData);
+  const useDate = useArgoStore((state) => state.date);
+  const useArgo = useArgoStore((state) => state.argoParams);
+  const { depth, worldMeteorologicalOrgId } = useArgo;
   const depthPosition = [
     { text: '-0.4', position: 10, color: '#524dab' },
     { text: '-0.2', position: 30, color: '#5ed8e9' },
@@ -14,20 +20,30 @@ const MapSidebar: React.FC = () => {
     { text: '0.2', position: 70, color: '#fdd768' },
     { text: '0.4', position: 90, color: '#ca705c' },
   ];
-  const [showCopiedMessage, setShowCopiedMessage] = useState(false);
+
+  useEffect(() => {
+    const mapZoom = 3.5;
+    const singleArgoMetaData = argoMetaData.find(
+      (data) => data.worldMeteorologicalOrgId === argoParams.worldMeteorologicalOrgId,
+    );
+    if (singleArgoMetaData) {
+      updatePositionAndZoom(singleArgoMetaData.position.latitude, singleArgoMetaData.position.longitude, mapZoom);
+    }
+  }, [argoParams, argoMetaData]);
 
   const addDay = () => {
-    setCurrentDate(new Date(currentDate.setDate(currentDate.getDate() + 1)));
+    addOneDay();
+    onDateChange(useDate.add(1, 'day'));
   };
 
   const subtractDay = () => {
-    setCurrentDate(new Date(currentDate.setDate(currentDate.getDate() - 1)));
+    subtractOneDay();
+    onDateChange(useDate.subtract(1, 'day'));
   };
 
-  const handlePermlinkClick = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setShowCopiedMessage(true);
-    setTimeout(() => setShowCopiedMessage(false), 500);
+  const changeDepth = (newDepth: '0' | '1') => {
+    onDepthChange(newDepth);
+    setArgoDepth(newDepth);
   };
 
   return (
@@ -57,8 +73,8 @@ const MapSidebar: React.FC = () => {
         <div className="p-2">
           <div className="my-5">
             <Button size="full" borderRadius="small" type="primary">
-              <img src={ArgoIdIcon} alt="" />
-              aoml 59069115
+              <img src={ArgoIdIcon} alt="argo id icon" />
+              aoml {worldMeteorologicalOrgId}
             </Button>
           </div>
           {/* aqui */}
@@ -80,9 +96,7 @@ const MapSidebar: React.FC = () => {
                 />
               </svg>
             </button>
-            <span className="text-lg ">
-              {currentDate.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}
-            </span>
+            <span className="text-lg ">{useDate.format('DD MMM YYYY')}</span>
             <button onClick={addDay} className="rounded bg-white p-2 font-semibold ">
               <svg
                 className="h-2.5 w-2.5 -rotate-90"
@@ -103,27 +117,32 @@ const MapSidebar: React.FC = () => {
           </div>
           {/* aqui */}
           <div className="mb-3 flex gap-3">
-            <Button size="full" borderRadius="small" type="secondary">
+            <Button
+              onClick={() => changeDepth('1')}
+              selected={depth === '1'}
+              size="full"
+              borderRadius="small"
+              type="secondary"
+            >
               0-400m
             </Button>
-            <Button size="full" borderRadius="small" type="secondary">
+            <Button
+              onClick={() => changeDepth('0')}
+              selected={depth === '0'}
+              size="full"
+              borderRadius="small"
+              type="secondary"
+            >
               0-2000m
             </Button>
           </div>
-          <div className="relative">
-            <Button size="full" borderRadius="small" type="secondary" onClick={handlePermlinkClick}>
-              Permlink
-            </Button>
-            {showCopiedMessage && (
-              <div className="absolute right-1/2 top-10 z-50 translate-x-1/2 rounded-md border-2 border-imos-black bg-white p-2">
-                Link copied!
-              </div>
-            )}
-          </div>
+          <Button size="full" borderRadius="small" type="secondary">
+            Permlink
+          </Button>
         </div>
       </div>
       <div className="mt-4 h-60 w-full overflow-hidden rounded-md">
-        <BasicMap initialViewState={miniMapViewState} navigationControl={false} />
+        <BasicMap navigationControl={false} />
       </div>
     </>
   );

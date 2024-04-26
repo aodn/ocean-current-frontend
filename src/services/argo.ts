@@ -1,8 +1,8 @@
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import httpClient from '@/services/httpClient';
 import { ContentType } from '@/constants/request';
 
-const getArgoProfilesByDate = async (date: string) => {
+const getArgoProfilesByDate = async (date: Dayjs) => {
   const validatedDate = dayjs(date);
   if (validatedDate.isValid()) {
     return await httpClient.get<string>(`/profiles/map/${validatedDate.format('YYYYMMDD')}`, {

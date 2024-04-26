@@ -1,10 +1,16 @@
+import { ViewState } from 'react-map-gl';
+
 export type State = {
-  zoom: number;
+  mapViewState: ViewState;
 };
 
 export type Actions = {
   actions: {
-    setZoom: (zoom: number) => void;
+    setMapViewState: (mapViewState: State['mapViewState']) => void;
     updateZoom: (zoom: number) => void;
+    updateLatitude: (latitude: number) => void;
+    updateLongitude: (longitude: number) => void;
+    updatePosition: (latitude: number, longitude: number) => void;
+    updatePositionAndZoom: (latitude: number, longitude: number, zoom: number) => void;
   };
 };

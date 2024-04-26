@@ -1,6 +1,6 @@
 export interface ArgoProfile {
   coords: number[];
-  worldMeteorologicalOrgId: number;
-  cycle: number;
-  depth: number;
+  worldMeteorologicalOrgId: string;
+  cycle: string;
+  depth: '0' | '1';
 }

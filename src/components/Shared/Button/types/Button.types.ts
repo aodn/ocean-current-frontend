@@ -24,4 +24,5 @@ export interface ButtonProps {
   icon?: JSX.Element;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   children: React.ReactNode;
+  selected?: boolean;
 }
