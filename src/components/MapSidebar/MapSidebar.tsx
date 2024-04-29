@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ArgoIcon from '@/assets/icons/argo-icon.svg';
 import ArgoIdIcon from '@/assets/icons/argo-id-icon.svg';
 import useArgoStore, { setArgoDepth, subtractOneDay, addOneDay } from '@/stores/argo-store/argoStore';
@@ -8,6 +8,7 @@ import BasicMap from '../Map/BasicMap';
 import { MapSidebarProps } from './types/mapSidebar';
 
 const MapSidebar: React.FC<MapSidebarProps> = ({ onDateChange, onDepthChange }) => {
+  const [copyButtonText, setCopyButtonText] = useState<string>('Copy Permlink');
   const argoParams = useArgoStore((state) => state.argoParams);
   const argoMetaData = useArgoStore((state) => state.argoMetaData);
   const useDate = useArgoStore((state) => state.date);
@@ -39,6 +40,16 @@ const MapSidebar: React.FC<MapSidebarProps> = ({ onDateChange, onDepthChange }) 
   const subtractDay = () => {
     subtractOneDay();
     onDateChange(useDate.subtract(1, 'day'));
+  };
+
+  const copyLink = () => {
+    const url = location.href;
+    navigator.clipboard.writeText(url);
+    setCopyButtonText('Copied!');
+
+    setTimeout(() => {
+      setCopyButtonText('Copy Permlink');
+    }, 2000);
   };
 
   const changeDepth = (newDepth: '0' | '1') => {
@@ -98,8 +109,8 @@ const MapSidebar: React.FC<MapSidebarProps> = ({ onDateChange, onDepthChange }) 
               0-2000m
             </Button>
           </div>
-          <Button size="full" borderRadius="small" type="secondary">
-            Permlink
+          <Button onClick={() => copyLink()} size="full" borderRadius="small" type="secondary">
+            {copyButtonText}
           </Button>
         </div>
       </div>
