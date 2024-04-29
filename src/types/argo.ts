@@ -3,4 +3,5 @@ export interface ArgoProfile {
   worldMeteorologicalOrgId: string;
   cycle: string;
   depth: '0' | '1';
+  date?: string;
 }

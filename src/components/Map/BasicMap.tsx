@@ -3,6 +3,7 @@ import Map, { FullscreenControl, MapStyle, NavigationControl, ViewStateChangeEve
 import { mapConfig } from '@/configs/map';
 import useMapStore, { setMapViewState, updateZoom } from '@/stores/map-store/mapStore';
 import useProductStore from '@/stores/product-store/productStore';
+import { mapboxInstanceIds } from '@/constants/mapboxId';
 import { RegionPolygonLayer, ArgoAsProductLayer } from './layers';
 import MAP_STYLE from './data/map-style.basic-v8.json';
 
@@ -16,7 +17,7 @@ interface BasicMapProps {
 }
 
 const BasicMap: React.FC<BasicMapProps> = ({
-  id = 'landing-oc-map',
+  id = mapboxInstanceIds.oceanCurrentBasicMap,
   mapStyle = MAP_STYLE as MapStyle,
   style,
   children,

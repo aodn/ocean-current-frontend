@@ -51,12 +51,15 @@ const useArgoAsProductData = () => {
     setArgoMetaData(argoMetaData);
   }, [argoProfiles]);
 
-  const features = argoProfiles.map(({ coords, worldMeteorologicalOrgId }) => {
+  const features = argoProfiles.map(({ coords, worldMeteorologicalOrgId, cycle, depth, date }) => {
     const center = calculateCenterByCoords(coords);
     return {
       type: 'Feature',
       properties: {
         worldMeteorologicalOrgId,
+        cycle,
+        depth,
+        date,
       },
       geometry: {
         type: 'Point',
