@@ -3,7 +3,7 @@ import ArgoIcon from '@/assets/icons/argo-icon.svg';
 import ArgoIdIcon from '@/assets/icons/argo-id-icon.svg';
 import useArgoStore, { setArgoDepth, subtractOneDay, addOneDay } from '@/stores/argo-store/argoStore';
 import { updatePositionAndZoom } from '@/stores/map-store/mapStore';
-import { Button } from '../Shared';
+import { Button, DateSelector } from '../Shared';
 import BasicMap from '../Map/BasicMap';
 import { MapSidebarProps } from './types/mapSidebar';
 
@@ -77,45 +77,7 @@ const MapSidebar: React.FC<MapSidebarProps> = ({ onDateChange, onDepthChange }) 
               aoml {worldMeteorologicalOrgId}
             </Button>
           </div>
-          {/* aqui */}
-          <div className="my-4 flex items-center justify-between rounded-md border bg-background-gradient px-2 py-1 text-lg text-imos-title-blue shadow">
-            <button onClick={subtractDay} className="rounded bg-white p-2 font-semibold ">
-              <svg
-                className="h-2.5 w-2.5 rotate-90"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 10 6"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="m1 1 4 4 4-4"
-                />
-              </svg>
-            </button>
-            <span className="text-lg ">{useDate.format('DD MMM YYYY')}</span>
-            <button onClick={addDay} className="rounded bg-white p-2 font-semibold ">
-              <svg
-                className="h-2.5 w-2.5 -rotate-90"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 10 6"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="m1 1 4 4 4-4"
-                />
-              </svg>
-            </button>
-          </div>
-          {/* aqui */}
+          <DateSelector date={useDate} subtractDay={subtractDay} addDay={addDay} />
           <div className="mb-3 flex gap-3">
             <Button
               onClick={() => changeDepth('1')}
