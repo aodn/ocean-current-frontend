@@ -1,7 +1,8 @@
 import { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import logo from '@/assets/images/imos-logo.png';
-import { linksData } from '../../data/linksData';
-import { LinkItem, SectionLinks } from '../../types/navbar';
+import { linksData } from '@/data/linksData';
+import { LinkItem, SectionLinks } from '@/types/navbar';
 import NavbarMenu from './components/NavbarMenu';
 
 const Navbar: React.FC = () => {
@@ -31,7 +32,9 @@ const Navbar: React.FC = () => {
   return (
     <nav className="flex items-center justify-between">
       <div className="flex py-9 ">
-        <img src={logo} alt="IMOS logo" />
+        <Link className="mr-auto" to={'/'}>
+          <img className="h-14" src={logo} alt="IMOS logo" />
+        </Link>
         <div className="mx-7 h-auto w-px bg-imos-title-blue"></div>
         <div className="flex flex-col justify-center text-xl font-light text-imos-title-blue ">
           <p>Ocean Current</p>

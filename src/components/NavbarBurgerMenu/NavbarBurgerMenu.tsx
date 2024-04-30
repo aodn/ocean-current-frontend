@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import logo from '@/assets/images/imos-logo.png';
 import burgerMenu from '@/assets/icons/burger-menu-icon.svg';
 import cross from '@/assets/icons/cross-icon.svg';
-import { linksData } from '../../data/linksData';
+import { linksData } from '@/data/linksData';
 
 const NavbarBurgerMenu: React.FC = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);

@@ -11,13 +11,17 @@ const convertHtmlToArgo = (html: string): ArgoProfile[] => {
       .getAttribute('coords')!
       .split(/\s+/)
       .map((coord) => parseFloat(coord));
-    const worldMeteorologicalOrgId = parseInt(area.getAttribute('alt') || '0');
-    const cycle = parseInt(area.getAttribute('href')!.split('_')[2]);
+
+    const hrefAttrAry = area.getAttribute('href')!.split('_');
+    const worldMeteorologicalOrgId = hrefAttrAry[1];
+    const cycle = hrefAttrAry[2].split('.')[0];
+    const date = hrefAttrAry[0].split('/')[2];
     return {
       coords: calculateOffsetByCoords(coords),
       worldMeteorologicalOrgId,
       cycle,
-      depth: 0,
+      depth: '0',
+      date,
     };
   });
 };

@@ -1,41 +1,37 @@
-import React, { PropsWithChildren, useState } from 'react';
-import Map, { FullscreenControl, MapStyle, NavigationControl, ViewState, ViewStateChangeEvent } from 'react-map-gl';
+import React from 'react';
+import Map, { FullscreenControl, MapStyle, NavigationControl, ViewStateChangeEvent } from 'react-map-gl';
 import { mapConfig } from '@/configs/map';
-import { setZoom } from '@/stores/map-store/mapStore';
+import useMapStore, { setMapViewState, updateZoom } from '@/stores/map-store/mapStore';
 import useProductStore from '@/stores/product-store/productStore';
+import { mapboxInstanceIds } from '@/constants/mapboxId';
 import { RegionPolygonLayer, ArgoAsProductLayer } from './layers';
 import MAP_STYLE from './data/map-style.basic-v8.json';
 
-interface BasicMapOptionalProps {
+interface BasicMapProps {
+  children?: React.ReactNode;
   id?: string;
-  initialViewState?: Partial<ViewState>;
   mapStyle?: string;
   style?: React.CSSProperties;
+  fullScreenControl?: boolean;
+  navigationControl?: boolean;
 }
 
-interface BasicMapProps extends BasicMapOptionalProps, PropsWithChildren {
-  fullScreenControl?: boolean;
-}
 const BasicMap: React.FC<BasicMapProps> = ({
-  id = 'landing-oc-map',
+  id = mapboxInstanceIds.oceanCurrentBasicMap,
   mapStyle = MAP_STYLE as MapStyle,
-  initialViewState = {
-    latitude: -25.824806,
-    longitude: 140.265399,
-    bearing: 0,
-    pitch: 0,
-    zoom: 2.6,
-  },
   style,
   children,
+  fullScreenControl = true,
+  navigationControl = true,
 }) => {
-  const [viewState, setViewState] = useState<Partial<ViewState>>(initialViewState);
   const useMainProduct = useProductStore((state) => state.mainProduct);
-
-  const handleMove = ({ viewState }: ViewStateChangeEvent) => setViewState(viewState);
+  const useMapViewState = useMapStore((state) => state.mapViewState);
+  const handleMove = ({ viewState }: ViewStateChangeEvent) => {
+    setMapViewState(viewState);
+  };
 
   const handleZoom = ({ viewState }: ViewStateChangeEvent) => {
-    setZoom(viewState.zoom);
+    updateZoom(viewState.zoom);
   };
 
   if (!mapConfig.accessToken) {
@@ -52,7 +48,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
       id={id}
       data-testid={id}
       mapboxAccessToken={mapConfig.accessToken}
-      {...viewState}
+      {...useMapViewState}
       onMove={handleMove}
       onZoom={handleZoom}
       style={{ width: '100%', height: '100%', ...style }}
@@ -62,8 +58,9 @@ const BasicMap: React.FC<BasicMapProps> = ({
       attributionControl={false}
     >
       {children}
-      <FullscreenControl position="top-left" />
-      <NavigationControl position="top-left" />
+      {fullScreenControl && <FullscreenControl position="top-left" />}
+      {navigationControl && <NavigationControl position="top-left" />}
+
       {useMainProduct !== 'argo' && <RegionPolygonLayer />}
       {useMainProduct === 'argo' && <ArgoAsProductLayer />}
     </Map>

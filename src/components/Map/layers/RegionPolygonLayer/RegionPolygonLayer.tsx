@@ -1,17 +1,18 @@
 import { Layer, Source } from 'react-map-gl';
+import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import useRegionData from '../../hooks/useRegionData';
-
-const SOURCE_ID = 'trackingRect';
 
 const RegionPolygonLayer = () => {
   const { regionData } = useRegionData();
+  const { productRegionBoxSource } = mapboxSourceIds;
+  const { productRegionBoxLayer } = mapboxLayerIds;
 
   return (
-    <Source id={SOURCE_ID} type="geojson" data={regionData}>
+    <Source id={productRegionBoxSource} type="geojson" data={regionData}>
       <Layer
-        id="trackingRectLayer"
+        id={productRegionBoxLayer}
         type="fill"
-        source={SOURCE_ID}
+        source={productRegionBoxSource}
         paint={{
           'fill-color': [
             'case',

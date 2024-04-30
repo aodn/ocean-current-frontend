@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { isAxiosError } from 'axios';
 import { getArgoProfilesByDate } from '@/services/argo';
 import { calculateCenterByCoords, convertHtmlToArgo } from '@/utils/argo';
 import { ArgoProfile } from '@/types/argo';
-import useProductStore, { setDate } from '@/stores/product-store/productStore';
+import useArgoStore, { setArgoMetaData, setDate } from '@/stores/argo-store/argoStore';
 
 const useArgoAsProductData = () => {
-  const useDate = useProductStore((state) => state.date);
+  const useDate = useArgoStore((state) => state.date);
 
-  const [latestDate, setLatestDate] = useState<string>(useDate);
+  const [latestDate, setLatestDate] = useState<Dayjs>(useDate);
   const [argoProfiles, setArgoProfiles] = useState<ArgoProfile[]>([]);
 
   useEffect(() => {
-    const fetchData = async (date: string) => {
+    const fetchData = async (date: Dayjs) => {
       try {
         const response = await getArgoProfilesByDate(date);
         const data = convertHtmlToArgo(response.data);
@@ -21,7 +21,7 @@ const useArgoAsProductData = () => {
         setLatestDate(date);
       } catch (error) {
         if (isAxiosError(error) && error.response?.status === 404) {
-          const newDate = dayjs(date).subtract(1, 'day').format('YYYYMMDD');
+          const newDate = dayjs(date).subtract(1, 'day');
           fetchData(newDate);
         }
         // TODO: Handle error, return error to UI, render notification/warning
@@ -29,19 +29,37 @@ const useArgoAsProductData = () => {
     };
 
     fetchData(useDate);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [useDate]);
 
   useEffect(() => {
     setDate(latestDate);
   }, [latestDate]);
 
-  const features = argoProfiles.map((data, index) => {
-    const center = calculateCenterByCoords(data.coords);
+  useEffect(() => {
+    if (argoProfiles.length === 0) return;
+    const argoMetaData = argoProfiles.map((data) => {
+      const { coords, ...rest } = data;
+      const center = calculateCenterByCoords(coords);
+      return {
+        ...rest,
+        position: {
+          latitude: center[1],
+          longitude: center[0],
+        },
+      };
+    });
+    setArgoMetaData(argoMetaData);
+  }, [argoProfiles]);
+
+  const features = argoProfiles.map(({ coords, worldMeteorologicalOrgId, cycle, depth, date }) => {
+    const center = calculateCenterByCoords(coords);
     return {
       type: 'Feature',
       properties: {
-        id: index,
+        worldMeteorologicalOrgId,
+        cycle,
+        depth,
+        date,
       },
       geometry: {
         type: 'Point',

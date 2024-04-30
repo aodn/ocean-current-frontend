@@ -15,7 +15,7 @@ const MainLayout: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="flex grow">
+      <div className="flex grow ">
         <div className="mx-auto w-full max-w-7xl">
           <Outlet />
         </div>

@@ -4,7 +4,7 @@ import { Region } from '../types/map.types';
 import useRegionFromProduct from './useRegionFromProduct';
 
 const useRegionData = () => {
-  const useZoom = useMapStore((state) => state.zoom);
+  const { zoom } = useMapStore((state) => state.mapViewState);
   const { regions } = useRegionFromProduct();
 
   const sortedRegions = regions.sort((a, b) => {
@@ -58,7 +58,7 @@ const useRegionData = () => {
     });
   };
 
-  const filteredFeatures = filterRegionsByZoom(sortedRegions, useZoom).map((area, index) => ({
+  const filteredFeatures = filterRegionsByZoom(sortedRegions, zoom).map((area, index) => ({
     type: 'Feature',
     id: index,
     properties: {

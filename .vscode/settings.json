@@ -6,8 +6,21 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "files.insertFinalNewline": true,
-  "cSpell.words": ["Anom", "equirectangular", "Geolocate", "imos", "lexend", "mapbox", "noto", "testid", "wmoid"],
+  "cSpell.words": [
+    "Anom",
+    "equirectangular",
+    "Geolocate",
+    "imos",
+    "lexend",
+    "mapbox",
+    "noto",
+    "Permlink",
+    "testid",
+    "wmoid",
+    "zustand"
+  ],
   "cSpell.ignoreWords": ["Bonney"],
+  "cSpell.ignorePaths": ["package.json"],
   "git.branchProtection": ["main"],
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#82cef0",
