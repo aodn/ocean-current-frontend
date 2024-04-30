@@ -15,12 +15,6 @@ vi.doMock('../data/regionData', () => ({
 }));
 
 describe('useRegionData', () => {
-  beforeEach(() => {
-    // vi.mocked(calculateAreaFromCoords).mockImplementation(mockedCalculateAreaFromCoords);
-    // convertAreaCoordsToGeoJsonCoordinates.mockImplementation((coords) => coords);
-    // vi.mocked(useMapStore).mockReturnValue(2.0);
-  });
-
   it('should only show one or zero box when zoom out', () => {
     vi.mocked(useMapStore).mockReturnValue(2);
     const { result } = renderHook(() => useRegionData());
