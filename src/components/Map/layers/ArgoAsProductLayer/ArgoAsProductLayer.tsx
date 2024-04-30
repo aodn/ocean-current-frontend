@@ -35,6 +35,12 @@ const ArgoAsProductLayer = () => {
       if (!eventAdded.current) {
         eventAdded.current = true;
         map.on('click', argoAsProductPointLayer, handleClick);
+        map.on('mouseenter', argoAsProductPointLayer, () => {
+          map.getCanvas().style.cursor = 'pointer';
+        });
+        map.on('mouseleave', argoAsProductPointLayer, () => {
+          map.getCanvas().style.cursor = '';
+        });
       }
     });
     return () => {
@@ -64,6 +70,8 @@ const ArgoAsProductLayer = () => {
         paint={{
           'circle-radius': 8,
           'circle-color': '#524DAB',
+          'circle-stroke-color': 'transparent',
+          'circle-stroke-width': 15,
         }}
       />
     </Source>
