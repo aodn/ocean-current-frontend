@@ -9,8 +9,7 @@ import { MapSidebarProps } from './types/mapSidebar';
 
 const MapSidebar: React.FC<MapSidebarProps> = ({ onDateChange, onDepthChange }) => {
   const [copyButtonText, setCopyButtonText] = useState<string>('Copy Permlink');
-  const argoParams = useArgoStore((state) => state.argoParams);
-  const argoMetaData = useArgoStore((state) => state.argoMetaData);
+  const useArgoMetaData = useArgoStore((state) => state.argoMetaData);
   const useDate = useArgoStore((state) => state.date);
   const useArgo = useArgoStore((state) => state.argoParams);
   const { depth, worldMeteorologicalOrgId } = useArgo;
@@ -24,13 +23,13 @@ const MapSidebar: React.FC<MapSidebarProps> = ({ onDateChange, onDepthChange }) 
 
   useEffect(() => {
     const mapZoom = 3.5;
-    const singleArgoMetaData = argoMetaData.find(
-      (data) => data.worldMeteorologicalOrgId === argoParams.worldMeteorologicalOrgId,
+    const singleArgoMetaData = useArgoMetaData.find(
+      (data) => data.worldMeteorologicalOrgId === useArgo.worldMeteorologicalOrgId,
     );
     if (singleArgoMetaData) {
       updatePositionAndZoom(singleArgoMetaData.position.latitude, singleArgoMetaData.position.longitude, mapZoom);
     }
-  }, [argoParams, argoMetaData]);
+  }, [useArgo, useArgoMetaData]);
 
   const addDay = () => {
     addOneDay();

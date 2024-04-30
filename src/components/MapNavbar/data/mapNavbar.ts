@@ -5,9 +5,9 @@ import MonthlyMeansIcon from '@/assets/icons/products/monthly-means-icon.png';
 import SurfaceWavesIcon from '@/assets/icons/products/surface-waves-icon.png';
 import FourHourSSTIcon from '@/assets/icons/products/4-hour-SST-icon.png';
 import SixHourSSTIcon from '@/assets/icons/products/6-hour-SST-icon.png';
-import { mapNavBarElement } from '../types/mapNavbar.types';
+import { MapNavBarElement } from '../types/mapNavbar.types';
 
-export const mapNavbarDataElements: mapNavBarElement[] = [
+export const mapNavbarDataElements: MapNavBarElement[] = [
   { id: 'snapshot-sea', label: 'Snapshot Sea', icon: SSTIcon },
   { id: 'ocean-colour', label: 'Ocean Colour', icon: OceanColourIcon },
   { id: 'adjusted-sea-level-anomaly', label: 'Adjusted Sea Level Anomaly', icon: AdjustedSeaLevelAnomalyIcon },

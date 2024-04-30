@@ -17,8 +17,6 @@ const MapView: React.FC = () => {
   const subProductMatch = useMatch('/product/:product/:subProduct');
   const productKey = subProductMatch?.params.subProduct ?? productMatch?.params.product ?? '';
 
-  console.log('render MapView');
-
   useEffect(() => {
     setProductKey(productKey);
   }, [productKey]);
