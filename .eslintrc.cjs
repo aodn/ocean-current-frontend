@@ -58,6 +58,6 @@ module.exports = {
       },
     ],
     'import/newline-after-import': 'error',
-    'no-console': 'warn',
+    'no-console': ['warn', { allow: ['error'] }],
   },
 };
