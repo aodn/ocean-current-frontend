@@ -12,5 +12,6 @@ export type Actions = {
     updateLongitude: (longitude: number) => void;
     updatePosition: (latitude: number, longitude: number) => void;
     updatePositionAndZoom: (latitude: number, longitude: number, zoom: number) => void;
+    reset: () => void;
   };
 };

@@ -34,12 +34,16 @@ const ProductCarrousel: React.FC = () => {
   }, [useZoom]);
 
   useEffect(() => {
-    const switchSelectedProduct = () => {
-      setSelectedProductIndex((preSelectedIndex) => (preSelectedIndex + 1) % productsData.length);
+    const timeoutId = setTimeout(() => {
+      const switchSelectedProduct = () => {
+        setSelectedProductIndex((preSelectedIndex) => (preSelectedIndex + 1) % productsData.length);
+      };
+      intervalRef.current = setInterval(switchSelectedProduct, 2500);
+    }, 0);
+    return () => {
+      clearTimeout(timeoutId);
+      stopInterval();
     };
-    intervalRef.current = setInterval(switchSelectedProduct, 2500);
-
-    return () => stopInterval();
   }, []);
 
   useEffect(() => {

@@ -2,21 +2,25 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { State, Actions } from './map.types';
 
+const initialState: State = {
+  mapViewState: {
+    latitude: -25.824806,
+    longitude: 140.265399,
+    bearing: 0,
+    pitch: 0,
+    zoom: 2.6,
+    padding: {
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+    },
+  },
+};
+
 const useMapStore = create<State & Actions>()(
   devtools((set) => ({
-    mapViewState: {
-      latitude: -25.824806,
-      longitude: 140.265399,
-      bearing: 0,
-      pitch: 0,
-      zoom: 2.6,
-      padding: {
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-      },
-    },
+    ...initialState,
     actions: {
       setMapViewState: (mapViewState) => {
         set({ mapViewState }, true, 'setMapViewState');
@@ -34,11 +38,19 @@ const useMapStore = create<State & Actions>()(
           false,
           'updatePositionAndZoom',
         ),
+      reset: () => set(initialState, false, 'resetMapStore'),
     },
   })),
 );
 
-export const { setMapViewState, updatePositionAndZoom, updateZoom, updateLatitude, updateLongitude, updatePosition } =
-  useMapStore.getState().actions;
+export const {
+  setMapViewState,
+  updatePositionAndZoom,
+  updateZoom,
+  updateLatitude,
+  updateLongitude,
+  updatePosition,
+  reset: resetMapStore,
+} = useMapStore.getState().actions;
 
 export default useMapStore;
