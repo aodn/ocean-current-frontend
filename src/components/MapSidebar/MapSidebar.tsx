@@ -114,7 +114,7 @@ const MapSidebar: React.FC<MapSidebarProps> = ({ onDateChange, onDepthChange }) 
         </div>
       </div>
       <div className="mt-4 h-60 w-full overflow-hidden rounded-md">
-        <BasicMap navigationControl={false} />
+        <BasicMap id="side-bar-minimap" navigationControl={false} />
       </div>
     </>
   );

@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { resetArgoStore } from '@/stores/argo-store/argoStore';
+import { resetMapStore } from '@/stores/map-store/mapStore';
 import ProductsCarrousel from './product-carrousel/ProductCarrousel';
 import HomeTitle from './home-title/HomeTitle';
 import HomeNews from './home-news/HomeNews';
 import HomeMap from './home-map/HomeMap';
 
 const Home: React.FC = () => {
+  useEffect(() => {
+    resetArgoStore();
+    resetMapStore();
+  }, []);
+
   return (
     <>
       <section>

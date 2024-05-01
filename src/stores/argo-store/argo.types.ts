@@ -28,5 +28,6 @@ export type Actions = {
     setDate: (date: State['date']) => void;
     addOneDay: () => void;
     subtractOneDay: () => void;
+    reset: () => void;
   };
 };

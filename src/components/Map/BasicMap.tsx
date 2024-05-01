@@ -54,7 +54,6 @@ const BasicMap: React.FC<BasicMapProps> = ({
       style={{ width: '100%', height: '100%', ...style }}
       mapStyle={mapStyle}
       projection={{ name: 'mercator' }}
-      reuseMaps
       attributionControl={false}
     >
       {children}
