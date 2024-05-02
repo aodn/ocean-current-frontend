@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import ProductCarrouselCard from './components/ProductCarrouselCard';
+import HomeProductCarrouselCard from './components/HomeProductCarrouselCard';
 
-describe('ProductCarrouselCard', () => {
+describe('HomeProductCarrouselCard', () => {
   it('should render the product information', () => {
     // Arrange
     const title = 'Test Product';
@@ -12,7 +12,7 @@ describe('ProductCarrouselCard', () => {
 
     // Act
     render(
-      <ProductCarrouselCard title={title} description={description} selected={false} imageUrl={imageUrl} id={id} />,
+      <HomeProductCarrouselCard title={title} description={description} selected={false} imageUrl={imageUrl} id={id} />,
     );
 
     // Assert
@@ -30,7 +30,7 @@ describe('ProductCarrouselCard', () => {
 
     // Act
     render(
-      <ProductCarrouselCard title={title} description={description} selected={true} imageUrl={imageUrl} id={id} />,
+      <HomeProductCarrouselCard title={title} description={description} selected={true} imageUrl={imageUrl} id={id} />,
     );
 
     // Assert
