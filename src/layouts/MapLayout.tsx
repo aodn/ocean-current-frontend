@@ -20,15 +20,13 @@ const MapLayout: React.FC<MapLayoutProps> = ({ type }) => {
   const subProductMatch = useMatch(`/${type}/:product/:subProduct`);
 
   const getProductKeyFromMatch = () => {
-    let productKey: string;
-    if (subProductMatch?.params.product) {
-      productKey = `${subProductMatch.params.product}-${subProductMatch.params.subProduct}`;
-    } else if (productMatch?.params.product) {
-      productKey = productMatch.params.product;
-    } else {
-      productKey = 'fourHourSst-Sst';
-    }
-    return productKey;
+    const subProduct = subProductMatch?.params.subProduct;
+    const productWithoutSubProduct = productMatch?.params.product;
+    const urlProductWithSubProduct = `${subProductMatch?.params.product}-${subProductMatch?.params.subProduct}`;
+    const defaultProductKey = 'fourHourSst-Sst';
+    const productKey = subProduct ? urlProductWithSubProduct : productWithoutSubProduct;
+
+    return productKey || defaultProductKey;
   };
 
   const productKey = getProductKeyFromMatch();

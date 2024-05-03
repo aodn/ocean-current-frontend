@@ -9,8 +9,8 @@ import BasicMap from '../Map/BasicMap';
 import { MapSidebarProps } from './types/mapSidebar';
 
 const MapSidebar: React.FC<MapSidebarProps> = ({ onDateChange, onDepthChange }) => {
-  const rrdLocation = useLocation();
-  const isRenderMiniMap = rrdLocation.pathname.includes('/product');
+  const { pathname } = useLocation();
+  const isRenderMiniMap = pathname.includes('/product');
   const [copyButtonText, setCopyButtonText] = useState<string>('Copy Permlink');
   const useArgoMetaData = useArgoStore((state) => state.argoMetaData);
   const useDate = useArgoStore((state) => state.date);
