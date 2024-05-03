@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import ArgoIcon from '@/assets/icons/argo-icon.svg';
 import ArgoIdIcon from '@/assets/icons/argo-id-icon.svg';
 import useArgoStore, { setArgoDepth, subtractOneDay, addOneDay } from '@/stores/argo-store/argoStore';
@@ -8,6 +9,8 @@ import BasicMap from '../Map/BasicMap';
 import { MapSidebarProps } from './types/mapSidebar';
 
 const MapSidebar: React.FC<MapSidebarProps> = ({ onDateChange, onDepthChange }) => {
+  const { pathname } = useLocation();
+  const isRenderMiniMap = pathname.includes('/product');
   const [copyButtonText, setCopyButtonText] = useState<string>('Copy Permlink');
   const useArgoMetaData = useArgoStore((state) => state.argoMetaData);
   const useDate = useArgoStore((state) => state.date);
@@ -113,9 +116,11 @@ const MapSidebar: React.FC<MapSidebarProps> = ({ onDateChange, onDepthChange }) 
           </Button>
         </div>
       </div>
-      <div className="mt-4 h-60 w-full overflow-hidden rounded-md">
-        <BasicMap id="side-bar-minimap" navigationControl={false} />
-      </div>
+      {isRenderMiniMap && (
+        <div className="mt-4 h-60 w-full overflow-hidden rounded-md">
+          <BasicMap id="side-bar-minimap" navigationControl={false} />
+        </div>
+      )}
     </>
   );
 };

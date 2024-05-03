@@ -1,6 +1,7 @@
-import type { RouteObject } from 'react-router-dom';
-import { Home, MapView, News, NotFound, GuidedTour } from '@/pages';
+import { Navigate, type RouteObject } from 'react-router-dom';
+import { Home, MapView, DataView, News, NotFound, GuidedTour } from '@/pages';
 import MainLayout from '@/layouts/MainLayout';
+import MapLayout from '@/layouts/MapLayout';
 
 const routes: RouteObject[] = [
   {
@@ -13,24 +14,41 @@ const routes: RouteObject[] = [
       },
       {
         path: '/product',
-        element: <MapView />,
+        element: <MapLayout type="product" />,
         children: [
           {
+            index: true,
+            element: <Navigate to="argo?wmoid=6902985&cycle=192&depth=0&date=20240421" replace />,
+          },
+          {
+            path: ':product/:subProduct',
+            element: <DataView />,
+          },
+          {
             path: ':product',
-            element: <MapView />,
-            children: [
-              {
-                path: ':subProduct',
-                element: <MapView />,
-              },
-            ],
+            element: <DataView />,
           },
         ],
       },
       {
         path: '/map',
-        element: <MapView />,
+        element: <MapLayout type="map" />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="fourHourSst/Sst" replace />,
+          },
+          {
+            path: ':product/:subProduct',
+            element: <MapView />,
+          },
+          {
+            path: ':product',
+            element: <MapView />,
+          },
+        ],
       },
+
       {
         path: '/news',
         element: <News />,
