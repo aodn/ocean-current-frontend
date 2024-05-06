@@ -5,8 +5,8 @@ import ArgoIdIcon from '@/assets/icons/argo-id-icon.svg';
 import useArgoStore, { setArgoDepth, subtractOneDay, addOneDay } from '@/stores/argo-store/argoStore';
 import { updatePositionAndZoom } from '@/stores/map-store/mapStore';
 import { Button, DateSelector } from '../Shared';
-import BasicMap from '../Map/BasicMap';
 import { MapSidebarProps } from './types/mapSidebar';
+import MiniMap from './components/MiniMap';
 
 const MapSidebar: React.FC<MapSidebarProps> = ({ onDateChange, onDepthChange }) => {
   const { pathname } = useLocation();
@@ -118,7 +118,7 @@ const MapSidebar: React.FC<MapSidebarProps> = ({ onDateChange, onDepthChange }) 
       </div>
       {isRenderMiniMap && (
         <div className="mt-4 h-60 w-full overflow-hidden rounded-md">
-          <BasicMap id="side-bar-minimap" navigationControl={false} />
+          <MiniMap />
         </div>
       )}
     </>
