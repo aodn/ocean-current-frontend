@@ -1,4 +1,4 @@
-export interface ProductCarrouselCardProps extends HomeProductData {
+export interface ProductCarrouselCardProps extends Omit<HomeProductData, 'mainProduct' | 'subProduct'> {
   selected: boolean;
 }
 
@@ -7,4 +7,6 @@ export interface HomeProductData {
   id: string;
   description: string;
   imageUrl: string;
+  mainProduct: string;
+  subProduct: string | null;
 }

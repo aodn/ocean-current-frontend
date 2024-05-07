@@ -10,9 +10,13 @@ const DataView: React.FC = () => {
   const cycle = searchParams.get('cycle') || '';
   const depth = searchParams.get('depth') === '1' ? '1' : '0';
 
-  const buildArgoUrlImg = (): string => {
+  const buildArgoUrlImg2 = (): string => {
     const profiles = depth === '0' ? 'profiles' : 'profiles_s';
     return `https://oceancurrent.aodn.org.au/${profiles}/${worldMeteorologicalOrgId}/${date}_${worldMeteorologicalOrgId}_${cycle}.gif`;
+  };
+
+  const buildArgoUrlImg = (): string => {
+    return 'https://oceancurrent.aodn.org.au/SST_4hr/SST_Filled/Adelaide/2024022118.gif';
   };
 
   return (

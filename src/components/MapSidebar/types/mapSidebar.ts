@@ -1,6 +1,8 @@
-import { Dayjs } from 'dayjs';
+export interface DataSidebarProps {
+  copyButtonText: string;
+  handleCopyLink: () => void;
+}
 
-export interface MapSidebarProps {
-  onDateChange: (date: Dayjs) => void;
-  onDepthChange: (depth: '0' | '1') => void;
+export interface SidebarProps {
+  renderMiniMap: boolean;
 }
