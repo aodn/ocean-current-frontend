@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
+import useProductStore from '@/stores/product-store/productStore';
+import { TEXT_CONSTANT } from '@/constants/textConstant';
 import MiniMap from './components/MiniMap';
 import { SidebarProps } from './types/mapSidebar';
 import ProductSideBar from './components/ProductSidebar';
 import ArgoSideBar from './components/ArgoSideBar';
 
 const MapSidebar: React.FC<SidebarProps> = ({ renderMiniMap }) => {
-  const [copyButtonText, setCopyButtonText] = useState<string>('Copy Permlink');
+  const [copyButtonText, setCopyButtonText] = useState<string>(TEXT_CONSTANT.COPY_PERMLINK);
+  const useProductParams = useProductStore((state) => state.productParams);
+
+  const isArgo = useProductParams.mainProduct === 'argo';
 
   const handleCopyLink = () => {
     const url = location.href;
@@ -13,16 +18,16 @@ const MapSidebar: React.FC<SidebarProps> = ({ renderMiniMap }) => {
     setCopyButtonText('Copied!');
 
     setTimeout(() => {
-      setCopyButtonText('Copy Permlink');
+      setCopyButtonText(TEXT_CONSTANT.COPY_PERMLINK);
     }, 2000);
   };
 
   return (
     <>
-      {true ? (
-        <ProductSideBar copyButtonText={copyButtonText} handleCopyLink={handleCopyLink} />
-      ) : (
+      {isArgo ? (
         <ArgoSideBar copyButtonText={copyButtonText} handleCopyLink={handleCopyLink} />
+      ) : (
+        <ProductSideBar copyButtonText={copyButtonText} handleCopyLink={handleCopyLink} />
       )}
 
       {renderMiniMap && (

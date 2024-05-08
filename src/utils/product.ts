@@ -1,5 +1,5 @@
 import { OC_PRODUCTS } from '@/constants/product';
-import { CombinedProduct, Product } from '@/types/product';
+import { CombinedProduct, MainProductWithSubProduct, Product } from '@/types/product';
 
 export const combineProducts = (products: Product[]): CombinedProduct[] => {
   return products.flatMap((product) => {
@@ -36,4 +36,38 @@ export const validateProductIdentifier = (identifier: string): boolean => {
     throw new Error(`Invalid identifier at runtime: ${identifier}`);
   }
   return true;
+};
+
+export const getProductByPath = (mainProductPath: string, subProductPath: string | null = null) => {
+  const mainProduct = OC_PRODUCTS.find((product) => product.path === mainProductPath);
+  if (!mainProduct) {
+    throw new Error(`Invalid main product path: ${mainProductPath}`);
+  }
+  if (!subProductPath) {
+    return mainProduct;
+  }
+  const subProduct = mainProduct.children?.find((product) => product.path === subProductPath);
+  if (!subProduct) {
+    throw new Error(`Invalid sub product path: ${subProductPath}`);
+  }
+  return subProduct;
+};
+
+export const getProductByKey = (
+  mainProductKey: string,
+  subProductKey: string | null = null,
+): MainProductWithSubProduct => {
+  const mainProduct = OC_PRODUCTS.find((product) => product.key === mainProductKey);
+  if (!mainProduct) {
+    throw new Error(`Invalid main product key: ${mainProductKey}`);
+  }
+
+  if (!subProductKey) {
+    return { mainProduct, subProduct: null };
+  }
+  const subProduct = mainProduct.children?.find((product) => product.key === subProductKey);
+  if (!subProduct) {
+    throw new Error(`Invalid sub product key: ${subProductKey}`);
+  }
+  return { mainProduct, subProduct };
 };

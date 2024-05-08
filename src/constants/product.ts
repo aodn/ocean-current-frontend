@@ -19,7 +19,7 @@ export const OC_PRODUCTS: Product[] = [
       {
         title: 'SST',
         key: 'fourHourSst-Sst',
-        path: 'four-hour-sst',
+        path: 'sst',
       },
       {
         title: 'SST Age',

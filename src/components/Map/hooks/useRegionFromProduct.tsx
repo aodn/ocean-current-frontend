@@ -4,8 +4,8 @@ import useProductStore from '@/stores/product-store/productStore';
 import { Region } from '@/types/map';
 
 const useRegionFromProduct = () => {
-  const useMainProduct = useProductStore((state) => state.mainProduct);
-  const useSubProduct = useProductStore((state) => state.subProduct);
+  const useMainProduct = useProductStore((state) => state.productParams.mainProduct);
+  const useSubProduct = useProductStore((state) => state.productParams.subProduct);
 
   const getRegions = (mainProduct: string, subProduct: string | null): Region[] => {
     const key = subProduct ? `${mainProduct}-${subProduct}` : mainProduct;
