@@ -27,7 +27,7 @@ const MapNavbar: React.FC = () => {
   };
 
   return (
-    <div className="relative z-10 flex h-18 justify-between border bg-white p-2 drop-shadow-[0_4px_6px_rgba(0,0,0,0.25)]">
+    <div className="relative z-10 flex h-18 justify-between border bg-white p-2 drop-shadow-x0y4">
       <div className="flex items-center">
         <div className="flex p-2">
           <img src={categoryIcon} alt="category logo" />

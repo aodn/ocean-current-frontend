@@ -5,7 +5,6 @@ export interface RegionSelectionProps {
 }
 
 export interface RegionButtonProps {
-  key: RegionScope;
   label: string;
   icon: string;
   selected: boolean;

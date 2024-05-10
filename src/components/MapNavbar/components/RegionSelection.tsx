@@ -16,7 +16,7 @@ const RegionSelection: React.FC<RegionSelectionProps> = ({ onChange }) => {
     <ul className="flex items-center gap-4">
       {regionSelectionButtonElements.map(({ key, label, icon }) => (
         <li key={key} onClick={handleClick(key)} aria-hidden>
-          <RegionButton key={key} label={label} icon={icon} selected={selectedRegion === key} />
+          <RegionButton label={label} icon={icon} selected={selectedRegion === key} />
         </li>
       ))}
     </ul>
