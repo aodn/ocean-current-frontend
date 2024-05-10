@@ -15,22 +15,22 @@ const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopy
   const navigate = useNavigate();
 
   const convertProductFromStore = () => {
+    const { mainProduct: mainKey, subProduct: subKey } = useProductParams;
+
     let product: MainProductWithSubProduct | null = null;
     let mainProduct: Product | null = null;
     let subProduct: SubProduct | null = null;
     let subProducts: SubProduct[] = [];
 
-    if (useProductParams.mainProduct && useProductParams.subProduct) {
-      product = getProductByKey(useProductParams.mainProduct, useProductParams.subProduct);
+    if (mainKey && subKey) {
+      product = getProductByKey(mainKey, subKey);
       mainProduct = product.mainProduct;
       subProducts = product.mainProduct.children || [];
-      if (product.subProduct) {
-        subProduct = product.subProduct;
-      }
+      subProduct = product.subProduct;
     }
 
-    if (useProductParams.mainProduct && !useProductParams.subProduct) {
-      product = getProductByKey(useProductParams.mainProduct);
+    if (mainKey && !subKey) {
+      product = getProductByKey(mainKey);
       mainProduct = product.mainProduct;
     }
 
