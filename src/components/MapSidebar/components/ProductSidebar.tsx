@@ -15,22 +15,22 @@ const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopy
   const navigate = useNavigate();
 
   const convertProductFromStore = () => {
-    const { mainProduct: mainKey, subProduct: subKey } = useProductParams;
-
     let product: MainProductWithSubProduct | null = null;
     let mainProduct: Product | null = null;
     let subProduct: SubProduct | null = null;
     let subProducts: SubProduct[] = [];
 
-    if (mainKey && subKey) {
-      product = getProductByKey(mainKey, subKey);
+    if (useProductParams.mainProduct && useProductParams.subProduct) {
+      product = getProductByKey(useProductParams.mainProduct, useProductParams.subProduct);
       mainProduct = product.mainProduct;
       subProducts = product.mainProduct.children || [];
-      subProduct = product.subProduct;
+      if (product.subProduct) {
+        subProduct = product.subProduct;
+      }
     }
 
-    if (mainKey && !subKey) {
-      product = getProductByKey(mainKey);
+    if (useProductParams.mainProduct && !useProductParams.subProduct) {
+      product = getProductByKey(useProductParams.mainProduct);
       mainProduct = product.mainProduct;
     }
 
@@ -62,55 +62,53 @@ const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopy
   }
 
   return (
-    <>
-      <div className="rounded-md border-2 border-imos-grey">
-        <div className="flex items-center justify-between bg-white p-2 pb-4">
-          <img className="mx-6 h-16 w-14 object-cover" src={SSTIcon} alt="sst-icon" />
-          <div>
-            <h2 className="mb-2 text-lg font-semibold text-imos-black">{mainProduct.title}</h2>
-            <p className="text-imos-grey">Sea Surface Temperature (°C) 6-day ngt-only comp QL3</p>
-          </div>
+    <div className="relative -z-10 rounded-md border-2 border-imos-grey">
+      <div className="flex items-center justify-between bg-white p-2 pb-4">
+        <img className="mx-6 h-16 w-14 object-cover" src={SSTIcon} alt="sst-icon" />
+        <div>
+          <h2 className="mb-2 text-lg font-semibold text-imos-black">{mainProduct.title}</h2>
+          <p className="text-imos-grey">Sea Surface Temperature (°C) 6-day ngt-only comp QL3</p>
         </div>
+      </div>
 
-        <div className="p-4">
-          <DateSelector date={useDate} subtractDay={subtractDay} addDay={addDay} />
-          {mainProduct && subProduct && subProducts && subProducts.length > 0 && (
-            <div className="my-6 flex flex-wrap justify-between gap-2">
-              {subProducts.map(({ key, title, path }, index) => (
-                <div key={key} className={index === subProducts.length - 1 ? 'w-auto' : 'flex-1'}>
-                  <Button
-                    size="full"
-                    borderRadius="small"
-                    type="secondary"
-                    selected={key === subProduct.key}
-                    onClick={() => handleSubProductChange(key, mainProduct.path, path)}
-                  >
-                    {title}
-                  </Button>
-                </div>
-              ))}
-            </div>
-          )}
-
-          <Legend />
-
-          <p className="text-lg font-semibold text-imos-black">Data sources</p>
+      <div className="p-4">
+        <DateSelector date={useDate} subtractDay={subtractDay} addDay={addDay} />
+        {mainProduct && subProduct && subProducts && subProducts.length > 0 && (
           <div className="my-6 flex flex-wrap justify-between gap-2">
-            {dataSources.map((product, index) => (
-              <div key={product} className={index === subProducts.length - 1 ? 'w-auto' : 'flex-1'}>
-                <Button size="full" borderRadius="small" type="secondary">
-                  {product}
+            {subProducts.map(({ key, title, path }, index) => (
+              <div key={key} className={index === subProducts.length - 1 ? 'w-auto' : 'flex-1'}>
+                <Button
+                  size="full"
+                  borderRadius="small"
+                  type="secondary"
+                  selected={key === subProduct.key}
+                  onClick={() => handleSubProductChange(key, mainProduct.path, path)}
+                >
+                  {title}
                 </Button>
               </div>
             ))}
           </div>
+        )}
 
-          <Button onClick={() => handleCopyLink()} size="full" borderRadius="small" type="secondary">
-            {copyButtonText}
-          </Button>
+        <Legend />
+
+        <p className="text-lg font-semibold text-imos-black">Data sources</p>
+        <div className="my-6 flex flex-wrap justify-between gap-2">
+          {dataSources.map((product, index) => (
+            <div key={product} className={index === subProducts.length - 1 ? 'w-auto' : 'flex-1'}>
+              <Button size="full" borderRadius="small" type="secondary">
+                {product}
+              </Button>
+            </div>
+          ))}
         </div>
+
+        <Button onClick={() => handleCopyLink()} size="full" borderRadius="small" type="secondary">
+          {copyButtonText}
+        </Button>
       </div>
-    </>
+    </div>
   );
 };
 

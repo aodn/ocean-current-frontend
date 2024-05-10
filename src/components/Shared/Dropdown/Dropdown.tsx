@@ -1,11 +1,16 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import arrowIcon from '@/assets/icons/arrow.svg';
+import useOutsideClick from '@/hooks/useOutsideClick';
 import { DropdownElement, DropdownProps } from './types/dropdown.types';
 
-const Dropdown: React.FC<DropdownProps> = ({ elements, initialSelectedId }: DropdownProps) => {
+const Dropdown: React.FC<DropdownProps> = ({ elements, initialSelectedId, onChange }: DropdownProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [selectedElement, setSelectedElement] = useState<DropdownElement | undefined>();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+
+  useOutsideClick<HTMLDivElement>(dropdownRef, () => {
+    setDropdownOpen(false);
+  });
 
   const toggleDropdown = (): void => {
     setDropdownOpen(!isDropdownOpen);
@@ -19,25 +24,18 @@ const Dropdown: React.FC<DropdownProps> = ({ elements, initialSelectedId }: Drop
     [elements],
   );
 
+  const handleOnClick = (element: DropdownElement): void => {
+    setDropdownOpen(false);
+    selectElement(element.id);
+    if (onChange) onChange(element);
+  };
+
   useEffect(() => {
     if (!selectedElement && initialSelectedId) selectElement(initialSelectedId);
   }, [selectElement, selectedElement, initialSelectedId]);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   return (
-    <div className="relative z-20 ml-3" ref={dropdownRef}>
+    <div className="relative ml-3 w-[270px]" ref={dropdownRef}>
       <div
         onClick={toggleDropdown}
         aria-hidden="true"
@@ -47,16 +45,16 @@ const Dropdown: React.FC<DropdownProps> = ({ elements, initialSelectedId }: Drop
         <img className="ms-3 h-2.5 w-2.5" src={arrowIcon} alt="arrow icon" />
       </div>
       {isDropdownOpen && elements.length > 0 && (
-        <div className="absolute w-full rounded-b-md bg-background-gradient p-4 shadow">
+        <div
+          className="absolute w-full rounded-b-md bg-white bg-background-gradient p-4 shadow"
+          data-testid="drop-down-menu"
+        >
           {elements.map((element) => (
             <div
               key={element.id}
               aria-hidden="true"
-              className="mb-4 flex cursor-pointer items-center justify-between rounded-md border border-imos-black p-3"
-              onClick={() => {
-                selectElement(element.id);
-                toggleDropdown();
-              }}
+              className="mb-4 flex h-[68px] w-[240px] cursor-pointer items-center justify-between rounded-md border border-[#c2c2c2] p-3 hover:border-imos-black"
+              onClick={() => handleOnClick(element)}
             >
               <img src={element.icon} alt={`${element.label} icon`} />
               <span className="text-right text-base">{element.label}</span>

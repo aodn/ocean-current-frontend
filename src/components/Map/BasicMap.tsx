@@ -2,8 +2,8 @@ import React from 'react';
 import Map, { FullscreenControl, MapStyle, NavigationControl, ViewStateChangeEvent } from 'react-map-gl';
 import { mapConfig } from '@/configs/map';
 import useMapStore, { setMapViewState, updateZoom } from '@/stores/map-store/mapStore';
-import useProductStore from '@/stores/product-store/productStore';
 import { mapboxInstanceIds } from '@/constants/mapboxId';
+import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { RegionPolygonLayer, ArgoAsProductLayer } from './layers';
 import MAP_STYLE from './data/map-style.basic-v8.json';
 
@@ -24,11 +24,11 @@ const BasicMap: React.FC<BasicMapProps> = ({
   fullScreenControl = true,
   navigationControl = true,
 }) => {
-  const useMainProduct = useProductStore((state) => state.productParams.mainProduct);
   const useMapViewState = useMapStore((state) => state.mapViewState);
   const handleMove = ({ viewState }: ViewStateChangeEvent) => {
     setMapViewState(viewState);
   };
+  const { isArgo } = useProductCheck();
 
   const handleZoom = ({ viewState }: ViewStateChangeEvent) => {
     updateZoom(viewState.zoom);
@@ -60,8 +60,8 @@ const BasicMap: React.FC<BasicMapProps> = ({
       {fullScreenControl && <FullscreenControl position="top-left" />}
       {navigationControl && <NavigationControl position="top-left" />}
 
-      {useMainProduct !== 'argo' && <RegionPolygonLayer />}
-      {useMainProduct === 'argo' && <ArgoAsProductLayer />}
+      {!isArgo && <RegionPolygonLayer />}
+      {isArgo && <ArgoAsProductLayer />}
     </Map>
   );
 };

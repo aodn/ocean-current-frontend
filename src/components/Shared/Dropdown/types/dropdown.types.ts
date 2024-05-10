@@ -7,4 +7,5 @@ export interface DropdownElement {
 export interface DropdownProps {
   elements: DropdownElement[];
   initialSelectedId?: string;
+  onChange?: (selectedElement: DropdownElement) => void;
 }

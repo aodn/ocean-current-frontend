@@ -1,12 +1,11 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import useProductStore from '@/stores/product-store/productStore';
+import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 
 const DataView: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const useProductParams = useProductStore((state) => state.productParams);
-  const isArgo = useProductParams.mainProduct === 'argo';
+  const { isArgo } = useProductCheck();
 
   const date = searchParams.get('date') || dayjs().format('YYYYMMDD');
   const worldMeteorologicalOrgId = searchParams.get('wmoid') || '';
