@@ -1,20 +1,26 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
+import dayjs from 'dayjs';
 import { RegionScope } from '@/constants/region';
 import { combinedProducts } from '@/utils/product';
 import { Actions, State } from './product.types';
 
-const useProductStore = create<State & Actions>()(
-  devtools((set, get) => ({
+const initialState: State = {
+  productParams: {
     mainProduct: '',
     subProduct: null,
     productKey: '',
     regionScope: RegionScope.State,
     regionName: '',
-    date: new Date().toLocaleString(),
+    date: dayjs(),
+  },
+};
+
+const useProductStore = create<State & Actions>()(
+  devtools((set, get) => ({
+    ...initialState,
     actions: {
-      setMainProduct: (product) => set({ mainProduct: product }, false, 'setMainProduct'),
-      setSubProduct: (subProduct) => set({ subProduct }, false, 'setSubProduct'),
+      setProductData: (product) => set({ productParams: product }, false, 'setProductData'),
       setProductKey: (productKey) => {
         const foundProduct = combinedProducts.find((product) => product.fullKey === productKey);
 
@@ -23,13 +29,28 @@ const useProductStore = create<State & Actions>()(
         }
         const { mainProduct, subProduct } = foundProduct;
 
-        set({ productKey }, false, 'setProductKey');
+        set(
+          (state) => ({
+            productParams: {
+              ...state.productParams,
+              productKey,
+            },
+          }),
+          false,
+          'setProductKey',
+        );
         get().actions.setMainProduct(mainProduct.key);
         get().actions.setSubProduct(subProduct?.key || null);
       },
-      setRegionScope: (regionScope) => set({ regionScope }),
-      setRegionName: (regionName) => set({ regionName }),
-      setDate: (date) => set({ date }, false, 'setDate'),
+      setMainProduct: (mainProduct) =>
+        set((state) => ({ productParams: { ...state.productParams, mainProduct } }), false, 'setMainProduct'),
+      setSubProduct: (subProduct) =>
+        set((state) => ({ productParams: { ...state.productParams, subProduct } }), false, 'setSubProduct'),
+      setRegionScope: (regionScope) =>
+        set((state) => ({ productParams: { ...state.productParams, regionScope } }), false, 'setRegionScope'),
+      setRegionName: (regionName) =>
+        set((state) => ({ productParams: { ...state.productParams, regionName } }), false, 'setRegionName'),
+      setDate: (date) => set((state) => ({ productParams: { ...state.productParams, date } }), false, 'setDate'),
     },
   })),
 );

@@ -24,7 +24,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
   fullScreenControl = true,
   navigationControl = true,
 }) => {
-  const useMainProduct = useProductStore((state) => state.mainProduct);
+  const useMainProduct = useProductStore((state) => state.productParams.mainProduct);
   const useMapViewState = useMapStore((state) => state.mapViewState);
   const handleMove = ({ viewState }: ViewStateChangeEvent) => {
     setMapViewState(viewState);

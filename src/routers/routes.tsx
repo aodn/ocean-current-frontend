@@ -18,7 +18,7 @@ const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <Navigate to="argo?wmoid=6902985&cycle=192&depth=0&date=20240421" replace />,
+            element: <Navigate to="four-hour-sst/sst" replace />,
           },
           {
             path: ':product/:subProduct',
@@ -36,7 +36,7 @@ const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <Navigate to="fourHourSst/Sst" replace />,
+            element: <Navigate to="four-hour-sst/sst" replace />,
           },
           {
             path: ':product/:subProduct',
