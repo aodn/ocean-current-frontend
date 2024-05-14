@@ -22,25 +22,5 @@
   "cSpell.ignoreWords": ["Bonney"],
   "cSpell.ignorePaths": ["package.json"],
   "git.branchProtection": ["main"],
-  "workbench.colorCustomizations": {
-    "activityBar.activeBackground": "#82cef0",
-    "activityBar.background": "#82cef0",
-    "activityBar.foreground": "#15202b",
-    "activityBar.inactiveForeground": "#15202b99",
-    "activityBarBadge.background": "#e738b1",
-    "activityBarBadge.foreground": "#e7e7e7",
-    "commandCenter.border": "#15202b99",
-    "sash.hoverBorder": "#82cef0",
-    "statusBar.background": "#54bceb",
-    "statusBar.foreground": "#15202b",
-    "statusBarItem.hoverBackground": "#26aae6",
-    "statusBarItem.remoteBackground": "#54bceb",
-    "statusBarItem.remoteForeground": "#15202b",
-    "titleBar.activeBackground": "#54bceb",
-    "titleBar.activeForeground": "#15202b",
-    "titleBar.inactiveBackground": "#54bceb99",
-    "titleBar.inactiveForeground": "#15202b99"
-  },
-  "peacock.color": "#54bceb",
   "cSpell.language": "en,en-AU"
 }

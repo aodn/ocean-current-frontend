@@ -40,6 +40,7 @@ module.exports = {
       'error',
       {
         argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
       },
     ],
     quotes: ['error', 'single', { avoidEscape: true }],

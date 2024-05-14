@@ -18,7 +18,7 @@ export const OC_PRODUCTS: Product[] = [
       },
       {
         title: 'SST',
-        key: 'fourHourSst-Sst',
+        key: 'fourHourSst-sst',
         path: 'sst',
       },
       {
@@ -35,22 +35,22 @@ export const OC_PRODUCTS: Product[] = [
   },
   {
     title: '6-Day SST & Centiles',
-    key: '6DaySstCentiles',
+    key: 'sixDaySst',
     path: '6-day-sst-centiles',
     children: [
       {
         title: 'SST',
-        key: '6DaySstCentiles-sst',
+        key: 'sixDaySst-sst',
         path: 'sst',
       },
       {
         title: 'SST Anomaly',
-        key: '6DaySstCentiles-sstAnomaly',
+        key: 'sixDaySst-sstAnomaly',
         path: 'sst-anomaly',
       },
       {
         title: 'Centiles',
-        key: '6DaySstCentiles-centiles',
+        key: 'sixDaySst-centiles',
         path: 'centiles',
       },
     ],
@@ -84,7 +84,7 @@ export const OC_PRODUCTS: Product[] = [
   },
   {
     title: 'Adj. Sea Level Anom.',
-    key: 'adjSeaLevelAnom',
+    key: 'adjustedSeaLevelAnomaly',
     path: 'adj-sea-level-anom',
   },
   {
@@ -93,9 +93,19 @@ export const OC_PRODUCTS: Product[] = [
     path: 'non-tidal-sea-level-anom',
   },
   {
-    title: 'Ocean Color',
-    key: 'oceanColor',
-    path: 'ocean-color',
+    title: 'Ocean Colour',
+    key: 'oceanColour',
+    path: 'ocean-colour',
+  },
+  {
+    title: 'Surface Waves',
+    key: 'surfaceWaves',
+    path: 'surface-waves',
+  },
+  {
+    title: 'Monthly Means',
+    key: 'monthlyMeans',
+    path: 'monthly-means',
   },
   {
     title: 'Argo',

@@ -63,7 +63,7 @@ const MapLayout: React.FC<MapLayoutProps> = ({ type }) => {
   }, [date, depth, worldMeteorologicalOrgId, cycle]);
 
   return (
-    <div className="my-9">
+    <div className="my-9 shadow-[4px_4px_10px_0_rgba(0,0,0,0.20)] backdrop-blur-[2px]">
       <MapNavbar />
       <div className="flex p-4">
         <div className="mx-2 w-1/3">

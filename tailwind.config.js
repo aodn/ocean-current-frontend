@@ -38,6 +38,10 @@ export default {
       },
       dropShadow: {
         xy4: '4px 4px 10px rgba(0, 0, 0, 0.25)',
+        x0y4: '0px 4px 6px rgba(0, 0, 0, 0.25)',
+      },
+      height: {
+        18: '4.5rem',
       },
     },
   },
