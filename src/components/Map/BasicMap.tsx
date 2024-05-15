@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import Map, { FullscreenControl, MapStyle, NavigationControl, ViewStateChangeEvent } from 'react-map-gl';
 import { mapConfig } from '@/configs/map';
 import useMapStore, { setMapViewState, updateZoom } from '@/stores/map-store/mapStore';
-import { mapboxInstanceIds } from '@/constants/mapboxId';
+import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { RegionPolygonLayer, ArgoAsProductLayer } from './layers';
 import MAP_STYLE from './data/map-style.basic-v8.json';
@@ -24,15 +24,22 @@ const BasicMap: React.FC<BasicMapProps> = ({
   fullScreenControl = true,
   navigationControl = true,
 }) => {
+  const interactiveIds = [mapboxLayerIds.productRegionBoxLayer, mapboxLayerIds.argoAsProductPointLayer];
+
+  const [cursor, setCursor] = useState<string>('grab');
   const useMapViewState = useMapStore((state) => state.mapViewState);
+  const { isArgo } = useProductCheck();
+
   const handleMove = ({ viewState }: ViewStateChangeEvent) => {
     setMapViewState(viewState);
   };
-  const { isArgo } = useProductCheck();
 
   const handleZoom = ({ viewState }: ViewStateChangeEvent) => {
     updateZoom(viewState.zoom);
   };
+
+  const handleMouseEnter = useCallback(() => setCursor('pointer'), []);
+  const handleMouseLeave = useCallback(() => setCursor('grab'), []);
 
   if (!mapConfig.accessToken) {
     return (
@@ -49,12 +56,16 @@ const BasicMap: React.FC<BasicMapProps> = ({
       data-testid={id}
       mapboxAccessToken={mapConfig.accessToken}
       {...useMapViewState}
+      cursor={cursor}
       onMove={handleMove}
       onZoom={handleZoom}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       style={{ width: '100%', height: '100%', ...style }}
       mapStyle={mapStyle}
       projection={{ name: 'mercator' }}
       attributionControl={false}
+      interactiveLayerIds={interactiveIds}
     >
       {children}
       {fullScreenControl && <FullscreenControl position="top-left" />}
