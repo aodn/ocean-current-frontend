@@ -37,7 +37,7 @@ export default ({ mode }) => {
         provider: 'v8',
         reporter: ['text', 'json', 'html'],
         include: ['src/**/*.?(c|m)[jt]s?(x)'],
-        exclude: ['src/styles', '**/*.d.ts'],
+        exclude: ['src/styles', 'src/types', '**/*.d.ts', '**/*.types.ts'],
       },
     },
   });

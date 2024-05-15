@@ -20,7 +20,7 @@ export const regionException: RegionException = {
     localException: [],
     stateException: [...fullStateList], // fourHour product is not available for all state level
   },
-  'fourHourSst-Sst': {
+  'fourHourSst-sst': {
     localException: [],
     stateException: [...fullStateList], // fourHour product is not available for all state level
   },
@@ -28,11 +28,11 @@ export const regionException: RegionException = {
     localException: [],
     stateException: [...fullStateList], // fourHour product is not available for all state level
   },
-  adjSeaLevelAnom: {
+  adjustedSeaLevelAnomaly: {
     localException: pickRandomElements<LocalKey>([...fullLocalList], 5), // TODO: this is fake data, need to be updated
     stateException: pickRandomElements<StateKey>([...fullStateList], 3), // TODO: this is fake data, need to be updated
   },
-  oceanColor: {
+  oceanColour: {
     localException: pickRandomElements<LocalKey>([...fullLocalList], 5), // TODO: this is fake data, need to be updated
     stateException: pickRandomElements<StateKey>([...fullStateList], 3), // TODO: this is fake data, need to be updated
   },

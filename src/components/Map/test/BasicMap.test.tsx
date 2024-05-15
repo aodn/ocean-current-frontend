@@ -1,7 +1,7 @@
 import { render, screen, renderHook } from '@testing-library/react';
 import { mapConfig } from '@/configs/map';
 import useMapStore from '@/stores/map-store/mapStore';
-import { calculateAreaFromCoords, convertAreaCoordsToGeoJsonCoordinates } from '../utils/region';
+import { calculateAreaFromCoords, convertAreaCoordsToGeoJsonCoordinates } from '../utils/regionUtils';
 import BasicMap from '../BasicMap';
 import useRegionData from '../hooks/useRegionData';
 
