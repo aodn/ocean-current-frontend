@@ -50,7 +50,7 @@ const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopy
   }
 
   return (
-    <div className="relative -z-10 rounded-md border-2 border-imos-grey">
+    <div className="relative rounded-md border-2 border-imos-grey">
       <div className="flex items-center justify-between bg-white p-2 pb-4">
         <img className="mx-6 h-16 w-14 object-cover" src={SSTIcon} alt="sst-icon" />
         <div>

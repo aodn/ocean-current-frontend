@@ -22,6 +22,6 @@ export type Actions = {
     setProductKey: (productKey: string) => void;
     setRegionScope: (regionScope: RegionScope) => void;
     setRegionName: (regionName: string) => void;
-    setDate: (date: string) => void;
+    setDate: (date: Dayjs) => void;
   };
 };

@@ -14,7 +14,7 @@ vi.doMock('../data/regionData', () => ({
   allRegions: mockRegions,
 }));
 
-describe('useRegionData', () => {
+describe('useRegionData hook', () => {
   it('should only show one or zero box when zoom out', () => {
     vi.mocked(useMapStore).mockReturnValue(2);
     const { result } = renderHook(() => useRegionData());

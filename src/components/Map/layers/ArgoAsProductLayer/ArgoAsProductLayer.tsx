@@ -5,6 +5,7 @@ import useArgoStore from '@/stores/argo-store/argoStore';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { ArgoProfile } from '@/types/argo';
 import useArgoAsProductData from '../../hooks/useArgoAsProductData';
+import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
 
 const ArgoAsProductLayer = () => {
   const { argoData } = useArgoAsProductData();
@@ -20,25 +21,26 @@ const ArgoAsProductLayer = () => {
   useEffect(() => {
     if (!map) return;
     const handleClick = (e: MapMouseEvent) => {
-      const features = map.queryRenderedFeatures(e.point, { layers: [argoAsProductPointLayer] });
-      if (!features.length) {
-        return;
+      try {
+        const clickedArgoParam = getPropertyFromMapFeatures<ArgoProfile>(map, e, argoAsProductPointLayer, [
+          'worldMeteorologicalOrgId',
+          'cycle',
+          'depth',
+          'date',
+        ]);
+        const { worldMeteorologicalOrgId, cycle, depth, date } = clickedArgoParam;
+        const query = new URLSearchParams({ wmoid: worldMeteorologicalOrgId, cycle, depth, date: date! }).toString();
+        const clickedArgoPath = `/product/argo?${query}`;
+        navigate(clickedArgoPath);
+      } catch (error) {
+        console.error(error);
       }
-      const clickedArgoParam = features[0].properties;
-      if (!clickedArgoParam) {
-        return;
-      }
-      const { worldMeteorologicalOrgId, cycle, depth, date } = clickedArgoParam;
-      const query = new URLSearchParams({ wmoid: worldMeteorologicalOrgId, cycle, depth, date }).toString();
-      const clickedArgoPath = `/product/argo?${query}`;
-      navigate(clickedArgoPath);
     };
 
     if (!eventAdded.current) {
       eventAdded.current = true;
       map.on('click', argoAsProductPointLayer, handleClick);
       map.on('mouseenter', argoAsProductPointLayer, (e) => {
-        map.getCanvas().style.cursor = 'pointer';
         const features = map.queryRenderedFeatures(e.point, { layers: [argoAsProductPointLayer] });
         if (!features.length) {
           return;
@@ -60,7 +62,6 @@ const ArgoAsProductLayer = () => {
         }
       });
       map.on('mouseleave', argoAsProductPointLayer, () => {
-        map.getCanvas().style.cursor = '';
         setPopupInfo(null);
       });
     }

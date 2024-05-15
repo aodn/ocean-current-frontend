@@ -1,5 +1,5 @@
 import useMapStore from '@/stores/map-store/mapStore';
-import { calculateAreaFromCoords, convertAreaCoordsToGeoJsonCoordinates } from '../utils/region';
+import { calculateAreaFromCoords, convertAreaCoordsToGeoJsonCoordinates } from '../utils/regionUtils';
 import { Region } from '../types/map.types';
 import useRegionFromProduct from './useRegionFromProduct';
 
@@ -11,7 +11,7 @@ const useRegionData = () => {
     const areaA = calculateAreaFromCoords(a.coords);
     const areaB = calculateAreaFromCoords(b.coords);
     // TODO: larger regions should be selected by mouse hover, check which order is correct
-    return areaA - areaB;
+    return areaB - areaA;
   });
 
   const calculateZoomLevel = (area: number) => {
