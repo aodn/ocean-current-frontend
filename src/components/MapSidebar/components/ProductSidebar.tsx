@@ -1,8 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import SSTIcon from '@/assets/icons/products/SST-icon.svg';
-import useArgoStore, { subtractOneDay, addOneDay } from '@/stores/argo-store/argoStore';
-import { Button, DateSelector } from '@/components/Shared';
+import { Button } from '@/components/Shared';
 import useProductStore, { setSubProduct } from '@/stores/product-store/productStore';
 import { getProductByKey } from '@/utils/product';
 import { MainProductWithSubProduct, Product, SubProduct } from '@/types/product';
@@ -11,7 +10,6 @@ import Legend from './Legend';
 
 const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopyLink }) => {
   const useProductParams = useProductStore((state) => state.productParams);
-  const useDate = useArgoStore((state) => state.date);
   const navigate = useNavigate();
 
   const convertProductFromStore = () => {
@@ -41,16 +39,6 @@ const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopy
 
   const dataSources = ['SST L3S-6d ngt (1992-2017)', 'SST L3SM-6d ngt (2018-now)', 'GSLA', 'SSTAARS'];
 
-  const addDay = () => {
-    addOneDay();
-    // onDateChange(useDate.add(1, 'day'));
-  };
-
-  const subtractDay = () => {
-    subtractOneDay();
-    // onDateChange(useDate.subtract(1, 'day'));
-  };
-
   const handleSubProductChange = (key: string, mainProductPath: string, subProductPath: string) => {
     navigate(`${mainProductPath}/${subProductPath}`);
     setSubProduct(key);
@@ -72,7 +60,6 @@ const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopy
       </div>
 
       <div className="p-4">
-        <DateSelector date={useDate} subtractDay={subtractDay} addDay={addDay} />
         {mainProduct && subProduct && subProducts && subProducts.length > 0 && (
           <div className="my-6 flex flex-wrap justify-between gap-2">
             {subProducts.map(({ key, title, path }, index) => (

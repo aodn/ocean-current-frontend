@@ -3,15 +3,14 @@ import { useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import ArgoIcon from '@/assets/icons/products/argo-icon.svg';
 import ArgoIdIcon from '@/assets/icons/argo-id-icon.svg';
-import useArgoStore, { setArgoDepth, subtractOneDay, addOneDay } from '@/stores/argo-store/argoStore';
+import useArgoStore, { setArgoDepth } from '@/stores/argo-store/argoStore';
 import { updatePositionAndZoom } from '@/stores/map-store/mapStore';
-import { Button, DateSelector } from '@/components/Shared';
+import { Button } from '@/components/Shared';
 import { DataSidebarProps } from '../types/mapSidebar';
 
 const MapSidebar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopyLink }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const useArgoMetaData = useArgoStore((state) => state.argoMetaData);
-  const useDate = useArgoStore((state) => state.date);
   const useArgo = useArgoStore((state) => state.argoParams);
   const { depth, worldMeteorologicalOrgId, cycle } = useArgo;
   const date = searchParams.get('date') || dayjs().format('YYYYMMDD');
@@ -33,22 +32,6 @@ const MapSidebar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopyLink
       updatePositionAndZoom(singleArgoMetaData.position.latitude, singleArgoMetaData.position.longitude, mapZoom);
     }
   }, [useArgo, useArgoMetaData]);
-
-  const changeDateUrlParams = (newDate: string) => {
-    setSearchParams({ wmoid: worldMeteorologicalOrgId, cycle: cycle, depth, date: newDate });
-  };
-
-  const addDay = () => {
-    const newDate = useDate.add(1, 'day').format('YYYYMMDD');
-    addOneDay();
-    changeDateUrlParams(newDate);
-  };
-
-  const subtractDay = () => {
-    const newDate = useDate.subtract(1, 'day').format('YYYYMMDD');
-    subtractOneDay();
-    changeDateUrlParams(newDate);
-  };
 
   const changeDepth = (newDepth: '0' | '1') => {
     setSearchParams({ wmoid: worldMeteorologicalOrgId, cycle, depth: newDepth, date });
@@ -86,7 +69,6 @@ const MapSidebar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopyLink
               aoml {worldMeteorologicalOrgId}
             </Button>
           </div>
-          <DateSelector date={useDate} subtractDay={subtractDay} addDay={addDay} />
           <div className="mb-3 flex gap-3">
             <Button
               onClick={() => changeDepth('1')}
