@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { SliderProps } from './types/slider.types';
 
 const Slider: React.FC<SliderProps> = ({ min, max, step, value, onChange, labelFormatter }) => {
@@ -6,12 +6,15 @@ const Slider: React.FC<SliderProps> = ({ min, max, step, value, onChange, labelF
   const [dragging, setDragging] = useState<boolean>(false);
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
 
-  const calculateValue = (clientX: number) => {
-    const { left, width } = sliderRef.current!.getBoundingClientRect();
-    const position = Math.min(Math.max(clientX - left, 0), width);
-    const newValue = Math.round((min + (position / width) * (max - min)) / step) * step;
-    onChange(newValue);
-  };
+  const calculateValue = useCallback(
+    (clientX: number) => {
+      const { left, width } = sliderRef.current!.getBoundingClientRect();
+      const position = Math.min(Math.max(clientX - left, 0), width);
+      const newValue = Math.round((min + (position / width) * (max - min)) / step) * step;
+      onChange(newValue);
+    },
+    [min, max, step, onChange],
+  );
 
   const startDragging = (event: React.MouseEvent) => {
     setDragging(true);
@@ -40,7 +43,7 @@ const Slider: React.FC<SliderProps> = ({ min, max, step, value, onChange, labelF
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [dragging]);
+  }, [dragging, calculateValue]);
 
   const renderMarks = () => {
     return Array.from({ length: (max - min) / step + 1 }).map((_, index) => (
@@ -67,10 +70,12 @@ const Slider: React.FC<SliderProps> = ({ min, max, step, value, onChange, labelF
       className="relative h-1 w-full cursor-pointer bg-gray-300"
       onMouseDown={startDragging}
       aria-hidden
+      data-testid="slider-base"
     >
       {renderMarks()}
       <div
         className="absolute -top-2 h-5 w-5 -translate-x-1/2 rounded-full border bg-white shadow-md"
+        data-testid="slider-thumb"
         style={{
           left: `${((value - min) / (max - min)) * 100}%`,
         }}
