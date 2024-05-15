@@ -6,6 +6,7 @@ import { setArgoData, setDate } from '@/stores/argo-store/argoStore';
 import { setMainProduct, setSubProduct } from '@/stores/product-store/productStore';
 import MapSidebar from '@/components/MapSidebar/MapSidebar';
 import { getProductByPath } from '@/utils/product';
+import TimeSelector from '@/components/TimeSelector/TimeSelector';
 
 interface MapLayoutProps {
   type: 'product' | 'map';
@@ -73,6 +74,7 @@ const MapLayout: React.FC<MapLayoutProps> = ({ type }) => {
           <Outlet />
         </div>
       </div>
+      <TimeSelector />
     </div>
   );
 };

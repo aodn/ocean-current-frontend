@@ -22,6 +22,7 @@ const useArgoAsProductData = () => {
       } catch (error) {
         if (isAxiosError(error) && error.response?.status === 404) {
           const newDate = dayjs(date).subtract(1, 'day');
+          if (newDate.isAfter(dayjs())) return;
           fetchData(newDate);
         }
         // TODO: Handle error, return error to UI, render notification/warning
