@@ -4,6 +4,7 @@ import MapNavbar from '@/components/MapNavbar/MapNavbar';
 import { setMainProduct, setSubProduct } from '@/stores/product-store/productStore';
 import { getProductByPath } from '@/utils/product';
 import useProductFromUrl from '@/hooks/useGetProductFromUrl/useGetProductFromUrl';
+import TimeSelector from '@/components/TimeSelector/TimeSelector';
 
 const MapLayout: React.FC = () => {
   const product = useProductFromUrl('map');
@@ -26,6 +27,7 @@ const MapLayout: React.FC = () => {
       <div className="w-full">
         <Outlet />
       </div>
+      <TimeSelector />
     </div>
   );
 };
