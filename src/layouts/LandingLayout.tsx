@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Footer, Navbar, BurgerMenu } from '@/components';
 
-const MainLayout: React.FC = () => {
+const LandingLayout: React.FC = () => {
   return (
     <div className="flex flex-col px-6 font-lexend md:px-0">
       <div className="bg-white">
@@ -29,4 +29,4 @@ const MainLayout: React.FC = () => {
   );
 };
 
-export default MainLayout;
+export default LandingLayout;

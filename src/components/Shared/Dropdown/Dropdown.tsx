@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import arrowIcon from '@/assets/icons/arrow.svg';
-import useOutsideClick from '@/hooks/useOutsideClick';
+import useOutsideClick from '@/hooks/useOutSideClick/useOutsideClick';
 import { DropdownElement, DropdownProps } from './types/dropdown.types';
 
 const Dropdown: React.FC<DropdownProps> = ({ elements, initialSelectedId, onChange }: DropdownProps) => {

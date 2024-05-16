@@ -1,7 +1,8 @@
 import { Navigate, type RouteObject } from 'react-router-dom';
 import { Home, MapView, DataView, News, NotFound, GuidedTour } from '@/pages';
-import MainLayout from '@/layouts/MainLayout';
+import MainLayout from '@/layouts/LandingLayout';
 import MapLayout from '@/layouts/MapLayout';
+import ProductLayout from '@/layouts/ProductLayout';
 
 const routes: RouteObject[] = [
   {
@@ -14,7 +15,7 @@ const routes: RouteObject[] = [
       },
       {
         path: '/product',
-        element: <MapLayout type="product" />,
+        element: <ProductLayout />,
         children: [
           {
             index: true,
@@ -32,7 +33,7 @@ const routes: RouteObject[] = [
       },
       {
         path: '/map',
-        element: <MapLayout type="map" />,
+        element: <MapLayout />,
         children: [
           {
             index: true,
