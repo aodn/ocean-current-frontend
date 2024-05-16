@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import { TEXT_CONSTANT } from '@/constants/textConstant';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import MiniMap from './components/MiniMap';
-import { SidebarProps } from './types/mapSidebar';
 import ProductSideBar from './components/ProductSidebar';
 import ArgoSideBar from './components/ArgoSideBar';
 
-const MapSidebar: React.FC<SidebarProps> = ({ renderMiniMap }) => {
+const MapSidebar: React.FC = () => {
   const [copyButtonText, setCopyButtonText] = useState<string>(TEXT_CONSTANT.COPY_PERMLINK);
-
   const { isArgo } = useProductCheck();
 
   const handleCopyLink = () => {
@@ -29,11 +27,9 @@ const MapSidebar: React.FC<SidebarProps> = ({ renderMiniMap }) => {
         <ProductSideBar copyButtonText={copyButtonText} handleCopyLink={handleCopyLink} />
       )}
 
-      {renderMiniMap && (
-        <div className="mt-4 h-60 w-full overflow-hidden rounded-md">
-          <MiniMap />
-        </div>
-      )}
+      <div className="mt-4 h-60 w-full overflow-hidden rounded-md">
+        <MiniMap />
+      </div>
     </>
   );
 };

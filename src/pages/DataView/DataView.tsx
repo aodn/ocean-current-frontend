@@ -12,7 +12,7 @@ const DataView: React.FC = () => {
   const cycle = searchParams.get('cycle') || '';
   const depth = searchParams.get('depth') === '1' ? '1' : '0';
 
-  const buildArgoUrlImg = (): string => {
+  const buildImg = (): string => {
     const profiles = depth === '0' ? 'profiles' : 'profiles_s';
     const mockUrl = isArgo
       ? `https://oceancurrent.aodn.org.au/${profiles}/${worldMeteorologicalOrgId}/${date}_${worldMeteorologicalOrgId}_${cycle}.gif`
@@ -20,13 +20,7 @@ const DataView: React.FC = () => {
     return mockUrl;
   };
 
-  return (
-    <div className="flex p-4">
-      <div className="w-full">
-        <img src={buildArgoUrlImg()} alt="" />
-      </div>
-    </div>
-  );
+  return <img className="h-full w-full " src={buildImg()} alt="product" />;
 };
 
 export default DataView;
