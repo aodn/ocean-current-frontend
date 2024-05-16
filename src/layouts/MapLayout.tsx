@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import MapNavbar from '@/components/MapNavbar/MapNavbar';
 import { setMainProduct, setSubProduct } from '@/stores/product-store/productStore';
 import { getProductByPath } from '@/utils/product';
-import useProductFromUrl from '@/hooks/useGetProductFromUrl/useGetProductFromUrl';
+import { useProductFromUrl } from '@/hooks';
 import TimeSelector from '@/components/TimeSelector/TimeSelector';
 
 const MapLayout: React.FC = () => {
@@ -14,7 +14,7 @@ const MapLayout: React.FC = () => {
       const { mainProduct, subProduct } = product;
 
       const mainProductKey = getProductByPath(mainProduct)!.key;
-      const subProductKey = product.subProduct ? getProductByPath(mainProduct, subProduct)!.key : null;
+      const subProductKey = subProduct ? getProductByPath(mainProduct, subProduct)!.key : null;
 
       setMainProduct(mainProductKey);
       setSubProduct(subProductKey);
@@ -22,7 +22,7 @@ const MapLayout: React.FC = () => {
   }, [product]);
 
   return (
-    <div className="my-9 shadow-layoutShadow">
+    <div className="my-9 shadow-layout-shadow">
       <MapNavbar />
       <div className="w-full">
         <Outlet />

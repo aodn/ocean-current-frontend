@@ -7,7 +7,8 @@ import { setMainProduct, setSubProduct } from '@/stores/product-store/productSto
 import MapSidebar from '@/components/MapSidebar/MapSidebar';
 import { getProductByPath } from '@/utils/product';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import useProductFromUrl from '@/hooks/useGetProductFromUrl/useGetProductFromUrl';
+import { useProductFromUrl } from '@/hooks';
+import TimeSelector from '@/components/TimeSelector/TimeSelector';
 
 const MapLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -26,8 +27,11 @@ const MapLayout: React.FC = () => {
 
   const setProductKey = useCallback(() => {
     if (product) {
-      const mainProductKey = getProductByPath(product.mainProduct)!.key;
-      const subProductKey = product.subProduct ? getProductByPath(product.mainProduct, product.subProduct)!.key : null;
+      const { mainProduct, subProduct } = product;
+
+      const mainProductKey = getProductByPath(mainProduct)!.key;
+      const subProductKey = subProduct ? getProductByPath(mainProduct, subProduct)!.key : null;
+
       setMainProduct(mainProductKey);
       setSubProduct(subProductKey);
     }
@@ -42,7 +46,7 @@ const MapLayout: React.FC = () => {
   }, [getArgoData, isArgo]);
 
   return (
-    <div className="my-9 shadow-layoutShadow">
+    <div className="my-9 shadow-layout-shadow">
       <MapNavbar />
       <div className="flex p-4">
         <div className="mx-2 w-1/3">
@@ -52,6 +56,7 @@ const MapLayout: React.FC = () => {
           <Outlet />
         </div>
       </div>
+      <TimeSelector />
     </div>
   );
 };

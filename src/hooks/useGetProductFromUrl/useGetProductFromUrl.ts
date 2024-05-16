@@ -1,6 +1,6 @@
 import { useMatch } from 'react-router-dom';
 
-const useProductFromUrl = (type: string) => {
+const useProductFromUrl = (type: 'product' | 'map') => {
   const mainProductOnlyMatch = useMatch(`/${type}/:product`);
   const mainProductWithSubProductMatch = useMatch(`/${type}/:product/:subProduct`);
 

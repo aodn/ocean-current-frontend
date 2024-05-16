@@ -41,7 +41,7 @@ export default {
         x0y4: '0px 4px 6px rgba(0, 0, 0, 0.25)',
       },
       boxShadow: {
-        layoutShadow: '4px 4px 10px 0 rgba(0,0,0,0.20)',
+        'layout-shadow': '4px 4px 10px 0 rgba(0,0,0,0.20)',
       },
       height: {
         18: '4.5rem',
