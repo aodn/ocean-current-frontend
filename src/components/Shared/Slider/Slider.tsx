@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { SliderProps } from './types/slider.types';
+import Markers from './components/Markers';
 
 const Slider: React.FC<SliderProps> = ({ min, max, step, value, onChange, labelFormatter }) => {
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -45,25 +46,6 @@ const Slider: React.FC<SliderProps> = ({ min, max, step, value, onChange, labelF
     };
   }, [dragging, calculateValue]);
 
-  const renderMarks = () => {
-    return Array.from({ length: (max - min) / step + 1 }).map((_, index) => (
-      <div
-        key={index}
-        className="absolute -top-0.5 w-0.5 translate-y-1/2 select-none bg-gray-300"
-        style={{
-          left: `${((index * step) / (max - min)) * 100}%`,
-          height: index % 7 === 0 ? '12px' : '6px',
-        }}
-      >
-        {index % 7 === 0 && (
-          <span className="absolute right-1/2 mt-3 block translate-x-1/2 select-none whitespace-nowrap">
-            {labelFormatter ? labelFormatter(index) : index}
-          </span>
-        )}
-      </div>
-    ));
-  };
-
   return (
     <div
       ref={sliderRef}
@@ -72,7 +54,8 @@ const Slider: React.FC<SliderProps> = ({ min, max, step, value, onChange, labelF
       aria-hidden
       data-testid="slider-base"
     >
-      {renderMarks()}
+      <Markers min={min} max={max} step={step} labelFormatter={labelFormatter} />
+
       <div
         className="absolute -top-2 h-5 w-5 -translate-x-1/2 rounded-full border bg-white shadow-md"
         data-testid="slider-thumb"

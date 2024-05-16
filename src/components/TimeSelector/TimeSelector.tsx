@@ -31,10 +31,12 @@ const TimeSelector: React.FC = () => {
     const dates = [];
     let current = dayjs(start);
     const endDay = dayjs(end);
+
     while (current.isBefore(endDay) || current.isSame(endDay, 'day')) {
       dates.push(current.toDate());
       current = current.add(1, 'day');
     }
+
     return dates;
   };
 
@@ -77,6 +79,12 @@ const TimeSelector: React.FC = () => {
     return dayjs(allDates[index]).format('DD-MM');
   };
 
+  const handleDateChange = (dates: [Date | null, Date | null]) => {
+    const [start, end] = dates;
+    setStartDate(start || new Date());
+    setEndDate(end);
+  };
+
   return (
     <div className="flex justify-between">
       <div className="flex w-10/12 items-center justify-between rounded p-4 px-6 pb-10 shadow-lg">
@@ -104,11 +112,7 @@ const TimeSelector: React.FC = () => {
         <DatePicker
           customInput={<p className="cursor-pointer">{dayjs(allDates[selectedDateIndex]).format('DD MMM YYYY')}</p>}
           selected={startDate}
-          onChange={(dates: [Date | null, Date | null]) => {
-            const [start, end] = dates;
-            setStartDate(start || new Date());
-            setEndDate(end);
-          }}
+          onChange={handleDateChange}
           startDate={startDate}
           endDate={endDate}
           selectsRange

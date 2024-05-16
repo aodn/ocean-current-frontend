@@ -6,3 +6,10 @@ export interface SliderProps {
   onChange: (value: number) => void;
   labelFormatter?: (value: number) => string;
 }
+
+export interface MarkersProps {
+  min: number;
+  max: number;
+  step: number;
+  labelFormatter?: (value: number) => string;
+}
