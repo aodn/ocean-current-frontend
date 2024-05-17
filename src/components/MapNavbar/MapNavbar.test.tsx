@@ -29,7 +29,7 @@ describe('MapNavbar', () => {
     );
 
     // Assert
-    expect(screen.getByText(/loading/)).toBeInTheDocument();
+    expect(screen.getByTestId('loading-component')).toBeInTheDocument();
   });
 
   it('should render category, local, state, and all Australia regions with corresponding icons', () => {

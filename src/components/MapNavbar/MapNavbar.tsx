@@ -1,6 +1,6 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import categoryIcon from '@/assets/icons/category-icon.png';
-import { Dropdown } from '@/components/Shared';
+import { Dropdown, Loading } from '@/components/Shared';
 import { RegionScope } from '@/constants/region';
 import { setMainProduct, setRegionScope, setSubProduct } from '@/stores/product-store/productStore';
 import { getProductByKey } from '@/utils/product';
@@ -31,7 +31,7 @@ const MapNavbar: React.FC = () => {
   };
 
   if (!mainProductKey) {
-    return <div>loading</div>;
+    return <Loading loadingSize="w-10 h-10" />;
   }
 
   return (
