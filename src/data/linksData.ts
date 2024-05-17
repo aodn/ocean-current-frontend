@@ -3,20 +3,20 @@ export const linksData = [
     title: 'Maps',
     leftLinks: [
       {
-        id: 'snapshot-sst',
+        id: 'snapshotSst',
         imageUrl:
           'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
         title: 'Snapshot SST',
         description: 'Sea Surface Temperature',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
+        url: '/map/snapshot-sst',
       },
       {
-        id: 'ocean-color',
+        id: 'oceanColour',
         imageUrl:
           'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
         title: 'Ocean Color',
         description: 'Satellite ocean color',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
+        url: '/map/ocean-colour',
       },
       {
         id: 'sea-floor-heat',
@@ -37,36 +37,36 @@ export const linksData = [
     ],
     rightLinks: [
       {
-        id: 'daily-sst',
+        id: 'sixDaySst-sst',
         imageUrl:
           'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
         title: 'Daily SST',
         description: 'Daily sea surface temperature',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
+        url: '/map/6-day-sst-centiles/sst',
       },
       {
-        id: 'sst-anomaly',
+        id: 'adjustedSeaLevelAnomaly',
         imageUrl:
           'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
         title: 'SST Anomaly',
         description: 'Sea surface temperature anomaly',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
+        url: '/map/adj-sea-level-anom',
       },
       {
-        id: 'monthly-means',
+        id: 'monthlyMeans',
         imageUrl:
           'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
         title: 'Monthly Means',
         description: 'Monthly temperature averages',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
+        url: '/map/monthly-means',
       },
       {
-        id: 'surface-waves',
+        id: 'surfaceWaves',
         imageUrl:
           'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
         title: 'Surface Waves',
         description: 'Ocean surface wave observations',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
+        url: '/map/surface-waves',
       },
     ],
   },
@@ -79,7 +79,7 @@ export const linksData = [
           'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
         title: 'Argo',
         description: 'Ocean observation network',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
+        url: '/map/argo',
       },
       {
         id: 'gliders',
