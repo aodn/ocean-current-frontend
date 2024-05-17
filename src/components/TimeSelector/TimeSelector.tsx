@@ -41,6 +41,7 @@ const TimeSelector: React.FC = () => {
   };
 
   const handleSliderChange = (newValue: number) => {
+    if (newValue === selectedDateIndex) return;
     setSelectedDateIndex(newValue);
     const formattedDate = dayjs(allDates[newValue]).format('YYYYMMDD');
     changeDateUrlParams(formattedDate);
