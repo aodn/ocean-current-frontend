@@ -4,21 +4,44 @@ import australiaIcon from '@/assets/icons/australia-icon.png';
 import localRegionIcon from '@/assets/icons/local-region-icon.png';
 import stateRegionIcon from '@/assets/icons/state-region-icon.png';
 import categoryIcon from '@/assets/icons/category-icon.png';
+import useMainProductKey from '@/stores/product-store/hooks/useMainProductKey';
+import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import MapNavbar from './MapNavbar';
 import RegionSelection from './components/RegionSelection';
 import RegionButton from './components/RegionButton';
 
+vi.mock('@/stores/product-store/hooks/useMainProductKey');
+vi.mock('@/stores/product-store/hooks/useProductCheck');
+
 describe('MapNavbar', () => {
-  beforeEach(() => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('should render loading when mainProductKey is not available', () => {
     // Arrange
+    vi.mocked(useMainProductKey).mockReturnValue(null);
+    vi.mocked(useProductCheck).mockReturnValue({ isRegionRequired: true, isArgo: false });
     render(
       <MemoryRouter>
         <MapNavbar />
       </MemoryRouter>,
     );
+
+    // Assert
+    expect(screen.getByTestId('loading-component')).toBeInTheDocument();
   });
 
   it('should render category, local, state, and all Australia regions with corresponding icons', () => {
+    // Arrange
+    vi.mocked(useMainProductKey).mockReturnValue('fourHourSst');
+    vi.mocked(useProductCheck).mockReturnValue({ isRegionRequired: true, isArgo: false });
+    render(
+      <MemoryRouter>
+        <MapNavbar />
+      </MemoryRouter>,
+    );
+
     // Assert
     expect(screen.getByAltText(/category logo/i)).toHaveAttribute('src', categoryIcon);
     expect(screen.getByAltText(/local region logo/i)).toHaveAttribute('src', localRegionIcon);
@@ -29,6 +52,22 @@ describe('MapNavbar', () => {
     expect(screen.getByText('Local Region')).toBeInTheDocument();
     expect(screen.getByText('State Region')).toBeInTheDocument();
     expect(screen.getByText('All Australia')).toBeInTheDocument();
+  });
+
+  it('should not render RegionSelection when isRegionRequired is false', () => {
+    // Arrange
+    vi.mocked(useMainProductKey).mockReturnValue('argo');
+    vi.mocked(useProductCheck).mockReturnValue({ isRegionRequired: false, isArgo: true });
+    render(
+      <MemoryRouter>
+        <MapNavbar />
+      </MemoryRouter>,
+    );
+
+    // Assert
+    expect(screen.queryByText('Local Region')).not.toBeInTheDocument();
+    expect(screen.queryByText('State Region')).not.toBeInTheDocument();
+    expect(screen.queryByText('All Australia')).not.toBeInTheDocument();
   });
 });
 

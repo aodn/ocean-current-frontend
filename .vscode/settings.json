@@ -19,7 +19,7 @@
     "wmoid",
     "zustand"
   ],
-  "cSpell.ignoreWords": ["Bonney"],
+  "cSpell.ignoreWords": ["Bonney", "datepicker"],
   "cSpell.ignorePaths": ["package.json"],
   "git.branchProtection": ["main"],
   "cSpell.language": "en,en-AU"

@@ -1,6 +1,9 @@
-import { useMatch } from 'react-router-dom';
+import { useMemo } from 'react';
+import { useLocation, useMatch } from 'react-router-dom';
 
 const useProductFromUrl = (type: 'product' | 'map') => {
+  const location = useLocation();
+
   const mainProductOnlyMatch = useMatch(`/${type}/:product`);
   const mainProductWithSubProductMatch = useMatch(`/${type}/:product/:subProduct`);
 
@@ -24,7 +27,10 @@ const useProductFromUrl = (type: 'product' | 'map') => {
     // TODO: give default product
   };
 
-  return getProductFromUrlMatch();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const memoizedProductFromUrl = useMemo(getProductFromUrlMatch, [location.pathname]);
+
+  return memoizedProductFromUrl;
 };
 
 export default useProductFromUrl;

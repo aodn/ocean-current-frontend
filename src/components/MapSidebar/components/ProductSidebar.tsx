@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import SSTIcon from '@/assets/icons/products/SST-icon.svg';
-import { Button } from '@/components/Shared';
+import { Button, Loading } from '@/components/Shared';
 import useProductStore, { setSubProduct } from '@/stores/product-store/productStore';
 import { getProductByKey } from '@/utils/product';
 import { MainProductWithSubProduct, Product, SubProduct } from '@/types/product';
@@ -44,9 +44,8 @@ const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopy
     setSubProduct(key);
   };
 
-  // TODO: Add loading UI
   if (!mainProduct) {
-    return <>loading</>;
+    return <Loading />;
   }
 
   return (
