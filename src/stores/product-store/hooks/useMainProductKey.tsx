@@ -12,5 +12,4 @@ const useMainProductKey = () => {
   return product?.mainProduct?.key || null;
 };
 
-// export { useMainProductKey };
 export default useMainProductKey;

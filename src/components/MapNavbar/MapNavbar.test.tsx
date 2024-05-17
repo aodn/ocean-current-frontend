@@ -54,7 +54,7 @@ describe('MapNavbar', () => {
     expect(screen.getByText('All Australia')).toBeInTheDocument();
   });
 
-  it('should net render RegionSelection when isRegionRequired is false', () => {
+  it('should not render RegionSelection when isRegionRequired is false', () => {
     // Arrange
     vi.mocked(useMainProductKey).mockReturnValue('argo');
     vi.mocked(useProductCheck).mockReturnValue({ isRegionRequired: false, isArgo: true });
