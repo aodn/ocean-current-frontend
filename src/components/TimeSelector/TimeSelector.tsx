@@ -4,16 +4,22 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Slider } from '@/components/Shared/index';
-import useArgoStore from '@/stores/argo-store/argoStore';
 import arrowIcon from '@/assets/icons/arrow.svg';
 
 const TimeSelector: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { depth, worldMeteorologicalOrgId, cycle } = useArgoStore((state) => state.argoParams);
-  const initialDate = useArgoStore((state) => state.date);
+
   const urlDate = searchParams.get('date');
-  const initialStartDate = urlDate ? dayjs(urlDate, 'YYYYMMDD').toDate() : dayjs(initialDate).toDate();
-  const initialEndDate = dayjs(initialStartDate).add(1, 'month').toDate();
+  const urlStartDate = searchParams.get('startDate');
+  const urlEndDate = searchParams.get('endDate');
+
+  const initialDate = urlDate ? dayjs(urlDate, 'YYYYMMDD').toDate() : dayjs().subtract(1, 'month').toDate();
+  const initialStartDate = urlStartDate
+    ? dayjs(urlStartDate, 'YYYYMMDD').toDate()
+    : dayjs(initialDate).subtract(1, 'month').toDate();
+  const initialEndDate = urlEndDate ? dayjs(urlEndDate, 'YYYYMMDD').toDate() : initialDate;
+
+  const steps: number = 1;
 
   const [startDate, setStartDate] = useState(initialStartDate);
   const [endDate, setEndDate] = useState<Date | null>(initialEndDate);
@@ -24,7 +30,10 @@ const TimeSelector: React.FC = () => {
     if (endDate) {
       const range = generateDateRange(startDate, endDate);
       setAllDates(range);
+      const initialIndex = range.findIndex((date) => dayjs(date).isSame(dayjs(initialDate), 'day'));
+      setSelectedDateIndex(initialIndex !== -1 ? initialIndex : range.length - 1);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDate, endDate]);
 
   const generateDateRange = (start: Date, end: Date) => {
@@ -44,46 +53,51 @@ const TimeSelector: React.FC = () => {
     if (newValue === selectedDateIndex) return;
     setSelectedDateIndex(newValue);
     const formattedDate = dayjs(allDates[newValue]).format('YYYYMMDD');
-    changeDateUrlParams(formattedDate);
+    updateUrlParams(formattedDate, startDate, endDate);
   };
 
-  const changeDateUrlParams = (newDate: string) => {
-    setSearchParams({ wmoid: worldMeteorologicalOrgId, cycle: cycle, depth, date: newDate });
+  const updateUrlParams = (newDate: string, newStartDate: Date, newEndDate: Date | null) => {
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set('date', newDate);
+    newSearchParams.set('startDate', dayjs(newStartDate).format('YYYYMMDD'));
+    newSearchParams.set('endDate', dayjs(newEndDate).format('YYYYMMDD'));
+    setSearchParams(newSearchParams);
   };
 
   const modifyDate = (modificationType: 'add' | 'subtract') => {
     let newStartDate = startDate;
     let newEndDate = endDate;
     let newIndex = selectedDateIndex;
-    let newRange = allDates;
 
-    if (modificationType === 'subtract' && selectedDateIndex === 0) {
+    const isSubtractingAndAtStart = modificationType === 'subtract' && selectedDateIndex === 0;
+    const isAddingAndAtEnd = modificationType === 'add' && selectedDateIndex === allDates.length - 1;
+
+    if (isSubtractingAndAtStart) {
       newStartDate = dayjs(startDate).subtract(1, 'day').toDate();
-      newRange = generateDateRange(newStartDate, endDate!);
-      newIndex = 0;
-    } else if (modificationType === 'add' && selectedDateIndex === allDates.length - 1) {
+    } else if (isAddingAndAtEnd) {
       newEndDate = dayjs(endDate).add(1, 'day').toDate();
-      newRange = generateDateRange(startDate, newEndDate);
-      newIndex = newRange.length - 1;
+      newIndex = newIndex + 1;
     } else {
       newIndex = modificationType === 'add' ? selectedDateIndex + 1 : selectedDateIndex - 1;
     }
 
+    const newRange = generateDateRange(newStartDate, newEndDate!);
     setStartDate(newStartDate);
     setEndDate(newEndDate);
     setAllDates(newRange);
     setSelectedDateIndex(newIndex);
-    changeDateUrlParams(dayjs(newRange[newIndex]).format('YYYYMMDD'));
+    updateUrlParams(dayjs(newRange[newIndex]).format('YYYYMMDD'), newStartDate, newEndDate!);
   };
 
-  const formatDateLabel = (index: number) => {
-    return dayjs(allDates[index]).format('DD-MM');
-  };
+  const formatDateLabel = (index: number) => dayjs(allDates[index]).format('DD-MM');
 
   const handleDateChange = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
     setStartDate(start || new Date());
     setEndDate(end);
+    if (start && end) {
+      updateUrlParams(dayjs(start).format('YYYYMMDD'), start, end);
+    }
   };
 
   return (
@@ -96,7 +110,7 @@ const TimeSelector: React.FC = () => {
               onChange={handleSliderChange}
               min={0}
               max={allDates.length - 1}
-              step={1}
+              step={steps}
               labelFormatter={formatDateLabel}
             />
           </div>

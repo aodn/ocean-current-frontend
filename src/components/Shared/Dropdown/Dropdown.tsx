@@ -35,7 +35,7 @@ const Dropdown: React.FC<DropdownProps> = ({ elements, initialSelectedId, onChan
   }, [selectElement, selectedElement, initialSelectedId]);
 
   return (
-    <div className="relative ml-3 w-[270px]" ref={dropdownRef}>
+    <div className="relative ml-3" ref={dropdownRef}>
       <div
         onClick={toggleDropdown}
         aria-hidden="true"
@@ -45,19 +45,16 @@ const Dropdown: React.FC<DropdownProps> = ({ elements, initialSelectedId, onChan
         <img className="ms-3 h-2.5 w-2.5" src={arrowIcon} alt="arrow icon" />
       </div>
       {isDropdownOpen && elements.length > 0 && (
-        <div
-          className="absolute w-full rounded-b-md bg-white bg-background-gradient p-4 shadow"
-          data-testid="drop-down-menu"
-        >
+        <div className="absolute w-full rounded-b-md bg-[#EFEFEF] p-4 shadow" data-testid="drop-down-menu">
           {elements.map((element) => (
             <div
               key={element.id}
               aria-hidden="true"
-              className="mb-4 flex h-[68px] w-[240px] cursor-pointer items-center justify-between rounded-md border border-[#c2c2c2] p-3 hover:border-imos-black"
+              className={`mb-4 flex cursor-pointer items-center rounded-md border border-[#c2c2c2] p-3 duration-300 hover:border-imos-black ${element.id === selectedElement?.id ? 'border-[#888888] bg-white' : ''}`}
               onClick={() => handleOnClick(element)}
             >
-              <img src={element.icon} alt={`${element.label} icon`} />
-              <span className="text-right text-base">{element.label}</span>
+              <img className="mr-4 h-9 w-9" src={element.icon} alt={`${element.label} icon`} />
+              <span className="text-left text-base text-imos-grey">{element.label}</span>
             </div>
           ))}
         </div>

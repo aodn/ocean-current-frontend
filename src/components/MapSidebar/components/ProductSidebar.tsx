@@ -44,6 +44,8 @@ const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopy
     setSubProduct(key);
   };
 
+  const renderSubProducts = () => mainProduct && subProducts.length > 0;
+
   if (!mainProduct) {
     return <Loading />;
   }
@@ -59,10 +61,10 @@ const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopy
       </div>
 
       <div className="p-4">
-        {mainProduct && subProduct && subProducts && subProducts.length > 0 && (
-          <div className="my-6 flex flex-wrap justify-between gap-2">
-            {subProducts.map(({ key, title, path }, index) => (
-              <div key={key} className={index === subProducts.length - 1 ? 'w-auto' : 'flex-1'}>
+        {renderSubProducts() && subProduct && (
+          <div className="my-6 grid grid-cols-2 gap-2">
+            {subProducts.map(({ key, title, path }) => (
+              <div key={key}>
                 <Button
                   size="full"
                   borderRadius="small"
