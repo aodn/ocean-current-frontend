@@ -1,5 +1,5 @@
 import { MapboxGeoJSONFeature, MapMouseEvent, MapRef } from 'react-map-gl';
-import { isNotNullOrUndefined } from './generalUtils';
+import { isNotNullOrUndefined } from '../../../utils/general';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const extractPropertyFromFeatures = <T extends Record<string, any>>(

@@ -1,7 +1,6 @@
 import { MapboxGeoJSONFeature } from 'react-map-gl';
-import { isNotNullOrUndefined } from '../utils/generalUtils';
+import * as generalUtils from '@/utils/general';
 import { extractPropertyFromFeatures } from '../utils/mapUtils';
-import * as generalUtils from '../utils/generalUtils';
 
 describe('extractPropertyFromFeatures', async () => {
   afterEach(() => {
@@ -58,23 +57,5 @@ describe('extractPropertyFromFeatures', async () => {
 
     // Assert
     expect(result).toEqual({ id: 1, name: 'Test Feature' });
-  });
-});
-
-describe('isNotNullOrUndefined', () => {
-  it('should return true if the value is not null or undefined', () => {
-    // Act and Assert
-    expect(isNotNullOrUndefined(1)).toBe(true);
-    expect(isNotNullOrUndefined('')).toBe(true);
-    expect(isNotNullOrUndefined(0)).toBe(true);
-    expect(isNotNullOrUndefined([])).toBe(true);
-    expect(isNotNullOrUndefined({})).toBe(true);
-    expect(isNotNullOrUndefined(false)).toBe(true);
-  });
-
-  it('should return false if the value is null or undefined', () => {
-    // Act and Assert
-    expect(isNotNullOrUndefined(null)).toBe(false);
-    expect(isNotNullOrUndefined(undefined)).toBe(false);
   });
 });

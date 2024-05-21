@@ -14,9 +14,11 @@
     "lexend",
     "mapbox",
     "noto",
+    "pctiles",
     "Permlink",
     "testid",
     "wmoid",
+    "YYYYMMDDHH",
     "zustand"
   ],
   "cSpell.ignoreWords": ["Bonney", "datepicker"],

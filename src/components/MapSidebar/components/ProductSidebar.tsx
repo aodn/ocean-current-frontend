@@ -1,16 +1,16 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import SSTIcon from '@/assets/icons/products/SST-icon.svg';
 import { Button, Loading } from '@/components/Shared';
 import useProductStore, { setSubProduct } from '@/stores/product-store/productStore';
 import { getProductByKey } from '@/utils/product';
 import { MainProductWithSubProduct, Product, SubProduct } from '@/types/product';
+import { useQueryParams } from '@/hooks';
 import { DataSidebarProps } from '../types/mapSidebar';
 import Legend from './Legend';
 
 const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopyLink }) => {
   const useProductParams = useProductStore((state) => state.productParams);
-  const navigate = useNavigate();
+  const { updateQueryParamsAndNavigate } = useQueryParams();
 
   const convertProductFromStore = () => {
     let product: MainProductWithSubProduct | null = null;
@@ -40,7 +40,8 @@ const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopy
   const dataSources = ['SST L3S-6d ngt (1992-2017)', 'SST L3SM-6d ngt (2018-now)', 'GSLA', 'SSTAARS'];
 
   const handleSubProductChange = (key: string, mainProductPath: string, subProductPath: string) => {
-    navigate(`${mainProductPath}/${subProductPath}`);
+    const targetPath = `${mainProductPath}/${subProductPath}`;
+    updateQueryParamsAndNavigate(targetPath);
     setSubProduct(key);
   };
 

@@ -11,8 +11,8 @@ const initialState: State = {
     subProduct: null,
     productKey: '',
     regionScope: RegionScope.State,
-    regionName: '',
-    date: dayjs(),
+    regionTitle: '',
+    date: dayjs().subtract(1, 'day'),
   },
 };
 
@@ -48,14 +48,18 @@ const useProductStore = create<State & Actions>()(
         set((state) => ({ productParams: { ...state.productParams, subProduct } }), false, 'setSubProduct'),
       setRegionScope: (regionScope) =>
         set((state) => ({ productParams: { ...state.productParams, regionScope } }), false, 'setRegionScope'),
-      setRegionName: (regionName) =>
-        set((state) => ({ productParams: { ...state.productParams, regionName } }), false, 'setRegionName'),
+      setRegionTitle: (regionTitle) =>
+        set(
+          (state) => ({ productParams: { ...state.productParams, regionTitle: regionTitle } }),
+          false,
+          'setRegionTitle',
+        ),
       setDate: (date) => set((state) => ({ productParams: { ...state.productParams, date } }), false, 'setDate'),
     },
   })),
 );
 
-export const { setMainProduct, setSubProduct, setProductKey, setRegionScope, setRegionName, setDate } =
+export const { setMainProduct, setSubProduct, setProductKey, setRegionScope, setRegionTitle, setDate } =
   useProductStore.getState().actions;
 
 export default useProductStore;

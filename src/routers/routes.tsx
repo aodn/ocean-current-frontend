@@ -22,6 +22,14 @@ const routes: RouteObject[] = [
             element: <Navigate to="four-hour-sst/sst" replace />,
           },
           {
+            path: 'four-hour-sst',
+            element: <Navigate to="sst" replace />,
+          },
+          {
+            path: '6-day-sst',
+            element: <Navigate to="sst" replace />,
+          },
+          {
             path: ':product/:subProduct',
             element: <DataView />,
           },

@@ -16,6 +16,9 @@ const convertHtmlToArgo = (html: string): ArgoProfile[] => {
     const worldMeteorologicalOrgId = hrefAttrAry[1];
     const cycle = hrefAttrAry[2].split('.')[0];
     const date = hrefAttrAry[0].split('/')[2];
+
+    console.log('coords', coords);
+    console.log('calculateOffsetByCoords(coords)', calculateOffsetByCoords(coords));
     return {
       coords: calculateOffsetByCoords(coords),
       worldMeteorologicalOrgId,

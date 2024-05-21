@@ -9,7 +9,7 @@ const initialState: State = {
     cycle: '',
     depth: '0',
   },
-  date: dayjs(),
+  date: dayjs().subtract(1, 'day'),
   argoMetaData: [],
 };
 

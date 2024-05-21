@@ -36,22 +36,25 @@ export const OC_PRODUCTS: Product[] = [
   {
     title: '6-Day SST & Centiles',
     key: 'sixDaySst',
-    path: '6-day-sst-centiles',
+    path: '6-day-sst',
     children: [
       {
         title: 'SST',
         key: 'sixDaySst-sst',
         path: 'sst',
+        imgPath: 'SST',
       },
       {
         title: 'SST Anomaly',
         key: 'sixDaySst-sstAnomaly',
         path: 'sst-anomaly',
+        imgPath: 'SST_ANOM',
       },
       {
         title: 'Centiles',
         key: 'sixDaySst-centiles',
         path: 'centiles',
+        imgPath: 'pctiles',
       },
     ],
   },

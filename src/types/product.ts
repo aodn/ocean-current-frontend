@@ -4,7 +4,9 @@ interface BaseProduct {
   key: string;
 }
 
-export interface SubProduct extends BaseProduct {}
+export interface SubProduct extends BaseProduct {
+  imgPath?: string;
+}
 
 export interface Product extends SubProduct {
   children?: SubProduct[];
