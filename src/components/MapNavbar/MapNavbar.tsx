@@ -1,20 +1,14 @@
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import categoryIcon from '@/assets/icons/category-icon.png';
 import { Dropdown, Loading } from '@/components/Shared';
-import { RegionScope } from '@/constants/region';
-import { setMainProduct, setRegionScope, setSubProduct } from '@/stores/product-store/productStore';
+import { setMainProduct, setSubProduct } from '@/stores/product-store/productStore';
 import { getProductByKey } from '@/utils/product';
-import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import useMainProductKey from '@/stores/product-store/hooks/useMainProductKey';
 import { mapNavbarDataElements } from './data/mapNavbar';
-import RegionSelection from './components/RegionSelection';
 import { MapNavBarElement } from './types/mapNavbar.types';
 
 const MapNavbar: React.FC = () => {
   const navigate = useNavigate();
-  const [_, setSearchParams] = useSearchParams();
-
-  const { isRegionRequired } = useProductCheck();
 
   const mainProductKey = useMainProductKey();
 
@@ -23,11 +17,6 @@ const MapNavbar: React.FC = () => {
     setMainProduct(product.mainProduct.key);
     setSubProduct(product.subProduct?.key || null);
     navigate(product.mainProduct.path);
-  };
-
-  const handleRegionChange = (selectedRegion: RegionScope) => {
-    setRegionScope(selectedRegion);
-    setSearchParams({ regionScope: selectedRegion });
   };
 
   if (!mainProductKey) {
@@ -43,7 +32,7 @@ const MapNavbar: React.FC = () => {
         </div>
         <Dropdown elements={mapNavbarDataElements} initialSelectedId={mainProductKey} onChange={handleDropdownChange} />
       </div>
-      {isRegionRequired && <RegionSelection onChange={handleRegionChange} />}
+      {/* {isRegionRequired && <RegionSelection onChange={handleRegionChange} />} */}
     </div>
   );
 };
