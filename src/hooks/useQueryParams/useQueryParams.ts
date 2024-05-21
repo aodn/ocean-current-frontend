@@ -1,10 +1,5 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
-
-type UseQueryParamsResult<T, U extends T> = {
-  searchParams: T;
-  updateQueryParams: (params: Partial<U>) => void;
-  updateQueryParamsAndNavigate: (path: string, params?: Partial<U>) => void;
-};
+import { UseQueryParamsResult } from './types/userQueryParams.types';
 
 const useQueryParams = <
   T extends Record<string, string>,

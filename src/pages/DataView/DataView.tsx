@@ -45,7 +45,7 @@ const DataView: React.FC = () => {
     return mockUrl;
   };
 
-  return <img className="h-full w-full" src={buildImg()} alt="product" />;
+  return <img className="h-full w-full object-contain" src={buildImg()} alt="product" />;
 };
 
 export default DataView;
