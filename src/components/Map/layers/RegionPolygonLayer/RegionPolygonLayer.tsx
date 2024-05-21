@@ -62,7 +62,7 @@ const RegionPolygonLayer = () => {
       map.off('mouseleave', productRegionBoxLayer, handleMouseLeave);
       map.off('mousemove', productRegionBoxLayer, handleMouseMove);
     };
-  }, [mainProductPath, map, navigate, productRegionBoxLayer, subProductPath]);
+  }, [mainProductPath, map, navigate, productRegionBoxLayer, subProductPath, todayDate]);
 
   return (
     <Source id={productRegionBoxSource} type="geojson" data={regionData}>
