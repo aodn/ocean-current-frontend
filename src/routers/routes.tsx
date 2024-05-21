@@ -30,6 +30,14 @@ const routes: RouteObject[] = [
             element: <Navigate to="sst" replace />,
           },
           {
+            path: 'climatology',
+            element: <Navigate to="sst" replace />,
+          },
+          {
+            path: 'ocean-colour',
+            element: <Navigate to="chl-a" replace />,
+          },
+          {
             path: ':product/:subProduct',
             element: <DataView />,
           },

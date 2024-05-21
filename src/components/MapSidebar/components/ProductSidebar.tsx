@@ -1,41 +1,15 @@
 import React from 'react';
 import SSTIcon from '@/assets/icons/products/SST-icon.svg';
 import { Button, Loading } from '@/components/Shared';
-import useProductStore, { setSubProduct } from '@/stores/product-store/productStore';
-import { getProductByKey } from '@/utils/product';
-import { MainProductWithSubProduct, Product, SubProduct } from '@/types/product';
+import { setSubProduct } from '@/stores/product-store/productStore';
 import { useQueryParams } from '@/hooks';
+import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { DataSidebarProps } from '../types/mapSidebar';
 import Legend from './Legend';
 
 const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopyLink }) => {
-  const useProductParams = useProductStore((state) => state.productParams);
   const { updateQueryParamsAndNavigate } = useQueryParams();
-
-  const convertProductFromStore = () => {
-    let product: MainProductWithSubProduct | null = null;
-    let mainProduct: Product | null = null;
-    let subProduct: SubProduct | null = null;
-    let subProducts: SubProduct[] = [];
-
-    if (useProductParams.mainProduct && useProductParams.subProduct) {
-      product = getProductByKey(useProductParams.mainProduct, useProductParams.subProduct);
-      mainProduct = product.mainProduct;
-      subProducts = product.mainProduct.children || [];
-      if (product.subProduct) {
-        subProduct = product.subProduct;
-      }
-    }
-
-    if (useProductParams.mainProduct && !useProductParams.subProduct) {
-      product = getProductByKey(useProductParams.mainProduct);
-      mainProduct = product.mainProduct;
-    }
-
-    return { mainProduct, subProduct, subProducts };
-  };
-
-  const { mainProduct, subProduct, subProducts } = convertProductFromStore();
+  const { mainProduct, subProduct, subProducts } = useProductConvert();
 
   const dataSources = ['SST L3S-6d ngt (1992-2017)', 'SST L3SM-6d ngt (2018-now)', 'GSLA', 'SSTAARS'];
 

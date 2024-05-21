@@ -67,11 +67,13 @@ export const OC_PRODUCTS: Product[] = [
         title: 'SST',
         key: 'climatology-sst',
         path: 'sst',
+        imgPath: 'SST',
       },
       {
-        title: 'Date Count',
-        key: 'climatology-dateCount',
-        path: 'date-count',
+        title: 'Data Count',
+        key: 'climatology-dataCount',
+        path: 'data-count',
+        imgPath: 'NMON',
       },
     ],
   },
@@ -99,6 +101,20 @@ export const OC_PRODUCTS: Product[] = [
     title: 'Ocean Colour',
     key: 'oceanColour',
     path: 'ocean-colour',
+    children: [
+      {
+        title: 'Chl-A',
+        key: 'oceanColour-chlA',
+        path: 'chl-a',
+        imgPath: 'CHL',
+      },
+      {
+        title: 'Chl-A Age',
+        key: 'oceanColour-chlAAge',
+        path: 'chl-a-age',
+        imgPath: 'CHL_AGE',
+      },
+    ],
   },
   {
     title: 'Surface Waves',

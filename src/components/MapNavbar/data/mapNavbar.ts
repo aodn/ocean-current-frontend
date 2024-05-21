@@ -27,6 +27,7 @@ export const mapNavbarDataElements: MapNavBarElement[] = [
   { id: 'fourHourSst', label: 'Four Hour SST', icon: FourHourSSTIcon },
   { id: 'sixDaySst', label: '6-Day SST', icon: SixHourSSTIcon },
   { id: 'argo', label: 'Argo', icon: ArgoIcon },
+  { id: 'climatology', label: 'Climatology', icon: SSTIcon },
 ];
 
 export const regionSelectionButtonElements: RegionSelectionElement[] = [

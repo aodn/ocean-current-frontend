@@ -39,4 +39,22 @@ export const productTypeMapping = new Map<
       dateFormat: 'YYYYMMDDHH',
     },
   ],
+  [
+    'climatology',
+    {
+      subProduct: ['SST', 'NMON'],
+      stateSegment: 'STATE_CLIM',
+      localSegment: 'DR_SST_CLIM',
+      dateFormat: 'MM',
+    },
+  ],
+  [
+    'oceanColour',
+    {
+      subProduct: ['CHL', 'CHL_AGE'],
+      stateSegment: 'STATE_daily',
+      localSegment: null,
+      dateFormat: 'YYYYMMDDHH',
+    },
+  ],
 ]);
