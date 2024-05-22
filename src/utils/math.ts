@@ -1,4 +1,4 @@
-export const generateRandomIndices = (targetLength: number, pickLength: number): number[] => {
+const generateRandomIndices = (targetLength: number, pickLength: number): number[] => {
   if (pickLength > targetLength) {
     throw new Error('Cannot pick more elements than are available');
   }
@@ -12,7 +12,7 @@ export const generateRandomIndices = (targetLength: number, pickLength: number):
   return Array.from(indices);
 };
 
-export const pickRandomElements = <T>(elements: T[], pickLength: number): T[] => {
+const pickRandomElements = <T>(elements: T[], pickLength: number): T[] => {
   if (pickLength > elements.length) {
     throw new Error('Cannot pick more elements than array length');
   }
@@ -20,3 +20,5 @@ export const pickRandomElements = <T>(elements: T[], pickLength: number): T[] =>
   const indices = generateRandomIndices(elements.length, pickLength);
   return indices.map((index) => elements[index]);
 };
+
+export { generateRandomIndices, pickRandomElements };

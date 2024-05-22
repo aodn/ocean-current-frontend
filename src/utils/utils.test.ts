@@ -1,9 +1,11 @@
+import dayjs from 'dayjs';
 import { Region } from '@/types/map';
 import { RegionScope } from '@/constants/region';
 import { TargetPathRegionScope } from '@/constants/imgPath';
+import { imageBaseUrl } from '@/configs/image';
 import { isNotNullOrUndefined } from './general';
 import { getRegionByRegionTitle } from './region';
-import { buildImageUrl } from './dataImgBuilder';
+import { buildArgoImageUrl, buildProductImageUrl } from './dataImgBuilder';
 
 describe('isNotNullOrUndefined', () => {
   it('should return true if the value is not null or undefined', () => {
@@ -38,8 +40,10 @@ describe('getRegionByRegionTitle', () => {
   it('should return the region object if the region title exists', async () => {
     // Arrange
     const regionTitle = 'Southern NSW';
+
     // Act
     const region = getRegionByRegionTitle(regionTitle);
+
     // Assert
     expect(region).toEqual({
       region: 'SNSW',
@@ -52,8 +56,10 @@ describe('getRegionByRegionTitle', () => {
   it('should return undefined if the region title does not exist', () => {
     // Arrange
     const regionTitle = 'NonExistentRegion';
+
     // Act
     const region = getRegionByRegionTitle(regionTitle);
+
     // Assert
     expect(region).toBeUndefined();
   });
@@ -72,8 +78,10 @@ describe('calculateOffsetByCoords', async () => {
   it('should return the correct offset values', () => {
     // Arrange
     const coords = [500, 300, 505, 305];
+
     // Act
     const offset = calculateOffsetByCoords(coords);
+
     // Assert
     // 5/1000 = 0.005
     expect(offset).toEqual([150, -20, 150.5, -20.5]);
@@ -82,15 +90,17 @@ describe('calculateOffsetByCoords', async () => {
   it('should return the correct offset values for different coords', () => {
     // Arrange
     const coords = [100, 200, 200, 300];
+
     // Act
     const offset = calculateOffsetByCoords(coords);
+
     //100/1000 = 10
     // Assert
     expect(offset).toEqual([110, -10, 120, -20]);
   });
 });
 
-describe('buildImageUrl', () => {
+describe('buildProductImageUrl', () => {
   it('should return the correct image url if pass correct state region for six day sst', () => {
     // Arrange
     const productType = 'sixDaySst';
@@ -99,9 +109,9 @@ describe('buildImageUrl', () => {
     const regionScope = TargetPathRegionScope.State;
     const date = '20240519';
     // Act
-    const imageUrl = buildImageUrl(productType, subProduct, region, regionScope, date);
+    const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
     // Assert
-    expect(imageUrl).toBe('/STATE_daily/SST/Au/20240519.gif');
+    expect(imageUrl).toBe(`${imageBaseUrl}/STATE_daily/SST/Au/20240519.gif`);
   });
 
   it('should return the correct image url if pass correct local region for six day sst', () => {
@@ -112,9 +122,9 @@ describe('buildImageUrl', () => {
     const regionScope = TargetPathRegionScope.Local;
     const date = '20240519';
     // Act
-    const imageUrl = buildImageUrl(productType, subProduct, region, regionScope, date);
+    const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
     // Assert
-    expect(imageUrl).toBe('/DR_SST_daily/SST/Adelaide/20240519.gif');
+    expect(imageUrl).toBe(`${imageBaseUrl}/DR_SST_daily/SST/Adelaide/20240519.gif`);
   });
 
   it('should return the correct image url if pass correct local region for four hour sst', () => {
@@ -125,9 +135,9 @@ describe('buildImageUrl', () => {
     const regionScope = TargetPathRegionScope.Local;
     const date = '2024051922';
     // Act
-    const imageUrl = buildImageUrl(productType, subProduct, region, regionScope, date);
+    const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
     // Assert
-    expect(imageUrl).toBe('/SST_4hr/SST/Adelaide/2024051922.gif');
+    expect(imageUrl).toBe(`${imageBaseUrl}/SST_4hr/SST/Adelaide/2024051922.gif`);
   });
 
   it('should throw an error if pass state region for four hour sst', () => {
@@ -138,7 +148,7 @@ describe('buildImageUrl', () => {
     const regionScope = TargetPathRegionScope.State;
     const date = '20240519';
     // Act and Assert
-    expect(() => buildImageUrl(productType, subProduct, region, regionScope, date)).toThrowError(
+    expect(() => buildProductImageUrl(productType, subProduct, region, regionScope, date)).toThrowError(
       `Product ${productType} does not support state region`,
     );
   });
@@ -151,8 +161,52 @@ describe('buildImageUrl', () => {
     const regionScope = TargetPathRegionScope.Local;
     const date = '20240519';
     // Act and Assert
-    expect(() => buildImageUrl(productType, subProduct, region, regionScope, date)).toThrowError(
+    expect(() => buildProductImageUrl(productType, subProduct, region, regionScope, date)).toThrowError(
       `Product type ${productType} is not supported`,
     );
+  });
+});
+
+describe('buildArgoImageUrl ', () => {
+  it('should return the correct image url if pass correct parameters', () => {
+    // Arrange
+    const worldMeteorologicalOrgId = '1234';
+    const date = dayjs('20240519');
+    const cycle = '12';
+    const depth = '0';
+
+    // Act
+    const imageUrl = buildArgoImageUrl(worldMeteorologicalOrgId, date, cycle, depth);
+
+    // Assert
+    expect(imageUrl).toBe(`${imageBaseUrl}/profiles/1234/20240519_1234_12.gif`);
+  });
+
+  it('should return the formatted date image url when pass different date format', () => {
+    // Arrange
+    const worldMeteorologicalOrgId = '1234';
+    const date = dayjs('2024-05-19');
+    const cycle = '12';
+    const depth = '0';
+
+    // Act
+    const imageUrl = buildArgoImageUrl(worldMeteorologicalOrgId, date, cycle, depth);
+
+    // Assert
+    expect(imageUrl).toBe(`${imageBaseUrl}/profiles/1234/20240519_1234_12.gif`);
+  });
+
+  it('should return the profiles_s image url if depth is 1', () => {
+    // Arrange
+    const worldMeteorologicalOrgId = '1234';
+    const date = dayjs('20240519');
+    const cycle = '12';
+    const depth = '1';
+
+    // Act
+    const imageUrl = buildArgoImageUrl(worldMeteorologicalOrgId, date, cycle, depth);
+
+    // Assert
+    expect(imageUrl).toBe(`${imageBaseUrl}/profiles_s/1234/20240519_1234_12.gif`);
   });
 });

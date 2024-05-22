@@ -1,14 +1,15 @@
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { productTypeMapping, TargetPathRegionScope } from '@/constants/imgPath';
 import { RegionScope } from '@/constants/region';
+import { imageBaseUrl } from '@/configs/image';
 
-export const getTargetRegionScopPath = (regionScope: RegionScope) => {
+const getTargetRegionScopPath = (regionScope: RegionScope) => {
   return [RegionScope.Au, RegionScope.State].includes(regionScope)
     ? TargetPathRegionScope.State
     : TargetPathRegionScope.Local;
 };
 
-export const buildImageUrl = (
+const buildProductImageUrl = (
   productType: string,
   subProductType: string,
   regionName: string,
@@ -28,11 +29,19 @@ export const buildImageUrl = (
 
   const segment = regionScope === TargetPathRegionScope.State ? productData.stateSegment : productData.localSegment;
 
-  const productSegment = segment ? `/${segment}` : '';
+  const productSegment = segment ? `${segment}` : '';
 
   const subProductSegment = subProductType ? `/${subProductType}` : '';
 
   const formattedDate = dayjs(date).format(productData.dateFormat);
 
-  return `${productSegment}${subProductSegment}/${regionName}/${formattedDate}.gif`;
+  return `${imageBaseUrl}/${productSegment}${subProductSegment}/${regionName}/${formattedDate}.gif`;
 };
+
+const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle: string, depth: string) => {
+  const profiles = depth === '0' ? 'profiles' : 'profiles_s';
+  const formatDate = dayjs(date).format('YYYYMMDD');
+  return `${imageBaseUrl}/${profiles}/${worldMeteorologicalOrgId}/${formatDate}_${worldMeteorologicalOrgId}_${cycle}.gif`;
+};
+
+export { getTargetRegionScopPath, buildProductImageUrl, buildArgoImageUrl };

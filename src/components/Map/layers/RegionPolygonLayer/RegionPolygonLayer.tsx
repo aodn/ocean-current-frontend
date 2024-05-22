@@ -15,7 +15,7 @@ const RegionPolygonLayer = () => {
   const { regionData } = useRegionData();
   const mainProduct = useProductStore((state) => state.productParams.mainProduct);
   const subProduct = useProductStore((state) => state.productParams.subProduct);
-  const { updateQueryParamsAndNavigate } = useQueryParams();
+  const { searchParams, updateQueryParamsAndNavigate } = useQueryParams();
   const { current: map } = useMap();
 
   const [hoveredRegion, setHoveredRegion] = useState<string>('');
@@ -23,7 +23,7 @@ const RegionPolygonLayer = () => {
   const product = getProductByKey(mainProduct, subProduct);
   const mainProductPath = product.mainProduct.path;
   const subProductPath = product.subProduct ? `/${product.subProduct.path}` : '';
-  const todayDate = dayjs().format('YYYYMMDD');
+  const yesterdayDate = dayjs().subtract(1, 'day').format('YYYYMMDD');
 
   useEffect(() => {
     if (!map) return;
@@ -45,7 +45,10 @@ const RegionPolygonLayer = () => {
 
       if (regionName) {
         const targetPath = `/product/${mainProductPath}${subProductPath}`;
-        updateQueryParamsAndNavigate(targetPath, { region: regionName, date: todayDate });
+
+        const dateFromQuery = searchParams.date;
+        const queryObject = dateFromQuery ? { region: regionName } : { region: regionName, date: yesterdayDate };
+        updateQueryParamsAndNavigate(targetPath, queryObject);
       }
     };
 
@@ -62,7 +65,15 @@ const RegionPolygonLayer = () => {
       map.off('mouseleave', productRegionBoxLayer, handleMouseLeave);
       map.off('mousemove', productRegionBoxLayer, handleMouseMove);
     };
-  }, [mainProductPath, map, productRegionBoxLayer, subProductPath, updateQueryParamsAndNavigate, todayDate]);
+  }, [
+    mainProductPath,
+    map,
+    productRegionBoxLayer,
+    searchParams.date,
+    subProductPath,
+    updateQueryParamsAndNavigate,
+    yesterdayDate,
+  ]);
 
   return (
     <Source id={productRegionBoxSource} type="geojson" data={regionData}>

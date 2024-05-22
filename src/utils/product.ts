@@ -1,7 +1,7 @@
 import { OC_PRODUCTS } from '@/constants/product';
 import { CombinedProduct, MainProductWithSubProduct, Product } from '@/types/product';
 
-export const combineProducts = (products: Product[]): CombinedProduct[] => {
+const combineProducts = (products: Product[]): CombinedProduct[] => {
   return products.flatMap((product) => {
     if (!product.children) {
       return {
@@ -25,20 +25,18 @@ export const combineProducts = (products: Product[]): CombinedProduct[] => {
   });
 };
 
-export const combinedProducts = combineProducts(OC_PRODUCTS);
+const combinedProducts = combineProducts(OC_PRODUCTS);
 
-export type ValidProductIdentifier = (typeof combinedProducts)[number]['fullKey'];
+const validIdentifiers = new Set(combinedProducts.map((product) => product.fullKey));
 
-export const validIdentifiers = new Set(combinedProducts.map((product) => product.fullKey));
-
-export const validateProductIdentifier = (identifier: string): boolean => {
+const validateProductIdentifier = (identifier: string): boolean => {
   if (!validIdentifiers.has(identifier)) {
     throw new Error(`Invalid identifier at runtime: ${identifier}`);
   }
   return true;
 };
 
-export const getProductByPath = (mainProductPath: string, subProductPath: string | null = null) => {
+const getProductByPath = (mainProductPath: string, subProductPath: string | null = null) => {
   const mainProduct = OC_PRODUCTS.find((product) => product.path === mainProductPath);
   if (!mainProduct) {
     throw new Error(`Invalid main product path: ${mainProductPath}`);
@@ -53,10 +51,7 @@ export const getProductByPath = (mainProductPath: string, subProductPath: string
   return subProduct;
 };
 
-export const getProductByKey = (
-  mainProductKey: string,
-  subProductKey: string | null = null,
-): MainProductWithSubProduct => {
+const getProductByKey = (mainProductKey: string, subProductKey: string | null = null): MainProductWithSubProduct => {
   const mainProduct = OC_PRODUCTS.find((product) => product.key === mainProductKey);
   if (!mainProduct) {
     throw new Error(`Invalid main product key: ${mainProductKey}`);
@@ -71,3 +66,5 @@ export const getProductByKey = (
   }
   return { mainProduct, subProduct };
 };
+
+export { combineProducts, combinedProducts, getProductByPath, getProductByKey, validateProductIdentifier };
