@@ -1,26 +1,50 @@
 import React from 'react';
-import { useSearchParams } from 'react-router-dom';
-import dayjs from 'dayjs';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
+import { buildProductImageUrl, buildArgoImageUrl, getTargetRegionScopPath } from '@/utils/dataImgBuilder';
+import useArgoStore from '@/stores/argo-store/argoStore';
+import useProductStore from '@/stores/product-store/productStore';
+import { getRegionByRegionTitle } from '@/utils/region';
+import { RegionScope } from '@/constants/region';
+import { Loading } from '@/components/Shared';
+import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 
 const DataView: React.FC = () => {
-  const [searchParams] = useSearchParams();
   const { isArgo } = useProductCheck();
+  const date = useArgoStore((state) => state.date);
+  const useProductDate = useProductStore((state) => state.productParams.date);
+  const useProductRegionTitle = useProductStore((state) => state.productParams.regionTitle);
+  const { mainProduct, subProduct } = useProductConvert();
+  const { worldMeteorologicalOrgId, cycle, depth } = useArgoStore((state) => state.argoParams);
 
-  const date = searchParams.get('date') || dayjs().format('YYYYMMDD');
-  const worldMeteorologicalOrgId = searchParams.get('wmoid') || '';
-  const cycle = searchParams.get('cycle') || '';
-  const depth = searchParams.get('depth') === '1' ? '1' : '0';
+  const region = getRegionByRegionTitle(useProductRegionTitle);
+  const targetPathRegion = getTargetRegionScopPath(region?.scope || RegionScope.Au);
+  // TODO: handle error if no region selected
+  const regionPath = region?.region || 'au';
 
-  const buildImg = (): string => {
-    const profiles = depth === '0' ? 'profiles' : 'profiles_s';
-    const mockUrl = isArgo
-      ? `https://oceancurrent.aodn.org.au/${profiles}/${worldMeteorologicalOrgId}/${date}_${worldMeteorologicalOrgId}_${cycle}.gif`
-      : 'https://oceancurrent.aodn.org.au/SST_4hr/SST_Filled/Adelaide/2024022118.gif';
-    return mockUrl;
+  // TODO: give default sub product for subProductImgPath
+  const subProductImgPath = subProduct?.imgPath || 'SST';
+
+  if (!mainProduct) {
+    return <Loading />;
+  }
+
+  const buildArgoImg = (): string => {
+    return buildArgoImageUrl(worldMeteorologicalOrgId, date, cycle, depth);
   };
 
-  return <img className="h-full w-full " src={buildImg()} alt="product" />;
+  const buildProductImg = (): string => {
+    return buildProductImageUrl(
+      mainProduct.key,
+      subProductImgPath,
+      regionPath,
+      targetPathRegion,
+      useProductDate.toString(),
+    );
+  };
+
+  const chooseImg = (): string => (isArgo ? buildArgoImg() : buildProductImg());
+
+  return <img className="h-full w-full select-none object-contain" src={chooseImg()} alt="product" />;
 };
 
 export default DataView;

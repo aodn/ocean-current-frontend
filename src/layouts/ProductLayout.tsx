@@ -3,14 +3,20 @@ import { Outlet, useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import MapNavbar from '@/components/MapNavbar/MapNavbar';
 import { setArgoData, setDate } from '@/stores/argo-store/argoStore';
-import { setMainProduct, setSubProduct } from '@/stores/product-store/productStore';
+import {
+  setMainProduct,
+  setRegionTitle,
+  setSubProduct,
+  setDate as setProductDate,
+} from '@/stores/product-store/productStore';
 import MapSidebar from '@/components/MapSidebar/MapSidebar';
 import { getProductByPath } from '@/utils/product';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { useProductFromUrl } from '@/hooks';
+import { useProductFromUrl, useProductSearchParam } from '@/hooks';
 import TimeSelector from '@/components/TimeSelector/TimeSelector';
+import { getRegionByRegionTitle } from '@/utils/region';
 
-const MapLayout: React.FC = () => {
+const ProductLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
   const { isArgo } = useProductCheck();
   const product = useProductFromUrl('product');
@@ -25,6 +31,8 @@ const MapLayout: React.FC = () => {
     setDate(dayjs(date));
   }, [searchParams]);
 
+  const { region: regionTitle = 'Australia/NZ', date: productDate } = useProductSearchParam();
+
   const setProductKey = useCallback(() => {
     if (product) {
       const { mainProduct, subProduct } = product;
@@ -36,6 +44,16 @@ const MapLayout: React.FC = () => {
       setSubProduct(subProductKey);
     }
   }, [product]);
+
+  useEffect(() => {
+    const region = getRegionByRegionTitle(regionTitle as string);
+    const regionName = region?.title || 'Australia/NZ';
+    setRegionTitle(regionName);
+  }, [regionTitle]);
+
+  useEffect(() => {
+    if (productDate) setProductDate(dayjs(productDate));
+  }, [productDate]);
 
   useEffect(() => {
     setProductKey();
@@ -61,4 +79,4 @@ const MapLayout: React.FC = () => {
   );
 };
 
-export default MapLayout;
+export default ProductLayout;

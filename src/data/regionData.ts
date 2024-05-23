@@ -1,6 +1,9 @@
+import { RegionScope } from '@/constants/region';
 import { LocalRegion, NationRegion, Region, StateRegion } from '@/types/map';
 
-const nationRegions: NationRegion[] = [{ region: 'Au', title: 'Australia/NZ', coords: [100.5, 179.5, -49, -5.5] }];
+const nationRegions: NationRegion[] = [{ region: 'Au', title: 'Australia/NZ', coords: [100.5, 179.5, -49, -5.5] }].map(
+  (region) => ({ ...region, scope: RegionScope.Au }) as NationRegion,
+);
 
 const stateRegions: StateRegion[] = [
   { region: 'SE', title: 'South East', coords: [145, 162.5, -45, -24.5] },
@@ -10,7 +13,7 @@ const stateRegions: StateRegion[] = [
   { region: 'GAB', title: 'South', coords: [120, 150, -46, -30] },
   { region: 'SO', title: 'Southern Ocean', coords: [130, 155, -55, -35] },
   { region: 'NZ', title: 'New Zealand', coords: [160, 180, -50, -30] },
-];
+].map((region) => ({ ...region, scope: RegionScope.State }) as StateRegion);
 
 const localRegions: LocalRegion[] = [
   { region: 'Fiji', title: 'Fiji', coords: [176.0, 180.0, -20.0, -15.0] },
@@ -60,7 +63,7 @@ const localRegions: LocalRegion[] = [
   { region: 'NingLeeu', title: 'Ningaloo-Leeuwin', coords: [109.2 - 1.0, 116.6, -34.5, -21] },
   { region: 'NZNI', title: 'New Zealand North', coords: [170.0, 180.0, -42.0, -33.0] },
   { region: 'NZSI', title: 'New Zealand South', coords: [164.0, 177.0, -48.0, -39.0] },
-];
+].map((region) => ({ ...region, scope: RegionScope.Local }) as LocalRegion);
 
 const allRegions: Region[] = [...nationRegions, ...stateRegions, ...localRegions];
 

@@ -42,7 +42,7 @@ export const linksData = [
           'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
         title: 'Daily SST',
         description: 'Daily sea surface temperature',
-        url: '/map/6-day-sst-centiles/sst',
+        url: '/map/6-day-sst/sst',
       },
       {
         id: 'adjustedSeaLevelAnomaly',

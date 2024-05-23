@@ -13,7 +13,7 @@ export const productsData: HomeProductData[] = [
     title: 'Ocean Colour',
     id: 'oceanColour',
     mainProduct: 'oceanColour',
-    subProduct: null,
+    subProduct: 'oceanColour-chlAAge',
     description: 'It provides a nationally consistent set of the available mapping data, was created by UTAS.',
     imageUrl: 'https://oceancurrent.aodn.org.au/chla_entry/latest.gif',
   },

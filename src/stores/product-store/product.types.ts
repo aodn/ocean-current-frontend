@@ -6,7 +6,7 @@ type ProductParamState = {
   subProduct: string | null;
   productKey: string;
   regionScope: RegionScope;
-  regionName: string;
+  regionTitle: string;
   date: Dayjs;
 };
 
@@ -21,7 +21,7 @@ export type Actions = {
     setSubProduct: (subProduct: string | null) => void;
     setProductKey: (productKey: string) => void;
     setRegionScope: (regionScope: RegionScope) => void;
-    setRegionName: (regionName: string) => void;
+    setRegionTitle: (regionTitle: string) => void;
     setDate: (date: Dayjs) => void;
   };
 };
