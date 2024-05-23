@@ -67,4 +67,15 @@ const getProductByKey = (mainProductKey: string, subProductKey: string | null = 
   return { mainProduct, subProduct };
 };
 
-export { combineProducts, combinedProducts, getProductByPath, getProductByKey, validateProductIdentifier };
+const checkProductHasSubProduct = (productKey: string | undefined | null): boolean => {
+  return OC_PRODUCTS.some((p) => p.key === productKey && p.children);
+};
+
+export {
+  combineProducts,
+  combinedProducts,
+  getProductByPath,
+  getProductByKey,
+  validateProductIdentifier,
+  checkProductHasSubProduct,
+};
