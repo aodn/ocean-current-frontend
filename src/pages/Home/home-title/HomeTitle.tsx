@@ -1,5 +1,5 @@
 import React from 'react';
-import BgImage from '@/assets/images/bg_sample_09.png';
+import BgImage from '@/assets/images/background-home-image.png';
 
 const HomeTitle: React.FC = () => {
   return (
