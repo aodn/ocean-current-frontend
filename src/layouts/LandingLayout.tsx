@@ -5,8 +5,8 @@ import { Footer, Navbar, BurgerMenu } from '@/components';
 const LandingLayout: React.FC = () => {
   return (
     <div className="flex flex-col px-6 font-lexend md:px-0">
-      <div className="bg-white">
-        <div className="mx-auto w-full max-w-7xl">
+      <div className="sticky top-0 z-50 w-full bg-white">
+        <div className="mx-auto w-full ">
           <div className="md:hidden">
             <BurgerMenu />
           </div>
@@ -15,12 +15,12 @@ const LandingLayout: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="flex grow ">
-        <div className="mx-auto w-full max-w-7xl">
+      <div className="flex grow justify-center">
+        <div className="w-full">
           <Outlet />
         </div>
       </div>
-      <div className="bg-white">
+      <div className="bg-[#3A6F8F] ">
         <div className="mx-auto w-full max-w-7xl">
           <Footer />
         </div>

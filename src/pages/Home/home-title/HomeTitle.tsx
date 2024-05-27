@@ -1,13 +1,22 @@
 import React from 'react';
+import BgImage from '@/assets/images/bg_sample_09.png';
 
 const HomeTitle: React.FC = () => {
   return (
-    <section className="my-12 text-left font-lexend text-imos-grey md:my-28 md:text-right">
-      <h1 className="text-7xl font-thin uppercase md:text-9xl">
-        <span className="block">Ocean</span>
-        <span className="block">Current</span>
-      </h1>
-      <p className="mt-4 text-xl font-light text-imos-grey md:text-2xl">Surface Currents and Temperature</p>
+    <section
+      style={{
+        backgroundImage: `url(${BgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+      className="mb-12 flex h-96 flex-col items-center justify-center text-left font-lexend text-white md:-mb-10 md:text-right"
+    >
+      <div className=" p-8 text-center">
+        <h1 className="text-7xl font-semibold  md:text-8xl">
+          <span className="block">OceanCurrent</span>
+        </h1>
+        <p className="mt-4 text-xl font-light text-white md:text-2xl">Up-to-date ocean information around Australia</p>
+      </div>
     </section>
   );
 };

@@ -22,7 +22,7 @@ const MapLayout: React.FC = () => {
   }, [product]);
 
   return (
-    <div className="my-9 shadow-layout-shadow">
+    <div className="mx-auto my-9 w-full max-w-7xl shadow-layout-shadow">
       <MapNavbar />
       <div className="w-full">
         <Outlet />

@@ -64,7 +64,7 @@ const ProductLayout: React.FC = () => {
   }, [getArgoData, isArgo]);
 
   return (
-    <div className="my-9 shadow-layout-shadow">
+    <div className="mx-auto my-9 w-full max-w-7xl shadow-layout-shadow">
       <MapNavbar />
       <div className="flex p-4">
         <div className="mx-2 w-1/3">
