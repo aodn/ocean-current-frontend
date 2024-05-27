@@ -5,13 +5,13 @@ import { FooterIcon, FooterLink } from './types/Footer.types';
 const Footer: React.FC = () => {
   return (
     <div className="py-6 md:py-20">
-      <div className="text-2xl font-medium leading-7 text-imos-black">IMOS OceanCurrent</div>
+      <div className="text-2xl font-medium leading-7 text-white">IMOS OceanCurrent</div>
       <div className="flex flex-col justify-center md:flex md:flex-row">
         {footerData.map(({ title, links, icons }) => (
           <div key={title} className="w-full md:mr-4 md:w-1/4">
-            <div className="mt-11 text-base font-semibold leading-6 max-md:mt-10">{title}</div>
+            <div className="mt-11 text-base font-semibold leading-6 text-white max-md:mt-10">{title}</div>
             {links.map(({ name, url }: FooterLink, index: number) => (
-              <div key={index} className="mt-6 leading-6 text-imos-grey">
+              <div key={index} className="mt-6 leading-6 text-white">
                 {url ? <a href={url}>{name}</a> : name}
               </div>
             ))}
@@ -24,7 +24,7 @@ const Footer: React.FC = () => {
                     </a>
                   ))}
                 </div>
-                <div className="mt-10 text-left text-sm leading-5 text-slate-400">
+                <div className="mt-10 text-left text-sm leading-5 text-white">
                   Copyright © 2020. All rights reserved.
                 </div>
               </>

@@ -5,6 +5,7 @@ import HomeProductCarrousel from './home-product-carrousel/HomeProductCarrousel'
 import HomeTitle from './home-title/HomeTitle';
 import HomeNews from './home-news/HomeNews';
 import HomeMap from './home-map/HomeMap';
+import HomeInWater from './home-in-water/HomeInWater';
 
 const Home: React.FC = () => {
   useEffect(() => {
@@ -17,7 +18,7 @@ const Home: React.FC = () => {
       <section>
         <HomeTitle />
       </section>
-      <section className="md:flex md:gap-8">
+      <section className="mx-auto mb-10 w-full max-w-7xl md:flex md:gap-8">
         <div className="w-full md:w-2/3">
           <HomeProductCarrousel />
         </div>
@@ -25,7 +26,10 @@ const Home: React.FC = () => {
           <HomeMap />
         </div>
       </section>
-      <section className="py-10 md:py-28">
+      <section className="mx-auto w-full max-w-7xl py-10">
+        <HomeInWater />
+      </section>
+      <section className="bg-[#E5E8ED]">
         <HomeNews />
       </section>
     </>

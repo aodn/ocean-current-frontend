@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '@/assets/images/imos-logo.png';
 import { linksData } from '@/data/linksData';
@@ -10,6 +10,22 @@ const Navbar: React.FC = () => {
   const [popoverPosition, setPopoverPosition] = useState<{ left: number } | null>(null);
   const [menuItems] = useState<LinkItem[]>(linksData);
   const menuItemRefs = useRef<(HTMLElement | null)[]>([]);
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+
+  const handleScroll = () => {
+    if (window.scrollY > 0) {
+      setIsScrolled(true);
+    } else {
+      setIsScrolled(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const setPositionNavbar = (index: number, element: HTMLElement) => {
     setHoverIndex(index);
@@ -30,47 +46,49 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="flex items-center justify-between">
-      <div className="flex py-9 ">
-        <Link className="mr-auto" to={'/'}>
-          <img className="h-14" src={logo} alt="IMOS logo" />
-        </Link>
-        <div className="mx-7 h-auto w-px bg-imos-title-blue"></div>
-        <div className="flex flex-col justify-center text-xl font-light text-imos-title-blue ">
-          <p>Ocean Current</p>
+    <div className={`sticky top-0 z-50 w-full bg-white transition-all duration-300 ${isScrolled ? 'shadow-md' : ''}`}>
+      <nav className="mx-auto flex w-full max-w-7xl items-center justify-between p-6">
+        <div className="flex items-center">
+          <Link className="mr-auto" to={'/'}>
+            <img className={`transition-all duration-300 ${isScrolled ? 'h-10' : 'h-14'}`} src={logo} alt="IMOS logo" />
+          </Link>
+          <div className="mx-7 h-auto w-px bg-imos-title-blue"></div>
+          <div className="flex flex-col justify-center text-xl font-light text-imos-title-blue">
+            <p>Ocean Current</p>
+          </div>
         </div>
-      </div>
 
-      <div className="flex items-center justify-center capitalize text-black max-md:flex-wrap">
-        <div
-          onMouseLeave={() => closeNavbarMenu()}
-          className="relative mt-6  flex justify-between gap-20 self-start text-base max-md:max-w-full max-md:flex-wrap"
-        >
-          {menuItems.map((item, index) => (
-            <span
-              key={item.title}
-              onMouseEnter={(event) => setPositionNavbar(index, event.currentTarget)}
-              className="cursor-pointer pb-4 text-black"
-              ref={(el) => (menuItemRefs.current[index] = el)}
-            >
-              {item.title}
-            </span>
-          ))}
-          {hoverIndex !== null && shouldDisplayNavbarMenu(hoverIndex) && (
-            <div
-              onMouseLeave={() => setHoverIndex(null)}
-              style={{ left: popoverPosition?.left || 0 }}
-              className="absolute top-10 z-20 rounded-md bg-white p-6 shadow-lg transition duration-300 ease-in-out"
-            >
-              <NavbarMenu
-                itemsLeft={menuItems[hoverIndex].leftLinks || []}
-                itemsRight={menuItems[hoverIndex].rightLinks || []}
-              />
-            </div>
-          )}
+        <div className="flex items-center justify-center capitalize text-black max-md:flex-wrap">
+          <div
+            onMouseLeave={() => closeNavbarMenu()}
+            className="relative flex justify-between gap-20 self-start text-base max-md:max-w-full max-md:flex-wrap"
+          >
+            {menuItems.map((item, index) => (
+              <span
+                key={item.title}
+                onMouseEnter={(event) => setPositionNavbar(index, event.currentTarget)}
+                className="cursor-pointer py-4 text-black"
+                ref={(el) => (menuItemRefs.current[index] = el)}
+              >
+                {item.title}
+              </span>
+            ))}
+            {hoverIndex !== null && shouldDisplayNavbarMenu(hoverIndex) && (
+              <div
+                onMouseLeave={() => setHoverIndex(null)}
+                style={{ left: popoverPosition?.left || 0 }}
+                className="absolute top-10 z-20 rounded-md bg-white p-6 shadow-lg transition duration-300 ease-in-out"
+              >
+                <NavbarMenu
+                  itemsLeft={menuItems[hoverIndex].leftLinks || []}
+                  itemsRight={menuItems[hoverIndex].rightLinks || []}
+                />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 };
 

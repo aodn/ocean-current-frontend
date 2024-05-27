@@ -9,7 +9,7 @@ interface HorizontalProps {
 }
 const Horizontal: React.FC<HorizontalProps> = ({ news: { title, content, imageUrl } }) => {
   return (
-    <div className="h-full w-full overflow-hidden rounded-xl border sm:flex">
+    <div className="h-full w-full overflow-hidden rounded-xl border bg-white sm:flex">
       <div className="w-full sm:w-2/5">
         <img data-testid="news-img-card" src={imageUrl} alt={`${title} news`} className="h-full object-fill" />
       </div>
