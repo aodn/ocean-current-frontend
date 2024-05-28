@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { buildProductImageUrl, buildArgoImageUrl, getTargetRegionScopPath } from '@/utils/dataImgBuilder';
 import useArgoStore from '@/stores/argo-store/argoStore';
@@ -7,8 +7,10 @@ import { getRegionByRegionTitle } from '@/utils/region';
 import { RegionScope } from '@/constants/region';
 import { Loading } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
+import { checkProductHasSubProduct } from '@/utils/product';
 
 const DataView: React.FC = () => {
+  const [error, setError] = useState<string | null>(null);
   const { isArgo } = useProductCheck();
   const date = useArgoStore((state) => state.date);
   const useProductDate = useProductStore((state) => state.productParams.date);
@@ -24,27 +26,45 @@ const DataView: React.FC = () => {
   // TODO: give default sub product for subProductImgPath
   const subProductImgPath = subProduct?.imgPath || 'SST';
 
+  useEffect(() => {
+    setError(null);
+  }, [mainProduct, subProduct, date, cycle, depth, regionPath, targetPathRegion, useProductDate]);
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   if (!mainProduct) {
     return <Loading />;
   }
 
-  const buildArgoImg = (): string => {
-    return buildArgoImageUrl(worldMeteorologicalOrgId, date, cycle, depth);
+  const isHasSubProduct = checkProductHasSubProduct(mainProduct?.key);
+  if (isHasSubProduct && !subProduct) {
+    return <Loading />;
+  }
+
+  const buildArgoImg = (): string => buildArgoImageUrl(worldMeteorologicalOrgId, date, cycle, depth);
+
+  const buildProductImg = (): string =>
+    buildProductImageUrl(mainProduct.key, subProductImgPath, regionPath, targetPathRegion, useProductDate.toString());
+
+  const chooseImg = (): string | undefined => {
+    try {
+      return isArgo ? buildArgoImg() : buildProductImg();
+    } catch (e) {
+      if (e instanceof Error) {
+        setError(e.message);
+      }
+    }
   };
 
-  const buildProductImg = (): string => {
-    return buildProductImageUrl(
-      mainProduct.key,
-      subProductImgPath,
-      regionPath,
-      targetPathRegion,
-      useProductDate.toString(),
-    );
+  const handleError = () => {
+    setError('Image not found');
   };
 
-  const chooseImg = (): string => (isArgo ? buildArgoImg() : buildProductImg());
-
-  return <img className="h-full w-full select-none object-contain" src={chooseImg()} alt="product" />;
+  return (
+    <img className="h-full w-full select-none object-contain" src={chooseImg()} alt="product" onError={handleError} />
+  );
 };
 
 export default DataView;
