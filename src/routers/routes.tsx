@@ -38,6 +38,10 @@ const routes: RouteObject[] = [
             element: <Navigate to="chl-a" replace />,
           },
           {
+            path: 'adj-sea-level-anom',
+            element: <Navigate to="sla" replace />,
+          },
+          {
             path: ':product/:subProduct',
             element: <DataView />,
           },

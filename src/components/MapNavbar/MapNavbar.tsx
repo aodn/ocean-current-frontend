@@ -16,7 +16,10 @@ const MapNavbar: React.FC = () => {
     const product = getMainAndSubProductById(selectedElement.id);
     setMainProduct(product.mainProduct.key);
     setSubProduct(product.subProduct?.key || null);
-    navigate(product.mainProduct.path);
+    const targetPath = product.subProduct
+      ? `${product.mainProduct.path}/${product.subProduct.path}`
+      : product.mainProduct.path;
+    navigate(targetPath);
   };
 
   if (!useProductId) {

@@ -19,9 +19,9 @@ export const productsData: HomeProductData[] = [
   },
   {
     title: 'Adjusted Sea Level Anomaly',
-    id: 'adjustedSeaLevelAnomaly',
+    id: 'adjustedSeaLevelAnomaly-sla',
     mainProduct: 'adjustedSeaLevelAnomaly',
-    subProduct: null,
+    subProduct: 'adjustedSeaLevelAnomaly-sla',
     description: 'It provides a nationally consistent set of the available mapping data, was created by UTAS.',
     imageUrl: 'https://oceancurrent.aodn.org.au/GSLA_entry/latest.gif',
   },

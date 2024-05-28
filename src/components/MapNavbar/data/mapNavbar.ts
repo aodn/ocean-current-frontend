@@ -21,7 +21,7 @@ interface RegionSelectionElement {
 export const mapNavbarDataElements: MapNavBarElement[] = [
   { id: 'snapshotSst', label: 'Snapshot SST', icon: SSTIcon },
   { id: 'oceanColour-chlA', label: 'Ocean Colour', icon: OceanColourIcon },
-  { id: 'adjustedSeaLevelAnomaly', label: 'Adj. Sea Level Anom.', icon: AdjustedSeaLevelAnomalyIcon },
+  { id: 'adjustedSeaLevelAnomaly-sla', label: 'Adj. Sea Level Anom.', icon: AdjustedSeaLevelAnomalyIcon },
   { id: 'monthlyMeans', label: 'Monthly Means', icon: MonthlyMeansIcon },
   { id: 'surfaceWaves', label: 'Surface Waves', icon: SurfaceWavesIcon },
   { id: 'fourHourSst-sst', label: 'Four Hour SST', icon: FourHourSSTIcon },
