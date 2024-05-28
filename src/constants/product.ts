@@ -91,6 +91,20 @@ export const OC_PRODUCTS: Product[] = [
     title: 'Adj. Sea Level Anom.',
     key: 'adjustedSeaLevelAnomaly',
     path: 'adj-sea-level-anom',
+    children: [
+      {
+        title: 'SLA',
+        key: 'adjustedSeaLevelAnomaly-sla',
+        path: 'sla',
+        imgPath: 'SLA',
+      },
+      {
+        title: 'Centiles',
+        key: 'adjustedSeaLevelAnomaly-centiles',
+        path: 'centiles',
+        imgPath: 'SLA_pctiles',
+      },
+    ],
   },
   {
     title: 'Non-Tidal Sea Level Anom.',

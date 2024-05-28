@@ -246,8 +246,12 @@ export const productRegionMap: ProductRegionMap = {
     state: ['Au', 'GAB', 'NE', 'NW', 'NZ', 'originNW', 'originNZ', 'SE', 'SO', 'SW'],
     local: [],
   },
-  adjustedSeaLevelAnomaly: {
+  'adjustedSeaLevelAnomaly-sla': {
     state: ['Au', 'GAB', 'NE', 'NW', 'NW2', 'NZ', 'NZ2', 'originNW', 'originNZ', 'SE', 'SO', 'SW', 'TasE'],
+    local: [],
+  },
+  'adjustedSeaLevelAnomaly-centiles': {
+    state: ['Au'],
     local: [],
   },
 };

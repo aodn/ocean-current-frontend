@@ -57,6 +57,15 @@ export const productTypeMapping = new Map<
       dateFormat: 'YYYYMMDD',
     },
   ],
+  [
+    'adjustedSeaLevelAnomaly',
+    {
+      subProduct: ['SLA', 'SLA_pctiles'],
+      stateSegment: 'STATE_daily',
+      localSegment: null,
+      dateFormat: 'YYYYMMDD',
+    },
+  ],
 ]);
 
 interface ProductImageSource {
