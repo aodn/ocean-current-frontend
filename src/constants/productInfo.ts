@@ -23,7 +23,6 @@ const list: ProductInfo[] = [
 ];
 
 const productDescription = list.map((item) => {
-  // validateProductIdentifier(item.id);
   return item;
 });
 
