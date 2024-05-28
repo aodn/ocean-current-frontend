@@ -6,15 +6,7 @@ import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { RegionPolygonLayer, ArgoAsProductLayer } from './layers';
 import MAP_STYLE from './data/map-style.basic-v8.json';
-
-interface BasicMapProps {
-  children?: React.ReactNode;
-  id?: string;
-  mapStyle?: string;
-  style?: React.CSSProperties;
-  fullScreenControl?: boolean;
-  navigationControl?: boolean;
-}
+import { BasicMapProps } from './types/map.types';
 
 const BasicMap: React.FC<BasicMapProps> = ({
   id = mapboxInstanceIds.oceanCurrentBasicMap,

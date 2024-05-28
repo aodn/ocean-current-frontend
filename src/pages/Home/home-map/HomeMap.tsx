@@ -1,6 +1,6 @@
 import React from 'react';
 import BasicMap from '@/components/Map/BasicMap';
-import ErrorBoundary from '@/errors/ErrorBoundary';
+import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 
 const HomeMap: React.FC = () => {
   return (

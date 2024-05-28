@@ -15,6 +15,7 @@ import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useProductFromUrl, useProductSearchParam } from '@/hooks';
 import TimeSelector from '@/components/TimeSelector/TimeSelector';
 import { getRegionByRegionTitle } from '@/utils/region';
+import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 
 const ProductLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -71,7 +72,9 @@ const ProductLayout: React.FC = () => {
           <MapSidebar />
         </div>
         <div className="w-2/3">
-          <Outlet />
+          <ErrorBoundary key={product?.mainProduct}>
+            <Outlet />
+          </ErrorBoundary>
         </div>
       </div>
       <TimeSelector />
