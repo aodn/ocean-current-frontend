@@ -20,14 +20,14 @@ interface RegionSelectionElement {
 
 export const mapNavbarDataElements: MapNavBarElement[] = [
   { id: 'snapshotSst', label: 'Snapshot SST', icon: SSTIcon },
-  { id: 'oceanColour', label: 'Ocean Colour', icon: OceanColourIcon },
+  { id: 'oceanColour-chlA', label: 'Ocean Colour', icon: OceanColourIcon },
   { id: 'adjustedSeaLevelAnomaly', label: 'Adj. Sea Level Anom.', icon: AdjustedSeaLevelAnomalyIcon },
   { id: 'monthlyMeans', label: 'Monthly Means', icon: MonthlyMeansIcon },
   { id: 'surfaceWaves', label: 'Surface Waves', icon: SurfaceWavesIcon },
-  { id: 'fourHourSst', label: 'Four Hour SST', icon: FourHourSSTIcon },
-  { id: 'sixDaySst', label: '6-Day SST', icon: SixHourSSTIcon },
+  { id: 'fourHourSst-sst', label: 'Four Hour SST', icon: FourHourSSTIcon },
+  { id: 'sixDaySst-sst', label: '6-Day SST', icon: SixHourSSTIcon },
   { id: 'argo', label: 'Argo', icon: ArgoIcon },
-  { id: 'climatology', label: 'Climatology', icon: SSTIcon },
+  { id: 'climatology-sst', label: 'Climatology', icon: SSTIcon },
 ];
 
 export const regionSelectionButtonElements: RegionSelectionElement[] = [

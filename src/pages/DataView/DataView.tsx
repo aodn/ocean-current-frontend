@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { buildProductImageUrl, buildArgoImageUrl, getTargetRegionScopPath } from '@/utils/dataImgBuilder';
 import useArgoStore from '@/stores/argo-store/argoStore';
@@ -26,7 +26,9 @@ const DataView: React.FC = () => {
   // TODO: give default sub product for subProductImgPath
   const subProductImgPath = subProduct?.imgPath || 'SST';
 
-  const isHasSubProduct = checkProductHasSubProduct(mainProduct?.key);
+  useEffect(() => {
+    setError(null);
+  }, [mainProduct, subProduct, date, cycle, depth, regionPath, targetPathRegion, useProductDate]);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -36,6 +38,7 @@ const DataView: React.FC = () => {
     return <Loading />;
   }
 
+  const isHasSubProduct = checkProductHasSubProduct(mainProduct?.key);
   if (isHasSubProduct && !subProduct) {
     return <Loading />;
   }
@@ -55,7 +58,13 @@ const DataView: React.FC = () => {
     }
   };
 
-  return <img className="h-full w-full select-none object-contain" src={chooseImg()} alt="product" />;
+  const handleError = () => {
+    setError('Image not found');
+  };
+
+  return (
+    <img className="h-full w-full select-none object-contain" src={chooseImg()} alt="product" onError={handleError} />
+  );
 };
 
 export default DataView;

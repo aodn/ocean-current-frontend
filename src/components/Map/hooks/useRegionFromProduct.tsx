@@ -1,22 +1,21 @@
-import { nationRegions, stateRegions, localRegions } from '@/data/regionData';
-import { regionException } from '@/data/regionException';
+import { allRegions } from '@/data/regionData';
 import useProductStore from '@/stores/product-store/productStore';
-import { Region } from '@/types/map';
+import { Region, RegionKeyType } from '@/types/map';
+import { getRegionListByProductId } from '@/utils/region';
 
 const useRegionFromProduct = () => {
-  const useMainProduct = useProductStore((state) => state.productParams.mainProduct);
-  const useSubProduct = useProductStore((state) => state.productParams.subProduct);
+  const useProductId = useProductStore((state) => state.productParams.productId);
 
-  const getRegions = (mainProduct: string, subProduct: string | null): Region[] => {
-    const key = subProduct ? `${mainProduct}-${subProduct}` : mainProduct;
-    const { localException = [], stateException = [] } = regionException[key] || {};
-
-    const newLocalRegions = localRegions.filter(({ region }) => !localException.includes(region));
-    const newStateRegions = stateRegions.filter(({ region }) => !stateException.includes(region));
-    return [...nationRegions, ...newLocalRegions, ...newStateRegions] as Region[];
+  const getRegionList = (productId: string): RegionKeyType[] => {
+    const regionFromProduct = getRegionListByProductId(productId) || { local: [], state: [] };
+    const { local, state } = regionFromProduct;
+    return [...local, ...state];
   };
+  const mixedRegions = getRegionList(useProductId);
 
-  const newRegions = getRegions(useMainProduct, useSubProduct);
+  const getRegions = (regionKey: RegionKeyType[]): Region[] =>
+    allRegions.filter(({ region }) => regionKey.includes(region));
+  const newRegions = getRegions(mixedRegions);
 
   return { regions: newRegions };
 };

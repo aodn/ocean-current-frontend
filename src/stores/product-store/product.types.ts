@@ -2,6 +2,7 @@ import { Dayjs } from 'dayjs';
 import { RegionScope } from '@/constants/region';
 
 type ProductParamState = {
+  productId: string;
   mainProduct: string;
   subProduct: string | null;
   productKey: string;
@@ -17,6 +18,7 @@ export type State = {
 export type Actions = {
   actions: {
     setProductData: (product: ProductParamState) => void;
+    setProductId: (productId: string) => void;
     setMainProduct: (product: string) => void;
     setSubProduct: (subProduct: string | null) => void;
     setProductKey: (productKey: string) => void;

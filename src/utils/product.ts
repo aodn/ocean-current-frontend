@@ -1,5 +1,7 @@
 import { OC_PRODUCTS } from '@/constants/product';
-import { CombinedProduct, MainProductWithSubProduct, Product } from '@/types/product';
+import { productDescription } from '@/constants/productInfo';
+import { flatProducts } from '@/data/productData';
+import { CombinedProduct, FlatProduct, MainProductWithSubProduct, Product, ProductInfo } from '@/types/product';
 
 const combineProducts = (products: Product[]): CombinedProduct[] => {
   return products.flatMap((product) => {
@@ -67,15 +69,36 @@ const getProductByKey = (mainProductKey: string, subProductKey: string | null = 
   return { mainProduct, subProduct };
 };
 
-const checkProductHasSubProduct = (productKey: string | undefined | null): boolean => {
-  return OC_PRODUCTS.some((p) => p.key === productKey && p.children);
+const getProductById = (productId: string): FlatProduct | undefined => {
+  const product = flatProducts.find((product) => product.key === productId);
+  return product;
 };
+
+const getMainAndSubProductById = (productId: string): MainProductWithSubProduct => {
+  const product = getProductById(productId);
+  if (!product) {
+    throw new Error(`Invalid product id: ${productId}`);
+  }
+  if (!product.parent) {
+    return getProductByKey(product.key);
+  }
+  return getProductByKey(product.parent, product.key);
+};
+
+const checkProductHasSubProduct = (productKey: string | undefined | null): boolean =>
+  OC_PRODUCTS.some((p) => p.key === productKey && p.children);
+
+const getProductInfoByKey = (productKey: string): ProductInfo | undefined =>
+  productDescription.find((product) => product.id === productKey);
 
 export {
   combineProducts,
   combinedProducts,
+  getProductById,
   getProductByPath,
   getProductByKey,
+  getMainAndSubProductById,
   validateProductIdentifier,
   checkProductHasSubProduct,
+  getProductInfoByKey,
 };
