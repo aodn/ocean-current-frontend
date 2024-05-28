@@ -24,3 +24,13 @@ export interface CombinedProduct {
   fullKey: string;
   fullPath: string;
 }
+
+export interface ProductInfo {
+  id: string;
+  summary: string;
+  description: string;
+}
+
+export interface FlatProduct extends Product {
+  parent: string | null;
+}

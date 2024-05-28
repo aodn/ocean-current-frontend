@@ -54,7 +54,67 @@ export const productTypeMapping = new Map<
       subProduct: ['CHL', 'CHL_AGE'],
       stateSegment: 'STATE_daily',
       localSegment: null,
-      dateFormat: 'YYYYMMDDHH',
+      dateFormat: 'YYYYMMDD',
     },
   ],
 ]);
+
+interface ProductImageSource {
+  stateSegment: string | null;
+  localSegment: string | null;
+  hasStateImage: boolean;
+  hasLocalImage: boolean;
+  imagePath: string | null;
+  dateFormat: string;
+}
+
+export const productTypeMapping2: Record<string, ProductImageSource> = {
+  snapshot: {
+    stateSegment: null,
+    localSegment: null,
+    hasStateImage: false,
+    hasLocalImage: true,
+    imagePath: null,
+    dateFormat: 'YYYYMMDDHH',
+  },
+  sixDaySst: {
+    stateSegment: 'STATE_daily',
+    localSegment: 'DR_SST_daily',
+    hasStateImage: true,
+    hasLocalImage: true,
+    imagePath: 'sixDaySst',
+    dateFormat: 'YYYYMMDD',
+  },
+  fourHourSst: {
+    stateSegment: null,
+    localSegment: 'SST_4hr',
+    hasStateImage: false,
+    hasLocalImage: true,
+    imagePath: 'fourHourSst',
+    dateFormat: 'YYYYMMDDHH',
+  },
+  'fourHourSst-sstFilled': {
+    stateSegment: null,
+    localSegment: 'SST_4hr',
+    hasStateImage: false,
+    hasLocalImage: true,
+    imagePath: 'fourHourSst/sst-filled',
+    dateFormat: 'YYYYMMDDHH',
+  },
+  climatology: {
+    stateSegment: 'STATE_CLIM',
+    localSegment: 'DR_SST_CLIM',
+    hasStateImage: true,
+    hasLocalImage: true,
+    imagePath: 'climatology',
+    dateFormat: 'MM',
+  },
+  oceanColour: {
+    stateSegment: 'STATE_daily',
+    localSegment: null,
+    hasStateImage: true,
+    hasLocalImage: false,
+    imagePath: 'oceanColour',
+    dateFormat: 'YYYYMMDDHH',
+  },
+};

@@ -7,6 +7,7 @@ import { Actions, State } from './product.types';
 
 const initialState: State = {
   productParams: {
+    productId: '',
     mainProduct: '',
     subProduct: null,
     productKey: '',
@@ -21,6 +22,8 @@ const useProductStore = create<State & Actions>()(
     ...initialState,
     actions: {
       setProductData: (product) => set({ productParams: product }, false, 'setProductData'),
+      setProductId: (productId) =>
+        set((state) => ({ productParams: { ...state.productParams, productId } }), false, 'setProductId'),
       setProductKey: (productKey) => {
         const foundProduct = combinedProducts.find((product) => product.fullKey === productKey);
 
@@ -59,7 +62,7 @@ const useProductStore = create<State & Actions>()(
   })),
 );
 
-export const { setMainProduct, setSubProduct, setProductKey, setRegionScope, setRegionTitle, setDate } =
+export const { setProductId, setMainProduct, setSubProduct, setProductKey, setRegionScope, setRegionTitle, setDate } =
   useProductStore.getState().actions;
 
 export default useProductStore;

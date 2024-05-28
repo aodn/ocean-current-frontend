@@ -3,7 +3,7 @@ import { HomeProductData } from '../types/HomeProductCarrousel.types';
 export const productsData: HomeProductData[] = [
   {
     title: 'Sea Surface Temperature',
-    id: 'fourHourSst-Sst',
+    id: 'fourHourSst-sst',
     mainProduct: 'fourHourSst',
     subProduct: 'fourHourSst-sst',
     description: 'It provides a nationally consistent set of the available mapping data, was created by UTAS.',
@@ -11,9 +11,9 @@ export const productsData: HomeProductData[] = [
   },
   {
     title: 'Ocean Colour',
-    id: 'oceanColour',
+    id: 'oceanColour-chlA',
     mainProduct: 'oceanColour',
-    subProduct: 'oceanColour-chlAAge',
+    subProduct: 'oceanColour-chlA',
     description: 'It provides a nationally consistent set of the available mapping data, was created by UTAS.',
     imageUrl: 'https://oceancurrent.aodn.org.au/chla_entry/latest.gif',
   },

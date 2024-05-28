@@ -1,25 +1,25 @@
 import { useNavigate } from 'react-router-dom';
 import categoryIcon from '@/assets/icons/category-icon.png';
 import { Dropdown, Loading } from '@/components/Shared';
-import { setMainProduct, setSubProduct } from '@/stores/product-store/productStore';
-import { getProductByKey } from '@/utils/product';
-import useMainProductKey from '@/stores/product-store/hooks/useMainProductKey';
+import useProductStore, { setMainProduct, setProductId, setSubProduct } from '@/stores/product-store/productStore';
+import { getMainAndSubProductById } from '@/utils/product';
 import { mapNavbarDataElements } from './data/mapNavbar';
 import { MapNavBarElement } from './types/mapNavbar.types';
 
 const MapNavbar: React.FC = () => {
   const navigate = useNavigate();
 
-  const mainProductKey = useMainProductKey();
+  const useProductId = useProductStore((state) => state.productParams.productId);
 
   const handleDropdownChange = (selectedElement: MapNavBarElement) => {
-    const product = getProductByKey(selectedElement.id);
+    setProductId(selectedElement.id);
+    const product = getMainAndSubProductById(selectedElement.id);
     setMainProduct(product.mainProduct.key);
     setSubProduct(product.subProduct?.key || null);
     navigate(product.mainProduct.path);
   };
 
-  if (!mainProductKey) {
+  if (!useProductId) {
     return <Loading loadingSize="w-10 h-10" />;
   }
 
@@ -30,7 +30,7 @@ const MapNavbar: React.FC = () => {
           <img src={categoryIcon} alt="category logo" />
           <span className="ml-3 text-lg text-imos-sea-blue">Category</span>
         </div>
-        <Dropdown elements={mapNavbarDataElements} initialSelectedId={mainProductKey} onChange={handleDropdownChange} />
+        <Dropdown elements={mapNavbarDataElements} initialSelectedId={useProductId} onChange={handleDropdownChange} />
       </div>
       {/* {isRegionRequired && <RegionSelection onChange={handleRegionChange} />} */}
     </div>
