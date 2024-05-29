@@ -16,7 +16,7 @@ export const linksData = [
           'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
         title: 'Ocean Color',
         description: 'Satellite ocean color',
-        url: '/map/ocean-colour',
+        url: '/map/ocean-colour/chl-a',
       },
       {
         id: 'sea-floor-heat',
@@ -50,7 +50,7 @@ export const linksData = [
           'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
         title: 'SST Anomaly',
         description: 'Sea surface temperature anomaly',
-        url: '/map/adj-sea-level-anom',
+        url: '/map/adj-sea-level-anom/sla',
       },
       {
         id: 'monthlyMeans',

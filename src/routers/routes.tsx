@@ -69,7 +69,6 @@ const routes: RouteObject[] = [
           },
         ],
       },
-
       {
         path: '/news',
         element: <News />,

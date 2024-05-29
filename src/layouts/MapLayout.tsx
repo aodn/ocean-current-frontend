@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import MapNavbar from '@/components/MapNavbar/MapNavbar';
-import { setMainProduct, setSubProduct } from '@/stores/product-store/productStore';
+import { setMainProduct, setProductId, setSubProduct } from '@/stores/product-store/productStore';
 import { getProductByPath } from '@/utils/product';
 import { useProductFromUrl } from '@/hooks';
 import TimeSelector from '@/components/TimeSelector/TimeSelector';
@@ -16,6 +16,9 @@ const MapLayout: React.FC = () => {
       const mainProductKey = getProductByPath(mainProduct)!.key;
       const subProductKey = subProduct ? getProductByPath(mainProduct, subProduct)!.key : null;
 
+      const productId = subProductKey || mainProductKey;
+
+      setProductId(productId);
       setMainProduct(mainProductKey);
       setSubProduct(subProductKey);
     }

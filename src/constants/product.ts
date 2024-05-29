@@ -83,11 +83,6 @@ export const OC_PRODUCTS: Product[] = [
     path: 'sst-anom-vs-time',
   },
   {
-    title: 'Snapshot Chlorophyll-a',
-    key: 'snapshotChlorophyllA',
-    path: 'snapshot-chlorophyll-a',
-  },
-  {
     title: 'Adj. Sea Level Anom.',
     key: 'adjustedSeaLevelAnomaly',
     path: 'adj-sea-level-anom',
