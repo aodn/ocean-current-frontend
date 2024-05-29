@@ -1,5 +1,6 @@
 interface MapBoxInstanceIds {
   oceanCurrentBasicMap: string;
+  oceanCurrentMainMap: string;
   sidebarMiniMap: string;
 }
 
@@ -17,6 +18,7 @@ interface MapboxLayerIds {
 
 const mapboxInstanceIds: MapBoxInstanceIds = {
   oceanCurrentBasicMap: 'oc-basic-map',
+  oceanCurrentMainMap: 'oc-main-map',
   sidebarMiniMap: 'sidebar-mini-map',
 };
 

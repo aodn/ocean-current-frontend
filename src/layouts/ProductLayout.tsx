@@ -8,6 +8,7 @@ import {
   setRegionTitle,
   setSubProduct,
   setDate as setProductDate,
+  setProductId,
 } from '@/stores/product-store/productStore';
 import MapSidebar from '@/components/MapSidebar/MapSidebar';
 import { getProductByPath } from '@/utils/product';
@@ -41,6 +42,9 @@ const ProductLayout: React.FC = () => {
       const mainProductKey = getProductByPath(mainProduct)!.key;
       const subProductKey = subProduct ? getProductByPath(mainProduct, subProduct)!.key : null;
 
+      const productId = subProductKey || mainProductKey;
+
+      setProductId(productId);
       setMainProduct(mainProductKey);
       setSubProduct(subProductKey);
     }
