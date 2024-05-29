@@ -3,12 +3,9 @@ import { productTypeMapping, TargetPathRegionScope } from '@/constants/imgPath';
 import { RegionScope } from '@/constants/region';
 import { imageBaseUrl, imageS3BaseUrl } from '@/configs/image';
 
-const getBaseUrlByProductId = (productId: string) => {
-  if (productId === 'surfaceWaves') {
-    return imageS3BaseUrl;
-  }
-  return imageBaseUrl;
-};
+const getBaseUrlByProductId = (productId: string) =>
+  // TODO: config string to constant
+  productId === 'surfaceWaves' ? imageS3BaseUrl : imageBaseUrl;
 
 const getTargetRegionScopPath = (regionScope: RegionScope) => {
   return [RegionScope.Au, RegionScope.State].includes(regionScope)
@@ -54,9 +51,11 @@ const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle:
 };
 
 const buildSurfaceWavesImageUrl = (date: string) => {
-  const formattedDate = dayjs(date).format('YYYYMMDDHH');
-  const year = dayjs(date).format('YYYY');
-  const month = dayjs(date).format('MM');
+  const dayjsDate = dayjs(date);
+
+  const formattedDate = dayjsDate.format('YYYYMMDDHH');
+  const year = dayjsDate.format('YYYY');
+  const month = dayjsDate.format('MM');
   return `${imageS3BaseUrl}/WAVES/y${year}/m${month}/${formattedDate}.gif`;
 };
 
