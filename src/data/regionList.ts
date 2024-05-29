@@ -356,4 +356,8 @@ export const productRegionMap: ProductRegionMap = {
       'TimorP',
     ],
   },
+  surfaceWaves: {
+    state: ['Au'],
+    local: [],
+  },
 };

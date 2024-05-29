@@ -66,4 +66,13 @@ export const productTypeMapping = new Map<
       dateFormat: 'YYYYMMDD',
     },
   ],
+  [
+    'surfaceWaves',
+    {
+      subProduct: [],
+      stateSegment: 'WAVES',
+      localSegment: null,
+      dateFormat: 'YYYYMMDDHH',
+    },
+  ],
 ]);

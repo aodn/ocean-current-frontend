@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { buildProductImageUrl, buildArgoImageUrl, getTargetRegionScopPath } from '@/utils/dataImgBuilder';
+import {
+  buildProductImageUrl,
+  buildArgoImageUrl,
+  getTargetRegionScopPath,
+  buildSurfaceWavesImageUrl,
+} from '@/utils/dataImgBuilder';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
 import { getRegionByRegionTitle } from '@/utils/region';
@@ -23,9 +28,6 @@ const DataView: React.FC = () => {
   // TODO: handle error if no region selected
   const regionPath = region?.region || 'au';
 
-  // TODO: give default sub product for subProductImgPath
-  const subProductImgPath = subProduct?.imgPath || 'SST';
-
   useEffect(() => {
     setError(null);
   }, [mainProduct, subProduct, date, cycle, depth, regionPath, targetPathRegion, useProductDate]);
@@ -43,10 +45,24 @@ const DataView: React.FC = () => {
     return <Loading />;
   }
 
+  // TODO: give default sub product for subProductImgPath
+  const subProductImgPath = subProduct?.imgPath;
+
   const buildArgoImg = (): string => buildArgoImageUrl(worldMeteorologicalOrgId, date, cycle, depth);
 
-  const buildProductImg = (): string =>
-    buildProductImageUrl(mainProduct.key, subProductImgPath, regionPath, targetPathRegion, useProductDate.toString());
+  const buildProductImg = (): string => {
+    // TODO: config string to constant
+    if (mainProduct.key === 'surfaceWaves') {
+      return buildSurfaceWavesImageUrl(useProductDate.toString());
+    }
+    return buildProductImageUrl(
+      mainProduct.key,
+      subProductImgPath,
+      regionPath,
+      targetPathRegion,
+      useProductDate.toString(),
+    );
+  };
 
   const chooseImg = (): string | undefined => {
     try {

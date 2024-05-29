@@ -1,7 +1,11 @@
 import dayjs, { Dayjs } from 'dayjs';
 import { productTypeMapping, TargetPathRegionScope } from '@/constants/imgPath';
 import { RegionScope } from '@/constants/region';
-import { imageBaseUrl } from '@/configs/image';
+import { imageBaseUrl, imageS3BaseUrl } from '@/configs/image';
+
+const getBaseUrlByProductId = (productId: string) =>
+  // TODO: config string to constant
+  productId === 'surfaceWaves' ? imageS3BaseUrl : imageBaseUrl;
 
 const getTargetRegionScopPath = (regionScope: RegionScope) => {
   return [RegionScope.Au, RegionScope.State].includes(regionScope)
@@ -10,21 +14,21 @@ const getTargetRegionScopPath = (regionScope: RegionScope) => {
 };
 
 const buildProductImageUrl = (
-  productType: string,
-  subProductType: string,
+  productId: string,
+  subProductType: string | undefined,
   regionName: string,
   regionScope: TargetPathRegionScope,
   date: string,
 ) => {
-  const productData = productTypeMapping.get(productType);
+  const productData = productTypeMapping.get(productId);
   if (!productData) {
-    throw new Error(`Product type ${productType} is not supported`);
+    throw new Error(`Product type ${productId} is not supported`);
   }
-  if (!productData.subProduct.includes(subProductType)) {
+  if (subProductType && !productData.subProduct.includes(subProductType)) {
     throw new Error(`Sub product type ${subProductType} is not supported`);
   }
   if (regionScope === TargetPathRegionScope.State && productData.stateSegment === undefined) {
-    throw new Error(`Product ${productType} does not support state region`);
+    throw new Error(`Product ${productId} does not support state region`);
   }
 
   const segment = regionScope === TargetPathRegionScope.State ? productData.stateSegment : productData.localSegment;
@@ -35,7 +39,9 @@ const buildProductImageUrl = (
 
   const formattedDate = dayjs(date).format(productData.dateFormat);
 
-  return `${imageBaseUrl}/${productSegment}${subProductSegment}/${regionName}/${formattedDate}.gif`;
+  const baseUrl = getBaseUrlByProductId(productId);
+
+  return `${baseUrl}/${productSegment}${subProductSegment}/${regionName}/${formattedDate}.gif`;
 };
 
 const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle: string, depth: string) => {
@@ -44,4 +50,13 @@ const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle:
   return `${imageBaseUrl}/${profiles}/${worldMeteorologicalOrgId}/${formatDate}_${worldMeteorologicalOrgId}_${cycle}.gif`;
 };
 
-export { getTargetRegionScopPath, buildProductImageUrl, buildArgoImageUrl };
+const buildSurfaceWavesImageUrl = (date: string) => {
+  const dayjsDate = dayjs(date);
+
+  const formattedDate = dayjsDate.format('YYYYMMDDHH');
+  const year = dayjsDate.format('YYYY');
+  const month = dayjsDate.format('MM');
+  return `${imageS3BaseUrl}/WAVES/y${year}/m${month}/${formattedDate}.gif`;
+};
+
+export { getTargetRegionScopPath, buildProductImageUrl, buildArgoImageUrl, buildSurfaceWavesImageUrl };
