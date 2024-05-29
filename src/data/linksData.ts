@@ -19,12 +19,12 @@ export const linksData = [
         url: '/map/ocean-colour/chl-a',
       },
       {
-        id: 'sea-floor-heat',
+        id: 'climatology-sst',
         imageUrl:
           'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
-        title: 'Sea Floor Heat',
-        description: 'Sea floor heat flow data',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
+        title: 'Climatology SST',
+        description: 'SSTAARS Climatology',
+        url: '/map/climatology/sst',
       },
       {
         id: 'myocean',
@@ -48,8 +48,8 @@ export const linksData = [
         id: 'adjustedSeaLevelAnomaly',
         imageUrl:
           'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
-        title: 'SST Anomaly',
-        description: 'Sea surface temperature anomaly',
+        title: 'Adj. Sea Level Anom.',
+        description: 'Adjusted Sea Level Anomaly',
         url: '/map/adj-sea-level-anom/sla',
       },
       {

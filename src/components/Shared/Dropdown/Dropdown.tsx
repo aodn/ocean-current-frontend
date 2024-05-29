@@ -3,9 +3,10 @@ import arrowIcon from '@/assets/icons/arrow.svg';
 import { useOutsideClick } from '@/hooks';
 import { DropdownElement, DropdownProps } from './types/dropdown.types';
 
-const Dropdown: React.FC<DropdownProps> = ({ elements, initialSelectedId, onChange }: DropdownProps) => {
+const Dropdown: React.FC<DropdownProps> = ({ elements, selectedId, onChange }: DropdownProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [selectedElement, setSelectedElement] = useState<DropdownElement | undefined>();
+  const initialElement = elements.find((element) => element.id === selectedId);
+  const [selectedElement, setSelectedElement] = useState<DropdownElement | undefined>(initialElement);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   useOutsideClick<HTMLDivElement>(dropdownRef, () => {
@@ -31,8 +32,8 @@ const Dropdown: React.FC<DropdownProps> = ({ elements, initialSelectedId, onChan
   };
 
   useEffect(() => {
-    if (!selectedElement && initialSelectedId) selectElement(initialSelectedId);
-  }, [selectElement, selectedElement, initialSelectedId]);
+    if (selectedId) selectElement(selectedId);
+  }, [selectElement, selectedId]);
 
   return (
     <div className="relative ml-3" ref={dropdownRef}>

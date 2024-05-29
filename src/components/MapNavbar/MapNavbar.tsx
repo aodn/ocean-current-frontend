@@ -33,7 +33,7 @@ const MapNavbar: React.FC = () => {
           <img src={categoryIcon} alt="category logo" />
           <span className="ml-3 text-lg text-imos-sea-blue">Category</span>
         </div>
-        <Dropdown elements={mapNavbarDataElements} initialSelectedId={useProductId} onChange={handleDropdownChange} />
+        <Dropdown elements={mapNavbarDataElements} selectedId={useProductId} onChange={handleDropdownChange} />
       </div>
       {/* {isRegionRequired && <RegionSelection onChange={handleRegionChange} />} */}
     </div>

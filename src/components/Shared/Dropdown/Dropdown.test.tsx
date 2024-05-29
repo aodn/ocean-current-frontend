@@ -11,13 +11,13 @@ const elements: DropdownElement[] = [
 
 describe('Dropdown Component', () => {
   it('should render with initial selected item', () => {
-    render(<Dropdown elements={elements} initialSelectedId="1" />);
+    render(<Dropdown elements={elements} selectedId="1" />);
     const selectedItem = screen.getByText('Option 1');
     expect(selectedItem).toBeInTheDocument();
   });
 
   it('should toggle dropdown on click', async () => {
-    render(<Dropdown elements={elements} initialSelectedId="1" />);
+    render(<Dropdown elements={elements} selectedId="1" />);
     const dropdownButton = screen.getByText('Option 1');
     expect(screen.queryByText('Option 1')).toBeInTheDocument();
 
@@ -36,7 +36,7 @@ describe('Dropdown Component', () => {
   });
 
   it('should render all passed elements if dropdown opened by click ', async () => {
-    render(<Dropdown elements={elements} initialSelectedId="1" />);
+    render(<Dropdown elements={elements} selectedId="1" />);
 
     // Act
     const dropdownButton = screen.getByText('Option 1');
@@ -51,7 +51,7 @@ describe('Dropdown Component', () => {
   });
 
   it('should select an item and close dropdown', async () => {
-    render(<Dropdown elements={elements} initialSelectedId="1" />);
+    render(<Dropdown elements={elements} selectedId="1" />);
     const dropdownButton = screen.getByText('Option 1');
 
     // Act
