@@ -21,7 +21,7 @@ const LandingLayout: React.FC = () => {
         </div>
       </div>
       <div className="bg-[#3A6F8F] ">
-        <div className="mx-auto w-full max-w-7xl">
+        <div className="mx-auto w-full max-w-8xl">
           <Footer />
         </div>
       </div>

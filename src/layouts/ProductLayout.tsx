@@ -69,19 +69,19 @@ const ProductLayout: React.FC = () => {
   }, [getArgoData, isArgo]);
 
   return (
-    <div className="mx-auto my-9 w-full max-w-7xl shadow-layout-shadow">
+    <div className="mx-auto my-9 w-full max-w-8xl shadow-layout-shadow">
       <MapNavbar />
-      <div className="flex p-4">
-        <div className="mx-2 w-1/3">
+      <TimeSelector />
+      <div className="flex  p-4">
+        <div className="w-1/3">
           <MapSidebar />
         </div>
-        <div className="w-2/3">
+        <div className="w-full">
           <ErrorBoundary key={product?.mainProduct}>
             <Outlet />
           </ErrorBoundary>
         </div>
       </div>
-      <TimeSelector />
     </div>
   );
 };
