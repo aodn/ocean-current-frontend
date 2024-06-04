@@ -58,22 +58,23 @@ const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopy
   return (
     <div>
       <div className="flex justify-between bg-white p-2 pb-4">
-        <div className="flex justify-between">
+        <div className="flex w-full items-center justify-between">
           <img
-            className="mx-6 mt-4 h-16 w-14 object-contain"
+            className=" h-16 object-contain"
             src={showIconProduct(mainProduct.title)}
             alt={`${showIconProduct(mainProduct.title)} icon`}
           />
-          <div>
-            <h2 className="mb-2 text-lg font-semibold text-[#3A6F8F]">{mainProduct.title}</h2>
-            <p className="text-imos-grey">{productInfo?.summary}</p>
-          </div>
-          <img src={InfoIcon} alt="info icon" className="h-6 w-6 cursor-pointer object-contain" />
+          <h2 className="mb-2 text-lg font-semibold text-[#3A6F8F]">{mainProduct.title}</h2>
         </div>
       </div>
 
       <div className="mt-4 h-60 w-full overflow-hidden">
         <MiniMap />
+      </div>
+
+      <div className="flex items-center justify-between border-b-2 border-imos-grey p-4">
+        <img src={InfoIcon} alt="info icon" className="mr-6 h-6 w-6 cursor-pointer object-contain" />
+        <p className="text-imos-grey">{productInfo?.summary}</p>
       </div>
 
       {renderSubProducts() && (
@@ -83,7 +84,7 @@ const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopy
             onClick={() => setIsSubProductsCollapsed(!isSubProductsCollapsed)}
             aria-hidden
           >
-            <h3 className="text-lg font-medium text-imos-black">Sorts</h3>
+            <h3 className="text-lg font-medium text-imos-black">Sub-products</h3>
             <img
               src={ArrowIcon}
               alt="arrow icon"
