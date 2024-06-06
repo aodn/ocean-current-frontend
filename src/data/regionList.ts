@@ -11,9 +11,6 @@ export const fullLocalList = [
   'Bris-Syd',
   'Brisbane',
   'Brisbane2',
-  // TODO: map not accessible
-  // 'Broome',
-  // 'Broome2',
   'CGBR',
   'CLeeu',
   'Coffs',
@@ -26,8 +23,6 @@ export const fullLocalList = [
   'Indo',
   'JBGulf',
   'Kimberley',
-  // TODO: map not accessible
-  // 'LordHowe',
   'LordHoweS',
   'NewCal',
   'NGBR',
@@ -50,8 +45,6 @@ export const fullLocalList = [
   'Solomon',
   'Syd-Hob',
   'Tas',
-  // TODO: map not accessible
-  // 'Tas2',
   'TasE',
   'TasSE',
   'TimorP',
@@ -71,8 +64,6 @@ export const productRegionMap: ProductRegionMap = {
       'Brisbane',
       'Brisbane2',
       'Bris-Syd',
-      // TODO: map not accessible
-      // 'Broome',
       'CGBR',
       'CLeeu',
       'Coffs',
@@ -97,8 +88,6 @@ export const productRegionMap: ProductRegionMap = {
       'SNSW',
       'Syd-Hob',
       'Tas',
-      // TODO: map not accessible
-      // 'Tas2',
       'TasSE',
       'TimorP',
     ],
@@ -112,8 +101,6 @@ export const productRegionMap: ProductRegionMap = {
       'Brisbane',
       'Brisbane2',
       'Bris-Syd',
-      // TODO: map not accessible
-      // 'Broome',
       'CGBR',
       'CLeeu',
       'Coffs',
@@ -138,8 +125,6 @@ export const productRegionMap: ProductRegionMap = {
       'SNSW',
       'Syd-Hob',
       'Tas',
-      // TODO: map not accessible
-      // 'Tas2',
       'TasSE',
       'TimorP',
     ],
@@ -153,8 +138,6 @@ export const productRegionMap: ProductRegionMap = {
       'Brisbane',
       'Brisbane2',
       'Bris-Syd',
-      // TODO: map not accessible
-      // 'Broome',
       'CGBR',
       'CLeeu',
       'Coffs',
@@ -179,8 +162,6 @@ export const productRegionMap: ProductRegionMap = {
       'RechEyre',
       'Rowley',
       'Tas',
-      // TODO: map not accessible
-      // 'Tas2',
       'TasSE',
       'TimorP',
     ],
@@ -194,8 +175,6 @@ export const productRegionMap: ProductRegionMap = {
       'Brisbane',
       'Brisbane2',
       'Bris-Syd',
-      // TODO: map not accessible
-      // 'Broome',
       'CGBR',
       'CLeeu',
       'Coffs',
@@ -220,8 +199,6 @@ export const productRegionMap: ProductRegionMap = {
       'SNSW',
       'Syd-Hob',
       'Tas',
-      // TODO: map not accessible
-      // 'Tas2',
       'TasSE',
       'TimorP',
     ],
@@ -234,9 +211,6 @@ export const productRegionMap: ProductRegionMap = {
       'Bass',
       'Brisbane',
       'Brisbane2',
-      // TODO: map not accessible
-      // 'Broome',
-      // 'Broome2',
       'CGBR',
       'CLeeu',
       'Coffs',
@@ -268,8 +242,6 @@ export const productRegionMap: ProductRegionMap = {
       'SNSW',
       'Syd-Hob',
       'Tas',
-      // TODO: map not accessible
-      // 'Tas2',
       'TasSE',
       'TimorP',
       'TopEnd',
@@ -285,9 +257,6 @@ export const productRegionMap: ProductRegionMap = {
       'Bass',
       'Brisbane',
       'Brisbane2',
-      // TODO: map not accessible
-      // 'Broome',
-      // 'Broome2',
       'CGBR',
       'CLeeu',
       'Coffs',
@@ -320,8 +289,6 @@ export const productRegionMap: ProductRegionMap = {
       'Solomon',
       'Syd-Hob',
       'Tas',
-      // TODO: map not accessible
-      // 'Tas2',
       'TasSE',
       'TimorP',
       'TopEnd',
@@ -337,9 +304,6 @@ export const productRegionMap: ProductRegionMap = {
       'Bass',
       'Brisbane',
       'Brisbane2',
-      // TODO: map not accessible
-      // 'Broome',
-      // 'Broome2',
       'CGBR',
       'CLeeu',
       'Coffs',
@@ -372,8 +336,6 @@ export const productRegionMap: ProductRegionMap = {
       'Solomon',
       'Syd-Hob',
       'Tas',
-      // TODO: map not accessible
-      // 'Tas2',
       'TasSE',
       'TimorP',
       'TopEnd',
@@ -389,8 +351,6 @@ export const productRegionMap: ProductRegionMap = {
       'Brisbane',
       'Brisbane2',
       'Bris-Syd',
-      // TODO: map not accessible
-      // 'Broome',
       'CGBR',
       'CLeeu',
       'Coffs',
@@ -400,14 +360,10 @@ export const productRegionMap: ProductRegionMap = {
       'Forster',
       'GoC',
       'Kimberley',
-      // TODO: map not accessible
-      // 'LordHowe',
       'LordHoweS',
       'NGBR',
       'Ningaloo',
       'NWS',
-      // TODO: history old data only
-      // 'NZNI',
       'Perth',
       'RechEyre',
       'Rottnest',
@@ -442,8 +398,6 @@ export const productRegionMap: ProductRegionMap = {
       'Brisbane',
       'Brisbane2',
       'Bris-Syd',
-      // 'Broome',
-      // 'Broome2',
       'CGBR',
       'CLeeu',
       'DonPer',
@@ -474,8 +428,6 @@ export const productRegionMap: ProductRegionMap = {
       'Brisbane',
       'Brisbane2',
       'Bris-Syd',
-      // 'Broome',
-      // 'Broome2',
       'CGBR',
       'CLeeu',
       'DonPer',
