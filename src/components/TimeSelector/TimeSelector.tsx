@@ -105,14 +105,16 @@ const TimeSelector: React.FC = () => {
     <div>
       <div className="flex justify-between">
         <div className="flex w-4/12 items-center justify-evenly rounded p-1 shadow-lg">
-          <DatePicker
-            customInput={<img src={calendarIcon} alt="calendar icon" className="ml-6 mt-2 cursor-pointer" />}
-            selected={startDate}
-            onChange={handleDateChange}
-            startDate={startDate}
-            endDate={endDate}
-            selectsRange
-          />
+          <div className="max-w-11">
+            <DatePicker
+              customInput={<img src={calendarIcon} alt="calendar icon" className="mt-2 cursor-pointer" />}
+              selected={startDate}
+              onChange={handleDateChange}
+              startDate={startDate}
+              endDate={endDate}
+              selectsRange
+            />
+          </div>
           <div className="my-4 flex items-center justify-between rounded-md border bg-background-gradient px-2 py-1 text-lg text-imos-title-blue shadow">
             <button
               onClick={() => modifyDate('subtract')}

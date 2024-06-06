@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import MapNavbar from '@/components/MapNavbar/MapNavbar';
 import { setArgoData, setDate } from '@/stores/argo-store/argoStore';
 import {
   setMainProduct,
@@ -74,8 +73,7 @@ const ProductLayout: React.FC = () => {
         <div className="w-1/3">
           <MapSidebar />
         </div>
-        <div className="w-full">
-          <MapNavbar />
+        <div className="ml-4 w-full">
           <TimeSelector />
           <>
             <ErrorBoundary key={product?.mainProduct}>

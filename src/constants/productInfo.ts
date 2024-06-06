@@ -1,24 +1,62 @@
+import {
+  AdjustedSeaLevelAnomalyModalData,
+  ClimatologyModalData,
+  FourHourSstModalData,
+  OceanColourModalData,
+  SixDaySstModalData,
+  SnapshotModalData,
+  SurfaceWaveModalData,
+} from '@/data/productsModalData';
 import { ProductInfo } from '@/types/product';
 
 const list: ProductInfo[] = [
   {
     id: 'snapshotSst',
-    summary: '',
-    description:
-      'This is our legacy system for displaying the long archive of SST images from the NOAA Polar-Orbiting Environmental Satellites (and MODIS and VIIRS recently). Snapshot SST, as the name suggests, shows individual SST images without any time-averaging. Where the sky is clear, these images provide great detail. Unfortunately, individual SST images almost always have some gaps due to cloud. For this product, we fill those gaps using the last-available view of the ocean, no matter how old that is. The gap filling helps when viewing the animations as the eye is drawn to the movement of the water in cloud-free areas and not the cloud gaps',
+    title: 'Snapshot Sst',
+    summary:
+      'Our legacy system displays SST images from NOAA, MODIS, and VIIRS. Snapshot SST shows detailed individual images without time-averaging, but they often have gaps due to clouds. We fill these gaps with the latest available ocean view to improve animation clarity.',
+    description: SnapshotModalData,
   },
   {
     id: 'oceanColour',
+    title: 'Ocean Colour',
     summary:
       'Daily images of chlorophyll-a estimates from the MODIS sensor on NASA’s Aqua satellite indicating the amount of phytoplankton in the water.',
-    description:
-      "Daily images of chlorophyll-a estimates from the MODIS sensor on NASA's Aqua satellite indicating the amount of phytoplankton in the water. Chlorophyll-a can be detected by satellite by measuring the relative amounts of light coming from the ocean at different wavelengths. The Ocean Colour model (OC3) that converts the satellite observations to chlorophyll-a concentration assumes that chlorophyll-a is the only thing in the water affecting the measurements. This is largely true in the open ocean but in coastal waters tannin from rivers and suspended sediments can be present and cannot be differentiated from chlorophyll-a.\nIn the open ocean we can be confident the satellite images represent productivity, but in very shallow coastal waters or over reefs, bottom reflectance and bottom vegetation can also contribute to the estimate. There are times when a large chlorophyll-a signal in coastal waters can be relied on to infer productivity. For example, any summertime upwelling event off the Bonney Coast, where the shelf is deep and there is little river runoff. Conversely, there are times when we can be confident the satellite images are representing something else, such as the beautiful outline of the reefs on the central Great Barrier Reef or suspended sediment and dissolved organic matter in the aftermath of Cyclone Debbie.",
+    description: OceanColourModalData,
   },
   {
     id: 'sixDaySst',
+    title: 'Six Day Sst',
     summary: 'Sea Surface Temperature (°C) 6-day ngt-only comp QL3',
-    description:
-      'Sea Surface Temperature (SST) products are derived from the temperature of the ocean surface. SST is an important variable for monitoring the health of the ocean and the distribution of marine species. SST products are used to monitor the temperature of the ocean and the distribution of marine species.',
+    description: SixDaySstModalData,
+  },
+  {
+    id: 'adjustedSeaLevelAnomaly',
+    title: 'Adjusted Sea Level Anomaly',
+    summary:
+      'Adjusted Sea Level (ASL) accounts for slow ocean modes by removing rapid variations due to tides and atmospheric pressure, enabling near-surface velocity and ocean heat content estimates. ASL anomalies, measured as deviations from a long-term mean, help visualize significant sea level changes. Centile rankings of daily ASL anomalies show the extremity of anomalies compared to historical data, adjusted for regional trends.',
+    description: AdjustedSeaLevelAnomalyModalData,
+  },
+  {
+    id: 'surfaceWaves',
+    title: 'Surface Waves',
+    summary:
+      "The map shows surface wave conditions around Australia from BoM's AUSWAVE-R model and observations. It includes significant wave height and peak wave direction, updated every 2 hours. Data sources are coastal buoys, radar altimeters, and satellite SAR within a 3-hour window.",
+    description: SurfaceWaveModalData,
+  },
+  {
+    id: 'four-hour-sst',
+    title: 'Four hour SST',
+    summary:
+      'Four-hour SST is a 4-hourly 2km resolution composite of sea surface temperatures from various satellites, including Himawari-8, Himawari-9, N15, N18, N19, MetopA, MetopB, and VIIRS Suomi-NPP.',
+    description: FourHourSstModalData,
+  },
+  {
+    id: 'climatology',
+    title: 'Climatology',
+    summary:
+      'SSTAARS is a climatology of Australian regional seas, using 25 years of daily night-only SST data. It provides seasonal SST patterns, cloud-free data counts, sea level height, geostrophic velocity, and bathymetry contours, available from AODN.',
+    description: ClimatologyModalData,
   },
 ];
 

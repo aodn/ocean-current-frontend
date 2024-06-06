@@ -1,10 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import categoryIcon from '@/assets/icons/category-icon.png';
 import { Dropdown, Loading } from '@/components/Shared';
 import useProductStore, { setMainProduct, setProductId, setSubProduct } from '@/stores/product-store/productStore';
 import { getMainAndSubProductById } from '@/utils/product';
-import { mapNavbarDataElements } from './data/mapNavbar';
-import { MapNavBarElement } from './types/mapNavbar.types';
+import { mapNavbarDataElements } from '@/data/dropDownProductData';
+import { MapNavBarElement } from '@/types/dropDownProduct';
 
 const MapNavbar: React.FC = () => {
   const navigate = useNavigate();
@@ -27,15 +26,13 @@ const MapNavbar: React.FC = () => {
   }
 
   return (
-    <div className="relative z-10 flex h-18 justify-between border bg-white p-2 drop-shadow-x0y4">
-      <div className="flex items-center">
-        <div className="flex p-2">
-          <img src={categoryIcon} alt="category logo" />
-          <span className="ml-3 text-lg text-imos-sea-blue">Category</span>
-        </div>
-        <Dropdown elements={mapNavbarDataElements} selectedId={useProductId} onChange={handleDropdownChange} />
-      </div>
-    </div>
+    <Dropdown
+      showIcons
+      header
+      elements={mapNavbarDataElements}
+      selectedId={useProductId}
+      onChange={handleDropdownChange}
+    />
   );
 };
 

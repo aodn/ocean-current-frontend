@@ -8,4 +8,6 @@ export interface DropdownProps {
   elements: DropdownElement[];
   selectedId?: string;
   onChange?: (selectedElement: DropdownElement) => void;
+  header?: boolean;
+  showIcons?: boolean;
 }

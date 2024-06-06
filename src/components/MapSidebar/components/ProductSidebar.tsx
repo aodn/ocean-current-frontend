@@ -1,25 +1,20 @@
 import React, { useState } from 'react';
-import SSTIcon from '@/assets/icons/products/SST-icon.svg';
-import { Button, Loading } from '@/components/Shared';
+import { Button, Loading, Popup } from '@/components/Shared';
 import { setProductId, setSubProduct } from '@/stores/product-store/productStore';
 import { useQueryParams } from '@/hooks';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { getProductInfoByKey } from '@/utils/product';
-import OceanColourIcon from '@/assets/icons/products/ocean-colour-icon.svg';
-import AdjustedSeaLevelAnomalyIcon from '@/assets/icons/products/adjusted-sea-level-anomaly-icon.svg';
-import MonthlyMeansIcon from '@/assets/icons/products/monthly-means-icon.png';
-import SurfaceWavesIcon from '@/assets/icons/products/surface-waves-icon.png';
-import FourHourSSTIcon from '@/assets/icons/products/4-hour-SST-icon.png';
-import SixHourSSTIcon from '@/assets/icons/products/6-hour-SST-icon.png';
 import InfoIcon from '@/assets/icons/info-icon.svg';
 import ArrowIcon from '@/assets/icons/arrow.svg';
 import { DataSidebarProps } from '../types/mapSidebar';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
+import HeaderSideBar from './HeaderSideBar';
 
 const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopyLink }) => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
   const { mainProduct, subProduct, subProducts } = useProductConvert();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isSubProductsCollapsed, setIsSubProductsCollapsed] = useState(false);
   const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
   const [isDataSourcesCollapsed, setIsDataSourcesCollapsed] = useState(false);
@@ -33,54 +28,49 @@ const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopy
     updateQueryParamsAndNavigate(targetPath);
   };
 
+  const handlePopup = () => {
+    setIsPopupOpen(!isPopupOpen);
+  };
+
   const renderSubProducts = () => mainProduct && subProducts.length > 0;
 
   if (!mainProduct) {
     return <Loading />;
   }
 
-  const showIconProduct = (key: string) => {
-    const images: { [key: string]: string } = {
-      'Ocean Colour': OceanColourIcon,
-      'Snapshot SST': SSTIcon,
-      'Adj. Sea Level Anom.': AdjustedSeaLevelAnomalyIcon,
-      'Monthly Means': MonthlyMeansIcon,
-      'Surface Waves': SurfaceWavesIcon,
-      'Four hour SST': FourHourSSTIcon,
-      '6-Day SST & Centiles': SixHourSSTIcon,
-    };
-
-    return images[key];
+  const PopupBody = () => {
+    return <div className="p-4">{productInfo?.description()}</div>;
   };
 
   const productInfo = getProductInfoByKey(mainProduct?.key);
 
   return (
     <div>
-      <div className="flex justify-between bg-white p-2 pb-4">
-        <div className="flex w-full items-center justify-between">
-          <img
-            className=" h-16 object-contain"
-            src={showIconProduct(mainProduct.title)}
-            alt={`${showIconProduct(mainProduct.title)} icon`}
-          />
-          <h2 className="mb-2 text-lg font-semibold text-[#3A6F8F]">{mainProduct.title}</h2>
-        </div>
+      <div className="mb-1">
+        <HeaderSideBar />
       </div>
 
-      <div className="mt-4 h-60 w-full overflow-hidden">
+      <div className="h-60 w-full overflow-hidden">
         <MiniMap />
       </div>
 
       <div className="flex items-center justify-between border-b-2 border-imos-grey p-4">
-        <img src={InfoIcon} alt="info icon" className="mr-6 h-6 w-6 cursor-pointer object-contain" />
+        <img
+          aria-hidden
+          onClick={handlePopup}
+          src={InfoIcon}
+          alt="info icon"
+          className="mr-6 h-6 w-6 cursor-pointer object-contain"
+        />
         <p className="text-imos-grey">{productInfo?.summary}</p>
       </div>
+
+      <Popup title={productInfo?.title} body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
 
       {renderSubProducts() && (
         <div className="border-b-2 border-imos-grey px-4">
           <div
-            className="flex cursor-pointer justify-between px-4 pt-4"
+            className="flex cursor-pointer items-center justify-between px-4 py-2"
             onClick={() => setIsSubProductsCollapsed(!isSubProductsCollapsed)}
             aria-hidden
           >
@@ -114,7 +104,7 @@ const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopy
 
       <div className="border-b-2 border-imos-grey px-4">
         <div
-          className="flex cursor-pointer justify-between px-4 pt-4"
+          className="flex cursor-pointer items-center justify-between px-4 py-2"
           onClick={() => setIsLegendCollapsed(!isLegendCollapsed)}
           aria-hidden
         >
@@ -134,7 +124,7 @@ const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopy
 
       <div className="border-b-2 border-imos-grey px-4">
         <div
-          className="flex cursor-pointer justify-between px-4 pt-4"
+          className="flex cursor-pointer items-center justify-between px-4 py-2"
           onClick={() => setIsDataSourcesCollapsed(!isDataSourcesCollapsed)}
           aria-hidden
         >
