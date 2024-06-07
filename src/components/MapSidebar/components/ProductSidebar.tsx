@@ -10,6 +10,7 @@ import { DataSidebarProps } from '../types/mapSidebar';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
 import HeaderSideBar from './HeaderSideBar';
+import VideoCreation from './VideoCreation';
 
 const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopyLink }) => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
@@ -66,6 +67,8 @@ const ProductSideBar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopy
       </div>
 
       <Popup title={productInfo?.title} body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
+
+      <VideoCreation />
 
       {renderSubProducts() && (
         <div className="border-b-2 border-imos-grey px-4">
