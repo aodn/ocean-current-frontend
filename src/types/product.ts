@@ -28,7 +28,8 @@ export interface CombinedProduct {
 export interface ProductInfo {
   id: string;
   summary: string;
-  description: string;
+  description: () => JSX.Element;
+  title: string;
 }
 
 export interface FlatProduct extends Product {

@@ -3,7 +3,7 @@ import arrowIcon from '@/assets/icons/arrow.svg';
 import { useOutsideClick } from '@/hooks';
 import { DropdownElement, DropdownProps } from './types/dropdown.types';
 
-const Dropdown: React.FC<DropdownProps> = ({ elements, selectedId, onChange }: DropdownProps) => {
+const Dropdown: React.FC<DropdownProps> = ({ showIcons, elements, selectedId, onChange, header }: DropdownProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const initialElement = elements.find((element) => element.id === selectedId);
   const [selectedElement, setSelectedElement] = useState<DropdownElement | undefined>(initialElement);
@@ -36,17 +36,26 @@ const Dropdown: React.FC<DropdownProps> = ({ elements, selectedId, onChange }: D
   }, [selectElement, selectedId]);
 
   return (
-    <div className="relative ml-3" ref={dropdownRef}>
+    <div className="relative " ref={dropdownRef}>
       <div
         onClick={toggleDropdown}
         aria-hidden="true"
-        className="flex min-w-56 cursor-pointer items-center justify-between rounded-md border bg-background-gradient p-2 px-4 text-lg text-imos-title-blue shadow"
+        className={`${header ? 'bg-[#3A6F8F] p-3' : 'rounded-md bg-background-gradient p-2'} flex min-w-56 cursor-pointer items-center justify-between  border px-4 text-lg text-imos-title-blue shadow`}
       >
-        <span>{selectedElement ? selectedElement.label : 'Select Item'}</span>
-        <img className="ms-3 h-2.5 w-2.5" src={arrowIcon} alt="arrow icon" />
+        <div className="flex items-center">
+          {showIcons && selectedElement && (
+            <img className="mr-4 h-9 w-9" src={selectedElement.icon} alt={`${selectedElement.label} icon`} />
+          )}
+          <span className={header ? 'text-white' : ''}>{selectedElement ? selectedElement.label : 'Select Item'}</span>
+        </div>
+        <img
+          className={`transform transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''} ms-3 h-4 w-4 text-white`}
+          src={arrowIcon}
+          alt="arrow icon"
+        />
       </div>
       {isDropdownOpen && elements.length > 0 && (
-        <div className="absolute w-full rounded-b-md bg-[#EFEFEF] p-4 shadow" data-testid="drop-down-menu">
+        <div className="absolute z-40 w-full rounded-b-md bg-[#EFEFEF] p-4 shadow" data-testid="drop-down-menu">
           {elements.map((element) => (
             <div
               key={element.id}

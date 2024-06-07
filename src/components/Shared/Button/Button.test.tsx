@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Button from './Button';
+import { ButtonType } from './types/Button.types';
 
 describe('Button Component', () => {
   it('renders without crashing', () => {
@@ -40,7 +41,8 @@ describe('Button Component', () => {
     );
 
     // Assert
-    expect(container.firstChild).toHaveClass('bg-imos-black text-white rounded-xl');
+
+    expect(container.firstChild).toHaveClass(ButtonType.primary);
   });
 
   it('calls onClick when button is clicked', () => {

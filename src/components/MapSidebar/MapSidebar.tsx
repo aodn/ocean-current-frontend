@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { TEXT_CONSTANT } from '@/constants/textConstant';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import MiniMap from './components/MiniMap';
 import ProductSideBar from './components/ProductSidebar';
 import ArgoSideBar from './components/ArgoSideBar';
 
@@ -26,10 +25,6 @@ const MapSidebar: React.FC = () => {
       ) : (
         <ProductSideBar copyButtonText={copyButtonText} handleCopyLink={handleCopyLink} />
       )}
-
-      <div className="mt-4 h-60 w-full overflow-hidden rounded-md">
-        <MiniMap />
-      </div>
     </>
   );
 };

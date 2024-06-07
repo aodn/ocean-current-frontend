@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import MapNavbar from '@/components/MapNavbar/MapNavbar';
 import { setArgoData, setDate } from '@/stores/argo-store/argoStore';
 import {
   setMainProduct,
@@ -69,19 +68,20 @@ const ProductLayout: React.FC = () => {
   }, [getArgoData, isArgo]);
 
   return (
-    <div className="mx-auto my-9 w-full max-w-7xl shadow-layout-shadow">
-      <MapNavbar />
-      <div className="flex p-4">
-        <div className="mx-2 w-1/3">
+    <div className="mx-auto my-9 w-full max-w-8xl ">
+      <div className="flex  p-4">
+        <div className="w-1/3">
           <MapSidebar />
         </div>
-        <div className="w-2/3">
-          <ErrorBoundary key={product?.mainProduct}>
-            <Outlet />
-          </ErrorBoundary>
+        <div className="ml-4 w-full">
+          <TimeSelector />
+          <>
+            <ErrorBoundary key={product?.mainProduct}>
+              <Outlet />
+            </ErrorBoundary>
+          </>
         </div>
       </div>
-      <TimeSelector />
     </div>
   );
 };

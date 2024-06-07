@@ -18,7 +18,7 @@ const Home: React.FC = () => {
       <section>
         <HomeTitle />
       </section>
-      <section className="mx-auto mb-10 w-full max-w-7xl md:flex md:gap-8">
+      <section className="mx-auto mb-10 w-full max-w-8xl md:flex md:gap-8">
         <div className="w-full md:w-2/3">
           <HomeProductCarrousel />
         </div>
@@ -26,7 +26,7 @@ const Home: React.FC = () => {
           <HomeMap />
         </div>
       </section>
-      <section className="mx-auto w-full max-w-7xl py-10">
+      <section className="mx-auto w-full max-w-8xl py-10">
         <HomeInWater />
       </section>
       <section className="bg-[#E5E8ED]">

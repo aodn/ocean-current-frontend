@@ -5,6 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Slider } from '@/components/Shared/index';
 import arrowIcon from '@/assets/icons/arrow.svg';
+import calendarIcon from '@/assets/icons/calendar-icon.svg';
 
 const TimeSelector: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -101,8 +102,34 @@ const TimeSelector: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-between">
-      <div className="flex w-10/12 items-center justify-between rounded p-4 px-6 pb-10 shadow-lg">
+    <div>
+      <div className="flex justify-between">
+        <div className="flex w-4/12 items-center justify-evenly rounded p-1 shadow-lg">
+          <div className="max-w-11">
+            <DatePicker
+              customInput={<img src={calendarIcon} alt="calendar icon" className="mt-2 cursor-pointer" />}
+              selected={startDate}
+              onChange={handleDateChange}
+              startDate={startDate}
+              endDate={endDate}
+              selectsRange
+            />
+          </div>
+          <div className="my-4 flex items-center justify-between rounded-md border bg-background-gradient px-2 py-1 text-lg text-imos-title-blue shadow">
+            <button
+              onClick={() => modifyDate('subtract')}
+              className="cursor-pointer rounded bg-white p-2 font-semibold"
+            >
+              <img className="h-2.5 w-2.5 rotate-90" src={arrowIcon} alt="right arrow icon" />
+            </button>
+            <span className="text-l px-5">{dayjs(allDates[selectedDateIndex]).format('DD MMM YYYY')}</span>
+            <button onClick={() => modifyDate('add')} className="cursor-pointer rounded bg-white p-2 font-semibold ">
+              <img className="h-2.5 w-2.5 -rotate-90" src={arrowIcon} alt="left arrow icon" />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="my-2 flex w-full items-center justify-between rounded p-4 px-6 pb-10 shadow-lg">
         {allDates.length > 0 && (
           <div className="w-full px-2 ">
             <Slider
@@ -115,30 +142,6 @@ const TimeSelector: React.FC = () => {
             />
           </div>
         )}
-      </div>
-      <div className="ml-2 flex w-2/12 items-center justify-center rounded p-4 shadow-lg">
-        <img
-          onClick={() => modifyDate('subtract')}
-          className="mr-6 h-4 w-4 rotate-90 cursor-pointer rounded"
-          src={arrowIcon}
-          alt="right arrow icon"
-          aria-hidden="true"
-        />
-        <DatePicker
-          customInput={<p className="cursor-pointer">{dayjs(allDates[selectedDateIndex]).format('DD MMM YYYY')}</p>}
-          selected={startDate}
-          onChange={handleDateChange}
-          startDate={startDate}
-          endDate={endDate}
-          selectsRange
-        />
-        <img
-          onClick={() => modifyDate('add')}
-          className="ml-6 h-4 w-4 -rotate-90 cursor-pointer rounded"
-          src={arrowIcon}
-          aria-hidden="true"
-          alt="left arrow icon"
-        />
       </div>
     </div>
   );

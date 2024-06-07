@@ -10,7 +10,7 @@ import useArgoStore from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
 import { getRegionByRegionTitle } from '@/utils/region';
 import { RegionScope } from '@/constants/region';
-import { Loading, ImagePopup } from '@/components/Shared';
+import { Loading, Popup } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { checkProductHasSubProduct } from '@/utils/product';
 import SearchIcon from '@/assets/icons/search-icon.svg';
@@ -80,25 +80,26 @@ const DataView: React.FC = () => {
     setError('Image not found');
   };
 
-  const handleTextClick = () => {
-    setIsPopupOpen(true);
-  };
-
-  const handleClosePopup = () => {
-    setIsPopupOpen(false);
+  const handlePopup = () => {
+    setIsPopupOpen(!isPopupOpen);
   };
 
   return (
     <div className="group relative">
-      <img className="h-full w-full select-none object-contain" src={chooseImg()} alt="product" onError={handleError} />
+      <img
+        onClick={handlePopup}
+        className="h-full w-full cursor-pointer select-none object-contain"
+        src={chooseImg()}
+        alt="product"
+        onError={handleError}
+        aria-hidden
+      />
       <img
         alt="search icon"
         src={SearchIcon}
-        className="absolute right-0 top-0 cursor-pointer rounded bg-white p-2 px-2 py-1 opacity-0 duration-200 group-hover:opacity-100"
-        onClick={handleTextClick}
-        aria-hidden
+        className="absolute right-9 top-5 cursor-pointer rounded bg-white p-2 px-2 py-1 opacity-0 duration-200 group-hover:opacity-100"
       />
-      <ImagePopup isOpen={isPopupOpen} onClose={handleClosePopup} imageUrl={chooseImg()} />
+      <Popup isImage isOpen={isPopupOpen} onClose={handlePopup} imageUrl={chooseImg()} />
     </div>
   );
 };
