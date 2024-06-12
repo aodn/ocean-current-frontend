@@ -6,7 +6,7 @@ const Loading: React.FC<LoadingProps> = ({ fullPage, loadingSize }) => {
   const size = loadingSize || 'h-20 w-20';
   return (
     <div data-testid="loading-component" className={`flex items-center justify-center ${isFullPage}`}>
-      <div className={`${size} animate-spin rounded-full border-8 border-gray-300 border-t-imos-sea-blue`} />
+      <div className={`${size} animate-spin rounded-full border-4 border-gray-300 border-t-imos-sea-blue`} />
     </div>
   );
 };
