@@ -12,7 +12,7 @@ const MapSidebar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopyLink
   const [searchParams, setSearchParams] = useSearchParams();
   const useArgoMetaData = useArgoStore((state) => state.argoMetaData);
   const useArgo = useArgoStore((state) => state.argoParams);
-  const { depth, worldMeteorologicalOrgId, cycle } = useArgo;
+  const { worldMeteorologicalOrgId, cycle } = useArgo;
   const date = searchParams.get('date') || dayjs().format('YYYYMMDD');
 
   const depthPosition = [
@@ -70,22 +70,10 @@ const MapSidebar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopyLink
             </div>
           </div>
           <div className="mb-3 flex gap-3">
-            <Button
-              onClick={() => changeDepth('1')}
-              selected={depth === '1'}
-              size="full"
-              borderRadius="small"
-              type="secondary"
-            >
+            <Button onClick={() => changeDepth('1')} size="full" borderRadius="small" type="secondary">
               0-400m
             </Button>
-            <Button
-              onClick={() => changeDepth('0')}
-              selected={depth === '0'}
-              size="full"
-              borderRadius="small"
-              type="secondary"
-            >
+            <Button onClick={() => changeDepth('0')} size="full" borderRadius="small" type="secondary">
               0-2000m
             </Button>
           </div>

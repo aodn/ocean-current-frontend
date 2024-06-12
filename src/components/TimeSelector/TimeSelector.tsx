@@ -3,39 +3,49 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { useShallow } from 'zustand/react/shallow';
 import { Slider } from '@/components/Shared/index';
 import arrowIcon from '@/assets/icons/arrow.svg';
 import calendarIcon from '@/assets/icons/calendar-icon.svg';
+import { useDateStore, setStartDate, setEndDate } from '@/stores/date-store/dateStore';
 
 const TimeSelector: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const urlDate = searchParams.get('date');
-  const urlStartDate = searchParams.get('startDate');
-  const urlEndDate = searchParams.get('endDate');
 
   const initialDate = urlDate ? dayjs(urlDate, 'YYYYMMDD').toDate() : dayjs().subtract(1, 'month').toDate();
-  const initialStartDate = urlStartDate
-    ? dayjs(urlStartDate, 'YYYYMMDD').toDate()
-    : dayjs(initialDate).subtract(1, 'month').toDate();
-  const initialEndDate = urlEndDate ? dayjs(urlEndDate, 'YYYYMMDD').toDate() : initialDate;
 
   const steps: number = 1;
 
-  const [startDate, setStartDate] = useState(initialStartDate);
-  const [endDate, setEndDate] = useState<Date | null>(initialEndDate);
+  const { startDate, endDate } = useDateStore(
+    useShallow((state) => ({
+      startDate: state.startDate.toDate(),
+      endDate: state.endDate?.toDate() || null,
+    })),
+  );
+
   const [allDates, setAllDates] = useState<Date[]>([]);
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
 
+  const selectedDateDayjs = dayjs(allDates[selectedDateIndex]);
+
+  const isYesterdayOrLater: boolean = selectedDateDayjs.isSameOrAfter(dayjs().subtract(1, 'day'), 'day');
+
+  const updateDateSlider = (newStartDate: Date, newEndDate: Date, position: 'start' | 'end' = 'start') => {
+    const range = generateDateRange(newStartDate, newEndDate);
+    setAllDates(range);
+    const initialIndex = range.findIndex((date) => dayjs(date).isSame(dayjs(initialDate), 'day'));
+    const dateIndex = position === 'start' ? 0 : range.length - 1;
+    setSelectedDateIndex(initialIndex !== -1 ? initialIndex : dateIndex);
+  };
+
   useEffect(() => {
     if (endDate) {
-      const range = generateDateRange(startDate, endDate);
-      setAllDates(range);
-      const initialIndex = range.findIndex((date) => dayjs(date).isSame(dayjs(initialDate), 'day'));
-      setSelectedDateIndex(initialIndex !== -1 ? initialIndex : range.length - 1);
+      updateDateSlider(startDate, endDate, 'end');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startDate, endDate]);
+  }, []);
 
   const generateDateRange = (start: Date, end: Date) => {
     const dates = [];
@@ -83,8 +93,8 @@ const TimeSelector: React.FC = () => {
     }
 
     const newRange = generateDateRange(newStartDate, newEndDate!);
-    setStartDate(newStartDate);
-    setEndDate(newEndDate);
+    setStartDate(dayjs(newStartDate));
+    setEndDate(dayjs(newEndDate));
     setAllDates(newRange);
     setSelectedDateIndex(newIndex);
     updateUrlParams(dayjs(newRange[newIndex]).format('YYYYMMDD'), newStartDate, newEndDate!);
@@ -94,10 +104,12 @@ const TimeSelector: React.FC = () => {
 
   const handleDateChange = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
-    setStartDate(start || new Date());
-    setEndDate(end);
+
+    setStartDate(start ? dayjs(start) : dayjs());
+    setEndDate(end ? dayjs(end) : null);
     if (start && end) {
-      updateUrlParams(dayjs(start).format('YYYYMMDD'), start, end);
+      updateDateSlider(start, end);
+      updateUrlParams(dayjs(end).format('YYYYMMDD'), start, end);
     }
   };
 
@@ -112,6 +124,7 @@ const TimeSelector: React.FC = () => {
               onChange={handleDateChange}
               startDate={startDate}
               endDate={endDate}
+              maxDate={dayjs().toDate()}
               selectsRange
             />
           </div>
@@ -122,8 +135,12 @@ const TimeSelector: React.FC = () => {
             >
               <img className="h-2.5 w-2.5 rotate-90" src={arrowIcon} alt="right arrow icon" />
             </button>
-            <span className="text-l px-5">{dayjs(allDates[selectedDateIndex]).format('DD MMM YYYY')}</span>
-            <button onClick={() => modifyDate('add')} className="cursor-pointer rounded bg-white p-2 font-semibold ">
+            <span className="text-l px-5">{selectedDateDayjs.format('DD MMM YYYY')}</span>
+            <button
+              onClick={() => modifyDate('add')}
+              disabled={isYesterdayOrLater}
+              className="cursor-pointer rounded bg-white p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
+            >
               <img className="h-2.5 w-2.5 -rotate-90" src={arrowIcon} alt="left arrow icon" />
             </button>
           </div>

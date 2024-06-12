@@ -1,4 +1,3 @@
-import { Dayjs } from 'dayjs';
 import { RegionScope } from '@/constants/region';
 
 type ProductParamState = {
@@ -8,7 +7,6 @@ type ProductParamState = {
   productKey: string;
   regionScope: RegionScope;
   regionTitle: string;
-  date: Dayjs;
 };
 
 export type State = {
@@ -24,6 +22,5 @@ export type Actions = {
     setProductKey: (productKey: string) => void;
     setRegionScope: (regionScope: RegionScope) => void;
     setRegionTitle: (regionTitle: string) => void;
-    setDate: (date: Dayjs) => void;
   };
 };

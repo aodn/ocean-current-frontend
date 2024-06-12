@@ -14,13 +14,13 @@ import { Loading, Popup } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { checkProductHasSubProduct } from '@/utils/product';
 import SearchIcon from '@/assets/icons/search-icon.svg';
+import useDateStore from '@/stores/date-store/dateStore';
 
 const DataView: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { isArgo } = useProductCheck();
-  const date = useArgoStore((state) => state.date);
-  const useProductDate = useProductStore((state) => state.productParams.date);
+  const useDate = useDateStore((state) => state.date);
   const useProductRegionTitle = useProductStore((state) => state.productParams.regionTitle);
   const { mainProduct, subProduct } = useProductConvert();
   const { worldMeteorologicalOrgId, cycle, depth } = useArgoStore((state) => state.argoParams);
@@ -32,7 +32,7 @@ const DataView: React.FC = () => {
 
   useEffect(() => {
     setError(null);
-  }, [mainProduct, subProduct, date, cycle, depth, regionPath, targetPathRegion, useProductDate]);
+  }, [mainProduct, subProduct, cycle, depth, regionPath, targetPathRegion, useDate]);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -50,20 +50,14 @@ const DataView: React.FC = () => {
   // TODO: give default sub product for subProductImgPath
   const subProductImgPath = subProduct?.imgPath;
 
-  const buildArgoImg = (): string => buildArgoImageUrl(worldMeteorologicalOrgId, date, cycle, depth);
+  const buildArgoImg = (): string => buildArgoImageUrl(worldMeteorologicalOrgId, useDate, cycle, depth);
 
   const buildProductImg = (): string => {
     // TODO: config string to constant
     if (mainProduct.key === 'surfaceWaves') {
-      return buildSurfaceWavesImageUrl(useProductDate.toString());
+      return buildSurfaceWavesImageUrl(useDate.toString());
     }
-    return buildProductImageUrl(
-      mainProduct.key,
-      subProductImgPath,
-      regionPath,
-      targetPathRegion,
-      useProductDate.toString(),
-    );
+    return buildProductImageUrl(mainProduct.key, subProductImgPath, regionPath, targetPathRegion, useDate.toString());
   };
 
   const chooseImg = (): string | undefined => {
@@ -71,13 +65,14 @@ const DataView: React.FC = () => {
       return isArgo ? buildArgoImg() : buildProductImg();
     } catch (e) {
       if (e instanceof Error) {
-        setError(e.message);
+        console.error(e);
+        setError('Image not available');
       }
     }
   };
 
   const handleError = () => {
-    setError('Image not found');
+    setError('Image not available');
   };
 
   const handlePopup = () => {
