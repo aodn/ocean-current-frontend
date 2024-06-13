@@ -5,7 +5,7 @@ import { getMainAndSubProductById } from '@/utils/product';
 import { mapNavbarDataElements } from '@/data/dropDownProductData';
 import { MapNavBarElement } from '@/types/dropDownProduct';
 
-const MapNavbar: React.FC = () => {
+const HeaderSideBar: React.FC = () => {
   const navigate = useNavigate();
 
   const useProductId = useProductStore((state) => state.productParams.productId);
@@ -36,4 +36,4 @@ const MapNavbar: React.FC = () => {
   );
 };
 
-export default MapNavbar;
+export default HeaderSideBar;

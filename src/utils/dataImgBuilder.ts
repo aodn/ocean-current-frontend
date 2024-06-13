@@ -19,6 +19,7 @@ const buildProductImageUrl = (
   regionName: string,
   regionScope: TargetPathRegionScope,
   date: string,
+  isApi: boolean = false,
 ) => {
   const productData = productTypeMapping.get(productId);
   if (!productData) {
@@ -41,7 +42,9 @@ const buildProductImageUrl = (
 
   const baseUrl = getBaseUrlByProductId(productId);
 
-  return `${baseUrl}/${productSegment}${subProductSegment}/${regionName}/${formattedDate}.gif`;
+  return isApi
+    ? `/api/${productSegment}${subProductSegment}/${regionName}/${formattedDate}.gif`
+    : `${baseUrl}/${productSegment}${subProductSegment}/${regionName}/${formattedDate}.gif`;
 };
 
 const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle: string, depth: string) => {

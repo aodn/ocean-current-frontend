@@ -13,9 +13,9 @@ import MapSidebar from '@/components/MapSidebar/MapSidebar';
 import { getProductByPath } from '@/utils/product';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useProductFromUrl, useProductSearchParam } from '@/hooks';
-import TimeSelector from '@/components/TimeSelector/TimeSelector';
 import { getRegionByRegionTitle } from '@/utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
+import NewMapNavbar from '@/components/ProductNavbar/ProductNavbar';
 
 const ProductLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -74,7 +74,7 @@ const ProductLayout: React.FC = () => {
           <MapSidebar />
         </div>
         <div className="ml-4 w-full">
-          <TimeSelector />
+          <NewMapNavbar />
           <>
             <ErrorBoundary key={product?.mainProduct}>
               <Outlet />
