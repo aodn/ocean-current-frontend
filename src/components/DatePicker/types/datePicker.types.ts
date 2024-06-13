@@ -4,4 +4,5 @@ export interface DateRangePickerProps {
   handleDateChange: (dates: [Date | null, Date | null]) => void;
   modifyDate: (modificationType: 'add' | 'subtract') => void;
   selectedDate: Date;
+  isYesterdayOrLater: boolean;
 }

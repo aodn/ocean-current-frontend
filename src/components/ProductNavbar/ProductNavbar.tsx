@@ -1,4 +1,5 @@
 import React from 'react';
+import dayjs from 'dayjs';
 import DateRangePicker from '@/components/DatePicker/DatePicker';
 import DateSlider from '@/components/DateSlider/DateSlider';
 import VideoCreation from '@/components/VideoCreation/VideoCreation';
@@ -18,6 +19,7 @@ const ProductNavbar: React.FC = () => {
             handleDateChange={handleDateChange}
             modifyDate={modifyDate}
             selectedDate={allDates[selectedDateIndex]}
+            isYesterdayOrLater={dayjs(allDates[selectedDateIndex]).isSameOrAfter(dayjs().subtract(1, 'day'), 'day')}
           />
         </div>
         <VideoCreation allDates={allDates} />

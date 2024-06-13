@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import '@/configs/dayjs';
-import TimeSelector from './TimeSelector';
+import ProductNavbar from './ProductNavbar';
 
-describe('TimeSelector', () => {
+describe('ProductNavbar', () => {
   beforeEach(() => {
     vi.useFakeTimers();
   });
@@ -13,16 +13,16 @@ describe('TimeSelector', () => {
   });
 
   it('should render successfully', () => {
-    const date = new Date('12 June 2024');
+    const date = new Date('13 June 2024');
     vi.setSystemTime(date);
 
     render(
       <MemoryRouter>
-        <TimeSelector />
+        <ProductNavbar />
       </MemoryRouter>,
     );
 
-    expect(screen.getByText('12 May 2024')).toBeInTheDocument();
+    expect(screen.getByText('13 Jun 2024')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /right arrow icon/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /left arrow icon/i })).toBeInTheDocument();
   });
