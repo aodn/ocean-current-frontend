@@ -4,14 +4,14 @@ import { isAxiosError } from 'axios';
 import { getArgoProfilesByDate } from '@/services/argo';
 import { calculateCenterByCoords, convertHtmlToArgo } from '@/utils/argo';
 import { ArgoProfile } from '@/types/argo';
-import useArgoStore, { setArgoMetaData, setDate } from '@/stores/argo-store/argoStore';
+import { setArgoMetaData } from '@/stores/argo-store/argoStore';
+import useDateStore, { setDate } from '@/stores/date-store/dateStore';
 
 const useArgoAsProductData = () => {
-  const useDate = useArgoStore((state) => state.date);
+  const useDate = useDateStore((state) => state.date);
 
   const [latestDate, setLatestDate] = useState<Dayjs>(useDate);
   const [argoProfiles, setArgoProfiles] = useState<ArgoProfile[]>([]);
-
   useEffect(() => {
     const fetchData = async (date: Dayjs) => {
       try {
@@ -33,8 +33,9 @@ const useArgoAsProductData = () => {
   }, [useDate]);
 
   useEffect(() => {
+    if (latestDate === useDate) return;
     setDate(latestDate);
-  }, [latestDate]);
+  }, [latestDate, useDate]);
 
   useEffect(() => {
     if (argoProfiles.length === 0) return;

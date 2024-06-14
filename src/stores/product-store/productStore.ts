@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import dayjs from 'dayjs';
 import { RegionScope } from '@/constants/region';
 import { combinedProducts } from '@/utils/product';
 import { Actions, State } from './product.types';
@@ -13,7 +12,6 @@ const initialState: State = {
     productKey: '',
     regionScope: RegionScope.State,
     regionTitle: '',
-    date: dayjs().subtract(1, 'day'),
   },
 };
 
@@ -57,12 +55,11 @@ const useProductStore = create<State & Actions>()(
           false,
           'setRegionTitle',
         ),
-      setDate: (date) => set((state) => ({ productParams: { ...state.productParams, date } }), false, 'setDate'),
     },
   })),
 );
 
-export const { setProductId, setMainProduct, setSubProduct, setProductKey, setRegionScope, setRegionTitle, setDate } =
+export const { setProductId, setMainProduct, setSubProduct, setProductKey, setRegionScope, setRegionTitle } =
   useProductStore.getState().actions;
 
 export default useProductStore;

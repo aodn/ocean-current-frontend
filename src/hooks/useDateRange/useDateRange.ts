@@ -1,36 +1,30 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { useShallow } from 'zustand/react/shallow';
+import { useDateStore, setStartDate, setEndDate } from '@/stores/date-store/dateStore';
 
 const useDateRange = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-
   const urlDate = searchParams.get('date');
-  const urlStartDate = searchParams.get('startDate');
-  const urlEndDate = searchParams.get('endDate');
-
   const initialDate = urlDate ? dayjs(urlDate, 'YYYYMMDD').toDate() : dayjs().subtract(1, 'month').toDate();
-  const initialStartDate = urlStartDate
-    ? dayjs(urlStartDate, 'YYYYMMDD').toDate()
-    : dayjs(initialDate).subtract(1, 'month').toDate();
-  const initialEndDate = urlEndDate ? dayjs(urlEndDate, 'YYYYMMDD').toDate() : initialDate;
 
-  const steps: number = 1;
+  const { startDate, endDate } = useDateStore(
+    useShallow((state) => ({
+      startDate: state.startDate.toDate(),
+      endDate: state.endDate?.toDate() || null,
+    })),
+  );
 
-  const [startDate, setStartDate] = useState(initialStartDate);
-  const [endDate, setEndDate] = useState<Date | null>(initialEndDate);
   const [allDates, setAllDates] = useState<Date[]>([]);
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
 
   useEffect(() => {
     if (endDate) {
-      const range = generateDateRange(startDate, endDate);
-      setAllDates(range);
-      const initialIndex = range.findIndex((date) => dayjs(date).isSame(dayjs(initialDate), 'day'));
-      setSelectedDateIndex(initialIndex !== -1 ? initialIndex : range.length - 1);
+      updateDateSlider(startDate, endDate, 'end');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startDate, endDate]);
+  }, []);
 
   const generateDateRange = (start: Date, end: Date) => {
     const dates = [];
@@ -43,6 +37,14 @@ const useDateRange = () => {
     }
 
     return dates;
+  };
+
+  const updateDateSlider = (newStartDate: Date, newEndDate: Date, position: 'start' | 'end' = 'start') => {
+    const range = generateDateRange(newStartDate, newEndDate);
+    setAllDates(range);
+    const initialIndex = range.findIndex((date) => dayjs(date).isSame(dayjs(initialDate), 'day'));
+    const dateIndex = position === 'start' ? 0 : range.length - 1;
+    setSelectedDateIndex(initialIndex !== -1 ? initialIndex : dateIndex);
   };
 
   const handleSliderChange = (newValue: number) => {
@@ -78,8 +80,8 @@ const useDateRange = () => {
     }
 
     const newRange = generateDateRange(newStartDate, newEndDate!);
-    setStartDate(newStartDate);
-    setEndDate(newEndDate);
+    setStartDate(dayjs(newStartDate));
+    setEndDate(dayjs(newEndDate));
     setAllDates(newRange);
     setSelectedDateIndex(newIndex);
     updateUrlParams(dayjs(newRange[newIndex]).format('YYYYMMDD'), newStartDate, newEndDate!);
@@ -87,10 +89,12 @@ const useDateRange = () => {
 
   const handleDateChange = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
-    setStartDate(start || new Date());
-    setEndDate(end);
+
+    setStartDate(start ? dayjs(start) : dayjs());
+    setEndDate(end ? dayjs(end) : null);
     if (start && end) {
-      updateUrlParams(dayjs(start).format('YYYYMMDD'), start, end);
+      updateDateSlider(start, end);
+      updateUrlParams(dayjs(end).format('YYYYMMDD'), start, end);
     }
   };
 
@@ -102,7 +106,7 @@ const useDateRange = () => {
     handleSliderChange,
     handleDateChange,
     modifyDate,
-    steps,
+    steps: 1,
   };
 };
 

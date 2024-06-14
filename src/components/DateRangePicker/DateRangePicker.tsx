@@ -1,27 +1,36 @@
+import React from 'react';
 import DatePicker from 'react-datepicker';
 import dayjs from 'dayjs';
-import React from 'react';
 import arrowIcon from '@/assets/icons/arrow.svg';
 import calendarIcon from '@/assets/icons/calendar-icon.svg';
-import { DateRangePickerProps } from './types/datePicker.types';
-import 'react-datepicker/dist/react-datepicker.css';
+import { DateRangePickerProps } from './types/DateRangePicker.types';
+
+const customInput = () => (
+  <div className="mr-4 flex cursor-pointer items-center justify-center">
+    <img src={calendarIcon} alt="calendar icon" className="mr-4" />
+    <p className="font-medium text-imos-sea-blue">Date</p>
+  </div>
+);
 
 const DateRangePicker: React.FC<DateRangePickerProps> = ({
   startDate,
   endDate,
+  maxDate = new Date(),
+  addButtonDisabled = false,
   handleDateChange,
   modifyDate,
   selectedDate,
 }) => {
   return (
     <div className="flex items-center justify-evenly">
-      <div className="max-w-11">
+      <div className="max-w-28">
         <DatePicker
-          customInput={<img src={calendarIcon} alt="calendar icon" className="mt-2 cursor-pointer" />}
+          customInput={customInput()}
           selected={startDate}
           onChange={handleDateChange}
           startDate={startDate}
           endDate={endDate}
+          maxDate={maxDate}
           selectsRange
         />
       </div>
@@ -30,7 +39,11 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
           <img className="h-2.5 w-2.5 rotate-90" src={arrowIcon} alt="right arrow icon" />
         </button>
         <span className="text-l px-5">{dayjs(selectedDate).format('DD MMM YYYY')}</span>
-        <button onClick={() => modifyDate('add')} className="cursor-pointer rounded bg-white p-2 font-semibold ">
+        <button
+          onClick={() => modifyDate('add')}
+          disabled={addButtonDisabled}
+          className="cursor-pointer rounded bg-white p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
+        >
           <img className="h-2.5 w-2.5 -rotate-90" src={arrowIcon} alt="left arrow icon" />
         </button>
       </div>

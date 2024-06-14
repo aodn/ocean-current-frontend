@@ -23,7 +23,7 @@ const RegionPolygonLayer = () => {
   const product = getProductByKey(mainProduct, subProduct);
   const mainProductPath = product.mainProduct.path;
   const subProductPath = product.subProduct ? `/${product.subProduct.path}` : '';
-  const yesterdayDate = dayjs().subtract(1, 'day').format('YYYYMMDD');
+  const defaultTargetDate = dayjs().subtract(2, 'day').format('YYYYMMDD');
 
   useEffect(() => {
     if (!map) return;
@@ -47,7 +47,7 @@ const RegionPolygonLayer = () => {
         const targetPath = `/product/${mainProductPath}${subProductPath}`;
 
         const dateFromQuery = searchParams.date;
-        const queryObject = dateFromQuery ? { region: regionName } : { region: regionName, date: yesterdayDate };
+        const queryObject = dateFromQuery ? { region: regionName } : { region: regionName, date: defaultTargetDate };
         updateQueryParamsAndNavigate(targetPath, queryObject);
       }
     };
@@ -72,7 +72,7 @@ const RegionPolygonLayer = () => {
     searchParams.date,
     subProductPath,
     updateQueryParamsAndNavigate,
-    yesterdayDate,
+    defaultTargetDate,
   ]);
 
   return (

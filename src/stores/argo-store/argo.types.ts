@@ -1,5 +1,3 @@
-import { Dayjs } from 'dayjs';
-
 type ArgoProfile = {
   worldMeteorologicalOrgId: string;
   cycle: string;
@@ -14,7 +12,6 @@ type ArgoMetaData = {
 } & ArgoProfile;
 
 export type State = {
-  date: Dayjs;
   argoParams: ArgoProfile;
   argoMetaData: ArgoMetaData[];
 };
@@ -25,9 +22,6 @@ export type Actions = {
     setArgoCycle: (cycle: string) => void;
     setArgoDepth: (depth: '0' | '1') => void;
     setArgoMetaData: (metaData: ArgoMetaData[]) => void;
-    setDate: (date: State['date']) => void;
-    addOneDay: () => void;
-    subtractOneDay: () => void;
     reset: () => void;
   };
 };
