@@ -31,7 +31,7 @@ describe('useDateRange', () => {
     });
   });
 
-  test('should update date slider correctly', () => {
+  it('should update date slider correctly', () => {
     const { result } = renderHook(() => useDateRange());
 
     act(() => {
@@ -41,7 +41,7 @@ describe('useDateRange', () => {
     expect(result.current.selectedDateIndex).toBe(1);
   });
 
-  test('should handle date change correctly', () => {
+  it('should handle date change correctly', () => {
     const { result } = renderHook(() => useDateRange());
 
     const newStartDate = dayjs().subtract(2, 'months').toDate();
@@ -55,7 +55,7 @@ describe('useDateRange', () => {
     expect(setEndDate).toHaveBeenCalledWith(dayjs(newEndDate));
   });
 
-  test('should update URL parameters correctly on slider change', () => {
+  it('should update URL parameters correctly on slider change', () => {
     const setSearchParamsMock = vi.fn();
     vi.mocked(useSearchParams).mockReturnValue([searchParamsMock, setSearchParamsMock]);
 
