@@ -1,9 +1,10 @@
 import React from 'react';
-import DatePicker from 'react-datepicker';
+import ReactDatePicker from 'react-datepicker';
 import dayjs from 'dayjs';
 import arrowIcon from '@/assets/icons/arrow.svg';
 import calendarIcon from '@/assets/icons/calendar-icon.svg';
-import { DateRangePickerProps } from './types/DateRangePicker.types';
+import { DatePickerProps } from './types/DatePicker.types';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const customInput = () => (
   <div className="mr-4 flex cursor-pointer items-center justify-center">
@@ -12,7 +13,7 @@ const customInput = () => (
   </div>
 );
 
-const DateRangePicker: React.FC<DateRangePickerProps> = ({
+const DatePicker: React.FC<DatePickerProps> = ({
   startDate,
   endDate,
   maxDate = new Date(),
@@ -24,7 +25,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
   return (
     <div className="flex items-center justify-evenly">
       <div className="max-w-28">
-        <DatePicker
+        <ReactDatePicker
           customInput={customInput()}
           selected={startDate}
           onChange={handleDateChange}
@@ -36,7 +37,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
       </div>
       <div className="my-4 flex items-center justify-between rounded-md border px-2 py-1 text-lg text-imos-title-blue shadow">
         <button onClick={() => modifyDate('subtract')} className="cursor-pointer rounded bg-white p-2 font-semibold">
-          <img className="h-2.5 w-2.5 rotate-90" src={arrowIcon} alt="right arrow icon" />
+          <img className="h-2.5 w-2.5 rotate-90" src={arrowIcon} alt="left arrow icon" />
         </button>
         <span className="text-l px-5">{dayjs(selectedDate).format('DD MMM YYYY')}</span>
         <button
@@ -44,11 +45,11 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
           disabled={addButtonDisabled}
           className="cursor-pointer rounded bg-white p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <img className="h-2.5 w-2.5 -rotate-90" src={arrowIcon} alt="left arrow icon" />
+          <img className="h-2.5 w-2.5 -rotate-90" src={arrowIcon} alt="right arrow icon" />
         </button>
       </div>
     </div>
   );
 };
 
-export default DateRangePicker;
+export default DatePicker;
