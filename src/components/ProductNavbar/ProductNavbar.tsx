@@ -1,6 +1,6 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import DateRangePicker from '@/components/DatePicker/DatePicker';
+import DateRangePicker from '@/components/DateRangePicker/DateRangePicker';
 import DateSlider from '@/components/DateSlider/DateSlider';
 import VideoCreation from '@/components/VideoCreation/VideoCreation';
 import useDateRange from '@/hooks/useDateRange/useDateRange';
@@ -9,6 +9,11 @@ const ProductNavbar: React.FC = () => {
   const { startDate, endDate, allDates, selectedDateIndex, handleSliderChange, handleDateChange, modifyDate, steps } =
     useDateRange();
 
+  const isSelectedDayYesterdayOrLater = dayjs(allDates[selectedDateIndex]).isSameOrAfter(
+    dayjs().subtract(1, 'day'),
+    'day',
+  );
+
   return (
     <div className="mb-2 p-1 shadow-lg">
       <div className="flex items-center justify-between rounded ">
@@ -16,10 +21,10 @@ const ProductNavbar: React.FC = () => {
           <DateRangePicker
             startDate={startDate}
             endDate={endDate}
+            addButtonDisabled={isSelectedDayYesterdayOrLater}
             handleDateChange={handleDateChange}
             modifyDate={modifyDate}
             selectedDate={allDates[selectedDateIndex]}
-            isYesterdayOrLater={dayjs(allDates[selectedDateIndex]).isSameOrAfter(dayjs().subtract(1, 'day'), 'day')}
           />
         </div>
         <VideoCreation allDates={allDates} />

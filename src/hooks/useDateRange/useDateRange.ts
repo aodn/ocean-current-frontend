@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { useShallow } from 'zustand/react/shallow';
 import { useDateStore, setStartDate, setEndDate } from '@/stores/date-store/dateStore';
 
 const useDateRange = () => {
@@ -8,10 +9,12 @@ const useDateRange = () => {
   const urlDate = searchParams.get('date');
   const initialDate = urlDate ? dayjs(urlDate, 'YYYYMMDD').toDate() : dayjs().subtract(1, 'month').toDate();
 
-  const { startDate, endDate } = useDateStore((state) => ({
-    startDate: state.startDate.toDate(),
-    endDate: state.endDate?.toDate() || null,
-  }));
+  const { startDate, endDate } = useDateStore(
+    useShallow((state) => ({
+      startDate: state.startDate.toDate(),
+      endDate: state.endDate?.toDate() || null,
+    })),
+  );
 
   const [allDates, setAllDates] = useState<Date[]>([]);
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
