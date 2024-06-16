@@ -1,4 +1,4 @@
-export interface DateRangePickerProps {
+export interface DatePickerProps {
   startDate: Date | null;
   endDate: Date | null;
   maxDate?: Date;
