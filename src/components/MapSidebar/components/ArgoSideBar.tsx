@@ -64,7 +64,7 @@ const MapSidebar: React.FC<DataSidebarProps> = ({ copyButtonText, handleCopyLink
 
         <div className="p-2">
           <div className="my-5">
-            <div className="flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg border bg-imos-black px-12 py-1 text-lg  text-white transition duration-300 ease-in-out">
+            <div className="flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg border bg-[#3A6F8F] px-12 py-1 text-lg  text-white transition duration-300 ease-in-out">
               <img src={ArgoIdIcon} alt="argo id icon" />
               aoml {worldMeteorologicalOrgId}
             </div>

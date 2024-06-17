@@ -1,19 +1,28 @@
+import SSTIcon from '@/assets/icons/products/SST-icon.svg';
+import OceanColourIcon from '@/assets/icons/products/ocean-colour-icon.svg';
+import AdjustedSeaLevelAnomalyIcon from '@/assets/icons/products/adjusted-sea-level-anomaly-icon.svg';
+import MonthlyMeansIcon from '@/assets/icons/products/monthly-means-icon.svg';
+import SurfaceWavesIcon from '@/assets/icons/products/surface-waves-icon.svg';
+import FourHourSSTIcon from '@/assets/icons/products/4-hour-SST-icon.svg';
+import SixHourSSTIcon from '@/assets/icons/products/6-hour-SST-icon.svg';
+import CurrentMetersIcon from '@/assets/icons/products/current-meters-icon.svg';
+import GliderIcon from '@/assets/icons/products/glider-icon.svg';
+import SealCTDIcon from '@/assets/icons/products/seal-ctd-icon.svg';
+
 export const linksData = [
   {
     title: 'Maps',
     leftLinks: [
       {
         id: 'snapshotSst',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
+        imageUrl: SSTIcon,
         title: 'Snapshot SST',
         description: 'Sea Surface Temperature',
         url: '/map/snapshot-sst',
       },
       {
         id: 'oceanColour',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
+        imageUrl: OceanColourIcon,
         title: 'Ocean Color',
         description: 'Satellite ocean color',
         url: '/map/ocean-colour/chl-a',
@@ -27,43 +36,38 @@ export const linksData = [
         url: '/map/climatology/sst',
       },
       {
-        id: 'myocean',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
-        title: 'MyOcean',
+        id: 'four-hour-sst',
+        imageUrl: FourHourSSTIcon,
+        title: 'Four Hour SST',
         description: 'Ocean current observations',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
+        url: '/map/four-hour-sst/sst',
       },
     ],
     rightLinks: [
       {
         id: 'sixDaySst-sst',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
+        imageUrl: SixHourSSTIcon,
         title: 'Daily SST',
         description: 'Daily sea surface temperature',
         url: '/map/6-day-sst/sst',
       },
       {
         id: 'adjustedSeaLevelAnomaly',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
+        imageUrl: AdjustedSeaLevelAnomalyIcon,
         title: 'Adj. Sea Level Anom.',
         description: 'Adjusted Sea Level Anomaly',
         url: '/map/adj-sea-level-anom/sla',
       },
       {
         id: 'monthlyMeans',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
+        imageUrl: MonthlyMeansIcon,
         title: 'Monthly Means',
         description: 'Monthly temperature averages',
         url: '/map/monthly-means',
       },
       {
         id: 'surfaceWaves',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
+        imageUrl: SurfaceWavesIcon,
         title: 'Surface Waves',
         description: 'Ocean surface wave observations',
         url: '/map/surface-waves',
@@ -83,8 +87,7 @@ export const linksData = [
       },
       {
         id: 'gliders',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
+        imageUrl: GliderIcon,
         title: 'Gliders',
         description: 'Autonomous underwater vehicles',
         url: 'https://oceancurrent.aodn.org.au/index.php',
@@ -101,16 +104,14 @@ export const linksData = [
     rightLinks: [
       {
         id: 'current-meters',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
+        imageUrl: CurrentMetersIcon,
         title: 'Current Meters',
         description: 'Flow measurement devices',
         url: 'https://oceancurrent.aodn.org.au/index.php',
       },
       {
         id: 'sealctd',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
+        imageUrl: SealCTDIcon,
         title: 'SealCTD',
         description: 'Animal-mounted sensors',
         url: 'https://oceancurrent.aodn.org.au/index.php',
