@@ -4,15 +4,15 @@ import dayjs from 'dayjs';
 import { setArgoData } from '@/stores/argo-store/argoStore';
 import useDateStore, { setDate } from '@/stores/date-store/dateStore';
 import { setMainProduct, setRegionTitle, setSubProduct, setProductId } from '@/stores/product-store/productStore';
-import MapSidebar from '@/components/MapSidebar/MapSidebar';
 import { getProductByPath } from '@/utils/product';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useProductFromUrl, useProductSearchParam } from '@/hooks';
 import { getRegionByRegionTitle } from '@/utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
-import NewMapNavbar from '@/components/ProductNavbar/ProductNavbar';
+import DataVisualizationNavbar from '@/components/ProductNavbar/ProductNavbar';
+import DataVisualizationSidebar from '@/components/DataVisualizationSidebar/DataVisualizationSidebar';
 
-const ProductLayout: React.FC = () => {
+const DataVisualizationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
   const { isArgo } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
@@ -67,10 +67,10 @@ const ProductLayout: React.FC = () => {
     <div className="mx-auto my-9 w-full max-w-8xl">
       <div className="flex p-4">
         <div className="w-1/3">
-          <MapSidebar />
+          <DataVisualizationSidebar />
         </div>
         <div className="ml-4 w-full">
-          <NewMapNavbar />
+          <DataVisualizationNavbar />
           <>
             <ErrorBoundary key={product?.mainProduct}>
               <Outlet />
@@ -82,4 +82,4 @@ const ProductLayout: React.FC = () => {
   );
 };
 
-export default ProductLayout;
+export default DataVisualizationLayout;
