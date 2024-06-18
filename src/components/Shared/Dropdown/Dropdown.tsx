@@ -3,11 +3,18 @@ import arrowIcon from '@/assets/icons/arrow.svg';
 import { useOutsideClick } from '@/hooks';
 import { DropdownElement, DropdownProps } from './types/dropdown.types';
 
-const Dropdown: React.FC<DropdownProps> = ({ showIcons, elements, selectedId, onChange, header }: DropdownProps) => {
+const Dropdown: React.FC<DropdownProps> = ({
+  showIcons,
+  elements,
+  selectedId,
+  onChange,
+  header,
+  isOpen = false,
+}: DropdownProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const initialElement = elements.find((element) => element.id === selectedId);
   const [selectedElement, setSelectedElement] = useState<DropdownElement | undefined>(initialElement);
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [isDropdownOpen, setDropdownOpen] = useState(isOpen);
 
   useOutsideClick<HTMLDivElement>(dropdownRef, () => {
     setDropdownOpen(false);

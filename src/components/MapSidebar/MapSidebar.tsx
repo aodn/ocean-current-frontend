@@ -1,31 +1,41 @@
-import React, { useState } from 'react';
-import { TEXT_CONSTANT } from '@/constants/textConstant';
-import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import ProductSideBar from './components/ProductSidebar';
-import ArgoSideBar from './components/ArgoSideBar';
+import { useNavigate } from 'react-router-dom';
+import useProductStore, { setMainProduct, setProductId, setSubProduct } from '@/stores/product-store/productStore';
+import { getMainAndSubProductById } from '@/utils/product';
+import { mapNavbarDataElements } from '@/data/dropDownProductData';
+import { MapNavBarElement } from '@/types/dropDownProduct';
 
 const MapSidebar: React.FC = () => {
-  const [copyButtonText, setCopyButtonText] = useState<string>(TEXT_CONSTANT.COPY_PERMLINK);
-  const { isArgo } = useProductCheck();
+  const navigate = useNavigate();
 
-  const handleCopyLink = () => {
-    const url = location.href;
-    navigator.clipboard.writeText(url);
-    setCopyButtonText('Copied!');
+  const useProductId = useProductStore((state) => state.productParams.productId);
 
-    setTimeout(() => {
-      setCopyButtonText(TEXT_CONSTANT.COPY_PERMLINK);
-    }, 2000);
+  const handleDropdownChange = (selectedElement: MapNavBarElement) => {
+    setProductId(selectedElement.id);
+    const product = getMainAndSubProductById(selectedElement.id);
+    setMainProduct(product.mainProduct.key);
+    setSubProduct(product.subProduct?.key || null);
+    const targetPath = product.subProduct
+      ? `${product.mainProduct.path}/${product.subProduct.path}`
+      : product.mainProduct.path;
+    navigate(targetPath);
   };
 
   return (
-    <>
-      {isArgo ? (
-        <ArgoSideBar copyButtonText={copyButtonText} handleCopyLink={handleCopyLink} />
-      ) : (
-        <ProductSideBar copyButtonText={copyButtonText} handleCopyLink={handleCopyLink} />
-      )}
-    </>
+    <div>
+      <div className="  w-full rounded-b-md bg-[#EFEFEF] p-4 shadow" data-testid="drop-down-menu">
+        {mapNavbarDataElements.map((element) => (
+          <div
+            key={element.id}
+            aria-hidden="true"
+            className={`mb-4 flex cursor-pointer items-center rounded-md border border-[#c2c2c2] p-3 duration-300 hover:border-imos-black ${element.id === useProductId ? 'border-[#888888] bg-white' : ''}`}
+            onClick={() => handleDropdownChange(element)}
+          >
+            <img className="mr-4 h-9 w-9" src={element.icon} alt={`${element.label} icon`} />
+            <span className="text-left text-base text-imos-grey">{element.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 

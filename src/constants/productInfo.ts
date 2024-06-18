@@ -6,7 +6,7 @@ import {
   SixDaySstModalData,
   SnapshotModalData,
   SurfaceWaveModalData,
-} from '@/components/MapSidebar/components/modals/productsModalData';
+} from '@/components/DataVisualizationSidebar/components/modals/productsModalData';
 import { ProductInfo } from '@/types/product';
 
 const list: ProductInfo[] = [

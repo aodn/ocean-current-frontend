@@ -4,16 +4,16 @@ import dayjs from 'dayjs';
 import { setArgoData } from '@/stores/argo-store/argoStore';
 import useDateStore, { setDate } from '@/stores/date-store/dateStore';
 import { setMainProduct, setRegionTitle, setSubProduct, setProductId } from '@/stores/product-store/productStore';
-import MapSidebar from '@/components/MapSidebar/MapSidebar';
 import { getProductByPath } from '@/utils/product';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useProductFromUrl, useProductSearchParam } from '@/hooks';
 import { getRegionByRegionTitle } from '@/utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
-import NewMapNavbar from '@/components/ProductNavbar/ProductNavbar';
+import DataVisualizationNavbar from '@/components/ProductNavbar/ProductNavbar';
+import DataVisualizationSidebar from '@/components/DataVisualizationSidebar/DataVisualizationSidebar';
 import ArrowIcon from '@/assets/icons/arrow.svg';
 
-const ProductLayout: React.FC = () => {
+const DataVisualizationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
   const { isArgo } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
@@ -81,18 +81,19 @@ const ProductLayout: React.FC = () => {
           />
         </button>
         <div className={`transition-all duration-300 ${isSidebarVisible ? 'w-1/3' : 'w-0 overflow-hidden'}`}>
-          <MapSidebar />
+          <DataVisualizationSidebar />
         </div>
         <div className={`transition-all duration-300 ${isSidebarVisible ? 'ml-4' : 'ml-0'} w-full`}>
-          <NewMapNavbar />
-
-          <ErrorBoundary key={product?.mainProduct}>
-            <Outlet />
-          </ErrorBoundary>
+          <DataVisualizationNavbar />
+          <>
+            <ErrorBoundary key={product?.mainProduct}>
+              <Outlet />
+            </ErrorBoundary>
+          </>
         </div>
       </div>
     </div>
   );
 };
 
-export default ProductLayout;
+export default DataVisualizationLayout;

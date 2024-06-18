@@ -10,4 +10,5 @@ export interface DropdownProps {
   onChange?: (selectedElement: DropdownElement) => void;
   header?: boolean;
   showIcons?: boolean;
+  isOpen?: boolean;
 }
