@@ -69,20 +69,37 @@ const getProductByKey = (mainProductKey: string, subProductKey: string | null = 
   return { mainProduct, subProduct };
 };
 
-const getProductById = (productId: string): FlatProduct | undefined => {
+const getProductByIdFromFlat = (productId: string): FlatProduct | undefined => {
   const product = flatProducts.find((product) => product.key === productId);
   return product;
 };
 
+const getProductByIdFromTree = (productId: string): Product | undefined => {
+  const findProduct = (products: Product[]): Product | undefined => {
+    for (const product of products) {
+      if (product.key === productId) {
+        return product;
+      }
+      if (product.children) {
+        const childProduct = findProduct(product.children);
+        if (childProduct) {
+          return childProduct;
+        }
+      }
+    }
+  };
+  return findProduct(OC_PRODUCTS);
+};
+
 const getMainAndSubProductById = (productId: string): MainProductWithSubProduct => {
-  const product = getProductById(productId);
+  const product = getProductByIdFromFlat(productId);
   if (!product) {
     throw new Error(`Invalid product id: ${productId}`);
   }
-  if (!product.parent) {
+  if (!product.parentId) {
     return getProductByKey(product.key);
   }
-  return getProductByKey(product.parent, product.key);
+  return getProductByKey(product.parentId, product.key);
 };
 
 const checkProductHasSubProduct = (productKey: string | undefined | null): boolean =>
@@ -91,14 +108,29 @@ const checkProductHasSubProduct = (productKey: string | undefined | null): boole
 const getProductInfoByKey = (productKey: string): ProductInfo | undefined =>
   productDescription.find((product) => product.id === productKey);
 
+const constructPath = (product: FlatProduct): string => {
+  return `${product.path}`;
+};
+
+const constructParentPath = (product: FlatProduct): string => {
+  if (!product.parentId) {
+    return '';
+  }
+  const parentProductPath = getProductByIdFromFlat(product.parentId)?.path || '';
+  return `${parentProductPath}/${product.path}`;
+};
+
 export {
   combineProducts,
   combinedProducts,
-  getProductById,
+  getProductByIdFromFlat,
+  getProductByIdFromTree,
   getProductByPath,
   getProductByKey,
   getMainAndSubProductById,
   validateProductIdentifier,
   checkProductHasSubProduct,
   getProductInfoByKey,
+  constructPath,
+  constructParentPath,
 };

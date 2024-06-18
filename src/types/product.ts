@@ -33,5 +33,5 @@ export interface ProductInfo {
 }
 
 export interface FlatProduct extends Product {
-  parent: string | null;
+  parentId: string | null;
 }

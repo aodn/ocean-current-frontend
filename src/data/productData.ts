@@ -5,11 +5,12 @@ const flattenProducts = (products: Product[]): FlatProduct[] => {
   const flatList: FlatProduct[] = [];
 
   products.forEach((product) => {
-    if (!product.children) {
-      flatList.push({ ...product, parent: null });
-    } else {
+    const { children, ...flatProduct } = product;
+    flatList.push({ ...flatProduct, parentId: null });
+
+    if (product.children) {
       product.children.forEach((child) => {
-        flatList.push({ ...child, parent: product.key });
+        flatList.push({ ...child, parentId: product.key });
       });
     }
   });
