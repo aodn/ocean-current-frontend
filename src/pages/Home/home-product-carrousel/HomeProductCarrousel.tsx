@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import useMapStore from '@/stores/map-store/mapStore';
-import { setMainProduct, setProductId, setSubProduct } from '@/stores/product-store/productStore';
+import { setProductId } from '@/stores/product-store/productStore';
 import { productsData } from './data/homeProductsData';
 import HomeProductCarrouselCard from './components/HomeProductCarrouselCard';
 
@@ -48,9 +48,7 @@ const HomeProductCarrousel: React.FC = () => {
 
   useEffect(() => {
     setProductId(selectedProduct.id);
-    setMainProduct(selectedProduct.mainProduct);
-    setSubProduct(selectedProduct.subProduct);
-  }, [selectedProduct.id, selectedProduct.mainProduct, selectedProduct.subProduct]);
+  }, [selectedProduct.id]);
 
   return (
     <ul>

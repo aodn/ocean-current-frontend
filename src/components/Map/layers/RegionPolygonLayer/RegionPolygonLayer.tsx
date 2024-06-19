@@ -2,9 +2,8 @@ import { Layer, MapMouseEvent, Source, useMap } from 'react-map-gl';
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
-import useProductStore from '@/stores/product-store/productStore';
-import { getProductByKey } from '@/utils/product';
 import { useQueryParams } from '@/hooks';
+import useProductPath from '@/stores/product-store/hooks/useProductPath';
 import useRegionData from '../../hooks/useRegionData';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
 
@@ -13,16 +12,11 @@ const RegionPolygonLayer = () => {
   const { productRegionBoxLayer, productRegionBoxHighlightLayer } = mapboxLayerIds;
 
   const { regionData } = useRegionData();
-  const mainProduct = useProductStore((state) => state.productParams.mainProduct);
-  const subProduct = useProductStore((state) => state.productParams.subProduct);
+  const baseProductPath = useProductPath();
   const { searchParams, updateQueryParamsAndNavigate } = useQueryParams();
   const { current: map } = useMap();
-
   const [hoveredRegion, setHoveredRegion] = useState<string>('');
 
-  const product = getProductByKey(mainProduct, subProduct);
-  const mainProductPath = product.mainProduct.path;
-  const subProductPath = product.subProduct ? `/${product.subProduct.path}` : '';
   const defaultTargetDate = dayjs().subtract(2, 'day').format('YYYYMMDD');
 
   useEffect(() => {
@@ -44,7 +38,7 @@ const RegionPolygonLayer = () => {
       ]);
 
       if (regionName) {
-        const targetPath = `/product/${mainProductPath}${subProductPath}`;
+        const targetPath = `/product/${baseProductPath}`;
 
         const dateFromQuery = searchParams.date;
         const queryObject = dateFromQuery ? { region: regionName } : { region: regionName, date: defaultTargetDate };
@@ -65,15 +59,7 @@ const RegionPolygonLayer = () => {
       map.off('mouseleave', productRegionBoxLayer, handleMouseLeave);
       map.off('mousemove', productRegionBoxLayer, handleMouseMove);
     };
-  }, [
-    mainProductPath,
-    map,
-    productRegionBoxLayer,
-    searchParams.date,
-    subProductPath,
-    updateQueryParamsAndNavigate,
-    defaultTargetDate,
-  ]);
+  }, [map, productRegionBoxLayer, searchParams.date, updateQueryParamsAndNavigate, defaultTargetDate, baseProductPath]);
 
   return (
     <Source id={productRegionBoxSource} type="geojson" data={regionData}>
