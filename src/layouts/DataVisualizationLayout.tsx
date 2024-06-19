@@ -10,8 +10,9 @@ import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useProductFromUrl, useProductSearchParam } from '@/hooks';
 import { getRegionByRegionTitle } from '@/utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
-import NewMapNavbar from '@/components/ProductNavbar/ProductNavbar';
+import DataVisualizationNavbar from '@/components/ProductNavbar/ProductNavbar';
 import DataVisualizationSidebar from '@/components/DataVisualizationSidebar/DataVisualizationSidebar';
+import ArrowIcon from '@/assets/icons/arrow.svg';
 
 const DataVisualizationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -19,6 +20,9 @@ const DataVisualizationLayout: React.FC = () => {
   const useDate = useDateStore((state) => state.date);
   const product = useProductFromUrl('product');
   const [showVideo, setShowVideo] = useState(false);
+  const [isSidebarVisible, setSidebarVisible] = useState(true);
+
+  const toggleSidebar = () => setSidebarVisible(!isSidebarVisible);
 
   const getArgoData = useCallback(() => {
     const date = searchParams.get('date') || dayjs().format('YYYYMMDD');
@@ -66,13 +70,23 @@ const DataVisualizationLayout: React.FC = () => {
   }, [getArgoData, isArgo]);
 
   return (
-    <div className="mx-auto my-9 w-full max-w-8xl">
+    <div className="relative mx-auto my-9 w-full max-w-8xl">
       <div className="flex p-4">
-        <div className="w-1/3">
+        <button
+          onClick={toggleSidebar}
+          className="absolute -left-10 mb-4 flex h-28 items-center justify-center rounded bg-[#3A6F8F] px-4 py-2 text-white"
+        >
+          <img
+            src={ArrowIcon}
+            alt="Toggle Sidebar"
+            className={`h-5 w-5  transition-transform duration-300 ${isSidebarVisible ? 'rotate-90' : 'h-28 rotate-[270deg]'}`}
+          />
+        </button>
+        <div className={`transition-all duration-300 ${isSidebarVisible ? 'w-1/3' : 'w-0 overflow-hidden'}`}>
           <DataVisualizationSidebar />
         </div>
-        <div className="ml-4 w-full">
-          <NewMapNavbar setShowVideo={setShowVideo} />
+        <div className={`transition-all duration-300 ${isSidebarVisible ? 'ml-4' : 'ml-0'} w-full`}>
+          <DataVisualizationNavbar setShowVideo={setShowVideo} />
           <>
             <ErrorBoundary key={product?.mainProduct}>
               <Outlet context={{ showVideo }} />
