@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { setMainProduct, setProductId, setSubProduct } from '@/stores/product-store/productStore';
+import {
+  // setMainProduct,
+  setProductId,
+  // setSubProduct
+} from '@/stores/product-store/productStore';
 import { getProductByPath } from '@/utils/product';
 import { useProductFromUrl } from '@/hooks';
 import MapSidebar from '@/components/MapSidebar/MapSidebar';
@@ -18,8 +22,8 @@ const MapLayout: React.FC = () => {
       const productId = subProductKey || mainProductKey;
 
       setProductId(productId);
-      setMainProduct(mainProductKey);
-      setSubProduct(subProductKey);
+      // setMainProduct(mainProductKey);
+      // setSubProduct(subProductKey);
     }
   }, [product]);
 

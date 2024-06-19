@@ -1,17 +1,10 @@
-import { constructParentPath, constructPath, getProductByIdFromFlat } from '@/utils/product';
+import { getProductFullPathById } from '@/utils/product';
 import useProductStore from '../productStore';
 
 const useProductPath = () => {
   const useProductId = useProductStore((state) => state.productParams.productId);
 
-  const getTargetPath = (productId: string) => {
-    const product = getProductByIdFromFlat(productId);
-    if (!product) return '';
-
-    return product.parentId ? constructParentPath(product) : constructPath(product);
-  };
-
-  return getTargetPath(useProductId);
+  return getProductFullPathById(useProductId);
 };
 
 export default useProductPath;

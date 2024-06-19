@@ -1,12 +1,14 @@
-import useProductStore from '@/stores/product-store/productStore';
+import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 
 const useProductCheck = () => {
-  const mainProduct = useProductStore((state) => state.productParams.mainProduct);
+  const mainProduct = useProductConvert();
+
+  const mainProductId = mainProduct?.mainProduct?.key || '';
 
   const productsWithoutRegion = ['argo', 'surfaceWaves'];
 
-  const isRegionRequired = !productsWithoutRegion.includes(mainProduct);
-  const isArgo = mainProduct === 'argo';
+  const isRegionRequired = !productsWithoutRegion.includes(mainProductId);
+  const isArgo = mainProductId === 'argo';
 
   return { isRegionRequired, isArgo };
 };
