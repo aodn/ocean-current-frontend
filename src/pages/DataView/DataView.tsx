@@ -49,11 +49,13 @@ const DataView: React.FC = () => {
     return <Loading />;
   }
 
+  // TODO: give default sub product for subProductImgPath
   const subProductImgPath = subProduct?.imgPath;
 
   const buildArgoImg = (): string => buildArgoImageUrl(worldMeteorologicalOrgId, useDate, cycle, depth);
 
   const buildProductImg = (): string => {
+    // TODO: config string to constant
     if (mainProduct.key === 'surfaceWaves') {
       return buildSurfaceWavesImageUrl(useDate.toString());
     }

@@ -1,4 +1,3 @@
-// src/layouts/ProductLayout.tsx
 import React, { useCallback, useEffect, useState } from 'react';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
