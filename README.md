@@ -71,7 +71,8 @@ List of primary dependencies:
 
 - .eslintrc.js for linting rules
 - tailwind.config.js for Tailwind CSS configuration
-- vite.config.ts for Vite build tool configuration
+- vite.config.ts for Vite build tool configuration.
+  - vite-plugin-checker for output warning on browser and terminal. [Check this link for detail configuration.](https://vite-plugin-checker.netlify.app/)
 - tsconfig.json for TypeScript configuration
 
 ### Branching name
