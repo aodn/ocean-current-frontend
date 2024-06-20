@@ -3,7 +3,7 @@ import { Outlet, useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { setArgoData } from '@/stores/argo-store/argoStore';
 import useDateStore, { setDate } from '@/stores/date-store/dateStore';
-import { setMainProduct, setRegionTitle, setSubProduct, setProductId } from '@/stores/product-store/productStore';
+import { setRegionTitle, setProductId } from '@/stores/product-store/productStore';
 import { getProductByPath } from '@/utils/product';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useProductFromUrl, useProductSearchParam } from '@/hooks';
@@ -43,8 +43,6 @@ const DataVisualizationLayout: React.FC = () => {
       const productId = subProductKey || mainProductKey;
 
       setProductId(productId);
-      setMainProduct(mainProductKey);
-      setSubProduct(subProductKey);
     }
   }, [product]);
 

@@ -120,6 +120,15 @@ const constructParentPath = (product: FlatProduct): string => {
   return `${parentProductPath}/${product.path}`;
 };
 
+const getProductFullPathById = (productId: string) => {
+  const product = getProductByIdFromFlat(productId);
+
+  // TODO: throw error if product is not found
+  if (!product) return '';
+
+  return product.parentId ? constructParentPath(product) : constructPath(product);
+};
+
 export {
   combineProducts,
   combinedProducts,
@@ -133,4 +142,5 @@ export {
   getProductInfoByKey,
   constructPath,
   constructParentPath,
+  getProductFullPathById,
 };
