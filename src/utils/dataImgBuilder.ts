@@ -3,9 +3,7 @@ import { productTypeMapping, TargetPathRegionScope } from '@/constants/imgPath';
 import { RegionScope } from '@/constants/region';
 import { imageBaseUrl, imageS3BaseUrl } from '@/configs/image';
 
-const getBaseUrlByProductId = (productId: string) =>
-  // TODO: config string to constant
-  productId === 'surfaceWaves' ? imageS3BaseUrl : imageBaseUrl;
+const getBaseUrlByProductId = (productId: string) => (productId === 'surfaceWaves' ? imageS3BaseUrl : imageBaseUrl);
 
 const getTargetRegionScopPath = (regionScope: RegionScope) => {
   return [RegionScope.Au, RegionScope.State].includes(regionScope)
@@ -72,9 +70,9 @@ const buildProductVideoUrl = (
   const subProductSegment = subProductType ? `/${subProductType}` : '';
 
   const year = dayjs(date).format('YYYY');
-  const quarter = `Q${Math.ceil(dayjs(date).month() / 3)}`;
+  const quarter = `Q${Math.ceil((dayjs(date).month() + 1) / 3)}`;
 
-  return `${getBaseUrlByProductId(productId)}/${productSegment}${subProductSegment}/${regionName}/${productSegment}_${subProductType}_${year}_${quarter}.mp4`;
+  return `${getBaseUrlByProductId(productId)}/${productSegment}${subProductSegment}/${regionName}/${regionName}_${subProductType}_${year}_${quarter}.mp4`;
 };
 
 const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle: string, depth: string) => {
