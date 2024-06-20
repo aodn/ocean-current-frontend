@@ -122,6 +122,8 @@ const constructParentPath = (product: FlatProduct): string => {
 
 const getProductFullPathById = (productId: string) => {
   const product = getProductByIdFromFlat(productId);
+
+  // TODO: throw error if product is not found
   if (!product) return '';
 
   return product.parentId ? constructParentPath(product) : constructPath(product);
