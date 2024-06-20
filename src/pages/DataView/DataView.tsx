@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import {
   buildProductImageUrl,
   buildArgoImageUrl,
   getTargetRegionScopPath,
   buildSurfaceWavesImageUrl,
+  buildProductVideoUrl,
 } from '@/utils/dataImgBuilder';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
@@ -24,10 +26,10 @@ const DataView: React.FC = () => {
   const useProductRegionTitle = useProductStore((state) => state.productParams.regionTitle);
   const { mainProduct, subProduct } = useProductConvert();
   const { worldMeteorologicalOrgId, cycle, depth } = useArgoStore((state) => state.argoParams);
+  const { showVideo } = useOutletContext<{ showVideo: boolean }>();
 
   const region = getRegionByRegionTitle(useProductRegionTitle);
   const targetPathRegion = getTargetRegionScopPath(region?.scope || RegionScope.Au);
-  // TODO: handle error if no region selected
   const regionPath = region?.region || 'au';
 
   useEffect(() => {
@@ -71,8 +73,23 @@ const DataView: React.FC = () => {
     }
   };
 
+  const buildVideoUrl = (): string => {
+    const imgUrl = chooseImg();
+    const videoUrl = buildProductVideoUrl(
+      mainProduct.key,
+      subProductImgPath,
+      regionPath,
+      targetPathRegion,
+      useDate.toString(),
+    );
+
+    // 'https://oceancurrent.aodn.org.au/DR_SST_daily/SST/NingLeeu/NingLeeu_SST_2024_Q2.mp4';
+
+    return showVideo ? videoUrl : imgUrl!;
+  };
+
   const handleError = () => {
-    setError('Image not available');
+    setError('Media not available');
   };
 
   const handlePopup = () => {
@@ -81,20 +98,38 @@ const DataView: React.FC = () => {
 
   return (
     <div className="group relative">
-      <img
-        onClick={handlePopup}
-        className="h-full w-full cursor-pointer select-none object-contain"
-        src={chooseImg()}
-        alt="product"
-        onError={handleError}
-        aria-hidden
-      />
+      {showVideo ? (
+        <video
+          onClick={handlePopup}
+          className="h-full w-full cursor-pointer select-none object-contain"
+          src={buildVideoUrl()}
+          controls
+          onError={handleError}
+        >
+          <track default kind="captions" srcLang="en" />
+          Your browser does not support the video tag.
+        </video>
+      ) : (
+        <img
+          onClick={handlePopup}
+          className="h-full w-full cursor-pointer select-none object-contain"
+          src={chooseImg()}
+          alt="product"
+          onError={handleError}
+          aria-hidden
+        />
+      )}
       <img
         alt="search icon"
         src={SearchIcon}
         className="absolute right-9 top-5 cursor-pointer rounded bg-white p-2 px-2 py-1 opacity-0 duration-200 group-hover:opacity-100"
       />
-      <Popup isImage isOpen={isPopupOpen} onClose={handlePopup} imageUrl={chooseImg()} />
+      <Popup
+        isImage={!showVideo}
+        isOpen={isPopupOpen}
+        onClose={handlePopup}
+        imageUrl={showVideo ? buildVideoUrl() : chooseImg()}
+      />
     </div>
   );
 };

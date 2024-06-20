@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import dayjs from 'dayjs';
 import DatePicker from '@/components/DatePicker/DatePicker';
 import DateSlider from '@/components/DateSlider/DateSlider';
 import VideoCreation from '@/components/VideoCreation/VideoCreation';
 import useDateRange from '@/hooks/useDateRange/useDateRange';
+import { ToggleButton } from '@/components/Shared';
+import VideoIcon from '@/assets/icons/video-icon.svg';
+import { ProductNavbarProps } from './types/ProductNavbarProps.types';
 
-const ProductNavbar: React.FC = () => {
+const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
+  const [showVideo, setLocalShowVideo] = useState(false);
   const { startDate, endDate, allDates, selectedDateIndex, handleSliderChange, handleDateChange, modifyDate, steps } =
     useDateRange();
 
@@ -13,6 +17,11 @@ const ProductNavbar: React.FC = () => {
     dayjs().subtract(1, 'day'),
     'day',
   );
+
+  const handleToggle = (state: boolean) => {
+    setLocalShowVideo(state);
+    setShowVideo(state);
+  };
 
   return (
     <div className="mb-2 p-1 shadow-lg">
@@ -26,6 +35,11 @@ const ProductNavbar: React.FC = () => {
             modifyDate={modifyDate}
             selectedDate={allDates[selectedDateIndex]}
           />
+        </div>
+        <div className="flex items-center justify-center">
+          <img src={VideoIcon} alt="video icon" />
+          <p className="mx-5 text-imos-sea-blue">Video</p>
+          <ToggleButton isOn={showVideo} onToggle={handleToggle} />
         </div>
         <VideoCreation allDates={allDates} />
       </div>
