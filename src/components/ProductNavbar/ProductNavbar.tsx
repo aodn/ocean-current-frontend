@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import DatePicker from '@/components/DatePicker/DatePicker';
 import DateSlider from '@/components/DateSlider/DateSlider';
 import VideoCreation from '@/components/VideoCreation/VideoCreation';
 import useDateRange from '@/hooks/useDateRange/useDateRange';
-import { ToggleButton } from '@/components/Shared';
+import { Button, ToggleButton } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
+import { TEXT_CONSTANT } from '@/constants/textConstant';
+import ShareIcon from '@/assets/icons/share-icon.svg';
 import { ProductNavbarProps } from './types/ProductNavbarProps.types';
 
 const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
+  const [copyButtonText, setCopyButtonText] = useState<string>(TEXT_CONSTANT.SHARE_PERMLINK);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const [showVideo, setLocalShowVideo] = useState(false);
   const { startDate, endDate, allDates, selectedDateIndex, handleSliderChange, handleDateChange, modifyDate, steps } =
     useDateRange();
@@ -17,6 +22,24 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
     dayjs().subtract(1, 'day'),
     'day',
   );
+
+  const handleCopyLink = () => {
+    const url = location.href;
+    navigator.clipboard.writeText(url);
+    setCopyButtonText('Copied!');
+
+    timeoutRef.current = setTimeout(() => {
+      setCopyButtonText(TEXT_CONSTANT.SHARE_PERMLINK);
+    }, 2000);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleToggle = (state: boolean) => {
     setLocalShowVideo(state);
@@ -35,6 +58,12 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
             modifyDate={modifyDate}
             selectedDate={allDates[selectedDateIndex]}
           />
+        </div>
+        <div className="w-1/4">
+          <Button onClick={() => handleCopyLink()} size="full" borderRadius="small" type="secondary">
+            <img src={ShareIcon} alt="" />
+            {copyButtonText}
+          </Button>
         </div>
         <div className="flex items-center justify-center">
           <img src={VideoIcon} alt="video icon" />
