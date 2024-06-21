@@ -1,13 +1,13 @@
-import { useNavigate } from 'react-router-dom';
 import categoryIcon from '@/assets/icons/category-icon.png';
 import { Dropdown, Loading } from '@/components/Shared';
 import useProductStore, { setProductId } from '@/stores/product-store/productStore';
 import { getProductFullPathById } from '@/utils/product';
+import { useQueryParams } from '@/hooks';
 import { mapNavbarDataElements } from './data/mapNavbar';
 import { MapNavBarElement } from './types/mapNavbar.types';
 
 const MapNavbar: React.FC = () => {
-  const navigate = useNavigate();
+  const { updateQueryParamsAndNavigate } = useQueryParams();
 
   const useProductId = useProductStore((state) => state.productParams.productId);
 
@@ -17,7 +17,7 @@ const MapNavbar: React.FC = () => {
     }
     setProductId(selectedElement.id);
     const targetPath = getProductFullPathById(selectedElement.id);
-    navigate(targetPath);
+    updateQueryParamsAndNavigate(targetPath);
   };
 
   if (!useProductId) {
