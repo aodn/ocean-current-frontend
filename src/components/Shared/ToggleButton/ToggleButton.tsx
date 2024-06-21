@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ToggleButtonProps } from './types/toggleButtonProps.types';
 
-const ToggleButton: React.FC<ToggleButtonProps> = ({ isOn, onToggle }) => {
+const ToggleButton: React.FC<ToggleButtonProps> = ({ isOn = false, onToggle }) => {
   const [isToggled, setIsToggled] = useState(isOn);
 
   useEffect(() => {
