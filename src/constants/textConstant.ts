@@ -1,3 +1,3 @@
 export const TEXT_CONSTANT = {
-  COPY_PERMLINK: 'Copy Permlink',
+  SHARE_PERMLINK: 'Share Permlink',
 };
