@@ -6,12 +6,11 @@ import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { getProductInfoByKey } from '@/utils/product';
 import InfoIcon from '@/assets/icons/info-icon.svg';
 import ArrowIcon from '@/assets/icons/arrow.svg';
-import { DataVisualizationSidebarProps } from '../types/dataVisualizationSidebar';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
 import HeaderSideBar from './HeaderSideBar';
 
-const ProductSideBar: React.FC<DataVisualizationSidebarProps> = ({ copyButtonText, handleCopyLink }) => {
+const ProductSideBar: React.FC = () => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
   const { mainProduct, subProduct, subProducts } = useProductConvert();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -147,12 +146,6 @@ const ProductSideBar: React.FC<DataVisualizationSidebarProps> = ({ copyButtonTex
             ))}
           </div>
         </div>
-      </div>
-      <div className="border-imos-grey p-4">
-        <h3 className="mb-4 px-4 text-lg font-medium text-imos-black">Permlink</h3>
-        <Button onClick={() => handleCopyLink()} size="full" borderRadius="small" type="secondary">
-          {copyButtonText}
-        </Button>
       </div>
     </div>
   );

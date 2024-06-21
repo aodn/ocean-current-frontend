@@ -6,9 +6,8 @@ import ArgoIdIcon from '@/assets/icons/argo-id-icon.svg';
 import useArgoStore, { setArgoDepth } from '@/stores/argo-store/argoStore';
 import { updatePositionAndZoom } from '@/stores/map-store/mapStore';
 import { Button } from '@/components/Shared';
-import { DataVisualizationSidebarProps } from '../types/dataVisualizationSidebar';
 
-const ArgoSideBar: React.FC<DataVisualizationSidebarProps> = ({ copyButtonText, handleCopyLink }) => {
+const ArgoSideBar: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const useArgoMetaData = useArgoStore((state) => state.argoMetaData);
   const useArgo = useArgoStore((state) => state.argoParams);
@@ -77,9 +76,6 @@ const ArgoSideBar: React.FC<DataVisualizationSidebarProps> = ({ copyButtonText, 
               0-2000m
             </Button>
           </div>
-          <Button onClick={() => handleCopyLink()} size="full" borderRadius="small" type="secondary">
-            {copyButtonText}
-          </Button>
         </div>
       </div>
     </>
