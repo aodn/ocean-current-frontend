@@ -6,6 +6,7 @@ import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { getProductInfoByKey } from '@/utils/product';
 import InfoIcon from '@/assets/icons/info-icon.svg';
 import ArrowIcon from '@/assets/icons/arrow.svg';
+import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
 import HeaderSideBar from './HeaderSideBar';
@@ -13,6 +14,7 @@ import HeaderSideBar from './HeaderSideBar';
 const ProductSideBar: React.FC = () => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
   const { mainProduct, subProduct, subProducts } = useProductConvert();
+  const isProductAvailableInRegion = useProductAvailableInRegion();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isSubProductsCollapsed, setIsSubProductsCollapsed] = useState(false);
   const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
@@ -21,6 +23,9 @@ const ProductSideBar: React.FC = () => {
   const dataSources = ['SST L3S-6d ngt (1992-2017)', 'SST L3SM-6d ngt (2018-now)', 'GSLA', 'SSTAARS'];
 
   const handleSubProductChange = (key: string, mainProductPath: string, subProductPath: string) => {
+    if (key === subProduct?.key) {
+      return;
+    }
     setProductId(key);
     const targetPath = `${mainProductPath}/${subProductPath}`;
     updateQueryParamsAndNavigate(targetPath);
@@ -48,9 +53,11 @@ const ProductSideBar: React.FC = () => {
         <HeaderSideBar />
       </div>
 
-      <div className="h-60 w-full overflow-hidden">
-        <MiniMap />
-      </div>
+      {isProductAvailableInRegion && (
+        <div className="h-60 w-full overflow-hidden">
+          <MiniMap />
+        </div>
+      )}
 
       <div className="flex items-center justify-between border-b-2 border-imos-grey p-4">
         <img

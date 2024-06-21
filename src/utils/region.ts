@@ -8,8 +8,8 @@ const getRegionByRegionTitle = (regionTitle: string): Region | undefined => {
   return allRegions.find((region) => region.title === regionTitle);
 };
 
-const getRegionScopeByRegionTitle = (regionName: string): RegionScope | undefined => {
-  return getRegionByRegionTitle(regionName)?.scope;
+const getRegionScopeByRegionTitle = (regionTitle: string): RegionScope | undefined => {
+  return getRegionByRegionTitle(regionTitle)?.scope;
 };
 
 const getRegionNameByRegionTitle = (regionTitle: string): string | undefined => {
@@ -20,4 +20,27 @@ const getRegionListByProductId = (productId: string): RegionCategories | undefin
   return productRegionMap[productId];
 };
 
-export { getRegionByRegionTitle, getRegionScopeByRegionTitle, getRegionNameByRegionTitle, getRegionListByProductId };
+const isProductAvailableInRegion = (regionTitle: string, productId: string): boolean => {
+  const region = getRegionByRegionTitle(regionTitle);
+  if (!region) {
+    return false;
+  }
+
+  const regionList = getRegionListByProductId(productId);
+
+  if (!regionList) {
+    return false;
+  }
+
+  const allRegions = [...regionList.state, ...regionList.local];
+
+  return allRegions.includes(region.region);
+};
+
+export {
+  getRegionByRegionTitle,
+  getRegionScopeByRegionTitle,
+  getRegionNameByRegionTitle,
+  getRegionListByProductId,
+  isProductAvailableInRegion,
+};
