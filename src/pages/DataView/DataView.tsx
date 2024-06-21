@@ -12,10 +12,9 @@ import useArgoStore from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
 import { getRegionByRegionTitle } from '@/utils/region';
 import { RegionScope } from '@/constants/region';
-import { Loading, Popup } from '@/components/Shared';
+import { Loading } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { checkProductHasSubProduct } from '@/utils/product';
-import SearchIcon from '@/assets/icons/search-icon.svg';
 import useDateStore from '@/stores/date-store/dateStore';
 
 const DataView: React.FC = () => {
@@ -73,7 +72,7 @@ const DataView: React.FC = () => {
     }
   };
 
-  const buildVideoUrl = (): string => {
+  const buildMediaUrl = (): string => {
     const imgUrl = chooseImg();
     const videoUrl = buildProductVideoUrl(
       mainProduct.key,
@@ -102,7 +101,7 @@ const DataView: React.FC = () => {
         <video
           onClick={handlePopup}
           className="h-full w-full cursor-pointer select-none object-contain"
-          src={buildVideoUrl()}
+          src={buildMediaUrl()}
           controls
           onError={handleError}
         >
@@ -119,17 +118,6 @@ const DataView: React.FC = () => {
           aria-hidden
         />
       )}
-      <img
-        alt="search icon"
-        src={SearchIcon}
-        className="absolute right-9 top-5 cursor-pointer rounded bg-white p-2 px-2 py-1 opacity-0 duration-200 group-hover:opacity-100"
-      />
-      <Popup
-        isImage={!showVideo}
-        isOpen={isPopupOpen}
-        onClose={handlePopup}
-        imageUrl={showVideo ? buildVideoUrl() : chooseImg()}
-      />
     </div>
   );
 };
