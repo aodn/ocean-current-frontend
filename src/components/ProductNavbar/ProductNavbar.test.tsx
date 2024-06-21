@@ -38,9 +38,10 @@ describe('ProductNavbar', () => {
   });
 
   const renderComponentWithRouter = () => {
+    const setShowVideo = vi.fn();
     render(
       <MemoryRouter>
-        <ProductNavbar />
+        <ProductNavbar setShowVideo={setShowVideo} />
       </MemoryRouter>,
     );
   };

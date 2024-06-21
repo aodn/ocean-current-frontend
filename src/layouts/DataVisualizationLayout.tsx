@@ -18,6 +18,7 @@ const DataVisualizationLayout: React.FC = () => {
   const { isArgo } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const product = useProductFromUrl('product');
+  const [showVideo, setShowVideo] = useState(false);
   const [isSidebarVisible, setSidebarVisible] = useState(true);
 
   const toggleSidebar = () => setSidebarVisible(!isSidebarVisible);
@@ -82,10 +83,10 @@ const DataVisualizationLayout: React.FC = () => {
           <DataVisualizationSidebar />
         </div>
         <div className={`transition-all duration-300 ${isSidebarVisible ? 'ml-4' : 'ml-0'} w-full`}>
-          <DataVisualizationNavbar />
+          <DataVisualizationNavbar setShowVideo={setShowVideo} />
           <>
             <ErrorBoundary key={product?.mainProduct}>
-              <Outlet />
+              <Outlet context={{ showVideo }} />
             </ErrorBoundary>
           </>
         </div>
