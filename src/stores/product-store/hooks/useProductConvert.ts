@@ -11,7 +11,6 @@ const useProductConvert = () => {
   let subProducts: SubProduct[] = [];
 
   let parentProduct: FlatProduct | undefined;
-  // const { mainProduct: mainProductKey, subProduct: subProductKey } = useProductParams;
 
   const flatProduct = getProductByIdFromFlat(useProductId);
 
