@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Loading, Popup } from '@/components/Shared';
-import { setProductId, setSubProduct } from '@/stores/product-store/productStore';
+import { setProductId } from '@/stores/product-store/productStore';
 import { useQueryParams } from '@/hooks';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { getProductInfoByKey } from '@/utils/product';
@@ -23,7 +23,6 @@ const ProductSideBar: React.FC<DataVisualizationSidebarProps> = ({ copyButtonTex
 
   const handleSubProductChange = (key: string, mainProductPath: string, subProductPath: string) => {
     setProductId(key);
-    setSubProduct(key);
     const targetPath = `${mainProductPath}/${subProductPath}`;
     updateQueryParamsAndNavigate(targetPath);
   };

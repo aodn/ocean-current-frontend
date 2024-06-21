@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import useProductStore, { setMainProduct, setProductId, setSubProduct } from '@/stores/product-store/productStore';
-import { getMainAndSubProductById } from '@/utils/product';
+import useProductStore, { setProductId } from '@/stores/product-store/productStore';
+import { getProductFullPathById } from '@/utils/product';
 import { mapNavbarDataElements } from '@/data/dropDownProductData';
 import { MapNavBarElement } from '@/types/dropDownProduct';
 
@@ -10,13 +10,11 @@ const MapSidebar: React.FC = () => {
   const useProductId = useProductStore((state) => state.productParams.productId);
 
   const handleDropdownChange = (selectedElement: MapNavBarElement) => {
+    if (selectedElement.id === useProductId) {
+      return;
+    }
     setProductId(selectedElement.id);
-    const product = getMainAndSubProductById(selectedElement.id);
-    setMainProduct(product.mainProduct.key);
-    setSubProduct(product.subProduct?.key || null);
-    const targetPath = product.subProduct
-      ? `${product.mainProduct.path}/${product.subProduct.path}`
-      : product.mainProduct.path;
+    const targetPath = getProductFullPathById(selectedElement.id);
     navigate(targetPath);
   };
 
