@@ -116,7 +116,7 @@ const ProductSideBar: React.FC = () => {
         </div>
       </div>
       <Button onClick={handlePopup} size="full" borderRadius="small" type="secondary">
-        Click here for more information
+        Click for more information
       </Button>
 
       <Popup title="Legend" body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />

@@ -53,13 +53,10 @@ const ProductSideBar: React.FC = () => {
       </div>
 
       <div className="flex items-center justify-between border-b-2 border-imos-grey p-4">
-        <img
-          aria-hidden
-          onClick={handlePopup}
-          src={InfoIcon}
-          alt="info icon"
-          className="mr-6 h-6 w-6 cursor-pointer object-contain"
-        />
+        <div aria-hidden onClick={handlePopup} className="mr-6 flex flex-col items-center justify-center">
+          <img src={InfoIcon} alt="info icon" className=" h-6 w-6 cursor-pointer object-contain" />
+          <p className="mt-2 text-center text-xs text-imos-sea-blue">Click here for more information</p>
+        </div>
         <p className="text-imos-grey">{productInfo?.summary}</p>
       </div>
 
