@@ -3,5 +3,6 @@ import useProductSearchParam from './useProductSearchParam/useProductSearchParam
 import useQueryParams from './useQueryParams/useQueryParams';
 import useOutsideClick from './useOutSideClick/useOutsideClick';
 import useScrollToTop from './useScrollToTop/useScrollToTop';
+import useThrottle from './useThrottle/useThrottle';
 
-export { useProductFromUrl, useProductSearchParam, useQueryParams, useScrollToTop, useOutsideClick };
+export { useProductFromUrl, useProductSearchParam, useQueryParams, useScrollToTop, useOutsideClick, useThrottle };

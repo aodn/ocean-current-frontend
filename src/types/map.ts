@@ -6,7 +6,7 @@ export type RegionKeyType = NationKey | StateKey | LocalKey;
 export interface BaseRegion<T extends RegionKeyType> {
   region: T;
   title: string;
-  coords: number[];
+  coords: [number, number, number, number];
 }
 
 export interface NationRegion extends BaseRegion<NationKey> {

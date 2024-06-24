@@ -1,23 +1,47 @@
-import { Layer, MapMouseEvent, Source, useMap } from 'react-map-gl';
+import { Layer, LngLatBounds, MapMouseEvent, Source, useMap } from 'react-map-gl';
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
-import { useQueryParams } from '@/hooks';
+import { useQueryParams, useThrottle } from '@/hooks';
 import useProductPath from '@/stores/product-store/hooks/useProductPath';
-import useRegionData from '../../hooks/useRegionData';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
+import useVisibleRegionPolygons from '../../hooks/useVisibleRegionPolygons';
 
 const RegionPolygonLayer = () => {
   const { productRegionBoxSource } = mapboxSourceIds;
   const { productRegionBoxLayer, productRegionBoxHighlightLayer } = mapboxLayerIds;
 
-  const { regionData } = useRegionData();
   const baseProductPath = useProductPath();
   const { searchParams, updateQueryParamsAndNavigate } = useQueryParams();
   const { current: map } = useMap();
   const [hoveredRegion, setHoveredRegion] = useState<string>('');
 
   const defaultTargetDate = dayjs().subtract(2, 'day').format('YYYYMMDD');
+
+  const [bounds, setBounds] = useState<LngLatBounds | null>(null);
+
+  const throttleSetBounds = useThrottle((bounds: LngLatBounds) => {
+    setBounds(bounds);
+  }, 300);
+
+  useEffect(() => {
+    if (!map) return;
+
+    const handleMapChange = () => {
+      const bounds = map.getBounds();
+      throttleSetBounds(bounds);
+    };
+
+    map.on('zoom', handleMapChange);
+    setBounds(map.getBounds());
+
+    return () => {
+      map.off('zoom', handleMapChange);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map]);
+
+  const geoJsonData = useVisibleRegionPolygons(bounds, 3, 50);
 
   useEffect(() => {
     if (!map) return;
@@ -62,7 +86,7 @@ const RegionPolygonLayer = () => {
   }, [map, productRegionBoxLayer, searchParams.date, updateQueryParamsAndNavigate, defaultTargetDate, baseProductPath]);
 
   return (
-    <Source id={productRegionBoxSource} type="geojson" data={regionData}>
+    <Source id={productRegionBoxSource} type="geojson" data={geoJsonData}>
       <Layer
         id={productRegionBoxLayer}
         type="fill"
