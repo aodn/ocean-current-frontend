@@ -1,6 +1,7 @@
 import { render, screen, renderHook } from '@testing-library/react';
 import { mapConfig } from '@/configs/map';
 import useMapStore from '@/stores/map-store/mapStore';
+import { BoundingBoxCoords } from '@/types/map';
 import { calculateAreaFromCoords, convertAreaCoordsToGeoJsonCoordinates } from '../utils/regionUtils';
 import BasicMap from '../BasicMap';
 import useRegionData from '../hooks/useRegionData';
@@ -9,7 +10,7 @@ describe('Map utils', () => {
   describe('calculateAreaFromCoords', () => {
     it('should calculate the correct area for valid coordinates', () => {
       // Arrange
-      const coords = [141, 152, -47, -40]; // [west, east, south, north]
+      const coords: BoundingBoxCoords = [141, 152, -47, -40]; // [west, east, south, north]
       const expectedArea = 11 * 7; // (152 - 141) * (-40 - (-47))
 
       // Act & Assert
@@ -18,7 +19,7 @@ describe('Map utils', () => {
 
     it('should throw an error for invalid coordinates where west is greater than east', () => {
       // Arrange
-      const coords = [152, 141, -47, -40];
+      const coords: BoundingBoxCoords = [152, 141, -47, -40];
 
       // Act & Assert
       expect(() => calculateAreaFromCoords(coords)).toThrow('Invalid coordinates');
@@ -26,7 +27,7 @@ describe('Map utils', () => {
 
     it('should throw an error for invalid coordinates where north is greater than south', () => {
       // Arrange
-      const coords = [141, 152, -40, -47];
+      const coords: BoundingBoxCoords = [141, 152, -40, -47];
 
       // Act & Assert
       expect(() => calculateAreaFromCoords(coords)).toThrow('Invalid coordinates');
@@ -35,7 +36,7 @@ describe('Map utils', () => {
   describe('convertAreaCoordsToGeoJsonCoordinates', () => {
     it('should convert area coordinates to GeoJSON polygon', () => {
       // Arrange
-      const mockCoords = [141, 152, -47, -40];
+      const mockCoords: BoundingBoxCoords = [141, 152, -47, -40];
       const expectedGeoJsonPolygon = [
         [
           [141, -40],

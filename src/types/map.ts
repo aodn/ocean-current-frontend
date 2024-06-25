@@ -6,7 +6,7 @@ export type RegionKeyType = NationKey | StateKey | LocalKey;
 export interface BaseRegion<T extends RegionKeyType> {
   region: T;
   title: string;
-  coords: number[];
+  coords: BoundingBoxCoords;
 }
 
 export interface NationRegion extends BaseRegion<NationKey> {
@@ -22,3 +22,12 @@ export interface LocalRegion extends BaseRegion<LocalKey> {
 }
 
 export type Region = NationRegion | StateRegion | LocalRegion;
+
+export type GeoJsonPolygon = number[][][];
+
+export type BoundingBoxCoords = [
+  westLongitude: number,
+  eastLongitude: number,
+  southLatitude: number,
+  northLatitude: number,
+];
