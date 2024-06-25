@@ -35,7 +35,8 @@ const ProductSideBar: React.FC = () => {
     setIsPopupOpen(!isPopupOpen);
   };
 
-  const renderSubProducts = () => mainProduct && subProducts.length > 0;
+  const shouldRenderSubProducts = () => mainProduct && subProducts.length > 0;
+  const shouldRenderMiniMap = () => isProductAvailableInRegion;
 
   if (!mainProduct) {
     return <Loading />;
@@ -53,7 +54,7 @@ const ProductSideBar: React.FC = () => {
         <HeaderSideBar />
       </div>
 
-      {isProductAvailableInRegion && (
+      {shouldRenderMiniMap() && (
         <div className="h-60 w-full overflow-hidden">
           <MiniMap />
         </div>
@@ -69,7 +70,7 @@ const ProductSideBar: React.FC = () => {
 
       <Popup title={productInfo?.title} body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
 
-      {renderSubProducts() && (
+      {shouldRenderSubProducts() && (
         <div className="border-b-2 border-imos-grey px-4">
           <div
             className="flex cursor-pointer items-center justify-between px-4 py-2"
