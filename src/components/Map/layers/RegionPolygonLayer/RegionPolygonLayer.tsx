@@ -7,6 +7,9 @@ import useProductPath from '@/stores/product-store/hooks/useProductPath';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
 import useVisibleRegionPolygons from '../../hooks/useVisibleRegionPolygons';
 
+const MIN_THRESHOLD_PERCENTAGE = 3;
+const MAX_THRESHOLD_PERCENTAGE = 50;
+
 const RegionPolygonLayer = () => {
   const { productRegionBoxSource } = mapboxSourceIds;
   const { productRegionBoxLayer, productRegionBoxHighlightLayer } = mapboxLayerIds;
@@ -41,7 +44,7 @@ const RegionPolygonLayer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
 
-  const geoJsonData = useVisibleRegionPolygons(bounds, 3, 50);
+  const geoJsonData = useVisibleRegionPolygons(bounds, MIN_THRESHOLD_PERCENTAGE, MAX_THRESHOLD_PERCENTAGE);
 
   useEffect(() => {
     if (!map) return;

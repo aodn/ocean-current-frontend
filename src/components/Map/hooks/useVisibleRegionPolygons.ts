@@ -1,22 +1,9 @@
 import { useState, useEffect } from 'react';
 import { LngLatBounds } from 'react-map-gl';
+import { BoundingBoxCoords } from '@/types/map';
 import { calculateAreaFromCoords, convertAreaCoordsToGeoJsonCoordinates } from '../utils/regionUtils';
+import { isPolygonWithinBounds } from '../utils/mapUtils';
 import useRegionFromProduct from './useRegionFromProduct';
-
-const isPolygonWithinBounds = (
-  coords: [number, number, number, number],
-  bounds: LngLatBounds,
-  minThresholdPercentage: number,
-  maxThresholdPercentage: number,
-): boolean => {
-  const polygonArea = calculateAreaFromCoords(coords);
-
-  const boundCoords = [bounds.getWest(), bounds.getEast(), bounds.getSouth(), bounds.getNorth()];
-  const boundsArea = calculateAreaFromCoords(boundCoords);
-
-  const polygonPercentageOfBounds = (polygonArea / boundsArea) * 100;
-  return polygonPercentageOfBounds >= minThresholdPercentage && polygonPercentageOfBounds <= maxThresholdPercentage;
-};
 
 const useVisibleRegionPolygons = (
   bounds: LngLatBounds | null,
@@ -32,16 +19,19 @@ const useVisibleRegionPolygons = (
 
   useEffect(() => {
     if (!bounds) return;
+
+    const boundCoords = [bounds.getWest(), bounds.getEast(), bounds.getSouth(), bounds.getNorth()] as BoundingBoxCoords;
+
     const sortedRegions = regions.sort((a, b) => {
       const areaA = calculateAreaFromCoords(a.coords);
       const areaB = calculateAreaFromCoords(b.coords);
       return areaB - areaA;
     });
-    const newV = sortedRegions.filter(({ coords }) =>
-      isPolygonWithinBounds(coords, bounds, minThresholdPercentage, maxThresholdPercentage),
+    const visibleRegions = sortedRegions.filter(({ coords }) =>
+      isPolygonWithinBounds(coords, boundCoords, minThresholdPercentage, maxThresholdPercentage),
     );
 
-    const features: GeoJSON.Feature[] = newV.map(({ title, coords }, index) => ({
+    const features: GeoJSON.Feature[] = visibleRegions.map(({ title, coords }, index) => ({
       type: 'Feature',
       id: index,
       properties: {
