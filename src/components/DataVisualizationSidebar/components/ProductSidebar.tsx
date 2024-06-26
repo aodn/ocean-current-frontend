@@ -20,7 +20,28 @@ const ProductSideBar: React.FC = () => {
   const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
   const [isDataSourcesCollapsed, setIsDataSourcesCollapsed] = useState(false);
 
-  const dataSources = ['SST L3S-6d ngt (1992-2017)', 'SST L3SM-6d ngt (2018-now)', 'GSLA', 'SSTAARS'];
+  const dataSources = [
+    {
+      title: 'SST L3S-6d ngt (1992-2017)',
+      link: 'https://thredds.aodn.org.au/thredds/catalog/IMOS/SRS/SST/ghrsst/L3S-6d/ngt/catalog.html',
+      product: ['sixDaySst'],
+    },
+    {
+      title: 'SST L3SM-6d ngt (2018-now)',
+      link: 'https://thredds.aodn.org.au/thredds/catalog/IMOS/SRS/SST/ghrsst/L3SM-6d/ngt/catalog.html',
+      product: ['sixDaySst'],
+    },
+    {
+      title: 'GSLA',
+      link: 'https://thredds.aodn.org.au/thredds/catalog/IMOS/OceanCurrent/GSLA/catalog.html',
+      product: ['sixDaySst'],
+    },
+    {
+      title: 'SSTAARS',
+      link: 'https://portal.aodn.org.au/search?uuid=79c8eea2-4e86-4553-8237-4728e27abe10',
+      product: ['sixDaySst', 'climatology'],
+    },
+  ];
 
   const handleSubProductChange = (key: string, mainProductPath: string, subProductPath: string) => {
     if (key === subProduct?.key) {
@@ -47,6 +68,8 @@ const ProductSideBar: React.FC = () => {
   };
 
   const productInfo = getProductInfoByKey(mainProduct?.key);
+
+  const filteredDataSources = dataSources.filter((source) => source.product.includes(mainProduct.key));
 
   return (
     <div>
@@ -105,6 +128,38 @@ const ProductSideBar: React.FC = () => {
         </div>
       )}
 
+      {filteredDataSources.length > 0 && (
+        <div className="border-b-2 border-imos-grey px-4">
+          <div
+            className="flex cursor-pointer items-center justify-between px-4 py-2"
+            onClick={() => setIsDataSourcesCollapsed(!isDataSourcesCollapsed)}
+            aria-hidden
+          >
+            <h3 className="text-lg font-medium text-imos-black">Data sources</h3>
+            <img
+              src={ArrowIcon}
+              alt="arrow icon"
+              className={`h-4 w-4 transform transition-transform duration-300 ${isDataSourcesCollapsed ? 'rotate-180' : ''}`}
+            />
+          </div>
+          <div
+            className={`overflow-hidden transition-all duration-300 ${isDataSourcesCollapsed ? 'max-h-0' : 'max-h-screen'}`}
+          >
+            <div className="my-6 flex flex-wrap justify-between gap-2">
+              {filteredDataSources.map(({ title, link }, index) => (
+                <div key={title} className={index === subProducts.length - 1 ? 'w-auto' : 'flex-1'}>
+                  <a target="_blank" href={link} rel="noreferrer">
+                    <Button size="full" borderRadius="small" type="secondary">
+                      {title}
+                    </Button>
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="border-b-2 border-imos-grey px-4">
         <div
           className="flex cursor-pointer items-center justify-between px-4 py-2"
@@ -122,34 +177,6 @@ const ProductSideBar: React.FC = () => {
           className={`overflow-hidden transition-all duration-300 ${isLegendCollapsed ? 'max-h-0' : 'max-h-screen'}`}
         >
           <Legend />
-        </div>
-      </div>
-
-      <div className="border-b-2 border-imos-grey px-4">
-        <div
-          className="flex cursor-pointer items-center justify-between px-4 py-2"
-          onClick={() => setIsDataSourcesCollapsed(!isDataSourcesCollapsed)}
-          aria-hidden
-        >
-          <h3 className="text-lg font-medium text-imos-black">Data sources</h3>
-          <img
-            src={ArrowIcon}
-            alt="arrow icon"
-            className={`h-4 w-4 transform transition-transform duration-300 ${isDataSourcesCollapsed ? 'rotate-180' : ''}`}
-          />
-        </div>
-        <div
-          className={`overflow-hidden transition-all duration-300 ${isDataSourcesCollapsed ? 'max-h-0' : 'max-h-screen'}`}
-        >
-          <div className="my-6 flex flex-wrap justify-between gap-2">
-            {dataSources.map((product, index) => (
-              <div key={product} className={index === subProducts.length - 1 ? 'w-auto' : 'flex-1'}>
-                <Button size="full" borderRadius="small" type="secondary">
-                  {product}
-                </Button>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>
