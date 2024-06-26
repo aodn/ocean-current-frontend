@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { isAxiosError } from 'axios';
 import { getArgoProfilesByDate } from '@/services/argo';
@@ -12,6 +12,9 @@ const useArgoAsProductData = () => {
 
   const [latestDate, setLatestDate] = useState<Dayjs>(useDate);
   const [argoProfiles, setArgoProfiles] = useState<ArgoProfile[]>([]);
+
+  const retryCount = useRef(0);
+
   useEffect(() => {
     const fetchData = async (date: Dayjs) => {
       try {
@@ -20,15 +23,19 @@ const useArgoAsProductData = () => {
         setArgoProfiles(data);
         setLatestDate(date);
       } catch (error) {
-        if (isAxiosError(error) && error.response?.status === 404) {
+        if (isAxiosError(error) && error.response?.status === 404 && retryCount.current < 5) {
+          retryCount.current += 1;
           const newDate = dayjs(date).subtract(1, 'day');
           if (newDate.isAfter(dayjs())) return;
           fetchData(newDate);
         }
+        if (retryCount.current >= 5) {
+          console.error('Failed to fetch argo profiles after 5 attempts');
+        }
         // TODO: Handle error, return error to UI, render notification/warning
       }
     };
-
+    retryCount.current = 0;
     fetchData(useDate);
   }, [useDate]);
 
