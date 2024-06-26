@@ -2,10 +2,10 @@ import { HomeProductData } from '../types/HomeProductCarrousel.types';
 
 export const productsData: HomeProductData[] = [
   {
-    title: 'Sea Surface Temperature',
-    id: 'fourHourSst-sst',
-    mainProduct: 'fourHourSst',
-    subProduct: 'fourHourSst-sst',
+    title: 'Daily Sea Surface Temperature',
+    id: 'sixDaySst-sst',
+    mainProduct: 'sixDaySst',
+    subProduct: 'sixDaySst-sst',
     description: 'It provides a nationally consistent set of the available mapping data, was created by UTAS.',
     imageUrl: 'https://oceancurrent.aodn.org.au/SST_entry/latest.gif',
   },
