@@ -7,6 +7,8 @@ import { ArgoProfile } from '@/types/argo';
 import { setArgoMetaData } from '@/stores/argo-store/argoStore';
 import useDateStore, { setDate } from '@/stores/date-store/dateStore';
 
+const MAXIMUM_RETRIES = 5;
+
 const useArgoAsProductData = () => {
   const useDate = useDateStore((state) => state.date);
 
@@ -23,7 +25,7 @@ const useArgoAsProductData = () => {
         setArgoProfiles(data);
         setLatestDate(date);
       } catch (error) {
-        if (isAxiosError(error) && error.response?.status === 404 && retryCount.current < 5) {
+        if (isAxiosError(error) && error.response?.status === 404 && retryCount.current < MAXIMUM_RETRIES) {
           retryCount.current += 1;
           const newDate = dayjs(date).subtract(1, 'day');
           if (newDate.isAfter(dayjs())) return;
