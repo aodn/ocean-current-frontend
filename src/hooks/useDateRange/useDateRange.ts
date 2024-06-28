@@ -16,7 +16,7 @@ const useDateRange = () => {
     })),
   );
 
-  const [allDates, setAllDates] = useState<Date[]>([]);
+  const [allDates, setAllDates] = useState<{ date: Date; active: boolean }[]>([]);
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const useDateRange = () => {
     const endDay = dayjs(end);
 
     while (current.isBefore(endDay) || current.isSame(endDay, 'day')) {
-      dates.push(current.toDate());
+      dates.push({ date: current.toDate(), active: Math.random() > 0.5 });
       current = current.add(1, 'day');
     }
 
@@ -42,15 +42,20 @@ const useDateRange = () => {
   const updateDateSlider = (newStartDate: Date, newEndDate: Date, position: 'start' | 'end' = 'start') => {
     const range = generateDateRange(newStartDate, newEndDate);
     setAllDates(range);
-    const initialIndex = range.findIndex((date) => dayjs(date).isSame(dayjs(initialDate), 'day'));
+    const initialIndex = range.findIndex(({ date }) => dayjs(date).isSame(dayjs(initialDate), 'day'));
     const dateIndex = position === 'start' ? 0 : range.length - 1;
     setSelectedDateIndex(initialIndex !== -1 ? initialIndex : dateIndex);
   };
 
   const handleSliderChange = (newValue: number) => {
     if (newValue === selectedDateIndex) return;
-    setSelectedDateIndex(newValue);
-    const formattedDate = dayjs(allDates[newValue]).format('YYYYMMDD');
+
+    const nextActiveIndex = allDates.findIndex((_, index) => index > newValue && allDates[index].active);
+
+    const newIndex = nextActiveIndex !== -1 ? nextActiveIndex : selectedDateIndex;
+    setSelectedDateIndex(newIndex);
+
+    const formattedDate = dayjs(allDates[newIndex].date).format('YYYYMMDD');
     updateUrlParams(formattedDate, startDate, endDate);
   };
 
@@ -76,7 +81,10 @@ const useDateRange = () => {
       newEndDate = dayjs(endDate).add(1, 'day').toDate();
       newIndex = newIndex + 1;
     } else {
-      newIndex = modificationType === 'add' ? selectedDateIndex + 1 : selectedDateIndex - 1;
+      const step = modificationType === 'add' ? 1 : -1;
+      do {
+        newIndex += step;
+      } while (newIndex >= 0 && newIndex < allDates.length && !allDates[newIndex].active);
     }
 
     const newRange = generateDateRange(newStartDate, newEndDate!);
@@ -84,7 +92,7 @@ const useDateRange = () => {
     setEndDate(dayjs(newEndDate));
     setAllDates(newRange);
     setSelectedDateIndex(newIndex);
-    updateUrlParams(dayjs(newRange[newIndex]).format('YYYYMMDD'), newStartDate, newEndDate!);
+    updateUrlParams(dayjs(newRange[newIndex].date).format('YYYYMMDD'), newStartDate, newEndDate!);
   };
 
   const handleDateChange = (dates: [Date | null, Date | null]) => {

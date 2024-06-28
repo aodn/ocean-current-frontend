@@ -5,5 +5,5 @@ export interface DatePickerProps {
   addButtonDisabled?: boolean;
   handleDateChange: (dates: [Date | null, Date | null]) => void;
   modifyDate: (modificationType: 'add' | 'subtract') => void;
-  selectedDate: Date;
+  selectedDate: Date | null;
 }

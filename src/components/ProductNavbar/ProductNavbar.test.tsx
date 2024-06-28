@@ -12,15 +12,15 @@ vi.mock('@/components/VideoCreation/VideoCreation', () => {
 
 describe('ProductNavbar', () => {
   const mockDates = [
-    new Date('2024-06-13'),
-    new Date('2024-06-14'),
-    new Date('2024-06-15'),
-    new Date('2024-06-16'),
-    new Date('2024-06-17'),
+    { date: new Date('2024-06-13'), active: true },
+    { date: new Date('2024-06-14'), active: true },
+    { date: new Date('2024-06-15'), active: false },
+    { date: new Date('2024-06-16'), active: true },
+    { date: new Date('2024-06-17'), active: true },
   ];
   const mockReturnValue = {
     startDate: new Date('2024-06-13'),
-    endDate: new Date('2024-06-13'),
+    endDate: new Date('2024-06-17'),
     allDates: mockDates,
     selectedDateIndex: 0,
     handleSliderChange: vi.fn(),

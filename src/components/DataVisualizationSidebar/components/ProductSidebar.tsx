@@ -49,7 +49,7 @@ const ProductSideBar: React.FC = () => {
   const productInfo = getProductInfoByKey(mainProduct?.key);
 
   return (
-    <div>
+    <div className="bg-white">
       <div className="mb-1">
         <HeaderSideBar />
       </div>

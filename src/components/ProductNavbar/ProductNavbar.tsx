@@ -18,7 +18,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
   const { startDate, endDate, allDates, selectedDateIndex, handleSliderChange, handleDateChange, modifyDate, steps } =
     useDateRange();
 
-  const isSelectedDayYesterdayOrLater = dayjs(allDates[selectedDateIndex]).isSameOrAfter(
+  const isSelectedDayYesterdayOrLater = dayjs(allDates[selectedDateIndex]?.date).isSameOrAfter(
     dayjs().subtract(1, 'day'),
     'day',
   );
@@ -56,7 +56,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
             addButtonDisabled={isSelectedDayYesterdayOrLater}
             handleDateChange={handleDateChange}
             modifyDate={modifyDate}
-            selectedDate={allDates[selectedDateIndex]}
+            selectedDate={allDates[selectedDateIndex]?.date}
           />
         </div>
         <div className="w-1/4">

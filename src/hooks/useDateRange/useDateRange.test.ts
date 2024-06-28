@@ -66,7 +66,7 @@ describe('useDateRange', () => {
     });
 
     const expectedParams = new URLSearchParams();
-    expectedParams.set('date', dayjs(result.current.allDates[1]).format('YYYYMMDD'));
+    expectedParams.set('date', dayjs(result.current.allDates[1].date).format('YYYYMMDD'));
     expectedParams.set('startDate', dayjs(result.current.startDate).format('YYYYMMDD'));
     expectedParams.set('endDate', dayjs(result.current.endDate).format('YYYYMMDD'));
 

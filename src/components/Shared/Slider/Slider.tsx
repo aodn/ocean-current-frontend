@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { SliderProps } from './types/slider.types';
 import Markers from './components/Markers';
 
-const Slider: React.FC<SliderProps> = ({ min, max, step, value, onChange, labelFormatter }) => {
+const Slider: React.FC<SliderProps> = ({ min, max, step, value, onChange, labelFormatter, allDates }) => {
   const sliderRef = useRef<HTMLDivElement>(null);
   const [dragging, setDragging] = useState<boolean>(false);
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
@@ -54,7 +54,7 @@ const Slider: React.FC<SliderProps> = ({ min, max, step, value, onChange, labelF
       aria-hidden
       data-testid="slider-base"
     >
-      <Markers min={min} max={max} step={step} labelFormatter={labelFormatter} />
+      <Markers min={min} max={max} step={step} labelFormatter={labelFormatter} allDates={allDates} />
 
       <div
         className="absolute -top-4 -translate-x-1/2 border-l-[10px] border-r-[10px] border-t-[15px] border-l-transparent border-r-transparent border-t-imos-sea-blue"
