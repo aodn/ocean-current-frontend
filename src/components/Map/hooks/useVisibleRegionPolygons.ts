@@ -27,8 +27,8 @@ const useVisibleRegionPolygons = (
       const areaB = calculateAreaFromCoords(b.coords);
       return areaB - areaA;
     });
-    const visibleRegions = sortedRegions.filter(({ coords }) =>
-      isPolygonWithinBounds(coords, boundCoords, minThresholdPercentage, maxThresholdPercentage),
+    const visibleRegions = sortedRegions.filter(({ coords: regionCoords }) =>
+      isPolygonWithinBounds(regionCoords, boundCoords, minThresholdPercentage, maxThresholdPercentage),
     );
 
     const features: GeoJSON.Feature[] = visibleRegions.map(({ title, coords }, index) => ({

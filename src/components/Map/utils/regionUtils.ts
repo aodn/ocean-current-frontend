@@ -1,14 +1,17 @@
 import { BoundingBoxCoords, GeoJsonPolygon } from '@/types/map';
+import { validateCoords } from '@/utils/validators/map';
 
 export const calculateAreaFromCoords = (coords: BoundingBoxCoords) => {
-  const [westLongitude, eastLongitude, southLatitude, northLatitude] = coords;
-  if (westLongitude > eastLongitude) {
-    throw new Error('Invalid coordinates, west coordinate cannot be greater than east coordinate.');
+  try {
+    validateCoords(coords);
+    const [westLongitude, eastLongitude, southLatitude, northLatitude] = coords;
+    return Math.abs(eastLongitude - westLongitude) * Math.abs(southLatitude - northLatitude);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Error calculating area from coordinates: ${error.message}`);
+    }
+    throw new Error('Error calculating area from coordinates');
   }
-  if (Math.abs(northLatitude) > Math.abs(southLatitude)) {
-    throw new Error('Invalid coordinates, north coordinate cannot be greater than south coordinate in absolute value.');
-  }
-  return Math.abs(eastLongitude - westLongitude) * Math.abs(southLatitude - northLatitude);
 };
 
 /**
