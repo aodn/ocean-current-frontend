@@ -5,5 +5,7 @@ import Slider from './Slider/Slider';
 import Loading from './Loading/Loading';
 import Popup from './Popup/Popup';
 import ToggleButton from './ToggleButton/ToggleButton';
+import DropdownButton from './DropdownButton/DropdownButton';
+import Checkbox from './Checkbox/Checkbox';
 
-export { Button, Dropdown, DateSelector, Slider, Loading, Popup, ToggleButton };
+export { Button, Dropdown, DateSelector, Slider, Loading, Popup, ToggleButton, DropdownButton, Checkbox };

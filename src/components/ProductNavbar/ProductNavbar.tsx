@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import DatePicker from '@/components/DatePicker/DatePicker';
 import DateSlider from '@/components/DateSlider/DateSlider';
-import VideoCreation from '@/components/VideoCreation/VideoCreation';
+// import VideoCreation from '@/components/VideoCreation/VideoCreation';
 import useDateRange from '@/hooks/useDateRange/useDateRange';
-import { Button, ToggleButton } from '@/components/Shared';
+import { Button, ToggleButton, DropdownButton } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
 import { TEXT_CONSTANT } from '@/constants/textConstant';
 import ShareIcon from '@/assets/icons/share-icon.svg';
@@ -46,6 +46,10 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
     setShowVideo(state);
   };
 
+  const handleSelect = (selectedItems: string[]) => {
+    console.log('Selected items:', selectedItems);
+  };
+
   return (
     <div className="mb-2 p-1 shadow-lg">
       <div className="flex items-center justify-between rounded ">
@@ -70,7 +74,12 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
           <p className="mx-5 text-imos-sea-blue">Video</p>
           <ToggleButton isOn={showVideo} onToggle={handleToggle} />
         </div>
-        <VideoCreation allDates={allDates} />
+        {/* <VideoCreation allDates={allDates} /> */}
+        <DropdownButton
+          label="Download"
+          items={['Image', 'Video (default)', 'Video (customized)']}
+          onSelect={handleSelect}
+        />
       </div>
       <DateSlider
         allDates={allDates}
