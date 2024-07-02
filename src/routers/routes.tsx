@@ -2,7 +2,7 @@ import { Navigate, type RouteObject } from 'react-router-dom';
 import { Home, MapView, DataView, News, NotFound, GuidedTour } from '@/pages';
 import MainLayout from '@/layouts/LandingLayout';
 import MapLayout from '@/layouts/MapLayout';
-import ProductLayout from '@/layouts/DataVisualizationLayout';
+import DataVisualizationLayout from '@/layouts/DataVisualizationLayout';
 
 const routes: RouteObject[] = [
   {
@@ -15,7 +15,7 @@ const routes: RouteObject[] = [
       },
       {
         path: '/product',
-        element: <ProductLayout />,
+        element: <DataVisualizationLayout />,
         children: [
           {
             index: true,
