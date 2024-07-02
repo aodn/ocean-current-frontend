@@ -47,9 +47,9 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
   };
 
   return (
-    <div className="mb-2 p-1 shadow-lg">
-      <div className="flex items-center justify-between rounded ">
-        <div className="w-4/12">
+    <div className="mb-2 bg-[#FAFAFA] p-1 shadow-lg">
+      <div className="flex items-center justify-between rounded">
+        <div className="w-4/12 border-r-2">
           <DatePicker
             startDate={startDate}
             endDate={endDate}
@@ -59,18 +59,20 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
             selectedDate={allDates[selectedDateIndex]?.date}
           />
         </div>
-        <div className="w-1/4">
-          <Button onClick={() => handleCopyLink()} size="full" borderRadius="small" type="secondary">
-            <img src={ShareIcon} alt="" />
-            {copyButtonText}
-          </Button>
-        </div>
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center border-r-2 px-4 py-4">
           <img src={VideoIcon} alt="video icon" />
           <p className="mx-5 text-imos-sea-blue">Video</p>
           <ToggleButton isOn={showVideo} onToggle={handleToggle} />
         </div>
-        <VideoCreation allDates={allDates} />
+        <div className="w-1/4 border-r-2 px-4 py-4">
+          <Button onClick={() => handleCopyLink()} size="full" borderRadius="small" type="secondary">
+            <img src={ShareIcon} alt="share icon" />
+            {copyButtonText}
+          </Button>
+        </div>
+        <div className="ml-4">
+          <VideoCreation allDates={allDates} />
+        </div>
       </div>
       <DateSlider
         allDates={allDates}

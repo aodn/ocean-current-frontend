@@ -49,7 +49,7 @@ const ProductSideBar: React.FC = () => {
   const productInfo = getProductInfoByKey(mainProduct?.key);
 
   return (
-    <div className="bg-white">
+    <div className="border border-[#D6E1E8] bg-[#FAFAFA]">
       <div className="mb-1">
         <HeaderSideBar />
       </div>
@@ -60,7 +60,7 @@ const ProductSideBar: React.FC = () => {
         </div>
       )}
 
-      <div className="flex items-center justify-between border-b-2 border-imos-grey p-4">
+      <div className="flex items-center justify-between border-b-2 border-[#e5e7eb] p-4">
         <div aria-hidden onClick={handlePopup} className="mr-6 flex flex-col items-center justify-center">
           <img src={InfoIcon} alt="info icon" className=" h-6 w-6 cursor-pointer object-contain" />
           <p className="mt-2 text-center text-xs text-imos-sea-blue">Click here for more information</p>
@@ -71,13 +71,13 @@ const ProductSideBar: React.FC = () => {
       <Popup title={productInfo?.title} body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
 
       {shouldRenderSubProducts() && (
-        <div className="border-b-2 border-imos-grey px-4">
+        <div className="border-b-2 border-[#e5e7eb] px-4">
           <div
             className="flex cursor-pointer items-center justify-between px-4 py-2"
             onClick={() => setIsSubProductsCollapsed(!isSubProductsCollapsed)}
             aria-hidden
           >
-            <h3 className="text-lg font-medium text-imos-black">Sub-products</h3>
+            <h3 className="text-lg font-medium text-[#787878]">Sub-products</h3>
             <img
               src={ArrowIcon}
               alt="arrow icon"
@@ -105,13 +105,13 @@ const ProductSideBar: React.FC = () => {
         </div>
       )}
 
-      <div className="border-b-2 border-imos-grey px-4">
+      <div className="border-b-2 border-[#e5e7eb] px-4">
         <div
           className="flex cursor-pointer items-center justify-between px-4 py-2"
           onClick={() => setIsLegendCollapsed(!isLegendCollapsed)}
           aria-hidden
         >
-          <h3 className="text-lg font-medium text-imos-black">Legend</h3>
+          <h3 className="text-lg font-medium text-[#787878]">Legend</h3>
           <img
             src={ArrowIcon}
             alt="arrow icon"
@@ -125,13 +125,13 @@ const ProductSideBar: React.FC = () => {
         </div>
       </div>
 
-      <div className="border-b-2 border-imos-grey px-4">
+      <div className=" px-4">
         <div
           className="flex cursor-pointer items-center justify-between px-4 py-2"
           onClick={() => setIsDataSourcesCollapsed(!isDataSourcesCollapsed)}
           aria-hidden
         >
-          <h3 className="text-lg font-medium text-imos-black">Data sources</h3>
+          <h3 className="text-lg font-medium text-[#787878]">Data sources</h3>
           <img
             src={ArrowIcon}
             alt="arrow icon"

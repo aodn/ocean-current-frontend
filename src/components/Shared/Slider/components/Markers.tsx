@@ -8,11 +8,11 @@ const Markers: React.FC<MarkersProps> = ({ min, max, step, labelFormatter, allDa
         <div
           key={index}
           className={`absolute -top-0.5 w-0.5 translate-y-1/2 select-none ${
-            marker.active ? 'bg-gray-300' : 'bg-red-500'
+            marker.active ? 'bg-[#7C8EA9]' : 'bg-gray-300'
           }`}
           style={{
             left: `${((index * step) / (max - min)) * 100}%`,
-            height: index % 7 === 0 ? '12px' : '6px',
+            height: index % 7 === 0 ? '12px' : '8px',
           }}
         >
           {index % 7 === 0 && (
