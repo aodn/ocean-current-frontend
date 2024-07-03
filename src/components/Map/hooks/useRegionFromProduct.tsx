@@ -14,7 +14,7 @@ const useRegionFromProduct = () => {
   const mixedRegions = getRegionList(useProductId);
 
   const getRegions = (regionKey: RegionKeyType[]): Region[] =>
-    allRegions.filter(({ region }) => regionKey.includes(region));
+    allRegions.filter(({ code }) => regionKey.includes(code));
   const newRegions = getRegions(mixedRegions);
 
   return { regions: newRegions };

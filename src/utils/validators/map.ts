@@ -1,7 +1,7 @@
-import { BoundingBoxCoords } from '@/types/map';
+import { BoundingBox } from '@/types/map';
 
-const validateCoords = (coords: BoundingBoxCoords) => {
-  const [westLongitude, eastLongitude, southLatitude, northLatitude] = coords;
+const validateCoords = (coords: BoundingBox) => {
+  const [westLongitude, southLatitude, eastLongitude, northLatitude] = coords;
   if (coords.length !== 4) {
     throw new Error('Invalid coordinates, must be an array of four numbers.');
   }

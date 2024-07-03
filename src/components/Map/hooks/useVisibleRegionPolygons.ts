@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { LngLatBounds } from 'react-map-gl';
-import { BoundingBoxCoords } from '@/types/map';
-import { calculateAreaFromCoords, convertAreaCoordsToGeoJsonCoordinates } from '../utils/regionUtils';
+import { BoundingBox } from '@/types/map';
+import { calculateAreaFromCoords, convertAreaCoordsToGeoJsonCoordinates } from '@/utils/geo';
 import { isPolygonWithinBounds } from '../utils/mapUtils';
 import useRegionFromProduct from './useRegionFromProduct';
 
 const useVisibleRegionPolygons = (
-  bounds: LngLatBounds | null,
+  mapBounds: LngLatBounds | null,
   minThresholdPercentage = 0.1,
   maxThresholdPercentage = 100,
 ) => {
@@ -17,20 +17,27 @@ const useVisibleRegionPolygons = (
     features: [] as GeoJSON.Feature[],
   });
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const memoizedRegions = useMemo(() => regions, [JSON.stringify(regions)]);
+
   useEffect(() => {
-    if (!bounds) return;
+    if (!mapBounds) return;
 
-    const boundCoords = [bounds.getWest(), bounds.getEast(), bounds.getSouth(), bounds.getNorth()] as BoundingBoxCoords;
+    const mapBoundCoords = [
+      mapBounds.getWest(),
+      mapBounds.getSouth(),
+      mapBounds.getEast(),
+      mapBounds.getNorth(),
+    ] as BoundingBox;
 
-    const sortedRegions = regions.sort((a, b) => {
+    const sortedRegions = memoizedRegions.sort((a, b) => {
       const areaA = calculateAreaFromCoords(a.coords);
       const areaB = calculateAreaFromCoords(b.coords);
       return areaB - areaA;
     });
     const visibleRegions = sortedRegions.filter(({ coords: regionCoords }) =>
-      isPolygonWithinBounds(regionCoords, boundCoords, minThresholdPercentage, maxThresholdPercentage),
+      isPolygonWithinBounds(regionCoords, mapBoundCoords, minThresholdPercentage, maxThresholdPercentage),
     );
-
     const features: GeoJSON.Feature[] = visibleRegions.map(({ title, coords }, index) => ({
       type: 'Feature',
       id: index,
@@ -47,8 +54,7 @@ const useVisibleRegionPolygons = (
       type: 'FeatureCollection',
       features,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bounds, minThresholdPercentage, maxThresholdPercentage, JSON.stringify(regions)]);
+  }, [mapBounds, minThresholdPercentage, maxThresholdPercentage, memoizedRegions]);
 
   return geoJsonData;
 };

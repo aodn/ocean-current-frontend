@@ -32,7 +32,7 @@ const DataVisualizationLayout: React.FC = () => {
     setDate(dayjs(date));
   }, [searchParams]);
 
-  const { region: regionTitle = 'Australia/NZ', date } = useProductSearchParam();
+  const { region: regionTitleFromUrl = 'Australia/NZ', date } = useProductSearchParam();
 
   const setProductKey = useCallback(() => {
     if (product) {
@@ -48,10 +48,10 @@ const DataVisualizationLayout: React.FC = () => {
   }, [product]);
 
   useEffect(() => {
-    const region = getRegionByRegionTitle(regionTitle as string);
+    const region = getRegionByRegionTitle(regionTitleFromUrl as string);
     const regionName = region?.title || 'Australia/NZ';
     setRegionTitle(regionName);
-  }, [regionTitle]);
+  }, [regionTitleFromUrl]);
 
   useEffect(() => {
     if (!date || useDate.isSame(dayjs(date), 'day')) return;
@@ -84,11 +84,9 @@ const DataVisualizationLayout: React.FC = () => {
         </div>
         <div className={`transition-all duration-300 ${isSidebarVisible ? 'ml-4' : 'ml-0'} w-full`}>
           <DataVisualizationNavbar setShowVideo={setShowVideo} />
-          <>
-            <ErrorBoundary key={product?.mainProduct}>
-              <Outlet context={{ showVideo }} />
-            </ErrorBoundary>
-          </>
+          <ErrorBoundary key={product?.mainProduct}>
+            <Outlet context={{ showVideo }} />
+          </ErrorBoundary>
         </div>
       </div>
     </div>
