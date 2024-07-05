@@ -3,8 +3,10 @@ import ReactDatePicker from 'react-datepicker';
 import dayjs from 'dayjs';
 import arrowIcon from '@/assets/icons/arrow.svg';
 import calendarIcon from '@/assets/icons/calendar-icon.svg';
-import { DatePickerProps } from './types/DatePicker.types';
 import 'react-datepicker/dist/react-datepicker.css';
+import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
+import useDateRange from '@/hooks/useDateRange/useDateRange';
+import { DatePickerProps } from './types/DatePicker.types';
 
 const customInput = () => (
   <div className="mr-4 flex cursor-pointer items-center justify-center">
@@ -22,24 +24,41 @@ const DatePicker: React.FC<DatePickerProps> = ({
   modifyDate,
   selectedDate,
 }) => {
+  const { mainProduct } = useProductConvert();
+  const isClimatology = mainProduct?.key === 'climatology';
+  const { handleYearDateChange } = useDateRange();
+  const formattedDate = isClimatology
+    ? dayjs(selectedDate).format('MMM YYYY')
+    : dayjs(selectedDate).format('DD MMM YYYY');
+
   return (
     <div className="flex items-center justify-evenly">
       <div className="max-w-28">
-        <ReactDatePicker
-          customInput={customInput()}
-          selected={startDate}
-          onChange={handleDateChange}
-          startDate={startDate}
-          endDate={endDate}
-          maxDate={maxDate}
-          selectsRange
-        />
+        {isClimatology && (
+          <ReactDatePicker
+            customInput={customInput()}
+            onChange={(date) => handleYearDateChange(date as Date)}
+            showMonthYearPicker
+            dateFormat="yyyy"
+          />
+        )}
+        {!isClimatology && (
+          <ReactDatePicker
+            customInput={customInput()}
+            selected={startDate}
+            onChange={handleDateChange}
+            startDate={startDate}
+            endDate={endDate}
+            maxDate={maxDate}
+            selectsRange
+          />
+        )}
       </div>
       <div className="my-4 flex items-center justify-between rounded-md border px-2 py-1 text-lg text-imos-title-blue shadow">
         <button onClick={() => modifyDate('subtract')} className="cursor-pointer rounded bg-white p-2 font-semibold">
           <img className="h-2.5 w-2.5 rotate-90" src={arrowIcon} alt="left arrow icon" />
         </button>
-        <span className="text-l px-5">{dayjs(selectedDate).format('DD MMM YYYY')}</span>
+        <span className="text-l px-5">{formattedDate}</span>
         <button
           onClick={() => modifyDate('add')}
           disabled={addButtonDisabled}

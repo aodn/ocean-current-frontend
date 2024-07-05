@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { useShallow } from 'zustand/react/shallow';
 import { useDateStore, setStartDate, setEndDate } from '@/stores/date-store/dateStore';
+import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 
 const useDateRange = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { mainProduct } = useProductConvert();
   const urlDate = searchParams.get('date');
   const initialDate = urlDate ? dayjs(urlDate, 'YYYYMMDD').toDate() : dayjs().subtract(1, 'month').toDate();
 
@@ -16,6 +18,8 @@ const useDateRange = () => {
     })),
   );
 
+  const isYearRange = mainProduct?.key === 'climatology';
+
   const [allDates, setAllDates] = useState<{ date: Date; active: boolean }[]>([]);
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
 
@@ -24,19 +28,26 @@ const useDateRange = () => {
       updateDateSlider(startDate, endDate, 'end');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isYearRange]);
 
   const generateDateRange = (start: Date, end: Date) => {
-    const dates = [];
-    let current = dayjs(start);
-    const endDay = dayjs(end);
-
-    while (current.isBefore(endDay) || current.isSame(endDay, 'day')) {
-      dates.push({ date: current.toDate(), active: Math.random() > 0.5 });
-      current = current.add(1, 'day');
+    if (isYearRange) {
+      const year = dayjs(start).year();
+      const dates = Array.from({ length: 12 }, (_, index) => {
+        const date = dayjs(new Date(year, index, 1));
+        return { date: date.toDate(), active: true };
+      });
+      return dates;
+    } else {
+      const dates = [];
+      let current = dayjs(start);
+      const endDay = dayjs(end);
+      while (current.isBefore(endDay) || current.isSame(endDay, 'day')) {
+        dates.push({ date: current.toDate(), active: Math.random() > 0.5 });
+        current = current.add(1, 'day');
+      }
+      return dates;
     }
-
-    return dates;
   };
 
   const updateDateSlider = (newStartDate: Date, newEndDate: Date, position: 'start' | 'end' = 'start') => {
@@ -59,7 +70,7 @@ const useDateRange = () => {
     updateUrlParams(formattedDate, startDate, endDate);
   };
 
-  const updateUrlParams = (newDate: string, newStartDate: Date, newEndDate: Date | null) => {
+  const updateUrlParams = (newDate: string, newStartDate: Date | Dayjs, newEndDate: Date | Dayjs | null) => {
     const newSearchParams = new URLSearchParams(searchParams.toString());
     newSearchParams.set('date', newDate);
     newSearchParams.set('startDate', dayjs(newStartDate).format('YYYYMMDD'));
@@ -106,6 +117,17 @@ const useDateRange = () => {
     }
   };
 
+  const handleYearDateChange = (date: Date) => {
+    const startDate = dayjs(date).startOf('year');
+    const endDate = dayjs(date).endOf('year');
+
+    setStartDate(startDate);
+    setEndDate(endDate);
+
+    updateDateSlider(startDate.toDate(), endDate.toDate());
+    updateUrlParams(dayjs(date).format('YYYYMMDD'), startDate, endDate);
+  };
+
   return {
     startDate,
     endDate,
@@ -114,6 +136,7 @@ const useDateRange = () => {
     handleSliderChange,
     handleDateChange,
     modifyDate,
+    handleYearDateChange,
     steps: 1,
   };
 };

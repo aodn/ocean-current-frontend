@@ -1,7 +1,13 @@
 import React from 'react';
+import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { MarkersProps } from '../types/slider.types';
 
 const Markers: React.FC<MarkersProps> = ({ min, max, step, labelFormatter, allDates }) => {
+  const { mainProduct } = useProductConvert();
+  const isClimatology = mainProduct?.key === 'climatology';
+
+  const showWeekMarker = (index: number) => isClimatology || index % 7 === 0;
+
   return (
     <>
       {allDates.map((marker, index) => (
@@ -12,10 +18,10 @@ const Markers: React.FC<MarkersProps> = ({ min, max, step, labelFormatter, allDa
           }`}
           style={{
             left: `${((index * step) / (max - min)) * 100}%`,
-            height: index % 7 === 0 ? '12px' : '8px',
+            height: showWeekMarker(index) ? '12px' : '8px',
           }}
         >
-          {index % 7 === 0 && (
+          {showWeekMarker(index) && (
             <span className="absolute right-1/2 mt-3 block translate-x-1/2 select-none whitespace-nowrap">
               {labelFormatter ? labelFormatter(index) : index}
             </span>
