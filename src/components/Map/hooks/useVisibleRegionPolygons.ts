@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { LngLatBounds } from 'react-map-gl';
 import { BoundingBox } from '@/types/map';
-import { calculateAreaFromCoords, convertAreaCoordsToGeoJsonCoordinates } from '@/utils/geo';
+import { calculateAreaFromCoords, convertAreaCoordsToGeoJsonCoordinates } from '@/utils/geo-utils/geo';
 import { isPolygonWithinBounds } from '../utils/mapUtils';
 import useRegionFromProduct from './useRegionFromProduct';
 
