@@ -1,7 +1,7 @@
 import { MapboxGeoJSONFeature, MapMouseEvent, MapRef } from 'react-map-gl';
-import { isNotNullOrUndefined } from '@/utils/general';
+import { isNotNullOrUndefined } from '@/utils/general-utils/general';
 import { BoundingBox } from '@/types/map';
-import { calculateAreaFromCoords } from '@/utils/geo';
+import { calculateAreaFromCoords } from '@/utils/geo-utils/geo';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const extractPropertyFromFeatures = <T extends Record<string, any>>(
@@ -44,7 +44,7 @@ const isPolygonWithinBounds = (
   maxThresholdPercentage: number,
 ): boolean => {
   const polygonArea = calculateAreaFromCoords(polygonCoords);
-  const boundsArea = calculateAreaFromCoords(boundsCoords);
+  const boundsArea = calculateAreaFromCoords(boundsCoords, false);
 
   const polygonPercentageOfBounds = (polygonArea / boundsArea) * 100;
   return polygonPercentageOfBounds >= minThresholdPercentage && polygonPercentageOfBounds <= maxThresholdPercentage;

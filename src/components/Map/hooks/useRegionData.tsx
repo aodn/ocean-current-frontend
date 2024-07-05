@@ -1,5 +1,5 @@
 import useMapStore from '@/stores/map-store/mapStore';
-import { calculateAreaFromCoords, convertAreaCoordsToGeoJsonCoordinates } from '@/utils/geo';
+import { calculateAreaFromCoords, convertAreaCoordsToGeoJsonCoordinates } from '@/utils/geo-utils/geo';
 import { Region } from '../types/map.types';
 import useRegionFromProduct from './useRegionFromProduct';
 

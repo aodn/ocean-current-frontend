@@ -1,4 +1,4 @@
-import { getProductFullPathById } from '@/utils/product';
+import { getProductFullPathById } from '@/utils/product-utils/product';
 import useProductStore from '../productStore';
 
 const useProductPath = () => {
