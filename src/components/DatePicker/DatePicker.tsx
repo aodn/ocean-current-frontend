@@ -5,7 +5,6 @@ import arrowIcon from '@/assets/icons/arrow.svg';
 import calendarIcon from '@/assets/icons/calendar-icon.svg';
 import 'react-datepicker/dist/react-datepicker.css';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
-import useDateRange from '@/hooks/useDateRange/useDateRange';
 import { DatePickerProps } from './types/DatePicker.types';
 
 const customInput = () => (
@@ -22,11 +21,12 @@ const DatePicker: React.FC<DatePickerProps> = ({
   addButtonDisabled = false,
   handleDateChange,
   modifyDate,
+  handleYearDateChange,
   selectedDate,
+  isLastMonth,
 }) => {
   const { mainProduct } = useProductConvert();
   const isClimatology = mainProduct?.key === 'climatology';
-  const { handleYearDateChange } = useDateRange();
   const formattedDate = isClimatology
     ? dayjs(selectedDate).format('MMM YYYY')
     : dayjs(selectedDate).format('DD MMM YYYY');
@@ -37,7 +37,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
         {isClimatology && (
           <ReactDatePicker
             customInput={customInput()}
-            onChange={(date) => handleYearDateChange(date as Date)}
+            selected={startDate}
+            onChange={handleYearDateChange}
             showMonthYearPicker
             dateFormat="yyyy"
           />
@@ -54,6 +55,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
           />
         )}
       </div>
+
       <div className="my-4 flex items-center justify-between rounded-md border px-2 py-1 text-lg text-imos-title-blue shadow">
         <button onClick={() => modifyDate('subtract')} className="cursor-pointer rounded bg-white p-2 font-semibold">
           <img className="h-2.5 w-2.5 rotate-90" src={arrowIcon} alt="left arrow icon" />
@@ -61,7 +63,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
         <span className="text-l px-5">{formattedDate}</span>
         <button
           onClick={() => modifyDate('add')}
-          disabled={addButtonDisabled}
+          disabled={isClimatology ? isLastMonth() : addButtonDisabled}
           className="cursor-pointer rounded bg-white p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
         >
           <img className="h-2.5 w-2.5 -rotate-90" src={arrowIcon} alt="right arrow icon" />

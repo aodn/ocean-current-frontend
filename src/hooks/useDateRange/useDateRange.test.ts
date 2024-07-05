@@ -2,7 +2,14 @@ import { renderHook, act } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import dayjs from 'dayjs';
 import { useSearchParams } from 'react-router-dom';
+import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import useDateRange from './useDateRange';
+
+type Product = {
+  key: string;
+  title: string;
+  path: string;
+};
 
 vi.mock('react-router-dom', () => ({
   useSearchParams: vi.fn(() => [new URLSearchParams(), vi.fn()]),
@@ -17,9 +24,19 @@ vi.mock('@/stores/date-store/dateStore', () => ({
   setEndDate: vi.fn(),
 }));
 
+vi.mock('@/stores/product-store/hooks/useProductConvert', () => ({
+  __esModule: true,
+  default: vi.fn(),
+}));
+
 describe('useDateRange', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'default', title: 'Default Product', path: '/default' } as Product,
+      subProduct: null,
+      subProducts: [],
+    });
   });
 
   it('should initialize with correct default values', () => {
@@ -99,5 +116,32 @@ describe('useDateRange', () => {
 
     // Assert
     expect(result.current.allDates.length).toBe(dayjs(endDate).diff(startDate, 'day') + 1);
+  });
+
+  it('should detect if it is the last month', () => {
+    // Arrange
+    const { result } = renderHook(() => useDateRange());
+
+    // Act
+    const isLastMonth = result.current.isLastMonth();
+
+    // Assert
+    expect(isLastMonth).toBeDefined();
+    expect(typeof isLastMonth).toBe('boolean');
+  });
+
+  it('should handle year range correctly', () => {
+    // Arrange
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'climatology', title: 'Climatology', path: '/climatology' } as Product,
+      subProduct: null,
+      subProducts: [],
+    });
+
+    // Act
+    const { result } = renderHook(() => useDateRange());
+
+    // Assert
+    expect(result.current.allDates.length).toBe(12);
   });
 });

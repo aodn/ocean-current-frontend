@@ -24,13 +24,20 @@ const useDateRange = () => {
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
 
   useEffect(() => {
-    if (endDate) {
+    if (!isYearRange && endDate) {
       updateDateSlider(startDate, endDate, 'end');
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isYearRange]);
 
-  const generateDateRange = (start: Date, end: Date) => {
+  useEffect(() => {
+    updateDateSlider(startDate);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isYearRange]);
+
+  const generateDateRange = (start: Date, end?: Date) => {
     if (isYearRange) {
       const year = dayjs(start).year();
       const dates = Array.from({ length: 12 }, (_, index) => {
@@ -50,12 +57,34 @@ const useDateRange = () => {
     }
   };
 
-  const updateDateSlider = (newStartDate: Date, newEndDate: Date, position: 'start' | 'end' = 'start') => {
+  const updateDateSlider = (
+    newStartDate: Date,
+    newEndDate?: Date,
+    position: 'start' | 'end' = 'start',
+    newSelectedDate?: Date,
+  ) => {
     const range = generateDateRange(newStartDate, newEndDate);
     setAllDates(range);
-    const initialIndex = range.findIndex(({ date }) => dayjs(date).isSame(dayjs(initialDate), 'day'));
-    const dateIndex = position === 'start' ? 0 : range.length - 1;
-    setSelectedDateIndex(initialIndex !== -1 ? initialIndex : dateIndex);
+    if (isYearRange) {
+      if (newSelectedDate) {
+        const newSelectedMonthIndex = allDates.findIndex(({ date }) =>
+          dayjs(date).isSame(dayjs(newSelectedDate), 'month'),
+        );
+        setSelectedDateIndex(newSelectedMonthIndex);
+        return;
+      }
+      if (urlDate) {
+        const currentMonthIndex = dayjs(urlDate).get('month');
+        setSelectedDateIndex(currentMonthIndex);
+        return;
+      }
+      const currentMonthIndex = dayjs(newStartDate).get('month');
+      setSelectedDateIndex(currentMonthIndex);
+    } else {
+      const initialIndex = range.findIndex(({ date }) => dayjs(date).isSame(dayjs(initialDate), 'day'));
+      const dateIndex = position === 'start' ? 0 : range.length - 1;
+      setSelectedDateIndex(initialIndex !== -1 ? initialIndex : dateIndex);
+    }
   };
 
   const handleSliderChange = (newValue: number) => {
@@ -124,8 +153,17 @@ const useDateRange = () => {
     setStartDate(startDate);
     setEndDate(endDate);
 
-    updateDateSlider(startDate.toDate(), endDate.toDate());
+    updateDateSlider(startDate.toDate(), endDate.toDate(), 'start', date);
     updateUrlParams(dayjs(date).format('YYYYMMDD'), startDate, endDate);
+  };
+
+  const isLastMonth = () => {
+    const selectedDate = dayjs(allDates[selectedDateIndex]?.date);
+    if (selectedDate.month() === 11) {
+      return true;
+    }
+
+    return false;
   };
 
   return {
@@ -137,6 +175,7 @@ const useDateRange = () => {
     handleDateChange,
     modifyDate,
     handleYearDateChange,
+    isLastMonth,
     steps: 1,
   };
 };

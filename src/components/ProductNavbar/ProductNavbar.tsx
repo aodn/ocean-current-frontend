@@ -15,13 +15,18 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const [showVideo, setLocalShowVideo] = useState(false);
-  const { startDate, endDate, allDates, selectedDateIndex, handleSliderChange, handleDateChange, modifyDate, steps } =
-    useDateRange();
-
-  const isSelectedDayYesterdayOrLater = dayjs(allDates[selectedDateIndex]?.date).isSameOrAfter(
-    dayjs().subtract(1, 'day'),
-    'day',
-  );
+  const {
+    startDate,
+    endDate,
+    allDates,
+    selectedDateIndex,
+    handleSliderChange,
+    handleYearDateChange,
+    handleDateChange,
+    modifyDate,
+    steps,
+    isLastMonth,
+  } = useDateRange();
 
   const handleCopyLink = () => {
     const url = location.href;
@@ -32,6 +37,11 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
       setCopyButtonText(TEXT_CONSTANT.SHARE_PERMLINK);
     }, 2000);
   };
+
+  const isSelectedDayYesterdayOrLater = dayjs(allDates[selectedDateIndex]?.date).isSameOrAfter(
+    dayjs().subtract(1, 'day'),
+    'day',
+  );
 
   useEffect(() => {
     return () => {
@@ -55,8 +65,10 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
             endDate={endDate}
             addButtonDisabled={isSelectedDayYesterdayOrLater}
             handleDateChange={handleDateChange}
+            handleYearDateChange={handleYearDateChange}
             modifyDate={modifyDate}
             selectedDate={allDates[selectedDateIndex]?.date}
+            isLastMonth={isLastMonth}
           />
         </div>
         <div className="flex items-center justify-center border-r-2 px-4 py-4">
