@@ -7,7 +7,7 @@ const initialState: State = {
   productParams: {
     productId: '',
     regionScope: RegionScope.State,
-    regionTitle: '',
+    regionTitle: null,
   },
 };
 
@@ -21,11 +21,7 @@ const useProductStore = create<State & Actions>()(
       setRegionScope: (regionScope) =>
         set((state) => ({ productParams: { ...state.productParams, regionScope } }), false, 'setRegionScope'),
       setRegionTitle: (regionTitle) =>
-        set(
-          (state) => ({ productParams: { ...state.productParams, regionTitle: regionTitle } }),
-          false,
-          'setRegionTitle',
-        ),
+        set((state) => ({ productParams: { ...state.productParams, regionTitle } }), false, 'setRegionTitle'),
     },
   })),
 );

@@ -14,6 +14,8 @@ interface MapboxLayerIds {
   argoAsProductSelectedPointLayer: string;
   productRegionBoxLayer: string;
   productRegionBoxHighlightLayer: string;
+  productRegionNameLabelLayer: string;
+  productRegionSelectedBoxLayer: string;
 }
 
 const mapboxInstanceIds: MapBoxInstanceIds = {
@@ -32,6 +34,8 @@ const mapboxLayerIds: MapboxLayerIds = {
   argoAsProductSelectedPointLayer: 'argo-as-product-selected-point-layer-id',
   productRegionBoxLayer: 'product-region-box-layer-id',
   productRegionBoxHighlightLayer: 'product-region-box-highlight-layer-id',
+  productRegionNameLabelLayer: 'product-region-name-label-layer-id',
+  productRegionSelectedBoxLayer: 'product-region-selected-box-layer-id',
 };
 
 export { mapboxInstanceIds, mapboxSourceIds, mapboxLayerIds };
