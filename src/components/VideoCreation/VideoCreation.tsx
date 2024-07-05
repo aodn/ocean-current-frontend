@@ -16,7 +16,7 @@ const VideoCreation: React.FC<VideoCreationProps> = ({ allDates }) => {
 
   const region = getRegionByRegionTitle(useProductRegionTitle);
   const targetPathRegion = getTargetRegionScopPath(region?.scope || RegionScope.Au);
-  const regionPath = region?.region;
+  const regionPath = region?.code;
 
   const subProductImgPath = subProduct?.imgPath;
 

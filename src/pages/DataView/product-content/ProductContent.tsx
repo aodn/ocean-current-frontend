@@ -29,7 +29,7 @@ const ProductContent: React.FC = () => {
 
   const region = getRegionByRegionTitle(useProductRegionTitle);
   const targetPathRegion = getTargetRegionScopPath(region?.scope || RegionScope.Au);
-  const regionPath = region?.region || 'au';
+  const regionPath = region?.code || 'au';
 
   useEffect(() => {
     setError(null);

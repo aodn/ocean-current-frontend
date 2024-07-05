@@ -27,9 +27,9 @@ describe('isNotNullOrUndefined', () => {
 
 vi.mock('@/data/regionData', () => {
   const mockedRegions: Region[] = [
-    { region: 'Au', title: 'Australia/NZ', coords: [100.5, 179.5, -49, -5.5], scope: RegionScope.Au },
-    { region: 'SO', title: 'Southern Ocean', coords: [130, 155, -55, -35], scope: RegionScope.State },
-    { region: 'SNSW', title: 'Southern NSW', coords: [149.5, 155.5, -37.4, -31.6], scope: RegionScope.Local },
+    { code: 'Au', title: 'Australia/NZ', coords: [100.5, 179.5, -49, -5.5], scope: RegionScope.Au },
+    { code: 'SO', title: 'Southern Ocean', coords: [130, 155, -55, -35], scope: RegionScope.State },
+    { code: 'SNSW', title: 'Southern NSW', coords: [149.5, 155.5, -37.4, -31.6], scope: RegionScope.Local },
   ];
   return {
     allRegions: mockedRegions,
@@ -46,7 +46,7 @@ describe('getRegionByRegionTitle', () => {
 
     // Assert
     expect(region).toEqual({
-      region: 'SNSW',
+      code: 'SNSW',
       title: 'Southern NSW',
       coords: [149.5, 155.5, -37.4, -31.6],
       scope: RegionScope.Local,
