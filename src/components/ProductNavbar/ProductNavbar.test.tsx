@@ -27,7 +27,7 @@ describe('ProductNavbar', () => {
     handleDateChange: vi.fn(),
     modifyDate: vi.fn(),
     handleYearDateChange: vi.fn(),
-    isSelectedDayYesterdayOrLater: false,
+    isSelectedDayYesterdayOrLater: () => false,
     isLastMonth: vi.fn(),
     steps: 1,
   };
