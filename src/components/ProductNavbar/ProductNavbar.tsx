@@ -68,7 +68,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
   return (
     <div className="mb-2 bg-[#FAFAFA] p-1 shadow-lg">
       <div className="flex items-center justify-between rounded">
-        <div className="w-4/12 border-r-2">
+        <div className="w-4/12 border-r-2 px-4">
           <DatePicker
             startDate={startDate}
             endDate={endDate}
@@ -87,8 +87,8 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
         </div>
         {/* <VideoCreation allDates={allDates} /> */}
 
-        <div className="w-1/4 border-r-2 px-4 py-4">
-          <Button onClick={() => handleCopyLink()} size="full" borderRadius="small" type="secondary">
+        <div className="border-r-2 px-4 py-4">
+          <Button onClick={() => handleCopyLink()} size="auto" borderRadius="small" type="secondary">
             <img src={ShareIcon} alt="share icon" />
             {copyButtonText}
           </Button>
