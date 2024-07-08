@@ -1,4 +1,4 @@
-import { isProductAvailableInRegion } from '@/utils/region';
+import { isProductAvailableInRegion } from '@/utils/region-utils/region';
 import useProductStore from '../productStore';
 
 const useProductAvailableInRegion = () => {

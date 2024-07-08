@@ -1,7 +1,7 @@
 import { allRegions } from '@/data/regionData';
 import useProductStore from '@/stores/product-store/productStore';
 import { Region, RegionKeyType } from '@/types/map';
-import { getRegionListByProductId } from '@/utils/region';
+import { getRegionListByProductId } from '@/utils/region-utils/region';
 
 const useRegionFromProduct = () => {
   const useProductId = useProductStore((state) => state.productParams.productId);
@@ -14,7 +14,7 @@ const useRegionFromProduct = () => {
   const mixedRegions = getRegionList(useProductId);
 
   const getRegions = (regionKey: RegionKeyType[]): Region[] =>
-    allRegions.filter(({ region }) => regionKey.includes(region));
+    allRegions.filter(({ code }) => regionKey.includes(code));
   const newRegions = getRegions(mixedRegions);
 
   return { regions: newRegions };

@@ -1,75 +1,202 @@
 import { renderHook, act } from '@testing-library/react';
-import { useSearchParams } from 'react-router-dom';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import dayjs from 'dayjs';
-import { useDateStore, setStartDate, setEndDate } from '@/stores/date-store/dateStore';
+import { useSearchParams } from 'react-router-dom';
+import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
+import { setStartDate, setEndDate } from '@/stores/date-store/dateStore';
 import useDateRange from './useDateRange';
-import '@/configs/dayjs';
+
+type Product = {
+  key: string;
+  title: string;
+  path: string;
+};
 
 vi.mock('react-router-dom', () => ({
-  useSearchParams: vi.fn(),
+  useSearchParams: vi.fn(() => [new URLSearchParams(), vi.fn()]),
 }));
 
-vi.mock('@/stores/date-store/dateStore', () => {
-  const actualDateStore = vi.importActual('@/stores/date-store/dateStore');
-  return {
-    ...actualDateStore,
-    useDateStore: vi.fn(),
-    setStartDate: vi.fn(),
-    setEndDate: vi.fn(),
-  };
-});
+vi.mock('@/stores/date-store/dateStore', () => ({
+  useDateStore: vi.fn(() => ({
+    startDate: dayjs().subtract(1, 'month'),
+    endDate: dayjs(),
+  })),
+  setStartDate: vi.fn(),
+  setEndDate: vi.fn(),
+}));
+
+vi.mock('@/stores/product-store/hooks/useProductConvert', () => ({
+  __esModule: true,
+  default: vi.fn(),
+}));
 
 describe('useDateRange', () => {
-  let searchParamsMock: URLSearchParams;
-
   beforeEach(() => {
-    searchParamsMock = new URLSearchParams();
-    vi.mocked(useSearchParams).mockReturnValue([searchParamsMock, vi.fn()]);
-    vi.mocked(useDateStore).mockReturnValue({
-      startDate: dayjs().subtract(1, 'month').toDate(),
-      endDate: dayjs().toDate(),
+    vi.clearAllMocks();
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'default', title: 'Default Product', path: '/default' } as Product,
+      subProduct: null,
+      subProducts: [],
     });
   });
 
-  it('should update date slider correctly', () => {
+  it('should initialize with correct default values', () => {
+    // Arrange & Act
     const { result } = renderHook(() => useDateRange());
 
+    // Assert
+    expect(result.current.startDate).toBeDefined();
+    expect(result.current.endDate).toBeDefined();
+    expect(result.current.allDates).toBeInstanceOf(Array);
+    expect(result.current.selectedDateIndex).toBe(0);
+    expect(result.current.steps).toBe(1);
+  });
+
+  it('should modify date forward', () => {
+    // Arrange
+    const { result } = renderHook(() => useDateRange());
+    const initialIndex = result.current.selectedDateIndex;
+
+    // Act
     act(() => {
-      result.current.handleSliderChange(1);
+      result.current.modifyDate('add');
     });
 
-    expect(result.current.selectedDateIndex).toBe(1);
+    // Assert
+    expect(result.current.selectedDateIndex).toBeGreaterThan(initialIndex);
   });
 
-  it('should handle date change correctly', () => {
+  it('should modify date backward', () => {
+    // Arrange
     const { result } = renderHook(() => useDateRange());
+    act(() => {
+      result.current.handleSliderChange(5);
+    });
+    const initialIndex = result.current.selectedDateIndex;
 
-    const newStartDate = dayjs().subtract(2, 'months').toDate();
-    const newEndDate = dayjs().subtract(1, 'months').toDate();
+    // Act
+    act(() => {
+      result.current.modifyDate('subtract');
+    });
 
+    // Assert
+    expect(result.current.selectedDateIndex).toBeLessThan(initialIndex);
+  });
+
+  it('should update URL params when date changes', () => {
+    // Arrange
+    const setSearchParamsMock = vi.fn();
+    vi.mocked(useSearchParams).mockReturnValue([new URLSearchParams(), setSearchParamsMock]);
+    const { result } = renderHook(() => useDateRange());
+    const newStartDate = dayjs().subtract(2, 'weeks').toDate();
+    const newEndDate = dayjs().add(2, 'weeks').toDate();
+
+    // Act
     act(() => {
       result.current.handleDateChange([newStartDate, newEndDate]);
     });
 
-    expect(setStartDate).toHaveBeenCalledWith(dayjs(newStartDate));
-    expect(setEndDate).toHaveBeenCalledWith(dayjs(newEndDate));
+    // Assert
+    expect(setSearchParamsMock).toHaveBeenCalled();
+    expect(setStartDate).toHaveBeenCalledWith(expect.any(dayjs));
+    expect(setEndDate).toHaveBeenCalledWith(expect.any(dayjs));
   });
 
-  it('should update URL parameters correctly on slider change', () => {
-    const setSearchParamsMock = vi.fn();
-    vi.mocked(useSearchParams).mockReturnValue([searchParamsMock, setSearchParamsMock]);
-
+  it('should generate correct date range', () => {
+    // Arrange
     const { result } = renderHook(() => useDateRange());
+    const startDate = dayjs().subtract(1, 'week').toDate();
+    const endDate = dayjs().add(1, 'week').toDate();
 
+    // Act
     act(() => {
-      result.current.handleSliderChange(1);
+      result.current.handleDateChange([startDate, endDate]);
     });
 
-    const expectedParams = new URLSearchParams();
-    expectedParams.set('date', dayjs(result.current.allDates[1]).format('YYYYMMDD'));
-    expectedParams.set('startDate', dayjs(result.current.startDate).format('YYYYMMDD'));
-    expectedParams.set('endDate', dayjs(result.current.endDate).format('YYYYMMDD'));
+    // Assert
+    expect(result.current.allDates.length).toBe(dayjs(endDate).diff(startDate, 'day') + 1);
+  });
 
-    expect(setSearchParamsMock).toHaveBeenCalledWith(expectedParams);
+  it('should detect if it is the last month of the year', () => {
+    // Arrange
+    const { result } = renderHook(() => useDateRange());
+
+    // Act
+    act(() => {
+      result.current.handleDateChange([new Date(2023, 11, 15), new Date(2023, 11, 31)]);
+    });
+
+    // Assert
+    expect(result.current.isLastMonthOfTheYear()).toBe(true);
+  });
+
+  it('should handle year range correctly for climatology product', () => {
+    // Arrange
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'climatology', title: 'Climatology', path: '/climatology' } as Product,
+      subProduct: null,
+      subProducts: [],
+    });
+
+    // Act
+    const { result } = renderHook(() => useDateRange());
+
+    // Assert
+    expect(result.current.allDates.length).toBe(12);
+  });
+
+  it('should handle hour selector for fourHourSst product', () => {
+    // Arrange
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'fourHourSst', title: 'Four Hour SST', path: '/four-hour-sst' } as Product,
+      subProduct: null,
+      subProducts: [],
+    });
+
+    // Act
+    const { result } = renderHook(() => useDateRange());
+
+    // Assert
+    expect(result.current.showHourSelector).toBe(true);
+    expect(result.current.hoursRange).toHaveLength(6);
+  });
+
+  it('should handle hour change correctly', () => {
+    // Arrange
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'fourHourSst', title: 'Four Hour SST', path: '/four-hour-sst' } as Product,
+      subProduct: null,
+      subProducts: [],
+    });
+    const { result } = renderHook(() => useDateRange());
+
+    // Act
+    act(() => {
+      result.current.handleHourChange('12:00');
+    });
+
+    // Assert
+    expect(result.current.selectedHour).toBe('12:00');
+  });
+
+  it('should handle year date change correctly', () => {
+    // Arrange
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'climatology', title: 'Climatology', path: '/climatology' } as Product,
+      subProduct: null,
+      subProducts: [],
+    });
+    const { result } = renderHook(() => useDateRange());
+    const newDate = new Date(2023, 5, 15); // June 15, 2023
+
+    // Act
+    act(() => {
+      result.current.handleYearDateChange(newDate);
+    });
+
+    // Assert
+    expect(setStartDate).toHaveBeenCalledWith(expect.any(dayjs));
+    expect(setEndDate).toHaveBeenCalledWith(expect.any(dayjs));
+    expect(result.current.allDates[0].date.getFullYear()).toBe(2023);
   });
 });

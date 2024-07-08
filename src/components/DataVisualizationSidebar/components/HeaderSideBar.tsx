@@ -2,7 +2,7 @@ import { Dropdown, Loading } from '@/components/Shared';
 import useProductStore, { setProductId } from '@/stores/product-store/productStore';
 import { mapNavbarDataElements } from '@/data/dropDownProductData';
 import { MapNavBarElement } from '@/types/dropDownProduct';
-import { getProductFullPathById } from '@/utils/product';
+import { getProductFullPathById } from '@/utils/product-utils/product';
 import { useQueryParams } from '@/hooks';
 
 const HeaderSideBar: React.FC = () => {

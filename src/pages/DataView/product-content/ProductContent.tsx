@@ -7,14 +7,14 @@ import {
   getTargetRegionScopPath,
   buildSurfaceWavesImageUrl,
   buildProductVideoUrl,
-} from '@/utils/dataImgBuilder';
+} from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
-import { getRegionByRegionTitle } from '@/utils/region';
+import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import { RegionScope } from '@/constants/region';
 import { Loading } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
-import { checkProductHasSubProduct } from '@/utils/product';
+import { checkProductHasSubProduct } from '@/utils/product-utils/product';
 import useDateStore from '@/stores/date-store/dateStore';
 
 const ProductContent: React.FC = () => {
@@ -29,7 +29,7 @@ const ProductContent: React.FC = () => {
 
   const region = getRegionByRegionTitle(useProductRegionTitle);
   const targetPathRegion = getTargetRegionScopPath(region?.scope || RegionScope.Au);
-  const regionPath = region?.region || 'au';
+  const regionPath = region?.code || 'au';
 
   useEffect(() => {
     setError(null);

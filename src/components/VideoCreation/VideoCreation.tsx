@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { createGIF, CreateGIFOptions, CreateGIFObject } from 'gifshot';
 import dayjs from 'dayjs';
-import { buildProductImageUrl, getTargetRegionScopPath } from '@/utils/dataImgBuilder';
+import { buildProductImageUrl, getTargetRegionScopPath } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useProductStore from '@/stores/product-store/productStore';
-import { getRegionByRegionTitle } from '@/utils/region';
+import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import { RegionScope } from '@/constants/region';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { Button, Loading } from '@/components/Shared';
@@ -16,13 +16,13 @@ const VideoCreation: React.FC<VideoCreationProps> = ({ allDates }) => {
 
   const region = getRegionByRegionTitle(useProductRegionTitle);
   const targetPathRegion = getTargetRegionScopPath(region?.scope || RegionScope.Au);
-  const regionPath = region?.region;
+  const regionPath = region?.code;
 
   const subProductImgPath = subProduct?.imgPath;
 
   const generateImageArray = (): string[] => {
     const arr: string[] = [];
-    allDates.forEach((date) => {
+    allDates.forEach(({ date }) => {
       const formattedDate = dayjs(date).format('YYYYMMDD');
       arr.push(
         buildProductImageUrl(mainProduct!.key, subProductImgPath, regionPath!, targetPathRegion, formattedDate, true),
@@ -32,8 +32,8 @@ const VideoCreation: React.FC<VideoCreationProps> = ({ allDates }) => {
   };
 
   const fileName = () => {
-    const formattedDateStart = dayjs(allDates[0]).format('YYYYMMDD');
-    const formattedDateEnd = dayjs(allDates[allDates.length - 1]).format('YYYYMMDD');
+    const formattedDateStart = dayjs(allDates[0].date).format('YYYYMMDD');
+    const formattedDateEnd = dayjs(allDates[allDates.length - 1].date).format('YYYYMMDD');
 
     return `${mainProduct!.key}_${subProductImgPath}_${regionPath!}_${formattedDateStart}_${formattedDateEnd}.gif`;
   };

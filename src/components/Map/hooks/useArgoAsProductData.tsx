@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { isAxiosError } from 'axios';
 import { getArgoProfilesByDate } from '@/services/argo';
-import { calculateCenterByCoords, convertHtmlToArgo } from '@/utils/argo';
+import { calculateCenterByCoords, convertHtmlToArgo } from '@/utils/argo-utils/argo';
 import { ArgoProfile } from '@/types/argo';
 import { setArgoMetaData } from '@/stores/argo-store/argoStore';
 import useDateStore, { setDate } from '@/stores/date-store/dateStore';
