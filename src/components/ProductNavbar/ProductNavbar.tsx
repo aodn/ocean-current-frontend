@@ -8,13 +8,14 @@ import { Button, ToggleButton } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
 import { TEXT_CONSTANT } from '@/constants/textConstant';
 import ShareIcon from '@/assets/icons/share-icon.svg';
+import TimeDropdown from '../HourSelector/HourSelector';
 import { ProductNavbarProps } from './types/ProductNavbarProps.types';
 
 const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
   const [copyButtonText, setCopyButtonText] = useState<string>(TEXT_CONSTANT.SHARE_PERMLINK);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
   const [showVideo, setLocalShowVideo] = useState(false);
+
   const {
     startDate,
     endDate,
@@ -25,7 +26,11 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
     handleDateChange,
     modifyDate,
     steps,
-    isLastMonth,
+    isLastMonthOfTheYear,
+    showHourSelector,
+    handleHourChange,
+    selectedHour,
+    hoursRange,
   } = useDateRange();
 
   const handleCopyLink = () => {
@@ -68,7 +73,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
             handleYearDateChange={handleYearDateChange}
             modifyDate={modifyDate}
             selectedDate={allDates[selectedDateIndex]?.date}
-            isLastMonth={isLastMonth}
+            isLastMonthOfTheYear={isLastMonthOfTheYear}
           />
         </div>
         <div className="flex items-center justify-center border-r-2 px-4 py-4">
@@ -86,12 +91,23 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
           <VideoCreation allDates={allDates} />
         </div>
       </div>
-      <DateSlider
-        allDates={allDates}
-        selectedDateIndex={selectedDateIndex}
-        handleSliderChange={handleSliderChange}
-        steps={steps}
-      />
+      <div className="mb-2 flex items-center justify-center">
+        <DateSlider
+          allDates={allDates}
+          selectedDateIndex={selectedDateIndex}
+          handleSliderChange={handleSliderChange}
+          steps={steps}
+        />
+        {showHourSelector && (
+          <div className="mx-4">
+            <TimeDropdown
+              hours={hoursRange}
+              selectedId={selectedHour}
+              onChange={(element) => handleHourChange(element.id)}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

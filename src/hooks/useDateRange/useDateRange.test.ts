@@ -123,11 +123,11 @@ describe('useDateRange', () => {
     const { result } = renderHook(() => useDateRange());
 
     // Act
-    const isLastMonth = result.current.isLastMonth();
+    const isLastMonthOfTheYear = result.current.isLastMonthOfTheYear();
 
     // Assert
-    expect(isLastMonth).toBeDefined();
-    expect(typeof isLastMonth).toBe('boolean');
+    expect(isLastMonthOfTheYear).toBeDefined();
+    expect(typeof isLastMonthOfTheYear).toBe('boolean');
   });
 
   it('should handle year range correctly', () => {

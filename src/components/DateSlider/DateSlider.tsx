@@ -25,7 +25,7 @@ const DateSlider: React.FC<DateSliderProps> = ({ allDates, selectedDateIndex, ha
   };
 
   return (
-    <div className="mb-2 flex w-full items-center justify-between rounded bg-slate-200 p-6 pb-10 shadow">
+    <div className=" flex w-full items-center justify-between rounded bg-slate-200 p-6 pb-10 shadow">
       {allDates.length > 0 && (
         <div className="w-full px-2">
           <Slider

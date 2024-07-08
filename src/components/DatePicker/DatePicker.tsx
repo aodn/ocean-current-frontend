@@ -23,7 +23,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
   modifyDate,
   handleYearDateChange,
   selectedDate,
-  isLastMonth,
+  isLastMonthOfTheYear,
 }) => {
   const { mainProduct } = useProductConvert();
   const isClimatology = mainProduct?.key === 'climatology';
@@ -63,7 +63,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
         <span className="text-l px-5">{formattedDate}</span>
         <button
           onClick={() => modifyDate('add')}
-          disabled={isClimatology ? isLastMonth() : addButtonDisabled}
+          disabled={isClimatology ? isLastMonthOfTheYear() : addButtonDisabled}
           className="cursor-pointer rounded bg-white p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
         >
           <img className="h-2.5 w-2.5 -rotate-90" src={arrowIcon} alt="right arrow icon" />

@@ -18,6 +18,14 @@ describe('ProductNavbar', () => {
     { date: new Date('2024-06-16'), active: true },
     { date: new Date('2024-06-17'), active: true },
   ];
+
+  const hoursRange = [
+    { id: '1', icon: 'icon1', value: '00:00', label: '00:00' },
+    { id: '2', icon: 'icon2', value: '01:00', label: '01:00' },
+    { id: '3', icon: 'icon3', value: '02:00', label: '02:00' },
+    { id: '4', icon: 'icon4', value: '03:00', label: '03:00' },
+  ];
+
   const mockReturnValue = {
     startDate: new Date('2024-06-13'),
     endDate: new Date('2024-06-17'),
@@ -28,8 +36,12 @@ describe('ProductNavbar', () => {
     modifyDate: vi.fn(),
     handleYearDateChange: vi.fn(),
     isSelectedDayYesterdayOrLater: () => false,
-    isLastMonth: vi.fn(),
+    isLastMonthOfTheYear: vi.fn(),
     steps: 1,
+    showHourSelector: false,
+    handleHourChange: vi.fn(),
+    selectedHour: '00:00',
+    hoursRange,
   };
 
   beforeEach(() => {

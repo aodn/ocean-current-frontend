@@ -7,5 +7,5 @@ export interface DatePickerProps {
   handleYearDateChange: (date: Date) => void;
   modifyDate: (modificationType: 'add' | 'subtract') => void;
   selectedDate: Date | null;
-  isLastMonth: () => boolean;
+  isLastMonthOfTheYear: () => boolean;
 }
