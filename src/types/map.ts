@@ -4,9 +4,9 @@ import { LocalKey, NationKey, StateKey } from './region';
 export type RegionKeyType = NationKey | StateKey | LocalKey;
 
 export interface BaseRegion<T extends RegionKeyType> {
-  region: T;
+  code: T;
   title: string;
-  coords: BoundingBoxCoords;
+  coords: BoundingBox;
 }
 
 export interface NationRegion extends BaseRegion<NationKey> {
@@ -23,11 +23,6 @@ export interface LocalRegion extends BaseRegion<LocalKey> {
 
 export type Region = NationRegion | StateRegion | LocalRegion;
 
-export type GeoJsonPolygon = number[][][];
+export type GeoJsonPolygon = [number, number][][];
 
-export type BoundingBoxCoords = [
-  westLongitude: number,
-  eastLongitude: number,
-  southLatitude: number,
-  northLatitude: number,
-];
+export type BoundingBox = [westLongitude: number, southLatitude: number, eastLongitude: number, northLatitude: number];

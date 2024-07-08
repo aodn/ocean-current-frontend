@@ -3,7 +3,7 @@ import { RegionScope } from '@/constants/region';
 type ProductParamState = {
   productId: string;
   regionScope: RegionScope;
-  regionTitle: string;
+  regionTitle: string | null;
 };
 
 export type State = {

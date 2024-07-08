@@ -1,9 +1,9 @@
-import { BoundingBoxCoords } from '@/types/map';
+import { BoundingBox } from '@/types/map';
 
 export interface Region {
-  region: string;
+  code: string;
   title: string;
-  coords: BoundingBoxCoords;
+  coords: BoundingBox;
 }
 
 export interface BasicMapProps {

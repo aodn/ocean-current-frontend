@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import useProductStore, { setProductId } from '@/stores/product-store/productStore';
-import { getProductFullPathById } from '@/utils/product';
+import { getProductFullPathById } from '@/utils/product-utils/product';
 import { mapNavbarDataElements } from '@/data/dropDownProductData';
 import { MapNavBarElement } from '@/types/dropDownProduct';
 
