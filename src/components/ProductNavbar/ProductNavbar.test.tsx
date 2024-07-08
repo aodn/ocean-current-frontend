@@ -54,30 +54,56 @@ describe('ProductNavbar', () => {
 
   const renderComponentWithRouter = () => {
     const setShowVideo = vi.fn();
-    render(
+    return render(
       <MemoryRouter>
         <ProductNavbar setShowVideo={setShowVideo} />
       </MemoryRouter>,
     );
   };
 
-  it('should render successfully', () => {
+  it('should render successfully with correct date', () => {
+    // Arrange
     renderComponentWithRouter();
 
-    expect(screen.getByText('13 Jun 2024')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /right arrow icon/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /left arrow icon/i })).toBeInTheDocument();
+    // Act
+    const dateElement = screen.getByText('13 Jun 2024');
+
+    // Assert
+    expect(dateElement).toBeInTheDocument();
+  });
+
+  it('should display navigation arrows', () => {
+    // Arrange
+    renderComponentWithRouter();
+
+    // Act
+    const rightArrow = screen.getByRole('button', { name: /right arrow icon/i });
+    const leftArrow = screen.getByRole('button', { name: /left arrow icon/i });
+
+    // Assert
+    expect(rightArrow).toBeInTheDocument();
+    expect(leftArrow).toBeInTheDocument();
   });
 
   it('should display video creation component', () => {
+    // Arrange
     renderComponentWithRouter();
 
-    expect(screen.getByText('Download')).toBeInTheDocument();
+    // Act
+    const downloadElement = screen.getByText('Download');
+
+    // Assert
+    expect(downloadElement).toBeInTheDocument();
   });
 
   it('should display slider component with the start date', () => {
+    // Arrange
     renderComponentWithRouter();
 
-    expect(screen.getByText('13-06')).toBeInTheDocument();
+    // Act
+    const sliderDate = screen.getByText('13-06');
+
+    // Assert
+    expect(sliderDate).toBeInTheDocument();
   });
 });

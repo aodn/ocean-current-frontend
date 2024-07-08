@@ -3,6 +3,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import dayjs from 'dayjs';
 import { useSearchParams } from 'react-router-dom';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
+import { setStartDate, setEndDate } from '@/stores/date-store/dateStore';
 import useDateRange from './useDateRange';
 
 type Product = {
@@ -40,18 +41,15 @@ describe('useDateRange', () => {
   });
 
   it('should initialize with correct default values', () => {
-    // Arrange
+    // Arrange & Act
     const { result } = renderHook(() => useDateRange());
 
-    // Act
-    const { startDate, endDate, allDates, selectedDateIndex, steps } = result.current;
-
     // Assert
-    expect(startDate).toBeDefined();
-    expect(endDate).toBeDefined();
-    expect(allDates).toBeInstanceOf(Array);
-    expect(selectedDateIndex).toBe(0);
-    expect(steps).toBe(1);
+    expect(result.current.startDate).toBeDefined();
+    expect(result.current.endDate).toBeDefined();
+    expect(result.current.allDates).toBeInstanceOf(Array);
+    expect(result.current.selectedDateIndex).toBe(0);
+    expect(result.current.steps).toBe(1);
   });
 
   it('should modify date forward', () => {
@@ -89,7 +87,6 @@ describe('useDateRange', () => {
     // Arrange
     const setSearchParamsMock = vi.fn();
     vi.mocked(useSearchParams).mockReturnValue([new URLSearchParams(), setSearchParamsMock]);
-
     const { result } = renderHook(() => useDateRange());
     const newStartDate = dayjs().subtract(2, 'weeks').toDate();
     const newEndDate = dayjs().add(2, 'weeks').toDate();
@@ -101,6 +98,8 @@ describe('useDateRange', () => {
 
     // Assert
     expect(setSearchParamsMock).toHaveBeenCalled();
+    expect(setStartDate).toHaveBeenCalledWith(expect.any(dayjs));
+    expect(setEndDate).toHaveBeenCalledWith(expect.any(dayjs));
   });
 
   it('should generate correct date range', () => {
@@ -118,19 +117,20 @@ describe('useDateRange', () => {
     expect(result.current.allDates.length).toBe(dayjs(endDate).diff(startDate, 'day') + 1);
   });
 
-  it('should detect if it is the last month', () => {
+  it('should detect if it is the last month of the year', () => {
     // Arrange
     const { result } = renderHook(() => useDateRange());
 
     // Act
-    const isLastMonthOfTheYear = result.current.isLastMonthOfTheYear();
+    act(() => {
+      result.current.handleDateChange([new Date(2023, 11, 15), new Date(2023, 11, 31)]);
+    });
 
     // Assert
-    expect(isLastMonthOfTheYear).toBeDefined();
-    expect(typeof isLastMonthOfTheYear).toBe('boolean');
+    expect(result.current.isLastMonthOfTheYear()).toBe(true);
   });
 
-  it('should handle year range correctly', () => {
+  it('should handle year range correctly for climatology product', () => {
     // Arrange
     vi.mocked(useProductConvert).mockReturnValue({
       mainProduct: { key: 'climatology', title: 'Climatology', path: '/climatology' } as Product,
@@ -143,5 +143,60 @@ describe('useDateRange', () => {
 
     // Assert
     expect(result.current.allDates.length).toBe(12);
+  });
+
+  it('should handle hour selector for fourHourSst product', () => {
+    // Arrange
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'fourHourSst', title: 'Four Hour SST', path: '/four-hour-sst' } as Product,
+      subProduct: null,
+      subProducts: [],
+    });
+
+    // Act
+    const { result } = renderHook(() => useDateRange());
+
+    // Assert
+    expect(result.current.showHourSelector).toBe(true);
+    expect(result.current.hoursRange).toHaveLength(6);
+  });
+
+  it('should handle hour change correctly', () => {
+    // Arrange
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'fourHourSst', title: 'Four Hour SST', path: '/four-hour-sst' } as Product,
+      subProduct: null,
+      subProducts: [],
+    });
+    const { result } = renderHook(() => useDateRange());
+
+    // Act
+    act(() => {
+      result.current.handleHourChange('12:00');
+    });
+
+    // Assert
+    expect(result.current.selectedHour).toBe('12:00');
+  });
+
+  it('should handle year date change correctly', () => {
+    // Arrange
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'climatology', title: 'Climatology', path: '/climatology' } as Product,
+      subProduct: null,
+      subProducts: [],
+    });
+    const { result } = renderHook(() => useDateRange());
+    const newDate = new Date(2023, 5, 15); // June 15, 2023
+
+    // Act
+    act(() => {
+      result.current.handleYearDateChange(newDate);
+    });
+
+    // Assert
+    expect(setStartDate).toHaveBeenCalledWith(expect.any(dayjs));
+    expect(setEndDate).toHaveBeenCalledWith(expect.any(dayjs));
+    expect(result.current.allDates[0].date.getFullYear()).toBe(2023);
   });
 });
