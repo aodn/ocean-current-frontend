@@ -10,6 +10,18 @@ const mockProps: SliderProps = {
   value: 50,
   onChange: vi.fn(),
   labelFormatter: (value) => `${value}%`,
+  allDates: [
+    { date: new Date('2024-05-12'), active: true },
+    { date: new Date('2024-05-13'), active: false },
+    { date: new Date('2024-05-14'), active: true },
+    { date: new Date('2024-05-15'), active: true },
+    { date: new Date('2024-05-16'), active: false },
+    { date: new Date('2024-05-17'), active: true },
+    { date: new Date('2024-05-18'), active: true },
+    { date: new Date('2024-05-19'), active: false },
+    { date: new Date('2024-05-20'), active: true },
+    { date: new Date('2024-05-21'), active: true },
+  ],
 };
 
 describe('Slider Component', () => {

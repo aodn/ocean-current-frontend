@@ -22,7 +22,7 @@ const VideoCreation: React.FC<VideoCreationProps> = ({ allDates }) => {
 
   const generateImageArray = (): string[] => {
     const arr: string[] = [];
-    allDates.forEach((date) => {
+    allDates.forEach(({ date }) => {
       const formattedDate = dayjs(date).format('YYYYMMDD');
       arr.push(
         buildProductImageUrl(mainProduct!.key, subProductImgPath, regionPath!, targetPathRegion, formattedDate, true),
@@ -32,8 +32,8 @@ const VideoCreation: React.FC<VideoCreationProps> = ({ allDates }) => {
   };
 
   const fileName = () => {
-    const formattedDateStart = dayjs(allDates[0]).format('YYYYMMDD');
-    const formattedDateEnd = dayjs(allDates[allDates.length - 1]).format('YYYYMMDD');
+    const formattedDateStart = dayjs(allDates[0].date).format('YYYYMMDD');
+    const formattedDateEnd = dayjs(allDates[allDates.length - 1].date).format('YYYYMMDD');
 
     return `${mainProduct!.key}_${subProductImgPath}_${regionPath!}_${formattedDateStart}_${formattedDateEnd}.gif`;
   };

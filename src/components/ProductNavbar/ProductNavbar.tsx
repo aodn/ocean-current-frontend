@@ -8,20 +8,30 @@ import { Button, ToggleButton } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
 import { TEXT_CONSTANT } from '@/constants/textConstant';
 import ShareIcon from '@/assets/icons/share-icon.svg';
+import TimeDropdown from '../HourSelector/HourSelector';
 import { ProductNavbarProps } from './types/ProductNavbarProps.types';
 
 const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
   const [copyButtonText, setCopyButtonText] = useState<string>(TEXT_CONSTANT.SHARE_PERMLINK);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
   const [showVideo, setLocalShowVideo] = useState(false);
-  const { startDate, endDate, allDates, selectedDateIndex, handleSliderChange, handleDateChange, modifyDate, steps } =
-    useDateRange();
 
-  const isSelectedDayYesterdayOrLater = dayjs(allDates[selectedDateIndex]).isSameOrAfter(
-    dayjs().subtract(1, 'day'),
-    'day',
-  );
+  const {
+    startDate,
+    endDate,
+    allDates,
+    selectedDateIndex,
+    handleSliderChange,
+    handleYearDateChange,
+    handleDateChange,
+    modifyDate,
+    steps,
+    isLastMonthOfTheYear,
+    showHourSelector,
+    handleHourChange,
+    selectedHour,
+    hoursRange,
+  } = useDateRange();
 
   const handleCopyLink = () => {
     const url = location.href;
@@ -32,6 +42,11 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
       setCopyButtonText(TEXT_CONSTANT.SHARE_PERMLINK);
     }, 2000);
   };
+
+  const isSelectedDayYesterdayOrLater = dayjs(allDates[selectedDateIndex]?.date).isSameOrAfter(
+    dayjs().subtract(1, 'day'),
+    'day',
+  );
 
   useEffect(() => {
     return () => {
@@ -47,37 +62,52 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
   };
 
   return (
-    <div className="mb-2 p-1 shadow-lg">
-      <div className="flex items-center justify-between rounded ">
-        <div className="w-4/12">
+    <div className="mb-2 bg-[#FAFAFA] p-1 shadow-lg">
+      <div className="flex items-center justify-between rounded">
+        <div className="w-4/12 border-r-2">
           <DatePicker
             startDate={startDate}
             endDate={endDate}
             addButtonDisabled={isSelectedDayYesterdayOrLater}
             handleDateChange={handleDateChange}
+            handleYearDateChange={handleYearDateChange}
             modifyDate={modifyDate}
-            selectedDate={allDates[selectedDateIndex]}
+            selectedDate={allDates[selectedDateIndex]?.date}
+            isLastMonthOfTheYear={isLastMonthOfTheYear}
           />
         </div>
-        <div className="w-1/4">
-          <Button onClick={() => handleCopyLink()} size="full" borderRadius="small" type="secondary">
-            <img src={ShareIcon} alt="" />
-            {copyButtonText}
-          </Button>
-        </div>
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center border-r-2 px-4 py-4">
           <img src={VideoIcon} alt="video icon" />
           <p className="mx-5 text-imos-sea-blue">Video</p>
           <ToggleButton isOn={showVideo} onToggle={handleToggle} />
         </div>
-        <VideoCreation allDates={allDates} />
+        <div className="w-1/4 border-r-2 px-4 py-4">
+          <Button onClick={() => handleCopyLink()} size="full" borderRadius="small" type="secondary">
+            <img src={ShareIcon} alt="share icon" />
+            {copyButtonText}
+          </Button>
+        </div>
+        <div className="ml-4">
+          <VideoCreation allDates={allDates} />
+        </div>
       </div>
-      <DateSlider
-        allDates={allDates}
-        selectedDateIndex={selectedDateIndex}
-        handleSliderChange={handleSliderChange}
-        steps={steps}
-      />
+      <div className="mb-2 flex items-center justify-center">
+        <DateSlider
+          allDates={allDates}
+          selectedDateIndex={selectedDateIndex}
+          handleSliderChange={handleSliderChange}
+          steps={steps}
+        />
+        {showHourSelector && (
+          <div className="mx-4">
+            <TimeDropdown
+              hours={hoursRange}
+              selectedId={selectedHour}
+              onChange={(element) => handleHourChange(element.id)}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,3 +1,3 @@
 export interface VideoCreationProps {
-  allDates: Date[];
+  allDates: { date: Date; active: boolean }[];
 }
