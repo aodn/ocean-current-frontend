@@ -34,7 +34,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
   return (
     <div className="flex items-center justify-evenly">
       <div className="max-w-28">
-        {isClimatology && (
+        {isClimatology ? (
           <ReactDatePicker
             customInput={customInput()}
             selected={startDate}
@@ -42,8 +42,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
             showMonthYearPicker
             dateFormat="yyyy"
           />
-        )}
-        {!isClimatology && (
+        ) : (
           <ReactDatePicker
             customInput={customInput()}
             selected={startDate}
