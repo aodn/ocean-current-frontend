@@ -43,6 +43,19 @@ describe('buildProductImageUrl', () => {
     expect(imageUrl).toBe(`${imageBaseUrl}/SST_4hr/SST/Adelaide/2024051922.gif`);
   });
 
+  it('should return the correct image url if pass correct local region for ocean colour chl', () => {
+    // Arrange
+    const productType = 'oceanColour';
+    const subProduct = 'CHL';
+    const region = 'Adelaide';
+    const regionScope = TargetPathRegionScope.Local;
+    const date = '2024051922';
+    // Act
+    const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+    // Assert
+    expect(imageUrl).toBe(`${imageBaseUrl}/Adelaide_chl/2024051904.gif`);
+  });
+
   it('should throw an error if pass state region for four hour sst', () => {
     // Arrange
     const productType = 'fourHourSst';
