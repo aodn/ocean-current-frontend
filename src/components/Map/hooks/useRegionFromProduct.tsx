@@ -1,7 +1,7 @@
 import { allRegions } from '@/data/regionData';
 import useProductStore from '@/stores/product-store/productStore';
 import { Region, RegionKeyType } from '@/types/map';
-import { getRegionListByProductId } from '@/utils/region';
+import { getRegionListByProductId } from '@/utils/region-utils/region';
 
 const useRegionFromProduct = () => {
   const useProductId = useProductStore((state) => state.productParams.productId);

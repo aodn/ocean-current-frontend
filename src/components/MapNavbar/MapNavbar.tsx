@@ -1,7 +1,7 @@
 import categoryIcon from '@/assets/icons/category-icon.png';
 import { Dropdown, Loading } from '@/components/Shared';
 import useProductStore, { setProductId } from '@/stores/product-store/productStore';
-import { getProductFullPathById } from '@/utils/product';
+import { getProductFullPathById } from '@/utils/product-utils/product';
 import { useQueryParams } from '@/hooks';
 import { mapNavbarDataElements } from './data/mapNavbar';
 import { MapNavBarElement } from './types/mapNavbar.types';

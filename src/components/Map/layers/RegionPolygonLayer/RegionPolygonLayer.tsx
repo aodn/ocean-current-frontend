@@ -6,8 +6,8 @@ import { useProductSearchParam, useQueryParams, useThrottle } from '@/hooks';
 import useProductPath from '@/stores/product-store/hooks/useProductPath';
 import { BoundingBox, GeoJsonPolygon } from '@/types/map';
 import useProductStore from '@/stores/product-store/productStore';
-import { getRegionByRegionTitle } from '@/utils/region';
-import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo';
+import { getRegionByRegionTitle } from '@/utils/region-utils/region';
+import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo-utils/geo';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
 import useVisibleRegionPolygons from '../../hooks/useVisibleRegionPolygons';
 

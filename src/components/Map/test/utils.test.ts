@@ -1,5 +1,5 @@
 import { MapboxGeoJSONFeature } from 'react-map-gl';
-import * as generalUtils from '@/utils/general';
+import * as generalUtils from '@/utils/general-utils/general';
 import { extractPropertyFromFeatures } from '../utils/mapUtils';
 
 describe('extractPropertyFromFeatures', async () => {

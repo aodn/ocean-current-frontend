@@ -3,7 +3,7 @@ import { Button, Loading, Popup } from '@/components/Shared';
 import { setProductId } from '@/stores/product-store/productStore';
 import { useQueryParams } from '@/hooks';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
-import { getProductInfoByKey } from '@/utils/product';
+import { getProductInfoByKey } from '@/utils/product-utils/product';
 import InfoIcon from '@/assets/icons/info-icon.svg';
 import ArrowIcon from '@/assets/icons/arrow.svg';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';

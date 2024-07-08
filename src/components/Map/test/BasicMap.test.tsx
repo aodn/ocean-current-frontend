@@ -1,62 +1,8 @@
 import { render, screen, renderHook } from '@testing-library/react';
 import { mapConfig } from '@/configs/map';
 import useMapStore from '@/stores/map-store/mapStore';
-import { BoundingBox } from '@/types/map';
-import { calculateAreaFromCoords, convertAreaCoordsToGeoJsonCoordinates } from '@/utils/geo';
 import BasicMap from '../BasicMap';
 import useRegionData from '../hooks/useRegionData';
-
-describe('Map utils', () => {
-  describe('calculateAreaFromCoords', () => {
-    it('should calculate the correct area for valid coordinates', () => {
-      // Arrange
-      const coords: BoundingBox = [141, -47, 152, -40]; // [west, south, east, north]
-      const expectedArea = 11 * 7; // (152 - 141) * (-40 - (-47))
-
-      // Act & Assert
-      expect(calculateAreaFromCoords(coords)).toBe(expectedArea);
-    });
-
-    it('should throw an error for invalid coordinates where west is greater than east', () => {
-      // Arrange
-      const coords: BoundingBox = [152, -47, 141, -40];
-
-      // Act & Assert
-      expect(() => calculateAreaFromCoords(coords)).toThrow(
-        'Error calculating area from coordinates: Invalid coordinates, west coordinate cannot be greater than east coordinate.',
-      );
-    });
-
-    it('should throw an error for invalid coordinates where north is greater than south', () => {
-      // Arrange
-      const coords: BoundingBox = [141, -40, 152, -47];
-
-      // Act & Assert
-      expect(() => calculateAreaFromCoords(coords)).toThrow('Invalid coordinates');
-    });
-  });
-  describe('convertAreaCoordsToGeoJsonCoordinates', () => {
-    it('should convert area coordinates to GeoJSON polygon', () => {
-      // Arrange
-      const mockCoords: BoundingBox = [141, -47, 152, -40];
-      const expectedGeoJsonPolygon = [
-        [
-          [141, -40],
-          [152, -40],
-          [152, -47],
-          [141, -47],
-          [141, -40],
-        ],
-      ];
-
-      // Act
-      const result = convertAreaCoordsToGeoJsonCoordinates(mockCoords);
-
-      // Assert
-      expect(result).toEqual(expectedGeoJsonPolygon);
-    });
-  });
-});
 
 vi.mock('react-map-gl', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="test-map">{children}</div>,

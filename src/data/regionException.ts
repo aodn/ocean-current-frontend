@@ -1,5 +1,5 @@
 import { LocalKey, StateKey } from '@/types/region';
-import { pickRandomElements } from '@/utils/math';
+import { pickRandomElements } from '@/utils/math-utils/math';
 import { fullLocalList, fullStateList } from './regionList';
 
 /**

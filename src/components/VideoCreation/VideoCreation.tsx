@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { createGIF, CreateGIFOptions, CreateGIFObject } from 'gifshot';
 import dayjs from 'dayjs';
-import { buildProductImageUrl, getTargetRegionScopPath } from '@/utils/dataImgBuilder';
+import { buildProductImageUrl, getTargetRegionScopPath } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useProductStore from '@/stores/product-store/productStore';
-import { getRegionByRegionTitle } from '@/utils/region';
+import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import { RegionScope } from '@/constants/region';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { Button, Loading } from '@/components/Shared';
