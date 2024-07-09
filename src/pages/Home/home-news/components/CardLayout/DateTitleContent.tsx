@@ -19,7 +19,7 @@ const DateTitleContent: React.FC<DateTitleContentProps> = ({ news: { title, auth
           <Title title={title} />
           <Author author={author} />
         </div>
-        <div className="h-1/2 overflow-hidden">
+        <div className="h-1/2">
           <Content content={content} />
         </div>
       </div>

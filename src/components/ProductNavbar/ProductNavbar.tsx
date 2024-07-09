@@ -8,7 +8,7 @@ import { Button, ToggleButton } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
 import { TEXT_CONSTANT } from '@/constants/textConstant';
 import ShareIcon from '@/assets/icons/share-icon.svg';
-import TimeDropdown from '../HourSelector/HourSelector';
+import TimeDropdown from '@/components/HourSelector/HourSelector';
 import { ProductNavbarProps } from './types/ProductNavbarProps.types';
 
 const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
