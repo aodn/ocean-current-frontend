@@ -66,7 +66,7 @@ describe('ProductNavbar', () => {
     renderComponentWithRouter();
 
     // Act
-    const dateElement = screen.getByText('13 Jun 2024');
+    const dateElement = screen.getByText('13 Jun 24');
 
     // Assert
     expect(dateElement).toBeInTheDocument();

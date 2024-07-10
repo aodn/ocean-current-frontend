@@ -82,8 +82,6 @@ const ProductContent: React.FC = () => {
       useDate.toString(),
     );
 
-    // 'https://oceancurrent.aodn.org.au/DR_SST_daily/SST/NingLeeu/NingLeeu_SST_2024_Q2.mp4';
-
     return showVideo ? videoUrl : imgUrl!;
   };
 
@@ -100,7 +98,7 @@ const ProductContent: React.FC = () => {
       {showVideo ? (
         <video
           onClick={handlePopup}
-          className="h-full w-full cursor-pointer select-none object-contain"
+          className="cursor-pointer select-none object-contain"
           src={buildMediaUrl()}
           controls
           onError={handleError}
@@ -111,7 +109,7 @@ const ProductContent: React.FC = () => {
       ) : (
         <img
           onClick={handlePopup}
-          className="h-full w-full cursor-pointer select-none object-contain"
+          className="cursor-pointer select-none object-contain"
           src={chooseImg()}
           alt="product"
           onError={handleError}
