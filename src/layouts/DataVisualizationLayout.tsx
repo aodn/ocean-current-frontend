@@ -67,7 +67,7 @@ const DataVisualizationLayout: React.FC = () => {
   }, [getArgoData, isArgo]);
 
   return (
-    <div className="relative mx-auto my-9 w-full max-w-8xl">
+    <div className="relative mx-auto mb-9 w-full max-w-8xl">
       <div className="flex p-4">
         <button
           onClick={toggleSidebar}

@@ -22,7 +22,7 @@ const MapLayout: React.FC = () => {
   }, [product]);
 
   return (
-    <div className="mx-auto my-9 w-full max-w-8xl shadow-layout-shadow">
+    <div className="mx-auto mb-9 mt-4 w-full max-w-8xl ">
       <div className="flex w-full">
         <div className="w-1/3">
           <MapSidebar />

@@ -46,7 +46,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div className={`sticky top-0 z-50 w-full bg-white transition-all duration-300 ${isScrolled ? 'shadow-md' : ''}`}>
+    <div className="sticky top-0 z-50 w-full bg-white shadow-md transition-all duration-300">
       <nav className="mx-auto flex w-full max-w-8xl items-center justify-between p-6">
         <div className="flex items-center">
           <Link className="mr-auto" to={'/'}>

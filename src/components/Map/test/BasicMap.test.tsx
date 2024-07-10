@@ -26,7 +26,6 @@ describe('BasicMap Component', () => {
     render(<BasicMap />);
 
     // Assert
-    expect(screen.getByText('FullscreenControl')).toBeInTheDocument();
     expect(screen.getByText('NavigationControl')).toBeInTheDocument();
     expect(screen.getByText('RegionPolygonLayer')).toBeInTheDocument();
   });

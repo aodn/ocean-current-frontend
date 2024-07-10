@@ -11,7 +11,7 @@ const Horizontal: React.FC<HorizontalProps> = ({ news: { title, content, imageUr
   return (
     <div className="h-full w-full overflow-hidden rounded-xl border bg-white sm:flex">
       <div className="w-full sm:w-2/5">
-        <img data-testid="news-img-card" src={imageUrl} alt={`${title} news`} className="h-full object-fill" />
+        <img data-testid="news-img-card" src={imageUrl} alt={`${title} news`} className="object-fill" />
       </div>
       <div className="flex w-full flex-col justify-between p-6 sm:w-3/5">
         <Title title={title} />

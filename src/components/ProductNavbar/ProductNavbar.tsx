@@ -64,7 +64,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
   return (
     <div className="mb-2 bg-[#FAFAFA] p-1 shadow-lg">
       <div className="flex items-center justify-between rounded">
-        <div className="w-4/12 border-r-2">
+        <div className="w-1/3 border-r-2">
           <DatePicker
             startDate={startDate}
             endDate={endDate}
