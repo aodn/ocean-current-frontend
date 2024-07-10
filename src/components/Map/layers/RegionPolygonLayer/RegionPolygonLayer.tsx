@@ -1,42 +1,75 @@
 import { Layer, LngLatBounds, MapMouseEvent, Source, useMap } from 'react-map-gl';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
-import { useQueryParams, useThrottle } from '@/hooks';
+import { useProductSearchParam, useQueryParams, useThrottle } from '@/hooks';
 import useProductPath from '@/stores/product-store/hooks/useProductPath';
+import { BoundingBox, GeoJsonPolygon } from '@/types/map';
+import useProductStore from '@/stores/product-store/productStore';
+import { getRegionByRegionTitle } from '@/utils/region-utils/region';
+import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo-utils/geo';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
 import useVisibleRegionPolygons from '../../hooks/useVisibleRegionPolygons';
 
 const MIN_THRESHOLD_PERCENTAGE = 3;
-const MAX_THRESHOLD_PERCENTAGE = 50;
+const MAX_THRESHOLD_PERCENTAGE = 70;
 
 const RegionPolygonLayer = () => {
   const { productRegionBoxSource } = mapboxSourceIds;
-  const { productRegionBoxLayer, productRegionBoxHighlightLayer } = mapboxLayerIds;
+  const {
+    productRegionBoxLayer,
+    productRegionBoxHighlightLayer,
+    productRegionNameLabelLayer,
+    productRegionSelectedBoxLayer,
+  } = mapboxLayerIds;
 
+  const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
   const baseProductPath = useProductPath();
   const { searchParams, updateQueryParamsAndNavigate } = useQueryParams();
+  const { region: regionTitleFromUrl } = useProductSearchParam();
+  const selectedRegion = useRegionTitle || '';
+
   const { current: map } = useMap();
+
   const [hoveredRegion, setHoveredRegion] = useState<string>('');
+  const [mapBounds, setMapBounds] = useState<LngLatBounds | null>(null);
 
   const defaultTargetDate = dayjs().subtract(2, 'day').format('YYYYMMDD');
 
-  const [bounds, setBounds] = useState<LngLatBounds | null>(null);
-
-  const throttleSetBounds = useThrottle((bounds: LngLatBounds) => {
-    setBounds(bounds);
+  const throttleSetMapBounds = useThrottle((bounds: LngLatBounds) => {
+    setMapBounds(bounds);
   }, 300);
+
+  const mapFitBounds = useCallback(
+    (bounds: BoundingBox) => {
+      if (map) {
+        map.fitBounds(bounds, { padding: 50 });
+      }
+    },
+    [map],
+  );
+
+  useEffect(() => {
+    if (!map) return;
+
+    map.on('load', () => {
+      const region = regionTitleFromUrl && getRegionByRegionTitle(regionTitleFromUrl);
+      if (region) {
+        mapFitBounds(region.coords);
+      }
+    });
+  }, [map, regionTitleFromUrl, mapFitBounds]);
 
   useEffect(() => {
     if (!map) return;
 
     const handleMapChange = () => {
       const bounds = map.getBounds();
-      throttleSetBounds(bounds);
+      throttleSetMapBounds(bounds);
     };
 
     map.on('zoom', handleMapChange);
-    setBounds(map.getBounds());
+    setMapBounds(map.getBounds());
 
     return () => {
       map.off('zoom', handleMapChange);
@@ -44,7 +77,7 @@ const RegionPolygonLayer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
 
-  const geoJsonData = useVisibleRegionPolygons(bounds, MIN_THRESHOLD_PERCENTAGE, MAX_THRESHOLD_PERCENTAGE);
+  const geoJsonData = useVisibleRegionPolygons(mapBounds, MIN_THRESHOLD_PERCENTAGE, MAX_THRESHOLD_PERCENTAGE);
 
   useEffect(() => {
     if (!map) return;
@@ -60,6 +93,12 @@ const RegionPolygonLayer = () => {
     };
 
     const handleMouseClick = (e: MapMouseEvent) => {
+      const features = map.queryRenderedFeatures(e.point, { layers: [productRegionBoxLayer] });
+      if (features.length > 0 && features[0]?.geometry?.type === 'Polygon') {
+        const regionBounds = convertGeoJsonCoordinatesToBBox(features[0].geometry.coordinates as GeoJsonPolygon);
+        mapFitBounds(regionBounds);
+      }
+
       const { name: regionName } = getPropertyFromMapFeatures<{ name: string }>(map, e, productRegionBoxLayer, [
         'name',
       ]);
@@ -86,7 +125,15 @@ const RegionPolygonLayer = () => {
       map.off('mouseleave', productRegionBoxLayer, handleMouseLeave);
       map.off('mousemove', productRegionBoxLayer, handleMouseMove);
     };
-  }, [map, productRegionBoxLayer, searchParams.date, updateQueryParamsAndNavigate, defaultTargetDate, baseProductPath]);
+  }, [
+    map,
+    productRegionBoxLayer,
+    searchParams.date,
+    updateQueryParamsAndNavigate,
+    defaultTargetDate,
+    baseProductPath,
+    mapFitBounds,
+  ]);
 
   return (
     <Source id={productRegionBoxSource} type="geojson" data={geoJsonData}>
@@ -110,7 +157,7 @@ const RegionPolygonLayer = () => {
         filter={['==', 'name', hoveredRegion]}
       />
       <Layer
-        id="product-label"
+        id={productRegionNameLabelLayer}
         type="symbol"
         source={productRegionBoxSource}
         layout={{
@@ -123,6 +170,30 @@ const RegionPolygonLayer = () => {
           'text-color': '#fff',
         }}
         filter={['==', 'name', hoveredRegion]}
+      />
+      <Layer
+        type="symbol"
+        source={productRegionBoxSource}
+        layout={{
+          'text-field': ['get', 'name'],
+          'text-size': 16,
+          'text-justify': 'center',
+          'text-anchor': 'center',
+        }}
+        paint={{
+          'text-color': '#fff',
+        }}
+        filter={['==', 'name', selectedRegion]}
+      />
+      <Layer
+        id={productRegionSelectedBoxLayer}
+        type="line"
+        source={productRegionBoxSource}
+        paint={{
+          'line-color': 'rgba(58, 92, 143, 0.8)',
+          'line-width': 3,
+        }}
+        filter={['==', 'name', selectedRegion]}
       />
     </Source>
   );

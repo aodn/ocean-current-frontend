@@ -7,14 +7,14 @@ import {
   getTargetRegionScopPath,
   buildSurfaceWavesImageUrl,
   buildProductVideoUrl,
-} from '@/utils/dataImgBuilder';
+} from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
-import { getRegionByRegionTitle } from '@/utils/region';
+import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import { RegionScope } from '@/constants/region';
 import { Loading } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
-import { checkProductHasSubProduct } from '@/utils/product';
+import { checkProductHasSubProduct } from '@/utils/product-utils/product';
 import useDateStore from '@/stores/date-store/dateStore';
 
 const ProductContent: React.FC = () => {
@@ -29,7 +29,7 @@ const ProductContent: React.FC = () => {
 
   const region = getRegionByRegionTitle(useProductRegionTitle);
   const targetPathRegion = getTargetRegionScopPath(region?.scope || RegionScope.Au);
-  const regionPath = region?.region || 'au';
+  const regionPath = region?.code || 'au';
 
   useEffect(() => {
     setError(null);
@@ -82,8 +82,6 @@ const ProductContent: React.FC = () => {
       useDate.toString(),
     );
 
-    // 'https://oceancurrent.aodn.org.au/DR_SST_daily/SST/NingLeeu/NingLeeu_SST_2024_Q2.mp4';
-
     return showVideo ? videoUrl : imgUrl!;
   };
 
@@ -100,7 +98,7 @@ const ProductContent: React.FC = () => {
       {showVideo ? (
         <video
           onClick={handlePopup}
-          className="h-full w-full cursor-pointer select-none object-contain"
+          className="cursor-pointer select-none object-contain"
           src={buildMediaUrl()}
           controls
           onError={handleError}
@@ -111,7 +109,7 @@ const ProductContent: React.FC = () => {
       ) : (
         <img
           onClick={handlePopup}
-          className="h-full w-full cursor-pointer select-none object-contain"
+          className="cursor-pointer select-none object-contain"
           src={chooseImg()}
           alt="product"
           onError={handleError}

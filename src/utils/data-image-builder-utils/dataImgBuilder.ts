@@ -34,15 +34,24 @@ const buildProductImageUrl = (
 
   const productSegment = segment ? `${segment}` : '';
 
-  const subProductSegment = subProductType ? `/${subProductType}` : '';
-
+  let subProductSegment = subProductType ? `/${subProductType}` : '';
+  let regionNameSegment = `/${regionName}`;
   const formattedDate = dayjs(date).format(productData.dateFormat);
+  let dateTimeSegment = formattedDate;
+
+  const isProductOceanColourAndLocalRegion = productId === 'oceanColour' && regionScope === TargetPathRegionScope.Local;
+  if (isProductOceanColourAndLocalRegion) {
+    subProductSegment = '';
+    regionNameSegment = `${regionName}_chl`;
+    // TODO: remove hardcoded time
+    dateTimeSegment = `${formattedDate}04`;
+  }
 
   const baseUrl = getBaseUrlByProductId(productId);
 
   return isApi
     ? `/api/${productSegment}${subProductSegment}/${regionName}/${formattedDate}.gif`
-    : `${baseUrl}/${productSegment}${subProductSegment}/${regionName}/${formattedDate}.gif`;
+    : `${baseUrl}/${productSegment}${subProductSegment}${regionNameSegment}/${dateTimeSegment}.gif`;
 };
 
 const buildProductVideoUrl = (

@@ -4,10 +4,10 @@ import dayjs from 'dayjs';
 import { setArgoData } from '@/stores/argo-store/argoStore';
 import useDateStore, { setDate } from '@/stores/date-store/dateStore';
 import { setRegionTitle, setProductId } from '@/stores/product-store/productStore';
-import { getProductByPath } from '@/utils/product';
+import { getProductByPath } from '@/utils/product-utils/product';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useProductFromUrl, useProductSearchParam } from '@/hooks';
-import { getRegionByRegionTitle } from '@/utils/region';
+import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 import DataVisualizationNavbar from '@/components/ProductNavbar/ProductNavbar';
 import DataVisualizationSidebar from '@/components/DataVisualizationSidebar/DataVisualizationSidebar';
@@ -32,7 +32,7 @@ const DataVisualizationLayout: React.FC = () => {
     setDate(dayjs(date));
   }, [searchParams]);
 
-  const { region: regionTitle = 'Australia/NZ', date } = useProductSearchParam();
+  const { region: regionTitleFromUrl = 'Australia/NZ', date } = useProductSearchParam();
 
   const setProductKey = useCallback(() => {
     if (product) {
@@ -48,10 +48,10 @@ const DataVisualizationLayout: React.FC = () => {
   }, [product]);
 
   useEffect(() => {
-    const region = getRegionByRegionTitle(regionTitle as string);
+    const region = getRegionByRegionTitle(regionTitleFromUrl as string);
     const regionName = region?.title || 'Australia/NZ';
     setRegionTitle(regionName);
-  }, [regionTitle]);
+  }, [regionTitleFromUrl]);
 
   useEffect(() => {
     if (!date || useDate.isSame(dayjs(date), 'day')) return;
@@ -67,7 +67,7 @@ const DataVisualizationLayout: React.FC = () => {
   }, [getArgoData, isArgo]);
 
   return (
-    <div className="relative mx-auto my-9 w-full max-w-8xl">
+    <div className="relative mx-auto mb-9 w-full max-w-8xl">
       <div className="flex p-4">
         <button
           onClick={toggleSidebar}
@@ -84,11 +84,9 @@ const DataVisualizationLayout: React.FC = () => {
         </div>
         <div className={`transition-all duration-300 ${isSidebarVisible ? 'ml-4' : 'ml-0'} w-full`}>
           <DataVisualizationNavbar setShowVideo={setShowVideo} />
-          <>
-            <ErrorBoundary key={product?.mainProduct}>
-              <Outlet context={{ showVideo }} />
-            </ErrorBoundary>
-          </>
+          <ErrorBoundary key={product?.mainProduct}>
+            <Outlet context={{ showVideo }} />
+          </ErrorBoundary>
         </div>
       </div>
     </div>

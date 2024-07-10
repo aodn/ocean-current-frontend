@@ -4,7 +4,7 @@ import { allRegions } from '@/data/regionData';
 import { productRegionMap } from '@/data/regionList';
 import { RegionCategories } from '@/types/region';
 
-const getRegionByRegionTitle = (regionTitle: string): Region | undefined => {
+const getRegionByRegionTitle = (regionTitle: string | null): Region | undefined => {
   return allRegions.find((region) => region.title === regionTitle);
 };
 
@@ -12,15 +12,19 @@ const getRegionScopeByRegionTitle = (regionTitle: string): RegionScope | undefin
   return getRegionByRegionTitle(regionTitle)?.scope;
 };
 
-const getRegionNameByRegionTitle = (regionTitle: string): string | undefined => {
-  return getRegionByRegionTitle(regionTitle)?.region;
+const getRegionCodeByRegionTitle = (regionTitle: string): string | undefined => {
+  return getRegionByRegionTitle(regionTitle)?.code;
 };
 
 const getRegionListByProductId = (productId: string): RegionCategories | undefined => {
   return productRegionMap[productId];
 };
 
-const isProductAvailableInRegion = (regionTitle: string, productId: string): boolean => {
+const isProductAvailableInRegion = (regionTitle: string | null, productId: string): boolean => {
+  if (!regionTitle) {
+    return false;
+  }
+
   const region = getRegionByRegionTitle(regionTitle);
   if (!region) {
     return false;
@@ -34,13 +38,13 @@ const isProductAvailableInRegion = (regionTitle: string, productId: string): boo
 
   const allRegions = [...regionList.state, ...regionList.local];
 
-  return allRegions.includes(region.region);
+  return allRegions.includes(region.code);
 };
 
 export {
   getRegionByRegionTitle,
   getRegionScopeByRegionTitle,
-  getRegionNameByRegionTitle,
+  getRegionCodeByRegionTitle,
   getRegionListByProductId,
   isProductAvailableInRegion,
 };

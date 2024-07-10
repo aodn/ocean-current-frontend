@@ -11,4 +11,5 @@ export interface DropdownProps {
   header?: boolean;
   showIcons?: boolean;
   isOpen?: boolean;
+  smallDropdown?: boolean;
 }

@@ -1,37 +1,51 @@
-import categoryIcon from '@/assets/icons/category-icon.png';
-import { Dropdown, Loading } from '@/components/Shared';
-import useProductStore, { setProductId } from '@/stores/product-store/productStore';
-import { getProductFullPathById } from '@/utils/product';
-import { useQueryParams } from '@/hooks';
-import { mapNavbarDataElements } from './data/mapNavbar';
-import { MapNavBarElement } from './types/mapNavbar.types';
+import React from 'react';
+import dayjs from 'dayjs';
+import DatePicker from '@/components/DatePicker/DatePicker';
+import DateSlider from '@/components/DateSlider/DateSlider';
+import useDateRange from '@/hooks/useDateRange/useDateRange';
 
 const MapNavbar: React.FC = () => {
-  const { updateQueryParamsAndNavigate } = useQueryParams();
+  const {
+    startDate,
+    endDate,
+    allDates,
+    selectedDateIndex,
+    handleSliderChange,
+    handleYearDateChange,
+    handleDateChange,
+    modifyDate,
+    steps,
+    isLastMonthOfTheYear,
+  } = useDateRange();
 
-  const useProductId = useProductStore((state) => state.productParams.productId);
-
-  const handleDropdownChange = (selectedElement: MapNavBarElement) => {
-    if (selectedElement.id === useProductId) {
-      return;
-    }
-    setProductId(selectedElement.id);
-    const targetPath = getProductFullPathById(selectedElement.id);
-    updateQueryParamsAndNavigate(targetPath);
-  };
-
-  if (!useProductId) {
-    return <Loading loadingSize="w-10 h-10" />;
-  }
+  const isSelectedDayYesterdayOrLater = dayjs(allDates[selectedDateIndex]?.date).isSameOrAfter(
+    dayjs().subtract(1, 'day'),
+    'day',
+  );
 
   return (
-    <div className="relative z-10 flex h-18 justify-between border bg-white p-2 drop-shadow-x0y4">
-      <div className="flex items-center">
-        <div className="flex p-2">
-          <img src={categoryIcon} alt="category logo" />
-          <span className="ml-3 text-lg text-imos-sea-blue">Category</span>
+    <div className="mb-2 bg-[#FAFAFA] p-1 shadow-lg">
+      <div className="flex items-center justify-between rounded">
+        <div className="w-4/12">
+          <DatePicker
+            startDate={startDate}
+            endDate={endDate}
+            addButtonDisabled={isSelectedDayYesterdayOrLater}
+            handleDateChange={handleDateChange}
+            handleYearDateChange={handleYearDateChange}
+            modifyDate={modifyDate}
+            selectedDate={allDates[selectedDateIndex]?.date}
+            isLastMonthOfTheYear={isLastMonthOfTheYear}
+          />
         </div>
-        <Dropdown elements={mapNavbarDataElements} selectedId={useProductId} onChange={handleDropdownChange} />
+      </div>
+      <div className="mb-2 flex items-center justify-center">
+        <DateSlider
+          allDates={allDates}
+          selectedDateIndex={selectedDateIndex}
+          handleSliderChange={handleSliderChange}
+          steps={steps}
+        />
       </div>
     </div>
   );

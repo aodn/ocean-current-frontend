@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { setProductId } from '@/stores/product-store/productStore';
-import { getProductByPath } from '@/utils/product';
+import { getProductByPath } from '@/utils/product-utils/product';
 import { useProductFromUrl } from '@/hooks';
 import MapSidebar from '@/components/MapSidebar/MapSidebar';
+import MapNavbar from '@/components/MapNavbar/MapNavbar';
 
 const MapLayout: React.FC = () => {
   const product = useProductFromUrl('map');
@@ -22,12 +23,17 @@ const MapLayout: React.FC = () => {
   }, [product]);
 
   return (
-    <div className="mx-auto my-9 w-full max-w-8xl shadow-layout-shadow">
+    <div className="mx-auto mb-9 mt-4 w-full max-w-8xl ">
       <div className="flex w-full">
         <div className="w-1/3">
           <MapSidebar />
         </div>
-        <Outlet />
+        <div className="mx-2 mt-2 w-full">
+          <MapNavbar />
+          <div className="w-full">
+            <Outlet />
+          </div>
+        </div>
       </div>
     </div>
   );

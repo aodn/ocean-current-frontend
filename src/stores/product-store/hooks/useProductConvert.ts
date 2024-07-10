@@ -1,5 +1,5 @@
 import { FlatProduct, MainProductWithSubProduct, Product, SubProduct } from '@/types/product';
-import { getProductByIdFromFlat, getProductByKey } from '@/utils/product';
+import { getProductByIdFromFlat, getProductByKey } from '@/utils/product-utils/product';
 import useProductStore from '../productStore';
 
 const useProductConvert = () => {

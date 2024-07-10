@@ -1,22 +1,41 @@
 import dayjs from 'dayjs';
 import React from 'react';
 import { Slider } from '@/components/Shared/index';
+import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { DateSliderProps } from './types/dateSlider.types';
 
 const DateSlider: React.FC<DateSliderProps> = ({ allDates, selectedDateIndex, handleSliderChange, steps }) => {
-  const formatDateLabel = (index: number) => dayjs(allDates[index]).format('DD-MM');
+  const { mainProduct } = useProductConvert();
+  const isClimatology = mainProduct?.key === 'climatology';
+  const formatDateLabel = (index: number) =>
+    isClimatology ? dayjs(allDates[index].date).format('MMM') : dayjs(allDates[index].date).format('DD-MM');
+
+  const nextActiveIndex = (index: number, direction: 'forward' | 'backward') => {
+    let newIndex = index;
+    while (newIndex >= 0 && newIndex < allDates.length) {
+      newIndex = direction === 'forward' ? newIndex + 1 : newIndex - 1;
+      if (allDates[newIndex]?.active) break;
+    }
+    return newIndex >= 0 && newIndex < allDates.length ? newIndex : index;
+  };
+
+  const handleSliderUpdate = (newValue: number) => {
+    const newIndex = nextActiveIndex(newValue, newValue > selectedDateIndex ? 'forward' : 'backward');
+    handleSliderChange(newIndex);
+  };
 
   return (
-    <div className="my-2 flex w-full items-center justify-between rounded p-4 px-6 pb-10 ">
+    <div className=" flex w-full items-center justify-between rounded bg-slate-200 p-6 pb-10 shadow">
       {allDates.length > 0 && (
         <div className="w-full px-2">
           <Slider
             value={selectedDateIndex}
-            onChange={handleSliderChange}
+            onChange={handleSliderUpdate}
             min={0}
             max={allDates.length - 1}
             step={steps}
             labelFormatter={formatDateLabel}
+            allDates={allDates}
           />
         </div>
       )}

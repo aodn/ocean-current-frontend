@@ -4,16 +4,16 @@ import DateSlider from './DateSlider';
 import { DateSliderProps } from './types/dateSlider.types';
 
 const mockDates = [
-  new Date('2024-05-12'),
-  new Date('2024-05-13'),
-  new Date('2024-05-14'),
-  new Date('2024-05-15'),
-  new Date('2024-05-16'),
-  new Date('2024-05-17'),
-  new Date('2024-05-18'),
-  new Date('2024-05-19'),
-  new Date('2024-05-20'),
-  new Date('2024-05-21'),
+  { date: new Date('2024-05-12'), active: true },
+  { date: new Date('2024-05-13'), active: false },
+  { date: new Date('2024-05-14'), active: true },
+  { date: new Date('2024-05-15'), active: true },
+  { date: new Date('2024-05-16'), active: false },
+  { date: new Date('2024-05-17'), active: true },
+  { date: new Date('2024-05-18'), active: true },
+  { date: new Date('2024-05-19'), active: false },
+  { date: new Date('2024-05-20'), active: true },
+  { date: new Date('2024-05-21'), active: true },
 ];
 
 const renderComponent = (props: Partial<DateSliderProps> = {}) => {
@@ -32,7 +32,7 @@ describe('DateSlider Component', () => {
     expect(screen.getByTestId('slider-base')).toBeInTheDocument();
   });
 
-  it('displays the first date label (05-12)', () => {
+  it('displays the first date label (12-05)', () => {
     renderComponent();
 
     const label = screen.getByText('12-05');

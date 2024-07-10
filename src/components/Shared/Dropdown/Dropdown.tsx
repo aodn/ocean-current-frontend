@@ -9,6 +9,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   selectedId,
   onChange,
   header,
+  smallDropdown,
   isOpen = false,
 }: DropdownProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -47,7 +48,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       <div
         onClick={toggleDropdown}
         aria-hidden="true"
-        className={`${header ? 'bg-[#3A6F8F] p-3' : 'rounded-md bg-background-gradient p-2'} flex min-w-56 cursor-pointer items-center justify-between  border px-4 text-lg text-imos-title-blue shadow`}
+        className={`${header ? 'bg-[#3A6F8F] p-3' : 'rounded-md bg-background-gradient p-2'} ${smallDropdown ? 'min-w-28' : 'min-w-56'} flex  cursor-pointer items-center justify-between  border px-4 text-lg text-imos-title-blue shadow`}
       >
         <div className="flex items-center">
           {showIcons && selectedElement && (
@@ -67,10 +68,11 @@ const Dropdown: React.FC<DropdownProps> = ({
             <div
               key={element.id}
               aria-hidden="true"
-              className={`mb-4 flex cursor-pointer items-center rounded-md border border-[#c2c2c2] p-3 duration-300 hover:border-imos-black ${element.id === selectedElement?.id ? 'border-[#888888] bg-white' : ''}`}
+              className={`${!showIcons ? 'justify-center' : ''} mb-4 flex cursor-pointer items-center rounded-md border border-[#c2c2c2] p-3 duration-300 hover:border-imos-black ${element.id === selectedElement?.id ? 'border-[#888888] bg-white' : ''}`}
               onClick={() => handleOnClick(element)}
             >
-              <img className="mr-4 h-9 w-9" src={element.icon} alt={`${element.label} icon`} />
+              {showIcons && <img className="mr-4 h-9 w-9" src={element.icon} alt={`${element.label} icon`} />}
+
               <span className="text-left text-base text-imos-grey">{element.label}</span>
             </div>
           ))}

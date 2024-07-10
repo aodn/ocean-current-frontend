@@ -3,7 +3,7 @@ import { Button, Loading, Popup } from '@/components/Shared';
 import { setProductId } from '@/stores/product-store/productStore';
 import { useQueryParams } from '@/hooks';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
-import { getProductInfoByKey } from '@/utils/product';
+import { getProductInfoByKey } from '@/utils/product-utils/product';
 import InfoIcon from '@/assets/icons/info-icon.svg';
 import ArrowIcon from '@/assets/icons/arrow.svg';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
@@ -72,7 +72,7 @@ const ProductSideBar: React.FC = () => {
   const filteredDataSources = dataSources.filter((source) => source.product.includes(mainProduct.key));
 
   return (
-    <div>
+    <div className="border border-[#D6E1E8] bg-[#FAFAFA]">
       <div className="mb-1">
         <HeaderSideBar />
       </div>
@@ -83,7 +83,7 @@ const ProductSideBar: React.FC = () => {
         </div>
       )}
 
-      <div className="flex items-center justify-between border-b-2 border-imos-grey p-4">
+      <div className="flex items-center justify-between border-b-2 border-[#e5e7eb] p-4">
         <div aria-hidden onClick={handlePopup} className="mr-6 flex flex-col items-center justify-center">
           <img src={InfoIcon} alt="info icon" className=" h-6 w-6 cursor-pointer object-contain" />
           <p className="mt-2 text-center text-xs text-imos-sea-blue">Click here for more information</p>
@@ -94,13 +94,13 @@ const ProductSideBar: React.FC = () => {
       <Popup title={productInfo?.title} body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
 
       {shouldRenderSubProducts() && (
-        <div className="border-b-2 border-imos-grey px-4">
+        <div className="border-b-2 border-[#e5e7eb] px-4">
           <div
             className="flex cursor-pointer items-center justify-between px-4 py-2"
             onClick={() => setIsSubProductsCollapsed(!isSubProductsCollapsed)}
             aria-hidden
           >
-            <h3 className="text-lg font-medium text-imos-black">Sub-products</h3>
+            <h3 className="text-lg font-medium text-[#787878]">Sub-products</h3>
             <img
               src={ArrowIcon}
               alt="arrow icon"
@@ -166,7 +166,7 @@ const ProductSideBar: React.FC = () => {
           onClick={() => setIsLegendCollapsed(!isLegendCollapsed)}
           aria-hidden
         >
-          <h3 className="text-lg font-medium text-imos-black">Legend</h3>
+          <h3 className="text-lg font-medium text-[#787878]">Legend</h3>
           <img
             src={ArrowIcon}
             alt="arrow icon"
