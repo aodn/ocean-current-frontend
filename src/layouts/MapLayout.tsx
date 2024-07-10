@@ -4,6 +4,7 @@ import { setProductId } from '@/stores/product-store/productStore';
 import { getProductByPath } from '@/utils/product-utils/product';
 import { useProductFromUrl } from '@/hooks';
 import MapSidebar from '@/components/MapSidebar/MapSidebar';
+import MapNavbar from '@/components/MapNavbar/MapNavbar';
 
 const MapLayout: React.FC = () => {
   const product = useProductFromUrl('map');
@@ -27,7 +28,12 @@ const MapLayout: React.FC = () => {
         <div className="w-1/3">
           <MapSidebar />
         </div>
-        <Outlet />
+        <div className="mx-2 mt-2 w-full">
+          <MapNavbar />
+          <div className="w-full">
+            <Outlet />
+          </div>
+        </div>
       </div>
     </div>
   );

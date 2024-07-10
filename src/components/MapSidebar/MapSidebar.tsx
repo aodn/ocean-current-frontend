@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import useProductStore, { setProductId } from '@/stores/product-store/productStore';
 import { getProductFullPathById } from '@/utils/product-utils/product';
-import { mapNavbarDataElements } from '@/data/dropDownProductData';
+import { mapSidebarElements } from '@/data/dropDownProductData';
 import { MapNavBarElement } from '@/types/dropDownProduct';
 
 const MapSidebar: React.FC = () => {
@@ -19,20 +19,18 @@ const MapSidebar: React.FC = () => {
   };
 
   return (
-    <div>
-      <div className="  w-full rounded-b-md bg-[#EFEFEF] p-4 shadow" data-testid="drop-down-menu">
-        {mapNavbarDataElements.map((element) => (
-          <div
-            key={element.id}
-            aria-hidden="true"
-            className={`mb-4 flex cursor-pointer items-center rounded-md border border-[#c2c2c2] p-3 duration-300 hover:border-imos-black ${element.id === useProductId ? 'border-[#888888] bg-white' : ''}`}
-            onClick={() => handleDropdownChange(element)}
-          >
-            <img className="mr-4 h-9 w-9" src={element.icon} alt={`${element.label} icon`} />
-            <span className="text-left text-base text-imos-grey">{element.label}</span>
-          </div>
-        ))}
-      </div>
+    <div className="h-full w-full overflow-hidden bg-[#DAE3E8] p-4 shadow" data-testid="drop-down-menu">
+      {mapSidebarElements.map((element) => (
+        <div
+          key={element.id}
+          aria-hidden="true"
+          className={`mb-4 flex cursor-pointer items-center rounded-md border p-3 duration-300 hover:border-imos-black ${element.id === useProductId ? 'bg-[#3A6F8F] text-white' : 'bg-white text-[#787878]'}`}
+          onClick={() => handleDropdownChange(element)}
+        >
+          <img className="mr-4 h-9 w-9" src={element.icon} alt={`${element.label} icon`} />
+          <span className="text-left text-base ">{element.label}</span>
+        </div>
+      ))}
     </div>
   );
 };

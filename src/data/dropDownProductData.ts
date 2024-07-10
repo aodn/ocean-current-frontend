@@ -5,6 +5,7 @@ import MonthlyMeansIcon from '@/assets/icons/products/monthly-means-icon.svg';
 import SurfaceWavesIcon from '@/assets/icons/products/surface-waves-icon.svg';
 import FourHourSSTIcon from '@/assets/icons/products/4-hour-SST-icon.svg';
 import SixHourSSTIcon from '@/assets/icons/products/6-hour-SST-icon.svg';
+import ArgoIcon from '@/assets/icons/products/argo-icon.svg';
 
 export const mapNavbarDataElements = [
   { id: 'snapshotSst', label: 'Snapshot SST', icon: SSTIcon },
@@ -16,3 +17,5 @@ export const mapNavbarDataElements = [
   { id: 'sixDaySst-sst', label: '6-Day SST', icon: SixHourSSTIcon },
   { id: 'climatology-sst', label: 'Climatology', icon: SSTIcon },
 ];
+
+export const mapSidebarElements = [...mapNavbarDataElements, { id: 'argo', label: 'Argo', icon: ArgoIcon }];

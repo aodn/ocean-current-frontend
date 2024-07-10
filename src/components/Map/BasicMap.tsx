@@ -61,8 +61,8 @@ const BasicMap: React.FC<BasicMapProps> = ({
       minZoom={2.5}
     >
       {children}
-      {fullScreenControl && <FullscreenControl position="top-left" />}
-      {navigationControl && <NavigationControl position="top-left" />}
+      {fullScreenControl && <FullscreenControl position="top-right" />}
+      {navigationControl && <NavigationControl position="top-right" />}
 
       {!isArgo && <RegionPolygonLayer />}
       {isArgo && <ArgoAsProductLayer />}
