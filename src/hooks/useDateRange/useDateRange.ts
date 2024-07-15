@@ -4,7 +4,6 @@ import dayjs, { Dayjs } from 'dayjs';
 import { useShallow } from 'zustand/react/shallow';
 import { useDateStore, setStartDate, setEndDate } from '@/stores/date-store/dateStore';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
-import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 
 const useDateRange = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -16,26 +15,13 @@ const useDateRange = () => {
     })),
   );
 
-  const generateHoursRange = (startHour: number = 0) => {
-    return Array.from({ length: 6 }, (_, i) => {
-      const hour = (startHour + i * 4) % 24;
-      return {
-        id: `${hour.toString().padStart(2, '0')}:00`,
-        label: `${hour.toString().padStart(2, '0')}:00`,
-      };
-    }) as DropdownElement[];
-  };
-
-  const hoursRange = generateHoursRange(4);
-
   const [allDates, setAllDates] = useState<{ date: Date; active: boolean }[]>([]);
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
-  const [selectedHour, setSelectedHour] = useState<string>(hoursRange[0].id);
 
   const urlDate = searchParams.get('date');
   const initialDate = urlDate ? dayjs(urlDate, 'YYYYMMDDHH').toDate() : dayjs().subtract(1, 'month').toDate();
   const isYearRange = mainProduct?.key === 'climatology';
-  const showHourSelector = mainProduct?.key === 'fourHourSst';
+  const isFourHourSst = mainProduct?.key === 'fourHourSst';
 
   useEffect(() => {
     if (!isYearRange && endDate) {
@@ -51,9 +37,18 @@ const useDateRange = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isYearRange]);
 
+  useEffect(() => {
+    updateDateSlider(startDate);
+    setStartDate(dayjs().subtract(1, 'week'));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFourHourSst]);
+
   const generateDateRange = (start: Date, end?: Date) => {
     if (isYearRange) {
       return generateYearRange(start);
+    } else if (isFourHourSst) {
+      return generateDayWithHourRange(start, end);
     } else {
       return generateDayRange(start, end);
     }
@@ -64,6 +59,7 @@ const useDateRange = () => {
     return Array.from({ length: 12 }, (_, index) => ({
       date: dayjs(new Date(year, index, 1)).toDate(),
       active: true,
+      showLabel: true,
     }));
   };
 
@@ -71,10 +67,32 @@ const useDateRange = () => {
     const dates = [];
     let current = dayjs(start);
     const endDay = dayjs(end);
+    let dayCounter = 0;
+
     while (current.isBefore(endDay) || current.isSame(endDay, 'day')) {
-      dates.push({ date: current.toDate(), active: Math.random() > 0.5 });
+      dates.push({ date: current.toDate(), active: Math.random() > 0.5, showLabel: dayCounter % 7 === 0 });
+      current = current.add(1, 'day');
+      dayCounter++;
+    }
+
+    return dates;
+  };
+
+  const generateDayWithHourRange = (start: Date, end?: Date) => {
+    const dates = [];
+    let current = dayjs(start);
+    const endDay = dayjs(end);
+
+    while (current.isBefore(endDay) || current.isSame(endDay, 'day')) {
+      let firstHour = true;
+      for (let hour = 0; hour < 24; hour += 4) {
+        const dateWithHour = dayjs(current).hour(hour).minute(0).second(0).millisecond(0);
+        dates.push({ date: dateWithHour.toDate(), active: true, showLabel: firstHour });
+        firstHour = false;
+      }
       current = current.add(1, 'day');
     }
+
     return dates;
   };
 
@@ -123,9 +141,8 @@ const useDateRange = () => {
     const newIndex = nextActiveIndex !== -1 ? nextActiveIndex : selectedDateIndex;
     setSelectedDateIndex(newIndex);
 
-    const formattedDate = dayjs(allDates[newIndex].date).format('YYYYMMDD');
-    const updatedDate = updateSelectedDateWithHour(formattedDate);
-    updateUrlParams(updatedDate, startDate, endDate);
+    const formattedDate = dayjs(allDates[newIndex].date).format('YYYYMMDDHH');
+    updateUrlParams(formattedDate, startDate, endDate);
   };
 
   const modifyDate = (modificationType: 'add' | 'subtract') => {
@@ -137,9 +154,8 @@ const useDateRange = () => {
     setAllDates(newRange);
     setSelectedDateIndex(newIndex !== -1 ? newIndex : 0);
 
-    const formattedDate = dayjs(newRange[newIndex !== -1 ? newIndex : 0].date).format('YYYYMMDD');
-    const updatedDate = updateSelectedDateWithHour(formattedDate);
-    updateUrlParams(updatedDate, newStartDate, newEndDate!);
+    const formattedDate = dayjs(newRange[newIndex !== -1 ? newIndex : 0].date).format('YYYYMMDDHH');
+    updateUrlParams(formattedDate, newStartDate, newEndDate!);
   };
 
   const calculateNewDates = (modificationType: 'add' | 'subtract') => {
@@ -172,7 +188,7 @@ const useDateRange = () => {
     setEndDate(end ? dayjs(end) : null);
     if (start && end) {
       updateDateSlider(start, end);
-      updateUrlParams(dayjs(end).format('YYYYMMDD'), start, end);
+      updateUrlParams(dayjs(end).format('YYYYMMDDHH'), start, end);
     }
   };
 
@@ -185,32 +201,8 @@ const useDateRange = () => {
 
     updateDateSlider(startDate.toDate(), endDate.toDate(), date);
 
-    const formattedDate = dayjs(date).format('YYYYMMDD');
-    const updatedDate = updateSelectedDateWithHour(formattedDate);
-    updateUrlParams(updatedDate, startDate, endDate);
-  };
-
-  const handleHourChange = (hour: string) => {
-    setSelectedHour(hour);
-    const currentDate = allDates[selectedDateIndex]?.date;
-    if (!currentDate) return;
-
-    const [hourPart, minutePart] = hour.split(':');
-    const newSelectedDate = dayjs(currentDate)
-      .hour(parseInt(hourPart))
-      .minute(parseInt(minutePart))
-      .second(0)
-      .millisecond(0)
-      .toDate();
-
-    const updatedDate = dayjs(newSelectedDate).format('YYYYMMDDHH');
-    updateUrlParams(updatedDate, startDate, endDate);
-  };
-
-  const updateSelectedDateWithHour = (formattedDate: string) => {
-    if (!selectedHour || !showHourSelector) return formattedDate;
-    const [hourPart] = selectedHour.split(':');
-    return `${formattedDate}${hourPart}`;
+    const formattedDate = dayjs(date).format('YYYYMMDDHH');
+    updateUrlParams(formattedDate, startDate, endDate);
   };
 
   const updateUrlParams = (newDate: string, newStartDate: Date | Dayjs, newEndDate: Date | Dayjs | null) => {
@@ -238,10 +230,7 @@ const useDateRange = () => {
     isSelectedDayYesterdayOrLater,
     isLastMonthOfTheYear,
     steps: 1,
-    showHourSelector,
-    handleHourChange,
-    selectedHour,
-    hoursRange,
+    isFourHourSst,
   };
 };
 

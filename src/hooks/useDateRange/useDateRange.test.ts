@@ -145,40 +145,6 @@ describe('useDateRange', () => {
     expect(result.current.allDates.length).toBe(12);
   });
 
-  it('should handle hour selector for fourHourSst product', () => {
-    // Arrange
-    vi.mocked(useProductConvert).mockReturnValue({
-      mainProduct: { key: 'fourHourSst', title: 'Four Hour SST', path: '/four-hour-sst' } as Product,
-      subProduct: null,
-      subProducts: [],
-    });
-
-    // Act
-    const { result } = renderHook(() => useDateRange());
-
-    // Assert
-    expect(result.current.showHourSelector).toBe(true);
-    expect(result.current.hoursRange).toHaveLength(6);
-  });
-
-  it('should handle hour change correctly', () => {
-    // Arrange
-    vi.mocked(useProductConvert).mockReturnValue({
-      mainProduct: { key: 'fourHourSst', title: 'Four Hour SST', path: '/four-hour-sst' } as Product,
-      subProduct: null,
-      subProducts: [],
-    });
-    const { result } = renderHook(() => useDateRange());
-
-    // Act
-    act(() => {
-      result.current.handleHourChange('12:00');
-    });
-
-    // Assert
-    expect(result.current.selectedHour).toBe('12:00');
-  });
-
   it('should handle year date change correctly', () => {
     // Arrange
     vi.mocked(useProductConvert).mockReturnValue({
@@ -198,5 +164,74 @@ describe('useDateRange', () => {
     expect(setStartDate).toHaveBeenCalledWith(expect.any(dayjs));
     expect(setEndDate).toHaveBeenCalledWith(expect.any(dayjs));
     expect(result.current.allDates[0].date.getFullYear()).toBe(2023);
+  });
+
+  it('should not change index if slider value is out of bounds', () => {
+    // Arrange
+    const { result } = renderHook(() => useDateRange());
+    const initialIndex = result.current.selectedDateIndex;
+
+    // Act
+    act(() => {
+      result.current.handleSliderChange(-1);
+    });
+
+    // Assert
+    expect(result.current.selectedDateIndex).toBe(initialIndex);
+  });
+
+  it('should handle four hour SST product correctly', () => {
+    // Arrange
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'fourHourSst', title: 'Four Hour SST', path: '/four-hour-sst' } as Product,
+      subProduct: null,
+      subProducts: [],
+    });
+
+    // Act
+    const { result } = renderHook(() => useDateRange());
+
+    // Assert
+    expect(result.current.isFourHourSst).toBe(true);
+    expect(result.current.allDates[0].date.getHours() % 4).toBe(0);
+  });
+
+  it('should update date range when product changes to climatology', () => {
+    // Arrange
+    const { result, rerender } = renderHook(() => useDateRange());
+
+    // Act
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'climatology', title: 'Climatology', path: '/climatology' } as Product,
+      subProduct: null,
+      subProducts: [],
+    });
+    rerender();
+
+    // Assert
+    expect(result.current.allDates.length).toBe(12);
+    expect(result.current.allDates[0].date.getDate()).toBe(1);
+    expect(result.current.allDates[11].date.getDate()).toBe(1);
+  });
+
+  it('should handle date change for four hour SST product', () => {
+    // Arrange
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'fourHourSst', title: 'Four Hour SST', path: '/four-hour-sst' } as Product,
+      subProduct: null,
+      subProducts: [],
+    });
+    const { result } = renderHook(() => useDateRange());
+    const newStartDate = dayjs().startOf('day').toDate();
+    const newEndDate = dayjs().add(1, 'day').endOf('day').toDate();
+
+    // Act
+    act(() => {
+      result.current.handleDateChange([newStartDate, newEndDate]);
+    });
+
+    // Assert
+    expect(result.current.allDates.length).toBe(12); // 6 four-hour intervals per day * 2 days
+    expect(result.current.allDates.every((date) => date.date.getHours() % 4 === 0)).toBe(true);
   });
 });

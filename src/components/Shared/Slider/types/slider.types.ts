@@ -5,7 +5,7 @@ export interface SliderProps {
   value: number;
   onChange: (newValue: number) => void;
   labelFormatter?: (value: number) => string;
-  allDates: { date: Date; active: boolean }[];
+  allDates: AllDates[];
 }
 
 export interface MarkersProps {
@@ -13,5 +13,11 @@ export interface MarkersProps {
   max: number;
   step: number;
   labelFormatter?: (value: number) => string;
-  allDates: { date: Date; active: boolean }[];
+  allDates: AllDates[];
 }
+
+type AllDates = {
+  date: Date;
+  active: boolean;
+  showLabel: boolean;
+};

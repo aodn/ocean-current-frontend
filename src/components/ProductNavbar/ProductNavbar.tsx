@@ -8,7 +8,6 @@ import { Button, ToggleButton } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
 import { TEXT_CONSTANT } from '@/constants/textConstant';
 import ShareIcon from '@/assets/icons/share-icon.svg';
-import TimeDropdown from '@/components/HourSelector/HourSelector';
 import { ProductNavbarProps } from './types/ProductNavbarProps.types';
 
 const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
@@ -27,10 +26,6 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
     modifyDate,
     steps,
     isLastMonthOfTheYear,
-    showHourSelector,
-    handleHourChange,
-    selectedHour,
-    hoursRange,
   } = useDateRange();
 
   const handleCopyLink = () => {
@@ -98,15 +93,6 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
           handleSliderChange={handleSliderChange}
           steps={steps}
         />
-        {showHourSelector && (
-          <div className="mx-4">
-            <TimeDropdown
-              hours={hoursRange}
-              selectedId={selectedHour}
-              onChange={(element) => handleHourChange(element.id)}
-            />
-          </div>
-        )}
       </div>
     </div>
   );

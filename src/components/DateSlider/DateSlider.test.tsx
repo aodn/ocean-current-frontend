@@ -4,16 +4,16 @@ import DateSlider from './DateSlider';
 import { DateSliderProps } from './types/dateSlider.types';
 
 const mockDates = [
-  { date: new Date('2024-05-12'), active: true },
-  { date: new Date('2024-05-13'), active: false },
-  { date: new Date('2024-05-14'), active: true },
-  { date: new Date('2024-05-15'), active: true },
-  { date: new Date('2024-05-16'), active: false },
-  { date: new Date('2024-05-17'), active: true },
-  { date: new Date('2024-05-18'), active: true },
-  { date: new Date('2024-05-19'), active: false },
-  { date: new Date('2024-05-20'), active: true },
-  { date: new Date('2024-05-21'), active: true },
+  { date: new Date('2024-05-12'), active: true, showLabel: true },
+  { date: new Date('2024-05-13'), active: false, showLabel: false },
+  { date: new Date('2024-05-14'), active: true, showLabel: false },
+  { date: new Date('2024-05-15'), active: true, showLabel: false },
+  { date: new Date('2024-05-16'), active: false, showLabel: false },
+  { date: new Date('2024-05-17'), active: true, showLabel: false },
+  { date: new Date('2024-05-18'), active: true, showLabel: false },
+  { date: new Date('2024-05-19'), active: false, showLabel: true },
+  { date: new Date('2024-05-20'), active: true, showLabel: false },
+  { date: new Date('2024-05-21'), active: true, showLabel: false },
 ];
 
 const renderComponent = (props: Partial<DateSliderProps> = {}) => {
@@ -49,12 +49,12 @@ describe('DateSlider Component', () => {
     expect(label8th).toBeInTheDocument();
   });
 
-  it('does not display the date label between 1st and 8th', () => {
+  it('does not display the date labels that should not show labels', () => {
     renderComponent();
 
-    const dateLabelNotToDisplay = ['13-05', '14-05', '15-05', '16-05', '17-05', '18-05'];
+    const dateLabelsNotToDisplay = ['13-05', '14-05', '15-05', '16-05', '17-05', '18-05', '20-05', '21-05'];
 
-    dateLabelNotToDisplay.forEach((date) => {
+    dateLabelsNotToDisplay.forEach((date) => {
       expect(screen.queryByText(date)).not.toBeInTheDocument();
     });
   });
