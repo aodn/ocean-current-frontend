@@ -32,27 +32,36 @@ const useDateRange = (): UseDateRangeReturn => {
   const initialDate = urlDate ? dayjs(urlDate, 'YYYYMMDDHH').toDate() : dayjs().subtract(1, 'month').toDate();
   const isYearRange = mainProduct?.key === 'climatology';
   const isFourHourSst = mainProduct?.key === 'fourHourSst';
+  const formatDate = isFourHourSst ? 'YYYYMMDDHH' : 'YYYYMMDD';
 
   useEffect(() => {
-    if (!isYearRange && endDate) {
-      updateDateSlider(startDate, endDate);
-    }
+    const getDateRange = () => {
+      if (isYearRange) {
+        return {
+          start: dayjs().startOf('year'),
+          end: dayjs().endOf('year'),
+        };
+      } else if (isFourHourSst) {
+        return {
+          start: dayjs().subtract(1, 'week'),
+          end: dayjs(),
+        };
+      } else {
+        return {
+          start: dayjs().subtract(1, 'month'),
+          end: dayjs(),
+        };
+      }
+    };
+
+    const { start, end } = getDateRange();
+
+    setStartDate(start);
+    setEndDate(end);
+    updateDateSlider(start.toDate(), end.toDate());
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isYearRange]);
-
-  useEffect(() => {
-    updateDateSlider(startDate);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isYearRange]);
-
-  useEffect(() => {
-    updateDateSlider(startDate);
-    setStartDate(dayjs().subtract(1, 'week'));
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFourHourSst]);
+  }, [isYearRange, isFourHourSst]);
 
   const generateDateRange = (start: Date, end?: Date): DateRange => {
     if (isYearRange) return generateYearRange(start);
@@ -142,7 +151,7 @@ const useDateRange = (): UseDateRangeReturn => {
     const newIndex = nextActiveIndex !== -1 ? nextActiveIndex : selectedDateIndex;
     setSelectedDateIndex(newIndex);
 
-    const formattedDate = dayjs(allDates[newIndex].date).format('YYYYMMDDHH');
+    const formattedDate = dayjs(allDates[newIndex].date).format(formatDate);
     updateUrlParams(formattedDate, startDate, endDate);
   };
 
@@ -155,7 +164,7 @@ const useDateRange = (): UseDateRangeReturn => {
     setAllDates(newRange);
     setSelectedDateIndex(newIndex !== -1 ? newIndex : 0);
 
-    const formattedDate = dayjs(newRange[newIndex !== -1 ? newIndex : 0].date).format('YYYYMMDDHH');
+    const formattedDate = dayjs(newRange[newIndex !== -1 ? newIndex : 0].date).format(formatDate);
     updateUrlParams(formattedDate, newStartDate, newEndDate!);
   };
 
@@ -189,7 +198,7 @@ const useDateRange = (): UseDateRangeReturn => {
     setEndDate(end ? dayjs(end) : null);
     if (start && end) {
       updateDateSlider(start, end);
-      updateUrlParams(dayjs(end).format('YYYYMMDDHH'), start, end);
+      updateUrlParams(dayjs(end).format(formatDate), start, end);
     }
   };
 
@@ -202,7 +211,7 @@ const useDateRange = (): UseDateRangeReturn => {
 
     updateDateSlider(startDate.toDate(), endDate.toDate(), date);
 
-    const formattedDate = dayjs(date).format('YYYYMMDDHH');
+    const formattedDate = dayjs(date).format(formatDate);
     updateUrlParams(formattedDate, startDate, endDate);
   };
 
