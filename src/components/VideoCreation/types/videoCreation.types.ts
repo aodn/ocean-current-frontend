@@ -1,3 +1,5 @@
+import { DateItem } from '@/hooks/useDateRange/types/useDateRange.types';
+
 export interface VideoCreationProps {
-  allDates: { date: Date; active: boolean }[];
+  allDates: DateItem[];
 }

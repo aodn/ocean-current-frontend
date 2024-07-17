@@ -8,4 +8,6 @@ export interface DatePickerProps {
   modifyDate: (modificationType: 'add' | 'subtract') => void;
   selectedDate: Date | null;
   isLastMonthOfTheYear: () => boolean;
+  isYearRange: boolean;
+  isFourHourSst: boolean;
 }

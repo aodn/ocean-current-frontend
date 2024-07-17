@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import arrowIcon from '@/assets/icons/arrow.svg';
 import calendarIcon from '@/assets/icons/calendar-icon.svg';
 import 'react-datepicker/dist/react-datepicker.css';
-import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { DatePickerProps } from './types/DatePicker.types';
 
 const customInput = () => (
@@ -24,17 +23,23 @@ const DatePicker: React.FC<DatePickerProps> = ({
   handleYearDateChange,
   selectedDate,
   isLastMonthOfTheYear,
+  isFourHourSst,
+  isYearRange,
 }) => {
-  const { mainProduct } = useProductConvert();
-  const isClimatology = mainProduct?.key === 'climatology';
-  const formattedDate = isClimatology
-    ? dayjs(selectedDate).format('MMM YYYY')
-    : dayjs(selectedDate).format('DD MMM YY');
+  const formattedDate = () => {
+    if (isYearRange) {
+      return dayjs(selectedDate).format('MMM YYYY');
+    } else if (isFourHourSst) {
+      return dayjs(selectedDate).format('DD MMM h:mm A');
+    } else {
+      return dayjs(selectedDate).format('DD MMM YY');
+    }
+  };
 
   return (
     <div className="flex items-center justify-evenly">
       <div className="max-w-28">
-        {isClimatology ? (
+        {isYearRange ? (
           <ReactDatePicker
             customInput={customInput()}
             selected={startDate}
@@ -62,10 +67,10 @@ const DatePicker: React.FC<DatePickerProps> = ({
         >
           <img className="h-2.5 w-2.5 rotate-90" src={arrowIcon} alt="left arrow icon" />
         </button>
-        <span className="text-l px-1">{formattedDate}</span>
+        <span className="text-l px-1">{formattedDate()}</span>
         <button
           onClick={() => modifyDate('add')}
-          disabled={isClimatology ? isLastMonthOfTheYear() : addButtonDisabled}
+          disabled={isYearRange ? isLastMonthOfTheYear() : addButtonDisabled}
           className="cursor-pointer rounded bg-transparent p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
         >
           <img className="h-2.5 w-2.5 -rotate-90" src={arrowIcon} alt="right arrow icon" />

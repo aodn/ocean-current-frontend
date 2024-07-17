@@ -8,7 +8,6 @@ import { Button, ToggleButton } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
 import { TEXT_CONSTANT } from '@/constants/textConstant';
 import ShareIcon from '@/assets/icons/share-icon.svg';
-import TimeDropdown from '@/components/HourSelector/HourSelector';
 import { ProductNavbarProps } from './types/ProductNavbarProps.types';
 
 const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
@@ -27,10 +26,8 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
     modifyDate,
     steps,
     isLastMonthOfTheYear,
-    showHourSelector,
-    handleHourChange,
-    selectedHour,
-    hoursRange,
+    isFourHourSst,
+    isYearRange,
   } = useDateRange();
 
   const handleCopyLink = () => {
@@ -74,6 +71,8 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
             modifyDate={modifyDate}
             selectedDate={allDates[selectedDateIndex]?.date}
             isLastMonthOfTheYear={isLastMonthOfTheYear}
+            isFourHourSst={isFourHourSst}
+            isYearRange={isYearRange}
           />
         </div>
         <div className="flex items-center justify-center border-r-2 px-4 py-4">
@@ -93,20 +92,12 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
       </div>
       <div className="mb-2 flex items-center justify-center">
         <DateSlider
+          isYearRange={isYearRange}
           allDates={allDates}
           selectedDateIndex={selectedDateIndex}
           handleSliderChange={handleSliderChange}
           steps={steps}
         />
-        {showHourSelector && (
-          <div className="mx-4">
-            <TimeDropdown
-              hours={hoursRange}
-              selectedId={selectedHour}
-              onChange={(element) => handleHourChange(element.id)}
-            />
-          </div>
-        )}
       </div>
     </div>
   );
