@@ -45,7 +45,7 @@ const list: ProductInfo[] = [
     description: SurfaceWaveModalData,
   },
   {
-    id: 'four-hour-sst',
+    id: 'fourHourSst',
     title: 'Four hour SST',
     summary:
       'Four-hour SST is a 4-hourly 2km resolution composite of sea surface temperatures from various satellites, including Himawari-8, Himawari-9, N15, N18, N19, MetopA, MetopB, and VIIRS Suomi-NPP.',
