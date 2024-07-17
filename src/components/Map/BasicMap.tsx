@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import Map, { FullscreenControl, MapStyle, NavigationControl, ViewStateChangeEvent } from 'react-map-gl';
 import { mapConfig } from '@/configs/map';
 import useMapStore, { setMapViewState, updateZoom } from '@/stores/map-store/mapStore';
@@ -13,6 +13,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
   mapStyle = MAP_STYLE as MapStyle,
   style,
   children,
+  isMiniMap = false,
   fullScreenControl = false,
   navigationControl = true,
 }) => {
@@ -32,6 +33,9 @@ const BasicMap: React.FC<BasicMapProps> = ({
 
   const handleMouseEnter = useCallback(() => setCursor('pointer'), []);
   const handleMouseLeave = useCallback(() => setCursor('grab'), []);
+
+  const memoizedRegionPolygonLayer = useMemo(() => <RegionPolygonLayer />, []);
+  const memoizedArgoAsProductLayer = useMemo(() => <ArgoAsProductLayer isMiniMap={isMiniMap} />, [isMiniMap]);
 
   if (!mapConfig.accessToken) {
     return (
@@ -58,14 +62,13 @@ const BasicMap: React.FC<BasicMapProps> = ({
       projection={{ name: 'mercator' }}
       attributionControl={false}
       interactiveLayerIds={interactiveIds}
-      minZoom={2.5}
     >
       {children}
       {fullScreenControl && <FullscreenControl position="top-right" />}
       {navigationControl && <NavigationControl position="top-right" />}
 
-      {!isArgo && <RegionPolygonLayer />}
-      {isArgo && <ArgoAsProductLayer />}
+      {!isArgo && memoizedRegionPolygonLayer}
+      {isArgo && memoizedArgoAsProductLayer}
     </Map>
   );
 };

@@ -1,7 +1,8 @@
 export interface DatePickerProps {
   startDate: Date | null;
   endDate: Date | null;
-  maxDate?: Date;
+  minDate?: Date | null;
+  maxDate?: Date | null;
   addButtonDisabled?: boolean;
   handleDateChange: (dates: [Date | null, Date | null]) => void;
   handleYearDateChange: (date: Date) => void;

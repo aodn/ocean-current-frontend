@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import dayjs, { Dayjs } from 'dayjs';
 import { useShallow } from 'zustand/react/shallow';
+import { useArgoStore } from '@/stores/argo-store/argoStore';
 import { useDateStore, setStartDate, setEndDate } from '@/stores/date-store/dateStore';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
+import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import {
   DateRange,
   DateStoreState,
@@ -18,12 +20,16 @@ import {
 const useDateRange = (): UseDateRangeReturn => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { mainProduct } = useProductConvert();
+  const { isArgo } = useProductCheck();
   const { startDate, endDate } = useDateStore(
     useShallow((state: DateStoreState) => ({
       startDate: state.startDate.toDate(),
       endDate: state.endDate?.toDate() || null,
     })),
   );
+
+  const useArgoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
+  const useWmoid = useArgoStore((state) => state.selectedArgoParams.worldMeteorologicalOrgId);
 
   const [allDates, setAllDates] = useState<DateRange>([]);
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
@@ -33,6 +39,29 @@ const useDateRange = (): UseDateRangeReturn => {
   const isYearRange = mainProduct?.key === 'climatology';
   const isFourHourSst = mainProduct?.key === 'fourHourSst';
   const formatDate = isFourHourSst ? 'YYYYMMDDHH' : 'YYYYMMDD';
+
+  const getMinMaxDate = () => {
+    let minDate: Date | null = null;
+    let maxDate: Date | null = null;
+
+    if (isArgo && useWmoid) {
+      const cycleDateTimestamps = useArgoProfileCycles.map(({ date }) => Number(date));
+      const minTimestamp = Math.min(...cycleDateTimestamps);
+      const maxTimestamp = Math.max(...cycleDateTimestamps);
+      minDate = dayjs(minTimestamp.toString()).toDate();
+      maxDate = dayjs(maxTimestamp.toString()).toDate();
+    }
+    return { minDate, maxDate };
+  };
+
+  const { minDate, maxDate } = getMinMaxDate();
+
+  useEffect(() => {
+    if (isArgo && endDate) {
+      updateDateSlider(startDate, endDate);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isArgo, useArgoProfileCycles.length, useWmoid]);
 
   useEffect(() => {
     const getDateRange = () => {
@@ -85,9 +114,13 @@ const useDateRange = (): UseDateRangeReturn => {
     let dayCounter = 0;
 
     while (current.isBefore(endDay) || current.isSame(endDay, 'day')) {
+      let isActive = true;
+      if (isArgo && useArgoProfileCycles.length > 0) {
+        isActive = useArgoProfileCycles.some((cycle) => dayjs(cycle.date).isSame(current, 'day'));
+      }
       dates.push({
         date: current.toDate(),
-        active: Math.random() > 0.5,
+        active: isActive,
         showLabel: dayCounter % 7 === 0,
       });
       current = current.add(1, 'day');
@@ -231,6 +264,8 @@ const useDateRange = (): UseDateRangeReturn => {
   return {
     startDate,
     endDate,
+    minDate,
+    maxDate,
     allDates,
     selectedDateIndex,
     handleSliderChange,

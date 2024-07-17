@@ -18,6 +18,8 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
   const {
     startDate,
     endDate,
+    minDate,
+    maxDate,
     allDates,
     selectedDateIndex,
     handleSliderChange,
@@ -65,6 +67,8 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
           <DatePicker
             startDate={startDate}
             endDate={endDate}
+            minDate={minDate}
+            maxDate={maxDate}
             addButtonDisabled={isSelectedDayYesterdayOrLater}
             handleDateChange={handleDateChange}
             handleYearDateChange={handleYearDateChange}
