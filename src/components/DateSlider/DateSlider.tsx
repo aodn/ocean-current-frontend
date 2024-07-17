@@ -1,14 +1,17 @@
 import dayjs from 'dayjs';
 import React from 'react';
 import { Slider } from '@/components/Shared/index';
-import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { DateSliderProps } from './types/dateSlider.types';
 
-const DateSlider: React.FC<DateSliderProps> = ({ allDates, selectedDateIndex, handleSliderChange, steps }) => {
-  const { mainProduct } = useProductConvert();
-  const isClimatology = mainProduct?.key === 'climatology';
+const DateSlider: React.FC<DateSliderProps> = ({
+  allDates,
+  selectedDateIndex,
+  handleSliderChange,
+  steps,
+  isYearRange,
+}) => {
   const formatDateLabel = (index: number) =>
-    isClimatology ? dayjs(allDates[index].date).format('MMM') : dayjs(allDates[index].date).format('DD-MM');
+    isYearRange ? dayjs(allDates[index].date).format('MMM') : dayjs(allDates[index].date).format('DD-MM');
 
   const nextActiveIndex = (index: number, direction: 'forward' | 'backward') => {
     let newIndex = index;

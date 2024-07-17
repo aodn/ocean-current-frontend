@@ -33,6 +33,7 @@ describe('ProductNavbar', () => {
     isLastMonthOfTheYear: vi.fn(),
     steps: 1,
     isFourHourSst: false,
+    isYearRange: false,
   };
 
   beforeEach(() => {

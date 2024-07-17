@@ -13,6 +13,8 @@ const mockProps = {
   handleYearDateChange: vi.fn(),
   isSelectedDayYesterdayOrLater: false,
   isLastMonthOfTheYear: vi.fn(),
+  isYearRange: false,
+  isFourHourSst: false,
 };
 
 describe('DatePicker', () => {

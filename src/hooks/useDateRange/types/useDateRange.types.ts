@@ -40,4 +40,5 @@ export type UseDateRangeReturn = {
   isLastMonthOfTheYear: () => boolean;
   steps: number;
   isFourHourSst: boolean;
+  isYearRange: boolean;
 };

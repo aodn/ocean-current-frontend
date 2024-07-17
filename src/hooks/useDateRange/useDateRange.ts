@@ -241,6 +241,7 @@ const useDateRange = (): UseDateRangeReturn => {
     isLastMonthOfTheYear,
     steps: 1,
     isFourHourSst,
+    isYearRange,
   };
 };
 

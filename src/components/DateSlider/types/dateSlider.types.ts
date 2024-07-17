@@ -5,4 +5,5 @@ export interface DateSliderProps {
   selectedDateIndex: number;
   handleSliderChange: (newValue: number) => void;
   steps: number;
+  isYearRange: boolean;
 }

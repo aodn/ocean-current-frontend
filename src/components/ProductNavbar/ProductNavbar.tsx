@@ -26,6 +26,8 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
     modifyDate,
     steps,
     isLastMonthOfTheYear,
+    isFourHourSst,
+    isYearRange,
   } = useDateRange();
 
   const handleCopyLink = () => {
@@ -69,6 +71,8 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
             modifyDate={modifyDate}
             selectedDate={allDates[selectedDateIndex]?.date}
             isLastMonthOfTheYear={isLastMonthOfTheYear}
+            isFourHourSst={isFourHourSst}
+            isYearRange={isYearRange}
           />
         </div>
         <div className="flex items-center justify-center border-r-2 px-4 py-4">
@@ -88,6 +92,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
       </div>
       <div className="mb-2 flex items-center justify-center">
         <DateSlider
+          isYearRange={isYearRange}
           allDates={allDates}
           selectedDateIndex={selectedDateIndex}
           handleSliderChange={handleSliderChange}
