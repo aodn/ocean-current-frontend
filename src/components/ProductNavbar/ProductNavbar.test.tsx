@@ -34,6 +34,7 @@ describe('ProductNavbar', () => {
     steps: 1,
     isFourHourSst: false,
     isYearRange: false,
+    setYesterdayAsSelected: vi.fn(),
   };
 
   beforeEach(() => {

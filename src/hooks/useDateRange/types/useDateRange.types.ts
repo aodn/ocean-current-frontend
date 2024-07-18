@@ -41,4 +41,5 @@ export type UseDateRangeReturn = {
   steps: number;
   isFourHourSst: boolean;
   isYearRange: boolean;
+  setYesterdayAsSelected: () => void;
 };

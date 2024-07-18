@@ -28,6 +28,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
     isLastMonthOfTheYear,
     isFourHourSst,
     isYearRange,
+    setYesterdayAsSelected,
   } = useDateRange();
 
   const handleCopyLink = () => {
@@ -58,6 +59,10 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
     setShowVideo(state);
   };
 
+  const handleTodayClick = () => {
+    setYesterdayAsSelected();
+  };
+
   return (
     <div className="mb-2 bg-[#FAFAFA] p-1 shadow-lg">
       <div className="flex items-center justify-between rounded">
@@ -75,18 +80,18 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
             isYearRange={isYearRange}
           />
         </div>
-        <div className="flex items-center justify-center border-r-2 px-4 py-4">
+        <div className="flex w-1/5 items-center justify-center border-r-2 px-4 py-4">
           <img src={VideoIcon} alt="video icon" />
-          <p className="mx-5 text-imos-sea-blue">Video</p>
+          <p className="mx-3 text-imos-sea-blue">Video</p>
           <ToggleButton isOn={showVideo} onToggle={handleToggle} />
         </div>
-        <div className="w-1/4 border-r-2 px-4 py-4">
+        <div className="w-1/5 border-r-2 px-4 py-4">
           <Button onClick={() => handleCopyLink()} size="full" borderRadius="small" type="secondary">
             <img src={ShareIcon} alt="share icon" />
             {copyButtonText}
           </Button>
         </div>
-        <div className="ml-4">
+        <div className="ml-4 w-1/5">
           <VideoCreation allDates={allDates} />
         </div>
       </div>
@@ -98,6 +103,12 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
           handleSliderChange={handleSliderChange}
           steps={steps}
         />
+
+        <div className="mx-2">
+          <Button onClick={() => handleTodayClick()} size="auto" borderRadius="small" type="secondary">
+            Latest
+          </Button>
+        </div>
       </div>
     </div>
   );
