@@ -136,12 +136,12 @@ const useDateRange = (): UseDateRangeReturn => {
     const endDay = dayjs(end);
 
     while (current.isBefore(endDay) || current.isSame(endDay, 'day')) {
-      for (let hour = 0; hour < 24; hour += 4) {
+      for (let hour = 2; hour < 24; hour += 4) {
         const dateWithHour = dayjs(current).hour(hour).minute(0).second(0).millisecond(0);
         dates.push({
           date: dateWithHour.toDate(),
           active: true,
-          showLabel: hour === 0,
+          showLabel: hour === 2,
         });
       }
       current = current.add(1, 'day');
@@ -261,6 +261,15 @@ const useDateRange = (): UseDateRangeReturn => {
 
   const isLastMonthOfTheYear = () => dayjs(allDates[selectedDateIndex]?.date).month() === 11;
 
+  const setYesterdayAsSelected = () => {
+    const today = dayjs().subtract(1, 'day').toDate();
+    const todayIndex = allDates.findIndex(({ date }) => dayjs(date).isSame(today, 'day'));
+    if (todayIndex !== -1) {
+      setSelectedDateIndex(todayIndex);
+      updateUrlParams(dayjs(today).format(formatDate), startDate, endDate);
+    }
+  };
+
   return {
     startDate,
     endDate,
@@ -277,6 +286,7 @@ const useDateRange = (): UseDateRangeReturn => {
     steps: 1,
     isFourHourSst,
     isYearRange,
+    setYesterdayAsSelected,
   };
 };
 

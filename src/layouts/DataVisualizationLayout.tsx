@@ -54,8 +54,15 @@ const DataVisualizationLayout: React.FC = () => {
   }, [regionTitleFromUrl]);
 
   useEffect(() => {
-    if (!date || useDate.isSame(dayjs(date), 'day')) return;
-    setDate(dayjs(date));
+    if (!date) return;
+
+    const currentDate = dayjs(date);
+    const isSameDay = useDate.isSame(currentDate, 'day');
+    const isSameTime = useDate.hour() === currentDate.hour() && useDate.minute() === currentDate.minute();
+
+    if (isSameDay && isSameTime) return;
+
+    setDate(currentDate);
   }, [date, useDate]);
 
   useEffect(() => {

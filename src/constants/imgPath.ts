@@ -33,7 +33,7 @@ export const productTypeMapping = new Map<
   [
     'fourHourSst',
     {
-      subProduct: ['SST', 'sst-age'],
+      subProduct: ['SST_Filled', 'SST', 'SST_Age', 'Wind'],
       stateSegment: undefined,
       localSegment: 'SST_4hr',
       dateFormat: 'YYYYMMDDHH',

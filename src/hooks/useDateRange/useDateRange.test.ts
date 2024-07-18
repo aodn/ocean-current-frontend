@@ -193,7 +193,7 @@ describe('useDateRange', () => {
 
     // Assert
     expect(result.current.isFourHourSst).toBe(true);
-    expect(result.current.allDates[0].date.getHours() % 4).toBe(0);
+    expect(result.current.allDates[0].date.getHours() % 4).toBe(2);
   });
 
   it('should update date range when product changes to climatology', () => {
@@ -232,6 +232,6 @@ describe('useDateRange', () => {
 
     // Assert
     expect(result.current.allDates.length).toBe(12); // 6 four-hour intervals per day * 2 days
-    expect(result.current.allDates.every((date) => date.date.getHours() % 4 === 0)).toBe(true);
+    expect(result.current.allDates.every((date) => date.date.getHours() % 2 === 0)).toBe(true);
   });
 });

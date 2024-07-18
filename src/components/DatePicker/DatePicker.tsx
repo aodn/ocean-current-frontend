@@ -31,7 +31,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
     if (isYearRange) {
       return dayjs(selectedDate).format('MMM YYYY');
     } else if (isFourHourSst) {
-      return dayjs(selectedDate).format('DD MMM h:mm A');
+      return dayjs(selectedDate).format('DD MMM HH:mm ');
     } else {
       return dayjs(selectedDate).format('DD MMM YY');
     }

@@ -130,7 +130,7 @@ const ProductContent: React.FC = () => {
       {showVideo ? (
         <video
           onClick={handlePopup}
-          className="cursor-pointer select-none object-contain"
+          className="max-h-[80vh] w-full cursor-pointer select-none object-contain"
           src={buildMediaUrl()}
           controls
           onError={handleError}
@@ -141,7 +141,7 @@ const ProductContent: React.FC = () => {
       ) : (
         <img
           onClick={handlePopup}
-          className="cursor-pointer select-none object-contain"
+          className="max-h-[80vh] w-full cursor-pointer select-none object-contain"
           src={chooseImg()}
           alt="product"
           onError={handleError}
