@@ -106,7 +106,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
 
         <div className="mx-2">
           <Button onClick={() => handleTodayClick()} size="auto" borderRadius="small" type="secondary">
-            Today
+            Latest
           </Button>
         </div>
       </div>
