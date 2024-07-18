@@ -103,12 +103,12 @@ const useDateRange = (): UseDateRangeReturn => {
     const endDay = dayjs(end);
 
     while (current.isBefore(endDay) || current.isSame(endDay, 'day')) {
-      for (let hour = 0; hour < 24; hour += 4) {
+      for (let hour = 2; hour < 24; hour += 4) {
         const dateWithHour = dayjs(current).hour(hour).minute(0).second(0).millisecond(0);
         dates.push({
           date: dateWithHour.toDate(),
           active: true,
-          showLabel: hour === 0,
+          showLabel: hour === 2,
         });
       }
       current = current.add(1, 'day');
