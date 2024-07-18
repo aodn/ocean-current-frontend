@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { setArgoData } from '@/stores/argo-store/argoStore';
+import { setSelectedArgoParams } from '@/stores/argo-store/argoStore';
 import useDateStore, { setDate } from '@/stores/date-store/dateStore';
 import { setRegionTitle, setProductId } from '@/stores/product-store/productStore';
 import { getProductByPath } from '@/utils/product-utils/product';
@@ -28,7 +28,7 @@ const DataVisualizationLayout: React.FC = () => {
     const worldMeteorologicalOrgId = searchParams.get('wmoid') || '';
     const cycle = searchParams.get('cycle') || '';
     const depth = searchParams.get('depth') === '1' ? '1' : '0';
-    setArgoData({ worldMeteorologicalOrgId, cycle, depth });
+    setSelectedArgoParams({ worldMeteorologicalOrgId, cycle, depth });
     setDate(dayjs(date));
   }, [searchParams]);
 
@@ -89,10 +89,12 @@ const DataVisualizationLayout: React.FC = () => {
         <div className={`transition-all duration-300 ${isSidebarVisible ? 'w-1/3' : 'w-0 overflow-hidden'}`}>
           <DataVisualizationSidebar />
         </div>
-        <div className={`transition-all duration-300 ${isSidebarVisible ? 'ml-4' : 'ml-0'} w-full`}>
+        <div
+          className={`transition-all duration-300 ${isSidebarVisible ? 'ml-4' : 'ml-0'} min-h-[800px] w-full min-w-[800px]`}
+        >
           <DataVisualizationNavbar setShowVideo={setShowVideo} />
           <ErrorBoundary key={product?.mainProduct}>
-            <Outlet context={{ showVideo }} />
+            <Outlet context={{ showVideo, loading: true }} />
           </ErrorBoundary>
         </div>
       </div>

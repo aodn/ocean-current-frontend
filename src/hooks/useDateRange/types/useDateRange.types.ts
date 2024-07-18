@@ -30,6 +30,8 @@ export type DateStoreState = {
 export type UseDateRangeReturn = {
   startDate: Date;
   endDate: Date | null;
+  minDate?: Date | null;
+  maxDate?: Date | null;
   allDates: DateRange;
   selectedDateIndex: number;
   handleSliderChange: SliderChangeHandler;

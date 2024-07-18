@@ -5,3 +5,9 @@ export interface ArgoProfile {
   depth: '0' | '1';
   date?: string;
 }
+
+export interface ArgoProfileCycle {
+  date: string;
+  cycle: string;
+  filename: string;
+}

@@ -1,3 +1,5 @@
+import { ArgoProfileCycle } from '@/types/argo';
+
 type ArgoProfile = {
   worldMeteorologicalOrgId: string;
   cycle: string;
@@ -12,16 +14,18 @@ type ArgoMetaData = {
 } & ArgoProfile;
 
 export type State = {
-  argoParams: ArgoProfile;
+  selectedArgoParams: ArgoProfile;
   argoMetaData: ArgoMetaData[];
+  argoProfileCycles: ArgoProfileCycle[];
 };
 
 export type Actions = {
   actions: {
-    setArgoData: (data: ArgoProfile) => void;
+    setSelectedArgoParams: (data: ArgoProfile) => void;
     setArgoCycle: (cycle: string) => void;
     setArgoDepth: (depth: '0' | '1') => void;
     setArgoMetaData: (metaData: ArgoMetaData[]) => void;
+    setArgoProfileCycles: (profileCycles: ArgoProfileCycle[]) => void;
     reset: () => void;
   };
 };

@@ -16,6 +16,7 @@ const customInput = () => (
 const DatePicker: React.FC<DatePickerProps> = ({
   startDate,
   endDate,
+  minDate,
   maxDate = new Date(),
   addButtonDisabled = false,
   handleDateChange,
@@ -54,6 +55,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
             onChange={handleDateChange}
             startDate={startDate}
             endDate={endDate}
+            minDate={minDate}
             maxDate={maxDate}
             selectsRange
           />

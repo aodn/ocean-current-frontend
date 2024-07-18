@@ -3,33 +3,40 @@ import { devtools } from 'zustand/middleware';
 import { State, Actions } from './argo.types';
 
 const initialState: State = {
-  argoParams: {
+  selectedArgoParams: {
     worldMeteorologicalOrgId: '',
     cycle: '',
     depth: '0',
   },
   argoMetaData: [],
+  argoProfileCycles: [],
 };
 
 const useArgoStore = create<State & Actions>()(
   devtools((set) => ({
     ...initialState,
     actions: {
-      setArgoData: (argoData) => set({ argoParams: argoData }, false, 'setArgoData'),
-      setArgoCycle: (cycle) => set((state) => ({ argoParams: { ...state.argoParams, cycle } }), false, 'setArgoCycle'),
-      setArgoDepth: (depth) => set((state) => ({ argoParams: { ...state.argoParams, depth } }), false, 'setArgoDepth'),
+      setSelectedArgoParams: (argoParams) => set({ selectedArgoParams: argoParams }, false, 'setSelectedArgoParams'),
+      setArgoCycle: (cycle) =>
+        set((state) => ({ selectedArgoParams: { ...state.selectedArgoParams, cycle } }), false, 'setArgoCycle'),
+      setArgoDepth: (depth) =>
+        set((state) => ({ selectedArgoParams: { ...state.selectedArgoParams, depth } }), false, 'setArgoDepth'),
       setArgoMetaData: (metaData) => set({ argoMetaData: metaData }, false, 'setArgoMetaData'),
+      setArgoProfileCycles: (profileCycles) => set({ argoProfileCycles: profileCycles }, false, 'setArgoProfileCycles'),
       reset: () => set(initialState, false, 'resetArgoStore'),
     },
   })),
 );
 
 export const {
-  setArgoData,
+  setSelectedArgoParams,
   setArgoCycle,
   setArgoDepth,
   setArgoMetaData,
+  setArgoProfileCycles,
   reset: resetArgoStore,
 } = useArgoStore.getState().actions;
+
+export { useArgoStore };
 
 export default useArgoStore;

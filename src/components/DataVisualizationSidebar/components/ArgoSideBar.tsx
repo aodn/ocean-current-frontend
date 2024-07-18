@@ -1,16 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import ArgoIcon from '@/assets/icons/products/argo-icon.svg';
 import ArgoIdIcon from '@/assets/icons/argo-id-icon.svg';
 import useArgoStore, { setArgoDepth } from '@/stores/argo-store/argoStore';
-import { updatePositionAndZoom } from '@/stores/map-store/mapStore';
 import { Button } from '@/components/Shared';
+import MiniMap from './MiniMap';
 
 const ArgoSideBar: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const useArgoMetaData = useArgoStore((state) => state.argoMetaData);
-  const useArgo = useArgoStore((state) => state.argoParams);
+  const useArgo = useArgoStore((state) => state.selectedArgoParams);
   const { worldMeteorologicalOrgId, cycle } = useArgo;
   const date = searchParams.get('date') || dayjs().format('YYYYMMDD');
 
@@ -22,16 +21,6 @@ const ArgoSideBar: React.FC = () => {
     { text: '0.4', position: 90, color: '#ca705c' },
   ];
 
-  useEffect(() => {
-    const mapZoom = 3.5;
-    const singleArgoMetaData = useArgoMetaData.find(
-      (data) => data.worldMeteorologicalOrgId === useArgo.worldMeteorologicalOrgId,
-    );
-    if (singleArgoMetaData) {
-      updatePositionAndZoom(singleArgoMetaData.position.latitude, singleArgoMetaData.position.longitude, mapZoom);
-    }
-  }, [useArgo, useArgoMetaData]);
-
   const changeDepth = (newDepth: '0' | '1') => {
     setSearchParams({ wmoid: worldMeteorologicalOrgId, cycle, depth: newDepth, date });
     setArgoDepth(newDepth);
@@ -39,6 +28,9 @@ const ArgoSideBar: React.FC = () => {
 
   return (
     <>
+      <div className="h-60 w-full overflow-hidden">
+        <MiniMap />
+      </div>
       <div className="relative rounded-md border-2 border-imos-grey">
         <div className="flex items-center justify-between bg-white p-2 pb-4">
           <img className="mx-6 h-16 w-14 object-cover" src={ArgoIcon} alt="argo-icon" />

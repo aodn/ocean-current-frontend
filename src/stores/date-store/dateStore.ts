@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { State, Actions } from './date.types';
 
 const initialState: State = {
-  date: dayjs(),
+  date: dayjs().subtract(1, 'day'),
   startDate: dayjs().subtract(1, 'month'),
   endDate: dayjs().subtract(1, 'day'),
   hours: 0,
