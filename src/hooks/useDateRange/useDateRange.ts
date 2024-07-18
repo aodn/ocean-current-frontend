@@ -228,6 +228,15 @@ const useDateRange = (): UseDateRangeReturn => {
 
   const isLastMonthOfTheYear = () => dayjs(allDates[selectedDateIndex]?.date).month() === 11;
 
+  const setYesterdayAsSelected = () => {
+    const today = dayjs().subtract(1, 'day').toDate();
+    const todayIndex = allDates.findIndex(({ date }) => dayjs(date).isSame(today, 'day'));
+    if (todayIndex !== -1) {
+      setSelectedDateIndex(todayIndex);
+      updateUrlParams(dayjs(today).format(formatDate), startDate, endDate);
+    }
+  };
+
   return {
     startDate,
     endDate,
@@ -242,6 +251,7 @@ const useDateRange = (): UseDateRangeReturn => {
     steps: 1,
     isFourHourSst,
     isYearRange,
+    setYesterdayAsSelected,
   };
 };
 
