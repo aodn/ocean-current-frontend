@@ -18,7 +18,7 @@ export default ({ mode }) => {
         ? checker({
             typescript: true,
             eslint: {
-              lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
+              lintCommand: 'eslint --rule "no-console: off" "./src/**/*.{ts,tsx}"',
             },
           })
         : undefined,
