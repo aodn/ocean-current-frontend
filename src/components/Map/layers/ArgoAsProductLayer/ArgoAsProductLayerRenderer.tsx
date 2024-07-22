@@ -22,7 +22,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
   const navigate = useNavigate();
   const eventAdded = useRef(false);
 
-  const { searchParams, updateQueryParams } = useQueryParams();
+  const { updateQueryParams } = useQueryParams();
 
   const mapFlyToPoint = useCallback(
     (coordinates: [number, number]) => {
@@ -53,8 +53,6 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
           cycle,
           depth,
           date: date!,
-          startDate: searchParams.startDate,
-          endDate: searchParams.endDate,
         }).toString();
         const clickedArgoPath = `/product/argo?${query}`;
         if (!isMiniMap) {
@@ -66,15 +64,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         console.error(error);
       }
     },
-    [
-      map,
-      argoAsProductPointLayer,
-      selectedWorldMeteorologicalOrgId,
-      navigate,
-      searchParams,
-      updateQueryParams,
-      isMiniMap,
-    ],
+    [map, argoAsProductPointLayer, selectedWorldMeteorologicalOrgId, navigate, updateQueryParams, isMiniMap],
   );
 
   useEffect(() => {
