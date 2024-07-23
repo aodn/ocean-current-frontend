@@ -44,4 +44,5 @@ export type UseDateRangeReturn = {
   isFourHourSst: boolean;
   isYearRange: boolean;
   setYesterdayAsSelected: () => void;
+  isMonthlyMeansClimatology: boolean;
 };

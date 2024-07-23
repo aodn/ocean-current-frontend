@@ -5,7 +5,7 @@ interface BaseProduct {
 }
 
 export interface SubProduct extends BaseProduct {
-  imgPath?: string;
+  imgPath?: string | null;
 }
 
 export interface Product extends SubProduct {

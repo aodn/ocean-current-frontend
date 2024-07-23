@@ -74,7 +74,7 @@ const ProductContent: React.FC = () => {
   }
 
   // TODO: give default sub product for subProductImgPath
-  const subProductImgPath = subProduct?.imgPath;
+  const subProductImgPath = subProduct?.imgPath ?? '';
 
   const buildArgoImg = (): string => {
     const selectedCycle = useArgoProfileCycles.find(({ date }) => date === useDate.format('YYYYMMDD'))?.cycle;
@@ -126,11 +126,11 @@ const ProductContent: React.FC = () => {
   };
 
   return (
-    <div className="group relative">
+    <>
       {showVideo ? (
         <video
           onClick={handlePopup}
-          className="max-h-[80vh] w-full cursor-pointer select-none object-contain"
+          className="max-h-[80vh] w-full select-none object-contain"
           src={buildMediaUrl()}
           controls
           onError={handleError}
@@ -141,14 +141,14 @@ const ProductContent: React.FC = () => {
       ) : (
         <img
           onClick={handlePopup}
-          className="max-h-[80vh] w-full cursor-pointer select-none object-contain"
+          className="max-h-[80vh] w-full select-none object-contain"
           src={chooseImg()}
           alt="product"
           onError={handleError}
           aria-hidden
         />
       )}
-    </div>
+    </>
   );
 };
 

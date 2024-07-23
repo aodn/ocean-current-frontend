@@ -19,7 +19,7 @@ import {
 
 const useDateRange = (): UseDateRangeReturn => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { mainProduct } = useProductConvert();
+  const { mainProduct, subProduct } = useProductConvert();
   const { isArgo } = useProductCheck();
   const { startDate, endDate } = useDateStore(
     useShallow((state: DateStoreState) => ({
@@ -36,7 +36,10 @@ const useDateRange = (): UseDateRangeReturn => {
 
   const urlDate = searchParams.get('date');
   const initialDate = urlDate ? dayjs(urlDate, 'YYYYMMDDHH').toDate() : dayjs().subtract(1, 'month').toDate();
-  const isYearRange = mainProduct?.key === 'climatology';
+  const isYearRange = mainProduct?.key === 'climatology' || mainProduct?.key === 'monthlyMeans';
+  const isMonthlyMeansAnomalies = mainProduct?.key === 'monthlyMeans' && subProduct?.key === 'monthlyMeans-anomalies';
+  const isMonthlyMeansClimatology =
+    subProduct?.key === 'monthlyMeans-CLIM_OFAM3_SSTAARS' || subProduct?.key === 'monthlyMeans-CLIM_CNESCARS';
   const isFourHourSst = mainProduct?.key === 'fourHourSst';
   const formatDate = isFourHourSst ? 'YYYYMMDDHH' : 'YYYYMMDD';
 
@@ -100,9 +103,12 @@ const useDateRange = (): UseDateRangeReturn => {
 
   const generateYearRange = (start: Date): DateRange => {
     const year = dayjs(start).year();
+    const currentMonth = dayjs().month();
+    const currentYear = dayjs().year();
+
     return Array.from({ length: 12 }, (_, index) => ({
-      date: dayjs(new Date(year, index, 1)).toDate(),
-      active: true,
+      date: dayjs(new Date(year, index, 15)).toDate(),
+      active: !(isMonthlyMeansAnomalies && year === currentYear && index >= currentMonth),
       showLabel: true,
     }));
   };
@@ -191,14 +197,16 @@ const useDateRange = (): UseDateRangeReturn => {
   const modifyDate = (modificationType: ModificationType) => {
     const { newStartDate, newEndDate, newIndex } = calculateNewDates(modificationType);
 
-    const newRange = generateDateRange(newStartDate, newEndDate!);
-    setStartDate(dayjs(newStartDate));
-    setEndDate(dayjs(newEndDate));
-    setAllDates(newRange);
-    setSelectedDateIndex(newIndex !== -1 ? newIndex : 0);
+    if (newIndex !== selectedDateIndex) {
+      const newRange = generateDateRange(newStartDate, newEndDate!);
+      setStartDate(dayjs(newStartDate));
+      setEndDate(dayjs(newEndDate));
+      setAllDates(newRange);
+      setSelectedDateIndex(newIndex);
 
-    const formattedDate = dayjs(newRange[newIndex !== -1 ? newIndex : 0].date).format(formatDate);
-    updateUrlParams(formattedDate, newStartDate, newEndDate!);
+      const formattedDate = dayjs(newRange[newIndex].date).format(formatDate);
+      updateUrlParams(formattedDate, newStartDate, newEndDate!);
+    }
   };
 
   const calculateNewDates = (modificationType: ModificationType): CalculatedDates => {
@@ -210,15 +218,33 @@ const useDateRange = (): UseDateRangeReturn => {
     const isAddingAndAtEnd = modificationType === 'add' && selectedDateIndex === allDates.length - 1;
 
     if (isSubtractingAndAtStart) {
-      newStartDate = dayjs(startDate).subtract(1, 'day').toDate();
+      // Check if the previous day is active before subtracting
+      const previousDay = dayjs(startDate).subtract(1, 'day').toDate();
+      const previousDayActive = allDates.some((date) => dayjs(date.date).isSame(previousDay, 'day') && date.active);
+      if (previousDayActive) {
+        newStartDate = previousDay;
+        newIndex = 0; // The new date will be at the start of the range
+      }
     } else if (isAddingAndAtEnd) {
-      newEndDate = dayjs(endDate).add(1, 'day').toDate();
-      newIndex = newIndex + 1;
+      // Check if the next day is active before adding
+      const nextDay = dayjs(endDate).add(1, 'day').toDate();
+      const nextDayActive = allDates.some((date) => dayjs(date.date).isSame(nextDay, 'day') && date.active);
+      if (nextDayActive) {
+        newEndDate = nextDay;
+        newIndex = allDates.length; // The new date will be at the end of the range
+      }
     } else {
       const step = modificationType === 'add' ? 1 : -1;
-      do {
+      let foundActive = false;
+      while (newIndex + step >= 0 && newIndex + step < allDates.length && !foundActive) {
         newIndex += step;
-      } while (newIndex >= 0 && newIndex < allDates.length && !allDates[newIndex].active);
+        if (allDates[newIndex].active) {
+          foundActive = true;
+        }
+      }
+      if (!foundActive) {
+        newIndex = selectedDateIndex; // If no active date found, stay at the current index
+      }
     }
 
     return { newStartDate, newEndDate, newIndex };
@@ -262,11 +288,20 @@ const useDateRange = (): UseDateRangeReturn => {
   const isLastMonthOfTheYear = () => dayjs(allDates[selectedDateIndex]?.date).month() === 11;
 
   const setYesterdayAsSelected = () => {
-    const today = dayjs().subtract(1, 'day').toDate();
-    const todayIndex = allDates.findIndex(({ date }) => dayjs(date).isSame(today, 'day'));
-    if (todayIndex !== -1) {
-      setSelectedDateIndex(todayIndex);
-      updateUrlParams(dayjs(today).format(formatDate), startDate, endDate);
+    const lastIndex = allDates.length - 1;
+    let activeIndex = -1;
+
+    for (let i = lastIndex; i >= 0; i--) {
+      if (allDates[i].active) {
+        activeIndex = i;
+        break;
+      }
+    }
+
+    if (activeIndex !== -1) {
+      setSelectedDateIndex(activeIndex);
+      const lastDate = allDates[activeIndex].date;
+      updateUrlParams(dayjs(lastDate).format(formatDate), startDate, endDate);
     }
   };
 
@@ -287,6 +322,7 @@ const useDateRange = (): UseDateRangeReturn => {
     isFourHourSst,
     isYearRange,
     setYesterdayAsSelected,
+    isMonthlyMeansClimatology,
   };
 };
 

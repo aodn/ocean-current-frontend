@@ -111,10 +111,10 @@ const ProductSideBar: React.FC = () => {
             className={`overflow-hidden transition-all duration-300 ${isSubProductsCollapsed ? 'max-h-0' : 'max-h-screen'}`}
           >
             <div className="my-6 grid grid-cols-2 gap-2">
-              {subProducts.map(({ key, title, path }) => (
+              {subProducts.map(({ key, title, path }, index) => (
                 <div key={key}>
                   <Button
-                    size="full"
+                    size={index === subProducts.length - 1 && subProducts.length % 2 !== 0 ? 'auto' : 'full'}
                     borderRadius="small"
                     type={key === subProduct!.key ? 'primary' : 'secondary'}
                     onClick={() => handleSubProductChange(key, mainProduct.path, path)}

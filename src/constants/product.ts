@@ -138,6 +138,26 @@ export const OC_PRODUCTS: Product[] = [
     title: 'Monthly Means',
     key: 'monthlyMeans',
     path: 'monthly-means',
+    children: [
+      {
+        title: 'Anomalies',
+        key: 'monthlyMeans-anomalies',
+        path: 'monthly-means-anomalies',
+        imgPath: null,
+      },
+      {
+        title: 'OFAM3/SSTARS',
+        key: 'monthlyMeans-CLIM_OFAM3_SSTAARS',
+        path: 'monthly-means-CLIM_OFAM3_SSTAARS',
+        imgPath: 'CLIM_OFAM3_SSTAARS',
+      },
+      {
+        title: 'CNES MDT/CARS SST',
+        key: 'monthlyMeans-CLIM_CNESCARS',
+        path: 'monthly-means-CLIM_CNESCARS',
+        imgPath: 'CLIM_CNESCARS',
+      },
+    ],
   },
   {
     title: 'Argo',

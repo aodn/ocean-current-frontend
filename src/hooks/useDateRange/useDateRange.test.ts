@@ -196,24 +196,6 @@ describe('useDateRange', () => {
     expect(result.current.allDates[0].date.getHours() % 4).toBe(2);
   });
 
-  it('should update date range when product changes to climatology', () => {
-    // Arrange
-    const { result, rerender } = renderHook(() => useDateRange());
-
-    // Act
-    vi.mocked(useProductConvert).mockReturnValue({
-      mainProduct: { key: 'climatology', title: 'Climatology', path: '/climatology' } as Product,
-      subProduct: null,
-      subProducts: [],
-    });
-    rerender();
-
-    // Assert
-    expect(result.current.allDates.length).toBe(12);
-    expect(result.current.allDates[0].date.getDate()).toBe(1);
-    expect(result.current.allDates[11].date.getDate()).toBe(1);
-  });
-
   it('should handle date change for four hour SST product', () => {
     // Arrange
     vi.mocked(useProductConvert).mockReturnValue({

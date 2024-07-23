@@ -4,6 +4,8 @@ export const fullNationList = ['Au'] as const;
 
 export const fullStateList = ['GAB', 'NE', 'NW', 'NZ', 'SE', 'SO', 'SW'] as const;
 
+export const fullStateMonthlyMeansList = [...fullStateList.map((state) => `${state}_mm`), 'SLA30d', 'SST30d'] as const;
+
 export const fullLocalList = [
   'Adelaide',
   'AlbEsp',
@@ -55,6 +57,18 @@ export const fullLocalList = [
 ] as const;
 
 export const productRegionMap: ProductRegionMap = {
+  'monthlyMeans-anomalies': {
+    state: ['NW_mm', 'NE_mm', 'SE_mm', 'SO_mm', 'GAB_mm', 'SW_mm', 'SLA30d', 'SST30d'],
+    local: [],
+  },
+  'monthlyMeans-CLIM_OFAM3_SSTAARS': {
+    state: ['NW_mm', 'NE_mm', 'SE_mm', 'SO_mm', 'GAB_mm', 'SW_mm', 'SLA30d', 'SST30d'],
+    local: [],
+  },
+  'monthlyMeans-CLIM_CNESCARS': {
+    state: ['NW_mm', 'NE_mm', 'SE_mm', 'SO_mm', 'GAB_mm', 'SW_mm', 'SLA30d', 'SST30d'],
+    local: [],
+  },
   'fourHourSst-sst': {
     state: [],
     local: [

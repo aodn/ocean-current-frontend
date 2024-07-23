@@ -30,6 +30,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
     isLastMonthOfTheYear,
     isFourHourSst,
     isYearRange,
+    isMonthlyMeansClimatology,
     setYesterdayAsSelected,
   } = useDateRange();
 
@@ -87,7 +88,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
         <div className="flex w-1/5 items-center justify-center border-r-2 px-4 py-4">
           <img src={VideoIcon} alt="video icon" />
           <p className="mx-3 text-imos-sea-blue">Video</p>
-          <ToggleButton isOn={showVideo} onToggle={handleToggle} />
+          <ToggleButton disabled={isMonthlyMeansClimatology} isOn={showVideo} onToggle={handleToggle} />
         </div>
         <div className="w-1/5 border-r-2 px-4 py-4">
           <Button onClick={() => handleCopyLink()} size="full" borderRadius="small" type="secondary">
