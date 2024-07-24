@@ -217,6 +217,34 @@ const ClimatologyModalData = () => {
   );
 };
 
+const MonthlyMeansModalData = () => {
+  return (
+    <div className="p-4 text-gray-800">
+      <p className="mb-4">
+        Monthly means are time-averaged values of sea surface temperature (SST) and Adjusted Sea Level Anomalies (Adj.
+        SLA) over a month. They provide a stable representation of ocean conditions by averaging short-term variations,
+        useful for identifying long-term trends and patterns.
+      </p>
+      <div className="mb-4">
+        <strong className="text-[#52BDEC]">SST:</strong> Monthly averaged sea surface temperature, providing a clearer
+        view of long-term temperature trends.
+      </div>
+      <div className="mb-4">
+        <strong className="text-[#52BDEC]">Adjusted Sea Level Anomalies (Adj. SLA):</strong> Monthly means of sea level
+        anomalies adjusted for atmospheric pressure, showing long-term sea level trends.
+      </div>
+      <div className="mb-4">
+        <strong className="text-[#52BDEC]">Data Integration:</strong> The data combines satellite observations and
+        in-situ measurements for comprehensive coverage.
+      </div>
+      <p className="mb-4">
+        Monthly means are crucial for understanding seasonal variations and long-term changes in oceanographic
+        conditions. They help in tracking climate change and its impact on marine environments.
+      </p>
+    </div>
+  );
+};
+
 const SurfaceWaveModalData = () => {
   return (
     <div>
@@ -997,4 +1025,5 @@ export {
   FourHourSstModalData,
   ClimatologyModalData,
   SurfaceWaveModalData,
+  MonthlyMeansModalData,
 };

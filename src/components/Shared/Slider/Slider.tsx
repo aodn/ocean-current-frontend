@@ -12,21 +12,23 @@ const Slider: React.FC<SliderProps> = ({ min, max, step, value, onChange, labelF
       const { left, width } = sliderRef.current!.getBoundingClientRect();
       const position = Math.min(Math.max(clientX - left, 0), width);
       const newValue = Math.round((min + (position / width) * (max - min)) / step) * step;
-      onChange(newValue);
+      return Math.max(min, Math.min(newValue, max));
     },
-    [min, max, step, onChange],
+    [min, max, step],
   );
 
   const startDragging = (event: React.MouseEvent) => {
     setDragging(true);
     setShowTooltip(true);
-    calculateValue(event.clientX);
+    const newValue = calculateValue(event.clientX);
+    onChange(newValue);
   };
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
       if (dragging) {
-        calculateValue(event.clientX);
+        const newValue = calculateValue(event.clientX);
+        onChange(newValue);
       }
     };
 
@@ -44,6 +46,8 @@ const Slider: React.FC<SliderProps> = ({ min, max, step, value, onChange, labelF
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dragging, calculateValue]);
 
   return (

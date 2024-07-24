@@ -13,7 +13,7 @@ const getTargetRegionScopPath = (regionScope: RegionScope) => {
 
 const buildProductImageUrl = (
   productId: string,
-  subProductType: string | undefined,
+  subProductType: string | undefined | null,
   regionName: string,
   regionScope: TargetPathRegionScope,
   date: string,
@@ -32,26 +32,39 @@ const buildProductImageUrl = (
 
   const segment = regionScope === TargetPathRegionScope.State ? productData.stateSegment : productData.localSegment;
 
-  const productSegment = segment ? `${segment}` : '';
+  let productSegment = segment ? `${segment}` : '';
 
-  let subProductSegment = subProductType ? `/${subProductType}` : '';
+  if (productId === 'monthlyMeans' && subProductType === 'CLIM_CNESCARS') productSegment = '30d_MEAN_v1';
+
+  let formattedDate: string;
+  if (productId === 'monthlyMeans' && !subProductType) {
+    formattedDate = dayjs(date).format('YYYYMMDD');
+  } else {
+    formattedDate = dayjs(date).format(productData.dateFormat);
+  }
+
+  let subProductSegment = '';
   let regionNameSegment = `/${regionName}`;
-  const formattedDate = dayjs(date).format(productData.dateFormat);
   let dateTimeSegment = formattedDate;
 
   const isProductOceanColourAndLocalRegion = productId === 'oceanColour' && regionScope === TargetPathRegionScope.Local;
   if (isProductOceanColourAndLocalRegion) {
-    subProductSegment = '';
     regionNameSegment = `${regionName}_chl`;
     // TODO: remove hardcoded time
     dateTimeSegment = `${formattedDate}04`;
+  } else if (subProductType) {
+    subProductSegment = `/${subProductType}`;
   }
 
   const baseUrl = getBaseUrlByProductId(productId);
 
-  return isApi
-    ? `/api/${productSegment}${subProductSegment}/${regionName}/${formattedDate}.gif`
-    : `${baseUrl}/${productSegment}${subProductSegment}${regionNameSegment}/${dateTimeSegment}.gif`;
+  if (isApi) {
+    return `/api/${productSegment}${subProductSegment}/${regionName}/${formattedDate}.gif`;
+  } else {
+    return subProductType
+      ? `${baseUrl}/${productSegment}${subProductSegment}${regionNameSegment}/${dateTimeSegment}.gif`
+      : `${baseUrl}/${productSegment}/${regionName}/${formattedDate}.gif`;
+  }
 };
 
 const buildProductVideoUrl = (
@@ -81,7 +94,10 @@ const buildProductVideoUrl = (
   const year = dayjs(date).format('YYYY');
   const quarter = `Q${Math.ceil((dayjs(date).month() + 1) / 3)}`;
 
-  return `${getBaseUrlByProductId(productId)}/${productSegment}${subProductSegment}/${regionName}/${regionName}_${subProductType}_${year}_${quarter}.mp4`;
+  if (productId === 'monthlyMeans')
+    return `${getBaseUrlByProductId(productId)}/${productSegment}/${regionName}/${regionName}.mp4`;
+  else
+    return `${getBaseUrlByProductId(productId)}/${productSegment}${subProductSegment}/${regionName}/${regionName}_${subProductType}_${year}_${quarter}.mp4`;
 };
 
 const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle: string, depth: string) => {

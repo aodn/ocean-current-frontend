@@ -72,7 +72,7 @@ const ProductSideBar: React.FC = () => {
   const filteredDataSources = dataSources.filter((source) => source.product.includes(mainProduct.key));
 
   return (
-    <div className="border border-[#D6E1E8] bg-[#FAFAFA]">
+    <div className="border border-b-0 border-[#D6E1E8] bg-[#FAFAFA]">
       <div className="mb-1">
         <HeaderSideBar />
       </div>
@@ -111,10 +111,10 @@ const ProductSideBar: React.FC = () => {
             className={`overflow-hidden transition-all duration-300 ${isSubProductsCollapsed ? 'max-h-0' : 'max-h-screen'}`}
           >
             <div className="my-6 grid grid-cols-2 gap-2">
-              {subProducts.map(({ key, title, path }) => (
+              {subProducts.map(({ key, title, path }, index) => (
                 <div key={key}>
                   <Button
-                    size="full"
+                    size={index === subProducts.length - 1 && subProducts.length % 2 !== 0 ? 'auto' : 'full'}
                     borderRadius="small"
                     type={key === subProduct!.key ? 'primary' : 'secondary'}
                     onClick={() => handleSubProductChange(key, mainProduct.path, path)}
@@ -129,7 +129,7 @@ const ProductSideBar: React.FC = () => {
       )}
 
       {filteredDataSources.length > 0 && (
-        <div className="border-b-2 border-imos-grey px-4">
+        <div className="border-b-2 border-[#e5e7eb] px-4">
           <div
             className="flex cursor-pointer items-center justify-between px-4 py-2"
             onClick={() => setIsDataSourcesCollapsed(!isDataSourcesCollapsed)}
@@ -160,7 +160,7 @@ const ProductSideBar: React.FC = () => {
         </div>
       )}
 
-      <div className="border-b-2 border-imos-grey px-4">
+      <div className="border-b-2 border-[#e5e7eb] px-4">
         <div
           className="flex cursor-pointer items-center justify-between px-4 py-2"
           onClick={() => setIsLegendCollapsed(!isLegendCollapsed)}

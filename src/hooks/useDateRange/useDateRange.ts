@@ -19,7 +19,7 @@ import {
 
 const useDateRange = (): UseDateRangeReturn => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { mainProduct } = useProductConvert();
+  const { mainProduct, subProduct } = useProductConvert();
   const { isArgo } = useProductCheck();
   const { startDate, endDate } = useDateStore(
     useShallow((state: DateStoreState) => ({
@@ -33,7 +33,11 @@ const useDateRange = (): UseDateRangeReturn => {
 
   const [allDates, setAllDates] = useState<DateRange>([]);
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
-  const isYearRange = mainProduct?.key === 'climatology';
+
+  const isYearRange = mainProduct?.key === 'climatology' || mainProduct?.key === 'monthlyMeans';
+  const isMonthlyMeansAnomalies = mainProduct?.key === 'monthlyMeans' && subProduct?.key === 'monthlyMeans-anomalies';
+  const isMonthlyMeansClimatology =
+    subProduct?.key === 'monthlyMeans-CLIM_OFAM3_SSTAARS' || subProduct?.key === 'monthlyMeans-CLIM_CNESCARS';
   const isFourHourSst = mainProduct?.key === 'fourHourSst';
 
   const urlDate = searchParams.get('date');
@@ -100,9 +104,12 @@ const useDateRange = (): UseDateRangeReturn => {
 
   const generateYearRange = (start: Date): DateRange => {
     const year = dayjs(start).year();
+    const currentMonth = dayjs().month();
+    const currentYear = dayjs().year();
+
     return Array.from({ length: 12 }, (_, index) => ({
-      date: dayjs(new Date(year, index, 1)).toDate(),
-      active: true,
+      date: dayjs(new Date(year, index, 15)).toDate(),
+      active: !(isMonthlyMeansAnomalies && year === currentYear && index >= currentMonth),
       showLabel: true,
     }));
   };
@@ -178,50 +185,66 @@ const useDateRange = (): UseDateRangeReturn => {
   };
 
   const handleSliderChange: SliderChangeHandler = (newValue) => {
-    if (newValue === selectedDateIndex || newValue < 0 || newValue >= allDates.length) return;
-
-    const nextActiveIndex = allDates.findIndex((_, index) => index > newValue && allDates[index].active);
-    const newIndex = nextActiveIndex !== -1 ? nextActiveIndex : selectedDateIndex;
-    setSelectedDateIndex(newIndex);
-
-    const formattedDate = dayjs(allDates[newIndex].date).format(formatDate);
-    updateUrlParams(formattedDate, startDate, endDate);
+    const modificationType = newValue > selectedDateIndex ? 'add' : 'subtract';
+    modifyDate(modificationType, newValue);
   };
 
-  const modifyDate = (modificationType: ModificationType) => {
-    const { newStartDate, newEndDate, newIndex } = calculateNewDates(modificationType);
+  const modifyDate = (modificationType: ModificationType, newValue?: number) => {
+    const { newStartDate, newEndDate, newIndex } = calculateNewDates(modificationType, newValue);
 
-    const newRange = generateDateRange(newStartDate, newEndDate!);
-    setStartDate(dayjs(newStartDate));
-    setEndDate(dayjs(newEndDate));
-    setAllDates(newRange);
-    setSelectedDateIndex(newIndex !== -1 ? newIndex : 0);
+    if (newIndex !== selectedDateIndex) {
+      const newRange = generateDateRange(newStartDate, newEndDate!);
+      setStartDate(dayjs(newStartDate));
+      setEndDate(dayjs(newEndDate));
+      setAllDates(newRange);
+      setSelectedDateIndex(newIndex);
 
-    const formattedDate = dayjs(newRange[newIndex !== -1 ? newIndex : 0].date).format(formatDate);
-    updateUrlParams(formattedDate, newStartDate, newEndDate!);
+      const formattedDate = dayjs(newRange[newIndex].date).format(formatDate);
+      updateUrlParams(formattedDate, newStartDate, newEndDate!);
+    }
   };
 
-  const calculateNewDates = (modificationType: ModificationType): CalculatedDates => {
-    let newStartDate = startDate;
-    let newEndDate = endDate;
-    let newIndex = selectedDateIndex;
+  const calculateNewDates = (modificationType: ModificationType, newValue?: number): CalculatedDates => {
+    const isSubtracting = modificationType === 'subtract';
+    const isAdding = modificationType === 'add';
 
-    const isSubtractingAndAtStart = modificationType === 'subtract' && selectedDateIndex === 0;
-    const isAddingAndAtEnd = modificationType === 'add' && selectedDateIndex === allDates.length - 1;
+    const isAtStart = selectedDateIndex === 0;
+    const isAtEnd = selectedDateIndex === allDates.length - 1;
 
-    if (isSubtractingAndAtStart) {
-      newStartDate = dayjs(startDate).subtract(1, 'day').toDate();
-    } else if (isAddingAndAtEnd) {
-      newEndDate = dayjs(endDate).add(1, 'day').toDate();
-      newIndex = newIndex + 1;
+    let newStartDate = dayjs(startDate);
+    let newEndDate = dayjs(endDate);
+    let newIndex = newValue !== undefined ? newValue : selectedDateIndex;
+
+    if (isSubtracting && isAtStart) {
+      newStartDate = newStartDate.subtract(1, 'day');
+    } else if (isAdding && isAtEnd) {
+      newEndDate = newEndDate.add(1, 'day');
+      newIndex++;
+    } else if (newValue !== undefined) {
+      newIndex = findNextActiveIndex(modificationType, newValue);
     } else {
-      const step = modificationType === 'add' ? 1 : -1;
-      do {
-        newIndex += step;
-      } while (newIndex >= 0 && newIndex < allDates.length && !allDates[newIndex].active);
+      newIndex = findNextActiveIndex(modificationType);
     }
 
-    return { newStartDate, newEndDate, newIndex };
+    return {
+      newStartDate: newStartDate.toDate(),
+      newEndDate: newEndDate.toDate(),
+      newIndex,
+    };
+  };
+
+  const findNextActiveIndex = (modificationType: ModificationType, newValue?: number): number => {
+    const step = modificationType === 'add' ? 1 : -1;
+    let index = newValue !== undefined ? newValue : selectedDateIndex + step;
+
+    while (index >= 0 && index < allDates.length) {
+      if (allDates[index].active) {
+        return index;
+      }
+      index += step;
+    }
+
+    return selectedDateIndex;
   };
 
   const handleDateChange: DateChangeHandler = (dates) => {
@@ -262,11 +285,20 @@ const useDateRange = (): UseDateRangeReturn => {
   const isLastMonthOfTheYear = () => dayjs(allDates[selectedDateIndex]?.date).month() === 11;
 
   const setYesterdayAsSelected = () => {
-    const today = dayjs().subtract(1, 'day').toDate();
-    const todayIndex = allDates.findIndex(({ date }) => dayjs(date).isSame(today, 'day'));
-    if (todayIndex !== -1) {
-      setSelectedDateIndex(todayIndex);
-      updateUrlParams(dayjs(today).format(formatDate), startDate, endDate);
+    const lastIndex = allDates.length - 1;
+    let activeIndex = -1;
+
+    for (let i = lastIndex; i >= 0; i--) {
+      if (allDates[i].active) {
+        activeIndex = i;
+        break;
+      }
+    }
+
+    if (activeIndex !== -1) {
+      setSelectedDateIndex(activeIndex);
+      const lastDate = allDates[activeIndex].date;
+      updateUrlParams(dayjs(lastDate).format(formatDate), startDate, endDate);
     }
   };
 
@@ -287,6 +319,7 @@ const useDateRange = (): UseDateRangeReturn => {
     isFourHourSst,
     isYearRange,
     setYesterdayAsSelected,
+    isMonthlyMeansClimatology,
   };
 };
 

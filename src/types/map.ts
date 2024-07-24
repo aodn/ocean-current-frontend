@@ -1,7 +1,7 @@
 import { RegionScope } from '@/constants/region';
-import { LocalKey, NationKey, StateKey } from './region';
+import { LocalKey, NationKey, StateKey, StateMonthlyMeansKey } from './region';
 
-export type RegionKeyType = NationKey | StateKey | LocalKey;
+export type RegionKeyType = NationKey | StateKey | LocalKey | StateMonthlyMeansKey;
 
 export interface BaseRegion<T extends RegionKeyType> {
   code: T;

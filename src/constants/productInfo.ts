@@ -2,6 +2,7 @@ import {
   AdjustedSeaLevelAnomalyModalData,
   ClimatologyModalData,
   FourHourSstModalData,
+  MonthlyMeansModalData,
   OceanColourModalData,
   SixDaySstModalData,
   SnapshotModalData,
@@ -57,6 +58,13 @@ const list: ProductInfo[] = [
     summary:
       'SSTAARS is a climatology of Australian regional seas, using 25 years of daily night-only SST data. It provides seasonal SST patterns, cloud-free data counts, sea level height, geostrophic velocity, and bathymetry contours, available from AODN.',
     description: ClimatologyModalData,
+  },
+  {
+    id: 'monthlyMeans',
+    title: 'Monthly Means',
+    summary:
+      'Monthly means are time-averaged values of sea surface temperature (SST) and Adjusted Sea Level Anomalies (Adj. SLA) over a month. They provide a stable representation of ocean conditions by averaging short-term variations, useful for identifying long-term trends and patterns.',
+    description: MonthlyMeansModalData,
   },
 ];
 

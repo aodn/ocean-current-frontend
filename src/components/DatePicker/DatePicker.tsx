@@ -39,13 +39,13 @@ const DatePicker: React.FC<DatePickerProps> = ({
 
   return (
     <div className="flex items-center justify-evenly">
-      <div className="max-w-28">
+      <div className="w-28">
         {isYearRange ? (
           <ReactDatePicker
             customInput={customInput()}
             selected={startDate}
             onChange={handleYearDateChange}
-            showMonthYearPicker
+            showYearPicker
             dateFormat="yyyy"
           />
         ) : (
@@ -62,7 +62,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
         )}
       </div>
 
-      <div className="my-4 flex items-center justify-between rounded-md border px-2 py-1 text-lg text-imos-title-blue shadow">
+      <div className="my-4 flex min-w-44 items-center justify-between rounded-md border px-2 py-1 text-lg text-imos-title-blue shadow">
         <button
           onClick={() => modifyDate('subtract')}
           className="cursor-pointer rounded bg-transparent p-2 font-semibold"

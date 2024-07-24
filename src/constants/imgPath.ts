@@ -75,4 +75,13 @@ export const productTypeMapping = new Map<
       dateFormat: 'YYYYMMDDHH',
     },
   ],
+  [
+    'monthlyMeans',
+    {
+      subProduct: ['monthlyMeans-anomalies', 'CLIM_OFAM3_SSTAARS', 'CLIM_CNESCARS'],
+      stateSegment: '30d_MEAN',
+      localSegment: null,
+      dateFormat: 'MM',
+    },
+  ],
 ]);

@@ -11,7 +11,7 @@ export const mapNavbarDataElements = [
   { id: 'snapshotSst', label: 'Snapshot SST', icon: SSTIcon },
   { id: 'oceanColour-chlA', label: 'Ocean Colour', icon: OceanColourIcon },
   { id: 'adjustedSeaLevelAnomaly-sla', label: 'Adj. Sea Level Anom.', icon: AdjustedSeaLevelAnomalyIcon },
-  { id: 'monthlyMeans', label: 'Monthly Means', icon: MonthlyMeansIcon },
+  { id: 'monthlyMeans-anomalies', label: 'Monthly Means', icon: MonthlyMeansIcon },
   { id: 'surfaceWaves', label: 'Surface Waves', icon: SurfaceWavesIcon },
   { id: 'fourHourSst-sst', label: 'Four Hour SST', icon: FourHourSSTIcon },
   { id: 'sixDaySst-sst', label: '6-Day SST', icon: SixHourSSTIcon },
