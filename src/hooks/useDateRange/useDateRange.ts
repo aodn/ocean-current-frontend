@@ -34,14 +34,15 @@ const useDateRange = (): UseDateRangeReturn => {
   const [allDates, setAllDates] = useState<DateRange>([]);
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
 
-  const urlDate = searchParams.get('date');
-  const initialDate = urlDate ? dayjs(urlDate, 'YYYYMMDDHH').toDate() : dayjs().subtract(1, 'month').toDate();
   const isYearRange = mainProduct?.key === 'climatology' || mainProduct?.key === 'monthlyMeans';
   const isMonthlyMeansAnomalies = mainProduct?.key === 'monthlyMeans' && subProduct?.key === 'monthlyMeans-anomalies';
   const isMonthlyMeansClimatology =
     subProduct?.key === 'monthlyMeans-CLIM_OFAM3_SSTAARS' || subProduct?.key === 'monthlyMeans-CLIM_CNESCARS';
   const isFourHourSst = mainProduct?.key === 'fourHourSst';
+
+  const urlDate = searchParams.get('date');
   const formatDate = isFourHourSst ? 'YYYYMMDDHH' : 'YYYYMMDD';
+  const initialDate = urlDate ? dayjs(urlDate, formatDate).toDate() : dayjs().subtract(1, 'month').toDate();
 
   const getMinMaxDate = () => {
     let minDate: Date | null = null;
