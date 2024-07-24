@@ -92,9 +92,12 @@ const buildProductVideoUrl = (
   const subProductSegment = subProductType ? `/${subProductType}` : '';
 
   const year = dayjs(date).format('YYYY');
+  const month = dayjs(date).format('MM');
   const quarter = `Q${Math.ceil((dayjs(date).month() + 1) / 3)}`;
 
-  if (productId === 'monthlyMeans')
+  if (productId === 'fourHourSst')
+    return `${getBaseUrlByProductId(productId)}/${productSegment}/${subProductType}/${regionName}/${regionName}_${subProductType}_${year}${month}.mp4`;
+  else if (productId === 'monthlyMeans')
     return `${getBaseUrlByProductId(productId)}/${productSegment}/${regionName}/${regionName}.mp4`;
   else
     return `${getBaseUrlByProductId(productId)}/${productSegment}${subProductSegment}/${regionName}/${regionName}_${subProductType}_${year}_${quarter}.mp4`;
