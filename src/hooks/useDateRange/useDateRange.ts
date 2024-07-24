@@ -184,18 +184,12 @@ const useDateRange = (): UseDateRangeReturn => {
   };
 
   const handleSliderChange: SliderChangeHandler = (newValue) => {
-    if (newValue === selectedDateIndex || newValue < 0 || newValue >= allDates.length) return;
-
-    const nextActiveIndex = allDates.findIndex((_, index) => index > newValue && allDates[index].active);
-    const newIndex = nextActiveIndex !== -1 ? nextActiveIndex : selectedDateIndex;
-    setSelectedDateIndex(newIndex);
-
-    const formattedDate = dayjs(allDates[newIndex].date).format(formatDate);
-    updateUrlParams(formattedDate, startDate, endDate);
+    const modificationType = newValue > selectedDateIndex ? 'add' : 'subtract';
+    modifyDate(modificationType, newValue);
   };
 
-  const modifyDate = (modificationType: ModificationType) => {
-    const { newStartDate, newEndDate, newIndex } = calculateNewDates(modificationType);
+  const modifyDate = (modificationType: ModificationType, newValue?: number) => {
+    const { newStartDate, newEndDate, newIndex } = calculateNewDates(modificationType, newValue);
 
     if (newIndex !== selectedDateIndex) {
       const newRange = generateDateRange(newStartDate, newEndDate!);
@@ -209,45 +203,47 @@ const useDateRange = (): UseDateRangeReturn => {
     }
   };
 
-  const calculateNewDates = (modificationType: ModificationType): CalculatedDates => {
-    let newStartDate = startDate;
-    let newEndDate = endDate;
-    let newIndex = selectedDateIndex;
+  const calculateNewDates = (modificationType: ModificationType, newValue?: number): CalculatedDates => {
+    const isSubtracting = modificationType === 'subtract';
+    const isAdding = modificationType === 'add';
 
-    const isSubtractingAndAtStart = modificationType === 'subtract' && selectedDateIndex === 0;
-    const isAddingAndAtEnd = modificationType === 'add' && selectedDateIndex === allDates.length - 1;
+    const isAtStart = selectedDateIndex === 0;
+    const isAtEnd = selectedDateIndex === allDates.length - 1;
 
-    if (isSubtractingAndAtStart) {
-      // Check if the previous day is active before subtracting
-      const previousDay = dayjs(startDate).subtract(1, 'day').toDate();
-      const previousDayActive = allDates.some((date) => dayjs(date.date).isSame(previousDay, 'day') && date.active);
-      if (previousDayActive) {
-        newStartDate = previousDay;
-        newIndex = 0; // The new date will be at the start of the range
-      }
-    } else if (isAddingAndAtEnd) {
-      // Check if the next day is active before adding
-      const nextDay = dayjs(endDate).add(1, 'day').toDate();
-      const nextDayActive = allDates.some((date) => dayjs(date.date).isSame(nextDay, 'day') && date.active);
-      if (nextDayActive) {
-        newEndDate = nextDay;
-        newIndex = allDates.length; // The new date will be at the end of the range
-      }
+    let newStartDate = dayjs(startDate);
+    let newEndDate = dayjs(endDate);
+    let newIndex = newValue !== undefined ? newValue : selectedDateIndex;
+
+    if (isSubtracting && isAtStart) {
+      newStartDate = newStartDate.subtract(1, 'day');
+    } else if (isAdding && isAtEnd) {
+      newEndDate = newEndDate.add(1, 'day');
+      newIndex++;
+    } else if (newValue !== undefined) {
+      newIndex = findNextActiveIndex(modificationType, newValue);
     } else {
-      const step = modificationType === 'add' ? 1 : -1;
-      let foundActive = false;
-      while (newIndex + step >= 0 && newIndex + step < allDates.length && !foundActive) {
-        newIndex += step;
-        if (allDates[newIndex].active) {
-          foundActive = true;
-        }
-      }
-      if (!foundActive) {
-        newIndex = selectedDateIndex; // If no active date found, stay at the current index
-      }
+      newIndex = findNextActiveIndex(modificationType);
     }
 
-    return { newStartDate, newEndDate, newIndex };
+    return {
+      newStartDate: newStartDate.toDate(),
+      newEndDate: newEndDate.toDate(),
+      newIndex,
+    };
+  };
+
+  const findNextActiveIndex = (modificationType: ModificationType, newValue?: number): number => {
+    const step = modificationType === 'add' ? 1 : -1;
+    let index = newValue !== undefined ? newValue : selectedDateIndex + step;
+
+    while (index >= 0 && index < allDates.length) {
+      if (allDates[index].active) {
+        return index;
+      }
+      index += step;
+    }
+
+    return selectedDateIndex;
   };
 
   const handleDateChange: DateChangeHandler = (dates) => {
