@@ -72,7 +72,7 @@ const ProductSideBar: React.FC = () => {
   const filteredDataSources = dataSources.filter((source) => source.product.includes(mainProduct.key));
 
   return (
-    <div className="border border-[#D6E1E8] bg-[#FAFAFA]">
+    <div className="border border-b-0 border-[#D6E1E8] bg-[#FAFAFA]">
       <div className="mb-1">
         <HeaderSideBar />
       </div>
@@ -129,7 +129,7 @@ const ProductSideBar: React.FC = () => {
       )}
 
       {filteredDataSources.length > 0 && (
-        <div className="border-b-2 border-imos-grey px-4">
+        <div className="border-b-2 border-[#e5e7eb] px-4">
           <div
             className="flex cursor-pointer items-center justify-between px-4 py-2"
             onClick={() => setIsDataSourcesCollapsed(!isDataSourcesCollapsed)}
@@ -160,7 +160,7 @@ const ProductSideBar: React.FC = () => {
         </div>
       )}
 
-      <div className="border-b-2 border-imos-grey px-4">
+      <div className="border-b-2 border-[#e5e7eb] px-4">
         <div
           className="flex cursor-pointer items-center justify-between px-4 py-2"
           onClick={() => setIsLegendCollapsed(!isLegendCollapsed)}
