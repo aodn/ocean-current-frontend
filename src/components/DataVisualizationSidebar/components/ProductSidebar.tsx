@@ -7,6 +7,7 @@ import { getProductInfoByKey } from '@/utils/product-utils/product';
 import InfoIcon from '@/assets/icons/info-icon.svg';
 import ArrowIcon from '@/assets/icons/arrow.svg';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
+import useDateStore from '@/stores/date-store/dateStore';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
 import HeaderSideBar from './HeaderSideBar';
@@ -19,21 +20,35 @@ const ProductSideBar: React.FC = () => {
   const [isSubProductsCollapsed, setIsSubProductsCollapsed] = useState(false);
   const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
   const [isDataSourcesCollapsed, setIsDataSourcesCollapsed] = useState(false);
+  const useDate = useDateStore((state) => state.date);
+
+  const buildDataSourceUrl = (type: string): string => {
+    switch (type) {
+      case 'L3S-6d':
+        return `https://thredds.aodn.org.au/thredds/catalog/IMOS/SRS/SST/ghrsst/L3S-6d/ngt/${useDate.format('YYYY')}/catalog.html?dataset=IMOS/SRS/SST/ghrsst/L3S-6d/ngt/${useDate.format('YYYY')}/${useDate.format('YYYYMMDD')}032000-ABOM-L3S_GHRSST-SSTskin-AVHRR_D-6d_night.nc`;
+      case 'L3SM-6d':
+        return `https://thredds.aodn.org.au/thredds/catalog/IMOS/SRS/SST/ghrsst/L3SM-6d/ngt/${useDate.format('YYYY')}/catalog.html?dataset=IMOS/SRS/SST/ghrsst/L3SM-6d/ngt/${useDate.format('YYYY')}/${useDate.format('YYYYMMDD')}032000-ABOM-L3S_GHRSST-SSTskin-MultiSensor-6d_night.nc`;
+      case 'GSLA':
+        return `https://thredds.aodn.org.au/thredds/catalog/IMOS/OceanCurrent/GSLA/NRT/${useDate.format('YYYY')}/catalog.html?dataset=IMOS/OceanCurrent/GSLA/NRT/${useDate.format('YYYY')}/IMOS_OceanCurrent_HV_${useDate.format('YYYYMMDD')}T060000Z_GSLA_FV02_NRT.nc`;
+      default:
+        return 'Unknown status.';
+    }
+  };
 
   const dataSources = [
     {
       title: 'SST L3S-6d ngt (1992-2017)',
-      link: 'https://thredds.aodn.org.au/thredds/catalog/IMOS/SRS/SST/ghrsst/L3S-6d/ngt/catalog.html',
+      link: buildDataSourceUrl('L3S-6d'),
       product: ['sixDaySst'],
     },
     {
       title: 'SST L3SM-6d ngt (2018-now)',
-      link: 'https://thredds.aodn.org.au/thredds/catalog/IMOS/SRS/SST/ghrsst/L3SM-6d/ngt/catalog.html',
+      link: buildDataSourceUrl('L3SM-6d'),
       product: ['sixDaySst'],
     },
     {
       title: 'GSLA',
-      link: 'https://thredds.aodn.org.au/thredds/catalog/IMOS/OceanCurrent/GSLA/catalog.html',
+      link: buildDataSourceUrl('GSLA'),
       product: ['sixDaySst'],
     },
     {
