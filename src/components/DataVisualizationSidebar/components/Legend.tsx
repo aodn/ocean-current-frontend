@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Popup } from '@/components/Shared';
 
-const ProductSideBar: React.FC = () => {
+const Legend: React.FC = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handlePopup = () => {
@@ -124,4 +124,4 @@ const ProductSideBar: React.FC = () => {
   );
 };
 
-export default ProductSideBar;
+export default Legend;
