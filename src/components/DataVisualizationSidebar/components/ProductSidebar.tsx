@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Loading, Popup } from '@/components/Shared';
+import { Button, Loading, Popup, TruncateText } from '@/components/Shared';
 import { setProductId } from '@/stores/product-store/productStore';
 import { useQueryParams } from '@/hooks';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
@@ -8,6 +8,7 @@ import InfoIcon from '@/assets/icons/info-icon.svg';
 import ArrowIcon from '@/assets/icons/arrow.svg';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
 import useDateStore from '@/stores/date-store/dateStore';
+import ArrowWithTail from '@/assets/icons/ArrowWithTail';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
 import HeaderSideBar from './HeaderSideBar';
@@ -87,7 +88,7 @@ const ProductSideBar: React.FC = () => {
   const filteredDataSources = dataSources.filter((source) => source.product.includes(mainProduct.key));
 
   return (
-    <div className="border border-b-0 border-[#D6E1E8] bg-[#FAFAFA]">
+    <div className="rounded-md bg-white">
       <div className="mb-1">
         <HeaderSideBar />
       </div>
@@ -98,100 +99,105 @@ const ProductSideBar: React.FC = () => {
         </div>
       )}
 
-      <div className="flex items-center justify-between border-b-2 border-[#e5e7eb] p-4">
-        <div aria-hidden onClick={handlePopup} className="mr-6 flex flex-col items-center justify-center">
-          <img src={InfoIcon} alt="info icon" className=" h-6 w-6 cursor-pointer object-contain" />
-          <p className="mt-2 text-center text-xs text-imos-sea-blue">Click here for more information</p>
-        </div>
-        <p className="text-imos-grey">{productInfo?.summary}</p>
-      </div>
-
-      <Popup title={productInfo?.title} body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
-
-      {shouldRenderSubProducts() && (
-        <div className="border-b-2 border-[#e5e7eb] px-4">
-          <div
-            className="flex cursor-pointer items-center justify-between px-4 py-2"
-            onClick={() => setIsSubProductsCollapsed(!isSubProductsCollapsed)}
-            aria-hidden
-          >
-            <h3 className="text-lg font-medium text-[#787878]">Sub-products</h3>
-            <img
-              src={ArrowIcon}
-              alt="arrow icon"
-              className={`h-4 w-4 transform transition-transform duration-300 ${isSubProductsCollapsed ? 'rotate-180' : ''}`}
-            />
+      <div className="[&>*:last-child]:border-b-0 [&>*]:border-b-2 [&>*]:border-[#e5e7eb]">
+        <div className="p-4">
+          <div className="flex justify-between">
+            <img src={InfoIcon} alt="info icon" className="mr-6 mt-1 h-6 w-6 cursor-pointer object-contain" />
+            <TruncateText lines={4} text={productInfo?.summary} />
           </div>
-          <div
-            className={`overflow-hidden transition-all duration-300 ${isSubProductsCollapsed ? 'max-h-0' : 'max-h-screen'}`}
-          >
-            <div className="my-6 grid grid-cols-2 gap-2">
-              {subProducts.map(({ key, title, path }, index) => (
-                <div key={key}>
-                  <Button
-                    size={index === subProducts.length - 1 && subProducts.length % 2 !== 0 ? 'auto' : 'full'}
-                    borderRadius="small"
-                    type={key === subProduct!.key ? 'primary' : 'secondary'}
-                    onClick={() => handleSubProductChange(key, mainProduct.path, path)}
-                  >
-                    {title}
-                  </Button>
-                </div>
-              ))}
+          <div aria-hidden onClick={handlePopup} className="mt-3 flex justify-end">
+            <p className="mr-2 font-semibold text-imos-grey">Read More</p>
+            <ArrowWithTail stroke="#787878" className="mt-2" />
+          </div>
+        </div>
+
+        <Popup title={productInfo?.title} body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
+
+        {shouldRenderSubProducts() && (
+          <div className="px-4">
+            <div
+              className="flex cursor-pointer items-center justify-between px-4 py-2"
+              onClick={() => setIsSubProductsCollapsed(!isSubProductsCollapsed)}
+              aria-hidden
+            >
+              <h3 className="text-lg font-medium text-imos-grey">Sub-products</h3>
+              <img
+                src={ArrowIcon}
+                alt="arrow icon"
+                className={`h-4 w-4 transform transition-transform duration-300 ${isSubProductsCollapsed ? 'rotate-180' : ''}`}
+              />
             </div>
-          </div>
-        </div>
-      )}
-
-      {filteredDataSources.length > 0 && (
-        <div className="border-b-2 border-[#e5e7eb] px-4">
-          <div
-            className="flex cursor-pointer items-center justify-between px-4 py-2"
-            onClick={() => setIsDataSourcesCollapsed(!isDataSourcesCollapsed)}
-            aria-hidden
-          >
-            <h3 className="text-lg font-medium text-imos-black">Data sources</h3>
-            <img
-              src={ArrowIcon}
-              alt="arrow icon"
-              className={`h-4 w-4 transform transition-transform duration-300 ${isDataSourcesCollapsed ? 'rotate-180' : ''}`}
-            />
-          </div>
-          <div
-            className={`overflow-hidden transition-all duration-300 ${isDataSourcesCollapsed ? 'max-h-0' : 'max-h-screen'}`}
-          >
-            <div className="my-6 flex flex-wrap justify-between gap-2">
-              {filteredDataSources.map(({ title, link }, index) => (
-                <div key={title} className={index === subProducts.length - 1 ? 'w-auto' : 'flex-1'}>
-                  <a target="_blank" href={link} rel="noreferrer">
-                    <Button size="full" borderRadius="small" type="secondary">
+            <div
+              className={`overflow-hidden transition-all duration-300 ${isSubProductsCollapsed ? 'max-h-0' : 'max-h-screen'}`}
+            >
+              <div className="mb-6 mt-2 grid grid-cols-2 gap-2">
+                {subProducts.map(({ key, title, path }, index) => (
+                  <div key={key}>
+                    <Button
+                      size={index === subProducts.length - 1 && subProducts.length % 2 !== 0 ? 'auto' : 'full'}
+                      borderRadius="small"
+                      type={key === subProduct!.key ? 'primary' : 'secondary'}
+                      onClick={() => handleSubProductChange(key, mainProduct.path, path)}
+                    >
                       {title}
                     </Button>
-                  </a>
-                </div>
-              ))}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      <div className="border-b-2 border-[#e5e7eb] px-4">
-        <div
-          className="flex cursor-pointer items-center justify-between px-4 py-2"
-          onClick={() => setIsLegendCollapsed(!isLegendCollapsed)}
-          aria-hidden
-        >
-          <h3 className="text-lg font-medium text-[#787878]">Legend</h3>
-          <img
-            src={ArrowIcon}
-            alt="arrow icon"
-            className={`h-4 w-4 transform transition-transform duration-300 ${isLegendCollapsed ? 'rotate-180' : ''}`}
-          />
-        </div>
-        <div
-          className={`overflow-hidden transition-all duration-300 ${isLegendCollapsed ? 'max-h-0' : 'max-h-screen'}`}
-        >
-          <Legend />
+        {filteredDataSources.length > 0 && (
+          <div className="px-4">
+            <div
+              className="flex cursor-pointer items-center justify-between px-4 py-2"
+              onClick={() => setIsDataSourcesCollapsed(!isDataSourcesCollapsed)}
+              aria-hidden
+            >
+              <h3 className="text-lg font-medium text-imos-grey">Data sources</h3>
+              <img
+                src={ArrowIcon}
+                alt="arrow icon"
+                className={`h-4 w-4 transform transition-transform duration-300 ${isDataSourcesCollapsed ? 'rotate-180' : ''}`}
+              />
+            </div>
+            <div
+              className={`overflow-hidden transition-all duration-300 ${isDataSourcesCollapsed ? 'max-h-0' : 'max-h-screen'}`}
+            >
+              <div className="mb-6 mt-2 flex flex-wrap justify-between gap-2">
+                {filteredDataSources.map(({ title, link }, index) => (
+                  <div key={title} className={index === subProducts.length - 1 ? 'w-auto' : 'flex-1'}>
+                    <a target="_blank" href={link} rel="noreferrer">
+                      <Button size="full" borderRadius="small" type="secondary">
+                        {title}
+                      </Button>
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="px-4">
+          <div
+            className="flex cursor-pointer items-center justify-between px-4 py-2"
+            onClick={() => setIsLegendCollapsed(!isLegendCollapsed)}
+            aria-hidden
+          >
+            <h3 className="text-lg font-medium text-imos-grey">Legend</h3>
+            <img
+              src={ArrowIcon}
+              alt="arrow icon"
+              className={`h-4 w-4 transform transition-transform duration-300 ${isLegendCollapsed ? 'rotate-180' : ''}`}
+            />
+          </div>
+          <div
+            className={`overflow-hidden transition-all duration-300 ${isLegendCollapsed ? 'max-h-0' : 'max-h-screen'}`}
+          >
+            <Legend />
+          </div>
         </div>
       </div>
     </div>

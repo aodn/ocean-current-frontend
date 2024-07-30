@@ -4,7 +4,7 @@ import { Footer, Navbar, BurgerMenu } from '@/components';
 
 const LandingLayout: React.FC = () => {
   return (
-    <div className="flex flex-col px-6 font-lexend md:px-0">
+    <div className="flex flex-col bg-[#E8F0F6] px-6 font-lexend md:px-0">
       <div className="sticky top-0 z-50 w-full bg-white">
         <div className="mx-auto w-full ">
           <div className="md:hidden">
