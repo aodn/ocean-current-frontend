@@ -42,6 +42,7 @@ export default {
       },
       boxShadow: {
         'layout-shadow': '4px 4px 10px 0 rgba(0,0,0,0.20)',
+        'inset-custom': 'inset 0 0 10px rgba(0, 0, 0, 0.3)',
       },
       height: {
         18: '4.5rem',

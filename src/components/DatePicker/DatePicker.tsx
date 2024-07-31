@@ -7,9 +7,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { DatePickerProps } from './types/DatePicker.types';
 
 const customInput = () => (
-  <div className="mr-4 flex cursor-pointer items-center justify-center">
+  <div className="mr-5 mt-1 flex w-full cursor-pointer items-center justify-center">
     <img src={calendarIcon} alt="calendar icon" className="mr-4" />
-    <p className="font-medium text-imos-sea-blue">Date</p>
+    <p className="font-medium text-imos-sea-blue">Time Range</p>
   </div>
 );
 
@@ -39,7 +39,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
 
   return (
     <div className="flex items-center justify-evenly">
-      <div className="w-28">
+      <div>
         {isYearRange ? (
           <ReactDatePicker
             customInput={customInput()}
@@ -62,12 +62,12 @@ const DatePicker: React.FC<DatePickerProps> = ({
         )}
       </div>
 
-      <div className="my-4 flex min-w-44 items-center justify-between rounded-md border px-2 py-1 text-lg text-imos-title-blue shadow">
+      <div className="flex min-w-44 items-center justify-between border-l-2 text-lg text-imos-title-blue">
         <button
           onClick={() => modifyDate('subtract')}
           className="cursor-pointer rounded bg-transparent p-2 font-semibold"
         >
-          <img className="h-2.5 w-2.5 rotate-90" src={arrowIcon} alt="left arrow icon" />
+          <img className="h-4 w-4 rotate-90" src={arrowIcon} alt="left arrow icon" />
         </button>
         <span className="text-l px-1">{formattedDate()}</span>
         <button
@@ -75,7 +75,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
           disabled={isYearRange ? isLastMonthOfTheYear() : addButtonDisabled}
           className="cursor-pointer rounded bg-transparent p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <img className="h-2.5 w-2.5 -rotate-90" src={arrowIcon} alt="right arrow icon" />
+          <img className="h-4 w-4 -rotate-90" src={arrowIcon} alt="right arrow icon" />
         </button>
       </div>
     </div>

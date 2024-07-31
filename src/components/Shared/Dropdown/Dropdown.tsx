@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import arrowIcon from '@/assets/icons/arrow.svg';
 import { useOutsideClick } from '@/hooks';
+import ArrowIcon from '@/assets/icons/Arrow';
 import { DropdownElement, DropdownProps } from './types/dropdown.types';
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -48,7 +48,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       <div
         onClick={toggleDropdown}
         aria-hidden="true"
-        className={`${header ? 'bg-[#3A6F8F] p-3' : 'rounded-md bg-background-gradient p-2'} ${smallDropdown ? 'min-w-28' : 'min-w-56'} flex  cursor-pointer items-center justify-between  border px-4 text-lg text-imos-title-blue shadow`}
+        className={`${header ? 'rounded-t-md bg-[#182C3A] p-3' : 'rounded-md bg-background-gradient p-2'} ${smallDropdown ? 'min-w-28' : 'min-w-56'} flex  cursor-pointer items-center justify-between   px-4 text-lg text-imos-title-blue shadow`}
       >
         <div className="flex items-center">
           {showIcons && selectedElement && (
@@ -56,10 +56,9 @@ const Dropdown: React.FC<DropdownProps> = ({
           )}
           <span className={header ? 'text-white' : ''}>{selectedElement ? selectedElement.label : 'Select Item'}</span>
         </div>
-        <img
+        <ArrowIcon
           className={`transform transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''} ms-3 h-4 w-4 text-white`}
-          src={arrowIcon}
-          alt="arrow icon"
+          stroke={'white'}
         />
       </div>
       {isDropdownOpen && elements.length > 0 && (
