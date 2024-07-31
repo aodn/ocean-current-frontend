@@ -4,7 +4,7 @@ import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import {
   buildProductImageUrl,
   buildArgoImageUrl,
-  getTargetRegionScopPath,
+  getTargetRegionScopePath,
   buildSurfaceWavesImageUrl,
   buildProductVideoUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
@@ -35,7 +35,7 @@ const ProductContent: React.FC = () => {
 
   const region = getRegionByRegionTitle(useRegionTitle);
   const regionScope = region?.scope || RegionScope.Au;
-  const targetPathRegion = getTargetRegionScopPath(regionScope);
+  const targetPathRegion = getTargetRegionScopePath(regionScope);
   const regionPath = region?.code || 'Au';
 
   const dateString = useDate.format('YYYYMMDD');
@@ -94,9 +94,8 @@ const ProductContent: React.FC = () => {
   };
 
   const buildProductImg = (): string => {
-    // TODO: config string to constant
-    if (mainProduct.key === 'surfaceWaves') {
-      return buildSurfaceWavesImageUrl(useDate.toString());
+    if (mainProduct.key === 'surfaceWaves' && mainProduct.imgPath) {
+      return buildSurfaceWavesImageUrl(useDate.toString(), mainProduct.imgPath);
     }
     return buildProductImageUrl(mainProduct.key, subProductImgPath, regionPath, targetPathRegion, useDate.toString());
   };

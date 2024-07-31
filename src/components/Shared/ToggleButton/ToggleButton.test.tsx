@@ -9,7 +9,7 @@ describe('ToggleButton', () => {
     const handleToggle = vi.fn();
 
     // Act
-    render(<ToggleButton isOn={initialIsOn} onToggle={handleToggle} />);
+    render(<ToggleButton disabled={false} isOn={initialIsOn} onToggle={handleToggle} />);
     const button = screen.getByRole('button');
 
     // Assert
@@ -22,7 +22,7 @@ describe('ToggleButton', () => {
     const handleToggle = vi.fn();
 
     // Act
-    render(<ToggleButton isOn={initialIsOn} onToggle={handleToggle} />);
+    render(<ToggleButton disabled={false} isOn={initialIsOn} onToggle={handleToggle} />);
     const button = screen.getByRole('button');
 
     // Initial state assertion
@@ -37,16 +37,37 @@ describe('ToggleButton', () => {
 
   it('should reflect the toggled state when prop changes', () => {
     // Arrange
-    const { rerender } = render(<ToggleButton isOn={false} onToggle={() => {}} />);
+    const { rerender } = render(<ToggleButton disabled={false} isOn={false} onToggle={() => {}} />);
     const button = screen.getByRole('button');
 
     // Initial state assertion
     expect(button).toHaveClass('bg-gray-300');
 
     // Act - update prop
-    rerender(<ToggleButton isOn={true} onToggle={() => {}} />);
+    rerender(<ToggleButton disabled={false} isOn={true} onToggle={() => {}} />);
 
     // Assert
     expect(button).toHaveClass('bg-imos-sea-blue');
+  });
+
+  it('should not toggle state when disabled', () => {
+    // Arrange
+    const initialIsOn = false;
+    const handleToggle = vi.fn();
+
+    // Act
+    render(<ToggleButton disabled={true} isOn={initialIsOn} onToggle={handleToggle} />);
+    const button = screen.getByRole('button');
+
+    // Initial state assertion
+    expect(button).toHaveClass('bg-gray-300');
+    expect(button).toBeDisabled();
+
+    // Act
+    fireEvent.click(button);
+
+    // Assert
+    expect(handleToggle).not.toHaveBeenCalled();
+    expect(button).toHaveClass('bg-gray-300'); // State should not change
   });
 });

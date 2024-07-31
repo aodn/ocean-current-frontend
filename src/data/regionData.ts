@@ -16,6 +16,16 @@ const stateRegions: StateRegion[] = [
   { code: 'NZ', title: 'New Zealand', coords: [160, 180, -50, -30] },
 ].map((region) => ({ ...region, scope: RegionScope.State }) as StateRegion);
 
+const stateMonthlyMeansRegions: StateRegion[] = [
+  ...stateRegions.map((region) => ({
+    code: `${region.code}_mm`,
+    title: `${region.title} MM`,
+    coords: region.coords,
+  })),
+  { code: 'SLA30d', title: 'Monthly mean SLA', coords: [101, 160, -20, -10] },
+  { code: 'SST30d', title: 'Monthly mean SST', coords: [101, 160, -45, -35] },
+].map((region) => ({ ...region, scope: RegionScope.State }) as StateRegion);
+
 const localRegions: LocalRegion[] = [
   { code: 'Adelaide', title: 'Adelaide-Melbourne', coords: [135, 147, -44, -33] },
   { code: 'AlbEsp', title: 'Albany-Esperance', coords: [114, 125, -38.5, -33] },
@@ -66,8 +76,10 @@ const localRegions: LocalRegion[] = [
   { code: 'XmasI', title: 'Christmas Is.', coords: [100, 110, -12, -5] },
 ].map((region) => ({ ...region, scope: RegionScope.Local }) as LocalRegion);
 
-const allRegions: Region[] = [...nationRegions, ...stateRegions, ...localRegions].map((region) => ({
-  ...region,
-  coords: convertOldOceanCurrentCoordsToBBox(region.coords),
-}));
-export { nationRegions, stateRegions, localRegions, allRegions };
+const allRegions: Region[] = [...nationRegions, ...stateRegions, ...localRegions, ...stateMonthlyMeansRegions].map(
+  (region) => ({
+    ...region,
+    coords: convertOldOceanCurrentCoordsToBBox(region.coords),
+  }),
+);
+export { nationRegions, stateRegions, localRegions, allRegions, stateMonthlyMeansRegions };
