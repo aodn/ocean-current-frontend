@@ -133,6 +133,7 @@ export const OC_PRODUCTS: Product[] = [
     title: 'Surface Waves',
     key: 'surfaceWaves',
     path: 'surface-waves',
+    imgPath: 'WAVES',
   },
   {
     title: 'Monthly Means',
