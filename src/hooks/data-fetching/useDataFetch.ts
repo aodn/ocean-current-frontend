@@ -10,6 +10,7 @@ const useDataFetch = <T, Args extends ApiArgs>(fetchFn: FetchFunction<T, Args>, 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const response = await fetchFn(...args);
         setData(response.data);
         setError(null);
