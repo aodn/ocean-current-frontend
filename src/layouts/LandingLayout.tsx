@@ -20,7 +20,7 @@ const LandingLayout: React.FC = () => {
           <Outlet />
         </div>
       </div>
-      <div className="bg-[#3A6F8F] ">
+      <div className="bg-[#465661] ">
         <div className="mx-auto w-full max-w-8xl">
           <Footer />
         </div>

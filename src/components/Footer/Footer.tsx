@@ -4,7 +4,7 @@ import { FooterIcon, FooterLink } from './types/Footer.types';
 
 const Footer: React.FC = () => {
   return (
-    <div className="py-6 md:py-20">
+    <div className="py-6 md:pt-20">
       <div className="text-2xl font-medium leading-7 text-white">IMOS OceanCurrent</div>
       <div className="flex flex-col justify-center md:flex md:flex-row">
         {footerData.map(({ title, links, icons }) => (
