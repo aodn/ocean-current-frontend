@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createGIF, CreateGIFOptions, CreateGIFObject } from 'gifshot';
 import dayjs from 'dayjs';
-import { buildProductImageUrl, getTargetRegionScopPath } from '@/utils/data-image-builder-utils/dataImgBuilder';
+import { buildProductImageUrl, getTargetRegionScopePath } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useProductStore from '@/stores/product-store/productStore';
 import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import { RegionScope } from '@/constants/region';
@@ -15,7 +15,7 @@ const VideoCreation: React.FC<VideoCreationProps> = ({ allDates }) => {
   const { mainProduct, subProduct } = useProductConvert();
 
   const region = getRegionByRegionTitle(useProductRegionTitle);
-  const targetPathRegion = getTargetRegionScopPath(region?.scope || RegionScope.Au);
+  const targetPathRegion = getTargetRegionScopePath(region?.scope || RegionScope.Au);
   const regionPath = region?.code;
 
   const subProductImgPath = subProduct?.imgPath;

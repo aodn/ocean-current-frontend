@@ -1,90 +1,408 @@
 import dayjs from 'dayjs';
 import { TargetPathRegionScope } from '@/constants/imgPath';
-import { imageBaseUrl } from '@/configs/image';
-import { buildProductImageUrl, buildArgoImageUrl } from './dataImgBuilder';
+import { imageBaseUrl, imageS3BaseUrl } from '@/configs/image';
+import {
+  buildProductImageUrl,
+  buildArgoImageUrl,
+  buildSurfaceWavesImageUrl,
+  buildProductVideoUrl,
+} from './dataImgBuilder';
 
 describe('buildProductImageUrl', () => {
-  it('should return the correct image url if pass correct state region for six day sst', () => {
+  describe('sixDaySst', () => {
+    it('should return the correct image url for state region', () => {
+      // Arrange
+      const productType = 'sixDaySst';
+      const subProduct = 'SST';
+      const region = 'Au';
+      const regionScope = TargetPathRegionScope.State;
+      const date = '20240519';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/STATE_daily/SST/Au/20240519.gif`);
+    });
+
+    it('should return the correct image url for local region', () => {
+      // Arrange
+      const productType = 'sixDaySst';
+      const subProduct = 'SST';
+      const region = 'Adelaide';
+      const regionScope = TargetPathRegionScope.Local;
+      const date = '20240519';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/DR_SST_daily/SST/Adelaide/20240519.gif`);
+    });
+
+    it('should return the correct image and video URLs for SST', () => {
+      // Arrange
+      const productType = 'sixDaySst';
+      const subProduct = 'SST';
+      const region = 'Tas';
+      const regionScope = TargetPathRegionScope.Local;
+      const date = '20240723';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+      const videoUrl = buildProductVideoUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/DR_SST_daily/SST/Tas/20240723.gif`);
+      expect(videoUrl).toBe(`${imageBaseUrl}/DR_SST_daily/SST/Tas/Tas_SST_2024_Q3.mp4`);
+    });
+
+    it('should return the correct image and video URLs for SST_ANOM', () => {
+      // Arrange
+      const productType = 'sixDaySst';
+      const subProduct = 'SST_ANOM';
+      const region = 'Tas';
+      const regionScope = TargetPathRegionScope.Local;
+      const date = '20240721';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+      const videoUrl = buildProductVideoUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/DR_SST_daily/SST_ANOM/Tas/20240721.gif`);
+      expect(videoUrl).toBe(`${imageBaseUrl}/DR_SST_daily/SST_ANOM/Tas/Tas_SST_ANOM_2024_Q3.mp4`);
+    });
+
+    it('should return the correct image and video URLs for pctiles', () => {
+      // Arrange
+      const productType = 'sixDaySst';
+      const subProduct = 'pctiles';
+      const region = 'Tas';
+      const regionScope = TargetPathRegionScope.Local;
+      const date = '20240721';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+      const videoUrl = buildProductVideoUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/DR_SST_daily/pctiles/Tas/20240721.gif`);
+      expect(videoUrl).toBe(`${imageBaseUrl}/DR_SST_daily/pctiles/Tas/Tas_pctiles_2024_Q3.mp4`);
+    });
+  });
+
+  describe('fourHourSst', () => {
+    it('should return the correct image url for local region', () => {
+      // Arrange
+      const productType = 'fourHourSst';
+      const subProduct = 'SST';
+      const region = 'Adelaide';
+      const regionScope = TargetPathRegionScope.Local;
+      const date = '2024051922';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/SST_4hr/SST/Adelaide/2024051922.gif`);
+    });
+
+    it('should throw an error for state region', () => {
+      // Arrange
+      const productType = 'fourHourSst';
+      const subProduct = 'SST';
+      const region = 'Au';
+      const regionScope = TargetPathRegionScope.State;
+      const date = '20240519';
+
+      // Act & Assert
+      expect(() => buildProductImageUrl(productType, subProduct, region, regionScope, date)).toThrowError(
+        `Product ${productType} does not support state region`,
+      );
+    });
+
+    it('should return the correct image and video URLs for SST_Filled', () => {
+      // Arrange
+      const productType = 'fourHourSst';
+      const subProduct = 'SST_Filled';
+      const region = 'Tas';
+      const regionScope = TargetPathRegionScope.Local;
+      const date = '202407230600';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+      const videoUrl = buildProductVideoUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/SST_4hr/SST_Filled/Tas/2024072306.gif`);
+      expect(videoUrl).toBe(`${imageBaseUrl}/SST_4hr/SST_Filled/Tas/Tas_SST_Filled_202407.mp4`);
+    });
+
+    it('should return the correct image and video URLs for SST', () => {
+      // Arrange
+      const productType = 'fourHourSst';
+      const subProduct = 'SST';
+      const region = 'Tas';
+      const regionScope = TargetPathRegionScope.Local;
+      const date = '202407230600';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+      const videoUrl = buildProductVideoUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/SST_4hr/SST/Tas/2024072306.gif`);
+      expect(videoUrl).toBe(`${imageBaseUrl}/SST_4hr/SST/Tas/Tas_SST_202407.mp4`);
+    });
+
+    it('should return the correct image URL for SST_Age', () => {
+      // Arrange
+      const productType = 'fourHourSst';
+      const subProduct = 'SST_Age';
+      const region = 'Tas';
+      const regionScope = TargetPathRegionScope.Local;
+      const date = '2024072306';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/SST_4hr/SST_Age/Tas/2024072306.gif`);
+    });
+
+    it('should return the correct image URL for Wind', () => {
+      // Arrange
+      const productType = 'fourHourSst';
+      const subProduct = 'Wind';
+      const region = 'Tas';
+      const regionScope = TargetPathRegionScope.Local;
+      const date = '2024072306';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/SST_4hr/Wind/Tas/2024072306.gif`);
+    });
+  });
+
+  describe('oceanColour', () => {
+    it('should return the correct image url for local region chl', () => {
+      // Arrange
+      const productType = 'oceanColour';
+      const subProduct = 'CHL';
+      const region = 'Adelaide';
+      const regionScope = TargetPathRegionScope.Local;
+      const date = '2024051922';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/Adelaide_chl/2024051904.gif`);
+    });
+
+    it('should return the correct image and video URLs for CHL', () => {
+      // Arrange
+      const productType = 'oceanColour';
+      const subProduct = 'CHL';
+      const region = 'SE';
+      const regionScope = TargetPathRegionScope.State;
+      const date = '20240717';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+      const videoUrl = buildProductVideoUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/STATE_daily/CHL/SE/20240717.gif`);
+      expect(videoUrl).toBe(`${imageBaseUrl}/STATE_daily/CHL/SE/SE_CHL_2024_Q3.mp4`);
+    });
+
+    it('should return the correct image and video URLs for CHL_AGE', () => {
+      // Arrange
+      const productType = 'oceanColour';
+      const subProduct = 'CHL_AGE';
+      const region = 'SE';
+      const regionScope = TargetPathRegionScope.State;
+      const date = '20240717';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+      const videoUrl = buildProductVideoUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/STATE_daily/CHL_AGE/SE/20240717.gif`);
+      expect(videoUrl).toBe(`${imageBaseUrl}/STATE_daily/CHL_AGE/SE/SE_CHL_AGE_2024_Q3.mp4`);
+    });
+  });
+
+  describe('monthlyMeans', () => {
+    it('should return the correct image url for monthly means', () => {
+      // Arrange
+      const productType = 'monthlyMeans';
+      const subProduct = 'CLIM_CNESCARS';
+      const region = 'Au';
+      const regionScope = TargetPathRegionScope.State;
+      const date = '202405';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/30d_MEAN_v1/CLIM_CNESCARS/Au/05.gif`);
+    });
+
+    it('should return the correct image and video URLs without subProduct', () => {
+      // Arrange
+      const productType = 'monthlyMeans';
+      const subProduct = null;
+      const region = 'NW_mm';
+      const regionScope = TargetPathRegionScope.State;
+      const date = '20240615';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+      const videoUrl = buildProductVideoUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/30d_MEAN/NW_mm/20240615.gif`);
+      expect(videoUrl).toBe(`${imageBaseUrl}/30d_MEAN/NW_mm/NW_mm.mp4`);
+    });
+
+    it('should return the correct image URL for CLIM_OFAM3_SSTAARS', () => {
+      // Arrange
+      const productType = 'monthlyMeans';
+      const subProduct = 'CLIM_OFAM3_SSTAARS';
+      const region = 'NW_mm';
+      const regionScope = TargetPathRegionScope.State;
+      const date = '20240615';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/30d_MEAN/CLIM_OFAM3_SSTAARS/NW_mm/06.gif`);
+    });
+
+    it('should return the correct image URL for CLIM_CNESCARS', () => {
+      // Arrange
+      const productType = 'monthlyMeans';
+      const subProduct = 'CLIM_CNESCARS';
+      const region = 'NW_mm';
+      const regionScope = TargetPathRegionScope.Local;
+      const date = '20240615';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/30d_MEAN_v1/CLIM_CNESCARS/NW_mm/06.gif`);
+    });
+  });
+
+  describe('adjustedSeaLevelAnomaly', () => {
+    it('should return the correct image and video URLs for SLA', () => {
+      // Arrange
+      const productType = 'adjustedSeaLevelAnomaly';
+      const subProduct = 'SLA';
+      const region = 'Au';
+      const regionScope = TargetPathRegionScope.State;
+      const date = '20240717';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+      const videoUrl = buildProductVideoUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/STATE_daily/SLA/Au/20240717.gif`);
+      expect(videoUrl).toBe(`${imageBaseUrl}/STATE_daily/SLA/Au/Au_SLA_2024_Q3.mp4`);
+    });
+
+    it('should return the correct image and video URLs for SLA_pctiles', () => {
+      // Arrange
+      const productType = 'adjustedSeaLevelAnomaly';
+      const subProduct = 'SLA_pctiles';
+      const region = 'Au';
+      const regionScope = TargetPathRegionScope.State;
+      const date = '20240717';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+      const videoUrl = buildProductVideoUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/STATE_daily/SLA_pctiles/Au/20240717.gif`);
+      expect(videoUrl).toBe(`${imageBaseUrl}/STATE_daily/SLA_pctiles/Au/Au_SLA_pctiles_2024_Q3.mp4`);
+    });
+  });
+
+  describe('climatology', () => {
+    it('should return the correct image URL for SST', () => {
+      // Arrange
+      const productType = 'climatology';
+      const subProduct = 'SST';
+      const region = 'Tas';
+      const regionScope = TargetPathRegionScope.Local;
+      const date = '20240723';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/DR_SST_CLIM/SST/Tas/07.gif`);
+    });
+
+    it('should return the correct image URL for NMON', () => {
+      // Arrange
+      const productType = 'climatology';
+      const subProduct = 'NMON';
+      const region = 'Tas';
+      const regionScope = TargetPathRegionScope.Local;
+      const date = '20240723';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/DR_SST_CLIM/NMON/Tas/07.gif`);
+    });
+  });
+
+  it('should return the correct image url for API call', () => {
     // Arrange
     const productType = 'sixDaySst';
     const subProduct = 'SST';
-    const region = 'Au';
-    const regionScope = TargetPathRegionScope.State;
-    const date = '20240519';
-    // Act
-    const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
-    // Assert
-    expect(imageUrl).toBe(`${imageBaseUrl}/STATE_daily/SST/Au/20240519.gif`);
-  });
-
-  it('should return the correct image url if pass correct local region for six day sst', () => {
-    // Arrange
-    const productType = 'sixDaySst';
-    const subProduct = 'SST';
     const region = 'Adelaide';
     const regionScope = TargetPathRegionScope.Local;
     const date = '20240519';
+    const isApi = true;
+
     // Act
-    const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+    const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date, isApi);
+
     // Assert
-    expect(imageUrl).toBe(`${imageBaseUrl}/DR_SST_daily/SST/Adelaide/20240519.gif`);
+    expect(imageUrl).toBe('/api/DR_SST_daily/SST/Adelaide/20240519.gif');
   });
 
-  it('should return the correct image url if pass correct local region for four hour sst', () => {
-    // Arrange
-    const productType = 'fourHourSst';
-    const subProduct = 'SST';
-    const region = 'Adelaide';
-    const regionScope = TargetPathRegionScope.Local;
-    const date = '2024051922';
-    // Act
-    const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
-    // Assert
-    expect(imageUrl).toBe(`${imageBaseUrl}/SST_4hr/SST/Adelaide/2024051922.gif`);
-  });
-
-  it('should return the correct image url if pass correct local region for ocean colour chl', () => {
-    // Arrange
-    const productType = 'oceanColour';
-    const subProduct = 'CHL';
-    const region = 'Adelaide';
-    const regionScope = TargetPathRegionScope.Local;
-    const date = '2024051922';
-    // Act
-    const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
-    // Assert
-    expect(imageUrl).toBe(`${imageBaseUrl}/Adelaide_chl/2024051904.gif`);
-  });
-
-  it('should throw an error if pass state region for four hour sst', () => {
-    // Arrange
-    const productType = 'fourHourSst';
-    const subProduct = 'SST';
-    const region = 'Au';
-    const regionScope = TargetPathRegionScope.State;
-    const date = '20240519';
-    // Act and Assert
-    expect(() => buildProductImageUrl(productType, subProduct, region, regionScope, date)).toThrowError(
-      `Product ${productType} does not support state region`,
-    );
-  });
-
-  it('should throw an error if the product type is not supported', () => {
+  it('should throw an error for unsupported product type', () => {
     // Arrange
     const productType = 'unsupportedProduct';
     const subProduct = 'SST';
     const region = 'Adelaide';
     const regionScope = TargetPathRegionScope.Local;
     const date = '20240519';
-    // Act and Assert
+
+    // Act & Assert
     expect(() => buildProductImageUrl(productType, subProduct, region, regionScope, date)).toThrowError(
       `Product type ${productType} is not supported`,
     );
   });
 });
 
-describe('buildArgoImageUrl ', () => {
-  it('should return the correct image url if pass correct parameters', () => {
+describe('buildArgoImageUrl', () => {
+  it('should return the correct image url for correct parameters', () => {
     // Arrange
     const worldMeteorologicalOrgId = '1234';
     const date = dayjs('20240519');
@@ -98,7 +416,7 @@ describe('buildArgoImageUrl ', () => {
     expect(imageUrl).toBe(`${imageBaseUrl}/profiles/1234/20240519_1234_12.gif`);
   });
 
-  it('should return the formatted date image url when pass different date format', () => {
+  it('should return the formatted date image url for different date format', () => {
     // Arrange
     const worldMeteorologicalOrgId = '1234';
     const date = dayjs('2024-05-19');
@@ -112,7 +430,7 @@ describe('buildArgoImageUrl ', () => {
     expect(imageUrl).toBe(`${imageBaseUrl}/profiles/1234/20240519_1234_12.gif`);
   });
 
-  it('should return the profiles_s image url if depth is 1', () => {
+  it('should return the profiles_s image url if depth is not 0', () => {
     // Arrange
     const worldMeteorologicalOrgId = '1234';
     const date = dayjs('20240519');
@@ -124,5 +442,77 @@ describe('buildArgoImageUrl ', () => {
 
     // Assert
     expect(imageUrl).toBe(`${imageBaseUrl}/profiles_s/1234/20240519_1234_12.gif`);
+  });
+});
+
+describe('buildSurfaceWavesImageUrl', () => {
+  it('should return the correct image url for surface waves', () => {
+    // Arrange
+    const date = '2024-05-19T12:00:00';
+    const subProduct = 'WAVES';
+
+    // Act
+    const imageUrl = buildSurfaceWavesImageUrl(date, subProduct);
+
+    // Assert
+    expect(imageUrl).toBe(`${imageS3BaseUrl}/WAVES/y2024/m05/2024051912.gif`);
+  });
+
+  it('should handle different date formats correctly', () => {
+    // Arrange
+    const date = '20240519120000';
+    const subProduct = 'WAVES';
+
+    // Act
+    const imageUrl = buildSurfaceWavesImageUrl(date, subProduct);
+
+    // Assert
+    expect(imageUrl).toBe(`${imageS3BaseUrl}/WAVES/y2024/m05/2024051912.gif`);
+  });
+});
+
+describe('buildProductVideoUrl', () => {
+  it('should return the correct video url for four hour sst', () => {
+    // Arrange
+    const productType = 'fourHourSst';
+    const subProduct = 'SST';
+    const region = 'Adelaide';
+    const regionScope = TargetPathRegionScope.Local;
+    const date = '2024-05-19';
+
+    // Act
+    const videoUrl = buildProductVideoUrl(productType, subProduct, region, regionScope, date);
+
+    // Assert
+    expect(videoUrl).toBe(`${imageBaseUrl}/SST_4hr/SST/Adelaide/Adelaide_SST_202405.mp4`);
+  });
+
+  it('should return the correct video url for monthly means', () => {
+    // Arrange
+    const productType = 'monthlyMeans';
+    const subProduct = 'monthlyMeans-anomalies';
+    const region = 'Au';
+    const regionScope = TargetPathRegionScope.State;
+    const date = '202405';
+
+    // Act
+    const videoUrl = buildProductVideoUrl(productType, subProduct, region, regionScope, date);
+
+    // Assert
+    expect(videoUrl).toBe(`${imageBaseUrl}/30d_MEAN/Au/Au.mp4`);
+  });
+
+  it('should throw an error for unsupported product type', () => {
+    // Arrange
+    const productType = 'unsupportedProduct';
+    const subProduct = 'SST';
+    const region = 'Adelaide';
+    const regionScope = TargetPathRegionScope.Local;
+    const date = '2024-05-19';
+
+    // Act & Assert
+    expect(() => buildProductVideoUrl(productType, subProduct, region, regionScope, date)).toThrowError(
+      `Product type ${productType} is not supported`,
+    );
   });
 });
