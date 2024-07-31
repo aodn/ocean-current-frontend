@@ -11,7 +11,7 @@ import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 import DataVisualizationNavbar from '@/components/ProductNavbar/ProductNavbar';
 import DataVisualizationSidebar from '@/components/DataVisualizationSidebar/DataVisualizationSidebar';
-import ArrowIcon from '@/assets/icons/arrow.svg';
+import ArrowIcon from '@/assets/icons/Arrow';
 import { RegionScope } from '@/constants/region';
 
 const DataVisualizationLayout: React.FC = () => {
@@ -80,12 +80,11 @@ const DataVisualizationLayout: React.FC = () => {
       <div className="flex p-4">
         <button
           onClick={toggleSidebar}
-          className="absolute -left-10 mb-4 flex h-28 items-center justify-center rounded bg-[#3A6F8F] px-4 py-2 text-white"
+          className="absolute -left-10 mb-4 flex h-28 items-center justify-center rounded bg-imos-sea-blue px-4 py-2 text-white"
         >
-          <img
-            src={ArrowIcon}
-            alt="Toggle Sidebar"
+          <ArrowIcon
             className={`h-5 w-5  transition-transform duration-300 ${isSidebarVisible ? 'rotate-90' : 'h-28 rotate-[270deg]'}`}
+            stroke={'white'}
           />
         </button>
         <div className={`transition-all duration-300 ${isSidebarVisible ? 'w-1/3' : 'w-0 overflow-hidden'}`}>

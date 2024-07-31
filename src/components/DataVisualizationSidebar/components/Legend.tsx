@@ -76,7 +76,7 @@ const Legend: React.FC = () => {
 
   return (
     <div className="pb-4">
-      <div className="grid grid-cols-2 gap-x-1 gap-y-4 p-4">
+      <div className="mb-6 mt-2 grid grid-cols-2 gap-x-1 gap-y-4 px-6">
         <div className="flex flex-col space-y-2">
           <div className="flex items-center">
             <div className="mr-3 h-3 w-3 rounded-full border border-[#FA10E2] bg-white"></div>

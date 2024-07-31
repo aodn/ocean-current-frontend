@@ -284,21 +284,35 @@ const useDateRange = (): UseDateRangeReturn => {
 
   const isLastMonthOfTheYear = () => dayjs(allDates[selectedDateIndex]?.date).month() === 11;
 
-  const setYesterdayAsSelected = () => {
-    const lastIndex = allDates.length - 1;
-    let activeIndex = -1;
+  const resetDateRange = () => {
+    const { start, end } = getInitialDateRange();
 
-    for (let i = lastIndex; i >= 0; i--) {
-      if (allDates[i].active) {
-        activeIndex = i;
-        break;
-      }
-    }
+    setStartDate(start);
+    setEndDate(end);
+    updateDateSlider(start.toDate(), end.toDate());
 
-    if (activeIndex !== -1) {
-      setSelectedDateIndex(activeIndex);
-      const lastDate = allDates[activeIndex].date;
-      updateUrlParams(dayjs(lastDate).format(formatDate), startDate, endDate);
+    const formattedDate = end.format(formatDate);
+    updateUrlParams(formattedDate, start.toDate(), end.toDate());
+
+    setSelectedDateIndex(0);
+  };
+
+  const getInitialDateRange = () => {
+    if (isYearRange) {
+      return {
+        start: dayjs().startOf('year'),
+        end: dayjs().endOf('year'),
+      };
+    } else if (isFourHourSst) {
+      return {
+        start: dayjs().subtract(1, 'week'),
+        end: dayjs(),
+      };
+    } else {
+      return {
+        start: dayjs().subtract(1, 'month'),
+        end: dayjs(),
+      };
     }
   };
 
@@ -318,7 +332,7 @@ const useDateRange = (): UseDateRangeReturn => {
     steps: 1,
     isFourHourSst,
     isYearRange,
-    setYesterdayAsSelected,
+    resetDateRange,
     isMonthlyMeansClimatology,
   };
 };

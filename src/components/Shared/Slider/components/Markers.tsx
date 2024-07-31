@@ -14,7 +14,9 @@ const Markers: React.FC<MarkersProps> = ({ min, max, step, labelFormatter, allDa
           }}
         >
           {showLabel && (
-            <span className="absolute right-1/2 mt-3 block translate-x-1/2 select-none whitespace-nowrap">
+            <span
+              className={`absolute right-1/2 mt-3 block translate-x-1/2 select-none whitespace-nowrap ${active ? '' : 'text-gray-300'}`}
+            >
               {labelFormatter ? labelFormatter(index) : index}
             </span>
           )}

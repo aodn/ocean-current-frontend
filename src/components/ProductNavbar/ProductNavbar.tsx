@@ -2,12 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import DatePicker from '@/components/DatePicker/DatePicker';
 import DateSlider from '@/components/DateSlider/DateSlider';
-import VideoCreation from '@/components/VideoCreation/VideoCreation';
 import useDateRange from '@/hooks/useDateRange/useDateRange';
-import { Button, ToggleButton } from '@/components/Shared';
+import { ToggleButton } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
 import { TEXT_CONSTANT } from '@/constants/textConstant';
 import ShareIcon from '@/assets/icons/share-icon.svg';
+import DownloadIcon from '@/assets/icons/download-icon.svg';
+import ResetIcon from '@/assets/icons/reset-icon.svg';
 import { ProductNavbarProps } from './types/productNavbarProps.types';
 
 const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
@@ -31,7 +32,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
     isFourHourSst,
     isYearRange,
     isMonthlyMeansClimatology,
-    setYesterdayAsSelected,
+    resetDateRange,
   } = useDateRange();
 
   const handleCopyLink = () => {
@@ -62,14 +63,14 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
     setShowVideo(state);
   };
 
-  const handleTodayClick = () => {
-    setYesterdayAsSelected();
+  const handleReset = () => {
+    resetDateRange();
   };
 
   return (
-    <div className="mb-2 bg-[#FAFAFA] p-1 shadow-lg">
-      <div className="flex items-center justify-between rounded">
-        <div className="w-1/3 border-r-2">
+    <div className="mb-2 rounded-md bg-[#FAFAFA] p-3 ">
+      <div className="mb-2 flex items-center justify-between ">
+        <div className="flex h-11 items-center justify-center rounded-md border border-[#3A6F8F] p-2">
           <DatePicker
             startDate={startDate}
             endDate={endDate}
@@ -85,22 +86,39 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
             isYearRange={isYearRange}
           />
         </div>
-        <div className="flex w-1/5 items-center justify-center border-r-2 px-4 py-4">
+
+        <div
+          onClick={() => handleReset()}
+          aria-hidden
+          className="flex h-11 w-1/12 cursor-pointer items-center justify-center rounded-md border border-[#3A6F8F] p-2"
+        >
+          <img src={ResetIcon} alt="" srcSet="" />
+        </div>
+        <div className="flex h-11 w-1/5 items-center justify-center rounded-md border border-[#3A6F8F] p-3">
           <img src={VideoIcon} alt="video icon" />
           <p className="mx-3 text-imos-sea-blue">Video</p>
           <ToggleButton disabled={isMonthlyMeansClimatology} isOn={showVideo} onToggle={handleToggle} />
         </div>
-        <div className="w-1/5 border-r-2 px-4 py-4">
-          <Button onClick={() => handleCopyLink()} size="full" borderRadius="small" type="secondary">
-            <img src={ShareIcon} alt="share icon" />
-            {copyButtonText}
-          </Button>
+        <div className="w-1/6">
+          <div
+            onClick={() => handleCopyLink()}
+            aria-hidden
+            className="flex h-11 cursor-pointer items-center justify-between rounded-md border border-[#3A6F8F] p-3 "
+          >
+            <img className="mr-6 h-6 w-6" src={ShareIcon} alt="share icon" />
+            <p className="flex-grow text-center font-medium text-imos-grey">{copyButtonText}</p>
+            <div className="w-6"></div>
+          </div>
         </div>
-        <div className="ml-4 w-1/5">
-          <VideoCreation allDates={allDates} />
+        <div className="w-1/6">
+          <div className="flex h-11 cursor-pointer items-center justify-between rounded-md border border-[#3A6F8F] p-3">
+            <img className="mr-6 h-6 w-6" src={DownloadIcon} alt="share icon" />
+            <p className="flex-grow text-center font-medium text-imos-grey">Download</p>
+            <div className="w-6"></div>
+          </div>
         </div>
       </div>
-      <div className="mb-2 flex items-center justify-center">
+      <div className="flex items-center justify-center">
         <DateSlider
           isYearRange={isYearRange}
           allDates={allDates}
@@ -108,12 +126,6 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
           handleSliderChange={handleSliderChange}
           steps={steps}
         />
-
-        <div className="mx-2">
-          <Button onClick={() => handleTodayClick()} size="auto" borderRadius="small" type="secondary">
-            Latest
-          </Button>
-        </div>
       </div>
     </div>
   );

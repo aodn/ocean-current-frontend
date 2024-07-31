@@ -203,25 +203,6 @@ describe('useDateRange', () => {
     expect(result.current.allDates.every((date) => date.date.getHours() % 2 === 0)).toBe(true);
   });
 
-  // New tests
-
-  it('should set yesterday as selected when called', () => {
-    // Arrange
-    const { result } = renderHook(() => useDateRange());
-    const initialIndex = result.current.selectedDateIndex;
-
-    // Act
-    act(() => {
-      result.current.setYesterdayAsSelected();
-    });
-
-    // Assert
-    expect(result.current.selectedDateIndex).not.toBe(initialIndex);
-    expect(
-      dayjs(result.current.allDates[result.current.selectedDateIndex].date).isSame(dayjs().subtract(1, 'day'), 'day'),
-    ).toBe(false);
-  });
-
   it('should handle monthly means anomalies correctly', () => {
     // Arrange
     vi.mocked(useProductConvert).mockReturnValue({

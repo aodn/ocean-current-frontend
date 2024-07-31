@@ -35,7 +35,7 @@ describe('ProductNavbar', () => {
     isFourHourSst: false,
     isYearRange: false,
     isMonthlyMeansClimatology: false,
-    setYesterdayAsSelected: vi.fn(),
+    resetDateRange: vi.fn(),
   };
 
   beforeEach(() => {

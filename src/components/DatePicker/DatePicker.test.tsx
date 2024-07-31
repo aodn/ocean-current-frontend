@@ -28,7 +28,7 @@ describe('DatePicker', () => {
 
     // Act
     const calendarIconImg = screen.getByAltText('calendar icon');
-    const dateText = screen.getByText('Date');
+    const dateText = screen.getByText('Time Range');
 
     // Assert
     expect(calendarIconImg).toBeInTheDocument();
