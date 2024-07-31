@@ -4,7 +4,7 @@ import { useImageArgoTags } from '@/hooks/data-fetching';
 import { getArgoTagFilePathByProductId } from '@/utils/argo-utils/argoTag';
 import { RegionScope } from '@/constants/region';
 import ImageWithMap from './ImageWithMap';
-import { DataImageProps } from './types/DataImage.types';
+import { DataImageProps } from './types/dataImage.types';
 
 const DataImage: React.FC<DataImageProps> = ({ src, productId, date, regionCode, regionScope }) => {
   const argoTagFilePathValue = getArgoTagFilePathByProductId(productId);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { News } from '../../../types/HomeNews.types';
+import { News } from '../../../types/homeNews.types';
 
 const Date: React.FC<Pick<News, 'date'>> = ({ date }) => {
   return (

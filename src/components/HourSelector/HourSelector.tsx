@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dropdown } from '@/components/Shared';
-import { HourSelectorProps } from './types/HourSelector.types';
+import { HourSelectorProps } from './types/hourSelector.types';
 
 const TimeDropdown: React.FC<HourSelectorProps> = ({ onChange, selectedId, hours }) => {
   return (

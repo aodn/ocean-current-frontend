@@ -1,5 +1,5 @@
 import React from 'react';
-import { BorderRadius, ButtonType, ButtonProps, ButtonSize } from './types/Button.types';
+import { BorderRadius, ButtonType, ButtonProps, ButtonSize } from './types/button.types';
 
 const Button: React.FC<ButtonProps> = ({
   icon,

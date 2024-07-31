@@ -1,5 +1,5 @@
 import React from 'react';
-import { News, NewsCardLayout } from '../../types/HomeNews.types';
+import { News, NewsCardLayout } from '../../types/homeNews.types';
 import HorizontalLayout from '../CardLayout/Horizontal';
 import DateTitleContentLayout from '../CardLayout/DateTitleContent';
 

@@ -4,7 +4,7 @@ import { findMostRecentDateBefore } from '@/utils/date-utils/date';
 import { calculateImageScales } from '@/utils/general-utils/general';
 import { ArgoTagMapArea } from '@/types/argo';
 import { convertCoordsBasedOnImageScale } from '@/utils/argo-utils/argoTag';
-import { ImageWithMapProps } from './types/ImageWithMap.types';
+import { ImageWithMapProps } from './types/imageWithMap.types';
 
 const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, dateString }) => {
   const imgRef = useRef<HTMLImageElement | null>(null);
@@ -27,11 +27,7 @@ const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, d
     };
     const imageElement = imgRef.current;
     if (imageElement) {
-      if (imageElement.complete) {
-        handleLoad();
-      } else {
-        imageElement.addEventListener('load', handleLoad);
-      }
+      imageElement.complete ? handleLoad() : imageElement.addEventListener('load', handleLoad);
     }
 
     return () => {

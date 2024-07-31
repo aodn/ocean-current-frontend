@@ -1,10 +1,7 @@
-import { describe, it, expect } from 'vitest';
 import { ArgoTag } from '@/types/argo';
 import { parseArgoTagDataFromText } from './argoTag';
 
-// Import the function and type
-
-describe('parseArgoTagData', () => {
+describe('parseArgoTagDataFromText', () => {
   it('should parse valid Argo tag data correctly', () => {
     const input = `
       Argo    10.5          20.3     1234567 100    Germán R1234567_100.nc
