@@ -18,23 +18,31 @@ import { checkProductHasSubProduct } from '@/utils/product-utils/product';
 import useDateStore from '@/stores/date-store/dateStore';
 import { getArgoProfileCyclesByWmoId } from '@/services/argo';
 import { VideoPlayerOutletContext } from '@/types/router';
+import { checkProductHasArgoTags } from '@/utils/argo-utils/argoTag';
+import DataImage from '../data-image/DataImage';
 
 const ProductContent: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { isArgo } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
-  const useProductRegionTitle = useProductStore((state) => state.productParams.regionTitle);
+  const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
+  const useProductId = useProductStore((state) => state.productParams.productId);
   const useArgoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
   const { mainProduct, subProduct } = useProductConvert();
   const { worldMeteorologicalOrgId, cycle, depth } = useArgoStore((state) => state.selectedArgoParams);
   const { showVideo } = useOutletContext<VideoPlayerOutletContext>();
 
-  const region = getRegionByRegionTitle(useProductRegionTitle);
-  const targetPathRegion = getTargetRegionScopPath(region?.scope || RegionScope.Au);
-  const regionPath = region?.code || 'au';
+  const region = getRegionByRegionTitle(useRegionTitle);
+  const regionScope = region?.scope || RegionScope.Au;
+  const targetPathRegion = getTargetRegionScopPath(regionScope);
+  const regionPath = region?.code || 'Au';
 
   const dateString = useDate.format('YYYYMMDD');
+
+  const isImgHasArgoTags = checkProductHasArgoTags(useProductId);
+
+  const shouldRenderDataImageWithArgoTags = !isArgo && isImgHasArgoTags;
 
   useEffect(() => {
     setError(null);
@@ -64,7 +72,7 @@ const ProductContent: React.FC = () => {
     return <div>Error: {error}</div>;
   }
 
-  if (!mainProduct) {
+  if (!mainProduct || !useProductId) {
     return <Loading />;
   }
 
@@ -74,7 +82,7 @@ const ProductContent: React.FC = () => {
   }
 
   // TODO: give default sub product for subProductImgPath
-  const subProductImgPath = subProduct?.imgPath;
+  const subProductImgPath = subProduct?.imgPath ?? '';
 
   const buildArgoImg = (): string => {
     const selectedCycle = useArgoProfileCycles.find(({ date }) => date === useDate.format('YYYYMMDD'))?.cycle;
@@ -126,11 +134,11 @@ const ProductContent: React.FC = () => {
   };
 
   return (
-    <div className="group relative">
+    <>
       {showVideo ? (
         <video
           onClick={handlePopup}
-          className="max-h-[80vh] w-full cursor-pointer select-none object-contain"
+          className="max-h-[80vh] w-full select-none object-contain"
           src={buildMediaUrl()}
           controls
           onError={handleError}
@@ -139,16 +147,28 @@ const ProductContent: React.FC = () => {
           Your browser does not support the video tag.
         </video>
       ) : (
-        <img
-          onClick={handlePopup}
-          className="max-h-[80vh] w-full cursor-pointer select-none object-contain"
-          src={chooseImg()}
-          alt="product"
-          onError={handleError}
-          aria-hidden
-        />
+        <>
+          {shouldRenderDataImageWithArgoTags ? (
+            <DataImage
+              src={chooseImg()!}
+              date={useDate}
+              productId={useProductId}
+              regionCode={regionPath}
+              regionScope={regionScope}
+            />
+          ) : (
+            <img
+              onClick={handlePopup}
+              className="max-h-[80vh] w-full select-none object-contain"
+              src={chooseImg()}
+              alt="product"
+              onError={handleError}
+              aria-hidden
+            />
+          )}
+        </>
       )}
-    </div>
+    </>
   );
 };
 

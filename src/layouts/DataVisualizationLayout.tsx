@@ -3,7 +3,7 @@ import { Outlet, useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { setSelectedArgoParams } from '@/stores/argo-store/argoStore';
 import useDateStore, { setDate } from '@/stores/date-store/dateStore';
-import { setRegionTitle, setProductId } from '@/stores/product-store/productStore';
+import { setRegionTitle, setProductId, setRegionScope } from '@/stores/product-store/productStore';
 import { getProductByPath } from '@/utils/product-utils/product';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useProductFromUrl, useProductSearchParam } from '@/hooks';
@@ -12,6 +12,7 @@ import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 import DataVisualizationNavbar from '@/components/ProductNavbar/ProductNavbar';
 import DataVisualizationSidebar from '@/components/DataVisualizationSidebar/DataVisualizationSidebar';
 import ArrowIcon from '@/assets/icons/arrow.svg';
+import { RegionScope } from '@/constants/region';
 
 const DataVisualizationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -50,7 +51,9 @@ const DataVisualizationLayout: React.FC = () => {
   useEffect(() => {
     const region = getRegionByRegionTitle(regionTitleFromUrl as string);
     const regionName = region?.title || 'Australia/NZ';
+    const regionScope = region?.scope || RegionScope.Au;
     setRegionTitle(regionName);
+    setRegionScope(regionScope);
   }, [regionTitleFromUrl]);
 
   useEffect(() => {
@@ -61,7 +64,6 @@ const DataVisualizationLayout: React.FC = () => {
     const isSameTime = useDate.hour() === currentDate.hour() && useDate.minute() === currentDate.minute();
 
     if (isSameDay && isSameTime) return;
-
     setDate(currentDate);
   }, [date, useDate]);
 
