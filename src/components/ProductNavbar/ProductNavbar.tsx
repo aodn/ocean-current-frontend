@@ -9,7 +9,7 @@ import { TEXT_CONSTANT } from '@/constants/textConstant';
 import ShareIcon from '@/assets/icons/share-icon.svg';
 import DownloadIcon from '@/assets/icons/download-icon.svg';
 import ResetIcon from '@/assets/icons/reset-icon.svg';
-import { ProductNavbarProps } from './types/ProductNavbarProps.types';
+import { ProductNavbarProps } from './types/productNavbarProps.types';
 
 const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
   const [copyButtonText, setCopyButtonText] = useState<string>(TEXT_CONSTANT.SHARE_PERMLINK);

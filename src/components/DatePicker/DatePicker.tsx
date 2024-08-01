@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import arrowIcon from '@/assets/icons/arrow.svg';
 import calendarIcon from '@/assets/icons/calendar-icon.svg';
 import 'react-datepicker/dist/react-datepicker.css';
-import { DatePickerProps } from './types/DatePicker.types';
+import { DatePickerProps } from './types/datePicker.types';
 
 const customInput = () => (
   <div className="mr-5 mt-1 flex w-full cursor-pointer items-center justify-center">

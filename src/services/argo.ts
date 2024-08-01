@@ -21,4 +21,18 @@ const getArgoProfilesByDate = async (date: Dayjs) => {
 const getArgoProfileCyclesByWmoId = async (wmoId: string) =>
   axios.get<ArgoProfileCycle[]>(`${argoProfileS3BaseUrl}/${wmoId}/profiles.json`);
 
-export { getArgoProfilesByDate, getArgoProfileCyclesByWmoId };
+const getArgoTags = async (date: Dayjs, tagPath: string, region: string) => {
+  const validateDate = dayjs(date);
+
+  if (validateDate.isValid()) {
+    return await httpClient.get<string>(`/${tagPath}/TAGS/${region}/${validateDate.format('YYYYMMDD')}.txt`, {
+      headers: {
+        'Content-Type': ContentType.Text,
+      },
+    });
+  } else {
+    throw new Error('Invalid date format for Argo tags. Please use YYYYMMDD.');
+  }
+};
+
+export { getArgoProfilesByDate, getArgoProfileCyclesByWmoId, getArgoTags };

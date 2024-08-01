@@ -1,5 +1,5 @@
 import React from 'react';
-import { News } from '../../types/HomeNews.types';
+import { News } from '../../types/homeNews.types';
 import Title from './components/Title';
 import Author from './components/Author';
 import Content from './components/Content';

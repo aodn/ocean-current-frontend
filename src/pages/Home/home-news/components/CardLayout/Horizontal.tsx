@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/Shared';
-import { News } from '../../types/HomeNews.types';
+import { News } from '../../types/homeNews.types';
 import Title from './components/Title';
 import Content from './components/Content';
 
