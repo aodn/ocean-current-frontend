@@ -1,6 +1,6 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import { useImageArgoTags } from '@/hooks/data-fetching';
+import { useImageArgoTags } from '@/services/hooks';
 import { getArgoTagFilePathByProductId } from '@/utils/argo-utils/argoTag';
 import { RegionScope } from '@/constants/region';
 import ImageWithMap from './ImageWithMap';

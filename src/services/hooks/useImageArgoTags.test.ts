@@ -3,8 +3,8 @@ import { Dayjs } from 'dayjs';
 import { vi } from 'vitest';
 import { getArgoTags } from '@/services/argo';
 import { parseArgoTagDataFromText } from '@/utils/argo-utils/argoTag';
-import useImageArgoTags from './useImageArgoTags';
 import useDataFetch from './useDataFetch';
+import useImageArgoTags from './useImageArgoTags';
 
 vi.mock('./useDataFetch');
 vi.mock('@/services/argo');
