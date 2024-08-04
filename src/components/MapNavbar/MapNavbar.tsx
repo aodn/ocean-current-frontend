@@ -2,7 +2,7 @@ import React from 'react';
 import dayjs from 'dayjs';
 import DatePicker from '@/components/DatePicker/DatePicker';
 import DateSlider from '@/components/DateSlider/DateSlider';
-import useDateRange from '@/hooks/useDateRange/useDateRange';
+import { useDateRange } from '@/hooks';
 
 const MapNavbar: React.FC = () => {
   const {
