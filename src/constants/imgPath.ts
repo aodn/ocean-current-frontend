@@ -60,7 +60,7 @@ export const productTypeMapping = new Map<
   [
     'adjustedSeaLevelAnomaly',
     {
-      subProduct: ['SLA', 'SLA_pctiles'],
+      subProduct: ['SLA', 'SLA_pctiles', 'SST'],
       stateSegment: 'STATE_daily',
       localSegment: null,
       dateFormat: 'YYYYMMDD',

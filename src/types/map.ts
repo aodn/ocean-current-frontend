@@ -13,6 +13,10 @@ export interface NationRegion extends BaseRegion<NationKey> {
   scope: RegionScope.Au;
 }
 
+export interface NationBigRegion extends BaseRegion<NationKey> {
+  scope: RegionScope.Ht;
+}
+
 export interface StateRegion extends BaseRegion<StateKey> {
   scope: RegionScope.State;
 }
@@ -21,7 +25,7 @@ export interface LocalRegion extends BaseRegion<LocalKey> {
   scope: RegionScope.Local;
 }
 
-export type Region = NationRegion | StateRegion | LocalRegion;
+export type Region = NationRegion | StateRegion | LocalRegion | NationBigRegion;
 
 export type GeoJsonPolygon = [number, number][][];
 

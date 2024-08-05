@@ -103,6 +103,12 @@ export const OC_PRODUCTS: Product[] = [
         path: 'centiles',
         imgPath: 'SLA_pctiles',
       },
+      {
+        title: 'SST',
+        key: 'adjustedSeaLevelAnomaly-sst',
+        path: 'sst',
+        imgPath: null,
+      },
     ],
   },
   {

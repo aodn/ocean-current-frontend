@@ -65,12 +65,13 @@ const buildProductImageUrl = (
 
   const productSegment = getProductSegment(productId, subProductType, regionScope);
   const formattedDate = formatDate(productId, subProductType, date);
+  const isProductOceanColourAndLocalRegion = productId === 'oceanColour' && regionScope === TargetPathRegionScope.Local;
+  const isAdjustedSeaLevelAnomalyWithSST = productId === 'adjustedSeaLevelAnomaly' && !subProductType;
 
   let subProductSegment = '';
   let regionNameSegment = `/${regionName}`;
   let dateTimeSegment = formattedDate;
 
-  const isProductOceanColourAndLocalRegion = productId === 'oceanColour' && regionScope === TargetPathRegionScope.Local;
   if (isProductOceanColourAndLocalRegion) {
     regionNameSegment = `${regionName}_chl`;
     dateTimeSegment = `${formattedDate}04`;
@@ -82,6 +83,10 @@ const buildProductImageUrl = (
 
   if (isApi) {
     return `/api/${productSegment}${subProductSegment}/${regionName}/${formattedDate}.gif`;
+  }
+
+  if (isAdjustedSeaLevelAnomalyWithSST) {
+    return `${baseUrl}/${regionName}/${formattedDate}.gif`;
   }
 
   return subProductType

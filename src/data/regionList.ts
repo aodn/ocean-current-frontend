@@ -404,6 +404,10 @@ export const productRegionMap: ProductRegionMap = {
     state: ['Au'],
     local: [],
   },
+  'adjustedSeaLevelAnomaly-sst': {
+    state: ['ht', 'GAB', 'NE', 'NW', 'SE', 'SO', 'SW'],
+    local: [],
+  },
   'climatology-sst': {
     state: ['Au', 'GAB', 'NE', 'NW', 'NZ', 'SE', 'SO', 'SW'],
     local: [
