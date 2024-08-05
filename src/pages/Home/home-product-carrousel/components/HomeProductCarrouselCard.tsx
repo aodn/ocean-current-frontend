@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProductCarrouselCardProps } from '../types/HomeProductCarrousel.types';
+import { ProductCarrouselCardProps } from '../types/homeProductCarrousel.types';
 
 const ProductCarrouselCard: React.FC<ProductCarrouselCardProps> = ({ title, description, selected, imageUrl, id }) => {
   const selectedBorderStyle = 'border-4 border-blue-500';

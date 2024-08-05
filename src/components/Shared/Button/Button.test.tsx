@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Button from './Button';
-import { ButtonType } from './types/Button.types';
+import { ButtonType } from './types/button.types';
 
 describe('Button Component', () => {
   it('renders without crashing', () => {

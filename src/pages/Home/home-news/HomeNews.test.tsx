@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import NewsCard from './components/NewsCard/NewsCard';
-import { News } from './types/HomeNews.types';
+import { News } from './types/homeNews.types';
 
 const mockNews: News[] = [
   {

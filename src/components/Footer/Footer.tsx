@@ -1,6 +1,6 @@
 import React from 'react';
 import { footerData } from './data/FooterData';
-import { FooterIcon, FooterLink } from './types/Footer.types';
+import { FooterIcon, FooterLink } from './types/footer.types';
 
 const Footer: React.FC = () => {
   return (

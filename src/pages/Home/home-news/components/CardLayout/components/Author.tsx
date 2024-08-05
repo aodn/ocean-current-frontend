@@ -1,5 +1,5 @@
 import React from 'react';
-import { News } from '../../../types/HomeNews.types';
+import { News } from '../../../types/homeNews.types';
 
 const Author: React.FC<Pick<News, 'author'>> = ({ author }) => {
   return (
