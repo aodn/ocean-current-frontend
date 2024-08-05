@@ -45,7 +45,11 @@ export default ({ mode }) => {
       setupFiles: './src/test/setup.ts',
       include: ['src/**/*.test.[jt]s?(x)'],
       deps: {
-        inline: ['vitest-canvas-mock'],
+        optimizer: {
+          web: {
+            include: ['vitest-canvas-mock'],
+          },
+        },
       },
       coverage: {
         provider: 'v8',
