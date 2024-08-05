@@ -1,9 +1,13 @@
 import { RegionScope } from '@/constants/region';
-import { LocalRegion, NationRegion, Region, StateRegion } from '@/types/map';
+import { LocalRegion, NationRegion, NationBigRegion, Region, StateRegion } from '@/types/map';
 import { convertOldOceanCurrentCoordsToBBox } from '@/utils/geo-utils/geo';
 
 const nationRegions: NationRegion[] = [{ code: 'Au', title: 'Australia/NZ', coords: [100.5, 179.5, -49, -5.5] }].map(
   (region) => ({ ...region, scope: RegionScope.Au }) as NationRegion,
+);
+
+const nationBigRegion: NationBigRegion[] = [{ code: 'ht', title: 'Australia', coords: [70.5, 179.5, -55, 8] }].map(
+  (region) => ({ ...region, scope: RegionScope.Ht }) as NationBigRegion,
 );
 
 const stateRegions: StateRegion[] = [
@@ -76,10 +80,14 @@ const localRegions: LocalRegion[] = [
   { code: 'XmasI', title: 'Christmas Is.', coords: [100, 110, -12, -5] },
 ].map((region) => ({ ...region, scope: RegionScope.Local }) as LocalRegion);
 
-const allRegions: Region[] = [...nationRegions, ...stateRegions, ...localRegions, ...stateMonthlyMeansRegions].map(
-  (region) => ({
-    ...region,
-    coords: convertOldOceanCurrentCoordsToBBox(region.coords),
-  }),
-);
-export { nationRegions, stateRegions, localRegions, allRegions, stateMonthlyMeansRegions };
+const allRegions: Region[] = [
+  ...nationRegions,
+  ...stateRegions,
+  ...localRegions,
+  ...stateMonthlyMeansRegions,
+  ...nationBigRegion,
+].map((region) => ({
+  ...region,
+  coords: convertOldOceanCurrentCoordsToBBox(region.coords),
+}));
+export { nationRegions, stateRegions, localRegions, allRegions, stateMonthlyMeansRegions, nationBigRegion };

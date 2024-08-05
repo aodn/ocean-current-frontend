@@ -336,6 +336,21 @@ describe('buildProductImageUrl', () => {
       expect(imageUrl).toBe(`${imageBaseUrl}/STATE_daily/SLA_pctiles/Au/20240717.gif`);
       expect(videoUrl).toBe(`${imageBaseUrl}/STATE_daily/SLA_pctiles/Au/Au_SLA_pctiles_2024_Q3.mp4`);
     });
+
+    it('should return the correct image url for monthly means', () => {
+      // Arrange
+      const productType = 'adjustedSeaLevelAnomaly';
+      const subProduct = '';
+      const region = 'SO';
+      const regionScope = TargetPathRegionScope.State;
+      const date = '20240717';
+
+      // Act
+      const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/SO/20240717.gif`);
+    });
   });
 
   describe('climatology', () => {
