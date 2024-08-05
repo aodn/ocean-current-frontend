@@ -44,11 +44,13 @@ const Dropdown: React.FC<DropdownProps> = ({
   }, [selectElement, selectedId]);
 
   return (
-    <div className="relative " ref={dropdownRef}>
+    <div className="relative" ref={dropdownRef}>
       <div
         onClick={toggleDropdown}
         aria-hidden="true"
-        className={`${header ? 'rounded-t-md bg-[#182C3A] p-3' : 'rounded-md bg-background-gradient p-2'} ${smallDropdown ? 'min-w-28' : 'min-w-56'} flex  cursor-pointer items-center justify-between   px-4 text-lg text-imos-title-blue shadow`}
+        className={`${header ? 'rounded bg-[#182C3A] p-3' : 'rounded-md bg-white p-2'} ${
+          smallDropdown ? 'min-w-28' : 'min-w-56'
+        } flex cursor-pointer items-center justify-between px-4 text-lg text-imos-title-blue shadow`}
       >
         <div className="flex items-center">
           {showIcons && selectedElement && (
@@ -57,21 +59,27 @@ const Dropdown: React.FC<DropdownProps> = ({
           <span className={header ? 'text-white' : ''}>{selectedElement ? selectedElement.label : 'Select Item'}</span>
         </div>
         <ArrowIcon
-          className={`transform transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''} ms-3 h-4 w-4 text-white`}
-          stroke={'white'}
+          className={`transform transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''} ${header ? 'h-4 w-4' : 'h-3 w-3'} ms-3  text-white`}
+          stroke={`${header ? '#fff' : '#182C3A'}`}
         />
       </div>
       {isDropdownOpen && elements.length > 0 && (
-        <div className="absolute z-40 w-full rounded-b-md bg-[#EFEFEF] p-4 shadow" data-testid="drop-down-menu">
+        <div
+          className={`absolute z-40 mt-2 w-full rounded-md border-2 border-[#737373] bg-white ${!header ? 'max-h-60 overflow-y-auto' : ''}`}
+          data-testid="drop-down-menu"
+        >
           {elements.map((element) => (
             <div
               key={element.id}
               aria-hidden="true"
-              className={`${!showIcons ? 'justify-center' : ''} mb-4 flex cursor-pointer items-center rounded-md border border-[#c2c2c2] p-3 duration-300 hover:border-imos-black ${element.id === selectedElement?.id ? 'border-[#888888] bg-white' : ''}`}
+              className={`${
+                !showIcons ? 'justify-center' : ''
+              } flex cursor-pointer items-center p-3 duration-300 hover:opacity-65 ${
+                element.id === selectedElement?.id ? 'mx-1 rounded border-2 border-[#52BDEC] bg-[#52BDEC80]' : ''
+              }`}
               onClick={() => handleOnClick(element)}
             >
               {showIcons && <img className="mr-4 h-9 w-9" src={element.icon} alt={`${element.label} icon`} />}
-
               <span className="text-left text-base text-imos-grey">{element.label}</span>
             </div>
           ))}

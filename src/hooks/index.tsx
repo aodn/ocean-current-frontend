@@ -4,5 +4,16 @@ import useQueryParams from './useQueryParams/useQueryParams';
 import useOutsideClick from './useOutSideClick/useOutsideClick';
 import useScrollToTop from './useScrollToTop/useScrollToTop';
 import useThrottle from './useThrottle/useThrottle';
+import useDateRange from './useDateRange/useDateRange';
+import useVideoCreation from './useVideoCreation/useVideoCreation';
 
-export { useProductFromUrl, useProductSearchParam, useQueryParams, useScrollToTop, useOutsideClick, useThrottle };
+export {
+  useProductFromUrl,
+  useProductSearchParam,
+  useQueryParams,
+  useScrollToTop,
+  useOutsideClick,
+  useThrottle,
+  useDateRange,
+  useVideoCreation,
+};

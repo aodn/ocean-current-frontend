@@ -2,13 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import DatePicker from '@/components/DatePicker/DatePicker';
 import DateSlider from '@/components/DateSlider/DateSlider';
-import useDateRange from '@/hooks/useDateRange/useDateRange';
+import { useDateRange } from '@/hooks';
 import { ToggleButton } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
 import { TEXT_CONSTANT } from '@/constants/textConstant';
 import ShareIcon from '@/assets/icons/share-icon.svg';
-import DownloadIcon from '@/assets/icons/download-icon.svg';
 import ResetIcon from '@/assets/icons/reset-icon.svg';
+import VideoCreation from '@/components/VideoCreation/VideoCreation';
 import { ProductNavbarProps } from './types/productNavbarProps.types';
 
 const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
@@ -111,11 +111,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
           </div>
         </div>
         <div className="w-1/6">
-          <div className="flex h-11 cursor-pointer items-center justify-between rounded-md border border-[#3A6F8F] p-3">
-            <img className="mr-6 h-6 w-6" src={DownloadIcon} alt="share icon" />
-            <p className="flex-grow text-center font-medium text-imos-grey">Download</p>
-            <div className="w-6"></div>
-          </div>
+          <VideoCreation />
         </div>
       </div>
       <div className="flex items-center justify-center">

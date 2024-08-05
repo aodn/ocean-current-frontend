@@ -9,6 +9,7 @@ const Button: React.FC<ButtonProps> = ({
   type = 'primary',
   borderRadius = 'medium',
   size = 'auto',
+  disabled = false,
 }) => {
   const buttonType = ButtonType[type];
   const buttonBorderRadius = BorderRadius[borderRadius];
@@ -18,7 +19,10 @@ const Button: React.FC<ButtonProps> = ({
     <button
       onClick={onClick}
       data-testid={dataTestId}
-      className={`flex items-center justify-center gap-2 whitespace-nowrap border px-12 py-1 text-lg transition duration-300 ease-in-out ${buttonSize} ${buttonType} ${buttonBorderRadius}`}
+      disabled={disabled}
+      className={`flex items-center justify-center gap-2 whitespace-nowrap border px-12 py-1 text-lg transition duration-300 ease-in-out ${buttonSize} ${buttonType} ${buttonBorderRadius} ${
+        disabled ? 'cursor-not-allowed opacity-50' : ''
+      }`}
     >
       {icon}
       {children}

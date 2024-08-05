@@ -22,6 +22,7 @@ export interface ButtonProps {
   size?: keyof typeof ButtonSize;
   dataTestId?: string;
   icon?: JSX.Element;
+  disabled?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   children: React.ReactNode;
 }

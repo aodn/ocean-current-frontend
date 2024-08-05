@@ -44,6 +44,13 @@ export default ({ mode }) => {
       environment: 'jsdom',
       setupFiles: './src/test/setup.ts',
       include: ['src/**/*.test.[jt]s?(x)'],
+      deps: {
+        optimizer: {
+          web: {
+            include: ['vitest-canvas-mock'],
+          },
+        },
+      },
       coverage: {
         provider: 'v8',
         reporter: ['text', 'json', 'html'],

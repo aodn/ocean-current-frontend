@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import '@/configs/dayjs';
 import userEvent from '@testing-library/user-event';
-import useDateRange from '@/hooks/useDateRange/useDateRange';
+import { useDateRange } from '@/hooks';
 import ProductNavbar from './ProductNavbar';
 
 vi.mock('@/hooks/useDateRange/useDateRange');
