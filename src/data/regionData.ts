@@ -6,7 +6,7 @@ const nationRegions: NationRegion[] = [{ code: 'Au', title: 'Australia/NZ', coor
   (region) => ({ ...region, scope: RegionScope.Au }) as NationRegion,
 );
 
-const nationBigRegion: NationBigRegion[] = [{ code: 'ht', title: 'Australia', coords: [100.5, 179.5, -49, -5.5] }].map(
+const nationBigRegion: NationBigRegion[] = [{ code: 'ht', title: 'Australia', coords: [70.5, 179.5, -55, 8] }].map(
   (region) => ({ ...region, scope: RegionScope.Ht }) as NationBigRegion,
 );
 
