@@ -56,17 +56,10 @@ const VideoCreation: React.FC = () => {
     setSelectedFrameRate(Number(selectedElement.id));
   };
 
-  const handleWidthChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleDimensionChange = (e: React.ChangeEvent<HTMLInputElement>, dimension: 'width' | 'height'): void => {
     const value = parseInt(e.target.value, 10);
     if (!isNaN(value) && value > 0) {
-      setGifWidth(value);
-    }
-  };
-
-  const handleHeightChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const value = parseInt(e.target.value, 10);
-    if (!isNaN(value) && value > 0) {
-      setGifHeight(value);
+      dimension === 'width' ? setGifWidth(value) : setGifHeight(value);
     }
   };
 
@@ -127,7 +120,7 @@ const VideoCreation: React.FC = () => {
               <input
                 type="number"
                 value={gifWidth}
-                onChange={handleWidthChange}
+                onChange={(e) => handleDimensionChange(e, 'width')}
                 className="w-48 rounded bg-white p-2 px-3"
                 min="1"
                 max={2000}
@@ -138,7 +131,7 @@ const VideoCreation: React.FC = () => {
               <input
                 type="number"
                 value={gifHeight}
-                onChange={handleHeightChange}
+                onChange={(e) => handleDimensionChange(e, 'height')}
                 className="w-48 rounded bg-white p-2 px-3"
                 min="1"
                 max={2000}
