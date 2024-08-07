@@ -14,7 +14,7 @@ import useVisibleRegionPolygons from '../../hooks/useVisibleRegionPolygons';
 const MIN_THRESHOLD_PERCENTAGE = 3;
 const MAX_THRESHOLD_PERCENTAGE = 70;
 
-const RegionPolygonLayer = () => {
+const RegionPolygonLayer: React.FC = () => {
   const { productRegionBoxSource } = mapboxSourceIds;
   const {
     productRegionBoxLayer,
@@ -27,7 +27,7 @@ const RegionPolygonLayer = () => {
   const baseProductPath = useProductPath();
   const { searchParams, updateQueryParamsAndNavigate } = useQueryParams();
   const { region: regionTitleFromUrl } = useProductSearchParam();
-  const selectedRegion = useRegionTitle || '';
+  const selectedRegion = useRegionTitle || 'Au';
 
   const { current: map } = useMap();
 
@@ -136,66 +136,76 @@ const RegionPolygonLayer = () => {
   ]);
 
   return (
-    <Source id={productRegionBoxSource} type="geojson" data={geoJsonData}>
-      <Layer
-        id={productRegionBoxLayer}
-        type="fill"
-        source={productRegionBoxSource}
-        paint={{
-          'fill-color': 'rgba(19, 40, 113, 0.1)',
-          'fill-outline-color': 'rgba(47, 0, 179, 0.3)',
-        }}
-      />
-      <Layer
-        id={productRegionBoxHighlightLayer}
-        type="fill"
-        source={productRegionBoxSource}
-        paint={{
-          'fill-color': 'rgba(58, 77, 143, 0.2)',
-          'fill-outline-color': 'rgba(58, 92, 143, 0.8)',
-        }}
-        filter={['==', 'name', hoveredRegion]}
-      />
-      <Layer
-        id={productRegionNameLabelLayer}
-        type="symbol"
-        source={productRegionBoxSource}
-        layout={{
-          'text-field': ['get', 'name'],
-          'text-size': 16,
-          'text-justify': 'center',
-          'text-anchor': 'center',
-        }}
-        paint={{
-          'text-color': '#fff',
-        }}
-        filter={['==', 'name', hoveredRegion]}
-      />
-      <Layer
-        type="symbol"
-        source={productRegionBoxSource}
-        layout={{
-          'text-field': ['get', 'name'],
-          'text-size': 16,
-          'text-justify': 'center',
-          'text-anchor': 'center',
-        }}
-        paint={{
-          'text-color': '#fff',
-        }}
-        filter={['==', 'name', selectedRegion]}
-      />
-      <Layer
-        id={productRegionSelectedBoxLayer}
-        type="line"
-        source={productRegionBoxSource}
-        paint={{
-          'line-color': 'rgba(58, 92, 143, 0.8)',
-          'line-width': 3,
-        }}
-        filter={['==', 'name', selectedRegion]}
-      />
-    </Source>
+    <>
+      <Source id={productRegionBoxSource} type="geojson" data={geoJsonData}>
+        <Layer
+          id={productRegionBoxLayer}
+          type="fill"
+          source={productRegionBoxSource}
+          paint={{
+            'fill-color': 'rgba(19, 40, 113, 0)',
+            'fill-outline-color': 'rgba(47, 0, 179, 0.3)',
+          }}
+        />
+        <Layer
+          type="line"
+          source={productRegionBoxSource}
+          paint={{
+            'line-color': 'rgba(34,34,34,0.5)',
+            'line-width': 1.4,
+          }}
+        />
+        <Layer
+          id={productRegionBoxHighlightLayer}
+          type="fill"
+          source={productRegionBoxSource}
+          paint={{
+            'fill-color': 'rgba(58, 77, 143, 0.2)',
+            'fill-outline-color': 'rgba(58, 92, 143, 0.8)',
+          }}
+          filter={['==', 'name', hoveredRegion]}
+        />
+        <Layer
+          id={productRegionNameLabelLayer}
+          type="symbol"
+          source={productRegionBoxSource}
+          layout={{
+            'text-field': ['get', 'name'],
+            'text-size': 16,
+            'text-justify': 'center',
+            'text-anchor': 'center',
+          }}
+          paint={{
+            'text-color': '#fff',
+          }}
+          filter={['==', 'name', hoveredRegion]}
+        />
+        <Layer
+          type="symbol"
+          source={productRegionBoxSource}
+          layout={{
+            'text-field': ['get', 'name'],
+            'text-size': 16,
+            'text-justify': 'center',
+            'text-anchor': 'center',
+          }}
+          paint={{
+            'text-color': '#fff',
+          }}
+          filter={['==', 'name', selectedRegion]}
+        />
+        <Layer
+          id={productRegionSelectedBoxLayer}
+          type="line"
+          source={productRegionBoxSource}
+          paint={{
+            'line-color': 'rgba(58, 92, 143, 0.8)',
+            'line-width': 3,
+          }}
+          filter={['==', 'name', selectedRegion]}
+        />
+      </Source>
+    </>
   );
 };
 

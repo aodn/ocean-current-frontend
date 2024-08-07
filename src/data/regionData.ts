@@ -2,7 +2,7 @@ import { RegionScope } from '@/constants/region';
 import { LocalRegion, NationRegion, NationBigRegion, Region, StateRegion } from '@/types/map';
 import { convertOldOceanCurrentCoordsToBBox } from '@/utils/geo-utils/geo';
 
-const nationRegions: NationRegion[] = [{ code: 'Au', title: 'Australia/NZ', coords: [100.5, 179.5, -49, -5.5] }].map(
+const nationRegions: NationRegion[] = [{ code: 'Au', title: 'Australia/NZ', coords: [100, 180, -48, -4.5] }].map(
   (region) => ({ ...region, scope: RegionScope.Au }) as NationRegion,
 );
 

@@ -9,6 +9,7 @@ export interface SubProduct extends BaseProduct {
 }
 
 export interface Product extends SubProduct {
+  latestEntry?: string | null;
   children?: SubProduct[];
 }
 
@@ -34,4 +35,5 @@ export interface ProductInfo {
 
 export interface FlatProduct extends Product {
   parentId: string | null;
+  latestEntry?: string | null;
 }

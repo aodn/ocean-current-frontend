@@ -5,11 +5,13 @@ export const OC_PRODUCTS: Product[] = [
     title: 'Snapshot SST',
     key: 'snapshotSst',
     path: 'snapshot-sst',
+    latestEntry: 'SST_entry',
   },
   {
     title: 'Four hour SST',
     path: 'four-hour-sst',
     key: 'fourHourSst',
+    latestEntry: 'SST_entry',
     children: [
       {
         title: 'SST Filled',
@@ -41,6 +43,7 @@ export const OC_PRODUCTS: Product[] = [
     title: '6-Day SST & Centiles',
     key: 'sixDaySst',
     path: '6-day-sst',
+    latestEntry: 'SST_entry',
     children: [
       {
         title: 'SST',
@@ -66,6 +69,7 @@ export const OC_PRODUCTS: Product[] = [
     title: 'Climatology',
     key: 'climatology',
     path: 'climatology',
+    latestEntry: null,
     children: [
       {
         title: 'SST',
@@ -85,11 +89,13 @@ export const OC_PRODUCTS: Product[] = [
     title: 'SST Anom vs Time',
     key: 'sstAnomVsTime',
     path: 'sst-anom-vs-time',
+    latestEntry: null,
   },
   {
     title: 'Adj. Sea Level Anom.',
     key: 'adjustedSeaLevelAnomaly',
     path: 'adj-sea-level-anom',
+    latestEntry: 'GSLA_entry',
     children: [
       {
         title: 'SLA',
@@ -115,11 +121,13 @@ export const OC_PRODUCTS: Product[] = [
     title: 'Non-Tidal Sea Level Anom.',
     key: 'nonTidalSeaLevelAnom',
     path: 'non-tidal-sea-level-anom',
+    latestEntry: null,
   },
   {
     title: 'Ocean Colour',
     key: 'oceanColour',
     path: 'ocean-colour',
+    latestEntry: 'chla_entry',
     children: [
       {
         title: 'Chl-A',
@@ -140,11 +148,13 @@ export const OC_PRODUCTS: Product[] = [
     key: 'surfaceWaves',
     path: 'surface-waves',
     imgPath: 'WAVES',
+    latestEntry: 'waves_entry',
   },
   {
     title: 'Monthly Means',
     key: 'monthlyMeans',
     path: 'monthly-means',
+    latestEntry: null,
     children: [
       {
         title: 'Anomalies',
@@ -170,5 +180,6 @@ export const OC_PRODUCTS: Product[] = [
     title: 'Argo',
     key: 'argo',
     path: 'argo',
+    latestEntry: null,
   },
 ] as const;

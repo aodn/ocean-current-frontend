@@ -4,7 +4,7 @@ import { mapConfig } from '@/configs/map';
 import useMapStore, { setMapViewState, updateZoom } from '@/stores/map-store/mapStore';
 import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { RegionPolygonLayer, ArgoAsProductLayer } from './layers';
+import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer } from './layers';
 import MAP_STYLE from './data/map-style.basic-v8.json';
 import { BasicMapProps } from './types/map.types';
 
@@ -34,6 +34,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
   const handleMouseEnter = useCallback(() => setCursor('pointer'), []);
   const handleMouseLeave = useCallback(() => setCursor('grab'), []);
 
+  const memoizedDataImageLayer = useMemo(() => <DataImageLayer />, []);
   const memoizedRegionPolygonLayer = useMemo(() => <RegionPolygonLayer />, []);
   const memoizedArgoAsProductLayer = useMemo(() => <ArgoAsProductLayer isMiniMap={isMiniMap} />, [isMiniMap]);
 
@@ -67,6 +68,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
       {fullScreenControl && <FullscreenControl position="top-right" />}
       {navigationControl && <NavigationControl position="top-right" />}
 
+      {!isArgo && memoizedDataImageLayer}
       {!isArgo && memoizedRegionPolygonLayer}
       {isArgo && memoizedArgoAsProductLayer}
     </Map>
