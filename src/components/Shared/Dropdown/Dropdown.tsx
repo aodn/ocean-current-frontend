@@ -75,7 +75,7 @@ const Dropdown: React.FC<DropdownProps> = ({
               className={`${
                 !showIcons ? 'justify-center' : ''
               } flex cursor-pointer items-center p-3 duration-300 hover:opacity-65 ${
-                element.id === selectedElement?.id ? 'mx-1 rounded border-2 border-[#52BDEC] bg-[#52BDEC80]' : ''
+                element.id === selectedElement?.id ? 'm-1 rounded border-2 border-[#52BDEC] bg-[#52BDEC80]' : ''
               }`}
               onClick={() => handleOnClick(element)}
             >
