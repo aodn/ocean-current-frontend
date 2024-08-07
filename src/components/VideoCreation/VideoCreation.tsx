@@ -8,6 +8,7 @@ import calendarIcon from '@/assets/icons/calendar-icon.svg';
 import { useOutsideClick, useVideoCreation } from '@/hooks';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button, Dropdown } from '@/components/Shared';
+import { TEXT_CONSTANT } from '@/constants/textConstant';
 import { DropdownElement } from '../Shared/Dropdown/types/dropdown.types';
 
 type FrameRateOption = {
@@ -81,7 +82,7 @@ const VideoCreation: React.FC = () => {
         <div className="absolute right-0 z-50 mr-4 mt-3 w-3/12 rounded-md bg-white p-4">
           <div className="mb-4 flex items-center justify-between">
             <div></div>
-            <p className="font-semibold">Customize Gif</p>
+            <p className="font-semibold">{TEXT_CONSTANT.CUSTOMIZE_GIF}</p>
             <img
               aria-hidden
               onClick={toggleGifOptions}
