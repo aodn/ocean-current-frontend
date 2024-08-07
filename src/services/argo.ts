@@ -1,9 +1,7 @@
 import dayjs, { Dayjs } from 'dayjs';
-import axios from 'axios';
 import httpClient from '@/services/httpClient';
 import { ContentType } from '@/constants/request';
 import { ArgoProfileCycle } from '@/types/argo';
-import { argoProfileS3BaseUrl } from '@/configs/image';
 
 const getArgoProfilesByDate = async (date: Dayjs) => {
   const validatedDate = dayjs(date);
@@ -19,7 +17,7 @@ const getArgoProfilesByDate = async (date: Dayjs) => {
 };
 
 const getArgoProfileCyclesByWmoId = async (wmoId: string) =>
-  axios.get<ArgoProfileCycle[]>(`${argoProfileS3BaseUrl}/${wmoId}/profiles.json`);
+  httpClient.get<ArgoProfileCycle[]>(`/profiles/${wmoId}/profiles.json`);
 
 const getArgoTags = async (date: Dayjs, tagPath: string, region: string) => {
   const validateDate = dayjs(date);
