@@ -25,12 +25,13 @@ const DatePicker: React.FC<DatePickerProps> = ({
   selectedDate,
   isLastMonthOfTheYear,
   isFourHourSst,
+  isSurfaceWaves,
   isYearRange,
 }) => {
   const formattedDate = () => {
     if (isYearRange) {
       return dayjs(selectedDate).format('MMM YYYY');
-    } else if (isFourHourSst) {
+    } else if (isFourHourSst || isSurfaceWaves) {
       return dayjs(selectedDate).format('DD MMM HH:mm ');
     } else {
       return dayjs(selectedDate).format('DD MMM YY');

@@ -1,12 +1,7 @@
 import dayjs from 'dayjs';
 import { TargetPathRegionScope } from '@/constants/imgPath';
-import { imageBaseUrl, imageS3BaseUrl } from '@/configs/image';
-import {
-  buildProductImageUrl,
-  buildArgoImageUrl,
-  buildSurfaceWavesImageUrl,
-  buildProductVideoUrl,
-} from './dataImgBuilder';
+import { imageBaseUrl } from '@/configs/image';
+import { buildProductImageUrl, buildArgoImageUrl, buildProductVideoUrl } from './dataImgBuilder';
 
 describe('buildProductImageUrl', () => {
   describe('sixDaySst', () => {
@@ -460,29 +455,35 @@ describe('buildArgoImageUrl', () => {
   });
 });
 
-describe('buildSurfaceWavesImageUrl', () => {
+describe('buildProductImageUrl', () => {
   it('should return the correct image url for surface waves', () => {
     // Arrange
     const date = '2024-05-19T12:00:00';
-    const subProduct = 'WAVES';
+    const subProduct = null;
+    const productType = 'surfaceWaves';
+    const region = 'Au';
+    const regionScope = TargetPathRegionScope.State;
 
     // Act
-    const imageUrl = buildSurfaceWavesImageUrl(date, subProduct);
+    const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
 
     // Assert
-    expect(imageUrl).toBe(`${imageS3BaseUrl}/WAVES/y2024/m05/2024051912.gif`);
+    expect(imageUrl).toBe('/s3/WAVES/y2024/m05/2024051912.gif');
   });
 
   it('should handle different date formats correctly', () => {
     // Arrange
     const date = '20240519120000';
-    const subProduct = 'WAVES';
+    const subProduct = null;
+    const productType = 'surfaceWaves';
+    const region = 'Au';
+    const regionScope = TargetPathRegionScope.State;
 
     // Act
-    const imageUrl = buildSurfaceWavesImageUrl(date, subProduct);
+    const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
 
     // Assert
-    expect(imageUrl).toBe(`${imageS3BaseUrl}/WAVES/y2024/m05/2024051912.gif`);
+    expect(imageUrl).toBe('/s3/WAVES/y2024/m05/2024051912.gif');
   });
 });
 
@@ -505,7 +506,7 @@ describe('buildProductVideoUrl', () => {
   it('should return the correct video url for monthly means', () => {
     // Arrange
     const productType = 'monthlyMeans';
-    const subProduct = 'monthlyMeans-anomalies';
+    const subProduct = 'anomalies';
     const region = 'Au';
     const regionScope = TargetPathRegionScope.State;
     const date = '202405';

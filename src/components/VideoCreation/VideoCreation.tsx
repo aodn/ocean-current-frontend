@@ -81,7 +81,7 @@ const VideoCreation: React.FC = () => {
         <div className="absolute right-0 z-50 mr-4 mt-3 w-3/12 rounded-md bg-white p-4">
           <div className="mb-4 flex items-center justify-between">
             <div></div>
-            <p className="font-semibold">Customize Video</p>
+            <p className="font-semibold">Customize Gif</p>
             <img
               aria-hidden
               onClick={toggleGifOptions}

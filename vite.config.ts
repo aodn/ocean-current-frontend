@@ -37,6 +37,11 @@ export default ({ mode }) => {
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },
+        '/s3': {
+          target: 'https://oceancurrent-testing.s3.ap-southeast-2.amazonaws.com',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/s3/, ''),
+        },
       },
     },
     test: {

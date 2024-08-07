@@ -11,7 +11,7 @@ import useDateStore from '@/stores/date-store/dateStore';
 import { ImageDimensions, DateObject, UseVideoCreationReturn } from './types/useVideoCreation.types';
 
 const useVideoCreation = (): UseVideoCreationReturn => {
-  const { allDates, isFourHourSst } = useDateRange();
+  const { allDates, isFourHourSst, isSurfaceWaves } = useDateRange();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -33,7 +33,7 @@ const useVideoCreation = (): UseVideoCreationReturn => {
   const regionPath = region?.code;
   const subProductImgPath = subProduct?.imgPath;
 
-  const formatDate = isFourHourSst ? 'YYYYMMDDHH' : 'YYYYMMDD';
+  const formatDate = isFourHourSst || isSurfaceWaves ? 'YYYYMMDDHH' : 'YYYYMMDD';
 
   useEffect(() => {
     if (allDates && allDates.length > 0) {

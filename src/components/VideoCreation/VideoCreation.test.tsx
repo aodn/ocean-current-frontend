@@ -60,8 +60,9 @@ describe('VideoCreation', () => {
     isLastMonthOfTheYear: vi.fn(),
     steps: 1,
     isFourHourSst: false,
+    isSurfaceWaves: false,
     isYearRange: false,
-    isMonthlyMeansClimatology: false,
+    disableVideoCreation: () => false,
     resetDateRange: vi.fn(),
   };
 
@@ -110,7 +111,7 @@ describe('VideoCreation', () => {
     openGifOptions();
 
     // Assert
-    expect(screen.getByText('Customize Video')).toBeInTheDocument();
+    expect(screen.getByText('Customize Gif')).toBeInTheDocument();
   });
 
   it('updates frame rate when changed', async () => {
