@@ -10,7 +10,7 @@ const flattenProducts = (products: Product[]): FlatProduct[] => {
 
     if (product.children) {
       product.children.forEach((child) => {
-        flatList.push({ ...child, parentId: product.key });
+        flatList.push({ ...child, parentId: product.key, latestEntry: product.latestEntry });
       });
     }
   });

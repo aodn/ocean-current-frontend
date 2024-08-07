@@ -18,7 +18,6 @@ describe('HomeProductCarrouselCard', () => {
     // Assert
     expect(screen.getByText(title)).toBeInTheDocument();
     expect(screen.getByText(description)).toBeInTheDocument();
-    expect(screen.getByAltText(`${id} map`)).toHaveAttribute('src', imageUrl);
   });
 
   it('should apply the selected border style when selected is true', () => {

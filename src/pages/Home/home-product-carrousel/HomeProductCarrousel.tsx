@@ -53,7 +53,7 @@ const HomeProductCarrousel: React.FC = () => {
   return (
     <ul>
       {productsData.map((product) => (
-        <li className="[&:not(:last-child)]:mb-5" key={product.id} onClick={() => handleClick(product.id)} aria-hidden>
+        <li className="[&:not(:last-child)]:mb-2" key={product.id} onClick={() => handleClick(product.id)} aria-hidden>
           <HomeProductCarrouselCard
             title={product.title}
             description={product.description}

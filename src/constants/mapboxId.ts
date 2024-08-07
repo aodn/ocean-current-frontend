@@ -7,6 +7,7 @@ interface MapBoxInstanceIds {
 interface MapboxSourceIds {
   argoAsProductSource: string;
   productRegionBoxSource: string;
+  dataImageSource: string;
 }
 
 interface MapboxLayerIds {
@@ -16,6 +17,7 @@ interface MapboxLayerIds {
   productRegionBoxHighlightLayer: string;
   productRegionNameLabelLayer: string;
   productRegionSelectedBoxLayer: string;
+  dataImageLayer: string;
 }
 
 const mapboxInstanceIds: MapBoxInstanceIds = {
@@ -27,6 +29,7 @@ const mapboxInstanceIds: MapBoxInstanceIds = {
 const mapboxSourceIds: MapboxSourceIds = {
   argoAsProductSource: 'argo-as-product-source-id',
   productRegionBoxSource: 'product-region-box-source-id',
+  dataImageSource: 'data-image-source-id',
 };
 
 const mapboxLayerIds: MapboxLayerIds = {
@@ -36,6 +39,7 @@ const mapboxLayerIds: MapboxLayerIds = {
   productRegionBoxHighlightLayer: 'product-region-box-highlight-layer-id',
   productRegionNameLabelLayer: 'product-region-name-label-layer-id',
   productRegionSelectedBoxLayer: 'product-region-selected-box-layer-id',
+  dataImageLayer: 'data-image-layer-id',
 };
 
 export { mapboxInstanceIds, mapboxSourceIds, mapboxLayerIds };

@@ -4,11 +4,11 @@ import { State, Actions } from './map.types';
 
 const initialState: State = {
   mapViewState: {
-    latitude: -25.824806,
-    longitude: 140.265399,
+    latitude: -28.5,
+    longitude: 140,
     bearing: 0,
     pitch: 0,
-    zoom: 2.6,
+    zoom: 3.16,
     padding: {
       top: 0,
       bottom: 0,
