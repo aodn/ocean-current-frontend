@@ -18,6 +18,7 @@ const MapNavbar: React.FC = () => {
     isLastMonthOfTheYear,
     isYearRange,
     isFourHourSst,
+    isSurfaceWaves,
   } = useDateRange();
 
   const isSelectedDayYesterdayOrLater = dayjs(allDates[selectedDateIndex]?.date).isSameOrAfter(
@@ -40,6 +41,7 @@ const MapNavbar: React.FC = () => {
             modifyDate={modifyDate}
             selectedDate={allDates[selectedDateIndex]?.date}
             isLastMonthOfTheYear={isLastMonthOfTheYear}
+            isSurfaceWaves={isSurfaceWaves}
           />
         </div>
       </div>

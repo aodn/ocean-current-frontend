@@ -42,7 +42,8 @@ export type UseDateRangeReturn = {
   isLastMonthOfTheYear: () => boolean;
   steps: number;
   isFourHourSst: boolean;
+  isSurfaceWaves: boolean;
   isYearRange: boolean;
   resetDateRange: () => void;
-  isMonthlyMeansClimatology: boolean;
+  disableVideoCreation: () => boolean;
 };

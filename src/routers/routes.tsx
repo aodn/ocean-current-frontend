@@ -43,7 +43,7 @@ const routes: RouteObject[] = [
           },
           {
             path: 'monthly-means',
-            element: <Navigate to="monthly-means-anomalies" replace />,
+            element: <Navigate to="anomalies" replace />,
           },
           {
             path: ':product/:subProduct',

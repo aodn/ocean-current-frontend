@@ -78,7 +78,7 @@ export const productTypeMapping = new Map<
   [
     'monthlyMeans',
     {
-      subProduct: ['monthlyMeans-anomalies', 'CLIM_OFAM3_SSTAARS', 'CLIM_CNESCARS'],
+      subProduct: ['anomalies', 'CLIM_OFAM3_SSTAARS', 'CLIM_CNESCARS'],
       stateSegment: '30d_MEAN',
       localSegment: null,
       dateFormat: 'MM',

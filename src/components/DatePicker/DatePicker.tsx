@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import dayjs from 'dayjs';
 import arrowIcon from '@/assets/icons/arrow.svg';
@@ -25,17 +25,38 @@ const DatePicker: React.FC<DatePickerProps> = ({
   selectedDate,
   isLastMonthOfTheYear,
   isFourHourSst,
+  isSurfaceWaves,
   isYearRange,
 }) => {
   const formattedDate = () => {
     if (isYearRange) {
       return dayjs(selectedDate).format('MMM YYYY');
-    } else if (isFourHourSst) {
+    } else if (isFourHourSst || isSurfaceWaves) {
       return dayjs(selectedDate).format('DD MMM HH:mm ');
     } else {
       return dayjs(selectedDate).format('DD MMM YY');
     }
   };
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        modifyDate('subtract');
+      } else if (event.key === 'ArrowRight') {
+        if (!(isYearRange ? isLastMonthOfTheYear() : addButtonDisabled)) {
+          modifyDate('add');
+        }
+      }
+    },
+    [modifyDate, isYearRange, isLastMonthOfTheYear, addButtonDisabled],
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]);
 
   return (
     <div className="flex items-center justify-evenly">

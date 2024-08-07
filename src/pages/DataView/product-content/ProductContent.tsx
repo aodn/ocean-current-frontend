@@ -5,7 +5,6 @@ import {
   buildProductImageUrl,
   buildArgoImageUrl,
   getTargetRegionScopePath,
-  buildSurfaceWavesImageUrl,
   buildProductVideoUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
@@ -94,9 +93,6 @@ const ProductContent: React.FC = () => {
   };
 
   const buildProductImg = (): string => {
-    if (mainProduct.key === 'surfaceWaves' && mainProduct.imgPath) {
-      return buildSurfaceWavesImageUrl(useDate.toString(), mainProduct.imgPath);
-    }
     return buildProductImageUrl(mainProduct.key, subProductImgPath, regionPath, targetPathRegion, useDate.toString());
   };
 

@@ -81,6 +81,14 @@ const buildProductImageUrl = (
 
   const baseUrl = getBaseUrlByProductId(productId);
 
+  if (productId === 'surfaceWaves') {
+    const dayjsDate = dayjs(date);
+    const formattedDate = dayjsDate.format('YYYYMMDDHH');
+    const year = dayjsDate.format('YYYY');
+    const month = dayjsDate.format('MM');
+    return `/s3/WAVES/y${year}/m${month}/${formattedDate}.gif`;
+  }
+
   if (isApi) {
     return `/api/${productSegment}${subProductSegment}/${regionName}/${formattedDate}.gif`;
   }
@@ -113,6 +121,10 @@ const buildProductVideoUrl = (
   const quarter = `Q${Math.ceil((dayjs(date).month() + 1) / 3)}`;
 
   const baseUrl = getBaseUrlByProductId(productId);
+
+  if (productId === 'surfaceWaves') {
+    return `${imageBaseUrl}/s3.php?file=WAVES/y${year}/m${month}/Au_wave_m${month}.mp4`;
+  }
 
   if (productId === 'fourHourSst') {
     return `${baseUrl}/${productSegment}/${subProductType}/${regionName}/${regionName}_${subProductType}_${year}${month}.mp4`;

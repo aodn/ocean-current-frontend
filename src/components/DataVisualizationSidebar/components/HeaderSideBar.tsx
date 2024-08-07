@@ -4,10 +4,12 @@ import { mapNavbarDataElements } from '@/data/dropDownProductData';
 import { getProductFullPathById } from '@/utils/product-utils/product';
 import { useQueryParams } from '@/hooks';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
+import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 
 const HeaderSideBar: React.FC = () => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
   const useProductId = useProductStore((state) => state.productParams.productId);
+  const { mainProduct } = useProductConvert();
 
   const handleDropdownChange = (selectedElement: DropdownElement) => {
     if (selectedElement.id === useProductId) {
@@ -28,7 +30,7 @@ const HeaderSideBar: React.FC = () => {
       showIcons
       header
       elements={mapNavbarDataElements}
-      selectedId={useProductId}
+      selectedId={mainProduct?.key}
       onChange={handleDropdownChange}
     />
   );

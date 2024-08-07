@@ -54,7 +54,7 @@ const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, d
   };
 
   return (
-    <div style={{ position: 'relative', display: 'inline-block' }} className="w-full">
+    <div className="relative inline-block w-full">
       <img
         ref={imgRef}
         src={src}

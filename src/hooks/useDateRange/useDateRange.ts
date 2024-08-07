@@ -15,6 +15,7 @@ import {
   DateChangeHandler,
   YearDateChangeHandler,
   SliderChangeHandler,
+  DateItem,
 } from './types/useDateRange.types';
 
 const useDateRange = (): UseDateRangeReturn => {
@@ -36,13 +37,21 @@ const useDateRange = (): UseDateRangeReturn => {
 
   const isYearRange = mainProduct?.key === 'climatology' || mainProduct?.key === 'monthlyMeans';
   const isMonthlyMeansAnomalies = mainProduct?.key === 'monthlyMeans' && subProduct?.key === 'monthlyMeans-anomalies';
-  const isMonthlyMeansClimatology =
-    subProduct?.key === 'monthlyMeans-CLIM_OFAM3_SSTAARS' || subProduct?.key === 'monthlyMeans-CLIM_CNESCARS';
   const isFourHourSst = mainProduct?.key === 'fourHourSst';
+  const isSurfaceWaves = mainProduct?.key === 'surfaceWaves';
 
   const urlDate = searchParams.get('date');
-  const formatDate = isFourHourSst ? 'YYYYMMDDHH' : 'YYYYMMDD';
+  const formatDate = isFourHourSst || isSurfaceWaves ? 'YYYYMMDDHH' : 'YYYYMMDD';
   const initialDate = urlDate ? dayjs(urlDate, formatDate).toDate() : dayjs().subtract(1, 'month').toDate();
+
+  const disableVideoCreation = (): boolean => {
+    const fourHourSst = mainProduct?.key === 'fourHourSst' && subProduct?.key === 'fourHourSst-sstAge';
+    const isMonthlyMeansClimatology =
+      subProduct?.key === 'monthlyMeans-CLIM_OFAM3_SSTAARS' || subProduct?.key === 'monthlyMeans-CLIM_CNESCARS';
+    const climatology = mainProduct?.key === 'climatology';
+    const isAdjustedSeaLevelAnomalyWithSST = mainProduct?.key === 'adjustedSeaLevelAnomaly' && !subProduct?.key;
+    return climatology || isMonthlyMeansClimatology || fourHourSst || isAdjustedSeaLevelAnomalyWithSST;
+  };
 
   const getMinMaxDate = () => {
     let minDate: Date | null = null;
@@ -74,7 +83,7 @@ const useDateRange = (): UseDateRangeReturn => {
           start: dayjs().startOf('year'),
           end: dayjs().endOf('year'),
         };
-      } else if (isFourHourSst) {
+      } else if (isFourHourSst || isSurfaceWaves) {
         return {
           start: dayjs().subtract(1, 'week'),
           end: dayjs(),
@@ -94,11 +103,12 @@ const useDateRange = (): UseDateRangeReturn => {
     updateDateSlider(start.toDate(), end.toDate());
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isYearRange, isFourHourSst]);
+  }, [isYearRange, isFourHourSst, mainProduct, subProduct]);
 
   const generateDateRange = (start: Date, end?: Date): DateRange => {
     if (isYearRange) return generateYearRange(start);
-    if (isFourHourSst) return generateDayWithHourRange(start, end);
+    if (isFourHourSst) return generateDayWithHourRange(start, 2, 4, end);
+    if (isSurfaceWaves) return generateDayWithHourRange(start, 2, 2, end);
     return generateDayRange(start, end);
   };
 
@@ -137,13 +147,13 @@ const useDateRange = (): UseDateRangeReturn => {
     return dates;
   };
 
-  const generateDayWithHourRange = (start: Date, end?: Date): DateRange => {
+  const generateDayWithHourRange = (start: Date, startHour: number, scale: number, end?: Date): DateRange => {
     const dates = [];
     let current = dayjs(start);
     const endDay = dayjs(end);
 
     while (current.isBefore(endDay) || current.isSame(endDay, 'day')) {
-      for (let hour = 2; hour < 24; hour += 4) {
+      for (let hour = startHour; hour < 24; hour += scale) {
         const dateWithHour = dayjs(current).hour(hour).minute(0).second(0).millisecond(0);
         dates.push({
           date: dateWithHour.toDate(),
@@ -291,10 +301,20 @@ const useDateRange = (): UseDateRangeReturn => {
     setEndDate(end);
     updateDateSlider(start.toDate(), end.toDate());
 
+    const lastActiveIndex = findLastActiveIndex(allDates);
+    setSelectedDateIndex(lastActiveIndex);
+
     const formattedDate = end.format(formatDate);
     updateUrlParams(formattedDate, start.toDate(), end.toDate());
+  };
 
-    setSelectedDateIndex(0);
+  const findLastActiveIndex = (dates: DateItem[]) => {
+    for (let i = dates.length - 1; i >= 0; i--) {
+      if (dates[i].active) {
+        return i;
+      }
+    }
+    return 0;
   };
 
   const getInitialDateRange = () => {
@@ -332,8 +352,9 @@ const useDateRange = (): UseDateRangeReturn => {
     steps: 1,
     isFourHourSst,
     isYearRange,
+    isSurfaceWaves,
     resetDateRange,
-    isMonthlyMeansClimatology,
+    disableVideoCreation,
   };
 };
 

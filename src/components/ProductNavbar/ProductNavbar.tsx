@@ -31,7 +31,8 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
     isLastMonthOfTheYear,
     isFourHourSst,
     isYearRange,
-    isMonthlyMeansClimatology,
+    disableVideoCreation,
+    isSurfaceWaves,
     resetDateRange,
   } = useDateRange();
 
@@ -83,6 +84,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
             selectedDate={allDates[selectedDateIndex]?.date}
             isLastMonthOfTheYear={isLastMonthOfTheYear}
             isFourHourSst={isFourHourSst}
+            isSurfaceWaves={isSurfaceWaves}
             isYearRange={isYearRange}
           />
         </div>
@@ -97,7 +99,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
         <div className="flex h-11 w-1/5 items-center justify-center rounded-md border border-[#3A6F8F] p-3">
           <img src={VideoIcon} alt="video icon" />
           <p className="mx-3 text-imos-sea-blue">Video</p>
-          <ToggleButton disabled={isMonthlyMeansClimatology} isOn={showVideo} onToggle={handleToggle} />
+          <ToggleButton disabled={disableVideoCreation()} isOn={showVideo} onToggle={handleToggle} />
         </div>
         <div className="w-1/6">
           <div
