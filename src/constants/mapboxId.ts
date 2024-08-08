@@ -1,45 +1,45 @@
 interface MapBoxInstanceIds {
-  oceanCurrentBasicMap: string;
-  oceanCurrentMainMap: string;
-  sidebarMiniMap: string;
+  oceanCurrentBasicMapId: string;
+  oceanCurrentMainMapId: string;
+  sidebarMiniMapId: string;
 }
 
 interface MapboxSourceIds {
-  argoAsProductSource: string;
-  productRegionBoxSource: string;
-  dataImageSource: string;
+  argoAsProductSourceId: string;
+  productRegionBoxSourceId: string;
+  dataImageSourceId: string;
 }
 
 interface MapboxLayerIds {
-  argoAsProductPointLayer: string;
-  argoAsProductSelectedPointLayer: string;
-  productRegionBoxLayer: string;
-  productRegionBoxHighlightLayer: string;
-  productRegionNameLabelLayer: string;
-  productRegionSelectedBoxLayer: string;
-  dataImageLayer: string;
+  argoAsProductPointLayerId: string;
+  argoAsProductSelectedPointLayerId: string;
+  productRegionBoxLayerId: string;
+  productRegionBoxHighlightLayerId: string;
+  productRegionNameLabelLayerId: string;
+  productRegionSelectedBoxLayerId: string;
+  dataImageLayerId: string;
 }
 
 const mapboxInstanceIds: MapBoxInstanceIds = {
-  oceanCurrentBasicMap: 'oc-basic-map',
-  oceanCurrentMainMap: 'oc-main-map',
-  sidebarMiniMap: 'sidebar-mini-map',
+  oceanCurrentBasicMapId: 'oc-basic-map',
+  oceanCurrentMainMapId: 'oc-main-map',
+  sidebarMiniMapId: 'sidebar-mini-map',
 };
 
 const mapboxSourceIds: MapboxSourceIds = {
-  argoAsProductSource: 'argo-as-product-source-id',
-  productRegionBoxSource: 'product-region-box-source-id',
-  dataImageSource: 'data-image-source-id',
+  argoAsProductSourceId: 'argo-as-product-source-id',
+  productRegionBoxSourceId: 'product-region-box-source-id',
+  dataImageSourceId: 'data-image-source-id',
 };
 
 const mapboxLayerIds: MapboxLayerIds = {
-  argoAsProductPointLayer: 'argo-as-product-point-layer-id',
-  argoAsProductSelectedPointLayer: 'argo-as-product-selected-point-layer-id',
-  productRegionBoxLayer: 'product-region-box-layer-id',
-  productRegionBoxHighlightLayer: 'product-region-box-highlight-layer-id',
-  productRegionNameLabelLayer: 'product-region-name-label-layer-id',
-  productRegionSelectedBoxLayer: 'product-region-selected-box-layer-id',
-  dataImageLayer: 'data-image-layer-id',
+  argoAsProductPointLayerId: 'argo-as-product-point-layer-id',
+  argoAsProductSelectedPointLayerId: 'argo-as-product-selected-point-layer-id',
+  productRegionBoxLayerId: 'product-region-box-layer-id',
+  productRegionBoxHighlightLayerId: 'product-region-box-highlight-layer-id',
+  productRegionNameLabelLayerId: 'product-region-name-label-layer-id',
+  productRegionSelectedBoxLayerId: 'product-region-selected-box-layer-id',
+  dataImageLayerId: 'data-image-layer-id',
 };
 
 export { mapboxInstanceIds, mapboxSourceIds, mapboxLayerIds };
