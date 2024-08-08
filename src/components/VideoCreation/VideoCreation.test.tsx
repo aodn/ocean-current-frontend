@@ -111,7 +111,7 @@ describe('VideoCreation', () => {
     openGifOptions();
 
     // Assert
-    expect(screen.getByText('Customize Gif')).toBeInTheDocument();
+    expect(screen.getByText('Customise Gif')).toBeInTheDocument();
   });
 
   it('updates frame rate when changed', async () => {
