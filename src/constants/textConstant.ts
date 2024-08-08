@@ -1,4 +1,9 @@
-export const TEXT_CONSTANT = {
+interface TextConstant {
+  SHARE_PERMLINK: string;
+  CUSTOMISE_GIF: string;
+}
+
+export const TEXT_CONSTANT: TextConstant = {
   SHARE_PERMLINK: 'Share',
-  CUSTOMIZE_GIF: 'Customize Gif',
+  CUSTOMISE_GIF: 'Customise Gif',
 };

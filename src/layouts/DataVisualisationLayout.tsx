@@ -9,12 +9,12 @@ import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useProductFromUrl, useProductSearchParam } from '@/hooks';
 import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
-import DataVisualizationNavbar from '@/components/ProductNavbar/ProductNavbar';
-import DataVisualizationSidebar from '@/components/DataVisualizationSidebar/DataVisualizationSidebar';
+import DataVisualisationNavbar from '@/components/ProductNavbar/ProductNavbar';
+import DataVisualisationSidebar from '@/components/DataVisualisationSidebar/DataVisualisationSidebar';
 import ArrowIcon from '@/assets/icons/Arrow';
 import { RegionScope } from '@/constants/region';
 
-const DataVisualizationLayout: React.FC = () => {
+const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
   const { isArgo } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
@@ -88,12 +88,12 @@ const DataVisualizationLayout: React.FC = () => {
           />
         </button>
         <div className={`transition-all duration-300 ${isSidebarVisible ? 'w-1/3' : 'w-0 overflow-hidden'}`}>
-          <DataVisualizationSidebar />
+          <DataVisualisationSidebar />
         </div>
         <div
           className={`transition-all duration-300 ${isSidebarVisible ? 'ml-4' : 'ml-0'} min-h-[800px] w-full min-w-[800px]`}
         >
-          <DataVisualizationNavbar setShowVideo={setShowVideo} />
+          <DataVisualisationNavbar setShowVideo={setShowVideo} />
           <ErrorBoundary key={product?.mainProduct}>
             <Outlet context={{ showVideo, loading: true }} />
           </ErrorBoundary>
@@ -103,4 +103,4 @@ const DataVisualizationLayout: React.FC = () => {
   );
 };
 
-export default DataVisualizationLayout;
+export default DataVisualisationLayout;

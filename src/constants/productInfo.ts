@@ -7,7 +7,7 @@ import {
   SixDaySstModalData,
   SnapshotModalData,
   SurfaceWaveModalData,
-} from '@/components/DataVisualizationSidebar/components/modals/productsModalData';
+} from '@/components/DataVisualisationSidebar/components/modals/productsModalData';
 import { ProductInfo } from '@/types/product';
 
 const list: ProductInfo[] = [
@@ -35,7 +35,7 @@ const list: ProductInfo[] = [
     id: 'adjustedSeaLevelAnomaly',
     title: 'Adjusted Sea Level Anomaly',
     summary:
-      'Adjusted Sea Level (ASL) accounts for slow ocean modes by removing rapid variations due to tides and atmospheric pressure, enabling near-surface velocity and ocean heat content estimates. ASL anomalies, measured as deviations from a long-term mean, help visualize significant sea level changes. Centile rankings of daily ASL anomalies show the extremity of anomalies compared to historical data, adjusted for regional trends.',
+      'Adjusted Sea Level (ASL) accounts for slow ocean modes by removing rapid variations due to tides and atmospheric pressure, enabling near-surface velocity and ocean heat content estimates. ASL anomalies, measured as deviations from a long-term mean, help visualise significant sea level changes. Centile rankings of daily ASL anomalies show the extremity of anomalies compared to historical data, adjusted for regional trends.',
     description: AdjustedSeaLevelAnomalyModalData,
   },
   {
