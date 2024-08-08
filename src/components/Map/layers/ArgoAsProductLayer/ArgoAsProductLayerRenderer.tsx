@@ -16,8 +16,8 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
   const { worldMeteorologicalOrgId: selectedWorldMeteorologicalOrgId } = useArgoStore(
     (state) => state.selectedArgoParams,
   );
-  const { argoAsProductSelectedPointLayer, argoAsProductPointLayer } = mapboxLayerIds;
-  const { argoAsProductSource } = mapboxSourceIds;
+  const { argoAsProductSelectedPointLayerId, argoAsProductPointLayerId } = mapboxLayerIds;
+  const { argoAsProductSourceId } = mapboxSourceIds;
   const { current: map } = useMap();
   const navigate = useNavigate();
   const eventAdded = useRef(false);
@@ -38,7 +38,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
       if (!map) return;
 
       try {
-        const clickedArgoParam = getPropertyFromMapFeatures<ArgoProfile>(map, e, argoAsProductPointLayer, [
+        const clickedArgoParam = getPropertyFromMapFeatures<ArgoProfile>(map, e, argoAsProductPointLayerId, [
           'worldMeteorologicalOrgId',
           'cycle',
           'depth',
@@ -64,7 +64,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         console.error(error);
       }
     },
-    [map, argoAsProductPointLayer, selectedWorldMeteorologicalOrgId, navigate, updateQueryParams, isMiniMap],
+    [map, argoAsProductPointLayerId, selectedWorldMeteorologicalOrgId, navigate, updateQueryParams, isMiniMap],
   );
 
   useEffect(() => {
@@ -72,16 +72,16 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
 
     if (!eventAdded.current) {
       eventAdded.current = true;
-      map.on('click', argoAsProductPointLayer, handleClick);
+      map.on('click', argoAsProductPointLayerId, handleClick);
     }
 
     return () => {
       if (map && eventAdded.current) {
-        map.off('click', argoAsProductPointLayer, handleClick);
+        map.off('click', argoAsProductPointLayerId, handleClick);
         eventAdded.current = false;
       }
     };
-  }, [argoAsProductPointLayer, map, navigate, handleClick]);
+  }, [argoAsProductPointLayerId, map, navigate, handleClick]);
 
   useEffect(() => {
     if (!map || !isMiniMap) return;
@@ -95,11 +95,11 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
   }, [map, mapFlyToPoint, argoData, selectedWorldMeteorologicalOrgId, isMiniMap]);
 
   return (
-    <Source id={argoAsProductSource} type="geojson" data={argoData}>
+    <Source id={argoAsProductSourceId} type="geojson" data={argoData}>
       <Layer
-        id={argoAsProductSelectedPointLayer}
+        id={argoAsProductSelectedPointLayerId}
         type="circle"
-        source={argoAsProductSource}
+        source={argoAsProductSourceId}
         paint={{
           'circle-radius': 15,
           'circle-color': 'white',
@@ -110,9 +110,9 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         filter={['==', 'worldMeteorologicalOrgId', selectedWorldMeteorologicalOrgId]}
       />
       <Layer
-        id={argoAsProductPointLayer}
+        id={argoAsProductPointLayerId}
         type="circle"
-        source={argoAsProductSource}
+        source={argoAsProductSourceId}
         paint={{
           'circle-radius': 8,
           'circle-color': '#524DAB',

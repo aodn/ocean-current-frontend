@@ -9,7 +9,7 @@ import MAP_STYLE from './data/map-style.basic-v8.json';
 import { BasicMapProps } from './types/map.types';
 
 const BasicMap: React.FC<BasicMapProps> = ({
-  id = mapboxInstanceIds.oceanCurrentBasicMap,
+  id = mapboxInstanceIds.oceanCurrentBasicMapId,
   mapStyle = MAP_STYLE as MapStyle,
   style,
   children,
@@ -17,7 +17,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
   fullScreenControl = false,
   navigationControl = true,
 }) => {
-  const interactiveIds = [mapboxLayerIds.productRegionBoxLayer, mapboxLayerIds.argoAsProductPointLayer];
+  const interactiveIds = [mapboxLayerIds.productRegionBoxLayerId, mapboxLayerIds.argoAsProductPointLayerId];
 
   const [cursor, setCursor] = useState<string>('grab');
   const useMapViewState = useMapStore((state) => state.mapViewState);
