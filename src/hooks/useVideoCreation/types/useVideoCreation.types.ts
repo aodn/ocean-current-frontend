@@ -18,10 +18,13 @@ export type UseVideoCreationReturn = {
   gifHeight: number;
   startDate: Date;
   endDate: Date;
-  handleClick: () => Promise<void>;
+  handleGifDownload: () => Promise<void>;
   setSelectedFrameRate: (rate: number) => void;
   setGifWidth: (width: number) => void;
   setGifHeight: (height: number) => void;
   handleStartDateChange: (date: Date) => void;
   handleEndDateChange: (date: Date) => void;
+  resetState: () => void;
+  handleWidthChange: (newWidth: number) => void;
+  handleHeightChange: (newHeight: number) => void;
 };

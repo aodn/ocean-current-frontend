@@ -75,12 +75,15 @@ describe('VideoCreation', () => {
     gifHeight: 500,
     startDate: new Date('2024-06-13'),
     endDate: new Date('2024-06-17'),
-    handleClick: vi.fn(),
+    handleGifDownload: vi.fn(),
+    handleWidthChange: vi.fn(),
+    handleHeightChange: vi.fn(),
     setSelectedFrameRate: vi.fn(),
     setGifWidth: vi.fn(),
     setGifHeight: vi.fn(),
     handleStartDateChange: vi.fn(),
     handleEndDateChange: vi.fn(),
+    resetState: vi.fn(),
   };
 
   beforeEach(() => {
