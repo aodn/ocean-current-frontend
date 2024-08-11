@@ -114,7 +114,7 @@ describe('VideoCreation', () => {
     openGifOptions();
 
     // Assert
-    expect(screen.getByText('Customize Gif')).toBeInTheDocument();
+    expect(screen.getByText('Customise Gif')).toBeInTheDocument();
   });
 
   it('updates frame rate when changed', async () => {
@@ -133,7 +133,7 @@ describe('VideoCreation', () => {
     // Arrange
     const { rerender } = render(<VideoCreation />);
     openGifOptions();
-    let downloadButton = screen.getByText('Download Video');
+    let downloadButton = screen.getByText('Download Gif');
 
     // Act & Assert
     expect(downloadButton).not.toBeDisabled();
@@ -146,7 +146,7 @@ describe('VideoCreation', () => {
 
     // Act
     rerender(<VideoCreation />);
-    downloadButton = screen.getByText('Download Video');
+    downloadButton = screen.getByText('Download Gif');
 
     // Assert
     expect(downloadButton).toBeDisabled();

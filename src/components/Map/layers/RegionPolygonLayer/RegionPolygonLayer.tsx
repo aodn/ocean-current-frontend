@@ -15,12 +15,12 @@ const MIN_THRESHOLD_PERCENTAGE = 3;
 const MAX_THRESHOLD_PERCENTAGE = 70;
 
 const RegionPolygonLayer: React.FC = () => {
-  const { productRegionBoxSource } = mapboxSourceIds;
+  const { productRegionBoxSourceId: productRegionBoxSource } = mapboxSourceIds;
   const {
-    productRegionBoxLayer,
-    productRegionBoxHighlightLayer,
-    productRegionNameLabelLayer,
-    productRegionSelectedBoxLayer,
+    productRegionBoxLayerId,
+    productRegionBoxHighlightLayerId,
+    productRegionNameLabelLayerId,
+    productRegionSelectedBoxLayerId,
   } = mapboxLayerIds;
 
   const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
@@ -83,7 +83,7 @@ const RegionPolygonLayer: React.FC = () => {
     if (!map) return;
 
     const handleMouseMove = (e: MapMouseEvent) => {
-      const { name: regionName } = getPropertyFromMapFeatures<{ name: string }>(map, e, productRegionBoxLayer, [
+      const { name: regionName } = getPropertyFromMapFeatures<{ name: string }>(map, e, productRegionBoxLayerId, [
         'name',
       ]);
 
@@ -93,13 +93,13 @@ const RegionPolygonLayer: React.FC = () => {
     };
 
     const handleMouseClick = (e: MapMouseEvent) => {
-      const features = map.queryRenderedFeatures(e.point, { layers: [productRegionBoxLayer] });
+      const features = map.queryRenderedFeatures(e.point, { layers: [productRegionBoxLayerId] });
       if (features.length > 0 && features[0]?.geometry?.type === 'Polygon') {
         const regionBounds = convertGeoJsonCoordinatesToBBox(features[0].geometry.coordinates as GeoJsonPolygon);
         mapFitBounds(regionBounds);
       }
 
-      const { name: regionName } = getPropertyFromMapFeatures<{ name: string }>(map, e, productRegionBoxLayer, [
+      const { name: regionName } = getPropertyFromMapFeatures<{ name: string }>(map, e, productRegionBoxLayerId, [
         'name',
       ]);
 
@@ -116,18 +116,18 @@ const RegionPolygonLayer: React.FC = () => {
       setHoveredRegion('');
     };
 
-    map.on('mousemove', productRegionBoxLayer, handleMouseMove);
-    map.on('mouseleave', productRegionBoxLayer, handleMouseLeave);
-    map.on('click', productRegionBoxLayer, handleMouseClick);
+    map.on('mousemove', productRegionBoxLayerId, handleMouseMove);
+    map.on('mouseleave', productRegionBoxLayerId, handleMouseLeave);
+    map.on('click', productRegionBoxLayerId, handleMouseClick);
 
     return () => {
-      map.off('click', productRegionBoxLayer, handleMouseClick);
-      map.off('mouseleave', productRegionBoxLayer, handleMouseLeave);
-      map.off('mousemove', productRegionBoxLayer, handleMouseMove);
+      map.off('click', productRegionBoxLayerId, handleMouseClick);
+      map.off('mouseleave', productRegionBoxLayerId, handleMouseLeave);
+      map.off('mousemove', productRegionBoxLayerId, handleMouseMove);
     };
   }, [
     map,
-    productRegionBoxLayer,
+    productRegionBoxLayerId,
     searchParams.date,
     updateQueryParamsAndNavigate,
     defaultTargetDate,
@@ -139,7 +139,7 @@ const RegionPolygonLayer: React.FC = () => {
     <>
       <Source id={productRegionBoxSource} type="geojson" data={geoJsonData}>
         <Layer
-          id={productRegionBoxLayer}
+          id={productRegionBoxLayerId}
           type="fill"
           source={productRegionBoxSource}
           paint={{
@@ -156,7 +156,7 @@ const RegionPolygonLayer: React.FC = () => {
           }}
         />
         <Layer
-          id={productRegionBoxHighlightLayer}
+          id={productRegionBoxHighlightLayerId}
           type="fill"
           source={productRegionBoxSource}
           paint={{
@@ -166,7 +166,7 @@ const RegionPolygonLayer: React.FC = () => {
           filter={['==', 'name', hoveredRegion]}
         />
         <Layer
-          id={productRegionNameLabelLayer}
+          id={productRegionNameLabelLayerId}
           type="symbol"
           source={productRegionBoxSource}
           layout={{
@@ -195,7 +195,7 @@ const RegionPolygonLayer: React.FC = () => {
           filter={['==', 'name', selectedRegion]}
         />
         <Layer
-          id={productRegionSelectedBoxLayer}
+          id={productRegionSelectedBoxLayerId}
           type="line"
           source={productRegionBoxSource}
           paint={{
