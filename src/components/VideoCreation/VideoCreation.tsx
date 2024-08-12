@@ -51,7 +51,7 @@ const VideoCreation: React.FC = () => {
 
   const frameRateOptions: FrameRateOption[] = Array.from({ length: 10 }, (_, i) => i + 1).map((rate) => ({
     id: rate.toString(),
-    label: `${rate} frames`,
+    label: `${rate} seconds`,
   }));
 
   const customInput = (date: Date): JSX.Element => (
@@ -154,7 +154,6 @@ const VideoCreation: React.FC = () => {
                 className="h-full rounded-full bg-[#52BDEC] transition-all duration-300 ease-in-out"
                 style={{ width: `${progress}%` }}
               ></div>
-              <span className="text-black">{`${progress}%`}</span>
             </div>
           )}
 
