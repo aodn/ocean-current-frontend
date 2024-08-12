@@ -123,10 +123,10 @@ describe('VideoCreation', () => {
     openGifOptions();
 
     // Act
-    await selectDropdownOption('3 frames', '5 frames');
+    await selectDropdownOption('3 seconds', '5 seconds');
 
     // Assert
-    expect(screen.getByText('5 frames')).toBeInTheDocument();
+    expect(screen.getByText('5 seconds')).toBeInTheDocument();
   });
 
   it('disables download button when loading', async () => {
