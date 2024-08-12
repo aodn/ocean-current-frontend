@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { createGIF, CreateGIFOptions, CreateGIFObject } from 'gifshot';
 import dayjs from 'dayjs';
 import { buildProductImageUrl, getTargetRegionScopePath } from '@/utils/data-image-builder-utils/dataImgBuilder';
@@ -32,8 +32,23 @@ const useVideoCreation = (): UseVideoCreationReturn => {
   const targetPathRegion = getTargetRegionScopePath(region?.scope || RegionScope.Au);
   const regionPath = region?.code;
   const subProductImgPath = subProduct?.imgPath;
+  const aspectRatioRef = useRef<number>(1);
 
   const formatDate = isFourHourSst || isSurfaceWaves ? 'YYYYMMDDHH' : 'YYYYMMDD';
+
+  const resetState = useCallback(() => {
+    setIsLoading(false);
+    setProgress(0);
+    setErrorMessage('');
+    setSelectedFrameRate(3);
+    setAllDatesVideoGeneration(allDates);
+    setStartDate(allDates[0]?.date || dayjs().toDate());
+    setEndDate(allDates[allDates.length - 1]?.date || dayjs().subtract(1, 'month').toDate());
+  }, [allDates]);
+
+  useEffect(() => {
+    resetState();
+  }, [resetState, mainProduct, subProduct, regionPath]);
 
   useEffect(() => {
     if (allDates && allDates.length > 0) {
@@ -53,7 +68,7 @@ const useVideoCreation = (): UseVideoCreationReturn => {
   }, []);
 
   const getProductImageSize = useCallback(async () => {
-    if (!mainProduct || !subProductImgPath || !regionPath || !targetPathRegion || !useDate) {
+    if (!mainProduct || !regionPath || !targetPathRegion || !useDate) {
       return;
     }
 
@@ -69,6 +84,7 @@ const useVideoCreation = (): UseVideoCreationReturn => {
       const { width, height } = await getImageDimensions(imageUrl);
       setGifWidth(width);
       setGifHeight(height);
+      aspectRatioRef.current = width / height;
     } catch (error) {
       console.error('Error loading image:', error);
     }
@@ -116,7 +132,7 @@ const useVideoCreation = (): UseVideoCreationReturn => {
     return `${mainProduct!.key}_${subProductImgPath}_${regionPath}_${formattedDateStart}_${formattedDateEnd}.gif`;
   }, [allDatesVideoGeneration, formatDate, mainProduct, subProductImgPath, regionPath]);
 
-  const handleClick = useCallback(async () => {
+  const handleGifDownload = useCallback(async () => {
     setIsLoading(true);
     setProgress(0);
     setErrorMessage('');
@@ -131,7 +147,7 @@ const useVideoCreation = (): UseVideoCreationReturn => {
         images: images,
         gifWidth: gifWidth,
         gifHeight: gifHeight,
-        numWorkers: 5,
+        numWorkers: 10,
         frameDuration: selectedFrameRate,
         sampleInterval: 100,
         progressCallback: (captureProgress: number) => {
@@ -195,6 +211,16 @@ const useVideoCreation = (): UseVideoCreationReturn => {
     [startDate, updateAllDatesVideoGeneration],
   );
 
+  const handleWidthChange = useCallback((newWidth: number) => {
+    setGifWidth(newWidth);
+    setGifHeight(Math.round(newWidth / aspectRatioRef.current));
+  }, []);
+
+  const handleHeightChange = useCallback((newHeight: number) => {
+    setGifHeight(newHeight);
+    setGifWidth(Math.round(newHeight * aspectRatioRef.current));
+  }, []);
+
   return {
     isLoading,
     progress,
@@ -204,12 +230,15 @@ const useVideoCreation = (): UseVideoCreationReturn => {
     gifHeight,
     startDate,
     endDate,
-    handleClick,
+    handleGifDownload,
+    handleWidthChange,
+    handleHeightChange,
     setSelectedFrameRate,
     setGifWidth,
     setGifHeight,
     handleStartDateChange,
     handleEndDateChange,
+    resetState,
   };
 };
 

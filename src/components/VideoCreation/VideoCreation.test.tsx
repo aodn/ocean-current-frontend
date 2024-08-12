@@ -75,12 +75,15 @@ describe('VideoCreation', () => {
     gifHeight: 500,
     startDate: new Date('2024-06-13'),
     endDate: new Date('2024-06-17'),
-    handleClick: vi.fn(),
+    handleGifDownload: vi.fn(),
+    handleWidthChange: vi.fn(),
+    handleHeightChange: vi.fn(),
     setSelectedFrameRate: vi.fn(),
     setGifWidth: vi.fn(),
     setGifHeight: vi.fn(),
     handleStartDateChange: vi.fn(),
     handleEndDateChange: vi.fn(),
+    resetState: vi.fn(),
   };
 
   beforeEach(() => {
@@ -120,17 +123,17 @@ describe('VideoCreation', () => {
     openGifOptions();
 
     // Act
-    await selectDropdownOption('3 frames', '5 frames');
+    await selectDropdownOption('3 seconds', '5 seconds');
 
     // Assert
-    expect(screen.getByText('5 frames')).toBeInTheDocument();
+    expect(screen.getByText('5 seconds')).toBeInTheDocument();
   });
 
   it('disables download button when loading', async () => {
     // Arrange
     const { rerender } = render(<VideoCreation />);
     openGifOptions();
-    let downloadButton = screen.getByText('Download Video');
+    let downloadButton = screen.getByText('Download Gif');
 
     // Act & Assert
     expect(downloadButton).not.toBeDisabled();
@@ -143,7 +146,7 @@ describe('VideoCreation', () => {
 
     // Act
     rerender(<VideoCreation />);
-    downloadButton = screen.getByText('Download Video');
+    downloadButton = screen.getByText('Download Gif');
 
     // Assert
     expect(downloadButton).toBeDisabled();

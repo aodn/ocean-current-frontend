@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import dayjs from 'dayjs';
 import ReactDatePicker from 'react-datepicker';
 import DownloadIcon from '@/assets/icons/download-icon.svg';
@@ -10,11 +10,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Button, Dropdown } from '@/components/Shared';
 import { TEXT_CONSTANT } from '@/constants/textConstant';
 import { DropdownElement } from '../Shared/Dropdown/types/dropdown.types';
-
-type FrameRateOption = {
-  id: string;
-  label: string;
-};
+import { FrameRateOption } from './types/videoCreation.types';
 
 const VideoCreation: React.FC = () => {
   const gifOptionsRef = useRef<HTMLDivElement>(null);
@@ -29,21 +25,33 @@ const VideoCreation: React.FC = () => {
     gifHeight,
     startDate,
     endDate,
-    handleClick,
+    handleGifDownload,
+    handleWidthChange,
+    handleHeightChange,
     setSelectedFrameRate,
-    setGifWidth,
-    setGifHeight,
     handleStartDateChange,
     handleEndDateChange,
+    resetState,
   } = useVideoCreation();
 
   useOutsideClick(gifOptionsRef, () => setShowGifOptions(false));
 
-  const toggleGifOptions = (): void => setShowGifOptions(!showGifOptions);
+  const toggleGifOptions = (): void => {
+    setShowGifOptions(!showGifOptions);
+    if (!showGifOptions) {
+      resetState();
+    }
+  };
 
-  const frameRateOptions: FrameRateOption[] = Array.from({ length: 13 }, (_, i) => i + 3).map((rate) => ({
+  useEffect(() => {
+    if (showGifOptions) {
+      resetState();
+    }
+  }, [showGifOptions, resetState]);
+
+  const frameRateOptions: FrameRateOption[] = Array.from({ length: 10 }, (_, i) => i + 1).map((rate) => ({
     id: rate.toString(),
-    label: `${rate} frames`,
+    label: `${rate} seconds`,
   }));
 
   const customInput = (date: Date): JSX.Element => (
@@ -60,7 +68,7 @@ const VideoCreation: React.FC = () => {
   const handleDimensionChange = (e: React.ChangeEvent<HTMLInputElement>, dimension: 'width' | 'height'): void => {
     const value = parseInt(e.target.value, 10);
     if (!isNaN(value) && value > 0) {
-      dimension === 'width' ? setGifWidth(value) : setGifHeight(value);
+      dimension === 'width' ? handleWidthChange(value) : handleHeightChange(value);
     }
   };
 
@@ -79,7 +87,7 @@ const VideoCreation: React.FC = () => {
         />
       </div>
       {showGifOptions && (
-        <div className="absolute right-0 z-50 mr-4 mt-3 w-3/12 rounded-md bg-white p-4">
+        <div className="absolute right-0 z-50 mr-4 mt-3 w-[27%] rounded-md bg-white p-4">
           <div className="mb-4 flex items-center justify-between">
             <div></div>
             <p className="font-semibold">{TEXT_CONSTANT.CUSTOMISE_GIF}</p>
@@ -105,7 +113,7 @@ const VideoCreation: React.FC = () => {
               <ReactDatePicker selected={endDate} onChange={handleEndDateChange} customInput={customInput(endDate)} />
             </div>
             <div className="mb-2 flex items-center justify-between">
-              <p className="text-[#3A6F8F]">Frame Rate</p>
+              <p className="text-[#3A6F8F]">Animation Speed</p>
               <div className="w-48">
                 <Dropdown
                   elements={frameRateOptions}
@@ -146,15 +154,14 @@ const VideoCreation: React.FC = () => {
                 className="h-full rounded-full bg-[#52BDEC] transition-all duration-300 ease-in-out"
                 style={{ width: `${progress}%` }}
               ></div>
-              <span className="text-black">{`${progress}%`}</span>
             </div>
           )}
 
           {errorMessage && <p className="mt-2 text-center text-red-500">{errorMessage}</p>}
 
           <div className="mt-6 flex items-center justify-center">
-            <Button type="primary" borderRadius="small" onClick={handleClick} disabled={isLoading}>
-              Download Video
+            <Button type="primary" borderRadius="small" onClick={handleGifDownload} disabled={isLoading}>
+              Download Gif
             </Button>
           </div>
         </div>
