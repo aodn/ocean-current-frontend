@@ -8,6 +8,8 @@ import SixHourSSTIcon from '@/assets/icons/products/6-hour-SST-icon.svg';
 import CurrentMetersIcon from '@/assets/icons/products/current-meters-icon.svg';
 import GliderIcon from '@/assets/icons/products/glider-icon.svg';
 import SealCTDIcon from '@/assets/icons/products/seal-ctd-icon.svg';
+import ArgoIcon from '@/assets/icons/products/argo-icon.svg';
+import TidalCurrentsIcon from '@/assets/icons/products/in-water/tidal-currents-icon.svg';
 
 export const linksData = [
   {
@@ -29,8 +31,7 @@ export const linksData = [
       },
       {
         id: 'climatology-sst',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
+        imageUrl: SSTIcon,
         title: 'Climatology SST',
         description: 'SSTAARS Climatology',
         url: '/map/climatology/sst',
@@ -79,8 +80,7 @@ export const linksData = [
     leftLinks: [
       {
         id: 'argo',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
+        imageUrl: ArgoIcon,
         title: 'Argo',
         description: 'Ocean observation network',
         url: '/map/argo',
@@ -94,8 +94,7 @@ export const linksData = [
       },
       {
         id: 'tidal-currents',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
+        imageUrl: TidalCurrentsIcon,
         title: 'Tidal Currents',
         description: 'Oceanic flow patterns',
         url: 'https://oceancurrent.aodn.org.au/index.php',
@@ -118,8 +117,7 @@ export const linksData = [
       },
       {
         id: 'eac-mooring-array',
-        imageUrl:
-          'https://cdn.builder.io/api/v1/image/assets/TEMP/eac3190b90880cf161c56ba41f78d7145250bd3b809b2185f68361d5925ec5ab?',
+        imageUrl: CurrentMetersIcon,
         title: 'EAC Mooring Array',
         description: 'Monitoring station network',
         url: 'https://oceancurrent.aodn.org.au/index.php',

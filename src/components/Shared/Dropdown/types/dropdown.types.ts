@@ -2,6 +2,7 @@ export interface DropdownElement {
   label: string;
   id: string;
   icon?: string;
+  selectedIcon?: string;
 }
 
 export interface DropdownProps {
