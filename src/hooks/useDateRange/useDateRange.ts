@@ -39,10 +39,27 @@ const useDateRange = (): UseDateRangeReturn => {
   const isMonthlyMeansAnomalies = mainProduct?.key === 'monthlyMeans' && subProduct?.key === 'monthlyMeans-anomalies';
   const isFourHourSst = mainProduct?.key === 'fourHourSst';
   const isSurfaceWaves = mainProduct?.key === 'surfaceWaves';
+  const isWeakRange = isFourHourSst || isSurfaceWaves;
 
   const urlDate = searchParams.get('date');
-  const formatDate = isFourHourSst || isSurfaceWaves ? 'YYYYMMDDHH' : 'YYYYMMDD';
-  const initialDate = urlDate ? dayjs(urlDate, formatDate).toDate() : dayjs().subtract(1, 'month').toDate();
+  const urlStartDate = searchParams.get('startDate');
+  const urlEndDate = searchParams.get('endDate');
+  const formatDate = isWeakRange ? 'YYYYMMDDHH' : 'YYYYMMDD';
+
+  const getInitialDate = (): Date => {
+    if (urlDate) {
+      return dayjs(urlDate, formatDate).toDate();
+    }
+    if (isYearRange) {
+      return dayjs().startOf('year').toDate();
+    }
+    if (isWeakRange) {
+      return dayjs().subtract(1, 'week').toDate();
+    }
+    return dayjs().subtract(1, 'month').toDate();
+  };
+
+  const initialDate = getInitialDate();
 
   const disableVideoCreation = (): boolean => {
     const fourHourSst = mainProduct?.key === 'fourHourSst' && subProduct?.key === 'fourHourSst-sstAge';
@@ -78,12 +95,19 @@ const useDateRange = (): UseDateRangeReturn => {
 
   useEffect(() => {
     const getDateRange = () => {
+      if (urlStartDate && urlEndDate) {
+        return {
+          start: dayjs(urlStartDate, 'YYYYMMDD'),
+          end: dayjs(urlEndDate, 'YYYYMMDD'),
+        };
+      }
+
       if (isYearRange) {
         return {
           start: dayjs().startOf('year'),
           end: dayjs().endOf('year'),
         };
-      } else if (isFourHourSst || isSurfaceWaves) {
+      } else if (isWeakRange) {
         return {
           start: dayjs().subtract(1, 'week'),
           end: dayjs(),
@@ -100,10 +124,10 @@ const useDateRange = (): UseDateRangeReturn => {
 
     setStartDate(start);
     setEndDate(end);
-    updateDateSlider(start.toDate(), end.toDate());
+    updateDateSlider(start.toDate(), end.toDate(), urlDate ? dayjs(urlDate, formatDate).toDate() : undefined);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isYearRange, isFourHourSst, mainProduct, subProduct]);
+  }, [isYearRange, isFourHourSst, mainProduct, subProduct, urlDate, urlStartDate, urlEndDate, formatDate]);
 
   const generateDateRange = (start: Date, end?: Date): DateRange => {
     if (isYearRange) return generateYearRange(start);
@@ -176,7 +200,7 @@ const useDateRange = (): UseDateRangeReturn => {
 
   const determineSelectedIndex = (range: DateRange, newStartDate: Date, newSelectedDate?: Date) => {
     if (isYearRange) return determineYearSelectedIndex(range, newStartDate, newSelectedDate);
-    return determineDaySelectedIndex(range);
+    return determineDaySelectedIndex(range, newSelectedDate);
   };
 
   const determineYearSelectedIndex = (range: DateRange, newStartDate: Date, newSelectedDate?: Date) => {
@@ -184,13 +208,21 @@ const useDateRange = (): UseDateRangeReturn => {
       return range.findIndex(({ date }) => dayjs(date).isSame(dayjs(newSelectedDate), 'month'));
     }
     if (urlDate) {
-      return dayjs(urlDate).get('month');
+      return dayjs(urlDate, formatDate).get('month');
     }
     return dayjs(newStartDate).get('month');
   };
 
-  const determineDaySelectedIndex = (range: DateRange) => {
-    const initialIndex = range.findIndex(({ date }) => dayjs(date).isSame(dayjs(initialDate), 'day'));
+  const determineDaySelectedIndex = (range: DateRange, newSelectedDate?: Date) => {
+    if (newSelectedDate) {
+      const selectedIndex = range.findIndex(({ date }) =>
+        dayjs(date).isSame(dayjs(newSelectedDate), isWeakRange ? 'hour' : 'day'),
+      );
+      return selectedIndex !== -1 ? selectedIndex : 0;
+    }
+    const initialIndex = range.findIndex(({ date }) =>
+      dayjs(date).isSame(dayjs(initialDate), isWeakRange ? 'hour' : 'day'),
+    );
     return initialIndex !== -1 ? initialIndex : 0;
   };
 
