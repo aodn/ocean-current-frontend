@@ -54,7 +54,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       >
         <div className="flex items-center">
           {showIcons && selectedElement && (
-            <img className="mr-4 h-9 w-9" src={selectedElement.icon} alt={`${selectedElement.label} icon`} />
+            <img className="mr-4 h-9 w-9" src={selectedElement.selectedIcon} alt={`${selectedElement.label} icon`} />
           )}
           <span className={header ? 'text-white' : ''}>{selectedElement ? selectedElement.label : 'Select Item'}</span>
         </div>
