@@ -81,6 +81,7 @@ const useArgoAsProductData = () => {
     const center = calculateCenterByCoords(coords).map((coord) => Math.round(coord));
     return {
       type: 'Feature',
+      id: worldMeteorologicalOrgId,
       properties: {
         worldMeteorologicalOrgId,
         cycle,

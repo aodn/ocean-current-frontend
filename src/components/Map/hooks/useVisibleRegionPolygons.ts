@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { LngLatBounds } from 'react-map-gl';
 import { BoundingBox } from '@/types/map';
 import { calculateAreaFromCoords, convertAreaCoordsToGeoJsonCoordinates } from '@/utils/geo-utils/geo';
+import { stringToHash } from '@/utils/math-utils/math';
 import { isPolygonWithinBounds } from '../utils/mapUtils';
 import useRegionFromProduct from './useRegionFromProduct';
 
@@ -38,9 +39,9 @@ const useVisibleRegionPolygons = (
     const visibleRegions = sortedRegions.filter(({ coords: regionCoords }) =>
       isPolygonWithinBounds(regionCoords, mapBoundCoords, minThresholdPercentage, maxThresholdPercentage),
     );
-    const features: GeoJSON.Feature[] = visibleRegions.map(({ title, coords }, index) => ({
+    const features: GeoJSON.Feature[] = visibleRegions.map(({ title, coords }) => ({
       type: 'Feature',
-      id: index,
+      id: stringToHash(title),
       properties: {
         name: title,
       },
