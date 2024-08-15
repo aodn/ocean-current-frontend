@@ -9,7 +9,7 @@ import MAP_STYLE from './data/map-style.basic-v8.json';
 import { BasicMapProps } from './types/map.types';
 
 const BasicMap: React.FC<BasicMapProps> = ({
-  id = mapboxInstanceIds.oceanCurrentBasicMapId,
+  id = mapboxInstanceIds.OCEAN_CURRENT_BASIC_MAP_ID,
   mapStyle = MAP_STYLE as MapStyle,
   style,
   children,
@@ -17,11 +17,15 @@ const BasicMap: React.FC<BasicMapProps> = ({
   fullScreenControl = false,
   navigationControl = true,
 }) => {
-  const interactiveIds = [mapboxLayerIds.productRegionBoxLayerId, mapboxLayerIds.argoAsProductPointLayerId];
+  const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
+
+  const interactiveIds = [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID];
 
   const [cursor, setCursor] = useState<string>('grab');
   const useMapViewState = useMapStore((state) => state.mapViewState);
   const { isArgo } = useProductCheck();
+
+  const shouldShowArgoLayer = (!isArgo && !isMiniMap) || isArgo;
 
   const handleMove = ({ viewState }: ViewStateChangeEvent) => {
     setMapViewState(viewState);
@@ -70,7 +74,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
 
       {!isArgo && memoizedDataImageLayer}
       {!isArgo && memoizedRegionPolygonLayer}
-      {isArgo && memoizedArgoAsProductLayer}
+      {shouldShowArgoLayer && memoizedArgoAsProductLayer}
     </Map>
   );
 };
