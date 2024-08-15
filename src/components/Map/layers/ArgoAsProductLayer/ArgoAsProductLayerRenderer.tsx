@@ -78,7 +78,8 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
       const features = map.queryRenderedFeatures(e.point, {
         layers: [ARGO_AS_PRODUCT_POINT_LAYER_ID],
       });
-      if (features.length > 0 && features[0].id != null) {
+      const checkIfHoveredFeature = features.length > 0 && features[0]?.id != null;
+      if (checkIfHoveredFeature) {
         const hoveredFeature = features[0];
         if (hoveredFeatureId !== null) {
           map.setFeatureState(
