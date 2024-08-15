@@ -21,4 +21,14 @@ const pickRandomElements = <T>(elements: T[], pickLength: number): T[] => {
   return indices.map((index) => elements[index]);
 };
 
-export { generateRandomIndices, pickRandomElements };
+const stringToHash = (str: string): number => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash);
+};
+
+export { generateRandomIndices, pickRandomElements, stringToHash };

@@ -1,5 +1,5 @@
 import { Layer, MapMouseEvent, Source, useMap } from 'react-map-gl';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
@@ -16,8 +16,12 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
   const { worldMeteorologicalOrgId: selectedWorldMeteorologicalOrgId } = useArgoStore(
     (state) => state.selectedArgoParams,
   );
-  const { argoAsProductSelectedPointLayerId, argoAsProductPointLayerId } = mapboxLayerIds;
-  const { argoAsProductSourceId } = mapboxSourceIds;
+  const { ARGO_AS_PRODUCT_SELECTED_POINT_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =
+    mapboxLayerIds;
+  const { ARGO_AS_PRODUCT_SOURCE_ID } = mapboxSourceIds;
+
+  const [hoveredFeatureId, setHoveredFeatureId] = useState<number | string | null>(null);
+
   const { current: map } = useMap();
   const navigate = useNavigate();
   const eventAdded = useRef(false);
@@ -33,12 +37,12 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
     [map],
   );
 
-  const handleClick = useCallback(
+  const handleMouseClick = useCallback(
     (e: MapMouseEvent) => {
       if (!map) return;
 
       try {
-        const clickedArgoParam = getPropertyFromMapFeatures<ArgoProfile>(map, e, argoAsProductPointLayerId, [
+        const clickedArgoParam = getPropertyFromMapFeatures<ArgoProfile>(map, e, ARGO_AS_PRODUCT_POINT_LAYER_ID, [
           'worldMeteorologicalOrgId',
           'cycle',
           'depth',
@@ -64,24 +68,93 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         console.error(error);
       }
     },
-    [map, argoAsProductPointLayerId, selectedWorldMeteorologicalOrgId, navigate, updateQueryParams, isMiniMap],
+    [map, selectedWorldMeteorologicalOrgId, navigate, updateQueryParams, isMiniMap, ARGO_AS_PRODUCT_POINT_LAYER_ID],
   );
+
+  const handleMouseMove = useCallback(
+    (e: MapMouseEvent) => {
+      if (!map) return;
+
+      const features = map.queryRenderedFeatures(e.point, {
+        layers: [ARGO_AS_PRODUCT_POINT_LAYER_ID],
+      });
+      if (features.length > 0 && features[0].id != null) {
+        const hoveredFeature = features[0];
+        if (hoveredFeatureId !== null) {
+          map.setFeatureState(
+            {
+              source: ARGO_AS_PRODUCT_SOURCE_ID,
+              id: hoveredFeatureId,
+            },
+            {
+              hover: false,
+            },
+          );
+        }
+
+        map.setFeatureState(
+          {
+            source: ARGO_AS_PRODUCT_SOURCE_ID,
+            id: hoveredFeature.id,
+          },
+          {
+            hover: true,
+          },
+        );
+
+        setHoveredFeatureId(hoveredFeature.id!);
+      }
+    },
+    [map, hoveredFeatureId, ARGO_AS_PRODUCT_POINT_LAYER_ID, ARGO_AS_PRODUCT_SOURCE_ID],
+  );
+
+  const handleMouseLeave = useCallback(() => {
+    if (!map) return;
+
+    if (hoveredFeatureId !== null) {
+      map.setFeatureState(
+        {
+          source: ARGO_AS_PRODUCT_SOURCE_ID,
+          id: hoveredFeatureId,
+        },
+        {
+          hover: false,
+        },
+      );
+    }
+
+    if (hoveredFeatureId !== null) {
+      setHoveredFeatureId(null);
+    }
+  }, [map, hoveredFeatureId, ARGO_AS_PRODUCT_SOURCE_ID]);
 
   useEffect(() => {
     if (!map) return;
 
     if (!eventAdded.current) {
       eventAdded.current = true;
-      map.on('click', argoAsProductPointLayerId, handleClick);
+      map.on('click', ARGO_AS_PRODUCT_POINT_LAYER_ID, handleMouseClick);
+      map.on('mousemove', ARGO_AS_PRODUCT_POINT_LAYER_ID, handleMouseMove);
+      map.on('mouseleave', ARGO_AS_PRODUCT_POINT_LAYER_ID, handleMouseLeave);
     }
 
     return () => {
       if (map && eventAdded.current) {
-        map.off('click', argoAsProductPointLayerId, handleClick);
+        map.off('click', [ARGO_AS_PRODUCT_POINT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID], handleMouseClick);
+        map.off('mousemove', ARGO_AS_PRODUCT_POINT_LAYER_ID, handleMouseMove);
+        map.off('mouseleave', ARGO_AS_PRODUCT_POINT_LAYER_ID, handleMouseLeave);
         eventAdded.current = false;
       }
     };
-  }, [argoAsProductPointLayerId, map, navigate, handleClick]);
+  }, [
+    map,
+    navigate,
+    handleMouseClick,
+    handleMouseMove,
+    handleMouseLeave,
+    ARGO_AS_PRODUCT_POINT_LAYER_ID,
+    PRODUCT_REGION_BOX_LAYER_ID,
+  ]);
 
   useEffect(() => {
     if (!map || !isMiniMap) return;
@@ -95,11 +168,11 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
   }, [map, mapFlyToPoint, argoData, selectedWorldMeteorologicalOrgId, isMiniMap]);
 
   return (
-    <Source id={argoAsProductSourceId} type="geojson" data={argoData}>
+    <Source id={ARGO_AS_PRODUCT_SOURCE_ID} type="geojson" data={argoData}>
       <Layer
-        id={argoAsProductSelectedPointLayerId}
+        id={ARGO_AS_PRODUCT_SELECTED_POINT_LAYER_ID}
         type="circle"
-        source={argoAsProductSourceId}
+        source={ARGO_AS_PRODUCT_SOURCE_ID}
         paint={{
           'circle-radius': 15,
           'circle-color': 'white',
@@ -110,11 +183,11 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         filter={['==', 'worldMeteorologicalOrgId', selectedWorldMeteorologicalOrgId]}
       />
       <Layer
-        id={argoAsProductPointLayerId}
+        id={ARGO_AS_PRODUCT_POINT_LAYER_ID}
         type="circle"
-        source={argoAsProductSourceId}
+        source={ARGO_AS_PRODUCT_SOURCE_ID}
         paint={{
-          'circle-radius': 8,
+          'circle-radius': ['case', ['boolean', ['feature-state', 'hover'], false], 10, 8],
           'circle-color': '#524DAB',
           'circle-stroke-width': 1,
           'circle-stroke-color': 'white',

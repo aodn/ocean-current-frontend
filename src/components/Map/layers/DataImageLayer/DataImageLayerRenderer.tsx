@@ -4,8 +4,8 @@ import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { useArrayCompareEffect } from '@/hooks';
 
 const DataImageLayerRenderer: React.FC<{ imageUrl: string }> = ({ imageUrl }) => {
-  const { dataImageSourceId } = mapboxSourceIds;
-  const { dataImageLayerId, productRegionBoxLayerId, argoAsProductPointLayerId } = mapboxLayerIds;
+  const { DATA_IMAGE_SOURCE_ID } = mapboxSourceIds;
+  const { DATA_IMAGE_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
 
   const [layers, setLayers] = useState<string[]>([]);
   const { current: map } = useMap();
@@ -39,20 +39,20 @@ const DataImageLayerRenderer: React.FC<{ imageUrl: string }> = ({ imageUrl }) =>
   useArrayCompareEffect(() => {
     if (!map) return;
     const polygonLayers = layers.filter(
-      (layer) => layer.includes(productRegionBoxLayerId) || layer.includes(argoAsProductPointLayerId),
+      (layer) => layer.includes(PRODUCT_REGION_BOX_LAYER_ID) || layer.includes(ARGO_AS_PRODUCT_POINT_LAYER_ID),
     );
 
-    if (polygonLayers.length > 0 && layers.includes(dataImageLayerId)) {
+    if (polygonLayers.length > 0 && layers.includes(DATA_IMAGE_LAYER_ID)) {
       const bottomPolygonLayer = polygonLayers[0];
 
-      map.moveLayer(dataImageLayerId, bottomPolygonLayer);
+      map.moveLayer(DATA_IMAGE_LAYER_ID, bottomPolygonLayer);
     }
   }, layers);
 
   return (
     <div>
       <Source
-        id={dataImageSourceId}
+        id={DATA_IMAGE_SOURCE_ID}
         type="image"
         url={imageUrl}
         // TODO: read the coordinates from the regionData.ts and convert it to the format below
@@ -64,9 +64,9 @@ const DataImageLayerRenderer: React.FC<{ imageUrl: string }> = ({ imageUrl }) =>
         ]}
       >
         <Layer
-          id={dataImageLayerId}
+          id={DATA_IMAGE_LAYER_ID}
           type="raster"
-          source={dataImageSourceId}
+          source={DATA_IMAGE_SOURCE_ID}
           paint={{
             'raster-fade-duration': 0,
           }}

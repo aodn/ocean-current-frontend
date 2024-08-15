@@ -17,6 +17,12 @@ vi.mock('../layers/RegionPolygonLayer/RegionPolygonLayer', () => {
   };
 });
 
+vi.mock('../layers/ArgoAsProductLayer/ArgoAsProductLayer.tsx', () => {
+  return {
+    default: () => <div>ArgoAsProductLayerLayer</div>,
+  };
+});
+
 describe('BasicMap Component', () => {
   it('renders correctly with default props', () => {
     //Arrange

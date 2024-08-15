@@ -15,12 +15,12 @@ const MIN_THRESHOLD_PERCENTAGE = 3;
 const MAX_THRESHOLD_PERCENTAGE = 70;
 
 const RegionPolygonLayer: React.FC = () => {
-  const { productRegionBoxSourceId: productRegionBoxSource } = mapboxSourceIds;
+  const { PRODUCT_REGION_BOX_SOURCE_ID } = mapboxSourceIds;
   const {
-    productRegionBoxLayerId,
-    productRegionBoxHighlightLayerId,
-    productRegionNameLabelLayerId,
-    productRegionSelectedBoxLayerId,
+    PRODUCT_REGION_BOX_LAYER_ID,
+    PRODUCT_REGION_NAME_LABEL_LAYER_ID,
+    PRODUCT_REGION_SELECTED_BOX_LAYER_ID,
+    ARGO_AS_PRODUCT_POINT_LAYER_ID,
   } = mapboxLayerIds;
 
   const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
@@ -33,6 +33,7 @@ const RegionPolygonLayer: React.FC = () => {
 
   const [hoveredRegion, setHoveredRegion] = useState<string>('');
   const [mapBounds, setMapBounds] = useState<LngLatBounds | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | number | null>(null);
 
   const defaultTargetDate = dayjs().subtract(2, 'day').format('YYYYMMDD');
 
@@ -83,23 +84,48 @@ const RegionPolygonLayer: React.FC = () => {
     if (!map) return;
 
     const handleMouseMove = (e: MapMouseEvent) => {
-      const { name: regionName } = getPropertyFromMapFeatures<{ name: string }>(map, e, productRegionBoxLayerId, [
-        'name',
-      ]);
+      const features = map.queryRenderedFeatures(e.point, {
+        layers: [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID],
+      });
+      if (features && features.length > 0 && features[0]?.geometry?.type === 'Polygon' && features[0].id != null) {
+        setHoveredId(features[0].id);
+      }
 
-      if (regionName) {
-        setHoveredRegion(regionName);
+      const checkIfArgoPoint = features.find((feature) => feature.layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
+
+      if (checkIfArgoPoint) {
+        setHoveredRegion('');
+        setHoveredId(null);
+      } else {
+        const { name: regionName } = getPropertyFromMapFeatures<{ name: string }>(map, e, PRODUCT_REGION_BOX_LAYER_ID, [
+          'name',
+        ]);
+
+        if (regionName) {
+          setHoveredRegion(regionName);
+        }
       }
     };
 
     const handleMouseClick = (e: MapMouseEvent) => {
-      const features = map.queryRenderedFeatures(e.point, { layers: [productRegionBoxLayerId] });
+      if (!hoveredRegion) {
+        return;
+      }
+      const features = map.queryRenderedFeatures(e.point, {
+        layers: [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID],
+      });
+
+      const checkIfArgoPoint = features.find((feature) => feature.layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
+      if (checkIfArgoPoint) {
+        return;
+      }
+
       if (features.length > 0 && features[0]?.geometry?.type === 'Polygon') {
         const regionBounds = convertGeoJsonCoordinatesToBBox(features[0].geometry.coordinates as GeoJsonPolygon);
         mapFitBounds(regionBounds);
       }
 
-      const { name: regionName } = getPropertyFromMapFeatures<{ name: string }>(map, e, productRegionBoxLayerId, [
+      const { name: regionName } = getPropertyFromMapFeatures<{ name: string }>(map, e, PRODUCT_REGION_BOX_LAYER_ID, [
         'name',
       ]);
 
@@ -114,98 +140,89 @@ const RegionPolygonLayer: React.FC = () => {
 
     const handleMouseLeave = () => {
       setHoveredRegion('');
+      setHoveredId(null);
     };
 
-    map.on('mousemove', productRegionBoxLayerId, handleMouseMove);
-    map.on('mouseleave', productRegionBoxLayerId, handleMouseLeave);
-    map.on('click', productRegionBoxLayerId, handleMouseClick);
+    map.on('mousemove', PRODUCT_REGION_BOX_LAYER_ID, handleMouseMove);
+    map.on('mouseleave', PRODUCT_REGION_BOX_LAYER_ID, handleMouseLeave);
+    map.on('click', PRODUCT_REGION_BOX_LAYER_ID, handleMouseClick);
 
     return () => {
-      map.off('click', productRegionBoxLayerId, handleMouseClick);
-      map.off('mouseleave', productRegionBoxLayerId, handleMouseLeave);
-      map.off('mousemove', productRegionBoxLayerId, handleMouseMove);
+      map.off('click', PRODUCT_REGION_BOX_LAYER_ID, handleMouseClick);
+      map.off('mouseleave', PRODUCT_REGION_BOX_LAYER_ID, handleMouseLeave);
+      map.off('mousemove', PRODUCT_REGION_BOX_LAYER_ID, handleMouseMove);
     };
   }, [
     map,
-    productRegionBoxLayerId,
+    PRODUCT_REGION_BOX_LAYER_ID,
     searchParams.date,
     updateQueryParamsAndNavigate,
     defaultTargetDate,
     baseProductPath,
     mapFitBounds,
+    ARGO_AS_PRODUCT_POINT_LAYER_ID,
+    hoveredRegion,
   ]);
 
   return (
-    <>
-      <Source id={productRegionBoxSource} type="geojson" data={geoJsonData}>
-        <Layer
-          id={productRegionBoxLayerId}
-          type="fill"
-          source={productRegionBoxSource}
-          paint={{
-            'fill-color': 'rgba(19, 40, 113, 0)',
-            'fill-outline-color': 'rgba(47, 0, 179, 0.3)',
-          }}
-        />
-        <Layer
-          type="line"
-          source={productRegionBoxSource}
-          paint={{
-            'line-color': 'rgba(34,34,34,0.5)',
-            'line-width': 1.4,
-          }}
-        />
-        <Layer
-          id={productRegionBoxHighlightLayerId}
-          type="fill"
-          source={productRegionBoxSource}
-          paint={{
-            'fill-color': 'rgba(58, 77, 143, 0.2)',
-            'fill-outline-color': 'rgba(58, 92, 143, 0.8)',
-          }}
-          filter={['==', 'name', hoveredRegion]}
-        />
-        <Layer
-          id={productRegionNameLabelLayerId}
-          type="symbol"
-          source={productRegionBoxSource}
-          layout={{
-            'text-field': ['get', 'name'],
-            'text-size': 16,
-            'text-justify': 'center',
-            'text-anchor': 'center',
-          }}
-          paint={{
-            'text-color': '#fff',
-          }}
-          filter={['==', 'name', hoveredRegion]}
-        />
-        <Layer
-          type="symbol"
-          source={productRegionBoxSource}
-          layout={{
-            'text-field': ['get', 'name'],
-            'text-size': 16,
-            'text-justify': 'center',
-            'text-anchor': 'center',
-          }}
-          paint={{
-            'text-color': '#fff',
-          }}
-          filter={['==', 'name', selectedRegion]}
-        />
-        <Layer
-          id={productRegionSelectedBoxLayerId}
-          type="line"
-          source={productRegionBoxSource}
-          paint={{
-            'line-color': 'rgba(58, 92, 143, 0.8)',
-            'line-width': 3,
-          }}
-          filter={['==', 'name', selectedRegion]}
-        />
-      </Source>
-    </>
+    <Source id={PRODUCT_REGION_BOX_SOURCE_ID} type="geojson" data={geoJsonData}>
+      <Layer
+        id={PRODUCT_REGION_BOX_LAYER_ID}
+        type="fill"
+        source={PRODUCT_REGION_BOX_SOURCE_ID}
+        paint={{
+          'fill-color': ['case', ['==', ['id'], hoveredId], 'rgba(58, 77, 143, 0.2)', 'rgba(19, 40, 113, 0)'],
+          'fill-outline-color': ['case', ['==', ['id'], hoveredId], 'rgba(58, 92, 143, 0.8)', 'rgba(47, 0, 179, 0.3)'],
+        }}
+      />
+      <Layer
+        type="line"
+        source={PRODUCT_REGION_BOX_SOURCE_ID}
+        paint={{
+          'line-color': 'rgba(34,34,34,0.5)',
+          'line-width': ['case', ['==', ['id'], hoveredId], 2.5, 1.4],
+        }}
+      />
+      <Layer
+        id={PRODUCT_REGION_NAME_LABEL_LAYER_ID}
+        type="symbol"
+        source={PRODUCT_REGION_BOX_SOURCE_ID}
+        layout={{
+          'text-field': ['get', 'name'],
+          'text-size': 16,
+          'text-justify': 'center',
+          'text-anchor': 'center',
+        }}
+        paint={{
+          'text-color': '#fff',
+        }}
+        filter={['==', 'name', hoveredRegion]}
+      />
+      <Layer
+        type="symbol"
+        source={PRODUCT_REGION_BOX_SOURCE_ID}
+        layout={{
+          'text-field': ['get', 'name'],
+          'text-size': 16,
+          'text-justify': 'center',
+          'text-anchor': 'center',
+        }}
+        paint={{
+          'text-color': '#fff',
+        }}
+        filter={['==', 'name', selectedRegion]}
+      />
+      <Layer
+        id={PRODUCT_REGION_SELECTED_BOX_LAYER_ID}
+        type="line"
+        source={PRODUCT_REGION_BOX_SOURCE_ID}
+        paint={{
+          'line-color': 'rgba(58, 92, 143, 0.8)',
+          'line-width': 3,
+        }}
+        filter={['==', 'name', selectedRegion]}
+      />
+    </Source>
   );
 };
 
