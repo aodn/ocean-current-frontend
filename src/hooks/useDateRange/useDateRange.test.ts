@@ -233,4 +233,92 @@ describe('useDateRange', () => {
     expect(result.current.selectedDateIndex).toBe(5);
     expect(result.current.selectedDateIndex).not.toBe(initialIndex);
   });
+
+  it('should disable video creation for specific products', () => {
+    // Arrange
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'climatology', title: 'Climatology', path: '/climatology' } as Product,
+      subProduct: null,
+      subProducts: [],
+    });
+
+    // Act
+    const { result } = renderHook(() => useDateRange());
+
+    // Assert
+    expect(result.current.disableVideoCreation()).toBe(true);
+
+    // Test for other cases
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'fourHourSst', title: 'Four Hour SST', path: '/four-hour-sst' } as Product,
+      subProduct: { key: 'fourHourSst-sstAge', title: 'SST Age', path: '/sst-age' } as Product,
+      subProducts: [],
+    });
+    const { result: result2 } = renderHook(() => useDateRange());
+    expect(result2.current.disableVideoCreation()).toBe(true);
+
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'snapshotSst', title: 'Snapshot SST', path: '/snapshot-sst' } as Product,
+      subProduct: null,
+      subProducts: [],
+    });
+    const { result: result3 } = renderHook(() => useDateRange());
+    expect(result3.current.disableVideoCreation()).toBe(false);
+  });
+
+  it('should handle surface waves product correctly', () => {
+    // Arrange
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'surfaceWaves', title: 'Surface Waves', path: '/surface-waves' } as Product,
+      subProduct: null,
+      subProducts: [],
+    });
+
+    // Act
+    const { result } = renderHook(() => useDateRange());
+
+    // Assert
+    expect(result.current.isSurfaceWaves).toBe(true);
+    expect(result.current.allDates[0].date.getHours() % 2).toBe(0);
+  });
+
+  it('should use correct format date based on product type', () => {
+    // Arrange & Act
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'fourHourSst', title: 'Four Hour SST', path: '/four-hour-sst' } as Product,
+      subProduct: null,
+      subProducts: [],
+    });
+    const { result: resultFourHour } = renderHook(() => useDateRange());
+
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'snapshotSst', title: 'Snapshot SST', path: '/snapshot-sst' } as Product,
+      subProduct: null,
+      subProducts: [],
+    });
+    const { result: resultSnapshot } = renderHook(() => useDateRange());
+
+    // Assert
+    expect(resultFourHour.current.formatDate).toBe('YYYYMMDDHH');
+    expect(resultSnapshot.current.formatDate).toBe('YYYYMMDD');
+  });
+
+  it('should update correctly when product changes', () => {
+    // Arrange
+    const { result, rerender } = renderHook(() => useDateRange());
+    const initialAllDates = result.current.allDates;
+
+    // Act
+    vi.mocked(useProductConvert).mockReturnValue({
+      mainProduct: { key: 'climatology', title: 'Climatology', path: '/climatology' } as Product,
+      subProduct: null,
+      subProducts: [],
+    });
+    rerender();
+
+    // Assert
+    expect(result.current.allDates).not.toEqual(initialAllDates);
+    expect(result.current.isYearRange).toBe(true);
+    expect(result.current.allDates.length).toBe(12);
+  });
 });

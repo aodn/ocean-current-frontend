@@ -13,8 +13,9 @@ import FourHourSSTWhiteIcon from '@/assets/icons/products/white-icons/4-hour-SST
 import SixHourSSTIcon from '@/assets/icons/products/6-hour-SST-icon.svg';
 import SixHourSSTWhiteIcon from '@/assets/icons/products/white-icons/6-hour-SST-white-icon.svg';
 import ArgoIcon from '@/assets/icons/products/argo-icon.svg';
+import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 
-export const mapNavbarDataElements = [
+export const mapNavbarDataElements: DropdownElement[] = [
   { id: 'oceanColour', label: 'Ocean Colour', icon: OceanColourIcon, selectedIcon: OceanColourWhiteIcon },
   {
     id: 'adjustedSeaLevelAnomaly',

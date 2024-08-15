@@ -2,6 +2,7 @@ import React from 'react';
 import dayjs from 'dayjs';
 import DatePicker from '@/components/DatePicker/DatePicker';
 import DateSlider from '@/components/DateSlider/DateSlider';
+import ResetIcon from '@/assets/icons/reset-icon.svg';
 import { useDateRange } from '@/hooks';
 
 const MapNavbar: React.FC = () => {
@@ -19,6 +20,7 @@ const MapNavbar: React.FC = () => {
     isYearRange,
     isFourHourSst,
     isSurfaceWaves,
+    resetDateRange,
   } = useDateRange();
 
   const isSelectedDayYesterdayOrLater = dayjs(allDates[selectedDateIndex]?.date).isSameOrAfter(
@@ -26,10 +28,14 @@ const MapNavbar: React.FC = () => {
     'day',
   );
 
+  const handleReset = () => {
+    resetDateRange();
+  };
+
   return (
-    <div className="mb-2 bg-[#FAFAFA] p-1 shadow-lg">
-      <div className="flex items-center justify-between rounded">
-        <div className="w-4/12">
+    <div className="mb-2 rounded-md bg-[#FAFAFA] p-3">
+      <div className="mb-2 flex items-center rounded">
+        <div className="flex h-11 items-center justify-center rounded-md border border-[#3A6F8F] p-2">
           <DatePicker
             isYearRange={isYearRange}
             isFourHourSst={isFourHourSst}
@@ -43,6 +49,13 @@ const MapNavbar: React.FC = () => {
             isLastMonthOfTheYear={isLastMonthOfTheYear}
             isSurfaceWaves={isSurfaceWaves}
           />
+        </div>
+        <div
+          onClick={() => handleReset()}
+          aria-hidden
+          className="ml-4 flex h-11 w-1/12 cursor-pointer items-center justify-center rounded-md border border-[#3A6F8F] p-2"
+        >
+          <img src={ResetIcon} alt="" srcSet="" />
         </div>
       </div>
       <div className="mb-2 flex items-center justify-center">

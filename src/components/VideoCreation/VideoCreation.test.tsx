@@ -64,6 +64,7 @@ describe('VideoCreation', () => {
     isYearRange: false,
     disableVideoCreation: () => false,
     resetDateRange: vi.fn(),
+    formatDate: 'YYYYMMDD',
   };
 
   const mockVideoCreationReturnValue = {

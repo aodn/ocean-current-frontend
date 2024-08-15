@@ -46,4 +46,5 @@ export type UseDateRangeReturn = {
   isYearRange: boolean;
   resetDateRange: () => void;
   disableVideoCreation: () => boolean;
+  formatDate: string;
 };

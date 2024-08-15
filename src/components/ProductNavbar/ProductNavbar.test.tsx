@@ -37,6 +37,7 @@ describe('ProductNavbar', () => {
     isYearRange: false,
     disableVideoCreation: () => false,
     resetDateRange: vi.fn(),
+    formatDate: 'YYYYMMDD',
   };
 
   beforeEach(() => {
