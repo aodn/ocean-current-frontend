@@ -87,13 +87,13 @@ const RegionPolygonLayer: React.FC = () => {
       const features = map.queryRenderedFeatures(e.point, {
         layers: [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID],
       });
-      const checkIfRegionHovered =
+      const isRegionHovered =
         features &&
         features.length > 0 &&
         features[0]?.geometry?.type === 'Polygon' &&
         features[0].id != null &&
         features[0].id != undefined;
-      if (checkIfRegionHovered) {
+      if (isRegionHovered) {
         setHoveredId(features[0].id!);
       }
 
@@ -121,8 +121,8 @@ const RegionPolygonLayer: React.FC = () => {
         layers: [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID],
       });
 
-      const checkIfArgoPoint = features.find((feature) => feature.layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
-      if (checkIfArgoPoint) {
+      const hasArgoPoint = features.find((feature) => feature.layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
+      if (hasArgoPoint) {
         return;
       }
 
