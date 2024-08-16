@@ -178,7 +178,7 @@ describe('useDateRange', () => {
     const { result } = renderHook(() => useDateRange());
 
     // Assert
-    expect(result.current.isFourHourSst).toBe(true);
+    expect(result.current.isWeekRange).toBe(true);
     expect(result.current.allDates[0].date.getHours() % 4).toBe(2);
   });
 
@@ -278,7 +278,7 @@ describe('useDateRange', () => {
     const { result } = renderHook(() => useDateRange());
 
     // Assert
-    expect(result.current.isSurfaceWaves).toBe(true);
+    expect(result.current.isWeekRange).toBe(true);
     expect(result.current.allDates[0].date.getHours() % 2).toBe(0);
   });
 
