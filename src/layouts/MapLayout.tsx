@@ -28,7 +28,7 @@ const MapLayout: React.FC = () => {
         <div className="w-1/3">
           <MapSidebar />
         </div>
-        <div className="mx-2 mt-2 w-full">
+        <div className="mx-2 w-full">
           <MapNavbar />
           <div className="w-full">
             <Outlet />

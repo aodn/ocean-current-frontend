@@ -95,13 +95,6 @@ const useDateRange = (): UseDateRangeReturn => {
 
   useEffect(() => {
     const getDateRange = () => {
-      if (urlStartDate && urlEndDate) {
-        return {
-          start: dayjs(urlStartDate, 'YYYYMMDD'),
-          end: dayjs(urlEndDate, 'YYYYMMDD'),
-        };
-      }
-
       if (isYearRange) {
         return {
           start: dayjs().startOf('year'),
@@ -387,6 +380,7 @@ const useDateRange = (): UseDateRangeReturn => {
     isSurfaceWaves,
     resetDateRange,
     disableVideoCreation,
+    formatDate,
   };
 };
 

@@ -129,6 +129,34 @@ const getProductFullPathById = (productId: string) => {
   return product.parentId ? constructParentPath(product) : constructPath(product);
 };
 
+const getProductPathWithSubProduct = (productId: string): string => {
+  const product = getProductByIdFromFlat(productId);
+
+  if (!product) {
+    throw new Error(`Product with id ${productId} not found`);
+  }
+
+  if (!product.parentId) {
+    const mainProduct = OC_PRODUCTS.find((p) => p.key === product.key);
+    if (!mainProduct) {
+      throw new Error(`Main product with key ${product.key} not found`);
+    }
+
+    if (mainProduct.children && mainProduct.children.length > 0) {
+      return `${mainProduct.path}/${mainProduct.children[0].path}`;
+    }
+
+    return mainProduct.path;
+  }
+
+  const mainProduct = OC_PRODUCTS.find((p) => p.key === product.parentId);
+  if (!mainProduct) {
+    throw new Error(`Main product for child with key ${product.key} not found`);
+  }
+
+  return `${mainProduct.path}/${product.path}`;
+};
+
 export {
   combineProducts,
   combinedProducts,
@@ -143,4 +171,5 @@ export {
   constructPath,
   constructParentPath,
   getProductFullPathById,
+  getProductPathWithSubProduct,
 };
