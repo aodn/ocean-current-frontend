@@ -1,34 +1,37 @@
-import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 import useProductStore, { setProductId } from '@/stores/product-store/productStore';
-import { getProductFullPathById } from '@/utils/product-utils/product';
+import { getProductPathWithSubProduct } from '@/utils/product-utils/product';
 import { mapSidebarElements } from '@/data/dropDownProductData';
-import { MapNavBarElement } from '@/types/dropDownProduct';
+import { useDateRange, useQueryParams } from '@/hooks';
+import { DropdownElement } from '../Shared/Dropdown/types/dropdown.types';
 
 const MapSidebar: React.FC = () => {
-  const navigate = useNavigate();
-
+  const { updateQueryParamsAndNavigate } = useQueryParams();
+  const { allDates, selectedDateIndex, formatDate } = useDateRange();
   const useProductId = useProductStore((state) => state.productParams.productId);
+  const selectedDate = dayjs(allDates[selectedDateIndex]?.date).format(formatDate);
 
-  const handleDropdownChange = (selectedElement: MapNavBarElement) => {
+  const handleProductChange = (selectedElement: DropdownElement) => {
     if (selectedElement.id === useProductId) {
       return;
     }
     setProductId(selectedElement.id);
-    const targetPath = getProductFullPathById(selectedElement.id);
-    navigate(targetPath);
+
+    const targetPath = getProductPathWithSubProduct(selectedElement.id);
+    updateQueryParamsAndNavigate(targetPath, { date: selectedDate });
   };
 
   return (
-    <div className="h-full w-full overflow-hidden bg-[#DAE3E8] p-4 shadow" data-testid="drop-down-menu">
+    <div className=" w-full overflow-hidden rounded bg-[#fff] p-4 shadow" data-testid="drop-down-menu">
       {mapSidebarElements.map((element) => (
         <div
           key={element.id}
           aria-hidden="true"
-          className={`mb-4 flex cursor-pointer items-center rounded-md border p-3 duration-300 hover:border-imos-black ${element.id === useProductId ? 'bg-[#3A6F8F] text-white' : 'bg-white text-[#787878]'}`}
-          onClick={() => handleDropdownChange(element)}
+          className={`mb-4 flex cursor-pointer items-center rounded-md border border-[#3A6F8F] p-3 duration-300 hover:border-[#52BDEC] ${element.id === useProductId ? 'border-[#52BDEC] bg-[#52BDEC80]' : 'bg-white '}`}
+          onClick={() => handleProductChange(element)}
         >
           <img className="mr-4 h-9 w-9" src={element.icon} alt={`${element.label} icon`} />
-          <span className="text-left text-base ">{element.label}</span>
+          <span className="text-left text-base text-[#787878]">{element.label}</span>
         </div>
       ))}
     </div>
