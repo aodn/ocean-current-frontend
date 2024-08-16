@@ -44,12 +44,12 @@ const useDateRange = (): UseDateRangeReturn => {
   const isFourHourSst = mainProduct?.key === 'fourHourSst';
   const isSurfaceWaves = mainProduct?.key === 'surfaceWaves';
   const isOceanColourLocal = mainProduct?.key === 'oceanColour' && region?.scope === 'local';
-  const isWeakRange = isFourHourSst || isSurfaceWaves || isOceanColourLocal;
+  const isWeekRange = isFourHourSst || isSurfaceWaves || isOceanColourLocal;
 
   const urlDate = searchParams.get('date');
   const urlStartDate = searchParams.get('startDate');
   const urlEndDate = searchParams.get('endDate');
-  const formatDate = isWeakRange ? 'YYYYMMDDHH' : 'YYYYMMDD';
+  const formatDate = isWeekRange ? 'YYYYMMDDHH' : 'YYYYMMDD';
 
   const getInitialDate = (): Date => {
     if (urlDate) {
@@ -58,7 +58,7 @@ const useDateRange = (): UseDateRangeReturn => {
     if (isYearRange) {
       return dayjs().startOf('year').toDate();
     }
-    if (isWeakRange) {
+    if (isWeekRange) {
       return dayjs().subtract(1, 'week').toDate();
     }
     return dayjs().subtract(1, 'month').toDate();
@@ -106,7 +106,7 @@ const useDateRange = (): UseDateRangeReturn => {
           start: dayjs().startOf('year'),
           end: dayjs().endOf('year'),
         };
-      } else if (isWeakRange) {
+      } else if (isWeekRange) {
         return {
           start: dayjs().subtract(1, 'week'),
           end: dayjs(),
@@ -222,12 +222,12 @@ const useDateRange = (): UseDateRangeReturn => {
   const determineDaySelectedIndex = (range: DateRange, newSelectedDate?: Date) => {
     if (newSelectedDate) {
       const selectedIndex = range.findIndex(({ date }) =>
-        dayjs(date).isSame(dayjs(newSelectedDate), isWeakRange ? 'hour' : 'day'),
+        dayjs(date).isSame(dayjs(newSelectedDate), isWeekRange ? 'hour' : 'day'),
       );
       return selectedIndex !== -1 ? selectedIndex : 0;
     }
     const initialIndex = range.findIndex(({ date }) =>
-      dayjs(date).isSame(dayjs(initialDate), isWeakRange ? 'hour' : 'day'),
+      dayjs(date).isSame(dayjs(initialDate), isWeekRange ? 'hour' : 'day'),
     );
     return initialIndex !== -1 ? initialIndex : 0;
   };
@@ -392,7 +392,7 @@ const useDateRange = (): UseDateRangeReturn => {
     resetDateRange,
     disableVideoCreation,
     formatDate,
-    isWeakRange,
+    isWeekRange,
   };
 };
 

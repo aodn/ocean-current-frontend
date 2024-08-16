@@ -25,12 +25,12 @@ const DatePicker: React.FC<DatePickerProps> = ({
   selectedDate,
   isLastMonthOfTheYear,
   isYearRange,
-  isWeakRange,
+  isWeekRange,
 }) => {
   const formattedDate = () => {
     if (isYearRange) {
       return dayjs(selectedDate).format('MMM YYYY');
-    } else if (isWeakRange) {
+    } else if (isWeekRange) {
       return dayjs(selectedDate).format('DD MMM HH:mm ');
     } else {
       return dayjs(selectedDate).format('DD MMM YY');

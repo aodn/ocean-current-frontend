@@ -59,7 +59,7 @@ describe('VideoCreation', () => {
     isSelectedDayYesterdayOrLater: () => false,
     isLastMonthOfTheYear: vi.fn(),
     steps: 1,
-    isWeakRange: false,
+    isWeekRange: false,
     isYearRange: false,
     disableVideoCreation: () => false,
     resetDateRange: vi.fn(),

@@ -42,7 +42,7 @@ export type UseDateRangeReturn = {
   isLastMonthOfTheYear: () => boolean;
   steps: number;
   isYearRange: boolean;
-  isWeakRange: boolean;
+  isWeekRange: boolean;
   resetDateRange: () => void;
   disableVideoCreation: () => boolean;
   formatDate: string;

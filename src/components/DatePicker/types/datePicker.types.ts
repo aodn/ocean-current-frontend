@@ -10,5 +10,5 @@ export interface DatePickerProps {
   selectedDate: Date | null;
   isLastMonthOfTheYear: () => boolean;
   isYearRange: boolean;
-  isWeakRange: boolean;
+  isWeekRange: boolean;
 }

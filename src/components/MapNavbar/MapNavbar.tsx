@@ -19,7 +19,7 @@ const MapNavbar: React.FC = () => {
     isLastMonthOfTheYear,
     isYearRange,
     resetDateRange,
-    isWeakRange,
+    isWeekRange,
   } = useDateRange();
 
   const isSelectedDayYesterdayOrLater = dayjs(allDates[selectedDateIndex]?.date).isSameOrAfter(
@@ -37,7 +37,7 @@ const MapNavbar: React.FC = () => {
         <div className="flex h-11 items-center justify-center rounded-md border border-[#3A6F8F] p-2">
           <DatePicker
             isYearRange={isYearRange}
-            isWeakRange={isWeakRange}
+            isWeekRange={isWeekRange}
             startDate={startDate}
             endDate={endDate}
             addButtonDisabled={isSelectedDayYesterdayOrLater}

@@ -32,7 +32,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
     isYearRange,
     disableVideoCreation,
     resetDateRange,
-    isWeakRange,
+    isWeekRange,
   } = useDateRange();
 
   const handleCopyLink = () => {
@@ -82,7 +82,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
             modifyDate={modifyDate}
             selectedDate={allDates[selectedDateIndex]?.date}
             isLastMonthOfTheYear={isLastMonthOfTheYear}
-            isWeakRange={isWeakRange}
+            isWeekRange={isWeekRange}
             isYearRange={isYearRange}
           />
         </div>
