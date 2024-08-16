@@ -1,19 +1,16 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import HomeProductCarrouselCard from './components/HomeProductCarrouselCard';
+import HomeProductCarouselCard from './components/HomeProductCarouselCard';
 
-describe('HomeProductCarrouselCard', () => {
+describe('HomeProductCarouselCard', () => {
   it('should render the product information', () => {
     // Arrange
     const title = 'Test Product';
     const description = 'This is a test product.';
-    const imageUrl = 'test.jpg';
     const id = 'test-product';
 
     // Act
-    render(
-      <HomeProductCarrouselCard title={title} description={description} selected={false} imageUrl={imageUrl} id={id} />,
-    );
+    render(<HomeProductCarouselCard title={title} description={description} selected={false} id={id} />);
 
     // Assert
     expect(screen.getByText(title)).toBeInTheDocument();
@@ -24,16 +21,13 @@ describe('HomeProductCarrouselCard', () => {
     // Arrange
     const title = 'Test Product';
     const description = 'This is a test product.';
-    const imageUrl = 'test.jpg';
     const id = 'test-product';
 
     // Act
-    render(
-      <HomeProductCarrouselCard title={title} description={description} selected={true} imageUrl={imageUrl} id={id} />,
-    );
+    render(<HomeProductCarouselCard title={title} description={description} selected={true} id={id} />);
 
     // Assert
     const cardElement = screen.getByTestId(`product-card-${id}`);
-    expect(cardElement).toHaveClass('border-4 border-blue-500');
+    expect(cardElement).toHaveClass('border-l-8 border-imos-sea-blue border-2');
   });
 });

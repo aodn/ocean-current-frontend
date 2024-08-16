@@ -1,9 +1,9 @@
 import React from 'react';
-import { ProductCarrouselCardProps } from '../types/homeProductCarrousel.types';
+import { ProductCarouselCardProps } from '../types/homeProductCarousel.types';
 
-const ProductCarrouselCard: React.FC<ProductCarrouselCardProps> = ({ title, description, selected, id }) => {
-  const selectedBorderStyle = 'border-4 border-blue-500';
-  const nonSelectedBorderStyle = 'border-4 border';
+const ProductCarouselCard: React.FC<ProductCarouselCardProps> = ({ title, description, selected, id }) => {
+  const selectedBorderStyle = 'border-l-8 border-imos-sea-blue border-2';
+  const nonSelectedBorderStyle = 'border-l-8 border border-2 border-transparent';
 
   return (
     <div
@@ -18,4 +18,4 @@ const ProductCarrouselCard: React.FC<ProductCarrouselCardProps> = ({ title, desc
   );
 };
 
-export default ProductCarrouselCard;
+export default ProductCarouselCard;

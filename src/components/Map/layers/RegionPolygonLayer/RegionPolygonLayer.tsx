@@ -186,7 +186,7 @@ const RegionPolygonLayer: React.FC = () => {
         source={PRODUCT_REGION_BOX_SOURCE_ID}
         paint={{
           'line-color': 'rgba(34,34,34,0.5)',
-          'line-width': ['case', ['==', ['id'], hoveredId], 2.5, 1.4],
+          'line-width': ['case', ['==', ['id'], hoveredId], 3.5, 2.4],
         }}
       />
       <Layer

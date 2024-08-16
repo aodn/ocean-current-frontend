@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import useMapStore from '@/stores/map-store/mapStore';
 import { setProductId } from '@/stores/product-store/productStore';
 import { productsData } from './data/homeProductsData';
-import HomeProductCarrouselCard from './components/HomeProductCarrouselCard';
+import HomeProductCarouselCard from './components//HomeProductCarouselCard';
 
-const HomeProductCarrousel: React.FC = () => {
+const HomeProductCarousel: React.FC = () => {
   const [selectedProductIndex, setSelectedProductIndex] = useState<number>(0);
   const selectedProduct = productsData[selectedProductIndex];
 
@@ -54,11 +54,10 @@ const HomeProductCarrousel: React.FC = () => {
     <ul>
       {productsData.map((product) => (
         <li className="[&:not(:last-child)]:mb-2" key={product.id} onClick={() => handleClick(product.id)} aria-hidden>
-          <HomeProductCarrouselCard
+          <HomeProductCarouselCard
             title={product.title}
             description={product.description}
             selected={selectedProduct.id === product.id}
-            imageUrl={product.imageUrl}
             id={product.id}
           />
         </li>
@@ -67,4 +66,4 @@ const HomeProductCarrousel: React.FC = () => {
   );
 };
 
-export default HomeProductCarrousel;
+export default HomeProductCarousel;
