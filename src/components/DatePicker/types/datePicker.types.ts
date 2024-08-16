@@ -10,6 +10,5 @@ export interface DatePickerProps {
   selectedDate: Date | null;
   isLastMonthOfTheYear: () => boolean;
   isYearRange: boolean;
-  isSurfaceWaves: boolean;
-  isFourHourSst: boolean;
+  isWeakRange: boolean;
 }

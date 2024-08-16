@@ -74,7 +74,7 @@ const buildProductImageUrl = (
 
   if (isProductOceanColourAndLocalRegion) {
     regionNameSegment = `${regionName}_chl`;
-    dateTimeSegment = `${formattedDate}04`;
+    dateTimeSegment = dayjs(date).format('YYYYMMDDHH');
   } else if (subProductType) {
     subProductSegment = `/${subProductType}`;
   }
@@ -87,6 +87,11 @@ const buildProductImageUrl = (
     const year = dayjsDate.format('YYYY');
     const month = dayjsDate.format('MM');
     return `/s3/WAVES/y${year}/m${month}/${formattedDate}.gif`;
+  }
+
+  if (isApi && isProductOceanColourAndLocalRegion) {
+    const formatDate = dayjs(date).format('YYYYMMDDHH');
+    return `/api/${regionName}_chl/${formatDate}.gif`;
   }
 
   if (isApi) {

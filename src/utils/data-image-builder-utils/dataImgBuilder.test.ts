@@ -189,13 +189,13 @@ describe('buildProductImageUrl', () => {
       const subProduct = 'CHL';
       const region = 'Adelaide';
       const regionScope = TargetPathRegionScope.Local;
-      const date = '2024051922';
+      const date = '2024051906';
 
       // Act
       const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
 
       // Assert
-      expect(imageUrl).toBe(`${imageBaseUrl}/Adelaide_chl/2024051904.gif`);
+      expect(imageUrl).toBe(`${imageBaseUrl}/Adelaide_chl/2024051906.gif`);
     });
 
     it('should return the correct image and video URLs for CHL', () => {

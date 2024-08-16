@@ -9,9 +9,8 @@ const useProductCheck = () => {
 
   const isRegionRequired = !productsWithoutRegion.includes(mainProductId);
   const isArgo = mainProductId === 'argo';
-  const isFourHourSst = mainProductId === 'fourHourSst';
 
-  return { isRegionRequired, isArgo, isFourHourSst };
+  return { isRegionRequired, isArgo };
 };
 
 export default useProductCheck;

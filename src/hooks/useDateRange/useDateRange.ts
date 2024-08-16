@@ -6,6 +6,8 @@ import { useArgoStore } from '@/stores/argo-store/argoStore';
 import { useDateStore, setStartDate, setEndDate } from '@/stores/date-store/dateStore';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
+import useProductStore from '@/stores/product-store/productStore';
+import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import {
   DateRange,
   DateStoreState,
@@ -31,6 +33,8 @@ const useDateRange = (): UseDateRangeReturn => {
 
   const useArgoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
   const useWmoid = useArgoStore((state) => state.selectedArgoParams.worldMeteorologicalOrgId);
+  const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
+  const region = getRegionByRegionTitle(useRegionTitle);
 
   const [allDates, setAllDates] = useState<DateRange>([]);
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
@@ -39,7 +43,8 @@ const useDateRange = (): UseDateRangeReturn => {
   const isMonthlyMeansAnomalies = mainProduct?.key === 'monthlyMeans' && subProduct?.key === 'monthlyMeans-anomalies';
   const isFourHourSst = mainProduct?.key === 'fourHourSst';
   const isSurfaceWaves = mainProduct?.key === 'surfaceWaves';
-  const isWeakRange = isFourHourSst || isSurfaceWaves;
+  const isOceanColourLocal = mainProduct?.key === 'oceanColour' && region?.scope === 'local';
+  const isWeakRange = isFourHourSst || isSurfaceWaves || isOceanColourLocal;
 
   const urlDate = searchParams.get('date');
   const urlStartDate = searchParams.get('startDate');
@@ -67,6 +72,7 @@ const useDateRange = (): UseDateRangeReturn => {
       subProduct?.key === 'monthlyMeans-CLIM_OFAM3_SSTAARS' || subProduct?.key === 'monthlyMeans-CLIM_CNESCARS';
     const climatology = mainProduct?.key === 'climatology';
     const isAdjustedSeaLevelAnomalyWithSST = mainProduct?.key === 'adjustedSeaLevelAnomaly' && !subProduct?.key;
+
     return climatology || isMonthlyMeansClimatology || fourHourSst || isAdjustedSeaLevelAnomalyWithSST;
   };
 
@@ -124,8 +130,9 @@ const useDateRange = (): UseDateRangeReturn => {
 
   const generateDateRange = (start: Date, end?: Date): DateRange => {
     if (isYearRange) return generateYearRange(start);
-    if (isFourHourSst) return generateDayWithHourRange(start, 2, 4, end);
-    if (isSurfaceWaves) return generateDayWithHourRange(start, 2, 2, end);
+    if (isFourHourSst) return generateDayWithHourRange(start, 2, 4, 24, end);
+    if (isSurfaceWaves) return generateDayWithHourRange(start, 2, 2, 24, end);
+    if (isOceanColourLocal) return generateDayWithHourRange(start, 4, 1, 7, end);
     return generateDayRange(start, end);
   };
 
@@ -164,18 +171,24 @@ const useDateRange = (): UseDateRangeReturn => {
     return dates;
   };
 
-  const generateDayWithHourRange = (start: Date, startHour: number, scale: number, end?: Date): DateRange => {
+  const generateDayWithHourRange = (
+    start: Date,
+    startHour: number,
+    step: number,
+    endHour: number,
+    end?: Date,
+  ): DateRange => {
     const dates = [];
     let current = dayjs(start);
     const endDay = dayjs(end);
 
     while (current.isBefore(endDay) || current.isSame(endDay, 'day')) {
-      for (let hour = startHour; hour < 24; hour += scale) {
+      for (let hour = startHour; hour < endHour; hour += step) {
         const dateWithHour = dayjs(current).hour(hour).minute(0).second(0).millisecond(0);
         dates.push({
           date: dateWithHour.toDate(),
           active: true,
-          showLabel: hour === 2,
+          showLabel: hour === startHour,
         });
       }
       current = current.add(1, 'day');
@@ -375,12 +388,11 @@ const useDateRange = (): UseDateRangeReturn => {
     isSelectedDayYesterdayOrLater,
     isLastMonthOfTheYear,
     steps: 1,
-    isFourHourSst,
     isYearRange,
-    isSurfaceWaves,
     resetDateRange,
     disableVideoCreation,
     formatDate,
+    isWeakRange,
   };
 };
 
