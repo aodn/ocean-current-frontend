@@ -36,13 +36,10 @@ const getProductSegment = (
 ): string => {
   const productData = productTypeMapping.get(productId)!;
   const segment = regionScope === TargetPathRegionScope.State ? productData.stateSegment : productData.localSegment;
-  let productSegment = segment ? `${segment}` : '';
-
   if (productId === 'monthlyMeans' && subProductType === 'CLIM_CNESCARS') {
-    productSegment = '30d_MEAN_v1';
+    return '30d_MEAN_v1';
   }
-
-  return productSegment;
+  return segment ? `${segment}` : '';
 };
 
 const formatDate = (productId: ProductId, subProductType: SubProductType, date: string): string => {
@@ -65,46 +62,46 @@ const buildProductImageUrl = (
 
   const productSegment = getProductSegment(productId, subProductType, regionScope);
   const formattedDate = formatDate(productId, subProductType, date);
-  const isProductOceanColourAndLocalRegion = productId === 'oceanColour' && regionScope === TargetPathRegionScope.Local;
-  const isAdjustedSeaLevelAnomalyWithSST = productId === 'adjustedSeaLevelAnomaly' && !subProductType;
-
-  let subProductSegment = '';
-  let regionNameSegment = `/${regionName}`;
-  let dateTimeSegment = formattedDate;
-
-  if (isProductOceanColourAndLocalRegion) {
-    regionNameSegment = `${regionName}_chl`;
-    dateTimeSegment = dayjs(date).format('YYYYMMDDHH');
-  } else if (subProductType) {
-    subProductSegment = `/${subProductType}`;
-  }
-
   const baseUrl = getBaseUrlByProductId(productId);
 
+  const productUrl = {
+    surfaceWaves: () => {
+      const dayjsDate = dayjs(date);
+      const formattedDate = dayjsDate.format('YYYYMMDDHH');
+      const year = dayjsDate.format('YYYY');
+      const month = dayjsDate.format('MM');
+      return `/s3/WAVES/y${year}/m${month}/${formattedDate}.gif`;
+    },
+    oceanColourLocal: () => {
+      const dateTimeSegment = dayjs(date).format('YYYYMMDDHH');
+      return isApi
+        ? `/api/${regionName}_chl/${dateTimeSegment}.gif`
+        : `${baseUrl}/${regionName}_chl/${dateTimeSegment}.gif`;
+    },
+    adjustedSeaLevelAnomaly: () => {
+      return isApi ? `/api/${regionName}/${formattedDate}.gif` : `${baseUrl}/${regionName}/${formattedDate}.gif`;
+    },
+    default: () => {
+      const subProductSegment = subProductType ? `/${subProductType}` : '';
+      return isApi
+        ? `/api/${productSegment}${subProductSegment}/${regionName}/${formattedDate}.gif`
+        : `${baseUrl}/${productSegment}${subProductSegment}/${regionName}/${formattedDate}.gif`;
+    },
+  };
+
   if (productId === 'surfaceWaves') {
-    const dayjsDate = dayjs(date);
-    const formattedDate = dayjsDate.format('YYYYMMDDHH');
-    const year = dayjsDate.format('YYYY');
-    const month = dayjsDate.format('MM');
-    return `/s3/WAVES/y${year}/m${month}/${formattedDate}.gif`;
+    return productUrl.surfaceWaves();
   }
 
-  if (isApi && isProductOceanColourAndLocalRegion) {
-    const formatDate = dayjs(date).format('YYYYMMDDHH');
-    return `/api/${regionName}_chl/${formatDate}.gif`;
+  if (productId === 'oceanColour' && regionScope === TargetPathRegionScope.Local) {
+    return productUrl.oceanColourLocal();
   }
 
-  if (isApi) {
-    return `/api/${productSegment}${subProductSegment}/${regionName}/${formattedDate}.gif`;
+  if (productId === 'adjustedSeaLevelAnomaly' && !subProductType) {
+    return productUrl.adjustedSeaLevelAnomaly();
   }
 
-  if (isAdjustedSeaLevelAnomalyWithSST) {
-    return `${baseUrl}/${regionName}/${formattedDate}.gif`;
-  }
-
-  return subProductType
-    ? `${baseUrl}/${productSegment}${subProductSegment}${regionNameSegment}/${dateTimeSegment}.gif`
-    : `${baseUrl}/${productSegment}/${regionName}/${formattedDate}.gif`;
+  return productUrl.default();
 };
 
 const buildProductVideoUrl = (
@@ -127,17 +124,20 @@ const buildProductVideoUrl = (
 
   const baseUrl = getBaseUrlByProductId(productId);
 
-  if (productId === 'surfaceWaves') {
-    return `${imageBaseUrl}/s3.php?file=WAVES/y${year}/m${month}/Au_wave_m${month}.mp4`;
+  const productUrl = {
+    surfaceWaves: () => `${imageBaseUrl}/s3.php?file=WAVES/y${year}/m${month}/Au_wave_m${month}.mp4`,
+    fourHourSst: () =>
+      `${baseUrl}/${productSegment}/${subProductType}/${regionName}/${regionName}_${subProductType}_${year}${month}.mp4`,
+    monthlyMeans: () => `${baseUrl}/${productSegment}/${regionName}/${regionName}.mp4`,
+    default: () =>
+      `${baseUrl}/${productSegment}${subProductSegment}/${regionName}/${regionName}_${subProductType}_${year}_${quarter}.mp4`,
+  };
+
+  if (productId === 'oceanColour' && regionScope === TargetPathRegionScope.Local) {
+    return `${baseUrl}/${regionName}_chl/${regionName}_chl${dayjs(date).format('YYYYMM')}.mp4`;
   }
 
-  if (productId === 'fourHourSst') {
-    return `${baseUrl}/${productSegment}/${subProductType}/${regionName}/${regionName}_${subProductType}_${year}${month}.mp4`;
-  }
-  if (productId === 'monthlyMeans') {
-    return `${baseUrl}/${productSegment}/${regionName}/${regionName}.mp4`;
-  }
-  return `${baseUrl}/${productSegment}${subProductSegment}/${regionName}/${regionName}_${subProductType}_${year}_${quarter}.mp4`;
+  return productUrl[productId as keyof typeof productUrl]?.() || productUrl.default();
 };
 
 const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle: string, depth: string): string => {
