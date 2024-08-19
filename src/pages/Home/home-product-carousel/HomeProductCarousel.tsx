@@ -11,7 +11,9 @@ const HomeProductCarousel: React.FC = () => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const isMounted = useRef<boolean>(false);
 
-  const useZoom = useMapStore((state) => state.mapViewState.zoom);
+  const useMapZoom = useMapStore((state) => state.mapViewState.zoom);
+  const useMapLatitude = useMapStore((state) => state.mapViewState.latitude);
+  const useMapLongitude = useMapStore((state) => state.mapViewState.longitude);
 
   const stopInterval = () => {
     if (intervalRef.current) {
@@ -31,7 +33,7 @@ const HomeProductCarousel: React.FC = () => {
     } else {
       isMounted.current = true;
     }
-  }, [useZoom]);
+  }, [useMapZoom, useMapLatitude, useMapLongitude]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {

@@ -1,26 +1,11 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
+import { INITIAL_MAP_VIEW_STATE } from '@/configs/map';
 import { State, Actions } from './map.types';
-
-const initialState: State = {
-  mapViewState: {
-    latitude: -28.5,
-    longitude: 140,
-    bearing: 0,
-    pitch: 0,
-    zoom: 3.16,
-    padding: {
-      top: 0,
-      bottom: 0,
-      left: 0,
-      right: 0,
-    },
-  },
-};
 
 const useMapStore = create<State & Actions>()(
   devtools((set) => ({
-    ...initialState,
+    ...INITIAL_MAP_VIEW_STATE,
     actions: {
       setMapViewState: (mapViewState) => {
         set({ mapViewState }, true, 'setMapViewState');
@@ -38,7 +23,7 @@ const useMapStore = create<State & Actions>()(
           false,
           'updatePositionAndZoom',
         ),
-      reset: () => set(initialState, false, 'resetMapStore'),
+      reset: () => set(INITIAL_MAP_VIEW_STATE, false, 'resetMapStore'),
     },
   })),
 );
