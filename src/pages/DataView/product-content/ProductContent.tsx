@@ -89,6 +89,7 @@ const ProductContent: React.FC = () => {
     if (!selectedCycle) {
       throw new Error('Argo cycle not available');
     }
+
     return buildArgoImageUrl(worldMeteorologicalOrgId, useDate, selectedCycle, depth);
   };
 
