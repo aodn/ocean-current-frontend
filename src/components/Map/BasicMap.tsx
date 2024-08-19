@@ -16,6 +16,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
   isMiniMap = false,
   fullScreenControl = false,
   navigationControl = true,
+  minZoom,
 }) => {
   const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
 
@@ -67,6 +68,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
       projection={{ name: 'mercator' }}
       attributionControl={false}
       interactiveLayerIds={interactiveIds}
+      minZoom={minZoom}
     >
       {children}
       {fullScreenControl && <FullscreenControl position="top-right" />}
