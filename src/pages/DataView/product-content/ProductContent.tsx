@@ -86,7 +86,11 @@ const ProductContent: React.FC = () => {
   const buildArgoImg = (): string => {
     const selectedCycle = useArgoProfileCycles.find(({ date }) => date === useDate.format('YYYYMMDD'))?.cycle;
 
-    return buildArgoImageUrl(worldMeteorologicalOrgId, useDate, selectedCycle!, depth);
+    if (!selectedCycle) {
+      throw new Error('Argo cycle not available');
+    }
+
+    return buildArgoImageUrl(worldMeteorologicalOrgId, useDate, selectedCycle, depth);
   };
 
   const buildProductImg = (): string => {
