@@ -122,8 +122,12 @@ const RegionPolygonLayer: React.FC = () => {
       if (!hoveredRegion) {
         return;
       }
+      const containsArgoLayer = map.getStyle().layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
+      const layersToCheck = containsArgoLayer
+        ? [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID]
+        : [PRODUCT_REGION_BOX_LAYER_ID];
       const features = map.queryRenderedFeatures(e.point, {
-        layers: [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID],
+        layers: layersToCheck,
       });
 
       const hasArgoPoint = features.find((feature) => feature.layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
