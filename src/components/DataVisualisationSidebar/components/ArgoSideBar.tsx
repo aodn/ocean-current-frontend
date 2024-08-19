@@ -27,11 +27,11 @@ const ArgoSideBar: React.FC = () => {
   };
 
   return (
-    <>
+    <div className="rounded-md bg-white">
       <div className="h-60 w-full overflow-hidden">
         <MiniMap />
       </div>
-      <div className="relative rounded-md border-2 border-imos-grey">
+      <div className="relative">
         <div className="flex items-center justify-between bg-white p-2 pb-4">
           <img className="mx-6 h-16 w-14 object-cover" src={ArgoIcon} alt="argo-icon" />
           <div>
@@ -55,22 +55,32 @@ const ArgoSideBar: React.FC = () => {
 
         <div className="p-2">
           <div className="my-5">
-            <div className="flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg border bg-[#3A6F8F] px-12 py-1 text-lg  text-white transition duration-300 ease-in-out">
+            <div className="flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg border bg-imos-mid-grey px-12 py-1 text-lg  text-white transition duration-300 ease-in-out">
               <img src={ArgoIdIcon} alt="argo id icon" />
               aoml {worldMeteorologicalOrgId}
             </div>
           </div>
           <div className="mb-3 flex gap-3">
-            <Button onClick={() => changeDepth('1')} size="full" borderRadius="small" type="secondary">
+            <Button
+              onClick={() => changeDepth('1')}
+              size="full"
+              borderRadius="small"
+              type={useArgo.depth === '1' ? 'primary' : 'secondary'}
+            >
               0-400m
             </Button>
-            <Button onClick={() => changeDepth('0')} size="full" borderRadius="small" type="secondary">
+            <Button
+              onClick={() => changeDepth('0')}
+              size="full"
+              borderRadius="small"
+              type={useArgo.depth === '0' ? 'primary' : 'secondary'}
+            >
               0-2000m
             </Button>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

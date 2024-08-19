@@ -9,12 +9,14 @@ import { TEXT_CONSTANT } from '@/constants/textConstant';
 import ShareIcon from '@/assets/icons/share-icon.svg';
 import ResetIcon from '@/assets/icons/reset-icon.svg';
 import VideoCreation from '@/components/VideoCreation/VideoCreation';
+import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { ProductNavbarProps } from './types/productNavbarProps.types';
 
 const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
   const [copyButtonText, setCopyButtonText] = useState<string>(TEXT_CONSTANT.SHARE_PERMLINK);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [showVideo, setLocalShowVideo] = useState(false);
+  const { isArgo } = useProductCheck();
 
   const {
     startDate,
@@ -97,8 +99,9 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
         <div className="flex h-11 w-1/5 items-center justify-center rounded-md border border-[#3A6F8F] p-3">
           <img src={VideoIcon} alt="video icon" />
           <p className="mx-3 text-imos-sea-blue">Video</p>
-          <ToggleButton disabled={disableVideoCreation()} isOn={showVideo} onToggle={handleToggle} />
+          <ToggleButton disabled={disableVideoCreation() || isArgo} isOn={showVideo} onToggle={handleToggle} />
         </div>
+
         <div className="w-1/6">
           <div
             onClick={() => handleCopyLink()}
@@ -110,9 +113,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
             <div className="w-6"></div>
           </div>
         </div>
-        <div className="w-1/6">
-          <VideoCreation />
-        </div>
+        <div className="w-1/6">{!isArgo && <VideoCreation />}</div>
       </div>
       <div className="flex items-center justify-center">
         <DateSlider
