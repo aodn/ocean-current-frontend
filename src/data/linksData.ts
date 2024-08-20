@@ -64,7 +64,7 @@ export const linksData = [
         imageUrl: MonthlyMeansIcon,
         title: 'Monthly Means',
         description: 'Monthly temperature averages',
-        url: '/map/monthly-means',
+        url: '/map/monthly-means/anomalies',
       },
       {
         id: 'surfaceWaves',
