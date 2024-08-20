@@ -193,9 +193,11 @@ describe('buildProductImageUrl', () => {
 
       // Act
       const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+      const videoUrl = buildProductVideoUrl(productType, subProduct, region, regionScope, date);
 
       // Assert
       expect(imageUrl).toBe(`${imageBaseUrl}/Adelaide_chl/2024051906.gif`);
+      expect(videoUrl).toBe(`${imageBaseUrl}/Adelaide_chl/Adelaide_chl202405.mp4`);
     });
 
     it('should return the correct image and video URLs for CHL', () => {
