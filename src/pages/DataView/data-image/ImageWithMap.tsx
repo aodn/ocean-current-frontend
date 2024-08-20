@@ -9,6 +9,11 @@ import { ImageWithMapProps } from './types/imageWithMap.types';
 const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, dateString }) => {
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [coords, setCoords] = useState<ArgoTagMapArea[]>([]);
+  const [imgLoadError, setImgLoadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setImgLoadError(null);
+  }, [src]);
 
   useEffect(() => {
     const handleLoad = () => {
@@ -53,6 +58,11 @@ const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, d
     window.open(newPath, '_blank', 'noopener,noreferrer');
   };
 
+  if (imgLoadError) {
+    // TODO: Add error handling component
+    return <div>Error: {imgLoadError}</div>;
+  }
+
   return (
     <div className="relative inline-block w-full">
       <img
@@ -61,6 +71,9 @@ const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, d
         alt={alt}
         useMap="#argo-tag-map"
         className="max-h-[80vh] select-none object-contain"
+        onError={() => {
+          setImgLoadError('Image not available');
+        }}
       />
       <map name="argo-tag-map">
         {coords.map((area, index) => (
