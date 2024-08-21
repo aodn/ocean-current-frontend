@@ -6,6 +6,7 @@ import { getProductPathWithSubProduct } from '@/utils/product-utils/product';
 import { useDateRange, useQueryParams } from '@/hooks';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
+import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
 
 const HeaderSideBar: React.FC = () => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
@@ -13,6 +14,7 @@ const HeaderSideBar: React.FC = () => {
   const { mainProduct } = useProductConvert();
   const { allDates, selectedDateIndex, formatDate } = useDateRange();
   const selectedDate = dayjs(allDates[selectedDateIndex]?.date).format(formatDate);
+  const isProductAvailableInRegion = useProductAvailableInRegion();
 
   const handleDropdownChange = (selectedElement: DropdownElement) => {
     if (selectedElement.id === useProductId) {
@@ -20,8 +22,13 @@ const HeaderSideBar: React.FC = () => {
     }
     setProductId(selectedElement.id);
 
+    let queryToUpdate = { date: selectedDate } as Record<string, string | null>;
+    if (!isProductAvailableInRegion) {
+      queryToUpdate = { date: selectedDate, region: null };
+    }
+
     const targetPath = getProductPathWithSubProduct(selectedElement.id);
-    updateQueryParamsAndNavigate(targetPath, { date: selectedDate });
+    updateQueryParamsAndNavigate(targetPath, queryToUpdate);
   };
 
   if (!useProductId) {

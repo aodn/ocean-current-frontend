@@ -2,8 +2,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { UseQueryParamsResult } from './types/userQueryParams.types';
 
 const useQueryParams = <
-  T extends Record<string, string>,
-  U extends T & Record<string, string> = T,
+  T extends Record<string, string | null>,
+  U extends T & Record<string, string | null> = T,
 >(): UseQueryParamsResult<T, U> => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -21,6 +21,9 @@ const useQueryParams = <
     for (const key in params) {
       if (params[key] !== undefined && params[key] !== null) {
         newSearchParams.set(key, params[key] as string);
+      }
+      if (params[key] === null) {
+        newSearchParams.delete(key);
       }
     }
     return newSearchParams;

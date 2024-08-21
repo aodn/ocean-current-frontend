@@ -57,7 +57,9 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ keepNationalReg
     if (!map) return;
 
     map.on('load', () => {
-      const region = regionTitleFromUrl && getRegionByRegionTitle(regionTitleFromUrl);
+      const regionTitle = regionTitleFromUrl || 'Australia/NZ';
+      const region = getRegionByRegionTitle(regionTitle);
+
       if (region) {
         mapFitBounds(region.coords);
       }
