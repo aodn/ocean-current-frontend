@@ -4,11 +4,21 @@ import { findMostRecentDateBefore } from '@/utils/date-utils/date';
 import { calculateImageScales } from '@/utils/general-utils/general';
 import { ArgoTagMapArea } from '@/types/argo';
 import { convertCoordsBasedOnImageScale } from '@/utils/argo-utils/argoTag';
+import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
+import useDateStore from '@/stores/date-store/dateStore';
+import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { ImageWithMapProps } from './types/imageWithMap.types';
 
 const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, dateString }) => {
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [coords, setCoords] = useState<ArgoTagMapArea[]>([]);
+  const [imgLoadError, setImgLoadError] = useState<string | null>(null);
+  const useDate = useDateStore((state) => state.date);
+  const { mainProduct } = useProductConvert();
+
+  useEffect(() => {
+    setImgLoadError(null);
+  }, [src]);
 
   useEffect(() => {
     const handleLoad = () => {
@@ -53,6 +63,10 @@ const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, d
     window.open(newPath, '_blank', 'noopener,noreferrer');
   };
 
+  if (imgLoadError) {
+    return <ErrorImage product={mainProduct!} date={useDate} />;
+  }
+
   return (
     <div className="relative inline-block w-full">
       <img
@@ -61,6 +75,9 @@ const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, d
         alt={alt}
         useMap="#argo-tag-map"
         className="max-h-[80vh] select-none object-contain"
+        onError={() => {
+          setImgLoadError('Image not available');
+        }}
       />
       <map name="argo-tag-map">
         {coords.map((area, index) => (

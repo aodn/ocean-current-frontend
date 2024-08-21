@@ -18,10 +18,11 @@ import useDateStore from '@/stores/date-store/dateStore';
 import { getArgoProfileCyclesByWmoId } from '@/services/argo';
 import { VideoPlayerOutletContext } from '@/types/router';
 import { checkProductHasArgoTags } from '@/utils/argo-utils/argoTag';
+import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import DataImage from '../data-image/DataImage';
 
 const ProductContent: React.FC = () => {
-  const [error, setError] = useState<string | null>(null);
+  const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { isArgo } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
@@ -44,7 +45,7 @@ const ProductContent: React.FC = () => {
   const shouldRenderDataImageWithArgoTags = !isArgo && isImgHasArgoTags;
 
   useEffect(() => {
-    setError(null);
+    setImgLoadError(null);
   }, [
     mainProduct,
     subProduct,
@@ -67,8 +68,8 @@ const ProductContent: React.FC = () => {
     }
   }, [isArgo, worldMeteorologicalOrgId]);
 
-  if (error) {
-    return <div>Error: {error}</div>;
+  if (imgLoadError) {
+    return <ErrorImage date={useDate} product={mainProduct!} />;
   }
 
   if (!mainProduct || !useProductId) {
@@ -103,7 +104,7 @@ const ProductContent: React.FC = () => {
     } catch (e) {
       if (e instanceof Error) {
         console.error(e);
-        setError('Image not available');
+        setImgLoadError('Image not available');
       }
     }
   };
@@ -122,7 +123,7 @@ const ProductContent: React.FC = () => {
   };
 
   const handleError = () => {
-    setError('Media not available');
+    setImgLoadError('Media not available');
   };
 
   const handlePopup = () => {
