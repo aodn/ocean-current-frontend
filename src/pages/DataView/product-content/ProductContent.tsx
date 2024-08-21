@@ -18,6 +18,7 @@ import useDateStore from '@/stores/date-store/dateStore';
 import { getArgoProfileCyclesByWmoId } from '@/services/argo';
 import { VideoPlayerOutletContext } from '@/types/router';
 import { checkProductHasArgoTags } from '@/utils/argo-utils/argoTag';
+import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import DataImage from '../data-image/DataImage';
 
 const ProductContent: React.FC = () => {
@@ -68,8 +69,7 @@ const ProductContent: React.FC = () => {
   }, [isArgo, worldMeteorologicalOrgId]);
 
   if (imgLoadError) {
-    // TODO: Add error handling component
-    return <div>Error: {imgLoadError}</div>;
+    return <ErrorImage date={useDate} product={mainProduct!} />;
   }
 
   if (!mainProduct || !useProductId) {

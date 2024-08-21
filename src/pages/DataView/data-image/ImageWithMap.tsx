@@ -4,12 +4,17 @@ import { findMostRecentDateBefore } from '@/utils/date-utils/date';
 import { calculateImageScales } from '@/utils/general-utils/general';
 import { ArgoTagMapArea } from '@/types/argo';
 import { convertCoordsBasedOnImageScale } from '@/utils/argo-utils/argoTag';
+import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
+import useDateStore from '@/stores/date-store/dateStore';
+import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { ImageWithMapProps } from './types/imageWithMap.types';
 
 const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, dateString }) => {
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [coords, setCoords] = useState<ArgoTagMapArea[]>([]);
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
+  const useDate = useDateStore((state) => state.date);
+  const { mainProduct } = useProductConvert();
 
   useEffect(() => {
     setImgLoadError(null);
@@ -59,8 +64,7 @@ const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, d
   };
 
   if (imgLoadError) {
-    // TODO: Add error handling component
-    return <div>Error: {imgLoadError}</div>;
+    return <ErrorImage product={mainProduct!} date={useDate} />;
   }
 
   return (
