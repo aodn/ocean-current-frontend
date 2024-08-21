@@ -1,5 +1,5 @@
+import React, { useCallback, useEffect, useState } from 'react';
 import { Layer, LngLatBounds, MapMouseEvent, Source, useMap } from 'react-map-gl';
-import { useCallback, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { useProductSearchParam, useQueryParams, useThrottle } from '@/hooks';
@@ -14,7 +14,10 @@ import useVisibleRegionPolygons from '../../hooks/useVisibleRegionPolygons';
 const MIN_THRESHOLD_PERCENTAGE = 3;
 const MAX_THRESHOLD_PERCENTAGE = 70;
 
-const RegionPolygonLayer: React.FC = () => {
+interface RegionPolygonLayerProps {
+  keepNationalRegion?: boolean;
+}
+const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ keepNationalRegion = false }) => {
   const { PRODUCT_REGION_BOX_SOURCE_ID } = mapboxSourceIds;
   const {
     PRODUCT_REGION_BOX_LAYER_ID,
@@ -78,7 +81,12 @@ const RegionPolygonLayer: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
 
-  const geoJsonData = useVisibleRegionPolygons(mapBounds, MIN_THRESHOLD_PERCENTAGE, MAX_THRESHOLD_PERCENTAGE);
+  const geoJsonData = useVisibleRegionPolygons(
+    mapBounds,
+    MIN_THRESHOLD_PERCENTAGE,
+    MAX_THRESHOLD_PERCENTAGE,
+    keepNationalRegion,
+  );
 
   useEffect(() => {
     if (!map) return;

@@ -10,6 +10,7 @@ const useVisibleRegionPolygons = (
   mapBounds: LngLatBounds | null,
   minThresholdPercentage = 0.1,
   maxThresholdPercentage = 100,
+  keepNationalRegion = false,
 ) => {
   const { regions } = useRegionFromProduct();
 
@@ -39,6 +40,15 @@ const useVisibleRegionPolygons = (
     const visibleRegions = sortedRegions.filter(({ coords: regionCoords }) =>
       isPolygonWithinBounds(regionCoords, mapBoundCoords, minThresholdPercentage, maxThresholdPercentage),
     );
+
+    const nationalRegion = memoizedRegions.find((region) => region.code === 'Au');
+    const shouldKeepNationalRegion =
+      keepNationalRegion && !visibleRegions.find((region) => region.code === 'Au') && nationalRegion;
+
+    if (shouldKeepNationalRegion) {
+      visibleRegions.unshift(nationalRegion);
+    }
+
     const features: GeoJSON.Feature[] = visibleRegions.map(({ title, coords }) => ({
       type: 'Feature',
       id: stringToHash(title),
@@ -55,7 +65,7 @@ const useVisibleRegionPolygons = (
       type: 'FeatureCollection',
       features,
     });
-  }, [mapBounds, minThresholdPercentage, maxThresholdPercentage, memoizedRegions]);
+  }, [mapBounds, minThresholdPercentage, maxThresholdPercentage, memoizedRegions, keepNationalRegion]);
 
   return geoJsonData;
 };
