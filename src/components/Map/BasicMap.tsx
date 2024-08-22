@@ -40,7 +40,10 @@ const BasicMap: React.FC<BasicMapProps> = ({
   const handleMouseLeave = useCallback(() => setCursor('grab'), []);
 
   const memoizedDataImageLayer = useMemo(() => <DataImageLayer />, []);
-  const memoizedRegionPolygonLayer = useMemo(() => <RegionPolygonLayer keepNationalRegion={!isMiniMap} />, [isMiniMap]);
+  const memoizedRegionPolygonLayer = useMemo(
+    () => <RegionPolygonLayer shouldKeepNationalRegion={!isMiniMap} shouldFitNationalRegionBounds={isMiniMap} />,
+    [isMiniMap],
+  );
   const memoizedArgoAsProductLayer = useMemo(() => <ArgoAsProductLayer isMiniMap={isMiniMap} />, [isMiniMap]);
 
   if (!mapConfig.accessToken) {

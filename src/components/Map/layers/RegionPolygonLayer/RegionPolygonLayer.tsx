@@ -15,9 +15,13 @@ const MIN_THRESHOLD_PERCENTAGE = 3;
 const MAX_THRESHOLD_PERCENTAGE = 70;
 
 interface RegionPolygonLayerProps {
-  keepNationalRegion?: boolean;
+  shouldKeepNationalRegion?: boolean;
+  shouldFitNationalRegionBounds?: boolean;
 }
-const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ keepNationalRegion = false }) => {
+const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
+  shouldKeepNationalRegion = false,
+  shouldFitNationalRegionBounds = false,
+}) => {
   const { PRODUCT_REGION_BOX_SOURCE_ID } = mapboxSourceIds;
   const {
     PRODUCT_REGION_BOX_LAYER_ID,
@@ -60,11 +64,11 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ keepNationalReg
       const regionTitle = regionTitleFromUrl || 'Australia/NZ';
       const region = getRegionByRegionTitle(regionTitle);
 
-      if (region) {
+      if (region && shouldFitNationalRegionBounds) {
         mapFitBounds(region.coords);
       }
     });
-  }, [map, regionTitleFromUrl, mapFitBounds]);
+  }, [map, regionTitleFromUrl, mapFitBounds, shouldFitNationalRegionBounds]);
 
   useEffect(() => {
     if (!map) return;
@@ -87,7 +91,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ keepNationalReg
     mapBounds,
     MIN_THRESHOLD_PERCENTAGE,
     MAX_THRESHOLD_PERCENTAGE,
-    keepNationalRegion,
+    shouldKeepNationalRegion,
   );
 
   useEffect(() => {
