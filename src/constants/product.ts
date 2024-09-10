@@ -182,4 +182,10 @@ export const OC_PRODUCTS: Product[] = [
     path: 'argo',
     latestEntry: null,
   },
+  {
+    title: 'Current Meters',
+    key: 'currentMeters',
+    path: 'current-meters',
+    latestEntry: null,
+  },
 ] as const;

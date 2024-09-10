@@ -8,10 +8,10 @@ const DateSlider: React.FC<DateSliderProps> = ({
   selectedDateIndex,
   handleSliderChange,
   steps,
-  isYearRange,
+  isMonthRange,
 }) => {
   const formatDateLabel = (index: number) =>
-    isYearRange ? dayjs(allDates[index].date).format('MMM') : dayjs(allDates[index].date).format('DD-MM');
+    isMonthRange ? dayjs(allDates[index].date).format('MMM') : dayjs(allDates[index].date).format('DD-MM');
 
   const handleSliderUpdate = (newValue: number) => {
     handleSliderChange(newValue);

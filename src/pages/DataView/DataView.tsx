@@ -6,7 +6,7 @@ import { resetMapStore } from '@/stores/map-store/mapStore';
 import ProductContent from './product-content/ProductContent';
 
 const DataView: React.FC = () => {
-  const { isArgo } = useProductCheck();
+  const { isArgo, isCurrentMeters } = useProductCheck();
   const isProductAvailableInRegion = useProductAvailableInRegion();
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const DataView: React.FC = () => {
   }, [isProductAvailableInRegion]);
 
   const renderView = () => {
-    if (isArgo) {
+    if (isArgo || isCurrentMeters) {
       return <ProductContent />;
     }
 

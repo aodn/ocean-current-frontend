@@ -9,6 +9,7 @@ export interface DatePickerProps {
   modifyDate: (modificationType: 'add' | 'subtract') => void;
   selectedDate: Date | null;
   isLastMonthOfTheYear: () => boolean;
-  isYearRange: boolean;
-  isWeekRange: boolean;
+  isMonthRange?: boolean;
+  isWeekRange?: boolean;
+  isYearRange?: boolean;
 }

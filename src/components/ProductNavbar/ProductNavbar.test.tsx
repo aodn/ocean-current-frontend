@@ -33,6 +33,7 @@ describe('ProductNavbar', () => {
     isLastMonthOfTheYear: vi.fn(),
     steps: 1,
     isWeekRange: false,
+    isMonthRange: false,
     isYearRange: false,
     disableVideoCreation: () => false,
     resetDateRange: vi.fn(),

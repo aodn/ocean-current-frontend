@@ -22,7 +22,7 @@ const renderComponent = (props: Partial<DateSliderProps> = {}) => {
     selectedDateIndex: 2,
     handleSliderChange: vi.fn(),
     steps: 1,
-    isYearRange: false,
+    isMonthRange: false,
   };
   return render(<DateSlider {...defaultProps} {...props} />);
 };

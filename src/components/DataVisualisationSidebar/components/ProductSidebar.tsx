@@ -167,7 +167,7 @@ const ProductSideBar: React.FC = () => {
             >
               <div className="mb-6 mt-2 flex flex-wrap justify-between gap-2">
                 {filteredDataSources.map(({ title, link }, index) => (
-                  <div key={title} className={index === subProducts.length - 1 ? 'w-auto' : 'flex-1'}>
+                  <div key={title} className={index === filteredDataSources.length - 1 ? 'w-auto' : 'flex-1'}>
                     <a target="_blank" href={link} rel="noreferrer">
                       <Button size="full" borderRadius="small" type="secondary">
                         {title}

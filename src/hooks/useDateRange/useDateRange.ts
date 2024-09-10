@@ -23,7 +23,7 @@ import {
 const useDateRange = (): UseDateRangeReturn => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { mainProduct, subProduct } = useProductConvert();
-  const { isArgo } = useProductCheck();
+  const { isArgo, isCurrentMeters } = useProductCheck();
   const { startDate, endDate } = useDateStore(
     useShallow((state: DateStoreState) => ({
       startDate: state.startDate.toDate(),
@@ -39,7 +39,8 @@ const useDateRange = (): UseDateRangeReturn => {
   const [allDates, setAllDates] = useState<DateRange>([]);
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
 
-  const isYearRange = mainProduct?.key === 'climatology' || mainProduct?.key === 'monthlyMeans';
+  const isMonthRange = mainProduct?.key === 'climatology' || mainProduct?.key === 'monthlyMeans';
+  const isYearRange = isCurrentMeters;
   const isMonthlyMeansAnomalies = mainProduct?.key === 'monthlyMeans' && subProduct?.key === 'monthlyMeans-anomalies';
   const isFourHourSst = mainProduct?.key === 'fourHourSst';
   const isSurfaceWaves = mainProduct?.key === 'surfaceWaves';
@@ -55,11 +56,14 @@ const useDateRange = (): UseDateRangeReturn => {
     if (urlDate) {
       return dayjs(urlDate, formatDate).toDate();
     }
-    if (isYearRange) {
+    if (isMonthRange) {
       return dayjs().startOf('year').toDate();
     }
     if (isWeekRange) {
       return dayjs().subtract(1, 'week').toDate();
+    }
+    if (isYearRange) {
+      return dayjs('2024-01-01').toDate();
     }
     return dayjs().subtract(1, 'month').toDate();
   };
@@ -101,7 +105,7 @@ const useDateRange = (): UseDateRangeReturn => {
 
   useEffect(() => {
     const getDateRange = () => {
-      if (isYearRange) {
+      if (isMonthRange) {
         return {
           start: dayjs().startOf('year'),
           end: dayjs().endOf('year'),
@@ -110,6 +114,11 @@ const useDateRange = (): UseDateRangeReturn => {
         return {
           start: dayjs().subtract(1, 'week'),
           end: dayjs(),
+        };
+      } else if (isYearRange) {
+        return {
+          start: dayjs('2007-01-01'),
+          end: dayjs('2024-12-31'),
         };
       } else {
         return {
@@ -126,10 +135,21 @@ const useDateRange = (): UseDateRangeReturn => {
     updateDateSlider(start.toDate(), end.toDate(), urlDate ? dayjs(urlDate, formatDate).toDate() : undefined);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isYearRange, isFourHourSst, mainProduct, subProduct, urlDate, urlStartDate, urlEndDate, formatDate]);
+  }, [
+    isMonthRange,
+    isFourHourSst,
+    isYearRange,
+    mainProduct,
+    subProduct,
+    urlDate,
+    urlStartDate,
+    urlEndDate,
+    formatDate,
+  ]);
 
   const generateDateRange = (start: Date, end?: Date): DateRange => {
-    if (isYearRange) return generateYearRange(start);
+    if (isMonthRange) return generateYearRange(start);
+    if (isYearRange) return generateYearlyRange();
     if (isFourHourSst) return generateDayWithHourRange(start, 2, 4, 24, end);
     if (isSurfaceWaves) return generateDayWithHourRange(start, 2, 2, 24, end);
     if (isOceanColourLocal) return generateDayWithHourRange(start, 4, 1, 7, end);
@@ -146,6 +166,17 @@ const useDateRange = (): UseDateRangeReturn => {
       active: !(isMonthlyMeansAnomalies && year === currentYear && index >= currentMonth),
       showLabel: true,
     }));
+  };
+
+  const generateYearlyRange = (): DateRange => {
+    return Array.from({ length: 18 }, (_, index) => {
+      const year = 2007 + index;
+      return {
+        date: dayjs(`${year}-01-01`).toDate(),
+        active: true,
+        showLabel: true,
+      };
+    });
   };
 
   const generateDayRange = (start: Date, end?: Date): DateRange => {
@@ -205,7 +236,8 @@ const useDateRange = (): UseDateRangeReturn => {
   };
 
   const determineSelectedIndex = (range: DateRange, newStartDate: Date, newSelectedDate?: Date) => {
-    if (isYearRange) return determineYearSelectedIndex(range, newStartDate, newSelectedDate);
+    if (isMonthRange) return determineYearSelectedIndex(range, newStartDate, newSelectedDate);
+    if (isYearRange) return determineYearlySelectedIndex(range, newSelectedDate);
     return determineDaySelectedIndex(range, newSelectedDate);
   };
 
@@ -217,6 +249,16 @@ const useDateRange = (): UseDateRangeReturn => {
       return dayjs(urlDate, formatDate).get('month');
     }
     return dayjs(newStartDate).get('month');
+  };
+
+  const determineYearlySelectedIndex = (range: DateRange, newSelectedDate?: Date) => {
+    if (newSelectedDate) {
+      return range.findIndex(({ date }) => dayjs(date).isSame(dayjs(newSelectedDate), 'year'));
+    }
+    if (urlDate) {
+      return range.findIndex(({ date }) => dayjs(date).isSame(dayjs(urlDate, formatDate), 'year'));
+    }
+    return range.length - 1;
   };
 
   const determineDaySelectedIndex = (range: DateRange, newSelectedDate?: Date) => {
@@ -263,15 +305,23 @@ const useDateRange = (): UseDateRangeReturn => {
     let newEndDate = dayjs(endDate);
     let newIndex = newValue !== undefined ? newValue : selectedDateIndex;
 
-    if (isSubtracting && isAtStart) {
-      newStartDate = newStartDate.subtract(1, 'day');
-    } else if (isAdding && isAtEnd) {
-      newEndDate = newEndDate.add(1, 'day');
-      newIndex++;
-    } else if (newValue !== undefined) {
-      newIndex = findNextActiveIndex(modificationType, newValue);
+    if (isYearRange) {
+      if (isSubtracting && !isAtStart) {
+        newIndex--;
+      } else if (isAdding && !isAtEnd) {
+        newIndex++;
+      }
     } else {
-      newIndex = findNextActiveIndex(modificationType);
+      if (isSubtracting && isAtStart) {
+        newStartDate = newStartDate.subtract(1, 'day');
+      } else if (isAdding && isAtEnd) {
+        newEndDate = newEndDate.add(1, 'day');
+        newIndex++;
+      } else if (newValue !== undefined) {
+        newIndex = findNextActiveIndex(modificationType, newValue);
+      } else {
+        newIndex = findNextActiveIndex(modificationType);
+      }
     }
 
     return {
@@ -356,7 +406,7 @@ const useDateRange = (): UseDateRangeReturn => {
   };
 
   const getInitialDateRange = () => {
-    if (isYearRange) {
+    if (isMonthRange) {
       return {
         start: dayjs().startOf('year'),
         end: dayjs().endOf('year'),
@@ -388,11 +438,12 @@ const useDateRange = (): UseDateRangeReturn => {
     isSelectedDayYesterdayOrLater,
     isLastMonthOfTheYear,
     steps: 1,
-    isYearRange,
+    isMonthRange,
     resetDateRange,
     disableVideoCreation,
     formatDate,
     isWeekRange,
+    isYearRange,
   };
 };
 

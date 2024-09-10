@@ -9,7 +9,7 @@ import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useProductFromUrl, useProductSearchParam } from '@/hooks';
 import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
-import DataVisualisationNavbar from '@/components/ProductNavbar/ProductNavbar';
+import DataVisualisationNavbar from '@/components/DataVisualisationNavbar/DataVisualisationNavbar';
 import DataVisualisationSidebar from '@/components/DataVisualisationSidebar/DataVisualisationSidebar';
 import ArrowIcon from '@/assets/icons/Arrow';
 import { RegionScope } from '@/constants/region';

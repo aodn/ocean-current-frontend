@@ -48,7 +48,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       <div
         onClick={toggleDropdown}
         aria-hidden="true"
-        className={`${header ? 'rounded bg-[#182C3A] p-3' : 'rounded-md bg-white p-2'} ${
+        className={`${header ? 'rounded bg-[#182C3A] p-3' : 'rounded-md border-2 border-[#3a6f8f80] bg-white p-2'} ${
           smallDropdown ? 'min-w-28' : 'min-w-56'
         } flex cursor-pointer items-center justify-between px-4 text-lg text-imos-title-blue shadow`}
       >

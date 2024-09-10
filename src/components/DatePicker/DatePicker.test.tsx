@@ -13,7 +13,7 @@ const mockProps = {
   handleYearDateChange: vi.fn(),
   isSelectedDayYesterdayOrLater: false,
   isLastMonthOfTheYear: vi.fn(),
-  isYearRange: false,
+  isMonthRange: false,
   isWeekRange: false,
 };
 

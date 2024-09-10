@@ -24,14 +24,17 @@ const DatePicker: React.FC<DatePickerProps> = ({
   handleYearDateChange,
   selectedDate,
   isLastMonthOfTheYear,
-  isYearRange,
+  isMonthRange,
   isWeekRange,
+  isYearRange,
 }) => {
   const formattedDate = () => {
-    if (isYearRange) {
+    if (isMonthRange) {
       return dayjs(selectedDate).format('MMM YYYY');
     } else if (isWeekRange) {
       return dayjs(selectedDate).format('DD MMM HH:mm ');
+    } else if (isYearRange) {
+      return dayjs(selectedDate).format('YYYY');
     } else {
       return dayjs(selectedDate).format('DD MMM YY');
     }
@@ -42,12 +45,12 @@ const DatePicker: React.FC<DatePickerProps> = ({
       if (event.key === 'ArrowLeft') {
         modifyDate('subtract');
       } else if (event.key === 'ArrowRight') {
-        if (!(isYearRange ? isLastMonthOfTheYear() : addButtonDisabled)) {
+        if (!(isMonthRange ? isLastMonthOfTheYear() : addButtonDisabled)) {
           modifyDate('add');
         }
       }
     },
-    [modifyDate, isYearRange, isLastMonthOfTheYear, addButtonDisabled],
+    [modifyDate, isMonthRange, isLastMonthOfTheYear, addButtonDisabled],
   );
 
   useEffect(() => {
@@ -60,7 +63,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
   return (
     <div className="flex items-center justify-evenly">
       <div>
-        {isYearRange ? (
+        {isMonthRange || isYearRange ? (
           <ReactDatePicker
             customInput={customInput()}
             selected={startDate}
@@ -92,7 +95,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
         <span className="text-l px-1">{formattedDate()}</span>
         <button
           onClick={() => modifyDate('add')}
-          disabled={isYearRange ? isLastMonthOfTheYear() : addButtonDisabled}
+          disabled={isMonthRange ? isLastMonthOfTheYear() : addButtonDisabled}
           className="cursor-pointer rounded bg-transparent p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
         >
           <img className="h-4 w-4 -rotate-90" src={arrowIcon} alt="right arrow icon" />

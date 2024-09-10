@@ -41,8 +41,9 @@ export type UseDateRangeReturn = {
   isSelectedDayYesterdayOrLater: () => boolean;
   isLastMonthOfTheYear: () => boolean;
   steps: number;
-  isYearRange: boolean;
+  isMonthRange: boolean;
   isWeekRange: boolean;
+  isYearRange: boolean;
   resetDateRange: () => void;
   disableVideoCreation: () => boolean;
   formatDate: string;
