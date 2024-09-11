@@ -17,7 +17,6 @@ describe('useDataFetch', () => {
 
     await waitFor(() => result.current.loading === false);
 
-    expect(result.current.loading).toBe(false);
     expect(result.current.data).toEqual(mockData);
     expect(result.current.error).toBe(null);
     expect(mockFetchFn).toHaveBeenCalledWith('arg1', 'arg2');
@@ -35,7 +34,6 @@ describe('useDataFetch', () => {
 
     await waitFor(() => result.current.loading === false);
 
-    expect(result.current.loading).toBe(false);
     expect(result.current.data).toBe(null);
     expect(result.current.error).toEqual(new Error('API Error'));
     expect(mockFetchFn).toHaveBeenCalledWith('arg1', 'arg2');

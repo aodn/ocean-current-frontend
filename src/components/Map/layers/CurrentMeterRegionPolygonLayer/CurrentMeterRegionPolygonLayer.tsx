@@ -4,8 +4,6 @@ import { currentMeterDataPointsArray } from '@/data/current-meter/data-point';
 import { mapboxSourceIds } from '@/constants/mapboxId';
 import { CustomSquareSymbol } from '../../symbols';
 
-import '@/data/current-meter/region-list/aust';
-
 const SYMBOL_SIZE = 60;
 const SYMBOL_STROKE_WIDTH = 4;
 const SYMBOL_STROKE_STYLE = 'rgba(34,34,34,0.5)';
@@ -44,9 +42,10 @@ const CurrentMeterRegionPolygonLayer: React.FC = () => {
       return;
     }
 
-    const outlinedSquare2 = new CustomSquareSymbol(SYMBOL_SIZE, SYMBOL_STROKE_STYLE, SYMBOL_STROKE_WIDTH);
+    const outlinedSquare = new CustomSquareSymbol(SYMBOL_SIZE, SYMBOL_STROKE_STYLE, SYMBOL_STROKE_WIDTH);
 
-    map.addImage(CUSTOM_SQUARE_SYMBOL_IMAGE_NAME, outlinedSquare2, { pixelRatio: 2 });
+    map.addImage(CUSTOM_SQUARE_SYMBOL_IMAGE_NAME, outlinedSquare, { pixelRatio: 2 });
+
     return () => {
       map.removeImage(CUSTOM_SQUARE_SYMBOL_IMAGE_NAME);
     };
