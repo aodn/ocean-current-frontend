@@ -8,6 +8,7 @@ const mapboxSourceIds = {
   ARGO_AS_PRODUCT_SOURCE_ID: 'argo-as-product-source-id',
   PRODUCT_REGION_BOX_SOURCE_ID: 'product-region-box-source-id',
   DATA_IMAGE_SOURCE_ID: 'data-image-source-id',
+  CURRENT_METER_ALL_REGIONS_SOURCE_ID: 'current-meter-all-regions-source-id',
 } as const;
 
 const mapboxLayerIds = {

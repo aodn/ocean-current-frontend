@@ -2,11 +2,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Dayjs } from 'dayjs';
 import { isAxiosError } from 'axios';
 import { getArgoProfilesByDate } from '@/services/argo';
-import { calculateCenterByCoords, convertHtmlToArgo } from '@/utils/argo-utils/argo';
+import { convertHtmlToArgo } from '@/utils/argo-utils/argo';
 import { ArgoProfile } from '@/types/argo';
 import { setArgoMetaData } from '@/stores/argo-store/argoStore';
 import useDateStore, { setDate } from '@/stores/date-store/dateStore';
 import { ArgoProfileFeatureCollection } from '@/types/geo';
+import { calculateCenterByCoords } from '@/utils/geo-utils/geo';
 
 const MAXIMUM_RETRIES = 5;
 
