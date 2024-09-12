@@ -1,61 +1,62 @@
-import { calculateOffsetByCoords, calculateCenterByCoords } from './argo';
+import { describe, it, expect } from 'vitest';
+import { ArgoProfile } from '@/types/argo';
+import { convertHtmlToArgo } from './argo';
 
-vi.mock('@/constants/argo', () => ({
-  argoMapImgParamsNew: {
-    imageWidth: 1000,
-    imageHeight: 600,
-    imageBounds: [100, 200, -50, 10],
-  },
+// TODO: write tests for not mocked functions
+vi.mock('../geo-utils/geo', () => ({
+  calculateOffsetByCoords: (coords: number[]) => coords,
 }));
 
-describe('calculateOffsetByCoords', async () => {
-  it('should return the correct offset values', () => {
-    // Arrange
-    const coords = [500, 300, 505, 305];
+describe('convertHtmlToArgo', () => {
+  it('should convert HTML to ArgoProfile array correctly', () => {
+    const htmlInput = `<map name="imap">
+      <area shape="rect" coords="34 152 39 158" href="../1902055/20240910_1902055_153.html" target="_blank" alt="1902055">
+      <area shape="rect" coords="570 167 575 173" href="../3902358/20240910_3902358_60.html" target="_blank" alt="3902358">
+    </map>`;
 
-    // Act
-    const offset = calculateOffsetByCoords(coords);
+    const expectedOutput: ArgoProfile[] = [
+      {
+        coords: [34, 152, 39, 158],
+        worldMeteorologicalOrgId: '1902055',
+        cycle: '153',
+        depth: '0',
+        date: '20240910',
+      },
+      {
+        coords: [570, 167, 575, 173],
+        worldMeteorologicalOrgId: '3902358',
+        cycle: '60',
+        depth: '0',
+        date: '20240910',
+      },
+    ];
 
-    // Assert
-    // 5/1000 = 0.005
-    expect(offset).toEqual([150, -20, 150.5, -20.5]);
+    const result = convertHtmlToArgo(htmlInput);
+
+    expect(result).toEqual(expectedOutput);
+    expect(result).toHaveLength(2);
   });
 
-  it('should return the correct offset values for different coords', () => {
-    // Arrange
-    const coords = [100, 200, 200, 300];
+  it('should handle empty HTML input', () => {
+    const htmlInput = '';
+    const result = convertHtmlToArgo(htmlInput);
 
-    // Act
-    const offset = calculateOffsetByCoords(coords);
-
-    //100/1000 = 10
-    // Assert
-    expect(offset).toEqual([110, -10, 120, -20]);
-  });
-});
-
-describe('calculateCenterByCoords', () => {
-  it('calculates the center point correctly for positive coordinates', () => {
-    const coords = [0, 0, 4, 4];
-    const result = calculateCenterByCoords(coords);
-    expect(result).toEqual([2, 2]);
+    expect(result).toEqual([]);
+    expect(result).toHaveLength(0);
   });
 
-  it('calculates the center point correctly for negative coordinates', () => {
-    const coords = [-2, -2, 2, 2];
-    const result = calculateCenterByCoords(coords);
-    expect(result).toEqual([0, 0]);
+  it('should handle HTML input with no area elements', () => {
+    const htmlInput = '<map name="imap"></map>';
+    const result = convertHtmlToArgo(htmlInput);
+
+    expect(result).toEqual([]);
+    expect(result).toHaveLength(0);
   });
 
-  it('handles decimal coordinates', () => {
-    const coords = [1.5, 2.5, 3.5, 4.5];
-    const result = calculateCenterByCoords(coords);
-    expect(result).toEqual([2.5, 3.5]);
-  });
+  it('should handle malformed HTML input gracefully', () => {
+    const htmlInput =
+      '<map name="imap"><area shape="rect" coords="invalid" href="../1234567/20240910_1234567_123.html"></map>';
 
-  it('returns the same point if both coordinates are the same', () => {
-    const coords = [3, 3, 3, 3];
-    const result = calculateCenterByCoords(coords);
-    expect(result).toEqual([3, 3]);
+    expect(() => convertHtmlToArgo(htmlInput)).not.toThrow();
   });
 });

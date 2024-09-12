@@ -1,5 +1,7 @@
+import parse from 'node-html-parser';
 import { BoundingBox, GeoJsonPolygon } from '@/types/map';
 import { validateCoords } from '@/utils/validators/map';
+import { CurrentMeterMapArea } from '@/types/currentMeter';
 
 const calculateAreaFromCoords = (coords: BoundingBox, shouldValidate: boolean = true) => {
   if (shouldValidate) {
@@ -51,9 +53,54 @@ const convertOldOceanCurrentCoordsToBBox = (coords: number[]): BoundingBox => {
   return [westLongitude, southLatitude, eastLongitude, northLatitude];
 };
 
+const calculateOffsetByCoords = (
+  coords: number[],
+  imageParameter: { imageWidth: number; imageHeight: number; imageBounds: number[] },
+): number[] => {
+  const { imageWidth, imageHeight, imageBounds } = imageParameter;
+  const imageToGeo = (x: number, y: number) => {
+    const longitude = imageBounds[0] + (x / imageWidth) * (imageBounds[1] - imageBounds[0]);
+    const latitude = imageBounds[3] + (y / imageHeight) * (imageBounds[2] - imageBounds[3]);
+    return { longitude, latitude };
+  };
+  const [x1, y1, x2, y2] = coords;
+  const topLeftGeo = imageToGeo(x1, y1);
+  const bottomRightGeo = imageToGeo(x2, y2);
+  return [topLeftGeo.longitude, topLeftGeo.latitude, bottomRightGeo.longitude, bottomRightGeo.latitude];
+};
+
+const calculateCenterByCoords = (coords: number[]): number[] => {
+  const [x1, y1, x2, y2] = coords;
+  return [(x1 + x2) / 2, (y1 + y2) / 2];
+};
+
+// TODO: Refactor this function to be more generic
+const convertCurrentMeterHtmlMapElementStringToObj = (htmlMapElementString: string): CurrentMeterMapArea[] => {
+  const rootElement = parse(htmlMapElementString.replace(/(\r\n|\n|\r)/gm, ''));
+  const areaElements = rootElement!.querySelectorAll('area');
+
+  return areaElements.map((area) => {
+    const coords = area
+      .getAttribute('coords')!
+      .split(/\s+/)
+      .map((coord) => parseInt(coord, 10));
+
+    return {
+      shape: area.getAttribute('shape'),
+      coords,
+      href: area.getAttribute('href'),
+      alt: area.getAttribute('alt'),
+      title: area.getAttribute('title'),
+    };
+  });
+};
+
 export {
   calculateAreaFromCoords,
   convertAreaCoordsToGeoJsonCoordinates,
   convertGeoJsonCoordinatesToBBox,
   convertOldOceanCurrentCoordsToBBox,
+  calculateOffsetByCoords,
+  calculateCenterByCoords,
+  convertCurrentMeterHtmlMapElementStringToObj,
 };
