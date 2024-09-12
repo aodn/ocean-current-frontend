@@ -4,7 +4,7 @@ import { mapConfig } from '@/configs/map';
 import useMapStore, { setMapViewState, updateZoom } from '@/stores/map-store/mapStore';
 import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer } from './layers';
+import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer, CurrentMeterRegionPolygonLayer } from './layers';
 import MAP_STYLE from './data/map-style.basic-v8.json';
 import { BasicMapProps } from './types/map.types';
 
@@ -18,33 +18,38 @@ const BasicMap: React.FC<BasicMapProps> = ({
   navigationControl = true,
   minZoom,
 }) => {
-  const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
-
-  const interactiveIds = [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID];
-
   const [cursor, setCursor] = useState<string>('grab');
   const useMapViewState = useMapStore((state) => state.mapViewState);
-  const { isArgo } = useProductCheck();
+  const { isArgo, isCurrentMeters } = useProductCheck();
+
+  const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
+  const interactiveIds = [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID];
 
   const shouldShowArgoLayer = (!isArgo && !isMiniMap) || isArgo;
+  const showCurrentMetersLayer = isCurrentMeters && isMiniMap;
 
-  const handleMove = ({ viewState }: ViewStateChangeEvent) => {
+  const handleMove = useCallback(({ viewState }: ViewStateChangeEvent) => {
     setMapViewState(viewState);
-  };
+  }, []);
 
-  const handleZoom = ({ viewState }: ViewStateChangeEvent) => {
+  const handleZoom = useCallback(({ viewState }: ViewStateChangeEvent) => {
     updateZoom(viewState.zoom);
-  };
+  }, []);
 
   const handleMouseEnter = useCallback(() => setCursor('pointer'), []);
   const handleMouseLeave = useCallback(() => setCursor('grab'), []);
 
-  const memoizedDataImageLayer = useMemo(() => <DataImageLayer />, []);
-  const memoizedRegionPolygonLayer = useMemo(
-    () => <RegionPolygonLayer shouldKeepNationalRegion={!isMiniMap} shouldFitNationalRegionBounds={isMiniMap} />,
+  const memoizedLayers = useMemo(
+    () => ({
+      dataImageLayer: <DataImageLayer />,
+      currentMeterLayer: <CurrentMeterRegionPolygonLayer />,
+      regionPolygonLayer: (
+        <RegionPolygonLayer shouldKeepNationalRegion={!isMiniMap} shouldFitNationalRegionBounds={isMiniMap} />
+      ),
+      argoAsProductLayer: <ArgoAsProductLayer isMiniMap={isMiniMap} />,
+    }),
     [isMiniMap],
   );
-  const memoizedArgoAsProductLayer = useMemo(() => <ArgoAsProductLayer isMiniMap={isMiniMap} />, [isMiniMap]);
 
   if (!mapConfig.accessToken) {
     return (
@@ -77,9 +82,10 @@ const BasicMap: React.FC<BasicMapProps> = ({
       {fullScreenControl && <FullscreenControl position="top-right" />}
       {navigationControl && <NavigationControl position="top-right" />}
 
-      {!isArgo && memoizedDataImageLayer}
-      {!isArgo && memoizedRegionPolygonLayer}
-      {shouldShowArgoLayer && memoizedArgoAsProductLayer}
+      {!isArgo && memoizedLayers.dataImageLayer}
+      {!isArgo && memoizedLayers.regionPolygonLayer}
+      {shouldShowArgoLayer && memoizedLayers.argoAsProductLayer}
+      {showCurrentMetersLayer && memoizedLayers.currentMeterLayer}
     </Map>
   );
 };

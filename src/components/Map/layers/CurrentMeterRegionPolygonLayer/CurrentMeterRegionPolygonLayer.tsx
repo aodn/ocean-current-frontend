@@ -47,6 +47,9 @@ const CurrentMeterRegionPolygonLayer: React.FC = () => {
     map.addImage(CUSTOM_SQUARE_SYMBOL_IMAGE_NAME, outlinedSquare, { pixelRatio: 2 });
 
     return () => {
+      if (!map.hasImage(CUSTOM_SQUARE_SYMBOL_IMAGE_NAME)) {
+        return;
+      }
       map.removeImage(CUSTOM_SQUARE_SYMBOL_IMAGE_NAME);
     };
   }, [map]);
