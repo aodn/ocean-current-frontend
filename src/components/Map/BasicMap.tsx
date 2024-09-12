@@ -4,8 +4,7 @@ import { mapConfig } from '@/configs/map';
 import useMapStore, { setMapViewState, updateZoom } from '@/stores/map-store/mapStore';
 import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer } from './layers';
-import CurrentMeterRegionPolygonLayer from './layers/CurrentMeterRegionPolygonLayer/CurrentMeterRegionPolygonLayer';
+import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer, CurrentMeterRegionPolygonLayer } from './layers';
 import MAP_STYLE from './data/map-style.basic-v8.json';
 import { BasicMapProps } from './types/map.types';
 
