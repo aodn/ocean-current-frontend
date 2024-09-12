@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { currentMeterRegion, currentMeterProperty, currentMeterDepth } from '@/types/currentMeters';
+import { CurrentMeterRegion, CurrentMeterProperty, CurrentMeterDepth } from '@/types/currentMeters';
 import { State, Actions } from './currentMeters.types';
 
 const initialState: State = {
-  region: currentMeterRegion.Aust,
-  property: currentMeterProperty.vmean,
-  depth: currentMeterDepth.One,
+  region: CurrentMeterRegion.Aust,
+  property: CurrentMeterProperty.vmean,
+  depth: CurrentMeterDepth.One,
 };
 
 const useCurrentMeterStore = create<State & Actions>()(

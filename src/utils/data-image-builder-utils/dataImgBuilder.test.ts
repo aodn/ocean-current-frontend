@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { TargetPathRegionScope } from '@/constants/imgPath';
 import { imageBaseUrl } from '@/configs/image';
-import { currentMeterDepth, currentMeterProperty, currentMeterRegion } from '@/types/currentMeters';
+import { CurrentMeterDepth, CurrentMeterProperty, CurrentMeterRegion } from '@/types/currentMeters';
 import {
   buildProductImageUrl,
   buildArgoImageUrl,
@@ -544,10 +544,10 @@ describe('buildProductVideoUrl', () => {
 describe('buildCurrentMeterImageUrl', () => {
   it('should return the correct image url for current Meters', () => {
     // Arrange
-    const region = currentMeterRegion.Aust;
+    const region = CurrentMeterRegion.Aust;
     const date = '2024';
-    const property = currentMeterProperty.vmean;
-    const depth = currentMeterDepth.One;
+    const property = CurrentMeterProperty.vmean;
+    const depth = CurrentMeterDepth.One;
 
     // Act
     const videoUrl = buildCurrentMeterImageUrl(region, date, property, depth);

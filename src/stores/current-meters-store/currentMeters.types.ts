@@ -1,17 +1,17 @@
-import { currentMeterRegion, currentMeterProperty, currentMeterDepth } from '@/types/currentMeters';
+import { CurrentMeterRegion, CurrentMeterProperty, CurrentMeterDepth } from '@/types/currentMeters';
 
 export type State = {
-  region: currentMeterRegion;
-  property: currentMeterProperty;
-  depth: currentMeterDepth;
+  region: CurrentMeterRegion;
+  property: CurrentMeterProperty;
+  depth: CurrentMeterDepth;
 };
 
 export type Actions = {
   actions: {
     setSelectedCurrentMeter: (data: State) => void;
-    setRegion: (region: currentMeterRegion) => void;
-    setDepth: (depth: currentMeterDepth) => void;
-    setProperty: (property: currentMeterProperty) => void;
+    setRegion: (region: CurrentMeterRegion) => void;
+    setDepth: (depth: CurrentMeterDepth) => void;
+    setProperty: (property: CurrentMeterProperty) => void;
     reset: () => void;
   };
 };

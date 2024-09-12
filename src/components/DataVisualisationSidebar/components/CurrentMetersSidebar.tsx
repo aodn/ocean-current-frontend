@@ -6,7 +6,7 @@ import ArrowWithTail from '@/assets/icons/ArrowWithTail';
 import { currentMetersDescription, currentMetersDataModal } from '@/data/currentMetersData.tsx';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import useCurrentMeterStore, { setProperty, setDepth, setRegion } from '@/stores/current-meters-store/currentMeters';
-import { currentMeterProperty, currentMeterDepth, currentMeterRegion } from '@/types/currentMeters';
+import { CurrentMeterProperty, CurrentMeterDepth, CurrentMeterRegion } from '@/types/currentMeters';
 
 interface SectionData {
   title: string;
@@ -20,91 +20,91 @@ const CurrentMetersSidebar: React.FC = () => {
   const date = searchParams.get('date');
 
   useEffect(() => {
-    const urlRegion = searchParams.get('region') as currentMeterRegion;
-    const urlProperty = searchParams.get('property') as currentMeterProperty;
-    const urlDepth = searchParams.get('depth') as currentMeterDepth;
-    if (urlRegion && Object.values(currentMeterRegion).includes(urlRegion)) setRegion(urlRegion);
-    if (urlProperty && Object.values(currentMeterProperty).includes(urlProperty)) setProperty(urlProperty);
-    if (urlDepth && Object.values(currentMeterDepth).includes(urlDepth)) setDepth(urlDepth);
+    const urlRegion = searchParams.get('region') as CurrentMeterRegion;
+    const urlProperty = searchParams.get('property') as CurrentMeterProperty;
+    const urlDepth = searchParams.get('depth') as CurrentMeterDepth;
+    if (urlRegion && Object.values(CurrentMeterRegion).includes(urlRegion)) setRegion(urlRegion);
+    if (urlProperty && Object.values(CurrentMeterProperty).includes(urlProperty)) setProperty(urlProperty);
+    if (urlDepth && Object.values(CurrentMeterDepth).includes(urlDepth)) setDepth(urlDepth);
   }, [searchParams]);
 
   const propertyData = useMemo(() => {
     const allPropertyData: SectionData[] = [
-      { title: 'vmean', id: currentMeterProperty.vmean },
-      { title: 'vrms', id: currentMeterProperty.vrms },
-      { title: 'M2', id: currentMeterProperty.M2 },
-      { title: 'S2', id: currentMeterProperty.S2 },
-      { title: 'N2', id: currentMeterProperty.N2 },
-      { title: 'O1', id: currentMeterProperty.O1 },
-      { title: 'K1', id: currentMeterProperty.K1 },
+      { title: 'vmean', id: CurrentMeterProperty.vmean },
+      { title: 'vrms', id: CurrentMeterProperty.vrms },
+      { title: 'M2', id: CurrentMeterProperty.M2 },
+      { title: 'S2', id: CurrentMeterProperty.S2 },
+      { title: 'N2', id: CurrentMeterProperty.N2 },
+      { title: 'O1', id: CurrentMeterProperty.O1 },
+      { title: 'K1', id: CurrentMeterProperty.K1 },
     ];
 
-    if (depth === currentMeterDepth.One) {
+    if (depth === CurrentMeterDepth.One) {
       return allPropertyData;
     }
     return allPropertyData.filter(
-      (prop) => prop.id === currentMeterProperty.vmean || prop.id === currentMeterProperty.vrms,
+      (prop) => prop.id === CurrentMeterProperty.vmean || prop.id === CurrentMeterProperty.vrms,
     );
   }, [depth]);
 
   const depthOptionsData = [
-    { label: '0-4800m', id: currentMeterDepth.One },
-    { label: '0-30m', id: currentMeterDepth.Two },
-    { label: '80-150m', id: currentMeterDepth.Three },
-    { label: '150-300m', id: currentMeterDepth.Four },
-    { label: '300-600m', id: currentMeterDepth.Five },
-    { label: '1200-2200m', id: currentMeterDepth.Six },
-    { label: '2200-4800m', id: currentMeterDepth.Seven },
+    { label: '0-4800m', id: CurrentMeterDepth.One },
+    { label: '0-30m', id: CurrentMeterDepth.Two },
+    { label: '80-150m', id: CurrentMeterDepth.Three },
+    { label: '150-300m', id: CurrentMeterDepth.Four },
+    { label: '300-600m', id: CurrentMeterDepth.Five },
+    { label: '1200-2200m', id: CurrentMeterDepth.Six },
+    { label: '2200-4800m', id: CurrentMeterDepth.Seven },
   ];
 
   const regionsOptionsData = [
-    { label: 'Aust', id: currentMeterRegion.Aust },
-    { label: 'TimorP', id: currentMeterRegion.TimorP },
-    { label: 'Kim', id: currentMeterRegion.Kim },
-    { label: 'Row', id: currentMeterRegion.Row },
-    { label: 'Pil', id: currentMeterRegion.Pil },
-    { label: 'Ning', id: currentMeterRegion.Ning },
-    { label: 'Perth', id: currentMeterRegion.Perth },
-    { label: 'Esp', id: currentMeterRegion.Esp },
-    { label: 'SA', id: currentMeterRegion.SA },
-    { label: 'Totten', id: currentMeterRegion.Totten },
-    { label: 'SOFS', id: currentMeterRegion.SOFS },
-    { label: 'Polynya', id: currentMeterRegion.Polynya },
-    { label: 'ETas', id: currentMeterRegion.ETas },
-    { label: 'BMP', id: currentMeterRegion.BMP },
-    { label: 'Syd', id: currentMeterRegion.Syd },
-    { label: 'Coffs', id: currentMeterRegion.Coffs },
-    { label: 'SEQ', id: currentMeterRegion.SEQ },
-    { label: 'SGBR', id: currentMeterRegion.SGBR },
-    { label: 'SGBR2', id: currentMeterRegion.SGBR2 },
-    { label: 'CGBR', id: currentMeterRegion.CGBR },
-    { label: 'NGBR', id: currentMeterRegion.NGBR },
+    { label: 'Aust', id: CurrentMeterRegion.Aust },
+    { label: 'TimorP', id: CurrentMeterRegion.TimorP },
+    { label: 'Kim', id: CurrentMeterRegion.Kim },
+    { label: 'Row', id: CurrentMeterRegion.Row },
+    { label: 'Pil', id: CurrentMeterRegion.Pil },
+    { label: 'Ning', id: CurrentMeterRegion.Ning },
+    { label: 'Perth', id: CurrentMeterRegion.Perth },
+    { label: 'Esp', id: CurrentMeterRegion.Esp },
+    { label: 'SA', id: CurrentMeterRegion.SA },
+    { label: 'Totten', id: CurrentMeterRegion.Totten },
+    { label: 'SOFS', id: CurrentMeterRegion.SOFS },
+    { label: 'Polynya', id: CurrentMeterRegion.Polynya },
+    { label: 'ETas', id: CurrentMeterRegion.ETas },
+    { label: 'BMP', id: CurrentMeterRegion.BMP },
+    { label: 'Syd', id: CurrentMeterRegion.Syd },
+    { label: 'Coffs', id: CurrentMeterRegion.Coffs },
+    { label: 'SEQ', id: CurrentMeterRegion.SEQ },
+    { label: 'SGBR', id: CurrentMeterRegion.SGBR },
+    { label: 'SGBR2', id: CurrentMeterRegion.SGBR2 },
+    { label: 'CGBR', id: CurrentMeterRegion.CGBR },
+    { label: 'NGBR', id: CurrentMeterRegion.NGBR },
   ];
 
   const handlePopup = () => setIsPopupOpen(!isPopupOpen);
 
   const handlePropertyChange = (id: string) => {
     setSearchParams({ property: id, depth, region, date: date ?? '' });
-    setProperty(id as currentMeterProperty);
+    setProperty(id as CurrentMeterProperty);
   };
 
   const handleRegionOptions = (selectedElement: DropdownElement) => {
     const { id } = selectedElement;
 
     setSearchParams({ property, depth, region: id, date: date ?? '' });
-    setRegion(id as currentMeterRegion);
+    setRegion(id as CurrentMeterRegion);
   };
 
   const handleDepthOptions = (selectedElement: DropdownElement) => {
     const { id } = selectedElement;
     const shouldResetToDefaultProperty =
-      id !== currentMeterDepth.One && property !== currentMeterProperty.vmean && property !== currentMeterProperty.vrms;
+      id !== CurrentMeterDepth.One && property !== CurrentMeterProperty.vmean && property !== CurrentMeterProperty.vrms;
 
-    setDepth(selectedElement.id as currentMeterDepth);
+    setDepth(selectedElement.id as CurrentMeterDepth);
     setSearchParams({ property, depth: id, region, date: date ?? '' });
 
     if (shouldResetToDefaultProperty) {
-      setProperty(currentMeterProperty.vmean);
+      setProperty(CurrentMeterProperty.vmean);
     }
   };
 

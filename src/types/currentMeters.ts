@@ -1,4 +1,4 @@
-export enum currentMeterRegion {
+export enum CurrentMeterRegion {
   Aust = '01_Aust',
   TimorP = '02_TimorP',
   Kim = '03_Kim',
@@ -22,7 +22,7 @@ export enum currentMeterRegion {
   NGBR = '16_NGBR',
 }
 
-export enum currentMeterProperty {
+export enum CurrentMeterProperty {
   vmean = 'vmean',
   vrms = 'vrms',
   M2 = 'M2',
@@ -32,7 +32,7 @@ export enum currentMeterProperty {
   K1 = 'K1',
 }
 
-export enum currentMeterDepth {
+export enum CurrentMeterDepth {
   One = '1',
   Two = '2',
   Three = '3',
