@@ -19,7 +19,7 @@ const htmlString = `<map name="imap">
 
 export const kimMapAreas = convertCurrentMeterHtmlMapElementStringToObj(htmlString);
 
-const kim = [
+const regionArr = [
   {
     shape: 'rect',
     coords: [575, 179, 584, 189],
@@ -127,7 +127,7 @@ const kim = [
   },
 ];
 
-const convertedToGeo = kim.map((region) => {
+const convertedToGeo = regionArr.map((region) => {
   const coords = calculateOffsetByCoords(region.coords, {
     imageWidth: 875,
     imageHeight: 760,
