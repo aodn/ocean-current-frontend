@@ -106,7 +106,7 @@ export const linksData = [
         imageUrl: CurrentMetersIcon,
         title: 'Current Meters',
         description: 'Flow measurement devices',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
+        url: 'product/current-meters',
       },
       {
         id: 'sealctd',

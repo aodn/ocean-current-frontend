@@ -55,7 +55,7 @@ const VideoCreation: React.FC = () => {
   }));
 
   const customInput = (date: Date): JSX.Element => (
-    <div className="flex w-48 cursor-pointer items-center justify-between rounded bg-white p-2 px-3">
+    <div className="flex w-48 cursor-pointer items-center justify-between rounded border-2 border-[#3a6f8f80] bg-white p-2 px-3">
       <p>{dayjs(date).format('MMM DD, YYYY')}</p>
       <img className="h-6 w-6" src={calendarIcon} alt="calendar icon" />
     </div>
@@ -130,7 +130,7 @@ const VideoCreation: React.FC = () => {
                 type="number"
                 value={gifWidth}
                 onChange={(e) => handleDimensionChange(e, 'width')}
-                className="w-48 rounded bg-white p-2 px-3"
+                className="w-48 rounded border-2 border-[#3a6f8f80] bg-white p-2 px-3"
                 min="1"
                 max={2000}
               />
@@ -141,7 +141,7 @@ const VideoCreation: React.FC = () => {
                 type="number"
                 value={gifHeight}
                 onChange={(e) => handleDimensionChange(e, 'height')}
-                className="w-48 rounded bg-white p-2 px-3"
+                className="w-48 rounded border-2 border-[#3a6f8f80] bg-white p-2 px-3"
                 min="1"
                 max={2000}
               />

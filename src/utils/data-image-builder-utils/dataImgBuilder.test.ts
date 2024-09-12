@@ -1,7 +1,13 @@
 import dayjs from 'dayjs';
 import { TargetPathRegionScope } from '@/constants/imgPath';
 import { imageBaseUrl } from '@/configs/image';
-import { buildProductImageUrl, buildArgoImageUrl, buildProductVideoUrl } from './dataImgBuilder';
+import { CurrentMeterDepth, CurrentMeterProperty, CurrentMeterRegion } from '@/types/currentMeters';
+import {
+  buildProductImageUrl,
+  buildArgoImageUrl,
+  buildProductVideoUrl,
+  buildCurrentMeterImageUrl,
+} from './dataImgBuilder';
 
 describe('buildProductImageUrl', () => {
   describe('sixDaySst', () => {
@@ -532,5 +538,21 @@ describe('buildProductVideoUrl', () => {
     expect(() => buildProductVideoUrl(productType, subProduct, region, regionScope, date)).toThrowError(
       `Product type ${productType} is not supported`,
     );
+  });
+});
+
+describe('buildCurrentMeterImageUrl', () => {
+  it('should return the correct image url for current Meters', () => {
+    // Arrange
+    const region = CurrentMeterRegion.Aust;
+    const date = '2024';
+    const property = CurrentMeterProperty.vmean;
+    const depth = CurrentMeterDepth.One;
+
+    // Act
+    const videoUrl = buildCurrentMeterImageUrl(region, date, property, depth);
+
+    // Assert
+    expect(videoUrl).toBe(`${imageBaseUrl}/timeseries/ANMN_P48/mapst/01_Aust_vmean_1_2024.gif`);
   });
 });

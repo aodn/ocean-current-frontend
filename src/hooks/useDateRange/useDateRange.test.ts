@@ -215,7 +215,7 @@ describe('useDateRange', () => {
     const { result } = renderHook(() => useDateRange());
 
     // Assert
-    expect(result.current.isYearRange).toBe(true);
+    expect(result.current.isMonthRange).toBe(true);
     expect(result.current.allDates.filter((date) => !date.active).length).toBeGreaterThan(0);
   });
 
@@ -318,7 +318,7 @@ describe('useDateRange', () => {
 
     // Assert
     expect(result.current.allDates).not.toEqual(initialAllDates);
-    expect(result.current.isYearRange).toBe(true);
+    expect(result.current.isMonthRange).toBe(true);
     expect(result.current.allDates.length).toBe(12);
   });
 });

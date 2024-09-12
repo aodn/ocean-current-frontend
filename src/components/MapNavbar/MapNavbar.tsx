@@ -17,7 +17,7 @@ const MapNavbar: React.FC = () => {
     modifyDate,
     steps,
     isLastMonthOfTheYear,
-    isYearRange,
+    isMonthRange,
     resetDateRange,
     isWeekRange,
   } = useDateRange();
@@ -36,7 +36,7 @@ const MapNavbar: React.FC = () => {
       <div className="mb-2 flex items-center rounded">
         <div className="flex h-11 items-center justify-center rounded-md border border-[#3A6F8F] p-2">
           <DatePicker
-            isYearRange={isYearRange}
+            isMonthRange={isMonthRange}
             isWeekRange={isWeekRange}
             startDate={startDate}
             endDate={endDate}
@@ -58,7 +58,7 @@ const MapNavbar: React.FC = () => {
       </div>
       <div className="mb-2 flex items-center justify-center">
         <DateSlider
-          isYearRange={isYearRange}
+          isMonthRange={isMonthRange}
           allDates={allDates}
           selectedDateIndex={selectedDateIndex}
           handleSliderChange={handleSliderChange}

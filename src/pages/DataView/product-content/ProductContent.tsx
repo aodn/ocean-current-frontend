@@ -6,6 +6,7 @@ import {
   buildArgoImageUrl,
   getTargetRegionScopePath,
   buildProductVideoUrl,
+  buildCurrentMeterImageUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
@@ -19,12 +20,13 @@ import { getArgoProfileCyclesByWmoId } from '@/services/argo';
 import { VideoPlayerOutletContext } from '@/types/router';
 import { checkProductHasArgoTags } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
+import useCurrentMeterStore from '@/stores/current-meters-store/currentMeters';
 import DataImage from '../data-image/DataImage';
 
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const { isArgo } = useProductCheck();
+  const { isArgo, isCurrentMeters } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
   const useProductId = useProductStore((state) => state.productParams.productId);
@@ -32,6 +34,7 @@ const ProductContent: React.FC = () => {
   const { mainProduct, subProduct } = useProductConvert();
   const { worldMeteorologicalOrgId, cycle, depth } = useArgoStore((state) => state.selectedArgoParams);
   const { showVideo } = useOutletContext<VideoPlayerOutletContext>();
+  const { property, depth: currentMeterDepth, region: currentMeterRegion } = useCurrentMeterStore();
 
   const region = getRegionByRegionTitle(useRegionTitle);
   const regionScope = region?.scope || RegionScope.Au;
@@ -98,9 +101,21 @@ const ProductContent: React.FC = () => {
     return buildProductImageUrl(mainProduct.key, subProductImgPath, regionPath, targetPathRegion, useDate.toString());
   };
 
+  const buildCurrentMeterImg = (): string => {
+    const year = useDate.format('YYYY');
+    return buildCurrentMeterImageUrl(currentMeterRegion, year, property, currentMeterDepth);
+  };
+
   const chooseImg = (): string | undefined => {
     try {
-      return isArgo ? buildArgoImg() : buildProductImg();
+      switch (true) {
+        case isArgo:
+          return buildArgoImg();
+        case isCurrentMeters:
+          return buildCurrentMeterImg();
+        default:
+          return buildProductImg();
+      }
     } catch (e) {
       if (e instanceof Error) {
         console.error(e);

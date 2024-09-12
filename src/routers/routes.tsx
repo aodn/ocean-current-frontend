@@ -42,6 +42,10 @@ const routes: RouteObject[] = [
             element: <Navigate to="sla" replace />,
           },
           {
+            path: 'current-meters',
+            element: <DataView />,
+          },
+          {
             path: 'monthly-means',
             element: <Navigate to="anomalies" replace />,
           },
