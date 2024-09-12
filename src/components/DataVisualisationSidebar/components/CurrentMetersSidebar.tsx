@@ -7,6 +7,7 @@ import { currentMetersDescription, currentMetersDataModal } from '@/data/current
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import useCurrentMeterStore, { setProperty, setDepth, setRegion } from '@/stores/current-meters-store/currentMeters';
 import { CurrentMeterProperty, CurrentMeterDepth, CurrentMeterRegion } from '@/types/currentMeters';
+import MiniMap from './MiniMap';
 
 interface SectionData {
   title: string;
@@ -110,6 +111,9 @@ const CurrentMetersSidebar: React.FC = () => {
 
   return (
     <div className="rounded-md bg-white">
+      <div className="h-60 w-full overflow-hidden">
+        <MiniMap />
+      </div>
       <div className="[&>*:last-child]:border-b-0 [&>*]:border-b-2 [&>*]:border-[#e5e7eb]">
         <div className="p-4">
           <div className="flex justify-between">
