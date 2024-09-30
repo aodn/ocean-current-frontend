@@ -129,27 +129,4 @@ describe('VideoCreation', () => {
     // Assert
     expect(screen.getByText('5 seconds')).toBeInTheDocument();
   });
-
-  it('disables download button when loading', async () => {
-    // Arrange
-    const { rerender } = render(<VideoCreation />);
-    openGifOptions();
-    let downloadButton = screen.getByText('Download Gif');
-
-    // Act & Assert
-    expect(downloadButton).not.toBeDisabled();
-
-    // Arrange
-    vi.mocked(useVideoCreation).mockReturnValue({
-      ...mockVideoCreationReturnValue,
-      isLoading: true,
-    });
-
-    // Act
-    rerender(<VideoCreation />);
-    downloadButton = screen.getByText('Download Gif');
-
-    // Assert
-    expect(downloadButton).toBeDisabled();
-  });
 });

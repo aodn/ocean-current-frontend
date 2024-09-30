@@ -9,12 +9,10 @@ import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useProductFromUrl, useProductSearchParam } from '@/hooks';
 import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
-import DataVisualisationNavbar from '@/components/DataVisualisationNavbar/DataVisualisationNavbar';
-import DataVisualisationSidebar from '@/components/DataVisualisationSidebar/DataVisualisationSidebar';
 import ProductNavbarMobile from '@/components/ProductNavbar/ProductNavbarMobile';
-import ProductFooterMobile from '@/components/ProductFooterMobile/ProductFooterMobile';
-import ArrowIcon from '@/assets/icons/Arrow';
+import DataVisualisationSidebar from '@/components/DataVisualisationSidebar/DataVisualisationSidebar';
 import { RegionScope } from '@/constants/region';
+import ProductFooterMobile from '@/components/ProductFooterMobile/ProductFooterMobile';
 
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -22,9 +20,6 @@ const DataVisualisationLayout: React.FC = () => {
   const useDate = useDateStore((state) => state.date);
   const product = useProductFromUrl('product');
   const [showVideo, setShowVideo] = useState(false);
-  const [isSidebarVisible, setSidebarVisible] = useState(true);
-
-  const toggleSidebar = () => setSidebarVisible(!isSidebarVisible);
 
   const getArgoData = useCallback(() => {
     const date = searchParams.get('date') || dayjs().format('YYYYMMDD');
@@ -40,10 +35,12 @@ const DataVisualisationLayout: React.FC = () => {
   const setProductKey = useCallback(() => {
     if (product) {
       const { mainProduct, subProduct } = product;
-      const mainProductKey = getProductByPath(mainProduct)?.key;
-      const subProductKey = subProduct ? getProductByPath(mainProduct, subProduct)?.key : null;
+
+      const mainProductKey = getProductByPath(mainProduct)!.key;
+      const subProductKey = subProduct ? getProductByPath(mainProduct, subProduct)!.key : null;
 
       const productId = subProductKey || mainProductKey;
+
       setProductId(productId);
     }
   }, [product]);
@@ -77,7 +74,7 @@ const DataVisualisationLayout: React.FC = () => {
 
   return (
     <div className="relative mx-auto mb-9 w-full max-w-8xl">
-      <div className="block p-4 md:hidden">
+      <div className="p-4">
         <div>
           <DataVisualisationSidebar />
         </div>
@@ -87,29 +84,6 @@ const DataVisualisationLayout: React.FC = () => {
             <Outlet context={{ showVideo, loading: true }} />
           </ErrorBoundary>
           <ProductFooterMobile />
-        </div>
-      </div>
-
-      <div className="hidden p-4 md:flex">
-        <button
-          onClick={toggleSidebar}
-          className="absolute -left-6 mb-4 flex h-24 items-center justify-center rounded bg-imos-sea-blue p-2 text-white"
-        >
-          <ArrowIcon
-            className={`h-5 w-5 transition-transform duration-300 ${isSidebarVisible ? 'rotate-90' : 'h-28 rotate-[270deg]'}`}
-            stroke={'white'}
-          />
-        </button>
-        <div className={`transition-all duration-300 ${isSidebarVisible ? 'w-1/3' : 'w-0 overflow-hidden'}`}>
-          <DataVisualisationSidebar />
-        </div>
-        <div
-          className={`transition-all duration-300 ${isSidebarVisible ? 'ml-4' : 'ml-0'} min-h-[800px] w-full min-w-[800px]`}
-        >
-          <DataVisualisationNavbar setShowVideo={setShowVideo} />
-          <ErrorBoundary key={product?.mainProduct}>
-            <Outlet context={{ showVideo, loading: true }} />
-          </ErrorBoundary>
         </div>
       </div>
     </div>

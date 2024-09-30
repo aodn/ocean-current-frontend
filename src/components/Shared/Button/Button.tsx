@@ -20,12 +20,12 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       data-testid={dataTestId}
       disabled={disabled}
-      className={`flex items-center justify-center gap-2 whitespace-nowrap border px-12 py-1 text-lg transition duration-300 ease-in-out ${buttonSize} ${buttonType} ${buttonBorderRadius} ${
+      className={`relative flex items-center justify-center whitespace-nowrap border px-4 py-1 text-lg transition duration-300 ease-in-out md:px-12 ${buttonSize} ${buttonType} ${buttonBorderRadius} ${
         disabled ? 'cursor-not-allowed opacity-50' : ''
       }`}
     >
-      {icon}
-      {children}
+      {icon && <span className="absolute left-4 flex items-center">{icon}</span>}
+      <span className="flex-grow text-center">{children}</span>
     </button>
   );
 };
