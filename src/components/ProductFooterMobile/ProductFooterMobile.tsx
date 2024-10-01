@@ -66,7 +66,6 @@ const ProductFooterMobile: React.FC = () => {
     },
   ];
 
-  // Aseguramos que mainProduct no es null o undefined antes de acceder a sus propiedades
   const productInfo = mainProduct ? getProductInfoByKey(mainProduct.key) : null;
 
   const handlePopup = () => {
