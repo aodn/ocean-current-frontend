@@ -80,14 +80,14 @@ const VideoCreation: React.FC = () => {
         className="flex h-11 cursor-pointer items-center justify-between rounded-md border border-[#3A6F8F] p-3"
       >
         <img className="h-6 w-6" src={DownloadIcon} alt="share icon" />
-        <p className="font-medium text-imos-grey">Download</p>
+        <p className="hidden font-medium text-imos-grey md:inline-block">Download</p>
         <ArrowIcon
-          className={`h-3 w-3 transform transition-transform duration-300 ${showGifOptions ? 'rotate-180' : ''}`}
+          className={`hidden h-3 w-3 transform transition-transform duration-300 md:inline-block ${showGifOptions ? 'rotate-180' : ''}`}
           stroke="#3B6E8F"
         />
       </div>
       {showGifOptions && (
-        <div className="absolute right-0 z-50 mr-4 mt-3 w-[27%] rounded-md bg-white p-4">
+        <div className="absolute right-0 z-50 mr-4 mt-5 w-11/12 rounded-md bg-white p-4 md:mt-3 md:w-[27%]">
           <div className="mb-4 flex items-center justify-between">
             <div></div>
             <p className="font-semibold">{TEXT_CONSTANT.CUSTOMISE_GIF}</p>

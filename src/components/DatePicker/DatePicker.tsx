@@ -13,6 +13,12 @@ const customInput = () => (
   </div>
 );
 
+const customInputMobile = () => (
+  <div className="mr-5 mt-1 flex w-full cursor-pointer items-center justify-center">
+    <img src={calendarIcon} alt="calendar icon" className="mr-4" />
+  </div>
+);
+
 const DatePicker: React.FC<DatePickerProps> = ({
   startDate,
   endDate,
@@ -27,6 +33,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
   isMonthRange,
   isWeekRange,
   isYearRange,
+  isMobile,
 }) => {
   const formattedDate = () => {
     if (isMonthRange) {
@@ -65,7 +72,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
       <div>
         {isMonthRange || isYearRange ? (
           <ReactDatePicker
-            customInput={customInput()}
+            customInput={isMobile ? customInputMobile() : customInput()}
             selected={startDate}
             onChange={handleYearDateChange}
             showYearPicker
@@ -73,7 +80,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
           />
         ) : (
           <ReactDatePicker
-            customInput={customInput()}
+            customInput={isMobile ? customInputMobile() : customInput()}
             selected={startDate}
             onChange={handleDateChange}
             startDate={startDate}
@@ -88,15 +95,15 @@ const DatePicker: React.FC<DatePickerProps> = ({
       <div className="flex min-w-44 items-center justify-between border-l-2 text-lg text-imos-title-blue">
         <button
           onClick={() => modifyDate('subtract')}
-          className="cursor-pointer rounded bg-transparent p-2 font-semibold"
+          className="hidden cursor-pointer rounded bg-transparent p-2 font-semibold md:block"
         >
           <img className="h-4 w-4 rotate-90" src={arrowIcon} alt="left arrow icon" />
         </button>
-        <span className="text-l px-1">{formattedDate()}</span>
+        <span className="text-l w-full px-1 text-center">{formattedDate()}</span>
         <button
           onClick={() => modifyDate('add')}
           disabled={isMonthRange ? isLastMonthOfTheYear() : addButtonDisabled}
-          className="cursor-pointer rounded bg-transparent p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
+          className="hidden cursor-pointer rounded bg-transparent p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50 md:block"
         >
           <img className="h-4 w-4 -rotate-90" src={arrowIcon} alt="right arrow icon" />
         </button>

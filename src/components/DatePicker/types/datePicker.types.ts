@@ -12,4 +12,5 @@ export interface DatePickerProps {
   isMonthRange?: boolean;
   isWeekRange?: boolean;
   isYearRange?: boolean;
+  isMobile?: boolean;
 }
