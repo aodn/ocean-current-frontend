@@ -9,6 +9,7 @@ import ArrowIcon from '@/assets/icons/arrow.svg';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
 import useDateStore from '@/stores/date-store/dateStore';
 import ArrowWithTail from '@/assets/icons/ArrowWithTail';
+import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
 import HeaderSideBar from './HeaderSideBar';
@@ -22,6 +23,7 @@ const ProductSideBar: React.FC = () => {
   const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
   const [isDataSourcesCollapsed, setIsDataSourcesCollapsed] = useState(false);
   const useDate = useDateStore((state) => state.date);
+  const { isArgo } = useProductCheck();
 
   const buildDataSourceUrl = (type: string): string => {
     switch (type) {
@@ -89,9 +91,7 @@ const ProductSideBar: React.FC = () => {
 
   return (
     <div className="rounded-md bg-white">
-      <div className="mb-1">
-        <HeaderSideBar />
-      </div>
+      <div className="mb-1">{!isArgo && <HeaderSideBar />}</div>
 
       {shouldRenderMiniMap() && (
         <div className=" hidden h-60 w-full overflow-hidden md:block">
