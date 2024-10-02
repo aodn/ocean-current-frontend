@@ -1,23 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
+import { useIsMobile } from '@/utils/isMobile-utils/isMobile';
 import ProductSideBar from './components/ProductSidebar';
 import ArgoSideBar from './components/ArgoSideBar';
 import CurrentMetersSidebar from './components/CurrentMetersSidebar';
 
 const DataVisualisationSidebar: React.FC = () => {
   const { isArgo, isCurrentMeters } = useProductCheck();
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const isMobile = useIsMobile();
 
   if (isMobile) {
     return <ProductSideBar />;
