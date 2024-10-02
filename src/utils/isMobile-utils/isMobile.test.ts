@@ -16,19 +16,19 @@ describe('useIsMobile', () => {
     vi.restoreAllMocks();
   });
 
-  it('debería devolver true cuando el ancho de la ventana es menor o igual a 768px', () => {
+  it('should return true when window width is less than or equal to 768px', () => {
     window.innerWidth = 768;
     const { result } = renderHook(() => useIsMobile());
     expect(result.current).toBe(true);
   });
 
-  it('debería devolver false cuando el ancho de la ventana es mayor a 768px', () => {
+  it('should return false when window width is greater than 768px', () => {
     window.innerWidth = 1024;
     const { result } = renderHook(() => useIsMobile());
     expect(result.current).toBe(false);
   });
 
-  it('debería actualizar el valor cuando cambia el tamaño de la ventana', () => {
+  it('should update the value when the window size changes', () => {
     window.innerWidth = 1024;
     const { result } = renderHook(() => useIsMobile());
     expect(result.current).toBe(false);
@@ -41,7 +41,7 @@ describe('useIsMobile', () => {
     expect(result.current).toBe(true);
   });
 
-  it('debería agregar y eliminar el event listener correctamente', () => {
+  it('should correctly add and remove the event listener', () => {
     const addEventListenerSpy = vi.spyOn(window, 'addEventListener');
     const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
 

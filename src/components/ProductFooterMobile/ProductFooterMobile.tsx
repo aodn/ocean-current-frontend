@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Button, Popup, TruncateText } from '@/components/Shared';
@@ -90,7 +90,14 @@ const ProductFooterMobile: React.FC = () => {
     },
   ];
 
-  // const filteredDataSources = dataSources.filter((source) => source.product.includes(mainProduct!.key));
+  const filteredDataSources = useMemo(() => {
+    if (!mainProduct || !mainProduct.key) {
+      return [];
+    }
+    return dataSources.filter((source) => source.product.includes(mainProduct.key));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mainProduct]);
 
   const productInfo = mainProduct ? getProductInfoByKey(mainProduct.key) : null;
 
@@ -206,15 +213,15 @@ const ProductFooterMobile: React.FC = () => {
         <Legend />
       </div>
 
-      {dataSources.length > 0 && (
+      {filteredDataSources.length > 0 && (
         <div className="mt-2">
           <div className="flex cursor-pointer items-center justify-between p-2">
             <h3 className="text-lg font-medium text-imos-grey">Data sources</h3>
           </div>
           <div>
             <div className="mb-6 mt-2 flex flex-wrap justify-between gap-2">
-              {dataSources.map(({ title, link }, index) => (
-                <div key={title} className={index === dataSources.length - 1 ? 'w-auto' : 'flex-1'}>
+              {filteredDataSources.map(({ title, link }, index) => (
+                <div key={title} className={index === filteredDataSources.length - 1 ? 'w-auto' : 'flex-1'}>
                   <a target="_blank" href={link} rel="noreferrer">
                     <Button size="full" borderRadius="small" type="secondary">
                       {title}
