@@ -7,10 +7,12 @@ import { Button } from '@/components/Shared';
 import ResetIcon from '@/assets/icons/reset-icon.svg';
 import MapIcon from '@/assets/icons/map-icon.svg';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
+import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { ProductNavbarProps } from './types/productNavbarProps.types';
 
 const ProductNavbarMobile: React.FC<ProductNavbarProps> = () => {
   const { mainProduct, subProduct } = useProductConvert();
+  const { isArgo } = useProductCheck();
   const navigate = useNavigate();
 
   const {
@@ -39,6 +41,9 @@ const ProductNavbarMobile: React.FC<ProductNavbarProps> = () => {
   };
 
   const handleRegionClick = () => {
+    if (isArgo) {
+      navigate('/map/argo');
+    }
     if (mainProduct?.path && subProduct?.path) {
       const path = `/map/${mainProduct.path}/${subProduct.path}`;
       navigate(path);
@@ -55,7 +60,7 @@ const ProductNavbarMobile: React.FC<ProductNavbarProps> = () => {
           size="full"
           onClick={handleRegionClick}
         >
-          Select Region
+          Select {isArgo ? 'argo' : 'region'}
         </Button>
       </div>
       <div className="mb-2 flex items-center justify-between ">
