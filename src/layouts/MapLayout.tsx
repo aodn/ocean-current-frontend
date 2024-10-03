@@ -5,9 +5,12 @@ import { getProductByPath } from '@/utils/product-utils/product';
 import { useProductFromUrl } from '@/hooks';
 import MapSidebar from '@/components/MapSidebar/MapSidebar';
 import MapNavbar from '@/components/MapNavbar/MapNavbar';
+import { useIsMobile } from '@/utils/isMobile-utils/isMobile';
+import HeaderSideBar from '@/components/DataVisualisationSidebar/components/HeaderSideBar';
 
 const MapLayout: React.FC = () => {
   const product = useProductFromUrl('map');
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (product) {
@@ -24,11 +27,17 @@ const MapLayout: React.FC = () => {
 
   return (
     <div className="mx-auto mb-9 mt-4 w-full max-w-8xl ">
-      <div className="flex w-full">
-        <div className="w-1/3">
-          <MapSidebar />
-        </div>
-        <div className="mx-2 w-full">
+      <div className="w-full md:flex ">
+        {isMobile ? (
+          <div className="mb-2">
+            <HeaderSideBar />
+          </div>
+        ) : (
+          <div className="hidden w-1/3 md:block">
+            <MapSidebar />
+          </div>
+        )}
+        <div className="w-full md:mx-2">
           <MapNavbar />
           <div className="w-full">
             <Outlet />
