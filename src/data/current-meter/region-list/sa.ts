@@ -41,7 +41,7 @@ const regionArr = [
   },
 ];
 
-const convertedToGeo = regionArr.map((region) => {
+export const convertedToGeo = regionArr.map((region) => {
   const coords = calculateOffsetByCoords(region.coords, {
     imageWidth: 1032,
     imageHeight: 760,
@@ -54,4 +54,4 @@ const convertedToGeo = regionArr.map((region) => {
   };
 });
 
-export default convertedToGeo;
+export default regionArr;

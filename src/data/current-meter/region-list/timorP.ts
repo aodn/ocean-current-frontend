@@ -263,7 +263,7 @@ const regionArr = [
   },
 ];
 
-const convertedToGeo = regionArr.map((region) => {
+export const convertedToGeo = regionArr.map((region) => {
   const { coords } = region;
 
   const timorPImgParams = {
@@ -280,4 +280,4 @@ const convertedToGeo = regionArr.map((region) => {
   };
 });
 
-export default convertedToGeo;
+export default regionArr;

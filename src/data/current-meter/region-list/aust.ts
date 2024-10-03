@@ -1532,7 +1532,7 @@ const regionArr = [
   },
 ];
 
-const convertedToGeo = regionArr.map((region) => {
+export const convertedToGeo = regionArr.map((region) => {
   const coords = calculateOffsetByCoords(region.coords, currentMetersImgParams);
   return {
     ...region,
@@ -1540,4 +1540,4 @@ const convertedToGeo = regionArr.map((region) => {
   };
 });
 
-export default convertedToGeo;
+export default regionArr;

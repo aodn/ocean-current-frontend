@@ -41,3 +41,13 @@ export enum CurrentMeterDepth {
   Six = '6',
   Seven = '7',
 }
+
+export enum CurrentMeterPlot {
+  Zero = '0',
+  One = '1',
+}
+
+export enum CurrentMeterPlotType {
+  DepthTime = 'xyz',
+  VelocityVector = 'zt',
+}

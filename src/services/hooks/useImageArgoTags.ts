@@ -8,7 +8,7 @@ const useImageArgoTags = (date: Dayjs, tagPath: string, regionCode: string) => {
   const regionPath = tagPath === 'SnapshotCHL' ? `${regionCode}_chl` : regionCode;
 
   const { data, loading, error } = useDataFetch(getArgoTags, [date, tagPath, regionPath]);
-  const parsedData = data ? parseArgoTagDataFromText(data) : [];
+  const parsedData = data ? parseArgoTagDataFromText(data) : null;
 
   return { data: parsedData, loading, error };
 };

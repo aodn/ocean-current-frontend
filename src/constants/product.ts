@@ -188,4 +188,10 @@ export const OC_PRODUCTS: Product[] = [
     path: 'current-meters',
     latestEntry: null,
   },
+  {
+    title: 'Current Meters Plot',
+    key: 'currentMetersPlot',
+    path: 'current-meters-plot',
+    latestEntry: null,
+  },
 ] as const;

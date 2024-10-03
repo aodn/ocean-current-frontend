@@ -1,3 +1,5 @@
+import { CurrentMeterRegion } from '@/types/currentMeters';
+
 const currentMeterDataPointTitles = [
   'BMP070',
   'BMP090',
@@ -218,27 +220,28 @@ const ngbr: CurrentMeterDataPoint[] = [
   { title: 'GBRLSH', coords: [145.63, -14.7] },
 ];
 
-export const currentMeterDataPointsMap = {
-  timorP,
-  kim,
-  row,
-  pil,
-  ning,
-  perth,
-  esp,
-  sa,
-  totten,
-  sofs,
-  polynya,
-  eTas,
-  bmp,
-  syd,
-  coffs,
-  seq,
-  sgbr,
-  sgbr2,
-  cgbr,
-  ngbr,
+export const currentMeterDataPointsMap: Record<CurrentMeterRegion, CurrentMeterDataPoint[]> = {
+  [CurrentMeterRegion.Aust]: [],
+  [CurrentMeterRegion.TimorP]: timorP,
+  [CurrentMeterRegion.Kim]: kim,
+  [CurrentMeterRegion.Row]: row,
+  [CurrentMeterRegion.Pil]: pil,
+  [CurrentMeterRegion.Ning]: ning,
+  [CurrentMeterRegion.Perth]: perth,
+  [CurrentMeterRegion.Esp]: esp,
+  [CurrentMeterRegion.SA]: sa,
+  [CurrentMeterRegion.Totten]: totten,
+  [CurrentMeterRegion.SOFS]: sofs,
+  [CurrentMeterRegion.Polynya]: polynya,
+  [CurrentMeterRegion.ETas]: eTas,
+  [CurrentMeterRegion.BMP]: bmp,
+  [CurrentMeterRegion.Syd]: syd,
+  [CurrentMeterRegion.Coffs]: coffs,
+  [CurrentMeterRegion.SEQ]: seq,
+  [CurrentMeterRegion.SGBR]: sgbr,
+  [CurrentMeterRegion.SGBR2]: sgbr2,
+  [CurrentMeterRegion.CGBR]: cgbr,
+  [CurrentMeterRegion.NGBR]: ngbr,
 };
 
 export const currentMeterDataPointsArray = Object.values(currentMeterDataPointsMap).flat();

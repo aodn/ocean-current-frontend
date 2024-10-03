@@ -1,7 +1,7 @@
 import { Dayjs } from 'dayjs';
 import { RegionScope } from '@/constants/region';
 
-export interface DataImageProps {
+export interface DataImageArgoContainerProps {
   src: string;
   productId: string;
   date: Dayjs;

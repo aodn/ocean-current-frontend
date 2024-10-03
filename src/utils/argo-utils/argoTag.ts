@@ -1,5 +1,5 @@
 import { argoTagFilePaths } from '@/constants/argoTagPath';
-import { ArgoTagMapArea, ArgoTag, StateLocalPathValue } from '@/types/argo';
+import { ArgoTag, StateLocalPathValue } from '@/types/argo';
 
 const getArgoTagFilePathByProductId = (productId: string): StateLocalPathValue | undefined => {
   return argoTagFilePaths[productId];
@@ -33,21 +33,13 @@ const parseArgoTagDataFromText = (input: string): ArgoTag[] => {
   return result;
 };
 
-const convertCoordsBasedOnImageScale = (
-  originalCoords: ArgoTagMapArea[],
-  scaleX: number,
-  scaleY: number,
-  originalHeight: number,
-) => {
-  return originalCoords.map((area) => ({
-    ...area,
-    coords: area.coords.map((coord, index) => (index % 2 === 0 ? coord * scaleX : (originalHeight - coord) * scaleY)),
-  }));
+const convertProductWithArgoCoordsOffset = (coords: number[], offsetHeight: number) => {
+  return coords.map((coord, index) => (index % 2 === 0 ? coord : offsetHeight - coord));
 };
 
 export {
   getArgoTagFilePathByProductId,
   checkProductHasArgoTags,
   parseArgoTagDataFromText,
-  convertCoordsBasedOnImageScale,
+  convertProductWithArgoCoordsOffset,
 };

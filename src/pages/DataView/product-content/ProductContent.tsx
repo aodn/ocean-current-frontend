@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, useSearchParams } from 'react-router-dom';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import {
   buildProductImageUrl,
@@ -21,12 +21,14 @@ import { VideoPlayerOutletContext } from '@/types/router';
 import { checkProductHasArgoTags } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useCurrentMeterStore from '@/stores/current-meters-store/currentMeters';
-import DataImage from '../data-image/DataImage';
+import DataImageArgoContainer from '../data-image/DataImageArgoContainer';
+import DataImageCurrentMeterContainer from '../data-image/DataImageCurrentMeterContainer';
+import DataImageCurrentMeterPlotContainer from '../data-image/DataImageCurrentMeterPlotContainer';
 
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const { isArgo, isCurrentMeters } = useProductCheck();
+  const { isArgo, isCurrentMeters, isCurrentMetersPlot } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
   const useProductId = useProductStore((state) => state.productParams.productId);
@@ -35,6 +37,11 @@ const ProductContent: React.FC = () => {
   const { worldMeteorologicalOrgId, cycle, depth } = useArgoStore((state) => state.selectedArgoParams);
   const { showVideo } = useOutletContext<VideoPlayerOutletContext>();
   const { property, depth: currentMeterDepth, region: currentMeterRegion } = useCurrentMeterStore();
+
+  const [searchParams] = useSearchParams();
+  const currentMeterPoint = searchParams.get('point');
+
+  console.log('Product content isCurrentMetersPlot', isCurrentMetersPlot);
 
   const region = getRegionByRegionTitle(useRegionTitle);
   const regionScope = region?.scope || RegionScope.Au;
@@ -142,11 +149,47 @@ const ProductContent: React.FC = () => {
   };
 
   const handlePopup = () => {
+    console.log('handlePopup');
     setIsPopupOpen(!isPopupOpen);
+  };
+
+  const renderDataImageContainer = () => {
+    if (isCurrentMeters) {
+      return isCurrentMetersPlot && currentMeterPoint ? (
+        <DataImageCurrentMeterPlotContainer pointCode={currentMeterPoint} />
+      ) : (
+        <DataImageCurrentMeterContainer src={chooseImg()!} productId={useProductId} regionCode={currentMeterRegion} />
+      );
+    }
+
+    if (shouldRenderDataImageWithArgoTags) {
+      return (
+        <DataImageArgoContainer
+          src={chooseImg()!}
+          date={useDate}
+          productId={useProductId}
+          regionCode={regionPath}
+          regionScope={regionScope}
+        />
+      );
+    }
+
+    return (
+      <img
+        onClick={handlePopup}
+        className="max-h-[80vh] w-full select-none object-contain"
+        src={chooseImg()}
+        alt="product"
+        onError={handleError}
+        aria-hidden
+      />
+    );
   };
 
   return (
     <>
+      <button className="border">hello debug</button>
+
       {showVideo ? (
         <video
           onClick={handlePopup}
@@ -159,26 +202,7 @@ const ProductContent: React.FC = () => {
           Your browser does not support the video tag.
         </video>
       ) : (
-        <>
-          {shouldRenderDataImageWithArgoTags ? (
-            <DataImage
-              src={chooseImg()!}
-              date={useDate}
-              productId={useProductId}
-              regionCode={regionPath}
-              regionScope={regionScope}
-            />
-          ) : (
-            <img
-              onClick={handlePopup}
-              className="max-h-[80vh] w-full select-none object-contain"
-              src={chooseImg()}
-              alt="product"
-              onError={handleError}
-              aria-hidden
-            />
-          )}
-        </>
+        renderDataImageContainer()
       )}
     </>
   );

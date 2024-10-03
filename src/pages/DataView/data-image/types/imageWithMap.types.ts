@@ -1,8 +1,11 @@
 import { ArgoTagMapArea } from '@/types/argo';
+import { ImageMapArea } from '@/types/dataImage';
 
-export interface ImageWithMapProps {
+export interface InteractiveImageWithMapProps<T extends ImageMapArea> {
   src: string;
   alt: string;
-  originalCoords: ArgoTagMapArea[];
-  dateString: string;
+  originalAreas: T[];
+  // dateString: string;
+  onAreaClick?: (area: T) => void;
+  onImageLoad?: (originalHeight: number) => void;
 }

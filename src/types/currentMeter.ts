@@ -4,4 +4,5 @@ export interface CurrentMeterMapArea {
   href: string | undefined;
   alt: string | undefined;
   title: string | undefined;
+  isText?: boolean;
 }

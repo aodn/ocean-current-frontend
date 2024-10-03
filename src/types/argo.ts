@@ -1,3 +1,5 @@
+import { ImageMapArea } from './dataImage';
+
 export interface ArgoProfile {
   coords: number[];
   worldMeteorologicalOrgId: string;
@@ -31,8 +33,8 @@ export interface ArgoTag {
   dataSource: string;
 }
 
-export interface ArgoTagMapArea {
-  shape: string;
+export interface ArgoTagMapArea extends ImageMapArea {
+  // shape: string;
   coords: number[];
   href: string;
   wmoId: number;

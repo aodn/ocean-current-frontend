@@ -2,7 +2,12 @@ import dayjs, { Dayjs } from 'dayjs';
 import { productTypeMapping, TargetPathRegionScope } from '@/constants/imgPath';
 import { RegionScope } from '@/constants/region';
 import { imageBaseUrl, imageS3BaseUrl } from '@/configs/image';
-import { CurrentMeterDepth, CurrentMeterProperty, CurrentMeterRegion } from '@/types/currentMeters';
+import {
+  CurrentMeterDepth,
+  CurrentMeterPlotType,
+  CurrentMeterProperty,
+  CurrentMeterRegion,
+} from '@/types/currentMeters';
 
 type ProductId = string;
 type SubProductType = string | undefined | null;
@@ -158,6 +163,10 @@ const buildCurrentMeterImageUrl = (
   return `${imageBaseUrl}/timeseries/ANMN_P48/mapst/${region}_${property}_${depth}${year}.gif`;
 };
 
+const buildCurrentMeterPlotImageUrl = (pointCode: string, plotType: CurrentMeterPlotType) => {
+  return `${imageBaseUrl}/timeseries/ANMN_P48/${pointCode}/${plotType}/latest.gif`;
+};
+
 const buildSurfaceWavesImageUrl = (date: string, imgPath: string): string => {
   const dayjsDate = dayjs(date);
   const formattedDate = dayjsDate.format('YYYYMMDDHH');
@@ -173,4 +182,5 @@ export {
   buildSurfaceWavesImageUrl,
   buildProductVideoUrl,
   buildCurrentMeterImageUrl,
+  buildCurrentMeterPlotImageUrl,
 };
