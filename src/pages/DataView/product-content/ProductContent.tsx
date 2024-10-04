@@ -41,8 +41,6 @@ const ProductContent: React.FC = () => {
   const [searchParams] = useSearchParams();
   const currentMeterPoint = searchParams.get('point');
 
-  console.log('Product content isCurrentMetersPlot', isCurrentMetersPlot);
-
   const region = getRegionByRegionTitle(useRegionTitle);
   const regionScope = region?.scope || RegionScope.Au;
   const targetPathRegion = getTargetRegionScopePath(regionScope);
@@ -188,8 +186,6 @@ const ProductContent: React.FC = () => {
 
   return (
     <>
-      <button className="border">hello debug</button>
-
       {showVideo ? (
         <video
           onClick={handlePopup}
