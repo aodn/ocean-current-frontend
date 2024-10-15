@@ -175,7 +175,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         type="circle"
         source={ARGO_AS_PRODUCT_SOURCE_ID}
         paint={{
-          'circle-radius': 15,
+          'circle-radius': 12,
           'circle-color': 'white',
           'circle-opacity': 0.5,
           'circle-stroke-width': 1,
@@ -188,7 +188,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         type="circle"
         source={ARGO_AS_PRODUCT_SOURCE_ID}
         paint={{
-          'circle-radius': ['case', ['boolean', ['feature-state', 'hover'], false], 10, 8],
+          'circle-radius': ['case', ['boolean', ['feature-state', 'hover'], false], 8, 6],
           'circle-color': '#524DAB',
           'circle-stroke-width': 1,
           'circle-stroke-color': 'white',
