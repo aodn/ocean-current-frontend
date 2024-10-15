@@ -23,7 +23,7 @@ const DataView: React.FC = () => {
     return isProductAvailableInRegion ? (
       <ProductContent />
     ) : (
-      <div className="h-[800px]">
+      <div className="h-[660px]">
         <BasicMap />
       </div>
     );

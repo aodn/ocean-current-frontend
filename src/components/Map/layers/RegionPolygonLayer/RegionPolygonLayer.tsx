@@ -11,16 +11,20 @@ import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo-utils/geo';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
 import useVisibleRegionPolygons from '../../hooks/useVisibleRegionPolygons';
 
-const MIN_THRESHOLD_PERCENTAGE = 3;
-const MAX_THRESHOLD_PERCENTAGE = 70;
+const DEFAULT_MIN_THRESHOLD_PERCENTAGE = 1.8;
+const DEFAULT_MAX_THRESHOLD_PERCENTAGE = 70;
 
 interface RegionPolygonLayerProps {
   shouldKeepNationalRegion?: boolean;
   shouldFitNationalRegionBounds?: boolean;
+  minThresholdPercentage?: number;
+  maxThresholdPercentage?: number;
 }
 const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
   shouldKeepNationalRegion = false,
   shouldFitNationalRegionBounds = false,
+  minThresholdPercentage = DEFAULT_MIN_THRESHOLD_PERCENTAGE,
+  maxThresholdPercentage = DEFAULT_MAX_THRESHOLD_PERCENTAGE,
 }) => {
   const { PRODUCT_REGION_BOX_SOURCE_ID } = mapboxSourceIds;
   const {
@@ -49,9 +53,9 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
   }, 300);
 
   const mapFitBounds = useCallback(
-    (bounds: BoundingBox) => {
+    (bounds: BoundingBox, padding: number = 50) => {
       if (map) {
-        map.fitBounds(bounds, { padding: 50 });
+        map.fitBounds(bounds, { padding });
       }
     },
     [map],
@@ -89,8 +93,8 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
 
   const geoJsonData = useVisibleRegionPolygons(
     mapBounds,
-    MIN_THRESHOLD_PERCENTAGE,
-    MAX_THRESHOLD_PERCENTAGE,
+    minThresholdPercentage,
+    maxThresholdPercentage,
     shouldKeepNationalRegion,
   );
 
