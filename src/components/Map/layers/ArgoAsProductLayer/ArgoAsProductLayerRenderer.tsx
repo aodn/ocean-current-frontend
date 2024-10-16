@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { ArgoProfile } from '@/types/argo';
-import { useQueryParams } from '@/hooks';
+import { useQueryParams, useIsMobile } from '@/hooks';
 import { ArgoProfileFeatureCollection } from '@/types/geo';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
 
@@ -27,6 +27,11 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
   const eventAdded = useRef(false);
 
   const { updateQueryParams } = useQueryParams();
+  const isMobile = useIsMobile();
+
+  const circleRadius = isMobile ? 8 : 6;
+  const hoverCircleRadius = isMobile ? 10 : 8;
+  const selectedCircleRadius = isMobile ? 14 : 12;
 
   const mapFlyToPoint = useCallback(
     (coordinates: [number, number]) => {
@@ -175,7 +180,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         type="circle"
         source={ARGO_AS_PRODUCT_SOURCE_ID}
         paint={{
-          'circle-radius': 15,
+          'circle-radius': selectedCircleRadius,
           'circle-color': 'white',
           'circle-opacity': 0.5,
           'circle-stroke-width': 1,
@@ -188,7 +193,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         type="circle"
         source={ARGO_AS_PRODUCT_SOURCE_ID}
         paint={{
-          'circle-radius': ['case', ['boolean', ['feature-state', 'hover'], false], 10, 8],
+          'circle-radius': ['case', ['boolean', ['feature-state', 'hover'], false], hoverCircleRadius, circleRadius],
           'circle-color': '#524DAB',
           'circle-stroke-width': 1,
           'circle-stroke-color': 'white',

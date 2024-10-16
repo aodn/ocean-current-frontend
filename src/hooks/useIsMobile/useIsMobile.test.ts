@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { useIsMobile } from './isMobile';
+import useIsMobile from './useIsMobile';
 
 describe('useIsMobile', () => {
   let originalInnerWidth: number;
