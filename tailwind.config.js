@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import { color } from './src/styles/colors';
+
 export default {
   important: '#root',
   corePlugins: {
@@ -8,14 +10,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        'imos-deep-blue': '#3b6e8f',
-        'imos-sea-blue': '#52BDEC',
-        'imos-accent-orange': '#e36f1e',
-        'imos-sand': '#d9d7bd',
-        'imos-mid-grey': '#3c3c3c',
-        'imos-title-blue': '#356183',
-        'imos-grey': '#8C8C8C',
-        'imos-black': '#555555',
+        'imos-deep-blue': color.primary1,
+        'imos-sea-blue': color.seaBlue,
+        'imos-accent-orange': color.accentOrange,
+        'imos-sand': color.sand,
+        'imos-mid-grey': color.grey2,
+        'imos-title-blue': color.blue2,
+        'imos-grey': color.grey,
+        'imos-black': color.grey3,
       },
       backgroundImage: {
         'background-gradient': 'linear-gradient(180deg, #DCDCDC 0%, rgba(217, 217, 217, 0.34) 100%)',

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useOutsideClick } from '@/hooks';
 import ArrowIcon from '@/assets/icons/Arrow';
+import { color } from '@/styles/colors';
 import { DropdownElement, DropdownProps } from './types/dropdown.types';
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -74,7 +75,7 @@ const Dropdown: React.FC<DropdownProps> = ({
               aria-hidden="true"
               className={`${
                 !showIcons ? 'justify-center' : ''
-              } flex cursor-pointer items-center p-3 duration-300 hover:opacity-65 ${
+              } flex cursor-pointer items-center p-3 duration-300 hover:opacity-65 hover:bg-[${color.primary5}] ${
                 element.id === selectedElement?.id ? 'm-1 rounded border-2 border-[#52BDEC] bg-[#52BDEC80]' : ''
               }`}
               onClick={() => handleOnClick(element)}

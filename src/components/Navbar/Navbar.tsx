@@ -79,12 +79,9 @@ const Navbar: React.FC = () => {
               <div
                 onMouseLeave={() => setHoverIndex(null)}
                 style={{ left: popoverPosition?.left || 0 }}
-                className="absolute top-10 z-20 rounded-md bg-white p-6 shadow-lg transition duration-300 ease-in-out"
+                className="absolute top-10 z-20 rounded-lg bg-white drop-shadow-xy4 transition duration-300 ease-in-out"
               >
-                <NavbarMenu
-                  itemsLeft={menuItems[hoverIndex].leftLinks || []}
-                  itemsRight={menuItems[hoverIndex].rightLinks || []}
-                />
+                <NavbarMenu itemsLeft={menuItems[hoverIndex].leftLinks || []} itemsRight={[]} />
               </div>
             )}
           </div>
