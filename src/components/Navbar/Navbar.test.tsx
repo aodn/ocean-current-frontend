@@ -23,7 +23,7 @@ describe('Navbar component', () => {
 
   it('NavbarMenu renders without crashing', () => {
     // Arrange
-    const { getByText } = render(<NavbarMenu itemsLeft={[]} itemsRight={[]} />);
+    const { getByText } = render(<NavbarMenu items={[]} />);
 
     // Assert
     expect(getByText).toBeTruthy();

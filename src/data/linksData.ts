@@ -10,11 +10,12 @@ import GliderIcon from '@/assets/icons/products/glider-icon.svg';
 import SealCTDIcon from '@/assets/icons/products/seal-ctd-icon.svg';
 import ArgoIcon from '@/assets/icons/products/argo-icon.svg';
 import TidalCurrentsIcon from '@/assets/icons/products/in-water/tidal-currents-icon.svg';
+import { LinkItem } from '@/types/navbar';
 
-export const linksData = [
+export const linksData: LinkItem[] = [
   {
     title: 'Maps',
-    leftLinks: [
+    links: [
       {
         id: 'snapshotSst',
         imageUrl: SSTIcon,
@@ -72,11 +73,10 @@ export const linksData = [
         url: '/map/climatology/sst',
       },
     ],
-    rightLinks: [],
   },
   {
     title: 'In-Water',
-    leftLinks: [
+    links: [
       {
         id: 'argo',
         imageUrl: ArgoIcon,
@@ -106,7 +106,7 @@ export const linksData = [
         url: 'product/current-meters',
       },
       {
-        id: 'sealctd',
+        id: 'seal-ctd',
         imageUrl: SealCTDIcon,
         title: 'SealCTD',
         description: 'Animal-mounted sensors',
@@ -120,7 +120,6 @@ export const linksData = [
         url: 'https://oceancurrent.aodn.org.au/index.php',
       },
     ],
-    rightLinks: [],
   },
   {
     title: 'News',

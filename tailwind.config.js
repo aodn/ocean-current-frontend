@@ -12,6 +12,7 @@ export default {
       colors: {
         'imos-deep-blue': color.primary1,
         'imos-sea-blue': color.seaBlue,
+        'imos-light-blue': color.primary5,
         'imos-accent-orange': color.accentOrange,
         'imos-sand': color.sand,
         'imos-mid-grey': color.grey2,

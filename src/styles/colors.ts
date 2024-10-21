@@ -1,4 +1,19 @@
-const color = {
+interface OCColor {
+  primary1: string;
+  primary2: string;
+  primary3: string;
+  primary4: string;
+  primary5: string;
+  seaBlue: string;
+  accentOrange: string;
+  sand: string;
+  blue2: string;
+  grey: string;
+  grey2: string;
+  grey3: string;
+}
+
+const color: OCColor = {
   primary1: '#3B6E8F',
   primary2: '#182C3A',
   primary3: '#0C161D',
