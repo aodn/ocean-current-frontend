@@ -35,21 +35,17 @@ const NavbarBurgerMenu: React.FC = () => {
             </Link>
             <img onClick={toggleMenu} className="h-8" alt="cross" src={cross} aria-hidden="true" />
           </div>
-          {linksData.map((link) => (
-            <div key={link.title}>
-              <span className="mb-4 text-base text-gray-400">{link.title}</span>
-              {link.leftLinks && link.rightLinks && (
+          {linksData.map((item) => (
+            <div key={item.title}>
+              <span className="mb-4 text-base text-gray-400">{item.title}</span>
+              {item.links && (
                 <div className="ml-4">
-                  {link.leftLinks.map((subLink) => (
-                    <Link key={subLink.id} className="mr-auto block text-gray-400" to={subLink.url}>
-                      {subLink.title}
-                    </Link>
-                  ))}
-                  {link.rightLinks.map((subLink) => (
-                    <Link key={subLink.id} className="mr-auto block text-gray-400" to={subLink.url}>
-                      {subLink.title}
-                    </Link>
-                  ))}
+                  {item.links?.length > 0 &&
+                    item.links.map((subLink) => (
+                      <Link key={subLink.id} className="mr-auto block text-gray-400" to={subLink.url}>
+                        {subLink.title}
+                      </Link>
+                    ))}
                 </div>
               )}
             </div>

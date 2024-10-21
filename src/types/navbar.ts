@@ -2,8 +2,7 @@ export interface BasicLink {
   title: string;
   url: string;
   id?: never;
-  leftLinks?: never;
-  rightLinks?: never;
+  links?: never;
 }
 
 export interface DetailedLink {
@@ -16,8 +15,7 @@ export interface DetailedLink {
 
 export interface SectionLinks {
   title: string;
-  leftLinks?: DetailedLink[];
-  rightLinks?: DetailedLink[];
+  links?: DetailedLink[];
   url?: never;
 }
 

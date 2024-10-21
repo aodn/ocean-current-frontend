@@ -54,14 +54,14 @@ describe('NavbarBurgerMenu', () => {
 
     // Assert
     await waitFor(() => {
-      linksData.forEach((link) => {
-        const displayedLink = screen.getByText(link.title);
+      linksData.forEach((item) => {
+        const displayedLink = screen.getByText(item.title);
         expect(displayedLink).toBeVisible();
-        link.leftLinks?.forEach((subLink) => {
+        item.links?.forEach((subLink) => {
           const displayedSubLink = screen.getByText(subLink.title);
           expect(displayedSubLink).toBeVisible();
         });
-        link.rightLinks?.forEach((subLink) => {
+        item.links?.forEach((subLink) => {
           const displayedSubLink = screen.getByText(subLink.title);
           expect(displayedSubLink).toBeVisible();
         });

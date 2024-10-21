@@ -16,18 +16,48 @@ import ArgoIcon from '@/assets/icons/products/argo-icon.svg';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 
 export const mapNavbarDataElements: DropdownElement[] = [
-  { id: 'oceanColour', label: 'Ocean Colour', icon: OceanColourIcon, selectedIcon: OceanColourWhiteIcon },
+  {
+    id: 'fourHourSst',
+    label: 'Four-hour SST',
+    icon: FourHourSSTIcon,
+    selectedIcon: FourHourSSTWhiteIcon,
+  },
+  {
+    id: 'sixDaySst',
+    label: 'Daily SST (6-day composite)',
+    icon: SixHourSSTIcon,
+    selectedIcon: SixHourSSTWhiteIcon,
+  },
+  {
+    id: 'oceanColour',
+    label: 'Chlorophyll-a',
+    icon: OceanColourIcon,
+    selectedIcon: OceanColourWhiteIcon,
+  },
   {
     id: 'adjustedSeaLevelAnomaly',
-    label: 'Adj. Sea Level Anom.',
+    label: 'Adj. Sea Level Anomaly',
     icon: AdjustedSeaLevelAnomalyIcon,
     selectedIcon: AdjustedSeaLevelAnomalyWhiteIcon,
   },
-  { id: 'monthlyMeans', label: 'Monthly Means', icon: MonthlyMeansIcon, selectedIcon: MonthlyMeansWhiteIcon },
-  { id: 'surfaceWaves', label: 'Surface Waves', icon: SurfaceWavesIcon, selectedIcon: SurfaceWavesWhiteIcon },
-  { id: 'fourHourSst', label: 'Four Hour SST', icon: FourHourSSTIcon, selectedIcon: FourHourSSTWhiteIcon },
-  { id: 'sixDaySst', label: '6-Day SST', icon: SixHourSSTIcon, selectedIcon: SixHourSSTWhiteIcon },
-  { id: 'climatology', label: 'Climatology', icon: SSTIcon, selectedIcon: SSTWhiteIcon },
+  {
+    id: 'surfaceWaves',
+    label: 'Surface Waves',
+    icon: SurfaceWavesIcon,
+    selectedIcon: SurfaceWavesWhiteIcon,
+  },
+  {
+    id: 'monthlyMeans',
+    label: 'Monthly Means',
+    icon: MonthlyMeansIcon,
+    selectedIcon: MonthlyMeansWhiteIcon,
+  },
+  {
+    id: 'climatology',
+    label: 'Climatology SST',
+    icon: SSTIcon,
+    selectedIcon: SSTWhiteIcon,
+  },
 ];
 
 export const mapSidebarElements = [...mapNavbarDataElements, { id: 'argo', label: 'Argo', icon: ArgoIcon }];

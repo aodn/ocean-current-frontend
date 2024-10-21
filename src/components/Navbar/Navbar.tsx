@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import logo from '@/assets/images/imos-logo.png';
 import { linksData } from '@/data/linksData';
 import { LinkItem, SectionLinks } from '@/types/navbar';
+import { TEXT_CONSTANT } from '@/constants/textConstant';
 import NavbarMenu from './components/NavbarMenu';
 
 const Navbar: React.FC = () => {
@@ -32,17 +33,14 @@ const Navbar: React.FC = () => {
     setPopoverPosition({ left: element.offsetLeft });
   };
 
-  const isSectionLink = (item: LinkItem): item is SectionLinks => 'leftLinks' in item || 'rightLinks' in item;
+  const isSectionLink = (item: LinkItem): item is SectionLinks => 'links' in item;
 
   const closeNavbarMenu = () => setHoverIndex(null);
 
   const shouldDisplayNavbarMenu = (index: number | null): boolean => {
     if (index === null) return false;
     const item = menuItems[index];
-    return (
-      isSectionLink(item) &&
-      ((!!item.leftLinks && item.leftLinks.length > 0) || (!!item.rightLinks && item.rightLinks.length > 0))
-    );
+    return isSectionLink(item) && ((!!item.links && item.links.length > 0) || (!!item.links && item.links.length > 0));
   };
 
   return (
@@ -55,7 +53,7 @@ const Navbar: React.FC = () => {
           <div className="mx-7 h-10 w-0.5 bg-imos-title-blue"></div>
           <div className="flex flex-col justify-center text-xl  text-imos-title-blue">
             <Link className="mr-auto" to={'/'}>
-              OceanCurrent
+              {TEXT_CONSTANT.OC_PASCAL_CASE}
             </Link>
           </div>
         </div>
@@ -79,12 +77,9 @@ const Navbar: React.FC = () => {
               <div
                 onMouseLeave={() => setHoverIndex(null)}
                 style={{ left: popoverPosition?.left || 0 }}
-                className="absolute top-10 z-20 rounded-md bg-white p-6 shadow-lg transition duration-300 ease-in-out"
+                className="absolute top-10 z-20 rounded-lg bg-white drop-shadow-xy4 transition duration-300 ease-in-out"
               >
-                <NavbarMenu
-                  itemsLeft={menuItems[hoverIndex].leftLinks || []}
-                  itemsRight={menuItems[hoverIndex].rightLinks || []}
-                />
+                <NavbarMenu items={menuItems[hoverIndex].links || []} />
               </div>
             )}
           </div>
