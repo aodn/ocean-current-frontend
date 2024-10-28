@@ -77,10 +77,10 @@ const VideoCreation: React.FC = () => {
       <div
         aria-hidden
         onClick={toggleGifOptions}
-        className="flex h-11 cursor-pointer items-center justify-between rounded-md border border-[#3A6F8F] p-3"
+        className="flex h-11 cursor-pointer items-center justify-between rounded-md border bg-white p-3"
       >
         <img className="h-6 w-6" src={DownloadIcon} alt="share icon" />
-        <p className="hidden font-medium text-imos-grey md:inline-block">Download</p>
+        <p className="hidden font-medium md:inline-block">Download</p>
         <ArrowIcon
           className={`hidden h-3 w-3 transform transition-transform duration-300 md:inline-block ${showGifOptions ? 'rotate-180' : ''}`}
           stroke="#3B6E8F"
