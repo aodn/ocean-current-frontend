@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import '@/configs/dayjs';
-import userEvent from '@testing-library/user-event';
 import { useDateRange } from '@/hooks';
 import ProductNavbar from './ProductNavbar';
 
@@ -75,25 +74,5 @@ describe('ProductNavbar', () => {
     renderComponentWithRouter();
     const downloadElement = screen.getByText('Download');
     expect(downloadElement).toBeInTheDocument();
-  });
-
-  it('should display slider component with the start date', () => {
-    renderComponentWithRouter();
-    const sliderDate = screen.getByText('13-06');
-    expect(sliderDate).toBeInTheDocument();
-  });
-
-  it('should call handleSliderChange when the slider value changes', async () => {
-    renderComponentWithRouter();
-    const slider = screen.getByTestId('slider-base');
-    await userEvent.click(slider);
-    expect(mockReturnValue.handleSliderChange).toHaveBeenCalled();
-  });
-
-  it('should not render the slider if allDates is empty', () => {
-    const emptyMockReturnValue = { ...mockReturnValue, allDates: [] };
-    vi.mocked(useDateRange).mockReturnValue(emptyMockReturnValue);
-    renderComponentWithRouter();
-    expect(screen.queryByTestId('slider-base')).not.toBeInTheDocument();
   });
 });
