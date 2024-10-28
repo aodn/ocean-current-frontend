@@ -10,7 +10,7 @@ export const productsData: HomeProductData[] = [
       'Provides daily satellite measurements of ocean surface temperature, essential for monitoring thermal conditions and ocean currents',
   },
   {
-    title: 'Ocean Colour',
+    title: 'Chlorophyll-a Concentration',
     id: 'oceanColour-chlA',
     mainProduct: 'oceanColour',
     subProduct: 'oceanColour-chlA',

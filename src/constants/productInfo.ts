@@ -20,7 +20,7 @@ const list: ProductInfo[] = [
   },
   {
     id: 'oceanColour',
-    title: 'Ocean Colour',
+    title: 'Chlorophyll-a Concentration',
     summary:
       'Daily images of chlorophyll-a estimates from the MODIS sensor on NASA’s Aqua satellite indicating the amount of phytoplankton in the water.',
     description: OceanColourModalData,

@@ -124,7 +124,7 @@ export const OC_PRODUCTS: Product[] = [
     latestEntry: null,
   },
   {
-    title: 'Ocean Colour',
+    title: 'Chlorophyll-a Concentration',
     key: 'oceanColour',
     path: 'ocean-colour',
     latestEntry: 'chla_entry',
