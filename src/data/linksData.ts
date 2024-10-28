@@ -40,7 +40,7 @@ export const linksData: LinkItem[] = [
       {
         id: 'oceanColour',
         imageUrl: OceanColourIcon,
-        title: 'Chlorophyll-a concentration',
+        title: 'Chlorophyll-a Concentration',
         description: 'Satellite ocean color',
         url: '/map/ocean-colour/chl-a',
       },

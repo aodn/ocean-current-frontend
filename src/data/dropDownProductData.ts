@@ -30,7 +30,7 @@ export const mapNavbarDataElements: DropdownElement[] = [
   },
   {
     id: 'oceanColour',
-    label: 'Chlorophyll-a',
+    label: 'Chlorophyll-a Concentration',
     icon: OceanColourIcon,
     selectedIcon: OceanColourWhiteIcon,
   },
