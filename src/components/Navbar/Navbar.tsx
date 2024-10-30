@@ -4,6 +4,7 @@ import logo from '@/assets/images/imos-logo.png';
 import { linksData } from '@/data/linksData';
 import { LinkItem, SectionLinks } from '@/types/navbar';
 import { TEXT_CONSTANT } from '@/constants/textConstant';
+import ArrowIcon from '@/assets/icons/arrow.svg';
 import NavbarMenu from './components/NavbarMenu';
 
 const Navbar: React.FC = () => {
@@ -64,14 +65,25 @@ const Navbar: React.FC = () => {
             className="relative flex justify-between gap-20 self-start text-base max-md:max-w-full max-md:flex-wrap"
           >
             {menuItems.map((item, index) => (
-              <span
+              <div
                 key={item.title}
                 onMouseEnter={(event) => setPositionNavbar(index, event.currentTarget)}
-                className="cursor-pointer py-4 text-black"
-                ref={(el) => (menuItemRefs.current[index] = el)}
+                className="flex cursor-pointer content-center justify-center py-4 text-black"
               >
-                {item.title}
-              </span>
+                <span
+                  ref={(el) => (menuItemRefs.current[index] = el)}
+                  className={`decoration-imos-deep-blue decoration-2 underline-offset-[3px] ${hoverIndex === index ? 'underline' : ''}`}
+                >
+                  {item.title}
+                </span>
+                {isSectionLink(item) && (
+                  <img
+                    src={ArrowIcon}
+                    alt="arrow icon"
+                    className={`ml-2 w-4 transform transition-transform duration-300 ${hoverIndex === index ? '-rotate-90' : ''}`}
+                  />
+                )}
+              </div>
             ))}
             {hoverIndex !== null && shouldDisplayNavbarMenu(hoverIndex) && (
               <div
