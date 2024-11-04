@@ -7,7 +7,7 @@ const HomeMap: React.FC = () => {
   return (
     <div className="h-full w-full overflow-hidden rounded-xl drop-shadow-xy4">
       <ErrorBoundary>
-        <BasicMap minZoom={INITIAL_MAP_VIEW_STATE.mapViewState.zoom} />
+        <BasicMap minZoom={INITIAL_MAP_VIEW_STATE.mapViewState.zoom} showCursorLocationPanel={false} />
       </ErrorBoundary>
     </div>
   );

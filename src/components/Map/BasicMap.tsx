@@ -1,11 +1,19 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import Map, { FullscreenControl, MapStyle, NavigationControl, ViewStateChangeEvent } from 'react-map-gl';
+import Map, {
+  FullscreenControl,
+  MapLayerMouseEvent,
+  MapStyle,
+  NavigationControl,
+  ViewStateChangeEvent,
+} from 'react-map-gl';
 import { mapConfig } from '@/configs/map';
 import useMapStore, { setMapViewState, updateZoom } from '@/stores/map-store/mapStore';
 import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer, CurrentMeterRegionPolygonLayer } from './layers';
+import { useIsMobile } from '@/hooks';
 import MAP_STYLE from './data/map-style.basic-v8.json';
+import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer, CurrentMeterRegionPolygonLayer } from './layers';
+import { MouseCursorLocationPanel } from './panels';
 import { BasicMapProps } from './types/map.types';
 
 const BasicMap: React.FC<BasicMapProps> = ({
@@ -16,17 +24,21 @@ const BasicMap: React.FC<BasicMapProps> = ({
   isMiniMap = false,
   fullScreenControl = false,
   navigationControl = true,
+  showCursorLocationPanel = true,
   minZoom,
 }) => {
   const [cursor, setCursor] = useState<string>('grab');
+  const [cursorLngLat, setCursorLngLat] = useState<{ lng: number; lat: number } | null>(null);
   const useMapViewState = useMapStore((state) => state.mapViewState);
   const { isArgo, isCurrentMeters } = useProductCheck();
+  const isMobile = useIsMobile();
 
   const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
   const interactiveIds = [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID];
 
   const shouldShowArgoLayer = (!isArgo && !isMiniMap) || isArgo;
-  const showCurrentMetersLayer = isCurrentMeters && isMiniMap;
+  const shouldShowCurrentMetersLayer = isCurrentMeters && isMiniMap;
+  const shouldShowCursorLocationPanel = showCursorLocationPanel && !isMobile && cursorLngLat?.lng && cursorLngLat?.lat;
 
   const handleMove = useCallback(({ viewState }: ViewStateChangeEvent) => {
     setMapViewState(viewState);
@@ -34,6 +46,11 @@ const BasicMap: React.FC<BasicMapProps> = ({
 
   const handleZoom = useCallback(({ viewState }: ViewStateChangeEvent) => {
     updateZoom(viewState.zoom);
+  }, []);
+
+  const handleMouseMove = useCallback((e: MapLayerMouseEvent) => {
+    const { lng, lat } = e.lngLat;
+    setCursorLngLat({ lng, lat });
   }, []);
 
   const handleMouseEnter = useCallback(() => setCursor('pointer'), []);
@@ -69,6 +86,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
       cursor={cursor}
       onMove={handleMove}
       onZoom={handleZoom}
+      onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{ width: '100%', height: '100%', ...style }}
@@ -82,10 +100,12 @@ const BasicMap: React.FC<BasicMapProps> = ({
       {fullScreenControl && <FullscreenControl position="top-right" />}
       {navigationControl && <NavigationControl position="top-right" />}
 
+      {shouldShowCursorLocationPanel && <MouseCursorLocationPanel lat={cursorLngLat?.lat} lng={cursorLngLat?.lng} />}
+
       {!isArgo && memoizedLayers.dataImageLayer}
       {!isArgo && memoizedLayers.regionPolygonLayer}
       {shouldShowArgoLayer && memoizedLayers.argoAsProductLayer}
-      {showCurrentMetersLayer && memoizedLayers.currentMeterLayer}
+      {shouldShowCurrentMetersLayer && memoizedLayers.currentMeterLayer}
     </Map>
   );
 };

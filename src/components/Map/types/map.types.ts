@@ -14,5 +14,6 @@ export interface BasicMapProps {
   style?: React.CSSProperties;
   fullScreenControl?: boolean;
   navigationControl?: boolean;
+  showCursorLocationPanel?: boolean;
   minZoom?: number;
 }
