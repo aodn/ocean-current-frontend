@@ -1,13 +1,15 @@
 import React from 'react';
 import { mapboxInstanceIds } from '@/constants/mapboxId';
 import BasicMap from '../../Map/BasicMap';
-import NavigateIcon from './NavigateIcon';
 
 const MiniMap: React.FC = () => {
   return (
-    <BasicMap id={mapboxInstanceIds.SIDEBAR_MINI_MAP_ID} isMiniMap navigationControl={false} fullScreenControl={false}>
-      <NavigateIcon />
-    </BasicMap>
+    <BasicMap
+      id={mapboxInstanceIds.SIDEBAR_MINI_MAP_ID}
+      isMiniMap
+      navigationControl={false}
+      fullScreenControl={false}
+    />
   );
 };
 
