@@ -11,9 +11,9 @@ import useMapStore, { setMapViewState, updateZoom } from '@/stores/map-store/map
 import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useIsMobile } from '@/hooks';
-import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer, CurrentMeterRegionPolygonLayer } from './layers';
 import MAP_STYLE from './data/map-style.basic-v8.json';
-import MouseCursorLocationPanel from './MouseCursorLocationPanel';
+import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer, CurrentMeterRegionPolygonLayer } from './layers';
+import { MouseCursorLocationPanel } from './panels';
 import { BasicMapProps } from './types/map.types';
 
 const BasicMap: React.FC<BasicMapProps> = ({
