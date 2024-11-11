@@ -88,6 +88,9 @@ const DatePicker: React.FC<DatePickerProps> = ({
             minDate={minDate}
             maxDate={maxDate}
             selectsRange
+            showYearDropdown
+            showMonthDropdown
+            dropdownMode="select"
           />
         )}
       </div>
