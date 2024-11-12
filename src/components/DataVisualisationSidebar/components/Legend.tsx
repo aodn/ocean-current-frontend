@@ -115,8 +115,8 @@ const Legend: React.FC = () => {
           </div>
         </div>
       </div>
-      <Button onClick={handlePopup} size="full" borderRadius="small" type="secondary">
-        Click for more information
+      <Button onClick={handlePopup} size="full" borderRadius="small" type="secondary" className="!border">
+        <span className="text-imos-grey">Click for more information</span>
       </Button>
 
       <Popup title="Legend" body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />

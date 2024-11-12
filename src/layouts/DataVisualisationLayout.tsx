@@ -78,7 +78,7 @@ const DataVisualisationLayout: React.FC = () => {
   return (
     <div className="relative mx-auto mb-9 w-full max-w-8xl">
       <div className="block p-4 md:hidden">
-        <div>
+        <div className="text-imos-text-grey">
           <DataVisualisationSidebar />
         </div>
         <div>
