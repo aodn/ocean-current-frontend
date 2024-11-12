@@ -1,4 +1,5 @@
 import parse from 'node-html-parser';
+import { LngLatBoundsLike } from 'mapbox-gl';
 import { BoundingBox, GeoJsonPolygon } from '@/types/map';
 import { validateCoords } from '@/utils/validators/map';
 import { CurrentMeterMapArea } from '@/types/currentMeter';
@@ -95,6 +96,30 @@ const convertCurrentMeterHtmlMapElementStringToObj = (htmlMapElementString: stri
   });
 };
 
+const getBoundsFromCoordsArray = (coordinates: [number, number][]): LngLatBoundsLike => {
+  if (!coordinates.length) {
+    throw new Error('Coordinates array cannot be empty');
+  }
+  const bounds = {
+    minLng: coordinates[0][0],
+    maxLng: coordinates[0][0],
+    minLat: coordinates[0][1],
+    maxLat: coordinates[0][1],
+  };
+
+  coordinates.forEach(([lng, lat]) => {
+    bounds.minLng = Math.min(bounds.minLng, lng);
+    bounds.maxLng = Math.max(bounds.maxLng, lng);
+    bounds.minLat = Math.min(bounds.minLat, lat);
+    bounds.maxLat = Math.max(bounds.maxLat, lat);
+  });
+
+  return [
+    [bounds.minLng, bounds.minLat],
+    [bounds.maxLng, bounds.maxLat],
+  ];
+};
+
 export {
   calculateAreaFromCoords,
   convertAreaCoordsToGeoJsonCoordinates,
@@ -103,4 +128,5 @@ export {
   calculateOffsetByCoords,
   calculateCenterByCoords,
   convertCurrentMeterHtmlMapElementStringToObj,
+  getBoundsFromCoordsArray,
 };

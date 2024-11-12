@@ -6,13 +6,19 @@ import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { ArgoProfile } from '@/types/argo';
 import { useQueryParams, useIsMobile } from '@/hooks';
 import { ArgoProfileFeatureCollection } from '@/types/geo';
+import { getBoundsFromCoordsArray } from '@/utils/geo-utils/geo';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
 
 interface ArgoAsProductLayerRendererProps {
   isMiniMap: boolean;
   argoData: ArgoProfileFeatureCollection;
+  shouldFitBounds?: boolean;
 }
-const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({ isMiniMap, argoData }) => {
+const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
+  isMiniMap,
+  argoData,
+  shouldFitBounds = false,
+}) => {
   const { worldMeteorologicalOrgId: selectedWorldMeteorologicalOrgId } = useArgoStore(
     (state) => state.selectedArgoParams,
   );
@@ -172,6 +178,19 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
       mapFlyToPoint(argoPoint?.geometry.coordinates);
     }
   }, [map, mapFlyToPoint, argoData, selectedWorldMeteorologicalOrgId, isMiniMap]);
+
+  useEffect(() => {
+    const shouldSkipMapBoundsUpdate =
+      !map || !shouldFitBounds || isMiniMap || !argoData || argoData.features.length === 0;
+    if (shouldSkipMapBoundsUpdate) return;
+
+    const allCoordinates = argoData?.features.map((feature) => feature.geometry.coordinates);
+
+    const bounds = getBoundsFromCoordsArray(allCoordinates);
+    map.fitBounds(bounds, {
+      padding: 30,
+    });
+  }, [map, argoData, isMiniMap, shouldFitBounds]);
 
   return (
     <Source id={ARGO_AS_PRODUCT_SOURCE_ID} type="geojson" data={argoData}>
