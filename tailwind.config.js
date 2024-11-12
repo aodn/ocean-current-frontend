@@ -19,6 +19,7 @@ export default {
         'imos-title-blue': color.blue2,
         'imos-grey': color.grey,
         'imos-black': color.grey3,
+        'imos-text-grey': color.textGrey,
       },
       backgroundImage: {
         'background-gradient': 'linear-gradient(180deg, #DCDCDC 0%, rgba(217, 217, 217, 0.34) 100%)',
@@ -35,6 +36,7 @@ export default {
       fontFamily: {
         noto: ['NotoSans', 'sans-serif'],
         lexend: ['Lexend', 'sans-serif'],
+        'open-sans': ['"Open Sans"', 'sans-serif'],
       },
       maxWidth: {
         '8xl': '90rem',

@@ -139,7 +139,9 @@ const ProductSideBar: React.FC = () => {
                       type={key === subProduct!.key ? 'primary' : 'secondary'}
                       onClick={() => handleSubProductChange(key, mainProduct.path, path)}
                     >
-                      {title}
+                      <span className={`text-base ${key === subProduct!.key ? 'text-white' : 'text-imos-text-grey'}`}>
+                        {title}
+                      </span>
                     </Button>
                   </div>
                 ))}
@@ -169,8 +171,8 @@ const ProductSideBar: React.FC = () => {
                 {filteredDataSources.map(({ title, link }, index) => (
                   <div key={title} className={index === filteredDataSources.length - 1 ? 'w-auto' : 'flex-1'}>
                     <a target="_blank" href={link} rel="noreferrer">
-                      <Button size="full" borderRadius="small" type="secondary">
-                        {title}
+                      <Button size="full" borderRadius="small" type="secondary" className="!border">
+                        <span className="text-base text-imos-text-grey">{title}</span>
                       </Button>
                     </a>
                   </div>

@@ -11,6 +11,7 @@ interface OCColor {
   grey: string;
   grey2: string;
   grey3: string;
+  textGrey: string;
 }
 
 const color: OCColor = {
@@ -22,10 +23,11 @@ const color: OCColor = {
   seaBlue: '#52BDEC',
   accentOrange: '#E36F1E',
   sand: '#D9D7BD',
-  blue2: '#356183 ',
+  blue2: '#356183',
   grey: '#8C8C8C',
   grey2: '#555555',
   grey3: '#3C3C3C',
+  textGrey: '#646464',
 };
 
 export { color };
