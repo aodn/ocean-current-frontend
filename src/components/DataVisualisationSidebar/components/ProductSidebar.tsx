@@ -120,7 +120,7 @@ const ProductSideBar: React.FC = () => {
               onClick={() => setIsSubProductsCollapsed(!isSubProductsCollapsed)}
               aria-hidden
             >
-              <h3 className="text-lg font-medium text-imos-grey">Sub-products</h3>
+              <h3 className="text-lg font-medium text-imos-grey">Options</h3>
               <img
                 src={ArrowIcon}
                 alt="arrow icon"
