@@ -185,7 +185,7 @@ const ProductFooterMobile: React.FC = () => {
       {shouldRenderSubProducts() && (
         <div className="px-2">
           <div className="flex cursor-pointer items-center justify-between px-4 py-2" aria-hidden>
-            <h3 className="text-lg font-medium text-imos-grey">Sub-products</h3>
+            <h3 className="text-lg font-medium text-imos-grey">Options</h3>
           </div>
           <div>
             <div className="mb-6 mt-2 grid grid-cols-2 gap-2">
