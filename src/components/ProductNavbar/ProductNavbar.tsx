@@ -68,8 +68,8 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
 
   return (
     <div className="mb-2 rounded-md">
-      <div className="mb-2 flex items-center justify-between font-sans font-medium text-imos-black">
-        <div className="flex h-11 items-center justify-center rounded-md bg-white p-2">
+      <div className="mb-2 flex items-center justify-between gap-3 font-sans font-medium text-imos-black">
+        <div className="flex h-11 grow items-center justify-between rounded-md bg-white">
           <DatePicker
             startDate={startDate}
             endDate={endDate}
@@ -89,11 +89,11 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
         <div
           onClick={() => handleReset()}
           aria-hidden
-          className="flex h-11 w-1/12 cursor-pointer items-center justify-center rounded-md bg-white p-2"
+          className="flex-center h-11 w-12 cursor-pointer rounded-md bg-white p-2"
         >
           <img src={ResetIcon} alt="" srcSet="" />
         </div>
-        <div className="flex h-11 w-1/5 items-center justify-center rounded-md bg-white p-3">
+        <div className="flex-center h-11 w-1/5 rounded-md bg-white p-3">
           <img src={VideoIcon} alt="video icon" />
           <p className="mx-3">Video</p>
           <ToggleButton disabled={disableVideoCreation() || isArgo} isOn={showVideo} onToggle={handleToggle} />
