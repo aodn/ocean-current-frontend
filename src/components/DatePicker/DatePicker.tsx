@@ -9,7 +9,6 @@ import { DatePickerProps } from './types/datePicker.types';
 const customInput = () => (
   <div className="mr-5 mt-1 flex w-full cursor-pointer items-center justify-center">
     <img src={calendarIcon} alt="calendar icon" className="mr-4" />
-    <p className="font-medium text-imos-sea-blue">Time Range</p>
   </div>
 );
 
@@ -68,34 +67,56 @@ const DatePicker: React.FC<DatePickerProps> = ({
   }, [handleKeyDown]);
 
   return (
-    <div className="flex items-center justify-evenly">
-      <div>
-        {isMonthRange || isYearRange ? (
-          <ReactDatePicker
-            customInput={isMobile ? customInputMobile() : customInput()}
-            selected={startDate}
-            onChange={handleYearDateChange}
-            showYearPicker
-            dateFormat="yyyy"
-          />
-        ) : (
-          <ReactDatePicker
-            customInput={isMobile ? customInputMobile() : customInput()}
-            selected={startDate}
-            onChange={handleDateChange}
-            startDate={startDate}
-            endDate={endDate}
-            minDate={minDate}
-            maxDate={maxDate}
-            selectsRange
-            showYearDropdown
-            showMonthDropdown
-            dropdownMode="select"
-          />
-        )}
+    <div className="flex h-full w-full items-center justify-between">
+      <div className="flex-center h-full w-12 border-r-2 text-lg text-imos-title-blue">
+        <button
+          onClick={() => modifyDate('subtract')}
+          className="hidden cursor-pointer rounded bg-transparent p-2 font-semibold md:block"
+        >
+          <img className="h-4 w-4 rotate-90" src={arrowIcon} alt="left arrow icon" />
+        </button>
       </div>
 
-      <div className="flex min-w-44 items-center justify-between border-l-2 text-lg text-imos-title-blue">
+      <div className="flex-center h-full">
+        <div className="flex items-center justify-center text-center">
+          {isMonthRange || isYearRange ? (
+            <ReactDatePicker
+              customInput={isMobile ? customInputMobile() : customInput()}
+              selected={startDate}
+              onChange={handleYearDateChange}
+              showYearPicker
+              dateFormat="yyyy"
+            />
+          ) : (
+            <ReactDatePicker
+              customInput={isMobile ? customInputMobile() : customInput()}
+              selected={startDate}
+              onChange={handleDateChange}
+              startDate={startDate}
+              endDate={endDate}
+              minDate={minDate}
+              maxDate={maxDate}
+              selectsRange
+              showYearDropdown
+              showMonthDropdown
+              dropdownMode="select"
+            />
+          )}
+        </div>
+        <div className="text-l">{formattedDate()}</div>
+      </div>
+
+      <div className="flex-center h-full w-12 border-l-2 text-lg text-imos-title-blue">
+        <button
+          onClick={() => modifyDate('add')}
+          disabled={isMonthRange ? isLastMonthOfTheYear() : addButtonDisabled}
+          className="hidden cursor-pointer rounded bg-transparent p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50 md:block"
+        >
+          <img className="h-4 w-4 -rotate-90" src={arrowIcon} alt="right arrow icon" />
+        </button>
+      </div>
+
+      {/* <div className="flex min-w-44 items-center justify-between border-l-2 text-lg text-imos-title-blue">
         <button
           onClick={() => modifyDate('subtract')}
           className="hidden cursor-pointer rounded bg-transparent p-2 font-semibold md:block"
@@ -110,7 +131,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
         >
           <img className="h-4 w-4 -rotate-90" src={arrowIcon} alt="right arrow icon" />
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

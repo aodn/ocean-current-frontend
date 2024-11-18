@@ -28,11 +28,9 @@ describe('DatePicker', () => {
 
     // Act
     const calendarIconImg = screen.getByAltText('calendar icon');
-    const dateText = screen.getByText('Time Range');
 
     // Assert
     expect(calendarIconImg).toBeInTheDocument();
-    expect(dateText).toBeInTheDocument();
   });
 
   it('renders date range picker with initial dates', () => {
