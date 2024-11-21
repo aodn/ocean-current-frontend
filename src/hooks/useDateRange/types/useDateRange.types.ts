@@ -10,7 +10,7 @@ export type DateRange = DateItem[];
 
 export type ModificationType = 'add' | 'subtract';
 
-export type DateChangeHandler = (dates: [Date | null, Date | null]) => void;
+export type DateChangeHandler = (date: Date) => void;
 
 export type YearDateChangeHandler = (date: Date) => void;
 
