@@ -20,15 +20,11 @@ const DataView: React.FC = () => {
       return <ProductContent />;
     }
 
-    return (
-      <div className="h-full bg-white">
-        {isProductAvailableInRegion ? (
-          <ProductContent />
-        ) : (
-          <div className="h-[660px]">
-            <BasicMap />
-          </div>
-        )}
+    return isProductAvailableInRegion ? (
+      <ProductContent />
+    ) : (
+      <div className="h-[660px]">
+        <BasicMap />
       </div>
     );
   };

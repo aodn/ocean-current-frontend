@@ -146,7 +146,7 @@ const ProductContent: React.FC = () => {
   };
 
   return (
-    <>
+    <div className="h-full bg-white">
       {showVideo ? (
         <video
           onClick={handlePopup}
@@ -180,7 +180,7 @@ const ProductContent: React.FC = () => {
           )}
         </>
       )}
-    </>
+    </div>
   );
 };
 
