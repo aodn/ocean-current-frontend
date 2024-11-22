@@ -104,7 +104,7 @@ const DataVisualisationLayout: React.FC = () => {
           <DataVisualisationSidebar />
         </div>
         <div
-          className={`transition-all duration-300 ${isSidebarVisible ? 'ml-4' : 'ml-0'} min-h-[800px] w-full min-w-[800px]`}
+          className={`transition-all duration-300 ${isSidebarVisible ? 'ml-4' : 'ml-0'} flex min-h-[800px] w-full min-w-[800px] flex-col`}
         >
           <DataVisualisationNavbar setShowVideo={setShowVideo} />
           <ErrorBoundary key={product?.mainProduct}>
