@@ -25,8 +25,8 @@ const MapLayout: React.FC = () => {
   }, [product]);
 
   return (
-    <div className="mx-auto mb-9 mt-4 w-full max-w-8xl ">
-      <div className="w-full md:flex ">
+    <div className="mx-auto mb-9 mt-4 w-full max-w-8xl">
+      <div className="w-full md:flex">
         {isMobile ? (
           <div className="mb-2">
             <HeaderSideBar />

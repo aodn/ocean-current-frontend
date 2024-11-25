@@ -68,7 +68,11 @@ const VideoCreation: React.FC = () => {
   const handleDimensionChange = (e: React.ChangeEvent<HTMLInputElement>, dimension: 'width' | 'height'): void => {
     const value = parseInt(e.target.value, 10);
     if (!isNaN(value) && value > 0) {
-      dimension === 'width' ? handleWidthChange(value) : handleHeightChange(value);
+      if (dimension === 'width') {
+        handleWidthChange(value);
+      } else {
+        handleHeightChange(value);
+      }
     }
   };
 

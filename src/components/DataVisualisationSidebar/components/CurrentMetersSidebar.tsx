@@ -120,7 +120,7 @@ const CurrentMetersSidebar: React.FC = () => {
             <img src={InfoIcon} alt="info icon" className="mr-6 mt-1 h-6 w-6 cursor-pointer object-contain" />
             <TruncateText lines={4} text={currentMetersDescription} />
           </div>
-          <div aria-hidden onClick={handlePopup} className="mt-3 flex justify-end ">
+          <div aria-hidden onClick={handlePopup} className="mt-3 flex justify-end">
             <p className="mr-2 cursor-pointer font-semibold text-imos-grey">Read More</p>
             <ArrowWithTail stroke="#787878" className="mt-2 cursor-pointer" />
           </div>

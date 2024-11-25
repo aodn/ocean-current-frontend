@@ -138,7 +138,7 @@ const ProductFooterMobile: React.FC = () => {
 
           <div className="p-2">
             <div className="my-5">
-              <div className="flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg border bg-imos-mid-grey px-12 py-1 text-lg  text-white transition duration-300 ease-in-out">
+              <div className="flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg border bg-imos-mid-grey px-12 py-1 text-lg text-white transition duration-300 ease-in-out">
                 <img src={ArgoIdIcon} alt="argo id icon" />
                 aoml {worldMeteorologicalOrgId}
               </div>
@@ -174,7 +174,7 @@ const ProductFooterMobile: React.FC = () => {
           <img src={InfoIcon} alt="info icon" className="mr-6 mt-1 h-6 w-6 cursor-pointer object-contain" />
           <TruncateText lines={4} text={productInfo?.summary} />
         </div>
-        <div aria-hidden onClick={handlePopup} className="mt-3 flex justify-end ">
+        <div aria-hidden onClick={handlePopup} className="mt-3 flex justify-end">
           <p className="mr-2 cursor-pointer font-semibold text-imos-grey">Read More</p>
           <ArrowWithTail stroke="#787878" className="mt-2 cursor-pointer" />
         </div>

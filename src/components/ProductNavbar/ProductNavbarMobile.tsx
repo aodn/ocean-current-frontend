@@ -51,7 +51,7 @@ const ProductNavbarMobile: React.FC<ProductNavbarProps> = () => {
   };
 
   return (
-    <div className="mb-2 rounded-md bg-[#FAFAFA] p-3 ">
+    <div className="mb-2 rounded-md bg-[#FAFAFA] p-3">
       <div className="mb-2 w-full">
         <Button
           borderRadius="small"
@@ -63,7 +63,7 @@ const ProductNavbarMobile: React.FC<ProductNavbarProps> = () => {
           Select {isArgo ? 'argo' : 'region'}
         </Button>
       </div>
-      <div className="mb-2 flex items-center justify-between ">
+      <div className="mb-2 flex items-center justify-between">
         <div className="flex h-11 items-center justify-center rounded-md border border-[#3A6F8F] p-2">
           <DatePicker
             isMobile

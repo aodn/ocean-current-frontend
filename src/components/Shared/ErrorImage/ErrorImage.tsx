@@ -7,7 +7,7 @@ import { ErrorImageProps } from './types/ErrorImageProps';
 
 const ErrorImage: React.FC<ErrorImageProps> = ({ date, product }) => {
   return (
-    <div className="flex h-[80%] flex-col items-center justify-center  rounded bg-white px-4 py-12">
+    <div className="flex h-[80%] flex-col items-center justify-center rounded bg-white px-4 py-12">
       <img src={NotFoundIcon} alt="not found icon" />
       <p className="my-4 flex items-center text-xl font-bold text-gray-600">
         {date.format('DD MMM YYYY')} is not available for this product and/or region
