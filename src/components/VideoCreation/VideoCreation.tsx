@@ -83,6 +83,7 @@ const VideoCreation: React.FC<VideoCreationProps> = ({ disabled = false }) => {
       <div
         aria-hidden
         onClick={toggleGifOptions}
+        data-testid="product-menu-bar-download-option"
         className={`flex h-11 items-center justify-between rounded-md  bg-white p-3 ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
       >
         <img className="h-6 w-6" src={DownloadIcon} alt="share icon" />
