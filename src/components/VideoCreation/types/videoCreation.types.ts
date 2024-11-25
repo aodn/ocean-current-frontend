@@ -4,5 +4,5 @@ export type FrameRateOption = {
 };
 
 export type VideoCreationProps = {
-  disabled: boolean;
+  disabled?: boolean;
 };
