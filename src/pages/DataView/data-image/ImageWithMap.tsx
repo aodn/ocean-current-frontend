@@ -37,7 +37,11 @@ const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, d
     };
     const imageElement = imgRef.current;
     if (imageElement) {
-      imageElement.complete ? handleLoad() : imageElement.addEventListener('load', handleLoad);
+      if (imageElement.complete) {
+        handleLoad();
+      } else {
+        imageElement.addEventListener('load', handleLoad);
+      }
     }
 
     return () => {

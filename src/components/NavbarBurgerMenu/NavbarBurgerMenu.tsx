@@ -16,12 +16,12 @@ const NavbarBurgerMenu: React.FC = () => {
     <div>
       <nav className="flex items-center justify-between px-6 py-6">
         <Link className="mr-auto" to={'/'}>
-          <img className="h-8 " src={logo} alt="IMOS logo navbar" />
+          <img className="h-8" src={logo} alt="IMOS logo navbar" />
         </Link>
         <img
           data-testid="svg-toggle"
           onClick={toggleMenu}
-          className="block h-6 w-6 "
+          className="block h-6 w-6"
           alt="burger-menu"
           src={burgerMenu}
           aria-hidden="true"
@@ -31,7 +31,7 @@ const NavbarBurgerMenu: React.FC = () => {
         <nav className="fixed bottom-0 left-0 top-0 flex w-full flex-col overflow-y-auto border-r bg-white px-12 py-6">
           <div className="mb-8 flex items-center">
             <Link className="mr-auto" to={'/'}>
-              <img className="h-8 " src={logo} alt="IMOS logo" />
+              <img className="h-8" src={logo} alt="IMOS logo" />
             </Link>
             <img onClick={toggleMenu} className="h-8" alt="cross" src={cross} aria-hidden="true" />
           </div>

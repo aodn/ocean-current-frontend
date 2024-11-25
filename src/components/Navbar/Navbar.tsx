@@ -52,7 +52,7 @@ const Navbar: React.FC = () => {
             <img className={`transition-all duration-300 ${isScrolled ? 'h-8' : 'h-12'}`} src={logo} alt="IMOS logo" />
           </Link>
           <div className="mx-7 h-10 w-0.5 bg-imos-title-blue"></div>
-          <div className="flex flex-col justify-center text-xl  text-imos-title-blue">
+          <div className="flex flex-col justify-center text-xl text-imos-title-blue">
             <Link className="mr-auto" to={'/'}>
               {TEXT_CONSTANT.OC_PASCAL_CASE}
             </Link>

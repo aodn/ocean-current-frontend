@@ -1,4 +1,4 @@
-const currentMeterDataPointTitles = [
+export const currentMeterDataPointTitles = [
   'BMP070',
   'BMP090',
   'BMP120',

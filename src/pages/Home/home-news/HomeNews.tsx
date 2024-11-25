@@ -4,7 +4,7 @@ import NewsCard from './components/NewsCard/NewsCard';
 
 const HomeNews: React.FC = () => {
   return (
-    <div className="mx-auto w-full max-w-8xl py-10 ">
+    <div className="mx-auto w-full max-w-8xl py-10">
       <div className="flex items-center justify-between">
         <h2 className="py-4 text-center text-2xl text-imos-black">OceanCurrent News</h2>
         <button className="bg-transparent text-center text-lg text-imos-grey">View more &rarr;</button>

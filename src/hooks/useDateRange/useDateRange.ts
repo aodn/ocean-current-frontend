@@ -79,8 +79,8 @@ const useDateRange = (): UseDateRangeReturn => {
   };
 
   const getMinMaxDate = () => {
-    let minDate: Date | null = null;
-    let maxDate: Date | null = null;
+    let minDate: Date | undefined;
+    let maxDate: Date | undefined;
 
     if (isArgo && useWmoid) {
       const cycleDateTimestamps = useArgoProfileCycles.map(({ date }) => Number(date));
@@ -214,20 +214,20 @@ const useDateRange = (): UseDateRangeReturn => {
     return dates;
   };
 
-  const updateDateSlider = (newStartDate: Date, newEndDate?: Date, newSelectedDate?: Date) => {
+  const updateDateSlider = (newStartDate: Date, newEndDate?: Date, newSelectedDate?: Date | null) => {
     const range = generateDateRange(newStartDate, newEndDate);
     setAllDates(range);
     const newIndex = determineSelectedIndex(range, newStartDate, newSelectedDate);
     setSelectedDateIndex(newIndex !== -1 ? newIndex : 0);
   };
 
-  const determineSelectedIndex = (range: DateRange, newStartDate: Date, newSelectedDate?: Date) => {
+  const determineSelectedIndex = (range: DateRange, newStartDate: Date, newSelectedDate?: Date | null) => {
     if (isMonthRange) return determineYearSelectedIndex(range, newStartDate, newSelectedDate);
     if (isYearRange) return determineYearlySelectedIndex(range, newSelectedDate);
     return determineDaySelectedIndex(range, newSelectedDate);
   };
 
-  const determineYearSelectedIndex = (range: DateRange, newStartDate: Date, newSelectedDate?: Date) => {
+  const determineYearSelectedIndex = (range: DateRange, newStartDate: Date, newSelectedDate?: Date | null) => {
     if (newSelectedDate) {
       return range.findIndex(({ date }) => dayjs(date).isSame(dayjs(newSelectedDate), 'month'));
     }
@@ -237,7 +237,7 @@ const useDateRange = (): UseDateRangeReturn => {
     return dayjs(newStartDate).get('month');
   };
 
-  const determineYearlySelectedIndex = (range: DateRange, newSelectedDate?: Date) => {
+  const determineYearlySelectedIndex = (range: DateRange, newSelectedDate?: Date | null) => {
     if (newSelectedDate) {
       return range.findIndex(({ date }) => dayjs(date).isSame(dayjs(newSelectedDate), 'year'));
     }
@@ -247,7 +247,7 @@ const useDateRange = (): UseDateRangeReturn => {
     return range.length - 1;
   };
 
-  const determineDaySelectedIndex = (range: DateRange, newSelectedDate?: Date) => {
+  const determineDaySelectedIndex = (range: DateRange, newSelectedDate?: Date | null) => {
     if (newSelectedDate) {
       const selectedIndex = range.findIndex(({ date }) =>
         dayjs(date).isSame(dayjs(newSelectedDate), isWeekRange ? 'hour' : 'day'),
