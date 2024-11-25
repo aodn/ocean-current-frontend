@@ -29,7 +29,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo, isMapView =
     isWeekRange,
   } = useDateRange();
 
-  const [copyButtonText, setCopyButtonText] = useState<string>(TEXT_CONSTANT.SHARE_PERMLINK);
+  const [copyButtonText, setCopyButtonText] = useState<string>(TEXT_CONSTANT.SHARE);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [showVideo, setLocalShowVideo] = useState(false);
   const { isArgo } = useProductCheck();
@@ -41,7 +41,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo, isMapView =
     setCopyButtonText('Copied!');
 
     timeoutRef.current = setTimeout(() => {
-      setCopyButtonText(TEXT_CONSTANT.SHARE_PERMLINK);
+      setCopyButtonText(TEXT_CONSTANT.SHARE);
     }, 2000);
   };
 

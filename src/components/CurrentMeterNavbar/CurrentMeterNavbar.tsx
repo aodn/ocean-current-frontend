@@ -8,7 +8,7 @@ import ResetIcon from '@/assets/icons/reset-icon.svg';
 import { resetCurrentMeterStore } from '@/stores/current-meters-store/currentMeters';
 
 const CurrentMeterNavbar: React.FC = () => {
-  const [copyButtonText, setCopyButtonText] = useState<string>(TEXT_CONSTANT.SHARE_PERMLINK);
+  const [copyButtonText, setCopyButtonText] = useState<string>(TEXT_CONSTANT.SHARE);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const {
@@ -34,7 +34,7 @@ const CurrentMeterNavbar: React.FC = () => {
     setCopyButtonText('Copied!');
 
     timeoutRef.current = setTimeout(() => {
-      setCopyButtonText(TEXT_CONSTANT.SHARE_PERMLINK);
+      setCopyButtonText(TEXT_CONSTANT.SHARE);
     }, 2000);
   };
 
