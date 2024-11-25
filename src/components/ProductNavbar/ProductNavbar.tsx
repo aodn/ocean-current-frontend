@@ -113,7 +113,9 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
             <div className="w-6"></div>
           </div>
         </div>
-        <div className="w-1/6">{!isArgo && <VideoCreation disabled={shouldDisableOption} />}</div>
+        <div className="w-1/6">
+          <VideoCreation disabled={shouldDisableOption} />
+        </div>
       </div>
     </div>
   );
