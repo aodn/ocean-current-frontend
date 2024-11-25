@@ -11,8 +11,7 @@ const useScrollToTop = () => {
         left: 0,
         behavior: 'smooth',
       });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
+    } catch {
       window.scrollTo(0, 0);
     }
   }, [pathname]);
