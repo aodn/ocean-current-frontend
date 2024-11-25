@@ -11,7 +11,7 @@ import VideoCreation from '@/components/VideoCreation/VideoCreation';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { ProductNavbarProps } from './types/productNavbarProps.types';
 
-const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
+const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo, isMapView }) => {
   const {
     startDate,
     endDate,
@@ -33,7 +33,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [showVideo, setLocalShowVideo] = useState(false);
   const { isArgo } = useProductCheck();
-  const shouldDisableOption = disableVideoCreation() || isArgo;
+  const shouldDisableOption = disableVideoCreation() || isArgo || isMapView;
 
   const handleCopyLink = () => {
     const url = location.href;
