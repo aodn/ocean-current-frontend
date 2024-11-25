@@ -107,7 +107,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         map.setFeatureState(
           {
             source: ARGO_AS_PRODUCT_SOURCE_ID,
-            id: hoveredFeature.id,
+            id: hoveredFeature.id as number,
           },
           {
             hover: true,

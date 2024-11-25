@@ -48,8 +48,10 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
 
   const defaultTargetDate = dayjs().subtract(2, 'day').format('YYYYMMDD');
 
-  const throttleSetMapBounds = useThrottle((bounds: LngLatBounds) => {
-    setMapBounds(bounds);
+  const throttleSetMapBounds = useThrottle((bounds: LngLatBounds | null) => {
+    if (bounds) {
+      setMapBounds(bounds);
+    }
   }, 300);
 
   const mapFitBounds = useCallback(
@@ -102,7 +104,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
     if (!map) return;
 
     const handleMouseMove = (e: MapMouseEvent) => {
-      const containsArgoLayer = map.getStyle().layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
+      const containsArgoLayer = map?.getStyle()?.layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
       const layersToCheck = containsArgoLayer
         ? [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID]
         : [PRODUCT_REGION_BOX_LAYER_ID];
@@ -120,7 +122,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
         setHoveredId(features[0].id!);
       }
 
-      const checkIfArgoPoint = features.find((feature) => feature.layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
+      const checkIfArgoPoint = features.find((feature) => feature?.layer?.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
 
       if (checkIfArgoPoint) {
         setHoveredRegion('');
@@ -137,10 +139,10 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
     };
 
     const handleMouseClick = (e: MapMouseEvent) => {
-      if (!hoveredRegion) {
+      if (!hoveredRegion || !map) {
         return;
       }
-      const containsArgoLayer = map.getStyle().layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
+      const containsArgoLayer = map?.getStyle()?.layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
       const layersToCheck = containsArgoLayer
         ? [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID]
         : [PRODUCT_REGION_BOX_LAYER_ID];
@@ -148,7 +150,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
         layers: layersToCheck,
       });
 
-      const hasArgoPoint = features.find((feature) => feature.layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
+      const hasArgoPoint = features.find((feature) => feature?.layer?.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
       if (hasArgoPoint) {
         return;
       }

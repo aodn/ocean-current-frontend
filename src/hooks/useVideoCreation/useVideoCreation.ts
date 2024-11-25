@@ -186,8 +186,8 @@ const useVideoCreation = (): UseVideoCreationReturn => {
   );
 
   const handleStartDateChange = useCallback(
-    (date: Date) => {
-      if (date <= endDate) {
+    (date: Date | null) => {
+      if (date && date <= endDate) {
         setStartDate(date);
         updateAllDatesVideoGeneration(date, endDate);
       } else {
@@ -198,8 +198,8 @@ const useVideoCreation = (): UseVideoCreationReturn => {
   );
 
   const handleEndDateChange = useCallback(
-    (date: Date) => {
-      if (date >= startDate) {
+    (date: Date | null) => {
+      if (date && date >= startDate) {
         setEndDate(date);
         updateAllDatesVideoGeneration(startDate, date);
       } else {
