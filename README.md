@@ -46,7 +46,8 @@ yarn install
 yarn dev
 ```
 
-This will start the project on a local server, typically http://localhost:3000/.
+This will start the project on a local server, which can be accessed via http://localhost:5173/.
+Note: `5173` is Vite's default local dev server port. If you want to use a different port, you can change it in your `.env.local` file at the `VITE_PORT` variable.
 
 ### Branch naming convention
 
