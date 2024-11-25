@@ -38,7 +38,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo, isMapView =
   const handleCopyLink = () => {
     const url = location.href;
     navigator.clipboard.writeText(url);
-    setCopyButtonText('Copied!');
+    setCopyButtonText(`${TEXT_CONSTANT.COPIED}!`);
 
     timeoutRef.current = setTimeout(() => {
       setCopyButtonText(TEXT_CONSTANT.SHARE);
@@ -98,7 +98,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo, isMapView =
           className={`flex-center h-11 w-1/5 rounded-md bg-white p-3 ${shouldDisableOption && 'cursor-not-allowed opacity-50'}`}
         >
           <img src={VideoIcon} alt="video icon" />
-          <p className="mx-3">Video</p>
+          <p className="mx-3">{TEXT_CONSTANT.VIDEO}</p>
           <ToggleButton disabled={shouldDisableOption} isOn={showVideo} onToggle={handleToggle} />
         </div>
 

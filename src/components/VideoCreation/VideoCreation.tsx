@@ -87,7 +87,7 @@ const VideoCreation: React.FC<VideoCreationProps> = ({ disabled = false }) => {
         className={`flex h-11 items-center justify-between rounded-md bg-white p-3 ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
       >
         <img className="h-6 w-6" src={DownloadIcon} alt="share icon" />
-        <p className="hidden font-medium md:inline-block">Download</p>
+        <p className="hidden font-medium md:inline-block">{TEXT_CONSTANT.DOWNLOAD}</p>
         <ArrowIcon
           className={`hidden h-3 w-3 transform transition-transform duration-300 md:inline-block ${showGifOptions ? 'rotate-180' : ''}`}
           stroke="#3B6E8F"
@@ -108,7 +108,7 @@ const VideoCreation: React.FC<VideoCreationProps> = ({ disabled = false }) => {
           </div>
           <div className="rounded bg-[#E5EEF5] p-2">
             <div className="mb-2 flex items-center justify-between">
-              <p className="text-[#3A6F8F]">Start Date</p>
+              <p className="text-[#3A6F8F]">{TEXT_CONSTANT.START_DATE}</p>
               <ReactDatePicker
                 selected={startDate}
                 onChange={handleStartDateChange}
@@ -116,11 +116,11 @@ const VideoCreation: React.FC<VideoCreationProps> = ({ disabled = false }) => {
               />
             </div>
             <div className="mb-2 flex items-center justify-between">
-              <p className="text-[#3A6F8F]">End Date</p>
+              <p className="text-[#3A6F8F]">{TEXT_CONSTANT.END_DATE}</p>
               <ReactDatePicker selected={endDate} onChange={handleEndDateChange} customInput={customInput(endDate)} />
             </div>
             <div className="mb-2 flex items-center justify-between">
-              <p className="text-[#3A6F8F]">Animation Speed</p>
+              <p className="text-[#3A6F8F]">{TEXT_CONSTANT.ANIMATION_SPEED}</p>
               <div className="w-48">
                 <Dropdown
                   elements={frameRateOptions}
@@ -168,7 +168,7 @@ const VideoCreation: React.FC<VideoCreationProps> = ({ disabled = false }) => {
 
           <div className="mt-6 flex items-center justify-center">
             <Button type="primary" borderRadius="small" onClick={handleGifDownload} disabled={isLoading}>
-              Download Gif
+              {TEXT_CONSTANT.DOWNLOAD_GIF}
             </Button>
           </div>
         </div>
