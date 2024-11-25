@@ -94,7 +94,9 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
         >
           <img src={ResetIcon} alt="" srcSet="" />
         </div>
-        <div className="flex-center h-11 w-1/5 rounded-md bg-white p-3">
+        <div
+          className={`flex-center h-11 w-1/5 rounded-md bg-white p-3 ${shouldDisableOption && 'cursor-not-allowed opacity-50'}`}
+        >
           <img src={VideoIcon} alt="video icon" />
           <p className="mx-3">Video</p>
           <ToggleButton disabled={shouldDisableOption} isOn={showVideo} onToggle={handleToggle} />
