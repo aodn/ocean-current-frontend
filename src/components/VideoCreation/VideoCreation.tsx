@@ -10,9 +10,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Button, Dropdown } from '@/components/Shared';
 import { TEXT_CONSTANT } from '@/constants/textConstant';
 import { DropdownElement } from '../Shared/Dropdown/types/dropdown.types';
-import { FrameRateOption } from './types/videoCreation.types';
+import { FrameRateOption, VideoCreationProps } from './types/videoCreation.types';
 
-const VideoCreation: React.FC = () => {
+const VideoCreation: React.FC<VideoCreationProps> = ({ disabled = false }) => {
   const gifOptionsRef = useRef<HTMLDivElement>(null);
   const [showGifOptions, setShowGifOptions] = useState<boolean>(false);
 
@@ -37,6 +37,8 @@ const VideoCreation: React.FC = () => {
   useOutsideClick(gifOptionsRef, () => setShowGifOptions(false));
 
   const toggleGifOptions = (): void => {
+    if (disabled) return;
+
     setShowGifOptions(!showGifOptions);
     if (!showGifOptions) {
       resetState();
@@ -81,7 +83,7 @@ const VideoCreation: React.FC = () => {
       <div
         aria-hidden
         onClick={toggleGifOptions}
-        className="flex h-11 cursor-pointer items-center justify-between rounded-md border bg-white p-3"
+        className={`flex h-11 items-center justify-between rounded-md  bg-white p-3 ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
       >
         <img className="h-6 w-6" src={DownloadIcon} alt="share icon" />
         <p className="hidden font-medium md:inline-block">Download</p>
