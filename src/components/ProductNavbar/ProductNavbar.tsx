@@ -11,7 +11,7 @@ import VideoCreation from '@/components/VideoCreation/VideoCreation';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { ProductNavbarProps } from './types/productNavbarProps.types';
 
-const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo, isMapView }) => {
+const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo, isMapView = false }) => {
   const {
     startDate,
     endDate,
