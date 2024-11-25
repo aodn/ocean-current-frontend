@@ -46,7 +46,7 @@ yarn install
 yarn dev
 ```
 
-This will start the project on a local server, typically http://localhost:5173/.
+This will start the project on a local server, typically http://localhost:3000/.
 
 ### Branch naming convention
 
