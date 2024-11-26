@@ -9,6 +9,7 @@ import { useOutsideClick, useVideoCreation } from '@/hooks';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button, Dropdown } from '@/components/Shared';
 import { TEXT_CONSTANT } from '@/constants/textConstant';
+import { color } from '@/styles/colors';
 import { DropdownElement } from '../Shared/Dropdown/types/dropdown.types';
 import { FrameRateOption, VideoCreationProps } from './types/videoCreation.types';
 
@@ -90,7 +91,7 @@ const VideoCreation: React.FC<VideoCreationProps> = ({ disabled = false }) => {
         <p className="hidden font-medium md:inline-block">{TEXT_CONSTANT.DOWNLOAD}</p>
         <ArrowIcon
           className={`hidden h-3 w-3 transform transition-transform duration-300 md:inline-block ${showGifOptions ? 'rotate-180' : ''}`}
-          stroke="#3B6E8F"
+          stroke={color.primary1}
         />
       </div>
       {showGifOptions && (
