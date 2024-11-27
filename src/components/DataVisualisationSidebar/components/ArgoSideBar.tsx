@@ -2,7 +2,6 @@ import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import ArgoIcon from '@/assets/icons/products/argo-icon.svg';
-import ArgoIdIcon from '@/assets/icons/argo-id-icon.svg';
 import useArgoStore, { setArgoDepth } from '@/stores/argo-store/argoStore';
 import { Button } from '@/components/Shared';
 import MiniMap from './MiniMap';
@@ -10,13 +9,6 @@ import MiniMap from './MiniMap';
 const ArgoSideBar: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const useArgo = useArgoStore((state) => state.selectedArgoParams);
-  const useArgoMetaData = useArgoStore((state) => state.argoMetaData);
-
-  const selectedArgoPosition = useArgoMetaData.find(
-    (data) => data.worldMeteorologicalOrgId === useArgo.worldMeteorologicalOrgId,
-  )?.position;
-
-  const { latitude = 0, longitude = 0 } = selectedArgoPosition || { latitude: 0, longitude: 0 };
 
   const { worldMeteorologicalOrgId, cycle } = useArgo;
   const date = searchParams.get('date') || dayjs().format('YYYYMMDD');
@@ -41,17 +33,6 @@ const ArgoSideBar: React.FC = () => {
         </div>
 
         <div className="p-2">
-          <div className="my-5">
-            <div className="flex w-full flex-col items-center justify-center whitespace-nowrap rounded-lg border bg-imos-mid-grey px-12 py-1 text-lg text-white transition duration-300 ease-in-out">
-              <div className="flex items-center justify-center gap-2">
-                <img src={ArgoIdIcon} alt="argo id icon" />
-                aoml {worldMeteorologicalOrgId}
-              </div>
-              <p>
-                {latitude.toFixed(2)}°S {longitude.toFixed(2)}°E
-              </p>
-            </div>
-          </div>
           <div className="mb-3 flex gap-3">
             <Button
               onClick={() => changeDepth('1')}
