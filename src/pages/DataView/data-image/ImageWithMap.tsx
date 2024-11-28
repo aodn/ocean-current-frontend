@@ -93,6 +93,7 @@ const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, d
             alt={area.alt || `Area ${index + 1}`}
             onClick={() => handleCircleClick(area)}
             aria-hidden="true"
+            href="#"
           />
         ))}
       </map>
