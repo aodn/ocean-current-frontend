@@ -95,7 +95,7 @@ const DataVisualisationLayout: React.FC = () => {
         <div className="flex p-4">
           <button
             onClick={toggleSidebar}
-            className="absolute -left-6 mb-4 flex h-24 items-center justify-center rounded bg-imos-sea-blue p-2 text-white"
+            className="-left-6 mr-1 flex h-24 items-center justify-center rounded bg-imos-sea-blue p-2 text-white"
           >
             <ArrowIcon
               className={`h-5 w-5 transition-transform duration-300 ${isSidebarVisible ? 'rotate-90' : 'h-28 rotate-[270deg]'}`}
