@@ -87,12 +87,12 @@ const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, d
         {coords.map((area, index) => (
           <area
             key={index}
-            className="cursor-pointer"
             shape={area.shape}
             coords={area.coords.join(',')}
             alt={area.alt || `Area ${index + 1}`}
             onClick={() => handleCircleClick(area)}
             aria-hidden="true"
+            href=""
           />
         ))}
       </map>

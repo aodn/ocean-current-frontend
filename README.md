@@ -56,7 +56,7 @@ In this project, the branch naming convention is as follow: `<branch prefix>/<gi
 We use the following branch prefixes to categorise the work for each branch:
 
 - `hotfix/`: for quickly fixing critical issues
-- `bugfix/`: for fixing a bug
+- `fix/`: for fixing non-critical issues and bugs
 - `feature/`: for adding, removing or modifying a feature
 - `test/`: for experimentation, such as coming up with a working POC or testing an impplementation
 - `chore/`: literally a chore, such as code clean up, documentation updates, etc.
