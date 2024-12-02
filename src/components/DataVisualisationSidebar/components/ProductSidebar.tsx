@@ -10,6 +10,7 @@ import useProductAvailableInRegion from '@/stores/product-store/hooks/useProduct
 import useDateStore from '@/stores/date-store/dateStore';
 import ArrowWithTail from '@/assets/icons/ArrowWithTail';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
+import { ProductSidebarText } from '@/constants/textConstant';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
 import HeaderSideBar from './HeaderSideBar';
@@ -120,7 +121,7 @@ const ProductSideBar: React.FC = () => {
               onClick={() => setIsSubProductsCollapsed(!isSubProductsCollapsed)}
               aria-hidden
             >
-              <h3 className="text-lg font-medium text-imos-grey">Options</h3>
+              <h3 className="text-lg font-medium text-imos-grey">{ProductSidebarText.OPTIONS}</h3>
               <img
                 src={ArrowIcon}
                 alt="arrow icon"
@@ -157,7 +158,7 @@ const ProductSideBar: React.FC = () => {
               onClick={() => setIsDataSourcesCollapsed(!isDataSourcesCollapsed)}
               aria-hidden
             >
-              <h3 className="text-lg font-medium text-imos-grey">Data sources</h3>
+              <h3 className="text-lg font-medium text-imos-grey">{ProductSidebarText.DATA_SOURCES}</h3>
               <img
                 src={ArrowIcon}
                 alt="arrow icon"
@@ -188,7 +189,7 @@ const ProductSideBar: React.FC = () => {
             onClick={() => setIsLegendCollapsed(!isLegendCollapsed)}
             aria-hidden
           >
-            <h3 className="text-lg font-medium text-imos-grey">Legend</h3>
+            <h3 className="text-lg font-medium text-imos-grey">{ProductSidebarText.LEGEND}</h3>
             <img
               src={ArrowIcon}
               alt="arrow icon"
