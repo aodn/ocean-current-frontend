@@ -63,6 +63,17 @@ export const OC_PRODUCTS: Product[] = [
         path: 'centiles',
         imgPath: 'pctiles',
       },
+      /* 
+      Timeseries is "SST Anom vs Time" on the original site.
+      It was requested by the client to put this as an option under 6 Day SST
+      The data below is only for rendering the button, the image fetching is done in src/pages/DataView/product-content/ProductContent.tsx
+      */
+      {
+        title: 'Timeseries',
+        key: 'sixDaySst-timeseries',
+        path: 'timeseries',
+        imgPath: 'MMA',
+      },
     ],
   },
   {
