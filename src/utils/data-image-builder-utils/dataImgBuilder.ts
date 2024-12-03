@@ -149,11 +149,12 @@ const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle:
 
 const buildCurrentMeterImageUrl = (
   region: CurrentMeterRegion = CurrentMeterRegion.Aust,
-  date: string,
+  date: Dayjs,
   property: CurrentMeterProperty,
   depth: CurrentMeterDepth,
 ): string => {
-  const year = date ? `_${date}` : '';
+  const formattedDate = date.format('YYYY');
+  const year = formattedDate ? `_${formattedDate}` : '';
 
   return `${imageBaseUrl}/timeseries/ANMN_P48/mapst/${region}_${property}_${depth}${year}.gif`;
 };
