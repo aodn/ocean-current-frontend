@@ -10,7 +10,7 @@ import useProductAvailableInRegion from '@/stores/product-store/hooks/useProduct
 import useDateStore from '@/stores/date-store/dateStore';
 import ArrowWithTail from '@/assets/icons/ArrowWithTail';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { ProductSidebarText } from '@/constants/textConstant';
+import { GeneralText, ProductSidebarText } from '@/constants/textConstant';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
 import HeaderSideBar from './HeaderSideBar';
@@ -18,13 +18,15 @@ import HeaderSideBar from './HeaderSideBar';
 const ProductSideBar: React.FC = () => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
   const { mainProduct, subProduct, subProducts } = useProductConvert();
-  const isProductAvailableInRegion = useProductAvailableInRegion();
+  const shouldRenderMiniMap = useProductAvailableInRegion();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isSubProductsCollapsed, setIsSubProductsCollapsed] = useState(false);
   const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
   const [isDataSourcesCollapsed, setIsDataSourcesCollapsed] = useState(false);
   const useDate = useDateStore((state) => state.date);
   const { isArgo } = useProductCheck();
+
+  const shouldRenderSubProducts = mainProduct && subProducts.length > 0;
 
   const buildDataSourceUrl = (type: string): string => {
     switch (type) {
@@ -75,9 +77,6 @@ const ProductSideBar: React.FC = () => {
     setIsPopupOpen(!isPopupOpen);
   };
 
-  const shouldRenderSubProducts = () => mainProduct && subProducts.length > 0;
-  const shouldRenderMiniMap = () => isProductAvailableInRegion;
-
   if (!mainProduct) {
     return <Loading />;
   }
@@ -94,7 +93,7 @@ const ProductSideBar: React.FC = () => {
     <div className="rounded-md bg-white">
       <div className="mb-1">{!isArgo && <HeaderSideBar />}</div>
 
-      {shouldRenderMiniMap() && (
+      {shouldRenderMiniMap && (
         <div className="hidden h-60 w-full overflow-hidden md:block">
           <MiniMap />
         </div>
@@ -107,14 +106,14 @@ const ProductSideBar: React.FC = () => {
             <TruncateText lines={4} text={productInfo?.summary} />
           </div>
           <div aria-hidden onClick={handlePopup} className="mt-3 flex justify-end">
-            <p className="mr-2 cursor-pointer font-semibold text-imos-grey">Read More</p>
+            <p className="mr-2 cursor-pointer font-semibold text-imos-grey">{GeneralText.READ_MORE}</p>
             <ArrowWithTail stroke="#787878" className="mt-2 cursor-pointer" />
           </div>
         </div>
 
         <Popup title={productInfo?.title} body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
 
-        {shouldRenderSubProducts() && (
+        {shouldRenderSubProducts && (
           <div className="px-4">
             <div
               className="flex cursor-pointer items-center justify-between px-4 py-2"
