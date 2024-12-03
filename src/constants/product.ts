@@ -66,7 +66,8 @@ export const OC_PRODUCTS: Product[] = [
       /* 
       Timeseries is "SST Anom vs Time" on the original site.
       It was requested by the client to put this as an option under 6 Day SST
-      The data below is only for rendering the button, the image fetching is done in src/pages/DataView/product-content/ProductContent.tsx
+      The data below is only for rendering the button
+      The image source url is built here - src/utils/data-image-builder-utils/dataImgBuilder.ts
       */
       {
         title: 'Timeseries',
