@@ -7,6 +7,7 @@ import {
   getTargetRegionScopePath,
   buildProductVideoUrl,
   buildCurrentMeterImageUrl,
+  buildSSTTimeseriesImageUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
@@ -104,6 +105,8 @@ const ProductContent: React.FC = () => {
           return buildArgoImgUrl();
         case isCurrentMeters:
           return buildCurrentMeterImageUrl(currentMeterRegion, useDate, property, currentMeterDepth);
+        case useProductId === 'sixDaySst-timeseries':
+          return buildSSTTimeseriesImageUrl(regionPath);
         default:
           return buildProductImageUrl(
             mainProduct.key,

@@ -24,7 +24,7 @@ export const productTypeMapping = new Map<
   [
     'sixDaySst',
     {
-      subProduct: ['SST', 'SST_ANOM', 'pctiles'],
+      subProduct: ['SST', 'SST_ANOM', 'pctiles', 'MMA'],
       stateSegment: 'STATE_daily',
       localSegment: 'DR_SST_daily',
       dateFormat: 'YYYYMMDD',
