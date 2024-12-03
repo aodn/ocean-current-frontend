@@ -1,9 +1,9 @@
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 
 const useProductCheck = () => {
-  const mainProduct = useProductConvert();
+  const { mainProduct } = useProductConvert();
 
-  const mainProductId = mainProduct?.mainProduct?.key || '';
+  const mainProductId = mainProduct?.key || '';
 
   const productsWithoutRegion = ['argo', 'surfaceWaves'];
 
