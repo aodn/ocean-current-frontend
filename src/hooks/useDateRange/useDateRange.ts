@@ -74,8 +74,11 @@ const useDateRange = (): UseDateRangeReturn => {
       subProduct?.key === 'monthlyMeans-CLIM_OFAM3_SSTAARS' || subProduct?.key === 'monthlyMeans-CLIM_CNESCARS';
     const climatology = mainProduct?.key === 'climatology';
     const isAdjustedSeaLevelAnomalyWithSST = mainProduct?.key === 'adjustedSeaLevelAnomaly' && !subProduct?.key;
+    const isSSTTimeseries = subProduct?.key === 'sixDaySst-timeseries';
 
-    return climatology || isMonthlyMeansClimatology || fourHourSst || isAdjustedSeaLevelAnomalyWithSST;
+    return (
+      climatology || isMonthlyMeansClimatology || fourHourSst || isAdjustedSeaLevelAnomalyWithSST || isSSTTimeseries
+    );
   };
 
   const getMinMaxDate = () => {
