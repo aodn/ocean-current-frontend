@@ -559,7 +559,7 @@ describe('buildCurrentMeterImageUrl', () => {
   it('should return the correct image url for current Meters', () => {
     // Arrange
     const region = CurrentMeterRegion.Aust;
-    const date = dayjs();
+    const date = dayjs('2024');
     const property = CurrentMeterProperty.vmean;
     const depth = CurrentMeterDepth.One;
 
