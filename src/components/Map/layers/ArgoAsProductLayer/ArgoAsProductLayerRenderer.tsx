@@ -145,7 +145,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
 
     if (!eventAdded.current) {
       eventAdded.current = true;
-      map.on('click', ARGO_AS_PRODUCT_POINT_LAYER_ID, handleMouseClick);
+      map.on('click', [ARGO_AS_PRODUCT_POINT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID], handleMouseClick);
       map.on('mousemove', ARGO_AS_PRODUCT_POINT_LAYER_ID, handleMouseMove);
       map.on('mouseleave', ARGO_AS_PRODUCT_POINT_LAYER_ID, handleMouseLeave);
     }
@@ -160,7 +160,6 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
     };
   }, [
     map,
-    navigate,
     handleMouseClick,
     handleMouseMove,
     handleMouseLeave,
