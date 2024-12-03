@@ -26,6 +26,11 @@ const ProductSideBar: React.FC = () => {
   const useDate = useDateStore((state) => state.date);
   const { isArgo } = useProductCheck();
 
+  if (!mainProduct) {
+    return <Loading />;
+  }
+
+  const productInfo = getProductInfoByKey(mainProduct?.key);
   const shouldRenderSubProducts = mainProduct && subProducts.length > 0;
 
   const buildDataSourceUrl = (type: string): string => {
@@ -63,6 +68,7 @@ const ProductSideBar: React.FC = () => {
       product: ['sixDaySst', 'climatology'],
     },
   ];
+  const filteredDataSources = dataSources.filter((source) => source.product.includes(mainProduct.key));
 
   const handleSubProductChange = (key: string, mainProductPath: string, subProductPath: string) => {
     if (key === subProduct?.key) {
@@ -77,17 +83,9 @@ const ProductSideBar: React.FC = () => {
     setIsPopupOpen(!isPopupOpen);
   };
 
-  if (!mainProduct) {
-    return <Loading />;
-  }
-
   const PopupBody = () => {
     return <div className="p-4">{productInfo?.description()}</div>;
   };
-
-  const productInfo = getProductInfoByKey(mainProduct?.key);
-
-  const filteredDataSources = dataSources.filter((source) => source.product.includes(mainProduct.key));
 
   return (
     <div className="rounded-md bg-white">
