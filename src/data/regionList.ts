@@ -13,7 +13,6 @@ export const fullLocalList = [
   'Bris-Syd',
   'Brisbane',
   'Brisbane2',
-  'Broome',
   'CGBR',
   'CLeeu',
   'Coffs',
@@ -48,7 +47,6 @@ export const fullLocalList = [
   'Solomon',
   'Syd-Hob',
   'Tas',
-  'Tas2',
   'TasE',
   'TasSE',
   'TimorP',
@@ -359,6 +357,9 @@ export const productRegionMap: ProductRegionMap = {
       'Vanuatu',
     ],
   },
+  /*
+  The regions, Broome and Tas2, are not accessible on the map and therefore not included in the list below
+  */
   'sixDaySst-timeseries': {
     state: ['Au', 'GAB', 'NE', 'NW', 'NZ', 'SE', 'SO', 'SW'],
     local: [
@@ -368,7 +369,6 @@ export const productRegionMap: ProductRegionMap = {
       'Bris-Syd',
       'Brisbane',
       'Brisbane2',
-      'Broome',
       'CGBR',
       'CLeeu',
       'Coffs',
@@ -393,7 +393,6 @@ export const productRegionMap: ProductRegionMap = {
       'SNSW',
       'Syd-Hob',
       'Tas',
-      'Tas2',
       'TasSE',
       'TimorP',
     ],
