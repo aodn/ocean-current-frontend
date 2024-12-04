@@ -69,13 +69,16 @@ const useDateRange = (): UseDateRangeReturn => {
   const initialDate = getInitialDate();
 
   const disableVideoCreation = (): boolean => {
-    const fourHourSst = mainProduct?.key === 'fourHourSst' && subProduct?.key === 'fourHourSst-sstAge';
+    const isFourHourSst = mainProduct?.key === 'fourHourSst' && subProduct?.key === 'fourHourSst-sstAge';
     const isMonthlyMeansClimatology =
       subProduct?.key === 'monthlyMeans-CLIM_OFAM3_SSTAARS' || subProduct?.key === 'monthlyMeans-CLIM_CNESCARS';
-    const climatology = mainProduct?.key === 'climatology';
+    const isClimatology = mainProduct?.key === 'climatology';
     const isAdjustedSeaLevelAnomalyWithSST = mainProduct?.key === 'adjustedSeaLevelAnomaly' && !subProduct?.key;
+    const isSSTTimeseries = subProduct?.key === 'sixDaySst-timeseries';
 
-    return climatology || isMonthlyMeansClimatology || fourHourSst || isAdjustedSeaLevelAnomalyWithSST;
+    return (
+      isClimatology || isMonthlyMeansClimatology || isFourHourSst || isAdjustedSeaLevelAnomalyWithSST || isSSTTimeseries
+    );
   };
 
   const getMinMaxDate = () => {

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Dayjs } from 'dayjs';
 import { Button, Loading, Popup, TruncateText } from '@/components/Shared';
 import { setProductId } from '@/stores/product-store/productStore';
 import { useQueryParams } from '@/hooks';
@@ -10,14 +11,28 @@ import useProductAvailableInRegion from '@/stores/product-store/hooks/useProduct
 import useDateStore from '@/stores/date-store/dateStore';
 import ArrowWithTail from '@/assets/icons/ArrowWithTail';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
+import { GeneralText, ProductSidebarText } from '@/constants/textConstant';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
 import HeaderSideBar from './HeaderSideBar';
 
+const buildDataSourceUrl = (type: string, date: Dayjs): string => {
+  switch (type) {
+    case 'L3S-6d':
+      return `https://thredds.aodn.org.au/thredds/catalog/IMOS/SRS/SST/ghrsst/L3S-6d/ngt/${date.format('YYYY')}/catalog.html?dataset=IMOS/SRS/SST/ghrsst/L3S-6d/ngt/${date.format('YYYY')}/${date.format('YYYYMMDD')}032000-ABOM-L3S_GHRSST-SSTskin-AVHRR_D-6d_night.nc`;
+    case 'L3SM-6d':
+      return `https://thredds.aodn.org.au/thredds/catalog/IMOS/SRS/SST/ghrsst/L3SM-6d/ngt/${date.format('YYYY')}/catalog.html?dataset=IMOS/SRS/SST/ghrsst/L3SM-6d/ngt/${date.format('YYYY')}/${date.format('YYYYMMDD')}032000-ABOM-L3S_GHRSST-SSTskin-MultiSensor-6d_night.nc`;
+    case 'GSLA':
+      return `https://thredds.aodn.org.au/thredds/catalog/IMOS/OceanCurrent/GSLA/NRT/${date.format('YYYY')}/catalog.html?dataset=IMOS/OceanCurrent/GSLA/NRT/${date.format('YYYY')}/IMOS_OceanCurrent_HV_${date.format('YYYYMMDD')}T060000Z_GSLA_FV02_NRT.nc`;
+    default:
+      return 'Unknown status.';
+  }
+};
+
 const ProductSideBar: React.FC = () => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
   const { mainProduct, subProduct, subProducts } = useProductConvert();
-  const isProductAvailableInRegion = useProductAvailableInRegion();
+  const shouldRenderMiniMap = useProductAvailableInRegion();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isSubProductsCollapsed, setIsSubProductsCollapsed] = useState(false);
   const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
@@ -25,33 +40,26 @@ const ProductSideBar: React.FC = () => {
   const useDate = useDateStore((state) => state.date);
   const { isArgo } = useProductCheck();
 
-  const buildDataSourceUrl = (type: string): string => {
-    switch (type) {
-      case 'L3S-6d':
-        return `https://thredds.aodn.org.au/thredds/catalog/IMOS/SRS/SST/ghrsst/L3S-6d/ngt/${useDate.format('YYYY')}/catalog.html?dataset=IMOS/SRS/SST/ghrsst/L3S-6d/ngt/${useDate.format('YYYY')}/${useDate.format('YYYYMMDD')}032000-ABOM-L3S_GHRSST-SSTskin-AVHRR_D-6d_night.nc`;
-      case 'L3SM-6d':
-        return `https://thredds.aodn.org.au/thredds/catalog/IMOS/SRS/SST/ghrsst/L3SM-6d/ngt/${useDate.format('YYYY')}/catalog.html?dataset=IMOS/SRS/SST/ghrsst/L3SM-6d/ngt/${useDate.format('YYYY')}/${useDate.format('YYYYMMDD')}032000-ABOM-L3S_GHRSST-SSTskin-MultiSensor-6d_night.nc`;
-      case 'GSLA':
-        return `https://thredds.aodn.org.au/thredds/catalog/IMOS/OceanCurrent/GSLA/NRT/${useDate.format('YYYY')}/catalog.html?dataset=IMOS/OceanCurrent/GSLA/NRT/${useDate.format('YYYY')}/IMOS_OceanCurrent_HV_${useDate.format('YYYYMMDD')}T060000Z_GSLA_FV02_NRT.nc`;
-      default:
-        return 'Unknown status.';
-    }
-  };
+  if (!mainProduct) {
+    return <Loading />;
+  }
+
+  const productInfo = getProductInfoByKey(mainProduct.key);
 
   const dataSources = [
     {
       title: 'SST L3S-6d ngt (1992-2017)',
-      link: buildDataSourceUrl('L3S-6d'),
+      link: buildDataSourceUrl('L3S-6d', useDate),
       product: ['sixDaySst'],
     },
     {
       title: 'SST L3SM-6d ngt (2018-now)',
-      link: buildDataSourceUrl('L3SM-6d'),
+      link: buildDataSourceUrl('L3SM-6d', useDate),
       product: ['sixDaySst'],
     },
     {
       title: 'GSLA',
-      link: buildDataSourceUrl('GSLA'),
+      link: buildDataSourceUrl('GSLA', useDate),
       product: ['sixDaySst'],
     },
     {
@@ -60,6 +68,7 @@ const ProductSideBar: React.FC = () => {
       product: ['sixDaySst', 'climatology'],
     },
   ];
+  const filteredDataSources = dataSources.filter((source) => source.product.includes(mainProduct.key));
 
   const handleSubProductChange = (key: string, mainProductPath: string, subProductPath: string) => {
     if (key === subProduct?.key) {
@@ -74,26 +83,15 @@ const ProductSideBar: React.FC = () => {
     setIsPopupOpen(!isPopupOpen);
   };
 
-  const shouldRenderSubProducts = () => mainProduct && subProducts.length > 0;
-  const shouldRenderMiniMap = () => isProductAvailableInRegion;
-
-  if (!mainProduct) {
-    return <Loading />;
-  }
-
   const PopupBody = () => {
     return <div className="p-4">{productInfo?.description()}</div>;
   };
-
-  const productInfo = getProductInfoByKey(mainProduct?.key);
-
-  const filteredDataSources = dataSources.filter((source) => source.product.includes(mainProduct.key));
 
   return (
     <div className="rounded-md bg-white">
       <div className="mb-1">{!isArgo && <HeaderSideBar />}</div>
 
-      {shouldRenderMiniMap() && (
+      {shouldRenderMiniMap && (
         <div className="hidden h-60 w-full overflow-hidden md:block">
           <MiniMap />
         </div>
@@ -106,21 +104,21 @@ const ProductSideBar: React.FC = () => {
             <TruncateText lines={4} text={productInfo?.summary} />
           </div>
           <div aria-hidden onClick={handlePopup} className="mt-3 flex justify-end">
-            <p className="mr-2 cursor-pointer font-semibold text-imos-grey">Read More</p>
+            <p className="mr-2 cursor-pointer font-semibold text-imos-grey">{GeneralText.READ_MORE}</p>
             <ArrowWithTail stroke="#787878" className="mt-2 cursor-pointer" />
           </div>
         </div>
 
         <Popup title={productInfo?.title} body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
 
-        {shouldRenderSubProducts() && (
+        {subProducts.length > 0 && (
           <div className="px-4">
             <div
               className="flex cursor-pointer items-center justify-between px-4 py-2"
               onClick={() => setIsSubProductsCollapsed(!isSubProductsCollapsed)}
               aria-hidden
             >
-              <h3 className="text-lg font-medium text-imos-grey">Options</h3>
+              <h3 className="text-lg font-medium text-imos-grey">{ProductSidebarText.OPTIONS}</h3>
               <img
                 src={ArrowIcon}
                 alt="arrow icon"
@@ -157,7 +155,7 @@ const ProductSideBar: React.FC = () => {
               onClick={() => setIsDataSourcesCollapsed(!isDataSourcesCollapsed)}
               aria-hidden
             >
-              <h3 className="text-lg font-medium text-imos-grey">Data sources</h3>
+              <h3 className="text-lg font-medium text-imos-grey">{ProductSidebarText.DATA_SOURCES}</h3>
               <img
                 src={ArrowIcon}
                 alt="arrow icon"
@@ -188,7 +186,7 @@ const ProductSideBar: React.FC = () => {
             onClick={() => setIsLegendCollapsed(!isLegendCollapsed)}
             aria-hidden
           >
-            <h3 className="text-lg font-medium text-imos-grey">Legend</h3>
+            <h3 className="text-lg font-medium text-imos-grey">{ProductSidebarText.LEGEND}</h3>
             <img
               src={ArrowIcon}
               alt="arrow icon"

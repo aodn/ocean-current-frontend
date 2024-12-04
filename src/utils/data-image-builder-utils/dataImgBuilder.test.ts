@@ -7,6 +7,7 @@ import {
   buildArgoImageUrl,
   buildProductVideoUrl,
   buildCurrentMeterImageUrl,
+  buildSSTTimeseriesImageUrl,
 } from './dataImgBuilder';
 
 describe('buildProductImageUrl', () => {
@@ -90,6 +91,19 @@ describe('buildProductImageUrl', () => {
       // Assert
       expect(imageUrl).toBe(`${imageBaseUrl}/DR_SST_daily/pctiles/Tas/20240721.gif`);
       expect(videoUrl).toBe(`${imageBaseUrl}/DR_SST_daily/pctiles/Tas/Tas_pctiles_2024_Q3.mp4`);
+    });
+  });
+
+  describe('buildSSTTimeseriesImageUrl', () => {
+    it('should return the correct image url for SST Timeseries', () => {
+      // Arrange
+      const region = 'Broome';
+
+      // Act
+      const imageUrl = buildSSTTimeseriesImageUrl(region);
+
+      // Assert
+      expect(imageUrl).toBe(`${imageBaseUrl}/MM_SSTA/MMA/Broome_Anomaly_1993-latest.gif`);
     });
   });
 
@@ -545,7 +559,7 @@ describe('buildCurrentMeterImageUrl', () => {
   it('should return the correct image url for current Meters', () => {
     // Arrange
     const region = CurrentMeterRegion.Aust;
-    const date = '2024';
+    const date = dayjs('2024');
     const property = CurrentMeterProperty.vmean;
     const depth = CurrentMeterDepth.One;
 

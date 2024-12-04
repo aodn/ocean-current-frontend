@@ -141,6 +141,10 @@ const buildProductVideoUrl = (
   return productUrl[productId as keyof typeof productUrl]?.() || productUrl.default();
 };
 
+const buildSSTTimeseriesImageUrl = (region: string) => {
+  return `${imageBaseUrl}/MM_SSTA/MMA/${region}_Anomaly_1993-latest.gif`;
+};
+
 const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle: string, depth: string): string => {
   const profiles = depth === '0' ? 'profiles' : 'profiles_s';
   const formatDate = dayjs(date).format('YYYYMMDD');
@@ -149,11 +153,12 @@ const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle:
 
 const buildCurrentMeterImageUrl = (
   region: CurrentMeterRegion = CurrentMeterRegion.Aust,
-  date: string,
+  date: Dayjs,
   property: CurrentMeterProperty,
   depth: CurrentMeterDepth,
 ): string => {
-  const year = date ? `_${date}` : '';
+  const formattedDate = date.format('YYYY');
+  const year = formattedDate ? `_${formattedDate}` : '';
 
   return `${imageBaseUrl}/timeseries/ANMN_P48/mapst/${region}_${property}_${depth}${year}.gif`;
 };
@@ -173,4 +178,5 @@ export {
   buildSurfaceWavesImageUrl,
   buildProductVideoUrl,
   buildCurrentMeterImageUrl,
+  buildSSTTimeseriesImageUrl,
 };

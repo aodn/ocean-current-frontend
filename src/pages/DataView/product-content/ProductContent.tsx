@@ -7,6 +7,7 @@ import {
   getTargetRegionScopePath,
   buildProductVideoUrl,
   buildCurrentMeterImageUrl,
+  buildSSTTimeseriesImageUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
@@ -87,7 +88,7 @@ const ProductContent: React.FC = () => {
   // TODO: give default sub product for subProductImgPath
   const subProductImgPath = subProduct?.imgPath ?? '';
 
-  const buildArgoImg = (): string => {
+  const buildArgoImgUrl = (): string => {
     const selectedCycle = useArgoProfileCycles.find(({ date }) => date === useDate.format('YYYYMMDD'))?.cycle;
 
     if (!selectedCycle) {
@@ -97,24 +98,23 @@ const ProductContent: React.FC = () => {
     return buildArgoImageUrl(worldMeteorologicalOrgId, useDate, selectedCycle, depth);
   };
 
-  const buildProductImg = (): string => {
-    return buildProductImageUrl(mainProduct.key, subProductImgPath, regionPath, targetPathRegion, useDate.toString());
-  };
-
-  const buildCurrentMeterImg = (): string => {
-    const year = useDate.format('YYYY');
-    return buildCurrentMeterImageUrl(currentMeterRegion, year, property, currentMeterDepth);
-  };
-
   const chooseImg = (): string | undefined => {
     try {
       switch (true) {
         case isArgo:
-          return buildArgoImg();
+          return buildArgoImgUrl();
         case isCurrentMeters:
-          return buildCurrentMeterImg();
+          return buildCurrentMeterImageUrl(currentMeterRegion, useDate, property, currentMeterDepth);
+        case useProductId === 'sixDaySst-timeseries':
+          return buildSSTTimeseriesImageUrl(regionPath);
         default:
-          return buildProductImg();
+          return buildProductImageUrl(
+            mainProduct.key,
+            subProductImgPath,
+            regionPath,
+            targetPathRegion,
+            useDate.toString(),
+          );
       }
     } catch (e) {
       if (e instanceof Error) {
