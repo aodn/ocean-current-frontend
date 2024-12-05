@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import arrowIcon from '@/assets/icons/arrow.svg';
 import calendarIcon from '@/assets/icons/calendar-icon.svg';
 import 'react-datepicker/dist/react-datepicker.css';
+import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { DatePickerProps } from './types/datePicker.types';
 
 const customInput = () => (
@@ -33,8 +34,12 @@ const DatePicker: React.FC<DatePickerProps> = ({
   isYearRange,
   isMobile,
 }) => {
+  const { isClimatology } = useProductCheck();
+
   const formattedDate = () => {
-    if (isMonthRange) {
+    if (isClimatology) {
+      return dayjs(selectedDate).format('MMM');
+    } else if (isMonthRange) {
       return dayjs(selectedDate).format('MMM YYYY');
     } else if (isWeekRange) {
       return dayjs(selectedDate).format('DD MMM HH:mm ');
