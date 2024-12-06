@@ -10,8 +10,9 @@ const useProductCheck = () => {
   const isRegionRequired = !productsWithoutRegion.includes(mainProductId);
   const isArgo = mainProductId === 'argo';
   const isCurrentMeters = mainProductId === 'currentMeters';
+  const isClimatology = mainProductId === 'climatology';
 
-  return { isRegionRequired, isArgo, isCurrentMeters };
+  return { isRegionRequired, isArgo, isCurrentMeters, isClimatology };
 };
 
 export default useProductCheck;
