@@ -1,7 +1,6 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import DatePicker from '@/components/DatePicker/DatePicker';
-import DateSlider from '@/components/DateSlider/DateSlider';
 import ResetIcon from '@/assets/icons/reset-icon.svg';
 import { useDateRange } from '@/hooks';
 
@@ -11,11 +10,9 @@ const MapNavbar: React.FC = () => {
     endDate,
     allDates,
     selectedDateIndex,
-    handleSliderChange,
     handleYearDateChange,
     handleDateChange,
     modifyDate,
-    steps,
     isLastMonthOfTheYear,
     isMonthRange,
     resetDateRange,
@@ -56,15 +53,6 @@ const MapNavbar: React.FC = () => {
         >
           <img src={ResetIcon} alt="" srcSet="" />
         </div>
-      </div>
-      <div className="mb-0 hidden items-center justify-center md:mb-2 md:flex">
-        <DateSlider
-          isMonthRange={isMonthRange}
-          allDates={allDates}
-          selectedDateIndex={selectedDateIndex}
-          handleSliderChange={handleSliderChange}
-          steps={steps}
-        />
       </div>
     </div>
   );

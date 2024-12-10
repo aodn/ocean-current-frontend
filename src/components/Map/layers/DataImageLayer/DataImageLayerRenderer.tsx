@@ -14,10 +14,10 @@ const DataImageLayerRenderer: React.FC<{ imageUrl: string }> = ({ imageUrl }) =>
     if (!map) return;
 
     const repositionImageLayer = () => {
-      const layers = map.getStyle().layers;
+      const layers = map?.getStyle()?.layers;
       if (map.isStyleLoaded()) {
-        const currentLayers = map.getStyle().layers.map((layer) => layer.id);
-        if (JSON.stringify(currentLayers) !== JSON.stringify(layers)) {
+        const currentLayers = map?.getStyle()?.layers.map((layer) => layer.id);
+        if (currentLayers && JSON.stringify(currentLayers) !== JSON.stringify(layers)) {
           setLayers(currentLayers);
         }
       }

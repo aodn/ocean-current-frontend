@@ -57,8 +57,8 @@ const CurrentMeterNavbar: React.FC = () => {
   };
 
   return (
-    <div className="mb-2 rounded-md bg-[#FAFAFA] p-3 ">
-      <div className="flex items-center  ">
+    <div className="mb-2 rounded-md bg-[#FAFAFA] p-3">
+      <div className="flex items-center">
         <div className="flex h-11 items-center justify-center rounded-md border border-[#3A6F8F] p-2">
           <DatePicker
             startDate={startDate}
@@ -80,7 +80,7 @@ const CurrentMeterNavbar: React.FC = () => {
         <div
           onClick={() => handleReset()}
           aria-hidden
-          className="ml-4  flex h-11 w-1/12 cursor-pointer items-center justify-center rounded-md border border-[#3A6F8F] p-2"
+          className="ml-4 flex h-11 w-1/12 cursor-pointer items-center justify-center rounded-md border border-[#3A6F8F] p-2"
         >
           <img src={ResetIcon} alt="" srcSet="" />
         </div>
@@ -89,7 +89,7 @@ const CurrentMeterNavbar: React.FC = () => {
           <div
             onClick={() => handleCopyLink()}
             aria-hidden
-            className="ml-4 flex  h-11 cursor-pointer items-center justify-between rounded-md border border-[#3A6F8F] p-3 "
+            className="ml-4 flex h-11 cursor-pointer items-center justify-between rounded-md border border-[#3A6F8F] p-3"
           >
             <img className="mr-6 h-6 w-6" src={ShareIcon} alt="share icon" />
             <p className="flex-grow text-center font-medium text-imos-grey">{copyButtonText}</p>

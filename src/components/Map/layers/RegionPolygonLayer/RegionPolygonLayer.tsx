@@ -11,16 +11,20 @@ import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo-utils/geo';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
 import useVisibleRegionPolygons from '../../hooks/useVisibleRegionPolygons';
 
-const MIN_THRESHOLD_PERCENTAGE = 3;
-const MAX_THRESHOLD_PERCENTAGE = 70;
+const DEFAULT_MIN_THRESHOLD_PERCENTAGE = 1.8;
+const DEFAULT_MAX_THRESHOLD_PERCENTAGE = 70;
 
 interface RegionPolygonLayerProps {
   shouldKeepNationalRegion?: boolean;
   shouldFitNationalRegionBounds?: boolean;
+  minThresholdPercentage?: number;
+  maxThresholdPercentage?: number;
 }
 const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
   shouldKeepNationalRegion = false,
   shouldFitNationalRegionBounds = false,
+  minThresholdPercentage = DEFAULT_MIN_THRESHOLD_PERCENTAGE,
+  maxThresholdPercentage = DEFAULT_MAX_THRESHOLD_PERCENTAGE,
 }) => {
   const { PRODUCT_REGION_BOX_SOURCE_ID } = mapboxSourceIds;
   const {
@@ -44,14 +48,16 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
 
   const defaultTargetDate = dayjs().subtract(2, 'day').format('YYYYMMDD');
 
-  const throttleSetMapBounds = useThrottle((bounds: LngLatBounds) => {
-    setMapBounds(bounds);
+  const throttleSetMapBounds = useThrottle((bounds: LngLatBounds | null) => {
+    if (bounds) {
+      setMapBounds(bounds);
+    }
   }, 300);
 
   const mapFitBounds = useCallback(
-    (bounds: BoundingBox) => {
+    (bounds: BoundingBox, padding: number = 50) => {
       if (map) {
-        map.fitBounds(bounds, { padding: 50 });
+        map.fitBounds(bounds, { padding });
       }
     },
     [map],
@@ -89,8 +95,8 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
 
   const geoJsonData = useVisibleRegionPolygons(
     mapBounds,
-    MIN_THRESHOLD_PERCENTAGE,
-    MAX_THRESHOLD_PERCENTAGE,
+    minThresholdPercentage,
+    maxThresholdPercentage,
     shouldKeepNationalRegion,
   );
 
@@ -98,7 +104,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
     if (!map) return;
 
     const handleMouseMove = (e: MapMouseEvent) => {
-      const containsArgoLayer = map.getStyle().layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
+      const containsArgoLayer = map?.getStyle()?.layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
       const layersToCheck = containsArgoLayer
         ? [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID]
         : [PRODUCT_REGION_BOX_LAYER_ID];
@@ -116,7 +122,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
         setHoveredId(features[0].id!);
       }
 
-      const checkIfArgoPoint = features.find((feature) => feature.layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
+      const checkIfArgoPoint = features.find((feature) => feature?.layer?.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
 
       if (checkIfArgoPoint) {
         setHoveredRegion('');
@@ -133,10 +139,10 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
     };
 
     const handleMouseClick = (e: MapMouseEvent) => {
-      if (!hoveredRegion) {
+      if (!hoveredRegion || !map) {
         return;
       }
-      const containsArgoLayer = map.getStyle().layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
+      const containsArgoLayer = map?.getStyle()?.layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
       const layersToCheck = containsArgoLayer
         ? [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID]
         : [PRODUCT_REGION_BOX_LAYER_ID];
@@ -144,7 +150,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
         layers: layersToCheck,
       });
 
-      const hasArgoPoint = features.find((feature) => feature.layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
+      const hasArgoPoint = features.find((feature) => feature?.layer?.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
       if (hasArgoPoint) {
         return;
       }

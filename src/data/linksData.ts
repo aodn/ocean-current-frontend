@@ -10,11 +10,12 @@ import GliderIcon from '@/assets/icons/products/glider-icon.svg';
 import SealCTDIcon from '@/assets/icons/products/seal-ctd-icon.svg';
 import ArgoIcon from '@/assets/icons/products/argo-icon.svg';
 import TidalCurrentsIcon from '@/assets/icons/products/in-water/tidal-currents-icon.svg';
+import { LinkItem } from '@/types/navbar';
 
-export const linksData = [
+export const linksData: LinkItem[] = [
   {
     title: 'Maps',
-    leftLinks: [
+    links: [
       {
         id: 'snapshotSst',
         imageUrl: SSTIcon,
@@ -23,41 +24,39 @@ export const linksData = [
         url: '/map/snapshot-sst',
       },
       {
-        id: 'oceanColour',
-        imageUrl: OceanColourIcon,
-        title: 'Ocean Color',
-        description: 'Satellite ocean color',
-        url: '/map/ocean-colour/chl-a',
-      },
-      {
-        id: 'climatology-sst',
-        imageUrl: SSTIcon,
-        title: 'Climatology SST',
-        description: 'SSTAARS Climatology',
-        url: '/map/climatology/sst',
-      },
-      {
         id: 'four-hour-sst',
         imageUrl: FourHourSSTIcon,
-        title: 'Four Hour SST',
+        title: 'Four-hour SST',
         description: 'Ocean current observations',
         url: '/map/four-hour-sst/sst',
       },
-    ],
-    rightLinks: [
       {
         id: 'sixDaySst-sst',
         imageUrl: SixHourSSTIcon,
-        title: 'Daily SST',
+        title: 'Daily SST (6-day composite)',
         description: 'Daily sea surface temperature',
         url: '/map/6-day-sst/sst',
       },
       {
+        id: 'oceanColour',
+        imageUrl: OceanColourIcon,
+        title: 'Chlorophyll-a Concentration',
+        description: 'Satellite ocean color',
+        url: '/map/ocean-colour/chl-a',
+      },
+      {
         id: 'adjustedSeaLevelAnomaly',
         imageUrl: AdjustedSeaLevelAnomalyIcon,
-        title: 'Adj. Sea Level Anom.',
+        title: 'Adj. Sea Level Anomaly',
         description: 'Adjusted Sea Level Anomaly',
         url: '/map/adj-sea-level-anom/sla',
+      },
+      {
+        id: 'surfaceWaves',
+        imageUrl: SurfaceWavesIcon,
+        title: 'Surface Waves',
+        description: 'Ocean surface wave observations',
+        url: '/map/surface-waves',
       },
       {
         id: 'monthlyMeans',
@@ -67,17 +66,17 @@ export const linksData = [
         url: '/map/monthly-means/anomalies',
       },
       {
-        id: 'surfaceWaves',
-        imageUrl: SurfaceWavesIcon,
-        title: 'Surface Waves',
-        description: 'Ocean surface wave observations',
-        url: '/map/surface-waves',
+        id: 'climatology-sst',
+        imageUrl: SSTIcon,
+        title: 'Climatology SST',
+        description: 'SSTAARS Climatology',
+        url: '/map/climatology/sst',
       },
     ],
   },
   {
     title: 'In-Water',
-    leftLinks: [
+    links: [
       {
         id: 'argo',
         imageUrl: ArgoIcon,
@@ -99,8 +98,6 @@ export const linksData = [
         description: 'Oceanic flow patterns',
         url: 'https://oceancurrent.aodn.org.au/index.php',
       },
-    ],
-    rightLinks: [
       {
         id: 'current-meters',
         imageUrl: CurrentMetersIcon,
@@ -109,7 +106,7 @@ export const linksData = [
         url: 'product/current-meters',
       },
       {
-        id: 'sealctd',
+        id: 'seal-ctd',
         imageUrl: SealCTDIcon,
         title: 'SealCTD',
         description: 'Animal-mounted sensors',

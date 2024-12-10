@@ -4,15 +4,21 @@ import { useNavigate } from 'react-router-dom';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { ArgoProfile } from '@/types/argo';
-import { useQueryParams } from '@/hooks';
+import { useQueryParams, useIsMobile } from '@/hooks';
 import { ArgoProfileFeatureCollection } from '@/types/geo';
+import { getBoundsFromCoordsArray } from '@/utils/geo-utils/geo';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
 
 interface ArgoAsProductLayerRendererProps {
   isMiniMap: boolean;
   argoData: ArgoProfileFeatureCollection;
+  shouldFitBounds?: boolean;
 }
-const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({ isMiniMap, argoData }) => {
+const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
+  isMiniMap,
+  argoData,
+  shouldFitBounds = false,
+}) => {
   const { worldMeteorologicalOrgId: selectedWorldMeteorologicalOrgId } = useArgoStore(
     (state) => state.selectedArgoParams,
   );
@@ -27,6 +33,11 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
   const eventAdded = useRef(false);
 
   const { updateQueryParams } = useQueryParams();
+  const isMobile = useIsMobile();
+
+  const circleRadius = isMobile ? 8 : 6;
+  const hoverCircleRadius = isMobile ? 10 : 8;
+  const selectedCircleRadius = isMobile ? 14 : 12;
 
   const mapFlyToPoint = useCallback(
     (coordinates: [number, number]) => {
@@ -96,7 +107,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         map.setFeatureState(
           {
             source: ARGO_AS_PRODUCT_SOURCE_ID,
-            id: hoveredFeature.id,
+            id: hoveredFeature.id as number,
           },
           {
             hover: true,
@@ -134,7 +145,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
 
     if (!eventAdded.current) {
       eventAdded.current = true;
-      map.on('click', ARGO_AS_PRODUCT_POINT_LAYER_ID, handleMouseClick);
+      map.on('click', [ARGO_AS_PRODUCT_POINT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID], handleMouseClick);
       map.on('mousemove', ARGO_AS_PRODUCT_POINT_LAYER_ID, handleMouseMove);
       map.on('mouseleave', ARGO_AS_PRODUCT_POINT_LAYER_ID, handleMouseLeave);
     }
@@ -149,7 +160,6 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
     };
   }, [
     map,
-    navigate,
     handleMouseClick,
     handleMouseMove,
     handleMouseLeave,
@@ -168,6 +178,19 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
     }
   }, [map, mapFlyToPoint, argoData, selectedWorldMeteorologicalOrgId, isMiniMap]);
 
+  useEffect(() => {
+    const shouldSkipMapBoundsUpdate =
+      !map || !shouldFitBounds || isMiniMap || !argoData || argoData.features.length === 0;
+    if (shouldSkipMapBoundsUpdate) return;
+
+    const allCoordinates = argoData?.features.map((feature) => feature.geometry.coordinates);
+
+    const bounds = getBoundsFromCoordsArray(allCoordinates);
+    map.fitBounds(bounds, {
+      padding: 30,
+    });
+  }, [map, argoData, isMiniMap, shouldFitBounds]);
+
   return (
     <Source id={ARGO_AS_PRODUCT_SOURCE_ID} type="geojson" data={argoData}>
       <Layer
@@ -175,7 +198,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         type="circle"
         source={ARGO_AS_PRODUCT_SOURCE_ID}
         paint={{
-          'circle-radius': 15,
+          'circle-radius': selectedCircleRadius,
           'circle-color': 'white',
           'circle-opacity': 0.5,
           'circle-stroke-width': 1,
@@ -188,7 +211,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         type="circle"
         source={ARGO_AS_PRODUCT_SOURCE_ID}
         paint={{
-          'circle-radius': ['case', ['boolean', ['feature-state', 'hover'], false], 10, 8],
+          'circle-radius': ['case', ['boolean', ['feature-state', 'hover'], false], hoverCircleRadius, circleRadius],
           'circle-color': '#524DAB',
           'circle-stroke-width': 1,
           'circle-stroke-color': 'white',

@@ -1,4 +1,14 @@
-import { ForwardedRef, forwardRef, ReactElement, useEffect, useImperativeHandle, useRef, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  ForwardedRef,
+  forwardRef,
+  MouseEvent,
+  ReactElement,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { getArgoProfileCyclesByWmoId } from '@/services/argo';
 import { findMostRecentDateBefore } from '@/utils/date-utils/date';
 import { ArgoTagMapArea } from '@/types/argo';
@@ -59,7 +69,7 @@ const InteractiveImageWithMapComponent = <T extends ImageMapArea>(
   };
 
   useEffect(() => {
-    console.log('loaded!!!!!!!!!!!!!!!!!');
+    // console.log('loaded!!!!!!!!!!!!!!!!!');
 
     if (imgRef.current) {
       const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
@@ -88,7 +98,7 @@ const InteractiveImageWithMapComponent = <T extends ImageMapArea>(
   }, [originalAreas]);
 
   const handleLoad = () => {
-    console.log('loaded!!!!!!!!!!!!!!!!!');
+    // console.log('loaded!!!!!!!!!!!!!!!!!');
 
     if (imgRef.current) {
       const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
@@ -159,9 +169,9 @@ const InteractiveImageWithMapComponent = <T extends ImageMapArea>(
     };
   }, [src, originalAreas]);
  */
-  console.log('ImageWithMap rendered', areas);
+  // console.log('ImageWithMap rendered', areas);
 
-  const handleAreaClick = async (e: MouseEvent, area: T) => {
+  const handleAreaClick = async (e: MouseEvent<HTMLAreaElement, globalThis.MouseEvent>, area: T) => {
     e.preventDefault();
     if (onAreaClick) {
       onAreaClick(area);

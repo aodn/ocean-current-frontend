@@ -1,11 +1,11 @@
 import React from 'react';
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import { ImageMapArea } from '@/types/dataImage';
 import { CurrentMeterPlot, CurrentMeterRegion } from '@/types/currentMeters';
 import { currentMeterRegionAreasMap } from '@/data/current-meter/region-list';
-import { DataImageArgoContainerProps } from './types/dataImage.types';
-import ImageWithCurrentMeterMap from './ImageWithCurrentMeterMap';
+// import { DataImageArgoContainerProps } from './types/dataImage.types';
+// import ImageWithCurrentMeterMap from './ImageWithCurrentMeterMap';
 import InteractiveImageWithMap from './InteractiveImageWithMap';
 
 interface DataImageCurrentMeterContainerProps {
@@ -39,8 +39,8 @@ const DataImageCurrentMeterContainer: React.FC<DataImageCurrentMeterContainerPro
 
   const regionArr = currentMeterRegionAreasMap[regionCode] as ImageMapArea[];
 
-  console.log('regionCode############', regionCode);
-  console.log('currentMeterREgionlist', currentMeterRegionAreasMap[regionCode]);
+  // console.log('regionCode############', regionCode);
+  // console.log('currentMeterREgionlist', currentMeterRegionAreasMap[regionCode]);
 
   const buildHref = (point: string) => {
     return `/product/current-meters?plot=${CurrentMeterPlot.One}&point=${point}`;
@@ -56,7 +56,7 @@ const DataImageCurrentMeterContainer: React.FC<DataImageCurrentMeterContainerPro
   const imgAlt = `${productId} data`;
 
   const handleAreaClick = (area: ImageMapArea) => {
-    console.log('handleAreaClick', area.title);
+    // console.log('handleAreaClick', area.title);
     navigate(buildHref(area.title));
   };
 

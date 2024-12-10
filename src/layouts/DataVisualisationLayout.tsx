@@ -6,7 +6,7 @@ import useDateStore, { setDate } from '@/stores/date-store/dateStore';
 import { setRegionTitle, setProductId, setRegionScope } from '@/stores/product-store/productStore';
 import { getProductByPath } from '@/utils/product-utils/product';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { useProductFromUrl, useProductSearchParam } from '@/hooks';
+import { useIsMobile, useProductFromUrl, useProductSearchParam } from '@/hooks';
 import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 import DataVisualisationNavbar from '@/components/DataVisualisationNavbar/DataVisualisationNavbar';
@@ -18,6 +18,7 @@ import { RegionScope } from '@/constants/region';
 
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
+  const isMobile = useIsMobile();
   const { isArgo } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const product = useProductFromUrl('product');
@@ -77,41 +78,43 @@ const DataVisualisationLayout: React.FC = () => {
 
   return (
     <div className="relative mx-auto mb-9 w-full max-w-8xl">
-      <div className="block p-4 md:hidden">
-        <div>
-          <DataVisualisationSidebar />
+      {isMobile ? (
+        <div className="p-4">
+          <div className="text-imos-text-grey">
+            <DataVisualisationSidebar />
+          </div>
+          <div>
+            <ProductNavbarMobile setShowVideo={setShowVideo} />
+            <ErrorBoundary key={product?.mainProduct}>
+              <Outlet context={{ showVideo, loading: true }} />
+            </ErrorBoundary>
+            <ProductFooterMobile />
+          </div>
         </div>
-        <div>
-          <ProductNavbarMobile setShowVideo={setShowVideo} />
-          <ErrorBoundary key={product?.mainProduct}>
-            <Outlet context={{ showVideo, loading: true }} />
-          </ErrorBoundary>
-          <ProductFooterMobile />
+      ) : (
+        <div className="flex p-4">
+          <button
+            onClick={toggleSidebar}
+            className="-left-6 mr-1 flex h-24 items-center justify-center rounded bg-imos-sea-blue p-2 text-white"
+          >
+            <ArrowIcon
+              className={`h-5 w-5 transition-transform duration-300 ${isSidebarVisible ? 'rotate-90' : 'h-28 rotate-[270deg]'}`}
+              stroke={'white'}
+            />
+          </button>
+          <div className={`transition-all duration-300 ${isSidebarVisible ? 'w-1/3' : 'w-0 overflow-hidden'}`}>
+            <DataVisualisationSidebar />
+          </div>
+          <div
+            className={`transition-all duration-300 ${isSidebarVisible ? 'ml-4' : 'ml-0'} flex min-h-[800px] w-full min-w-[800px] flex-col`}
+          >
+            <DataVisualisationNavbar setShowVideo={setShowVideo} />
+            <ErrorBoundary key={product?.mainProduct}>
+              <Outlet context={{ showVideo, loading: true }} />
+            </ErrorBoundary>
+          </div>
         </div>
-      </div>
-
-      <div className="hidden p-4 md:flex">
-        <button
-          onClick={toggleSidebar}
-          className="absolute -left-6 mb-4 flex h-24 items-center justify-center rounded bg-imos-sea-blue p-2 text-white"
-        >
-          <ArrowIcon
-            className={`h-5 w-5 transition-transform duration-300 ${isSidebarVisible ? 'rotate-90' : 'h-28 rotate-[270deg]'}`}
-            stroke={'white'}
-          />
-        </button>
-        <div className={`transition-all duration-300 ${isSidebarVisible ? 'w-1/3' : 'w-0 overflow-hidden'}`}>
-          <DataVisualisationSidebar />
-        </div>
-        <div
-          className={`transition-all duration-300 ${isSidebarVisible ? 'ml-4' : 'ml-0'} min-h-[800px] w-full min-w-[800px]`}
-        >
-          <DataVisualisationNavbar setShowVideo={setShowVideo} />
-          <ErrorBoundary key={product?.mainProduct}>
-            <Outlet context={{ showVideo, loading: true }} />
-          </ErrorBoundary>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

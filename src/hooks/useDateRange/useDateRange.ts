@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { useShallow } from 'zustand/react/shallow';
 import { useArgoStore } from '@/stores/argo-store/argoStore';
 import { useDateStore, setStartDate, setEndDate } from '@/stores/date-store/dateStore';
@@ -48,8 +48,6 @@ const useDateRange = (): UseDateRangeReturn => {
   const isWeekRange = isFourHourSst || isSurfaceWaves || isOceanColourLocal;
 
   const urlDate = searchParams.get('date');
-  const urlStartDate = searchParams.get('startDate');
-  const urlEndDate = searchParams.get('endDate');
   const formatDate = isWeekRange ? 'YYYYMMDDHH' : 'YYYYMMDD';
 
   const getInitialDate = (): Date => {
@@ -71,18 +69,21 @@ const useDateRange = (): UseDateRangeReturn => {
   const initialDate = getInitialDate();
 
   const disableVideoCreation = (): boolean => {
-    const fourHourSst = mainProduct?.key === 'fourHourSst' && subProduct?.key === 'fourHourSst-sstAge';
+    const isFourHourSst = mainProduct?.key === 'fourHourSst' && subProduct?.key === 'fourHourSst-sstAge';
     const isMonthlyMeansClimatology =
       subProduct?.key === 'monthlyMeans-CLIM_OFAM3_SSTAARS' || subProduct?.key === 'monthlyMeans-CLIM_CNESCARS';
-    const climatology = mainProduct?.key === 'climatology';
+    const isClimatology = mainProduct?.key === 'climatology';
     const isAdjustedSeaLevelAnomalyWithSST = mainProduct?.key === 'adjustedSeaLevelAnomaly' && !subProduct?.key;
+    const isSSTTimeseries = subProduct?.key === 'sixDaySst-timeseries';
 
-    return climatology || isMonthlyMeansClimatology || fourHourSst || isAdjustedSeaLevelAnomalyWithSST;
+    return (
+      isClimatology || isMonthlyMeansClimatology || isFourHourSst || isAdjustedSeaLevelAnomalyWithSST || isSSTTimeseries
+    );
   };
 
   const getMinMaxDate = () => {
-    let minDate: Date | null = null;
-    let maxDate: Date | null = null;
+    let minDate: Date | undefined;
+    let maxDate: Date | undefined;
 
     if (isArgo && useWmoid) {
       const cycleDateTimestamps = useArgoProfileCycles.map(({ date }) => Number(date));
@@ -130,22 +131,10 @@ const useDateRange = (): UseDateRangeReturn => {
 
     const { start, end } = getDateRange();
 
-    setStartDate(start);
-    setEndDate(end);
     updateDateSlider(start.toDate(), end.toDate(), urlDate ? dayjs(urlDate, formatDate).toDate() : undefined);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    isMonthRange,
-    isFourHourSst,
-    isYearRange,
-    mainProduct,
-    subProduct,
-    urlDate,
-    urlStartDate,
-    urlEndDate,
-    formatDate,
-  ]);
+  }, [isMonthRange, isFourHourSst, isYearRange, mainProduct, subProduct, urlDate, formatDate]);
 
   const generateDateRange = (start: Date, end?: Date): DateRange => {
     if (isMonthRange) return generateYearRange(start);
@@ -228,20 +217,20 @@ const useDateRange = (): UseDateRangeReturn => {
     return dates;
   };
 
-  const updateDateSlider = (newStartDate: Date, newEndDate?: Date, newSelectedDate?: Date) => {
+  const updateDateSlider = (newStartDate: Date, newEndDate?: Date, newSelectedDate?: Date | null) => {
     const range = generateDateRange(newStartDate, newEndDate);
     setAllDates(range);
     const newIndex = determineSelectedIndex(range, newStartDate, newSelectedDate);
     setSelectedDateIndex(newIndex !== -1 ? newIndex : 0);
   };
 
-  const determineSelectedIndex = (range: DateRange, newStartDate: Date, newSelectedDate?: Date) => {
+  const determineSelectedIndex = (range: DateRange, newStartDate: Date, newSelectedDate?: Date | null) => {
     if (isMonthRange) return determineYearSelectedIndex(range, newStartDate, newSelectedDate);
     if (isYearRange) return determineYearlySelectedIndex(range, newSelectedDate);
     return determineDaySelectedIndex(range, newSelectedDate);
   };
 
-  const determineYearSelectedIndex = (range: DateRange, newStartDate: Date, newSelectedDate?: Date) => {
+  const determineYearSelectedIndex = (range: DateRange, newStartDate: Date, newSelectedDate?: Date | null) => {
     if (newSelectedDate) {
       return range.findIndex(({ date }) => dayjs(date).isSame(dayjs(newSelectedDate), 'month'));
     }
@@ -251,7 +240,7 @@ const useDateRange = (): UseDateRangeReturn => {
     return dayjs(newStartDate).get('month');
   };
 
-  const determineYearlySelectedIndex = (range: DateRange, newSelectedDate?: Date) => {
+  const determineYearlySelectedIndex = (range: DateRange, newSelectedDate?: Date | null) => {
     if (newSelectedDate) {
       return range.findIndex(({ date }) => dayjs(date).isSame(dayjs(newSelectedDate), 'year'));
     }
@@ -261,7 +250,7 @@ const useDateRange = (): UseDateRangeReturn => {
     return range.length - 1;
   };
 
-  const determineDaySelectedIndex = (range: DateRange, newSelectedDate?: Date) => {
+  const determineDaySelectedIndex = (range: DateRange, newSelectedDate?: Date | null) => {
     if (newSelectedDate) {
       const selectedIndex = range.findIndex(({ date }) =>
         dayjs(date).isSame(dayjs(newSelectedDate), isWeekRange ? 'hour' : 'day'),
@@ -290,7 +279,7 @@ const useDateRange = (): UseDateRangeReturn => {
       setSelectedDateIndex(newIndex);
 
       const formattedDate = dayjs(newRange[newIndex].date).format(formatDate);
-      updateUrlParams(formattedDate, newStartDate, newEndDate!);
+      updateUrlParams(formattedDate);
     }
   };
 
@@ -345,14 +334,16 @@ const useDateRange = (): UseDateRangeReturn => {
     return selectedDateIndex;
   };
 
-  const handleDateChange: DateChangeHandler = (dates) => {
-    const [start, end] = dates;
+  const handleDateChange: DateChangeHandler = (date) => {
+    // TODO: temporary hardcode 60 days for the date range
+    const start = dayjs(date).subtract(60, 'day').startOf('day').toDate();
+    const end = dayjs(date).add(60, 'day').endOf('day').toDate();
 
     setStartDate(start ? dayjs(start) : dayjs());
     setEndDate(end ? dayjs(end) : null);
     if (start && end) {
       updateDateSlider(start, end);
-      updateUrlParams(dayjs(end).format(formatDate), start, end);
+      updateUrlParams(dayjs(end).format(formatDate));
     }
   };
 
@@ -366,14 +357,12 @@ const useDateRange = (): UseDateRangeReturn => {
     updateDateSlider(startDate.toDate(), endDate.toDate(), date);
 
     const formattedDate = dayjs(date).format(formatDate);
-    updateUrlParams(formattedDate, startDate, endDate);
+    updateUrlParams(formattedDate);
   };
 
-  const updateUrlParams = (newDate: string, newStartDate: Date | Dayjs, newEndDate: Date | Dayjs | null) => {
+  const updateUrlParams = (newDate: string) => {
     const newSearchParams = new URLSearchParams(searchParams.toString());
     newSearchParams.set('date', newDate);
-    newSearchParams.set('startDate', dayjs(newStartDate).format('YYYYMMDD'));
-    newSearchParams.set('endDate', dayjs(newEndDate).format('YYYYMMDD'));
     setSearchParams(newSearchParams);
   };
 
@@ -393,7 +382,7 @@ const useDateRange = (): UseDateRangeReturn => {
     setSelectedDateIndex(lastActiveIndex);
 
     const formattedDate = end.format(formatDate);
-    updateUrlParams(formattedDate, start.toDate(), end.toDate());
+    updateUrlParams(formattedDate);
   };
 
   const findLastActiveIndex = (dates: DateItem[]) => {

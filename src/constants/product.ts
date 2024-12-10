@@ -63,6 +63,18 @@ export const OC_PRODUCTS: Product[] = [
         path: 'centiles',
         imgPath: 'pctiles',
       },
+      /* 
+      Timeseries is "SST Anom vs Time" on the original site.
+      It was requested by the client to put this as an option under 6 Day SST
+      The data below is only for rendering the button
+      The image source url is built here - src/utils/data-image-builder-utils/dataImgBuilder.ts
+      */
+      {
+        title: 'Timeseries',
+        key: 'sixDaySst-timeseries',
+        path: 'timeseries',
+        imgPath: 'MMA',
+      },
     ],
   },
   {
@@ -124,7 +136,7 @@ export const OC_PRODUCTS: Product[] = [
     latestEntry: null,
   },
   {
-    title: 'Ocean Colour',
+    title: 'Chlorophyll-a Concentration',
     key: 'oceanColour',
     path: 'ocean-colour',
     latestEntry: 'chla_entry',

@@ -5,18 +5,19 @@ import { CurrentMeterPlot } from '@/types/currentMeters';
 const useProductCheck = () => {
   const [searchParams] = useSearchParams();
   const currentMeterPlots = searchParams.get('plot');
-  const mainProduct = useProductConvert();
+  const { mainProduct } = useProductConvert();
 
-  const mainProductId = mainProduct?.mainProduct?.key || '';
+  const mainProductId = mainProduct?.key || '';
 
   const productsWithoutRegion = ['argo', 'surfaceWaves'];
 
   const isRegionRequired = !productsWithoutRegion.includes(mainProductId);
   const isArgo = mainProductId === 'argo';
   const isCurrentMeters = mainProductId === 'currentMeters';
+  const isClimatology = mainProductId === 'climatology';
   const isCurrentMetersPlot = currentMeterPlots === CurrentMeterPlot.One;
 
-  return { isRegionRequired, isArgo, isCurrentMeters, isCurrentMetersPlot };
+  return { isRegionRequired, isArgo, isCurrentMeters, isClimatology, isCurrentMetersPlot };
 };
 
 export default useProductCheck;

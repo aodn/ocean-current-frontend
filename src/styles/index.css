@@ -1,3 +1,22 @@
+@import './components.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Move the logo container from bottom left to bottom right */
+.mapboxgl-ctrl-bottom-left {
+  left: 100% !important;
+}
+
+.mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
+  margin: 0 !important;
+}
+
+.mapboxgl-ctrl-logo {
+  position: absolute !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  margin-bottom: 10px !important; /* align with the mapbox controller margin */
+  margin-right: 10px !important; /* align with the mapbox controller margin */
+}

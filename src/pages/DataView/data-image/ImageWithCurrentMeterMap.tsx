@@ -1,9 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useRef, useState } from 'react';
 import { getArgoProfileCyclesByWmoId } from '@/services/argo';
 import { findMostRecentDateBefore } from '@/utils/date-utils/date';
-import { calculateImageScales } from '@/utils/general-utils/general';
 import { ArgoTagMapArea } from '@/types/argo';
-import { convertCoordsBasedOnImageScale } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useDateStore from '@/stores/date-store/dateStore';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
@@ -73,10 +72,10 @@ const ImageWithCurrentMeterMap: React.FC<InteractiveImageWithMapProps> = ({ src,
   //   };
   // }, [src, originalCoords]);
 
-  console.log('ImageWithMap CurrentMeter rendered');
+  // console.log('ImageWithMap CurrentMeter rendered');
 
   const handleCircleClick = async () => {
-    console.log('clicked');
+    // console.log('clicked');
     // const { data } = await getArgoProfileCyclesByWmoId(area.wmoId.toString());
     // const dates = data.map((item) => item.date);
     // const mostRecentDate = findMostRecentDateBefore(dates, dateString);

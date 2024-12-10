@@ -59,7 +59,7 @@ const Dropdown: React.FC<DropdownProps> = ({
           <span className={header ? 'text-white' : ''}>{selectedElement ? selectedElement.label : 'Select Item'}</span>
         </div>
         <ArrowIcon
-          className={`transform transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''} ${header ? 'h-4 w-4' : 'h-3 w-3'} ms-3  text-white`}
+          className={`transform transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''} ${header ? 'h-4 w-4' : 'h-3 w-3'} ms-3 text-white`}
           stroke={`${header ? '#fff' : '#182C3A'}`}
         />
       </div>
@@ -74,7 +74,7 @@ const Dropdown: React.FC<DropdownProps> = ({
               aria-hidden="true"
               className={`${
                 !showIcons ? 'justify-center' : ''
-              } flex cursor-pointer items-center p-3 duration-300 hover:opacity-65 ${
+              } flex cursor-pointer items-center p-3 duration-300 hover:bg-imos-light-blue hover:opacity-65 ${
                 element.id === selectedElement?.id ? 'm-1 rounded border-2 border-[#52BDEC] bg-[#52BDEC80]' : ''
               }`}
               onClick={() => handleOnClick(element)}

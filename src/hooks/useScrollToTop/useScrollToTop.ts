@@ -11,7 +11,7 @@ const useScrollToTop = () => {
         left: 0,
         behavior: 'smooth',
       });
-    } catch (error) {
+    } catch {
       window.scrollTo(0, 0);
     }
   }, [pathname]);

@@ -7,6 +7,7 @@ import {
   convertAreaCoordsToGeoJsonCoordinates,
   convertGeoJsonCoordinatesToBBox,
   convertOldOceanCurrentCoordsToBBox,
+  getBoundsFromCoordsArray,
 } from './geo';
 
 vi.mock('@/utils/validators/map', () => ({
@@ -150,5 +151,151 @@ describe('calculateCenterByCoords', () => {
     const coords = [3, 3, 3, 3];
     const result = calculateCenterByCoords(coords);
     expect(result).toEqual([3, 3]);
+  });
+});
+
+describe('getBoundsFromCoordsArray', () => {
+  it('should correctly calculate bounds for a single coordinate', () => {
+    const coordinates: [number, number][] = [[100, 50]];
+    const bounds = getBoundsFromCoordsArray(coordinates);
+
+    expect(bounds).toEqual([
+      [100, 50], // Southwest
+      [100, 50], // Northeast
+    ]);
+  });
+
+  it('should correctly calculate bounds for multiple coordinates', () => {
+    const coordinates: [number, number][] = [
+      [100, 50],
+      [200, 60],
+      [150, 40],
+    ];
+    const bounds = getBoundsFromCoordsArray(coordinates);
+
+    expect(bounds).toEqual([
+      [100, 40], // Southwest (min lng, min lat)
+      [200, 60], // Northeast (max lng, max lat)
+    ]);
+  });
+
+  it('should handle negative coordinates correctly', () => {
+    const coordinates: [number, number][] = [
+      [-100, -50],
+      [-200, -60],
+      [-150, -40],
+    ];
+    const bounds = getBoundsFromCoordsArray(coordinates);
+
+    expect(bounds).toEqual([
+      [-200, -60], // Southwest
+      [-100, -40], // Northeast
+    ]);
+  });
+
+  it('should handle mixed positive and negative coordinates', () => {
+    const coordinates: [number, number][] = [
+      [-100, 50],
+      [100, -50],
+      [0, 0],
+    ];
+    const bounds = getBoundsFromCoordsArray(coordinates);
+
+    expect(bounds).toEqual([
+      [-100, -50], // Southwest
+      [100, 50], // Northeast
+    ]);
+  });
+
+  it('should handle coordinates around the prime meridian', () => {
+    const coordinates: [number, number][] = [
+      [-5, 5],
+      [5, -5],
+      [0, 0],
+    ];
+    const bounds = getBoundsFromCoordsArray(coordinates);
+
+    expect(bounds).toEqual([
+      [-5, -5], // Southwest
+      [5, 5], // Northeast
+    ]);
+  });
+
+  it('should throw error for empty coordinates array', () => {
+    const coordinates: [number, number][] = [];
+
+    expect(() => getBoundsFromCoordsArray(coordinates)).toThrow('Coordinates array cannot be empty');
+  });
+
+  it('should handle your specific coordinates correctly', () => {
+    const coordinates: [number, number][] = [
+      [212, -20],
+      [107, -30],
+      [202, -28],
+      [100, -9],
+      [187, -45],
+      [174, -7],
+      [160, -28],
+      [207, -2],
+      [169, -14],
+      [114, -43],
+      [166, -1],
+      [171, -24],
+      [187, -53],
+      [199, 3],
+      [96, -58],
+      [181, 2],
+      [154, -61],
+      [168, -22],
+    ];
+
+    const bounds = getBoundsFromCoordsArray(coordinates);
+
+    expect(bounds).toEqual([
+      [96, -61], // Southwest (min lng, min lat)
+      [212, 3], // Northeast (max lng, max lat)
+    ]);
+  });
+
+  it('should handle decimal coordinates', () => {
+    const coordinates: [number, number][] = [
+      [100.5, 50.25],
+      [200.75, 60.125],
+      [150.125, 40.875],
+    ];
+    const bounds = getBoundsFromCoordsArray(coordinates);
+
+    expect(bounds).toEqual([
+      [100.5, 40.875], // Southwest
+      [200.75, 60.125], // Northeast
+    ]);
+  });
+
+  it('should handle coordinates at the same latitude', () => {
+    const coordinates: [number, number][] = [
+      [100, 50],
+      [200, 50],
+      [150, 50],
+    ];
+    const bounds = getBoundsFromCoordsArray(coordinates);
+
+    expect(bounds).toEqual([
+      [100, 50], // Southwest
+      [200, 50], // Northeast
+    ]);
+  });
+
+  it('should handle coordinates at the same longitude', () => {
+    const coordinates: [number, number][] = [
+      [100, 40],
+      [100, 60],
+      [100, 50],
+    ];
+    const bounds = getBoundsFromCoordsArray(coordinates);
+
+    expect(bounds).toEqual([
+      [100, 40], // Southwest
+      [100, 60], // Northeast
+    ]);
   });
 });

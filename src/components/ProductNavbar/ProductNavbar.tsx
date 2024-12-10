@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import DatePicker from '@/components/DatePicker/DatePicker';
-import DateSlider from '@/components/DateSlider/DateSlider';
 import { useDateRange } from '@/hooks';
 import { ToggleButton } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
@@ -25,11 +24,9 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
     maxDate,
     allDates,
     selectedDateIndex,
-    handleSliderChange,
     handleYearDateChange,
     handleDateChange,
     modifyDate,
-    steps,
     isLastMonthOfTheYear,
     isMonthRange,
     disableVideoCreation,
@@ -70,9 +67,9 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
   };
 
   return (
-    <div className="mb-2 rounded-md bg-[#FAFAFA] p-3 ">
-      <div className="mb-2 flex items-center justify-between ">
-        <div className="flex h-11 items-center justify-center rounded-md border border-[#3A6F8F] p-2">
+    <div className="mb-2 rounded-md">
+      <div className="mb-2 flex items-center justify-between gap-3 font-sans font-medium text-imos-black">
+        <div className="flex h-11 grow items-center justify-between rounded-md bg-white">
           <DatePicker
             startDate={startDate}
             endDate={endDate}
@@ -92,13 +89,13 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
         <div
           onClick={() => handleReset()}
           aria-hidden
-          className="flex h-11 w-1/12 cursor-pointer items-center justify-center rounded-md border border-[#3A6F8F] p-2"
+          className="flex-center h-11 w-12 cursor-pointer rounded-md bg-white p-2"
         >
           <img src={ResetIcon} alt="" srcSet="" />
         </div>
-        <div className="flex h-11 w-1/5 items-center justify-center rounded-md border border-[#3A6F8F] p-3">
+        <div className="flex-center h-11 w-1/5 rounded-md bg-white p-3">
           <img src={VideoIcon} alt="video icon" />
-          <p className="mx-3 text-imos-sea-blue">Video</p>
+          <p className="mx-3">Video</p>
           <ToggleButton disabled={disableVideoCreation() || isArgo} isOn={showVideo} onToggle={handleToggle} />
         </div>
 
@@ -106,23 +103,14 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
           <div
             onClick={() => handleCopyLink()}
             aria-hidden
-            className="flex h-11 cursor-pointer items-center justify-between rounded-md border border-[#3A6F8F] p-3 "
+            className="flex h-11 cursor-pointer items-center justify-between rounded-md bg-white p-3"
           >
             <img className="mr-6 h-6 w-6" src={ShareIcon} alt="share icon" />
-            <p className="flex-grow text-center font-medium text-imos-grey">{copyButtonText}</p>
+            <p className="flex-grow text-center">{copyButtonText}</p>
             <div className="w-6"></div>
           </div>
         </div>
         <div className="w-1/6">{!isArgo && <VideoCreation />}</div>
-      </div>
-      <div className="flex items-center justify-center">
-        <DateSlider
-          isMonthRange={isMonthRange}
-          allDates={allDates}
-          selectedDateIndex={selectedDateIndex}
-          handleSliderChange={handleSliderChange}
-          steps={steps}
-        />
       </div>
     </div>
   );
