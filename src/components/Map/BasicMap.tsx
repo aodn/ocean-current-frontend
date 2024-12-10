@@ -103,7 +103,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
 
       {shouldShowCursorLocationPanel && <MouseCursorLocationPanel lat={cursorLngLat?.lat} lng={cursorLngLat?.lng} />}
 
-      {!isArgo && memoizedLayers.dataImageLayer}
+      {memoizedLayers.dataImageLayer}
       {!isArgo && memoizedLayers.regionPolygonLayer}
       {shouldShowArgoLayer && memoizedLayers.argoAsProductLayer}
       {shouldShowCurrentMetersLayer && memoizedLayers.currentMeterLayer}
