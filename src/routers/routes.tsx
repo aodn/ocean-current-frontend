@@ -1,6 +1,6 @@
 import { Navigate, type RouteObject } from 'react-router-dom';
 import { Home, MapView, DataView, News, NotFound, GuidedTour } from '@/pages';
-import MainLayout from '@/layouts/LandingLayout';
+import MainLayout from '@/layouts/MainLayout';
 import MapLayout from '@/layouts/MapLayout';
 import DataVisualisationLayout from '@/layouts/DataVisualisationLayout';
 

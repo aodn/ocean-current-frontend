@@ -3,10 +3,9 @@ import { Outlet, useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { setSelectedArgoParams } from '@/stores/argo-store/argoStore';
 import useDateStore, { setDate } from '@/stores/date-store/dateStore';
-import { setRegionTitle, setProductId, setRegionScope } from '@/stores/product-store/productStore';
-import { getProductByPath } from '@/utils/product-utils/product';
+import useProductStore, { setRegionTitle, setProductId, setRegionScope } from '@/stores/product-store/productStore';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { useIsMobile, useProductFromUrl, useProductSearchParam } from '@/hooks';
+import { useIsMobile, useProductFromUrl, useProductSearchParam, useSetProductId } from '@/hooks';
 import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 import DataVisualisationNavbar from '@/components/DataVisualisationNavbar/DataVisualisationNavbar';
@@ -15,6 +14,7 @@ import ProductNavbarMobile from '@/components/ProductNavbar/ProductNavbarMobile'
 import ProductFooterMobile from '@/components/ProductFooterMobile/ProductFooterMobile';
 import ArrowIcon from '@/assets/icons/Arrow';
 import { RegionScope } from '@/constants/region';
+import { Loading } from '@/components/Shared';
 
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -24,8 +24,10 @@ const DataVisualisationLayout: React.FC = () => {
   const product = useProductFromUrl('product');
   const [showVideo, setShowVideo] = useState(false);
   const [isSidebarVisible, setSidebarVisible] = useState(true);
-
+  const productId = useProductStore((state) => state.productParams.productId);
   const toggleSidebar = () => setSidebarVisible(!isSidebarVisible);
+
+  useSetProductId('product', setProductId);
 
   const getArgoData = useCallback(() => {
     const date = searchParams.get('date') || dayjs().format('YYYYMMDD');
@@ -37,17 +39,6 @@ const DataVisualisationLayout: React.FC = () => {
   }, [searchParams]);
 
   const { region: regionTitleFromUrl = 'Australia/NZ', date } = useProductSearchParam();
-
-  const setProductKey = useCallback(() => {
-    if (product) {
-      const { mainProduct, subProduct } = product;
-      const mainProductKey = getProductByPath(mainProduct)?.key;
-      const subProductKey = subProduct ? getProductByPath(mainProduct, subProduct)?.key : null;
-
-      const productId = subProductKey || mainProductKey;
-      setProductId(productId);
-    }
-  }, [product]);
 
   useEffect(() => {
     const region = getRegionByRegionTitle(regionTitleFromUrl as string);
@@ -69,12 +60,12 @@ const DataVisualisationLayout: React.FC = () => {
   }, [date, useDate]);
 
   useEffect(() => {
-    setProductKey();
-  }, [setProductKey, product]);
-
-  useEffect(() => {
     if (isArgo) getArgoData();
   }, [getArgoData, isArgo]);
+
+  if (!productId) {
+    return <Loading />;
+  }
 
   return (
     <div className="relative mx-auto mb-9 w-full max-w-8xl">
