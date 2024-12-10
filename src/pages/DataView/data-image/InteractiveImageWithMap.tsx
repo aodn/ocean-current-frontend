@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   ForwardedRef,
   forwardRef,
@@ -9,16 +8,16 @@ import {
   useRef,
   useState,
 } from 'react';
-import { getArgoProfileCyclesByWmoId } from '@/services/argo';
-import { findMostRecentDateBefore } from '@/utils/date-utils/date';
-import { ArgoTagMapArea } from '@/types/argo';
+// import { getArgoProfileCyclesByWmoId } from '@/services/argo';
+// import { findMostRecentDateBefore } from '@/utils/date-utils/date';
+// import { ArgoTagMapArea } from '@/types/argo';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useDateStore from '@/stores/date-store/dateStore';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { ImageMapArea } from '@/types/dataImage';
 import {
-  calculateImageScales,
-  scaleImageMapAreaCoordinates,
+  // calculateImageScales,
+  // scaleImageMapAreaCoordinates,
   scaleImageMapAreas,
 } from '@/utils/data-image-utils/dataImage';
 // import { InteractiveImageWithMapProps } from './types/imageWithMap.types';
@@ -62,11 +61,11 @@ const InteractiveImageWithMapComponent = <T extends ImageMapArea>(
     setImgLoadError(null);
   }, [src]);
 
-  const updateAreas = (originalWidth: number, originalHeight: number, width: number, height: number) => {
-    const convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, originalAreas);
+  // const updateAreas = (originalWidth: number, originalHeight: number, width: number, height: number) => {
+  //   const convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, originalAreas);
 
-    setAreas(convertedCoords);
-  };
+  //   setAreas(convertedCoords);
+  // };
 
   useEffect(() => {
     // console.log('loaded!!!!!!!!!!!!!!!!!');

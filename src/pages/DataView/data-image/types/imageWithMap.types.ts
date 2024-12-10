@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { ArgoTagMapArea } from '@/types/argo';
+// import { ArgoTagMapArea } from '@/types/argo';
 import { ImageMapArea } from '@/types/dataImage';
 
 export interface InteractiveImageWithMapProps<T extends ImageMapArea> {
