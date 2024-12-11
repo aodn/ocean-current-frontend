@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import useProductStore, { setProductId } from '@/stores/product-store/productStore';
-import { useIsMobile, useSetProductId } from '@/hooks';
+import { useIsMobile, useSetProductId, useUrlType } from '@/hooks';
 import MapSidebar from '@/components/MapSidebar/MapSidebar';
 import MapNavbar from '@/components/MapNavbar/MapNavbar';
 import HeaderSideBar from '@/components/DataVisualisationSidebar/components/HeaderSideBar';
@@ -11,7 +11,8 @@ const MapLayout: React.FC = () => {
   const isMobile = useIsMobile();
   const productId = useProductStore((state) => state.productParams.productId);
 
-  useSetProductId('map', setProductId);
+  const urlType = useUrlType();
+  useSetProductId(urlType, setProductId);
 
   if (!productId) {
     return <Loading />;

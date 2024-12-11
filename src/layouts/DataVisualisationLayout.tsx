@@ -5,7 +5,7 @@ import { setSelectedArgoParams } from '@/stores/argo-store/argoStore';
 import useDateStore, { setDate } from '@/stores/date-store/dateStore';
 import useProductStore, { setRegionTitle, setProductId, setRegionScope } from '@/stores/product-store/productStore';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { useIsMobile, useProductFromUrl, useProductSearchParam, useSetProductId } from '@/hooks';
+import { useIsMobile, useProductFromUrl, useProductSearchParam, useSetProductId, useUrlType } from '@/hooks';
 import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 import DataVisualisationNavbar from '@/components/DataVisualisationNavbar/DataVisualisationNavbar';
@@ -27,7 +27,8 @@ const DataVisualisationLayout: React.FC = () => {
   const productId = useProductStore((state) => state.productParams.productId);
   const toggleSidebar = () => setSidebarVisible(!isSidebarVisible);
 
-  useSetProductId('product', setProductId);
+  const urlType = useUrlType();
+  useSetProductId(urlType, setProductId);
 
   const getArgoData = useCallback(() => {
     const date = searchParams.get('date') || dayjs().format('YYYYMMDD');
