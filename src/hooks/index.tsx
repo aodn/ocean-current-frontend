@@ -1,4 +1,3 @@
-import useProductFromUrl from './useGetProductFromUrl/useGetProductFromUrl';
 import useProductSearchParam from './useProductSearchParam/useProductSearchParam';
 import useQueryParams from './useQueryParams/useQueryParams';
 import useOutsideClick from './useOutSideClick/useOutsideClick';
@@ -8,11 +7,9 @@ import useDateRange from './useDateRange/useDateRange';
 import useVideoCreation from './useVideoCreation/useVideoCreation';
 import useArrayCompareEffect from './useArrayCompareEffect/useArrayCompareEffect';
 import useIsMobile from './useIsMobile/useIsMobile';
-import useUrlType from './useUrlType/useUrlType';
 import useSetProductId from './useSetProductId/useSetProductId';
 
 export {
-  useProductFromUrl,
   useProductSearchParam,
   useQueryParams,
   useScrollToTop,
@@ -22,6 +19,5 @@ export {
   useVideoCreation,
   useArrayCompareEffect,
   useIsMobile,
-  useUrlType,
   useSetProductId,
 };

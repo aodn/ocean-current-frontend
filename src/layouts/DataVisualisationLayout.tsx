@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Outlet, useSearchParams } from 'react-router-dom';
+import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { setSelectedArgoParams } from '@/stores/argo-store/argoStore';
 import useDateStore, { setDate } from '@/stores/date-store/dateStore';
-import useProductStore, { setRegionTitle, setProductId, setRegionScope } from '@/stores/product-store/productStore';
+import useProductStore, { setRegionTitle, setRegionScope } from '@/stores/product-store/productStore';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { useIsMobile, useProductFromUrl, useProductSearchParam, useSetProductId } from '@/hooks';
+import { useIsMobile, useProductSearchParam, useSetProductId } from '@/hooks';
 import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 import DataVisualisationNavbar from '@/components/DataVisualisationNavbar/DataVisualisationNavbar';
@@ -17,17 +17,17 @@ import { RegionScope } from '@/constants/region';
 import { Loading } from '@/components/Shared';
 
 const DataVisualisationLayout: React.FC = () => {
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const isMobile = useIsMobile();
   const { isArgo } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
-  const product = useProductFromUrl('product');
   const [showVideo, setShowVideo] = useState(false);
   const [isSidebarVisible, setSidebarVisible] = useState(true);
   const productId = useProductStore((state) => state.productParams.productId);
   const toggleSidebar = () => setSidebarVisible(!isSidebarVisible);
 
-  useSetProductId('product', setProductId);
+  useSetProductId(location.pathname);
 
   const getArgoData = useCallback(() => {
     const date = searchParams.get('date') || dayjs().format('YYYYMMDD');
@@ -76,7 +76,7 @@ const DataVisualisationLayout: React.FC = () => {
           </div>
           <div>
             <ProductNavbarMobile setShowVideo={setShowVideo} />
-            <ErrorBoundary key={product?.mainProduct}>
+            <ErrorBoundary key={productId}>
               <Outlet context={{ showVideo, loading: true }} />
             </ErrorBoundary>
             <ProductFooterMobile />
@@ -100,7 +100,7 @@ const DataVisualisationLayout: React.FC = () => {
             className={`transition-all duration-300 ${isSidebarVisible ? 'ml-4' : 'ml-0'} flex min-h-[800px] w-full min-w-[800px] flex-col`}
           >
             <DataVisualisationNavbar setShowVideo={setShowVideo} />
-            <ErrorBoundary key={product?.mainProduct}>
+            <ErrorBoundary key={productId}>
               <Outlet context={{ showVideo, loading: true }} />
             </ErrorBoundary>
           </div>
