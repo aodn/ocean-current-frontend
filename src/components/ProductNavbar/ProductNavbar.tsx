@@ -34,7 +34,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo, isMapView =
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [showVideo, setLocalShowVideo] = useState(false);
   const { isArgo, isCurrentMeters } = useProductCheck();
-  const shouldDisableOption = disableVideoCreation() || isArgo || isMapView;
+  const shouldDisableOption = disableVideoCreation() || isArgo || isMapView || isCurrentMeters;
 
   const handleCopyLink = () => {
     const url = location.href;
