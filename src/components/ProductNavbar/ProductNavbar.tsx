@@ -9,6 +9,7 @@ import ShareIcon from '@/assets/icons/share-icon.svg';
 import ResetIcon from '@/assets/icons/reset-icon.svg';
 import VideoCreation from '@/components/VideoCreation/VideoCreation';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
+import { resetCurrentMeterStore } from '@/stores/current-meters-store/currentMeters';
 import { ProductNavbarProps } from './types/productNavbarProps.types';
 
 const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo, isMapView = false }) => {
@@ -32,7 +33,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo, isMapView =
   const [copyButtonText, setCopyButtonText] = useState<string>(ProductMenubarText.SHARE);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [showVideo, setLocalShowVideo] = useState(false);
-  const { isArgo } = useProductCheck();
+  const { isArgo, isCurrentMeters } = useProductCheck();
   const shouldDisableOption = disableVideoCreation() || isArgo || isMapView;
 
   const handleCopyLink = () => {
@@ -64,6 +65,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo, isMapView =
   };
 
   const handleReset = () => {
+    if (isCurrentMeters) resetCurrentMeterStore();
     resetDateRange();
   };
 
