@@ -10,9 +10,9 @@ import ResetIcon from '@/assets/icons/reset-icon.svg';
 import VideoCreation from '@/components/VideoCreation/VideoCreation';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { resetCurrentMeterStore } from '@/stores/current-meters-store/currentMeters';
-import { ProductNavbarProps } from './types/productNavbarProps.types';
+import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
-const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo, isMapView = false }) => {
+const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView = false }) => {
   const {
     startDate,
     endDate,
@@ -123,4 +123,4 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo, isMapView =
   );
 };
 
-export default ProductNavbar;
+export default ProductMenuBar;
