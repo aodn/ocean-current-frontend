@@ -4,7 +4,7 @@ import DatePicker from '@/components/DatePicker/DatePicker';
 import { useDateRange } from '@/hooks';
 import { ToggleButton } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
-import { TEXT_CONSTANT } from '@/constants/textConstant';
+import { ProductMenubarText } from '@/constants/textConstant';
 import ShareIcon from '@/assets/icons/share-icon.svg';
 import ResetIcon from '@/assets/icons/reset-icon.svg';
 import VideoCreation from '@/components/VideoCreation/VideoCreation';
@@ -29,7 +29,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo, isMapView =
     isWeekRange,
   } = useDateRange();
 
-  const [copyButtonText, setCopyButtonText] = useState<string>(TEXT_CONSTANT.SHARE);
+  const [copyButtonText, setCopyButtonText] = useState<string>(ProductMenubarText.SHARE);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [showVideo, setLocalShowVideo] = useState(false);
   const { isArgo } = useProductCheck();
@@ -38,10 +38,10 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo, isMapView =
   const handleCopyLink = () => {
     const url = location.href;
     navigator.clipboard.writeText(url);
-    setCopyButtonText(`${TEXT_CONSTANT.COPIED}!`);
+    setCopyButtonText(`${ProductMenubarText.COPIED}!`);
 
     timeoutRef.current = setTimeout(() => {
-      setCopyButtonText(TEXT_CONSTANT.SHARE);
+      setCopyButtonText(ProductMenubarText.SHARE);
     }, 2000);
   };
 
@@ -98,7 +98,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo, isMapView =
           className={`flex-center h-11 w-1/5 rounded-md bg-white p-3 ${shouldDisableOption && 'cursor-not-allowed opacity-50'}`}
         >
           <img src={VideoIcon} alt="video icon" />
-          <p className="mx-3">{TEXT_CONSTANT.VIDEO}</p>
+          <p className="mx-3">{ProductMenubarText.VIDEO}</p>
           <ToggleButton disabled={shouldDisableOption} isOn={showVideo} onToggle={handleToggle} />
         </div>
 

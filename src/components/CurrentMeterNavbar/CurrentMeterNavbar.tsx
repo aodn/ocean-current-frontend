@@ -2,13 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import DatePicker from '@/components/DatePicker/DatePicker';
 import { useDateRange } from '@/hooks';
-import { TEXT_CONSTANT } from '@/constants/textConstant';
+import { ProductMenubarText } from '@/constants/textConstant';
 import ShareIcon from '@/assets/icons/share-icon.svg';
 import ResetIcon from '@/assets/icons/reset-icon.svg';
 import { resetCurrentMeterStore } from '@/stores/current-meters-store/currentMeters';
 
 const CurrentMeterNavbar: React.FC = () => {
-  const [copyButtonText, setCopyButtonText] = useState<string>(TEXT_CONSTANT.SHARE);
+  const [copyButtonText, setCopyButtonText] = useState<string>(ProductMenubarText.SHARE);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const {
@@ -34,7 +34,7 @@ const CurrentMeterNavbar: React.FC = () => {
     setCopyButtonText('Copied!');
 
     timeoutRef.current = setTimeout(() => {
-      setCopyButtonText(TEXT_CONSTANT.SHARE);
+      setCopyButtonText(ProductMenubarText.SHARE);
     }, 2000);
   };
 
