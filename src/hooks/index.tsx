@@ -8,6 +8,8 @@ import useDateRange from './useDateRange/useDateRange';
 import useVideoCreation from './useVideoCreation/useVideoCreation';
 import useArrayCompareEffect from './useArrayCompareEffect/useArrayCompareEffect';
 import useIsMobile from './useIsMobile/useIsMobile';
+import useUrlType from './useUrlType/useUrlType';
+import useSetProductId from './useSetProductId/useSetProductId';
 
 export {
   useProductFromUrl,
@@ -20,4 +22,6 @@ export {
   useVideoCreation,
   useArrayCompareEffect,
   useIsMobile,
+  useUrlType,
+  useSetProductId,
 };

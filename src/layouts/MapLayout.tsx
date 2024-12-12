@@ -1,28 +1,22 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { setProductId } from '@/stores/product-store/productStore';
-import { getProductByPath } from '@/utils/product-utils/product';
-import { useProductFromUrl, useIsMobile } from '@/hooks';
+import useProductStore, { setProductId } from '@/stores/product-store/productStore';
+import { useIsMobile, useSetProductId, useUrlType } from '@/hooks';
 import MapSidebar from '@/components/MapSidebar/MapSidebar';
 import MapNavbar from '@/components/MapNavbar/MapNavbar';
 import HeaderSideBar from '@/components/DataVisualisationSidebar/components/HeaderSideBar';
+import { Loading } from '@/components/Shared';
 
 const MapLayout: React.FC = () => {
-  const product = useProductFromUrl('map');
   const isMobile = useIsMobile();
+  const productId = useProductStore((state) => state.productParams.productId);
 
-  useEffect(() => {
-    if (product) {
-      const { mainProduct, subProduct } = product;
+  const urlType = useUrlType();
+  useSetProductId(urlType, setProductId);
 
-      const mainProductKey = getProductByPath(mainProduct)!.key;
-      const subProductKey = subProduct ? getProductByPath(mainProduct, subProduct)!.key : null;
-
-      const productId = subProductKey || mainProductKey;
-
-      setProductId(productId);
-    }
-  }, [product]);
+  if (!productId) {
+    return <Loading />;
+  }
 
   return (
     <div className="mx-auto mb-9 mt-4 w-full max-w-8xl">

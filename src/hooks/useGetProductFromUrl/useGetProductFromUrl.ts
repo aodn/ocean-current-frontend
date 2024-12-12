@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { useLocation, useMatch } from 'react-router-dom';
+import { UrlType } from '@/types/router';
 
-const useProductFromUrl = (type: 'product' | 'map') => {
+const useProductFromUrl = (type: UrlType) => {
   const location = useLocation();
 
   const mainProductOnlyMatch = useMatch(`/${type}/:product`);
@@ -28,7 +29,7 @@ const useProductFromUrl = (type: 'product' | 'map') => {
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const memoizedProductFromUrl = useMemo(getProductFromUrlMatch, [location.pathname]);
+  const memoizedProductFromUrl = useMemo(getProductFromUrlMatch, [location.pathname, type]);
 
   return memoizedProductFromUrl;
 };
