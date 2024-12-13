@@ -3,9 +3,9 @@ import { Outlet } from 'react-router-dom';
 import useProductStore, { setProductId } from '@/stores/product-store/productStore';
 import { useIsMobile, useSetProductId, useUrlType } from '@/hooks';
 import MapSidebar from '@/components/MapSidebar/MapSidebar';
-import MapNavbar from '@/components/MapNavbar/MapNavbar';
 import HeaderSideBar from '@/components/DataVisualisationSidebar/components/HeaderSideBar';
 import { Loading } from '@/components/Shared';
+import ProductMenuBar from '@/components/ProductMenuBar/ProductMenuBar';
 
 const MapLayout: React.FC = () => {
   const isMobile = useIsMobile();
@@ -31,7 +31,9 @@ const MapLayout: React.FC = () => {
           </div>
         )}
         <div className="w-full md:mx-2">
-          <MapNavbar />
+          {/* we never need to show video when viewing the main map */}
+          <ProductMenuBar setShowVideo={() => false} isMapView={true} />
+
           <div className="w-full">
             <Outlet />
           </div>

@@ -8,9 +8,9 @@ import ResetIcon from '@/assets/icons/reset-icon.svg';
 import MapIcon from '@/assets/icons/map-icon.svg';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { ProductNavbarProps } from './types/productNavbarProps.types';
+import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
-const ProductNavbarMobile: React.FC<ProductNavbarProps> = () => {
+const ProductMenuBarMobile: React.FC<ProductMenuBarProps> = () => {
   const { mainProduct, subProduct } = useProductConvert();
   const { isArgo } = useProductCheck();
   const navigate = useNavigate();
@@ -108,4 +108,4 @@ const ProductNavbarMobile: React.FC<ProductNavbarProps> = () => {
   );
 };
 
-export default ProductNavbarMobile;
+export default ProductMenuBarMobile;

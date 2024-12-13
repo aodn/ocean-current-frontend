@@ -8,13 +8,13 @@ import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useIsMobile, useProductFromUrl, useProductSearchParam, useSetProductId, useUrlType } from '@/hooks';
 import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
-import DataVisualisationNavbar from '@/components/DataVisualisationNavbar/DataVisualisationNavbar';
 import DataVisualisationSidebar from '@/components/DataVisualisationSidebar/DataVisualisationSidebar';
-import ProductNavbarMobile from '@/components/ProductNavbar/ProductNavbarMobile';
 import ProductFooterMobile from '@/components/ProductFooterMobile/ProductFooterMobile';
 import ArrowIcon from '@/assets/icons/Arrow';
 import { RegionScope } from '@/constants/region';
 import { Loading } from '@/components/Shared';
+import ProductMenuBar from '@/components/ProductMenuBar/ProductMenuBar';
+import ProductMenuBarMobile from '@/components/ProductMenuBar/ProductNavbarMobile';
 
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -76,7 +76,7 @@ const DataVisualisationLayout: React.FC = () => {
             <DataVisualisationSidebar />
           </div>
           <div>
-            <ProductNavbarMobile setShowVideo={setShowVideo} />
+            <ProductMenuBarMobile setShowVideo={setShowVideo} />
             <ErrorBoundary key={product?.mainProduct}>
               <Outlet context={{ showVideo, loading: true }} />
             </ErrorBoundary>
@@ -100,7 +100,7 @@ const DataVisualisationLayout: React.FC = () => {
           <div
             className={`transition-all duration-300 ${isSidebarVisible ? 'ml-4' : 'ml-0'} flex min-h-[800px] w-full min-w-[800px] flex-col`}
           >
-            <DataVisualisationNavbar setShowVideo={setShowVideo} />
+            <ProductMenuBar setShowVideo={setShowVideo} />
             <ErrorBoundary key={product?.mainProduct}>
               <Outlet context={{ showVideo, loading: true }} />
             </ErrorBoundary>

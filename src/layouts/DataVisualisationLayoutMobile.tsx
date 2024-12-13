@@ -9,10 +9,10 @@ import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useProductFromUrl, useProductSearchParam } from '@/hooks';
 import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
-import ProductNavbarMobile from '@/components/ProductNavbar/ProductNavbarMobile';
 import DataVisualisationSidebar from '@/components/DataVisualisationSidebar/DataVisualisationSidebar';
 import { RegionScope } from '@/constants/region';
 import ProductFooterMobile from '@/components/ProductFooterMobile/ProductFooterMobile';
+import ProductMenuBarMobile from '@/components/ProductMenuBar/ProductNavbarMobile';
 
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -79,7 +79,7 @@ const DataVisualisationLayout: React.FC = () => {
           <DataVisualisationSidebar />
         </div>
         <div>
-          <ProductNavbarMobile setShowVideo={setShowVideo} />
+          <ProductMenuBarMobile setShowVideo={setShowVideo} />
           <ErrorBoundary key={product?.mainProduct}>
             <Outlet context={{ showVideo, loading: true }} />
           </ErrorBoundary>

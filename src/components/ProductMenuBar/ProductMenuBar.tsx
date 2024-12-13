@@ -4,19 +4,15 @@ import DatePicker from '@/components/DatePicker/DatePicker';
 import { useDateRange } from '@/hooks';
 import { ToggleButton } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
-import { TEXT_CONSTANT } from '@/constants/textConstant';
+import { ProductMenubarText } from '@/constants/textConstant';
 import ShareIcon from '@/assets/icons/share-icon.svg';
 import ResetIcon from '@/assets/icons/reset-icon.svg';
 import VideoCreation from '@/components/VideoCreation/VideoCreation';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { ProductNavbarProps } from './types/productNavbarProps.types';
+import { resetCurrentMeterStore } from '@/stores/current-meters-store/currentMeters';
+import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
-const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
-  const [copyButtonText, setCopyButtonText] = useState<string>(TEXT_CONSTANT.SHARE_PERMLINK);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [showVideo, setLocalShowVideo] = useState(false);
-  const { isArgo } = useProductCheck();
-
+const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView = false }) => {
   const {
     startDate,
     endDate,
@@ -34,13 +30,19 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
     isWeekRange,
   } = useDateRange();
 
+  const [copyButtonText, setCopyButtonText] = useState<string>(ProductMenubarText.SHARE);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [showVideo, setLocalShowVideo] = useState(false);
+  const { isArgo, isCurrentMeters } = useProductCheck();
+  const shouldDisableOption = disableVideoCreation() || isArgo || isMapView || isCurrentMeters;
+
   const handleCopyLink = () => {
     const url = location.href;
     navigator.clipboard.writeText(url);
-    setCopyButtonText('Copied!');
+    setCopyButtonText(`${ProductMenubarText.COPIED}!`);
 
     timeoutRef.current = setTimeout(() => {
-      setCopyButtonText(TEXT_CONSTANT.SHARE_PERMLINK);
+      setCopyButtonText(ProductMenubarText.SHARE);
     }, 2000);
   };
 
@@ -63,6 +65,7 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
   };
 
   const handleReset = () => {
+    if (isCurrentMeters) resetCurrentMeterStore();
     resetDateRange();
   };
 
@@ -93,10 +96,12 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
         >
           <img src={ResetIcon} alt="" srcSet="" />
         </div>
-        <div className="flex-center h-11 w-1/5 rounded-md bg-white p-3">
+        <div
+          className={`flex-center h-11 w-1/5 rounded-md bg-white p-3 ${shouldDisableOption && 'cursor-not-allowed opacity-50'}`}
+        >
           <img src={VideoIcon} alt="video icon" />
-          <p className="mx-3">Video</p>
-          <ToggleButton disabled={disableVideoCreation() || isArgo} isOn={showVideo} onToggle={handleToggle} />
+          <p className="mx-3">{ProductMenubarText.VIDEO}</p>
+          <ToggleButton disabled={shouldDisableOption} isOn={showVideo} onToggle={handleToggle} />
         </div>
 
         <div className="w-1/6">
@@ -110,10 +115,12 @@ const ProductNavbar: React.FC<ProductNavbarProps> = ({ setShowVideo }) => {
             <div className="w-6"></div>
           </div>
         </div>
-        <div className="w-1/6">{!isArgo && <VideoCreation />}</div>
+        <div className="w-1/6">
+          <VideoCreation disabled={shouldDisableOption} />
+        </div>
       </div>
     </div>
   );
 };
 
-export default ProductNavbar;
+export default ProductMenuBar;

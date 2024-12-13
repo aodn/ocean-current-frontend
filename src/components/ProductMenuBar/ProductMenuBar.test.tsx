@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import '@/configs/dayjs';
 import { useDateRange } from '@/hooks';
-import ProductNavbar from './ProductNavbar';
+import ProductMenuBar from './ProductMenuBar';
 
 vi.mock('@/hooks/useDateRange/useDateRange');
 vi.mock('@/components/VideoCreation/VideoCreation', () => {
@@ -10,7 +10,7 @@ vi.mock('@/components/VideoCreation/VideoCreation', () => {
   return { default: MockedVideoCreation };
 });
 
-describe('ProductNavbar', () => {
+describe('ProductMenuBar', () => {
   const mockDates = [
     { date: new Date('2024-06-13'), active: true, showLabel: true },
     { date: new Date('2024-06-14'), active: true, showLabel: false },
@@ -51,7 +51,7 @@ describe('ProductNavbar', () => {
     const setShowVideo = vi.fn();
     return render(
       <MemoryRouter>
-        <ProductNavbar setShowVideo={setShowVideo} />
+        <ProductMenuBar setShowVideo={setShowVideo} />
       </MemoryRouter>,
     );
   };

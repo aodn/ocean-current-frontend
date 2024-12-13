@@ -27,8 +27,8 @@ vi.mock('gifshot', () => ({
   },
 }));
 
-const openGifOptions = () => {
-  fireEvent.click(screen.getByText('Download'));
+const clickDownloadOption = () => {
+  fireEvent.click(screen.getByTestId('product-menu-bar-download-option'));
 };
 
 const selectDropdownOption = async (dropdownText: string, optionText: string) => {
@@ -104,15 +104,35 @@ describe('VideoCreation', () => {
     render(<VideoCreation />);
 
     // Act & Assert
-    expect(screen.getByText('Download')).toBeInTheDocument();
+    expect(screen.getByTestId('product-menu-bar-download-option')).toBeInTheDocument();
   });
 
-  it('opens the GIF options when download button is clicked', () => {
+  it('should be visibly disabled if disabled is true', async () => {
+    // Arrange
+    render(<VideoCreation disabled={true} />);
+
+    // Assert
+    expect(screen.getByTestId('product-menu-bar-download-option')).toHaveClass('cursor-not-allowed opacity-50');
+    expect(screen.getByTestId('product-menu-bar-download-option')).not.toHaveClass('cursor-pointer');
+  });
+
+  it('should not open GIF options if download option is disabled', async () => {
+    // Arrange
+    render(<VideoCreation disabled={true} />);
+
+    // Act
+    clickDownloadOption();
+
+    // Assert
+    expect(screen.queryByText('Customise Gif')).not.toBeInTheDocument();
+  });
+
+  it('opens the GIF options when download button is not disabled and is clicked', () => {
     // Arrange
     render(<VideoCreation />);
 
     // Act
-    openGifOptions();
+    clickDownloadOption();
 
     // Assert
     expect(screen.getByText('Customise Gif')).toBeInTheDocument();
@@ -121,7 +141,7 @@ describe('VideoCreation', () => {
   it('updates frame rate when changed', async () => {
     // Arrange
     render(<VideoCreation />);
-    openGifOptions();
+    clickDownloadOption();
 
     // Act
     await selectDropdownOption('3 seconds', '5 seconds');
