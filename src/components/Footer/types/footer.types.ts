@@ -8,8 +8,3 @@ export interface FooterIcon {
   src: string;
   url: string;
 }
-
-export interface FooterSection {
-  links: FooterLink[];
-  icons?: FooterIcon[];
-}
