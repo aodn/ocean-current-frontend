@@ -20,17 +20,17 @@ const MapLayout: React.FC = () => {
 
   return (
     <div className="mx-auto mb-9 mt-4 w-full max-w-8xl">
-      <div className="w-full md:flex">
+      <div className="md:flex w-full">
         {isMobile ? (
           <div className="mb-2">
             <HeaderSideBar />
           </div>
         ) : (
-          <div className="hidden w-1/3 md:block">
+          <div className="md:block hidden w-1/3">
             <MapSidebar />
           </div>
         )}
-        <div className="w-full md:mx-2">
+        <div className="md:mx-2 w-full">
           {/* we never need to show video when viewing the main map */}
           <ProductMenuBar setShowVideo={() => false} isMapView={true} />
 

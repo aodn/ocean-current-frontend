@@ -18,11 +18,11 @@ const Home: React.FC = () => {
       <section>
         <HomeTitle />
       </section>
-      <section className="mx-auto mb-10 w-full max-w-8xl md:flex md:gap-4">
-        <div className="w-full md:w-1/2">
+      <section className="md:flex md:gap-4 mx-auto mb-10 w-full max-w-8xl">
+        <div className="md:w-1/2 w-full">
           <HomeProductCarousel />
         </div>
-        <div className="mt-4 h-80 w-full md:mt-0 md:h-auto">
+        <div className="md:mt-0 md:h-auto mt-4 h-80 w-full">
           <HomeMap />
         </div>
       </section>

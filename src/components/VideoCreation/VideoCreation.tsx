@@ -88,14 +88,14 @@ const VideoCreation: React.FC<VideoCreationProps> = ({ disabled = false }) => {
         className={`flex h-11 items-center justify-between rounded-md bg-white p-3 ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
       >
         <img className="h-6 w-6" src={DownloadIcon} alt="share icon" />
-        <p className="hidden font-medium md:inline-block">{ProductMenubarText.DOWNLOAD}</p>
+        <p className="md:inline-block hidden font-medium">{ProductMenubarText.DOWNLOAD}</p>
         <ArrowIcon
-          className={`hidden h-3 w-3 transform transition-transform duration-300 md:inline-block ${showGifOptions ? 'rotate-180' : ''}`}
+          className={`md:inline-block hidden h-3 w-3 transform transition-transform duration-300 ${showGifOptions ? 'rotate-180' : ''}`}
           stroke={color.primary1}
         />
       </div>
       {showGifOptions && (
-        <div className="absolute right-0 z-50 mr-4 mt-5 w-11/12 rounded-md bg-white p-4 md:mt-3 md:w-[27%]">
+        <div className="md:mt-3 md:w-[27%] absolute right-0 z-50 mr-4 mt-5 w-11/12 rounded-md bg-white p-4">
           <div className="mb-4 flex items-center justify-between">
             <div></div>
             <p className="font-semibold">{ProductMenubarText.CUSTOMISE_GIF}</p>

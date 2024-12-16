@@ -15,8 +15,8 @@ const NavbarMenu = forwardRef(({ items }: { items: DetailedLink[] }, ref: Forwar
     ));
 
   return (
-    <div className="flex gap-5 max-md:flex-col max-md:gap-0" ref={ref}>
-      <div className="flex flex-col max-md:w-full">
+    <div className="max-md:flex-col max-md:gap-0 flex gap-5" ref={ref}>
+      <div className="max-md:w-full flex flex-col">
         <div className="flex flex-col self-stretch tracking-wide text-sky-950">{renderMenuItems(items)}</div>
       </div>
     </div>

@@ -75,7 +75,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
       <div className="flex-center h-full w-12 border-r-2 text-lg text-imos-title-blue">
         <button
           onClick={() => modifyDate('subtract')}
-          className="hidden cursor-pointer rounded bg-transparent p-2 font-semibold md:block"
+          className="md:block hidden cursor-pointer rounded bg-transparent p-2 font-semibold"
         >
           <img className="h-4 w-4 rotate-90" src={arrowIcon} alt="left arrow icon" />
         </button>
@@ -111,7 +111,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
         <button
           onClick={() => modifyDate('add')}
           disabled={isMonthRange ? isLastMonthOfTheYear() : addButtonDisabled}
-          className="hidden cursor-pointer rounded bg-transparent p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50 md:block"
+          className="md:block hidden cursor-pointer rounded bg-transparent p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
         >
           <img className="h-4 w-4 -rotate-90" src={arrowIcon} alt="right arrow icon" />
         </button>

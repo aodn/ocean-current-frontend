@@ -92,12 +92,12 @@ const ProductSideBar: React.FC = () => {
       <div className="mb-1">{!isArgo && <HeaderSideBar />}</div>
 
       {shouldRenderMiniMap && (
-        <div className="hidden h-60 w-full overflow-hidden md:block">
+        <div className="md:block hidden h-60 w-full overflow-hidden">
           <MiniMap />
         </div>
       )}
 
-      <div className="hidden md:block [&>*:last-child]:border-b-0 [&>*]:border-b-2 [&>*]:border-[#e5e7eb]">
+      <div className="md:block hidden [&>*:last-child]:border-b-0 [&>*]:border-b-2 [&>*]:border-[#e5e7eb]">
         <div className="p-4">
           <div className="flex justify-between">
             <img src={InfoIcon} alt="info icon" className="mr-6 mt-1 h-6 w-6 cursor-pointer object-contain" />
