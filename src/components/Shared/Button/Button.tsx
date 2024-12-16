@@ -21,7 +21,7 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       data-testid={dataTestId}
       disabled={disabled}
-      className={`md:px-12 relative flex items-center justify-center whitespace-nowrap px-4 py-1 text-lg transition duration-300 ease-in-out ${buttonSize} ${buttonType} ${buttonBorderRadius} ${
+      className={`relative flex items-center justify-center whitespace-nowrap px-4 py-1 text-lg transition duration-300 ease-in-out md:px-12 ${buttonSize} ${buttonType} ${buttonBorderRadius} ${
         disabled ? 'cursor-not-allowed opacity-50' : ''
       } ${className}`}
     >

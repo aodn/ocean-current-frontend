@@ -9,14 +9,14 @@ interface HorizontalProps {
 }
 const Horizontal: React.FC<HorizontalProps> = ({ news: { title, content, imageUrl } }) => {
   return (
-    <div className="sm:flex h-full w-full overflow-hidden rounded-xl border bg-white">
-      <div className="sm:w-2/5 w-full">
+    <div className="h-full w-full overflow-hidden rounded-xl border bg-white sm:flex">
+      <div className="w-full sm:w-2/5">
         <img data-testid="news-img-card" src={imageUrl} alt={`${title} news`} className="object-fill" />
       </div>
-      <div className="sm:w-3/5 flex w-full flex-col justify-between p-6">
+      <div className="flex w-full flex-col justify-between p-6 sm:w-3/5">
         <Title title={title} />
         <Content content={content} lineClamp={5} />
-        <div className="md:mt-0 md:justify-end mt-4 flex justify-center">
+        <div className="mt-4 flex justify-center md:mt-0 md:justify-end">
           <Button dataTestId="news-button-card" type="tertiary">
             Details
           </Button>

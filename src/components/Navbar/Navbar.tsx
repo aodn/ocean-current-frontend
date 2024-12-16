@@ -59,10 +59,10 @@ const Navbar: React.FC = () => {
           </div>
         </div>
 
-        <div className="max-md:flex-wrap flex items-center justify-center capitalize text-black">
+        <div className="flex items-center justify-center capitalize text-black max-md:flex-wrap">
           <div
             onMouseLeave={() => closeNavbarMenu()}
-            className="max-md:max-w-full max-md:flex-wrap relative flex justify-between gap-20 self-start text-base"
+            className="relative flex justify-between gap-20 self-start text-base max-md:max-w-full max-md:flex-wrap"
           >
             {menuItems.map((item, index) => (
               <div

@@ -6,7 +6,7 @@ const HomeInWater: React.FC = () => {
   return (
     <div className="p-6 text-center">
       <h2 className="mb-10 text-center text-2xl text-imos-black">Explore More Ocean Data</h2>
-      <div className="md:grid-cols-7 grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6 md:grid-cols-7">
         {homeInWaterData.map((item) => (
           <Link
             to={item.path}
