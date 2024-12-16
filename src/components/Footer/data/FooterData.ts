@@ -1,110 +1,16 @@
-import facebookIcon from '@/assets/icons/facebook-icon.svg';
-import instagramIcon from '@/assets/icons/instagram-icon.svg';
-import linkedinIcon from '@/assets/icons/linkedin-icon.svg';
-import twitterIcon from '@/assets/icons/twitter-icon.svg';
-import { FooterSection } from '../types/footer.types';
+import { FooterLink } from '../types/footer.types';
 
-export const footerData: FooterSection[] = [
+export const footerLinks: FooterLink[] = [
   {
-    title: 'Contact us',
-    links: [
-      {
-        name: 'contact@aodn.org.au',
-        url: 'mailto:contact@aodn.org.au',
-      },
-      {
-        name: '+1-2345-6789',
-        url: '',
-      },
-      {
-        name: '20 Castray Esplanade, Battery Point TAS',
-        url: '',
-      },
-    ],
+    text: 'Terms of Use',
+    url: 'https://imos.org.au/terms-of-use',
   },
   {
-    title: 'Data',
-    links: [
-      {
-        name: 'Auctor volutpat.',
-        url: '',
-      },
-      {
-        name: 'Fermentum turpis.',
-        url: '',
-      },
-      {
-        name: 'Mi consequat.',
-        url: '',
-      },
-      {
-        name: 'Amet venenatis.',
-        url: '',
-      },
-      {
-        name: 'Convallis porttitor.',
-        url: '',
-      },
-    ],
+    text: 'Conditions of Use',
+    url: 'https://imos.org.au/conditions-of-use',
   },
   {
-    title: 'Learn',
-    links: [
-      {
-        name: 'Auctor volutpat.',
-        url: '',
-      },
-      {
-        name: 'Fermentum turpis.',
-        url: '',
-      },
-      {
-        name: 'Mi consequat.',
-        url: '',
-      },
-      {
-        name: 'Amet venenatis.',
-        url: '',
-      },
-      {
-        name: 'Convallis porttitor.',
-        url: '',
-      },
-    ],
-  },
-  {
-    title: 'About',
-    links: [
-      {
-        name: 'Auctor volutpat.',
-        url: '',
-      },
-      {
-        name: 'Fermentum turpis.',
-        url: '',
-      },
-    ],
-    icons: [
-      {
-        alt: 'Facebook icon',
-        src: facebookIcon,
-        url: '',
-      },
-      {
-        alt: 'Instagram icon',
-        src: instagramIcon,
-        url: '',
-      },
-      {
-        alt: 'Linkedin icon',
-        src: linkedinIcon,
-        url: '',
-      },
-      {
-        alt: 'Twitter icon',
-        src: twitterIcon,
-        url: '',
-      },
-    ],
+    text: 'Acknowledging Us',
+    url: 'https://imos.org.au/resources/acknowledging-us',
   },
 ];
