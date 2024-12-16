@@ -1,36 +1,33 @@
 import React from 'react';
-import { footerData } from './data/FooterData';
-import { FooterIcon, FooterLink } from './types/footer.types';
+import { copyrightInfo, footerAcknowledgeText, footerLinks, footerSocials } from './data/FooterData';
+import { FooterIcon } from './types/footer.types';
+// import { FooterIcon, FooterLink } from './types/footer.types';
 
 const Footer: React.FC = () => {
   return (
-    <div className="py-6 md:pt-20">
-      <div className="text-2xl font-medium leading-7 text-white">IMOS OceanCurrent</div>
-      <div className="flex flex-col justify-center md:flex md:flex-row">
-        {footerData.map(({ title, links, icons }) => (
-          <div key={title} className="w-full md:mr-4 md:w-1/4">
-            <div className="mt-11 text-base font-semibold leading-6 text-white max-md:mt-10">{title}</div>
-            {links.map(({ name, url }: FooterLink, index: number) => (
-              <div key={index} className="mt-6 leading-6 text-white">
-                {url ? <a href={url}>{name}</a> : name}
-              </div>
+    <div className="flex w-full justify-center bg-white px-2">
+      <div className="max-w-8xl py-6 md:pt-10">
+        <div className="text-2xl font-medium leading-7">IMOS OceanCurrent</div>
+
+        <div className="flex flex-col justify-between border-y border-imos-primary-2 py-5 md:flex-row">
+          {footerLinks.map(({ text, url }) => (
+            <a key={text} href={url} target="_blank" rel="noreferrer">
+              {text}
+            </a>
+          ))}
+        </div>
+
+        <div className="flex flex-col justify-between pt-5 md:flex-row">
+          <div className="md:w-1/2">{footerAcknowledgeText}</div>
+          <div className="flex gap-5 px-0.5 max-md:mt-10 md:self-end xl:self-end">
+            {footerSocials.map(({ alt, src, url }: FooterIcon, index: number) => (
+              <a key={index} href={url}>
+                <img loading="lazy" alt={alt} src={src} className="aspect-square w-5 shrink-0" />
+              </a>
             ))}
-            {icons && (
-              <>
-                <div className="mt-20 flex gap-5 px-0.5 max-md:mt-10">
-                  {icons.map(({ alt, src, url }: FooterIcon, index: number) => (
-                    <a key={index} href={url}>
-                      <img loading="lazy" alt={alt} src={src} className="aspect-square w-5 shrink-0" />
-                    </a>
-                  ))}
-                </div>
-                <div className="mt-10 text-left text-sm leading-5 text-white">
-                  Copyright © 2020. All rights reserved.
-                </div>
-              </>
-            )}
           </div>
-        ))}
+        </div>
+        <div className="mt-10 text-left text-sm leading-5">{copyrightInfo}</div>
       </div>
     </div>
   );
