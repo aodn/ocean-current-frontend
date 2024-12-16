@@ -1,6 +1,8 @@
 import facebookIcon from '@/assets/icons/facebook-icon.svg';
 import instagramIcon from '@/assets/icons/instagram-icon.svg';
 import linkedinIcon from '@/assets/icons/linkedin-icon.svg';
+import xIcon from '@/assets/icons/x-icon.svg';
+import blueskyIcon from '@/assets/icons/bluesky-icon.svg';
 import { FooterIcon, FooterLink } from '../types/footer.types';
 
 export const footerLinks: FooterLink[] = [
@@ -34,12 +36,12 @@ export const footerSocials: FooterIcon[] = [
   },
   {
     alt: 'IMOS X',
-    src: facebookIcon,
+    src: xIcon,
     url: 'https://x.com/IMOS_AUS',
   },
   {
     alt: 'IMOS Bluesky',
-    src: facebookIcon,
+    src: blueskyIcon,
     url: 'https://bsky.app/profile/imos-aus.bsky.social',
   },
   {
