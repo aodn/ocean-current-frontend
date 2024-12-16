@@ -1,15 +1,8 @@
 import React from 'react';
 import logo from '@/assets/images/imos-logo.png';
 import { GeneralText } from '@/constants/textConstant';
-import {
-  aodnInfo,
-  copyrightInfo,
-  footerAcknowledgeText,
-  footerLinks,
-  footerSocials,
-  ocSubheading,
-} from './data/FooterData';
-import { FooterIcon } from './types/footer.types';
+import { aodnInfo, copyrightInfo, footerAcknowledgeText, footerLinks, footerSocials, ocSubheading } from './consts.ts';
+import { FooterIcon } from './footer.types';
 
 const Footer: React.FC = () => {
   return (
