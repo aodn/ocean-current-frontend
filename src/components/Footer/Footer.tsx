@@ -30,7 +30,7 @@ const Footer: React.FC = () => {
           <p className="md:w-1/2">{footerAcknowledgeText}</p>
           <div className="flex gap-5 self-center px-0.5 max-md:mt-10 md:self-end xl:self-end">
             {footerSocials.map(({ alt, src, url }: FooterIcon, index: number) => (
-              <a key={index} href={url}>
+              <a key={index} href={url} target="_blank" rel="noreferrer">
                 <img loading="lazy" alt={alt} src={src} className="aspect-square w-6 shrink-0" />
               </a>
             ))}
