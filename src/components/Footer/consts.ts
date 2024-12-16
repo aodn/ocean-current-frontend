@@ -3,7 +3,7 @@ import instagramIcon from '@/assets/icons/instagram-icon.svg';
 import linkedinIcon from '@/assets/icons/linkedin-icon.svg';
 import xIcon from '@/assets/icons/x-icon.svg';
 import blueskyIcon from '@/assets/icons/bluesky-icon.svg';
-import { FooterIcon, FooterLink } from '../types/footer.types';
+import { FooterIcon, FooterLink } from './footer.types';
 
 export const ocSubheading: string = 'Up-to-date ocean information around Australia';
 
