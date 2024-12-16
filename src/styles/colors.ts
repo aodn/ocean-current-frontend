@@ -15,7 +15,7 @@ interface OCColor {
 }
 
 const color: OCColor = {
-  primary1: '#3B6E8F',
+  primary1: '#3A6F8F',
   primary2: '#182C3A',
   primary3: '#0C161D',
   primary4: '#C5D8E7',

@@ -15,7 +15,8 @@ export default {
     },
     extend: {
       colors: {
-        'imos-deep-blue': color.primary1,
+        'imos-primary-1': color.primary1,
+        'imos-primary-2': color.primary2,
         'imos-sea-blue': color.seaBlue,
         'imos-light-blue': color.primary5,
         'imos-accent-orange': color.accentOrange,
@@ -25,7 +26,6 @@ export default {
         'imos-grey': color.grey,
         'imos-black': color.grey3,
         'imos-text-grey': color.textGrey,
-        'imos-primary-2': color.primary2,
       },
       backgroundImage: {
         'background-gradient': 'linear-gradient(180deg, #DCDCDC 0%, rgba(217, 217, 217, 0.34) 100%)',
