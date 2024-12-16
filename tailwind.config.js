@@ -9,9 +9,9 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     screens: {
-      mobile: '320px',
-      tablet: '768px',
-      desktop: '1280px',
+      sm: '320px',
+      md: '768px',
+      xl: '1280px',
     },
     extend: {
       colors: {
