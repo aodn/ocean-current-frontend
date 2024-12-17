@@ -127,6 +127,6 @@ export const linksData: LinkItem[] = [
   },
   {
     title: 'Guided Tour',
-    url: 'https://oceancurrent.aodn.org.au/news.php',
+    url: 'https://oceancurrent.aodn.org.au/whatsshown.php',
   },
 ];
