@@ -38,7 +38,7 @@ const NavbarBurgerMenu: React.FC = () => {
           {linksData.map((item) => (
             <div key={item.title}>
               {item.url ? (
-                <a className="mb-4 text-base text-gray-400" href={item.url}>
+                <a className="mb-4 text-base text-gray-400" href={item.url} target="_blank" rel="noreferrer">
                   {item.title}
                 </a>
               ) : (

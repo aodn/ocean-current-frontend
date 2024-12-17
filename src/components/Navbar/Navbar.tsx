@@ -73,6 +73,8 @@ const Navbar: React.FC = () => {
                 {item.url ? (
                   <a
                     href={item.url}
+                    target="_blank"
+                    rel="noreferrer"
                     className={`decoration-imos-deep-blue decoration-2 underline-offset-[3px] ${hoverIndex === index ? 'underline' : ''}`}
                   >
                     {item.title}
