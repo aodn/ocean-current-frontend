@@ -37,7 +37,13 @@ const NavbarBurgerMenu: React.FC = () => {
           </div>
           {linksData.map((item) => (
             <div key={item.title}>
-              <span className="mb-4 text-base text-gray-400">{item.title}</span>
+              {item.url ? (
+                <a className="mb-4 text-base text-gray-400" href={item.url} target="_blank" rel="noreferrer">
+                  {item.title}
+                </a>
+              ) : (
+                <span className="mb-4 text-base text-gray-400">{item.title}</span>
+              )}
               {item.links && (
                 <div className="ml-4">
                   {item.links?.length > 0 &&
