@@ -1,7 +1,10 @@
+import { DateConfig } from './date';
+
 interface BaseProduct {
   title: string;
   path: string;
   key: string;
+  dateFormat?: DateConfig | null;
 }
 
 export interface SubProduct extends BaseProduct {
