@@ -20,11 +20,7 @@ const MainLayout: React.FC = () => {
           <Outlet />
         </div>
       </div>
-      <div className="bg-[#465661] px-2 md:px-0">
-        <div className="mx-auto w-full max-w-8xl">
-          <Footer />
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 };

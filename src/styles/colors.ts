@@ -12,6 +12,7 @@ interface OCColor {
   grey2: string;
   grey3: string;
   textGrey: string;
+  subheadingGrey: string;
 }
 
 const color: OCColor = {
@@ -28,6 +29,7 @@ const color: OCColor = {
   grey2: '#555555',
   grey3: '#3C3C3C',
   textGrey: '#646464',
+  subheadingGrey: '#7C7C7C',
 };
 
 export { color };

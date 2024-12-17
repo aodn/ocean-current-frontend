@@ -8,9 +8,15 @@ export default {
   },
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
+    screens: {
+      sm: '320px',
+      md: '768px',
+      xl: '1280px',
+    },
     extend: {
       colors: {
         'imos-deep-blue': color.primary1,
+        'imos-deeper-blue': color.primary2,
         'imos-sea-blue': color.seaBlue,
         'imos-light-blue': color.primary5,
         'imos-accent-orange': color.accentOrange,
@@ -20,6 +26,7 @@ export default {
         'imos-grey': color.grey,
         'imos-black': color.grey3,
         'imos-text-grey': color.textGrey,
+        'imos-subheading-grey': color.subheadingGrey,
       },
       backgroundImage: {
         'background-gradient': 'linear-gradient(180deg, #DCDCDC 0%, rgba(217, 217, 217, 0.34) 100%)',
