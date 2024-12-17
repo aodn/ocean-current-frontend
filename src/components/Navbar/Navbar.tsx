@@ -70,12 +70,21 @@ const Navbar: React.FC = () => {
                 onMouseEnter={(event) => setPositionNavbar(index, event.currentTarget)}
                 className="flex cursor-pointer content-center justify-center py-4 text-black"
               >
-                <span
-                  ref={(el) => (menuItemRefs.current[index] = el)}
-                  className={`decoration-imos-deep-blue decoration-2 underline-offset-[3px] ${hoverIndex === index ? 'underline' : ''}`}
-                >
-                  {item.title}
-                </span>
+                {item.url ? (
+                  <a
+                    href={item.url}
+                    className={`decoration-imos-deep-blue decoration-2 underline-offset-[3px] ${hoverIndex === index ? 'underline' : ''}`}
+                  >
+                    {item.title}
+                  </a>
+                ) : (
+                  <span
+                    ref={(el) => (menuItemRefs.current[index] = el)}
+                    className={`decoration-imos-deep-blue decoration-2 underline-offset-[3px] ${hoverIndex === index ? 'underline' : ''}`}
+                  >
+                    {item.title}
+                  </span>
+                )}
                 {isSectionLink(item) && (
                   <img
                     src={ArrowIcon}
