@@ -15,8 +15,8 @@ export default {
     },
     extend: {
       colors: {
-        'imos-primary-1': color.primary1,
-        'imos-primary-2': color.primary2,
+        'imos-deep-blue': color.primary1,
+        'imos-deeper-blue': color.primary2,
         'imos-sea-blue': color.seaBlue,
         'imos-light-blue': color.primary5,
         'imos-accent-orange': color.accentOrange,

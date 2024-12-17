@@ -72,7 +72,7 @@ const Navbar: React.FC = () => {
               >
                 <span
                   ref={(el) => (menuItemRefs.current[index] = el)}
-                  className={`decoration-imos-primary-1 decoration-2 underline-offset-[3px] ${hoverIndex === index ? 'underline' : ''}`}
+                  className={`decoration-imos-deep-blue decoration-2 underline-offset-[3px] ${hoverIndex === index ? 'underline' : ''}`}
                 >
                   {item.title}
                 </span>

@@ -11,14 +11,14 @@ const Footer: React.FC = () => {
         <div className="flex flex-row items-center py-5">
           <img src={logo} alt="IMOS logo" className="h-8 sm:h-10 md:h-max" />
           <div className="px-6 leading-6">
-            <h1 className="text-2xl font-medium text-imos-primary-1">{GeneralText.OC_PASCAL_CASE}</h1>
+            <h1 className="text-2xl font-medium text-imos-deep-blue">{GeneralText.OC_PASCAL_CASE}</h1>
             <h2 className="text-sm font-normal text-imos-subheading-grey">{ocSubheading}</h2>
           </div>
         </div>
 
         <p className="py-5">{aodnInfo}</p>
 
-        <div className="flex flex-col items-center gap-5 border-y border-imos-primary-2 py-5 sm:flex-row sm:justify-between">
+        <div className="flex flex-col items-center gap-5 border-y border-imos-deeper-blue py-5 sm:flex-row sm:justify-between">
           {footerLinks.map(({ text, url }) => (
             <a key={text} href={url} target="_blank" rel="noreferrer">
               {text}
