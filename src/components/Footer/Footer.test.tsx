@@ -4,30 +4,27 @@ import Footer from './Footer';
 import { aodnInfo, copyrightInfo, footerAcknowledgeText, footerLinks, footerSocials, ocSubheading } from './consts.ts';
 
 describe('Footer Component', () => {
-  test('should render logo and title', () => {
+  it('should render logo and title', () => {
     render(<Footer />);
 
-    // Check for the logo
     const logo = screen.getByAltText('IMOS logo');
     expect(logo).toBeVisible();
 
-    // Check for the main heading
     const mainHeading = screen.getByText(GeneralText.OC_PASCAL_CASE);
     expect(mainHeading).toBeVisible();
 
-    // Check for subheading
     const subheading = screen.getByText(ocSubheading);
     expect(subheading).toBeVisible();
   });
 
-  test('should render AODN text', () => {
+  it('should render AODN text', () => {
     render(<Footer />);
 
     const aodnText = screen.getByText(aodnInfo);
     expect(aodnText).toBeVisible();
   });
 
-  test('should render footer links correctly', () => {
+  it('should render footer links correctly', () => {
     render(<Footer />);
 
     footerLinks.forEach(({ text, url }) => {
@@ -37,7 +34,7 @@ describe('Footer Component', () => {
     });
   });
 
-  test('should render social media icons with links', () => {
+  it('should render social media icons with links', () => {
     render(<Footer />);
 
     // Check that each social media icon is rendered and links correctly
@@ -51,21 +48,21 @@ describe('Footer Component', () => {
     });
   });
 
-  test('should render footer acknowledgement text', () => {
+  it('should render footer acknowledgement text', () => {
     render(<Footer />);
 
     const acknowledgeText = screen.getByText(footerAcknowledgeText);
     expect(acknowledgeText).toBeVisible();
   });
 
-  test('should render copyright text', () => {
+  it('should render copyright text', () => {
     render(<Footer />);
 
     const copyrightText = screen.getByText(copyrightInfo);
     expect(copyrightText).toBeVisible();
   });
 
-  test('should render footer with correct class names', () => {
+  it('should render footer with correct class names', () => {
     const { container } = render(<Footer />);
 
     // Check if the footer has the expected class name for layout and design
