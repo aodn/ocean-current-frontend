@@ -1,4 +1,4 @@
-import { HomeProductData } from '../types/homeProductCarousel.types';
+import { HomeProductData } from './types';
 
 export const productsData: HomeProductData[] = [
   {
