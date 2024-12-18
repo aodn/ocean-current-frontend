@@ -4,7 +4,6 @@ import { resetMapStore } from '@/stores/map-store/mapStore';
 import HomeProductCarousel from './home-product-carousel/HomeProductCarousel';
 import HomeTitle from './home-title/HomeTitle';
 import HomeNews from './home-news/HomeNews';
-import HomeMap from './home-map/HomeMap';
 import HomeInWater from './home-in-water/HomeInWater';
 
 const Home: React.FC = () => {
@@ -15,15 +14,12 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <section>
-        <HomeTitle />
-      </section>
-      <section className="mx-auto mb-10 w-full max-w-8xl md:flex md:gap-4">
+      <section className="mx-auto flex w-full max-w-8xl flex-col justify-center xl:mt-10 xl:flex-row">
+        <section>
+          <HomeTitle />
+        </section>
         <div className="w-full md:w-1/2">
           <HomeProductCarousel />
-        </div>
-        <div className="mt-4 h-80 w-full md:mt-0 md:h-auto">
-          <HomeMap />
         </div>
       </section>
       <section className="mx-auto w-full max-w-8xl py-10">
