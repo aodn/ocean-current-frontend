@@ -1,5 +1,5 @@
 {
-  // For more information about lunch configuration,
+  // For more information about launch configuration,
   // visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
@@ -14,8 +14,8 @@
         "/__vite-browser-external:*": "${webRoot}/*"
       }
     },
-    // This project will be running on port which read from .env file
-    // So we need to create different configurations for default port and common port
+    // This project will be running on a port which read from .env file
+    // So we need to create different configurations for default port and commonly used port
     {
       "type": "chrome",
       "request": "launch",
