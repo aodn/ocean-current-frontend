@@ -1,7 +1,32 @@
 {
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  // For more information about lunch configuration,
+  // visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome & debug on port 5173 (default)",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/src",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "/__vite-browser-external:*": "${webRoot}/*"
+      }
+    },
+    // This project will be running on port which read from .env file
+    // So we need to create different configurations for default port and common port
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome & debug on port 3000",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/src",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "/__vite-browser-external:*": "${webRoot}/*"
+      }
+    },
     {
       "type": "node",
       "request": "launch",
