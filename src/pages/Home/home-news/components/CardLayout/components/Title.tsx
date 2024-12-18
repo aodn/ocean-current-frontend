@@ -3,7 +3,7 @@ import { News } from '../../../types/homeNews.types';
 
 const Title: React.FC<Pick<News, 'title'>> = ({ title }) => {
   return (
-    <h3 data-testid="news-title-card" className="text-xl text-imos-black">
+    <h3 data-testid="news-title-card" className="text-xl text-imos-dark-grey">
       {title}
     </h3>
   );

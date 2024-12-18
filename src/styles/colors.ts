@@ -8,6 +8,7 @@ interface OCColor {
   accentOrange: string;
   sand: string;
   blue2: string;
+  lightGrey: string;
   grey: string;
   grey2: string;
   grey3: string;
@@ -25,6 +26,7 @@ const color: OCColor = {
   accentOrange: '#E36F1E',
   sand: '#D9D7BD',
   blue2: '#356183',
+  lightGrey: '#D9D9D9',
   grey: '#8C8C8C',
   grey2: '#555555',
   grey3: '#3C3C3C',
