@@ -35,17 +35,13 @@ const HomeProductCarousel: React.FC = () => {
     }
   }, [useMapZoom, useMapLatitude, useMapLongitude]);
 
+  // cycle through list of products
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      const switchSelectedProduct = () => {
-        setSelectedProductIndex((preSelectedIndex) => (preSelectedIndex + 1) % productsData.length);
-      };
-      intervalRef.current = setInterval(switchSelectedProduct, 2500);
-    }, 0);
-    return () => {
-      clearTimeout(timeoutId);
-      stopInterval();
-    };
+    const intervalId = setInterval(() => {
+      setSelectedProductIndex((prevIndex) => (prevIndex < productsData.length - 1 ? prevIndex + 1 : 0));
+    }, 1000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
