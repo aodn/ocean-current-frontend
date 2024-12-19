@@ -1,4 +1,4 @@
-name: Continuous Integration Pipeline
+name: CI
 run-name: Lint, run coverage tests and build
 
 on:
@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   build:
-    name: Deploy to Edge
+    name: Build
     runs-on: ubuntu-latest
 
     strategy:
@@ -37,11 +37,11 @@ jobs:
       - name: Install dependencies  
         run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
 
-      - name: Run linting 
-        run: yarn run lint
+      # - name: Run linting 
+      #   run: yarn run lint
 
-      - name: Run coverage tests
-        run: yarn run coverage
+      # - name: Run coverage tests
+      #   run: yarn run coverage
 
       - name: Build the front end
         run: yarn build

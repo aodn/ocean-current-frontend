@@ -3,9 +3,9 @@ run-name: Deploy frontend to Edge environment
 
 on:
   workflow_run:
-    workflows: ['Continuous Integration Pipeline']
+    workflows: ['CI']
     types: [completed]
-    branches: ['main', '6174-implement-githubaction-for-edge-deployment']
+    branches: ['6174-implement-githubaction-for-edge-deployment']
 
 jobs:
   build:
