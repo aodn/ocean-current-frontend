@@ -1,0 +1,52 @@
+name: Continuous Deployment Pipeline - Edge
+run-name: Deploy frontend to Edge environment
+
+on:
+  workflow_run:
+    workflows: ["Continuous Integration Pipeline"]
+    types:
+      - completed
+  # pull_request:
+  #   types:
+  #     - closed
+  #   branches:
+  #     - main
+
+jobs:
+  edge_deploy:
+    name: Deploy to Edge
+    environment: edge
+    runs-on: ubuntu-latest
+    # if: ${{ github.event.pull_request.merged == true && github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    env:
+      DIST: ./dist
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: yarn_build
+          path: ./dist
+
+      - name: Configure AWS credentials
+        id: aws_auth
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          audience: sts.amazonaws.com
+          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+
+      - name: Upload website artifacts to S3 bucket 
+        run: |
+          aws s3 sync --delete ${{ env.DIST }} s3://${{ vars.BUCKET }} --region ${{ vars.AWS_REGION }}
+
+      - name: Invalidate cloudfront cache
+        run: |
+          aws cloudfront create-invalidation \
+          --distribution-id ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }} \
+          --paths "/*" \
+          --region ${{ vars.AWS_REGION }}
