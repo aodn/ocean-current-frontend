@@ -19,17 +19,29 @@ jobs:
         node-version: [18.x]
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name : Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
-      - run: npm install -g yarn
-      - run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
-      - run: yarn run lint
-      - run: yarn run coverage
-      - run: yarn build
+      
+      - name: Install Yarn globally
+        run: npm install -g yarn
+
+      - name: Install dependencies  
+        run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
+
+      - name: Run linting 
+        run: yarn run lint
+
+      - name: Run coverage tests
+        run: yarn run coverage
+
+      - name: Build the front end
+        run: yarn build
   
   edge_deploy:
     environment: edge
@@ -40,10 +52,12 @@ jobs:
     permissions:
       contents: read
       id-token: write
+
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
         with:
-          name: build
+          name: yarn_build
           path: ./dist
 
       - name: Configure AWS credentials
@@ -54,11 +68,11 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
 
-      - name: Copy files to the production website with the AWS CLI
+      - name: Upload website artifacts to S3 bucket 
         run: |
           aws s3 sync --delete ${{ env.DIST }} s3://${{ vars.BUCKET }} --region ${{ vars.AWS_REGION }}
 
-      - name: Clear cloudfront cache
+      - name: Invalidate cloudfront cache
         run: |
           aws cloudfront create-invalidation \
           --distribution-id ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }} \
