@@ -49,9 +49,9 @@ jobs:
 
   edge_deploy:
     name: Deploy to Edge Environment
+    needs: build
     environment: edge
     runs-on: ubuntu-latest
-    # if: ${{ github.event.pull_request.merged == true && github.event.workflow_run.conclusion == 'success' }}
     env:
       DIST: ./dist
     permissions:
