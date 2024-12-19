@@ -11,7 +11,8 @@ on:
 
 jobs:
   build:
-    name: Build OceanCurrent FrondEnd
+    name: Build
+    environment: edge
     runs-on: ubuntu-latest
 
     strategy:
