@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import useMapStore from '@/stores/map-store/mapStore';
 import { setProductId } from '@/stores/product-store/productStore';
-import { productsData } from './data/homeProductsData';
-import HomeProductCarouselCard from './components//HomeProductCarouselCard';
+import BasicMap from '@/components/Map/BasicMap';
+import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
+import { INITIAL_MAP_VIEW_STATE } from '@/configs/map';
+import { productsData } from './data';
 
 const HomeProductCarousel: React.FC = () => {
   const [selectedProductIndex, setSelectedProductIndex] = useState<number>(0);
@@ -39,7 +41,7 @@ const HomeProductCarousel: React.FC = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setSelectedProductIndex((prevIndex) => (prevIndex < productsData.length - 1 ? prevIndex + 1 : 0));
-    }, 1000);
+    }, 2500);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -49,18 +51,32 @@ const HomeProductCarousel: React.FC = () => {
   }, [selectedProduct.id]);
 
   return (
-    <ul>
-      {productsData.map((product) => (
-        <li className="[&:not(:last-child)]:mb-2" key={product.id} onClick={() => handleClick(product.id)} aria-hidden>
-          <HomeProductCarouselCard
-            title={product.title}
-            description={product.description}
-            selected={selectedProduct.id === product.id}
-            id={product.id}
-          />
-        </li>
-      ))}
-    </ul>
+    <section className="flex h-[650px] w-full flex-col self-center rounded-xl">
+      <ErrorBoundary>
+        <BasicMap
+          minZoom={INITIAL_MAP_VIEW_STATE.mapViewState.zoom}
+          showCursorLocationPanel={false}
+          style={{ borderRadius: '0.75rem 0.75rem 0 0', height: '100%' }}
+        />
+      </ErrorBoundary>
+
+      <div className="flex flex-col rounded-b-xl border border-solid border-imos-calypso-blue border-opacity-60">
+        <div className="flex min-h-36 flex-col px-10 py-10 md:py-6">
+          <h2 className="pb-2 font-poppins text-lg font-semibold text-imos-dark-grey">{selectedProduct.title}</h2>
+          <p className="font-open-sans text-base text-imos-grey">{selectedProduct.description}</p>
+        </div>
+
+        <div className="mb-10 flex justify-center gap-2">
+          {productsData.map((_, index) => (
+            <button
+              key={index}
+              className={`transition:background-color z-50 h-2.5 w-2.5 cursor-pointer rounded-full ${selectedProductIndex === index ? 'bg-imos-sea-blue' : 'bg-imos-light-grey'}`}
+              onClick={() => handleClick(productsData[index].id)}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
 
