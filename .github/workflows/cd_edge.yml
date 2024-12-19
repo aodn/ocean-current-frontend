@@ -1,5 +1,8 @@
 name: CD - Edge
 run-name: Deploy frontend to Edge environment
+permissions:
+  actions: read
+  contents: read
 
 on:
   workflow_run:
