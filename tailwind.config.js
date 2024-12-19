@@ -28,6 +28,7 @@ export default {
         'imos-dark-grey': color.grey3,
         'imos-text-grey': color.textGrey,
         'imos-subheading-grey': color.subheadingGrey,
+        'imos-calypso-blue': color.calypsoBlue,
       },
       backgroundImage: {
         'background-gradient': 'linear-gradient(180deg, #DCDCDC 0%, rgba(217, 217, 217, 0.34) 100%)',
@@ -44,6 +45,7 @@ export default {
       fontFamily: {
         noto: ['NotoSans', 'sans-serif'],
         lexend: ['Lexend', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
         'open-sans': ['"Open Sans"', 'sans-serif'],
       },
       maxWidth: {

@@ -14,8 +14,12 @@ interface OCColor {
   grey3: string;
   textGrey: string;
   subheadingGrey: string;
+  calypsoBlue: string;
 }
-
+/*
+ We can use this tool to find a more meaningful name for all the colours
+ https://chir.ag/projects/name-that-color/
+ */
 const color: OCColor = {
   primary1: '#3B6E8F',
   primary2: '#182C3A',
@@ -32,6 +36,7 @@ const color: OCColor = {
   grey3: '#3C3C3C',
   textGrey: '#646464',
   subheadingGrey: '#7C7C7C',
+  calypsoBlue: '#3a6f8f',
 };
 
 export { color };
