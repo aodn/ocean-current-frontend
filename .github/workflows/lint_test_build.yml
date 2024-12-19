@@ -3,7 +3,7 @@ run-name: Lint, run coverage tests and build
 
 on:
   push:
-    branches: ['main']
+    branches: ['main', '6174-implement-githubaction-for-edge-deployment']
   pull_request:
     branches: ['main']
 
