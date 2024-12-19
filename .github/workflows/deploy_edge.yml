@@ -3,13 +3,50 @@ run-name: Deploy frontend to Edge environment
 
 on:
   workflow_run:
-      workflows: ['Continuous Integration Pipeline']
-      types: [completed]
-      branches: ['main', '6174-implement-githubaction-for-edge-deployment']
+    workflows: ['Continuous Integration Pipeline']
+    types: [completed]
+    branches: ['main', '6174-implement-githubaction-for-edge-deployment']
 
 jobs:
+  build:
+    name: Build OceanCurrent FrondEnd
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name : Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+      
+      - name: Install Yarn globally
+        run: npm install -g yarn
+
+      - name: Install dependencies  
+        run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
+
+      - name: Build the front end
+        env:
+          VITE_MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_ACCESS_TOKEN }}
+        run: yarn build
+
+      - name: Save build artifacts
+        # if: ${{ github.ref == 'refs/heads/main' }}
+        uses: actions/upload-artifact@v4
+        with:
+            name: yarn_build
+            path: ./dist
+            retention-days: 1
+
   edge_deploy:
-    name: Deploy to Edge
+    name: Deploy to Edge Environment
     environment: edge
     runs-on: ubuntu-latest
     # if: ${{ github.event.pull_request.merged == true && github.event.workflow_run.conclusion == 'success' }}
