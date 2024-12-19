@@ -52,7 +52,6 @@ jobs:
     environment: edge
     runs-on: ubuntu-latest
     # if: ${{ github.event.pull_request.merged == true && github.event.workflow_run.conclusion == 'success' }}
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     env:
       DIST: ./dist
     permissions:
