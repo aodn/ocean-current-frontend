@@ -29,6 +29,7 @@ const HomeProductCarousel: React.FC = () => {
     setSelectedProductIndex(foundIndexById);
   };
 
+  // stops the cycling if user pans the map
   useEffect(() => {
     if (isMounted.current) {
       stopInterval();
@@ -39,11 +40,13 @@ const HomeProductCarousel: React.FC = () => {
 
   // cycle through list of products
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setSelectedProductIndex((prevIndex) => (prevIndex < productsData.length - 1 ? prevIndex + 1 : 0));
+    intervalRef.current = setInterval(() => {
+      setSelectedProductIndex((prevIndex) => (prevIndex + 1) % productsData.length);
     }, 2500);
 
-    return () => clearInterval(intervalId);
+    return () => {
+      clearInterval(intervalRef.current!);
+    };
   }, []);
 
   useEffect(() => {
