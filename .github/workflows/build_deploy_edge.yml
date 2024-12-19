@@ -1,0 +1,66 @@
+name: Build OceanCurrent frontend and deploy to S3 bucket
+run-name: build frontend and deploy to s3
+
+on:
+  push:
+    branches: ['main', '6174-implement-githubaction-for-edge-deployment']
+
+# cancel currently running workflow from the same PR or branch
+concurrency:
+  group: ${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  yarn_build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+      - run: npm install -g yarn
+      - run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
+      - run: yarn run lint
+      - run: yarn run coverage
+      - run: yarn build
+  
+  edge_deploy:
+    environment: edge
+    runs-on: ubuntu-latest
+    needs: yarn_build
+    env:
+      DIST: ./dist
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: ./dist
+
+      - name: Configure AWS credentials
+        id: aws_auth
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          audience: sts.amazonaws.com
+          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+
+      - name: Copy files to the production website with the AWS CLI
+        run: |
+          aws s3 sync --delete ${{ env.DIST }} s3://${{ vars.BUCKET }} --region ${{ vars.AWS_REGION }}
+
+      - name: Clear cloudfront cache
+        run: |
+          aws cloudfront create-invalidation \
+          --distribution-id ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }} \
+          --paths "/*" \
+          --region ${{ vars.AWS_REGION }}
