@@ -3,7 +3,7 @@ run-name: Lint, run coverage tests and build
 
 on:
   push:
-    branches: ['main']
+    branches: ['main', '6174-implement-githubaction-for-edge-deployment']
   pull_request:
     branches: ['main']
 
@@ -45,11 +45,3 @@ jobs:
 
       - name: Build the front end
         run: yarn build
-
-      - name: Save build artifacts
-        # if: ${{ github.ref == 'refs/heads/main' }}
-        uses: actions/upload-artifact@v4
-        with:
-            name: yarn_build
-            path: ./dist
-            retention-days: 1

@@ -1,13 +1,13 @@
-name: Continuous Deployment Pipeline - Edge
+name: CD - Edge
 run-name: Deploy frontend to Edge environment
 
 on:
   workflow_run:
-    workflows: ['CI']
+    workflows: [CI]
     types: [completed]
-    branches: ['6174-implement-githubaction-for-edge-deployment']
-  push:
-    branches: ['main', '6174-implement-githubaction-for-edge-deployment']
+    branches: [6174-implement-githubaction-for-edge-deployment]
+  # push:
+  #   branches: ['main', '6174-implement-githubaction-for-edge-deployment']
 
 jobs:
   build:
