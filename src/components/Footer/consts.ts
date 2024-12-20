@@ -7,9 +7,6 @@ import { FooterIcon, FooterLink } from './footer.types';
 
 export const ocSubheading: string = 'Up-to-date ocean information around Australia';
 
-export const aodnInfo: string =
-  'The Australian Ocean Data Network (AODN) stands at the forefront of marine data management in Australia, providing an essential infrastructure for the discovery, sharing and reuse of comprehensive marine and climate data. By managing the IMOS data collection program and incorporating contributions from universities and government research agencies, AODN supports a diverse range of users including researchers, data scientists, government, and industry. Our commitment to making these data freely available underscores our dedication to fostering an informed and engaged public, promoting sustainable environmental practices and driving economic growth through innovation.';
-
 export const footerLinks: FooterLink[] = [
   {
     text: 'Terms of Use',
