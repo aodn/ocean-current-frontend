@@ -6,7 +6,7 @@ import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 import { INITIAL_MAP_VIEW_STATE } from '@/configs/map';
 import { productsData } from './data';
 
-const HomeProductCarousel: React.FC = () => {
+const HomeMapCarousel: React.FC = () => {
   const [selectedProductIndex, setSelectedProductIndex] = useState<number>(0);
   const selectedProduct = productsData[selectedProductIndex];
 
@@ -83,4 +83,4 @@ const HomeProductCarousel: React.FC = () => {
   );
 };
 
-export default HomeProductCarousel;
+export default HomeMapCarousel;

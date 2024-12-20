@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { resetArgoStore } from '@/stores/argo-store/argoStore';
 import { resetMapStore } from '@/stores/map-store/mapStore';
 import { BrandingText } from '@/constants/textConstant';
-import HomeProductCarousel from './home-product-carousel/HomeProductCarousel';
+import HomeProductCarousel from './home-map-carousel/HomeMapCarousel';
 import HomeNews from './home-news/HomeNews';
 import HomeInWater from './home-in-water/HomeInWater';
 
