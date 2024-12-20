@@ -5,8 +5,6 @@ import xIcon from '@/assets/icons/x-icon.svg';
 import blueskyIcon from '@/assets/icons/bluesky-icon.svg';
 import { FooterIcon, FooterLink } from './footer.types';
 
-export const ocSubheading: string = 'Up-to-date ocean information around Australia';
-
 export const footerLinks: FooterLink[] = [
   {
     text: 'Terms of Use',

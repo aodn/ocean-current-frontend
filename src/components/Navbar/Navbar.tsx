@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import logo from '@/assets/images/imos-logo.png';
 import { linksData } from '@/data/linksData';
 import { LinkItem, SectionLinks } from '@/types/navbar';
-import { GeneralText } from '@/constants/textConstant';
+import { BrandingText } from '@/constants/textConstant';
 import ArrowIcon from '@/assets/icons/arrow.svg';
 import NavbarMenu from './components/NavbarMenu';
 
@@ -54,7 +54,7 @@ const Navbar: React.FC = () => {
           <div className="mx-7 h-10 w-0.5 bg-imos-title-blue"></div>
           <div className="flex flex-col justify-center text-xl text-imos-title-blue">
             <Link className="mr-auto" to={'/'}>
-              {GeneralText.OC_PASCAL_CASE}
+              {BrandingText.OC_PASCAL_CASE}
             </Link>
           </div>
         </div>

@@ -14,13 +14,13 @@ const Legend: React.FC = () => {
         <div>
           <div className="inline-block">
             <div className="mr-2 inline-block h-3 w-3 rounded-full border border-[#FA10E2] bg-white"></div>
-            <span className="mr-1 inline-block font-bold text-imos-black">Argo: </span>
+            <span className="mr-1 inline-block font-bold text-imos-dark-grey">Argo: </span>
             pink circle at the location of any profile made in the window t0 +/- 12hrs; click on the circle to see the
             Argo profiles of temperature and salinity.
           </div>
           <div className="mt-2 inline-block">
             <div className="mr-2 inline-block h-3 w-3 rotate-45 bg-[#FA10E2]"></div>
-            <span className="mr-1 inline-block font-bold text-imos-black">Glider: </span>
+            <span className="mr-1 inline-block font-bold text-imos-dark-grey">Glider: </span>
             small diamonds (pink and black) indicate 6-hourly glider locations, pink when the glider is in the 24hr
             window around t0; click on the diamonds to see the glider profiles.
           </div>
@@ -33,7 +33,7 @@ const Legend: React.FC = () => {
                 <div className="absolute -top-[2px] right-0 h-2 w-2 rotate-45 border-r-2 border-[#2972FF]"></div>
               </div>
             </div>
-            <span className="mr-1 inline-block font-bold text-imos-black">Radar: </span>
+            <span className="mr-1 inline-block font-bold text-imos-dark-grey">Radar: </span>
             the average velocity using all available hourly radar velocities from the IMOS radar facility within a
             specified time window around t0. Eg (3-12h avg) indicates a minimum of 3 hourly radar velocity estimates are
             required within a 12 hour window. Blue (red) vectors are plotted over waters warmer (cooler) than the mean
@@ -41,13 +41,13 @@ const Legend: React.FC = () => {
           </div>
           <div className="mt-2 inline-block">
             <div className="mr-2 inline-block h-3 w-3 rotate-45 -skew-x-12 -skew-y-12 border-r-2 border-t-2 border-[#FA10E2]"></div>
-            <span className="mr-1 inline-block font-bold text-imos-black">Drifter: </span>
+            <span className="mr-1 inline-block font-bold text-imos-dark-grey">Drifter: </span>
             small diamonds (pink and black) indicate 6-hourly glider locations, pink when the glider is in the 24hr
             window around t0; click on the diamonds to see the glider profiles.
           </div>
           <div className="mt-2 inline-block">
             <div className="mr-2 inline-block h-3 w-3 rounded-full border-2 border-[#838383]"></div>
-            <span className="mr-1 inline-block font-bold text-imos-black">Ship: </span>
+            <span className="mr-1 inline-block font-bold text-imos-dark-grey">Ship: </span>
             Underway water temperature, plotted hourly, from ships with hull-mounted intake. These include the RV
             Investigator (MNF), RV Solander and RV Cape Ferguson (AIMS), and the Spirit of Tasmania 2, Sea Flyte and
             Stadacona from (IMOS Ships of Opportunity Facility). Data within t0 +/- 1day is indicated with a small black
@@ -55,15 +55,15 @@ const Legend: React.FC = () => {
           </div>
           <div className="mt-4">
             <p>
-              <span className="mr-1 inline-block font-bold text-imos-black">Selected isobaths:</span> grey and cyan
+              <span className="mr-1 inline-block font-bold text-imos-dark-grey">Selected isobaths:</span> grey and cyan
               contours, in metres.
             </p>
             <p>
-              <span className="mr-1 inline-block font-bold text-imos-black">Gridded Sea Level (GSL):</span> white
+              <span className="mr-1 inline-block font-bold text-imos-dark-grey">Gridded Sea Level (GSL):</span> white
               contours every 0.1 m.
             </p>
             <p>
-              <span className="mr-1 font-bold text-imos-black">Geostrophic velocity:</span>
+              <span className="mr-1 font-bold text-imos-dark-grey">Geostrophic velocity:</span>
               black arrows, where length indicates both speed and distance something would travel over a 12hr or 24hr
               period (as indicated) at this velocity. The latest GSLA (NRT00) is usually 4 days behind real time - the
               date of the GSLA and velocity vectors is indicated on the plot.

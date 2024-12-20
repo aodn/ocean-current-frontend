@@ -27,7 +27,7 @@ const ArgoSideBar: React.FC = () => {
         <div className="flex items-center justify-between bg-white p-2 pb-4">
           <img className="mx-6 h-16 w-14 object-cover" src={ArgoIcon} alt="argo-icon" />
           <div>
-            <h2 className="mb-2 text-lg font-semibold text-imos-black">Argo profiles</h2>
+            <h2 className="mb-2 text-lg font-semibold text-imos-dark-grey">Argo profiles</h2>
             <p className="text-imos-grey">Temperature and salinity down to 2000m in the Australian region</p>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from '@/assets/images/imos-logo.png';
-import { GeneralText } from '@/constants/textConstant';
-import { copyrightInfo, footerAcknowledgeText, footerLinks, footerSocials, ocSubheading } from './consts.ts';
+import { BrandingText } from '@/constants/textConstant';
+import { copyrightInfo, footerAcknowledgeText, footerLinks, footerSocials } from './consts.ts';
 import { FooterIcon } from './footer.types';
 
 const Footer: React.FC = () => {
@@ -11,8 +11,8 @@ const Footer: React.FC = () => {
         <div className="flex flex-row items-center pb-10 pt-5">
           <img src={logo} alt="IMOS logo" className="h-8 sm:h-10 md:h-max" />
           <div className="px-6 leading-6">
-            <h1 className="text-2xl font-medium text-imos-deep-blue">{GeneralText.OC_PASCAL_CASE}</h1>
-            <h2 className="text-sm font-normal text-imos-subheading-grey">{ocSubheading}</h2>
+            <h1 className="text-2xl font-medium text-imos-deep-blue">{BrandingText.OC_PASCAL_CASE}</h1>
+            <h2 className="text-sm font-normal text-imos-subheading-grey">{BrandingText.OC_SUBHEADING}</h2>
           </div>
         </div>
 
