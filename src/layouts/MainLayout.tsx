@@ -4,7 +4,7 @@ import { Footer, Navbar, BurgerMenu } from '@/components';
 
 const MainLayout: React.FC = () => {
   return (
-    <div className="flex w-full flex-col font-open-sans md:px-0">
+    <div className="flex w-full flex-col bg-imos-light-blue font-open-sans md:px-0">
       <div className="sticky top-0 z-50 w-full bg-white">
         <div className="mx-auto w-full">
           <div className="md:hidden">
