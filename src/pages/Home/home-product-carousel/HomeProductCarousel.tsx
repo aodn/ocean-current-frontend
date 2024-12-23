@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { linksData } from '@/data/linksData';
 import ArrowIcon from '@/assets/icons/Arrow';
 import { color } from '@/styles/colors';
+import { productCarouselData } from './data';
 
 const HomeProductCarousel: React.FC = () => {
-  const allProducts = linksData.flatMap((section) => section.links || []);
+  const allProducts = productCarouselData.flatMap((section) => section.links || []);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerRow, setItemsPerRow] = useState(3);
@@ -42,8 +42,8 @@ const HomeProductCarousel: React.FC = () => {
 
   const translateX = -(currentIndex * (itemWidth + gapWidth));
 
-  const arrowStyle = 'm-5 w-8 h-full mt-14 bg-white          ';
-  const arrowDisabledStyle = 'cursor-not-allowed opacity-50';
+  const arrowStyle = 'm-5 w-8 h-full mt-14 bg-white';
+  const arrowDisabledStyle = 'cursor-not-allowed opacity-20';
 
   return (
     <>
@@ -66,7 +66,7 @@ const HomeProductCarousel: React.FC = () => {
             <div key={id} className="w-32 flex-shrink-0">
               <Link
                 to={url}
-                className="flex h-32 flex-col items-center rounded-xl bg-imos-light-blue p-4 transition duration-300 ease-in-out"
+                className="flex h-32 flex-col items-center justify-center rounded-xl bg-imos-light-blue p-4 transition duration-300 ease-in-out"
               >
                 <img src={imageUrl} alt={description} className="h-full w-full" />
               </Link>
