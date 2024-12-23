@@ -66,7 +66,7 @@ const HomeProductCarousel: React.FC = () => {
             <div key={id} className="w-32 flex-shrink-0">
               <Link
                 to={url}
-                className="flex h-32 flex-col items-center justify-center rounded-xl bg-imos-light-blue p-4 transition duration-300 ease-in-out"
+                className="flex h-32 flex-col items-center justify-center rounded-xl bg-imos-light-blue p-4 transition duration-300 ease-in-out hover:border-[3px] hover:border-imos-deep-blue hover:bg-white"
               >
                 <img src={imageUrl} alt={description} className="h-full w-full" />
               </Link>
