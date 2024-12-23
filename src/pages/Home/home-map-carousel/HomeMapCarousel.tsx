@@ -54,7 +54,7 @@ const HomeMapCarousel: React.FC = () => {
   }, [selectedProduct.id]);
 
   return (
-    <section className="flex h-[650px] w-full flex-col self-center rounded-xl">
+    <>
       <ErrorBoundary>
         <BasicMap
           minZoom={INITIAL_MAP_VIEW_STATE.mapViewState.zoom}
@@ -79,7 +79,7 @@ const HomeMapCarousel: React.FC = () => {
           ))}
         </div>
       </div>
-    </section>
+    </>
   );
 };
 

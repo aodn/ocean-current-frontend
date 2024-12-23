@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { resetArgoStore } from '@/stores/argo-store/argoStore';
 import { resetMapStore } from '@/stores/map-store/mapStore';
 import { BrandingText } from '@/constants/textConstant';
-import HomeProductCarousel from './home-map-carousel/HomeMapCarousel';
+import HomeMapCarousel from './home-map-carousel/HomeMapCarousel';
 import HomeNews from './home-news/HomeNews';
-import HomeInWater from './home-in-water/HomeInWater';
+import HomeProductCarousel from './home-product-carousel/HomeProductCarousel';
 
 const Home: React.FC = () => {
   useEffect(() => {
@@ -24,11 +24,15 @@ const Home: React.FC = () => {
           </h2>
         </section>
 
+        <section className="flex h-[650px] w-full flex-col self-center rounded-xl">
+          <HomeMapCarousel />
+        </section>
+      </section>
+
+      <section className="flex w-full max-w-8xl flex-row self-center bg-blue-100 py-10">
         <HomeProductCarousel />
       </section>
-      <section className="w-full max-w-8xl self-center py-10">
-        <HomeInWater />
-      </section>
+
       <section className="bg-[#E5E8ED]">
         <HomeNews />
       </section>
