@@ -5,8 +5,6 @@ import { color } from '@/styles/colors';
 import { productCarouselData } from './data';
 
 const HomeProductCarousel: React.FC = () => {
-  const allProducts = productCarouselData.flatMap((section) => section.links || []);
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerRow, setItemsPerRow] = useState(3);
 
@@ -28,7 +26,7 @@ const HomeProductCarousel: React.FC = () => {
   }, []);
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, allProducts.length - itemsPerRow));
+    setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, productCarouselData.length - itemsPerRow));
   };
 
   const handlePrev = () => {
@@ -38,7 +36,7 @@ const HomeProductCarousel: React.FC = () => {
   const itemWidth = 128;
   const gapWidth = 16;
 
-  const totalWidth = allProducts.length * itemWidth + (allProducts.length - 1) * gapWidth;
+  const totalWidth = productCarouselData.length * itemWidth + (productCarouselData.length - 1) * gapWidth;
 
   const translateX = -(currentIndex * (itemWidth + gapWidth));
 
@@ -63,7 +61,7 @@ const HomeProductCarousel: React.FC = () => {
             width: `${totalWidth}px`,
           }}
         >
-          {allProducts.map(({ id, url, imageUrl, description, title }) => (
+          {productCarouselData.map(({ id, url, imageUrl, description, title }) => (
             <div key={id} className="w-32 flex-shrink-0">
               <Link
                 to={url}
@@ -81,7 +79,7 @@ const HomeProductCarousel: React.FC = () => {
 
       <button
         onClick={handleNext}
-        className={`${arrowStyle} -rotate-90 ${currentIndex === allProducts.length - itemsPerRow ? arrowDisabledStyle : ''}`}
+        className={`${arrowStyle} -rotate-90 ${currentIndex === productCarouselData.length - itemsPerRow ? arrowDisabledStyle : ''}`}
       >
         <ArrowIcon stroke={color.horizonBlue} strokeWidth={1} />
       </button>
