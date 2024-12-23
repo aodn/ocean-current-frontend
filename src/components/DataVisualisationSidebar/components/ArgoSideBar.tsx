@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import ArgoIcon from '@/assets/icons/products/argo-icon.svg';
+import ArgoIcon from '@/assets/icons/products/grey-icons/argo-icon-grey.svg';
 import useArgoStore, { setArgoDepth } from '@/stores/argo-store/argoStore';
 import { Button } from '@/components/Shared';
 import MiniMap from './MiniMap';
