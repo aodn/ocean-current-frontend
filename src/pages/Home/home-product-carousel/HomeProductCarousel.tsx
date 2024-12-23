@@ -56,6 +56,7 @@ const HomeProductCarousel: React.FC = () => {
 
       <div className="relative w-full overflow-hidden">
         <div
+          data-testid="carousel-container"
           className="flex gap-4 transition-transform duration-300 ease-in-out"
           style={{
             transform: `translateX(${translateX}px)`,
