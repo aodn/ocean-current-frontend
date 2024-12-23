@@ -7,15 +7,11 @@ import { productCarouselData } from './data';
 
 vi.mock('./data', () => ({
   productCarouselData: [
-    {
-      links: [
-        { id: 1, url: '/product1', imageUrl: 'image1.jpg', description: 'Product 1', title: 'Product 1' },
-        { id: 2, url: '/product2', imageUrl: 'image2.jpg', description: 'Product 2', title: 'Product 2' },
-        { id: 3, url: '/product3', imageUrl: 'image3.jpg', description: 'Product 3', title: 'Product 3' },
-        { id: 4, url: '/product4', imageUrl: 'image4.jpg', description: 'Product 4', title: 'Product 4' },
-        { id: 5, url: '/product5', imageUrl: 'image5.jpg', description: 'Product 5', title: 'Product 5' },
-      ],
-    },
+    { id: 1, url: '/product1', imageUrl: 'image1.jpg', description: 'Product 1', title: 'Product 1' },
+    { id: 2, url: '/product2', imageUrl: 'image2.jpg', description: 'Product 2', title: 'Product 2' },
+    { id: 3, url: '/product3', imageUrl: 'image3.jpg', description: 'Product 3', title: 'Product 3' },
+    { id: 4, url: '/product4', imageUrl: 'image4.jpg', description: 'Product 4', title: 'Product 4' },
+    { id: 5, url: '/product5', imageUrl: 'image5.jpg', description: 'Product 5', title: 'Product 5' },
   ],
 }));
 
@@ -30,7 +26,7 @@ describe('HomeProductCarousel', () => {
   it('renders all products', () => {
     renderComponent();
 
-    productCarouselData[0].links!.forEach((product) => {
+    productCarouselData.forEach((product) => {
       expect(screen.getByAltText(product.description)).toBeInTheDocument();
       expect(screen.getByText(product.title)).toBeInTheDocument();
     });
@@ -49,7 +45,7 @@ describe('HomeProductCarousel', () => {
 
     // Simulate clicks to reach the last possible index
     const itemsPerRow = window.innerWidth >= 1280 ? 7 : window.innerWidth >= 768 ? 4 : 1;
-    const maxIndex = productCarouselData[0].links!.length - itemsPerRow;
+    const maxIndex = productCarouselData.length - itemsPerRow;
 
     for (let i = 0; i < maxIndex; i++) {
       fireEvent.click(nextButton);
