@@ -29,7 +29,7 @@ const Home: React.FC = () => {
         </section>
       </section>
 
-      <section className="flex w-full max-w-8xl flex-row self-center bg-blue-100 py-10">
+      <section className="relative flex w-full max-w-8xl flex-row self-center overflow-hidden py-10">
         <HomeProductCarousel />
       </section>
 
