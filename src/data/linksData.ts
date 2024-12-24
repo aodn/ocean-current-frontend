@@ -125,7 +125,7 @@ export const linksData: LinkItem[] = [
   },
   {
     title: 'News',
-    url: 'https://oceancurrent.aodn.org.au/news.php',
+    url: 'https://imos.org.au/news/category/imos-oceancurrent',
   },
   {
     title: 'Guided Tour',
