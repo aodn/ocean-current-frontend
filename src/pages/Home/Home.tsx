@@ -40,7 +40,7 @@ const Home: React.FC = () => {
           </h1>
           <Button
             type="tertiary"
-            onClick={() => window.open('https://oceancurrent.aodn.org.au/news.php', '_blank')}
+            onClick={() => window.open('https://imos.org.au/news/category/imos-oceancurrent', '_blank')}
             className="h-12 min-w-40 self-center text-2xl"
           >
             {News.ALL_NEWS}
