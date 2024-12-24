@@ -57,7 +57,7 @@ const HomeProductCarousel: React.FC = () => {
           }}
         >
           {productCarouselData.map(({ id, url, imageUrl, description, title }) => (
-            <div key={id} className="w-24 flex-shrink-0 md:w-32">
+            <div key={id} className="mt-2 w-24 flex-shrink-0 md:w-32">
               <Link
                 to={url}
                 className="flex h-24 flex-col items-center justify-center rounded-xl bg-imos-light-blue p-4 transition duration-300 ease-in-out hover:border-[3px] hover:border-imos-deep-blue hover:bg-white md:h-32"
