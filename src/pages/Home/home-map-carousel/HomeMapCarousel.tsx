@@ -54,7 +54,7 @@ const HomeMapCarousel: React.FC = () => {
   }, [selectedProduct.id]);
 
   return (
-    <section className="flex h-[650px] w-full flex-col self-center rounded-xl">
+    <>
       <ErrorBoundary>
         <BasicMap
           minZoom={INITIAL_MAP_VIEW_STATE.mapViewState.zoom}
@@ -73,13 +73,13 @@ const HomeMapCarousel: React.FC = () => {
           {productsData.map((_, index) => (
             <button
               key={index}
-              className={`transition:background-color z-50 h-2.5 w-2.5 cursor-pointer rounded-full ${selectedProductIndex === index ? 'bg-imos-sea-blue' : 'bg-imos-light-grey'}`}
+              className={`transition:background-color z-20 h-2.5 w-2.5 cursor-pointer rounded-full ${selectedProductIndex === index ? 'bg-imos-sea-blue' : 'bg-imos-light-grey'}`}
               onClick={() => handleClick(productsData[index].id)}
             />
           ))}
         </div>
       </div>
-    </section>
+    </>
   );
 };
 

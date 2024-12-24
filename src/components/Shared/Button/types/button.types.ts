@@ -17,7 +17,7 @@ export enum ButtonSize {
 }
 
 export interface ButtonProps {
-  type: keyof typeof ButtonType;
+  type?: keyof typeof ButtonType;
   borderRadius?: keyof typeof BorderRadius;
   size?: keyof typeof ButtonSize;
   dataTestId?: string;

@@ -1,15 +1,17 @@
-import SSTIcon from '@/assets/icons/products/SST-icon.svg';
-import OceanColourIcon from '@/assets/icons/products/ocean-colour-icon.svg';
-import AdjustedSeaLevelAnomalyIcon from '@/assets/icons/products/adjusted-sea-level-anomaly-icon.svg';
-import MonthlyMeansIcon from '@/assets/icons/products/monthly-means-icon.svg';
-import SurfaceWavesIcon from '@/assets/icons/products/surface-waves-icon.svg';
-import FourHourSSTIcon from '@/assets/icons/products/4-hour-SST-icon.svg';
-import SixHourSSTIcon from '@/assets/icons/products/6-hour-SST-icon.svg';
-import CurrentMetersIcon from '@/assets/icons/products/current-meters-icon.svg';
-import GliderIcon from '@/assets/icons/products/glider-icon.svg';
-import SealCTDIcon from '@/assets/icons/products/seal-ctd-icon.svg';
-import ArgoIcon from '@/assets/icons/products/argo-icon.svg';
-import TidalCurrentsIcon from '@/assets/icons/products/in-water/tidal-currents-icon.svg';
+import ArgoIcon from '@/assets/icons/products/grey-icons/argo-icon-grey.svg';
+import SSTIcon from '@/assets/icons/products/grey-icons/sst-icon-grey.svg';
+import OceanColourIcon from '@/assets/icons/products/grey-icons/ocean-colour-icon-grey.svg';
+import AdjustedSeaLevelAnomalyIcon from '@/assets/icons/products/grey-icons/adjusted-sea-level-anomaly-icon-grey.svg';
+import MonthlyMeansIcon from '@/assets/icons/products/grey-icons/monthly-means-icon-grey.svg';
+import SurfaceWavesIcon from '@/assets/icons/products/grey-icons/surface-waves-icon-grey.svg';
+import FourHourSSTIcon from '@/assets/icons/products/grey-icons/4-hour-sst-icon-grey.svg';
+import SixHourSSTIcon from '@/assets/icons/products/grey-icons/6-day-sst-icon-grey.svg';
+import CurrentMetersIcon from '@/assets/icons/products/grey-icons/current-meters-icon-grey.svg';
+import GliderIcon from '@/assets/icons/products/grey-icons/glider-icon-grey.svg';
+import SealCTDIcon from '@/assets/icons/products/grey-icons/seal-ctd-icon-grey.svg';
+import TidalCurrentsIcon from '@/assets/icons/products/grey-icons/tidal-currents-icon-grey.svg';
+import ClimatologyIcon from '@/assets/icons/products/grey-icons/climatology-icon-grey.svg';
+import EACMooringArrayIcon from '@/assets/icons/products/grey-icons/eac-mooring-array-icon-grey.svg';
 import { LinkItem } from '@/types/navbar';
 
 export const linksData: LinkItem[] = [
@@ -67,7 +69,7 @@ export const linksData: LinkItem[] = [
       },
       {
         id: 'climatology-sst',
-        imageUrl: SSTIcon,
+        imageUrl: ClimatologyIcon,
         title: 'Climatology SST',
         description: 'SSTAARS Climatology',
         url: '/map/climatology/sst',
@@ -114,7 +116,7 @@ export const linksData: LinkItem[] = [
       },
       {
         id: 'eac-mooring-array',
-        imageUrl: CurrentMetersIcon,
+        imageUrl: EACMooringArrayIcon,
         title: 'EAC Mooring Array',
         description: 'Monitoring station network',
         url: 'https://oceancurrent.aodn.org.au/index.php',

@@ -1,21 +1,21 @@
-<svg width="28" height="27" viewBox="0 0 28 27" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="28" height="27" viewBox="-1 -1 30 29" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <mask id="mask0_5071_3028" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="12" width="28" height="15">
 <rect y="12.0669" width="28" height="14.9333" fill="url(#pattern0_5071_3028)"/>
 </mask>
 <g mask="url(#mask0_5071_3028)">
-<rect x="-0.933594" y="11.1333" width="29.8667" height="16.8" fill="#696969"/>
+<rect x="-0.933594" y="11.1333" width="29.8667" height="16.8" fill="#3A6F8F"/>
 </g>
 <mask id="mask1_5071_3028" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="2" y="0" width="11" height="11">
 <rect x="2" width="11" height="11" fill="url(#pattern1_5071_3028)"/>
 </mask>
 <g mask="url(#mask1_5071_3028)">
-<rect x="0.933594" y="0.0668945" width="13.0667" height="13.0667" fill="#696969"/>
+<rect x="0.933594" y="0.0668945" width="13.0667" height="13.0667" fill="#3A6F8F"/>
 </g>
 <mask id="mask2_5071_3028" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="15" y="1" width="11" height="11">
 <rect x="26" y="12" width="11" height="11" transform="rotate(-180 26 12)" fill="url(#pattern2_5071_3028)"/>
 </mask>
 <g mask="url(#mask2_5071_3028)">
-<rect x="27" y="12" width="13" height="12" transform="rotate(-180 27 12)" fill="#696969"/>
+<rect x="27" y="12" width="13" height="12" transform="rotate(-180 27 12)" fill="#3A6F8F"/>
 </g>
 <defs>
 <pattern id="pattern0_5071_3028" patternContentUnits="objectBoundingBox" width="1" height="1">

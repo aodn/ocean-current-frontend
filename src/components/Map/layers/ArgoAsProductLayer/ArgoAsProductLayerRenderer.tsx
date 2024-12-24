@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { ArgoProfile } from '@/types/argo';
-import { useQueryParams, useIsMobile } from '@/hooks';
+import { useQueryParams, useDeviceType } from '@/hooks';
 import { ArgoProfileFeatureCollection } from '@/types/geo';
 import { getBoundsFromCoordsArray } from '@/utils/geo-utils/geo';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
@@ -33,7 +33,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
   const eventAdded = useRef(false);
 
   const { updateQueryParams } = useQueryParams();
-  const isMobile = useIsMobile();
+  const { isMobile } = useDeviceType();
 
   const circleRadius = isMobile ? 8 : 6;
   const hoverCircleRadius = isMobile ? 10 : 8;

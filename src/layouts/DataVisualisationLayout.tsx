@@ -5,7 +5,7 @@ import { setSelectedArgoParams } from '@/stores/argo-store/argoStore';
 import useDateStore, { setDate } from '@/stores/date-store/dateStore';
 import useProductStore, { setRegionTitle, setProductId, setRegionScope } from '@/stores/product-store/productStore';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { useIsMobile, useProductFromUrl, useProductSearchParam, useSetProductId, useUrlType } from '@/hooks';
+import { useDeviceType, useProductFromUrl, useProductSearchParam, useSetProductId, useUrlType } from '@/hooks';
 import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 import DataVisualisationSidebar from '@/components/DataVisualisationSidebar/DataVisualisationSidebar';
@@ -18,7 +18,7 @@ import ProductMenuBarMobile from '@/components/ProductMenuBar/ProductNavbarMobil
 
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const isMobile = useIsMobile();
+  const { isMobile } = useDeviceType();
   const { isArgo } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const product = useProductFromUrl('product');

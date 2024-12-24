@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
-import { vi } from 'vitest'; // Vitest's mock functionality
+import { vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { setProductId } from '@/stores/product-store/productStore';
 import useMapStore from '@/stores/map-store/mapStore';
