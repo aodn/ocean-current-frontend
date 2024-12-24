@@ -1,13 +1,5 @@
 import { useState, useEffect } from 'react';
-
-const mobileBreakpoint = 768;
-const tabletBreakpoint = 1280;
-
-enum DeviceType {
-  MOBILE = 'mobile',
-  TABLET = 'tablet',
-  DESKTOP = 'desktop',
-}
+import { DeviceType, mobileBreakpoint, tabletBreakpoint } from '@/styles/screens';
 
 const useDeviceType = () => {
   const [deviceType, setDeviceType] = useState(DeviceType.DESKTOP);
