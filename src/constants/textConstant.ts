@@ -24,3 +24,8 @@ export enum ProductMenubarText {
   DOWNLOAD = 'Download',
   ANIMATION_SPEED = 'Animation Speed',
 }
+
+export enum News {
+  NEWS = 'News',
+  ALL_NEWS = 'All news',
+}

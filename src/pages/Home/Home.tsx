@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { resetArgoStore } from '@/stores/argo-store/argoStore';
 import { resetMapStore } from '@/stores/map-store/mapStore';
-import { BrandingText } from '@/constants/textConstant';
+import { BrandingText, News } from '@/constants/textConstant';
+import { Button } from '@/components/Shared';
 import HomeMapCarousel from './home-map-carousel/HomeMapCarousel';
-import HomeNews from './home-news/HomeNews';
 import HomeProductCarousel from './home-product-carousel/HomeProductCarousel';
 
 const Home: React.FC = () => {
@@ -33,8 +33,19 @@ const Home: React.FC = () => {
         <HomeProductCarousel />
       </section>
 
-      <section className="bg-[#E5E8ED]">
-        <HomeNews />
+      <section className="w-full bg-imos-light-blue">
+        <div className="flex flex-col items-center justify-between py-14">
+          <h1 className="px-2 pb-8 text-center font-open-sans text-3xl font-medium text-imos-dark-grey md:text-4xl">
+            {`${BrandingText.OC_PASCAL_CASE} ${News.NEWS}`}
+          </h1>
+          <Button
+            type="tertiary"
+            onClick={() => window.open('https://oceancurrent.aodn.org.au/news.php', '_blank')}
+            className="h-12 min-w-40 self-center text-2xl"
+          >
+            {News.ALL_NEWS}
+          </Button>
+        </div>
       </section>
     </section>
   );
