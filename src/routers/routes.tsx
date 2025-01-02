@@ -1,5 +1,5 @@
 import { Navigate, type RouteObject } from 'react-router-dom';
-import { Home, MapView, DataView, News, NotFound, GuidedTour } from '@/pages';
+import { Home, MapView, DataView, NotFound } from '@/pages';
 import MainLayout from '@/layouts/MainLayout';
 import MapLayout from '@/layouts/MapLayout';
 import DataVisualisationLayout from '@/layouts/DataVisualisationLayout';
@@ -76,14 +76,6 @@ const routes: RouteObject[] = [
             element: <MapView />,
           },
         ],
-      },
-      {
-        path: '/news',
-        element: <News />,
-      },
-      {
-        path: '/guided-tour',
-        element: <GuidedTour />,
       },
     ],
   },
