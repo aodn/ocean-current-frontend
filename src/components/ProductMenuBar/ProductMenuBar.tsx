@@ -33,8 +33,8 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
   const [copyButtonText, setCopyButtonText] = useState<string>(ProductMenubarText.SHARE);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [showVideo, setLocalShowVideo] = useState(false);
-  const { isArgo, isCurrentMeters } = useProductCheck();
-  const shouldDisableOption = disableVideoCreation() || isArgo || isMapView || isCurrentMeters;
+  const { isArgo, isCurrentMeters, isEACMooringArray } = useProductCheck();
+  const shouldDisableOption = disableVideoCreation() || isArgo || isMapView || isCurrentMeters || isEACMooringArray;
 
   const handleCopyLink = () => {
     const url = location.href;
