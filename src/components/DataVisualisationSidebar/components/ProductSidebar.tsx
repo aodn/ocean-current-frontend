@@ -10,11 +10,11 @@ import ArrowIcon from '@/assets/icons/arrow.svg';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
 import useDateStore from '@/stores/date-store/dateStore';
 import ArrowWithTail from '@/assets/icons/ArrowWithTail';
-import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { GeneralText, ProductSidebarText } from '@/constants/textConstant';
+import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
-import HeaderSideBar from './HeaderSideBar';
+import SidebarProductDropdown from './SidebarProductDropdown';
 
 const buildDataSourceUrl = (type: string, date: Dayjs): string => {
   switch (type) {
@@ -50,22 +50,27 @@ const ProductSideBar: React.FC = () => {
     {
       title: 'SST L3S-6d ngt (1992-2017)',
       link: buildDataSourceUrl('L3S-6d', useDate),
-      product: ['sixDaySst'],
+      product: ['sixDaySst', 'EACMooringArray'],
     },
     {
       title: 'SST L3SM-6d ngt (2018-now)',
       link: buildDataSourceUrl('L3SM-6d', useDate),
-      product: ['sixDaySst'],
+      product: ['sixDaySst', 'EACMooringArray'],
     },
     {
       title: 'GSLA',
       link: buildDataSourceUrl('GSLA', useDate),
-      product: ['sixDaySst'],
+      product: ['sixDaySst', 'EACMooringArray'],
     },
     {
       title: 'SSTAARS',
       link: 'https://portal.aodn.org.au/search?uuid=79c8eea2-4e86-4553-8237-4728e27abe10',
-      product: ['sixDaySst', 'climatology'],
+      product: ['sixDaySst', 'climatology', 'EACMooringArray'],
+    },
+    {
+      title: 'EAC Mooring Data',
+      link: 'https://data.csiro.au/collection/csiro%3A52949v18',
+      product: ['EACMooringArray'],
     },
   ];
   const filteredDataSources = dataSources.filter((source) => source.product.includes(mainProduct.key));
@@ -89,7 +94,7 @@ const ProductSideBar: React.FC = () => {
 
   return (
     <div className="rounded-md bg-white">
-      <div className="mb-1">{!isArgo && <HeaderSideBar />}</div>
+      <div className="mb-1">{!isArgo && <SidebarProductDropdown />}</div>
 
       {shouldRenderMiniMap && (
         <div className="hidden h-60 w-full overflow-hidden md:block">
