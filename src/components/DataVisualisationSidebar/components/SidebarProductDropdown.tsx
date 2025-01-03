@@ -8,7 +8,7 @@ import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.typ
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
 
-const HeaderSideBar: React.FC = () => {
+const SidebarProductDropdown: React.FC = () => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
   const useProductId = useProductStore((state) => state.productParams.productId);
   const { mainProduct } = useProductConvert();
@@ -46,4 +46,4 @@ const HeaderSideBar: React.FC = () => {
   );
 };
 
-export default HeaderSideBar;
+export default SidebarProductDropdown;
