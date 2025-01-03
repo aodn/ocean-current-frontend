@@ -89,8 +89,8 @@ export const productTypeMapping = new Map<
   [
     'EACMooringArray',
     {
-      subProduct: ['SST'],
-      stateSegment: 'EAC_array_figures',
+      subProduct: [],
+      stateSegment: 'EAC_array_figures/SST/Brisbane',
       localSegment: '',
       dateFormat: DateFormat.Day,
     },
