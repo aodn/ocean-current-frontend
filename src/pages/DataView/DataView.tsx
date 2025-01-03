@@ -6,7 +6,7 @@ import { resetMapStore } from '@/stores/map-store/mapStore';
 import ProductContent from './product-content/ProductContent';
 
 const DataView: React.FC = () => {
-  const { isArgo, isCurrentMeters } = useProductCheck();
+  const { isArgo, isCurrentMeters, isEACMooringArray } = useProductCheck();
   const isProductAvailableInRegion = useProductAvailableInRegion();
 
   useEffect(() => {
@@ -20,7 +20,8 @@ const DataView: React.FC = () => {
       return <ProductContent />;
     }
 
-    return isProductAvailableInRegion ? (
+    // EAC Mooring Array data is only available in Brisbane
+    return isProductAvailableInRegion || isEACMooringArray ? (
       <ProductContent />
     ) : (
       <div className="h-[660px]">

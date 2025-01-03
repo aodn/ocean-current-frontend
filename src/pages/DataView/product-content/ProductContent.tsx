@@ -8,6 +8,7 @@ import {
   buildProductVideoUrl,
   buildCurrentMeterImageUrl,
   buildSSTTimeseriesImageUrl,
+  buildEACMooringArrayImageUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
@@ -27,7 +28,7 @@ import DataImage from '../data-image/DataImage';
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const { isArgo, isCurrentMeters } = useProductCheck();
+  const { isArgo, isCurrentMeters, isEACMooringArray } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
   const useProductId = useProductStore((state) => state.productParams.productId);
@@ -107,6 +108,8 @@ const ProductContent: React.FC = () => {
           return buildCurrentMeterImageUrl(currentMeterRegion, useDate, property, currentMeterDepth);
         case useProductId === 'sixDaySst-timeseries':
           return buildSSTTimeseriesImageUrl(regionPath);
+        case isEACMooringArray:
+          return buildEACMooringArrayImageUrl(useDate);
         default:
           return buildProductImageUrl(
             mainProduct.key,
