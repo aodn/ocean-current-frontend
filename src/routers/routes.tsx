@@ -30,10 +30,6 @@ const routes: RouteObject[] = [
             element: <Navigate to="sst" replace />,
           },
           {
-            path: 'climatology',
-            element: <Navigate to="sst" replace />,
-          },
-          {
             path: 'ocean-colour',
             element: <Navigate to="chl-a" replace />,
           },
@@ -42,12 +38,12 @@ const routes: RouteObject[] = [
             element: <Navigate to="sla" replace />,
           },
           {
-            path: 'current-meters',
-            element: <DataView />,
-          },
-          {
             path: 'monthly-means',
             element: <Navigate to="anomalies" replace />,
+          },
+          {
+            path: 'climatology',
+            element: <Navigate to="sst" replace />,
           },
           {
             path: ':product/:subProduct',

@@ -119,7 +119,7 @@ export const linksData: LinkItem[] = [
         imageUrl: EACMooringArrayIcon,
         title: 'EAC Mooring Array',
         description: 'Monitoring station network',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
+        url: 'product/eac-mooring-array',
       },
     ],
   },
