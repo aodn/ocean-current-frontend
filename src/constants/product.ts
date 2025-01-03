@@ -297,4 +297,13 @@ export const OC_PRODUCTS: Product[] = [
     latestEntry: null,
     dateFormat: null,
   },
+  {
+    title: 'EAC Mooring Array',
+    key: 'EACMooringArray',
+    path: 'eac-mooring-array',
+    dateFormat: {
+      localFormat: DateFormat.Day,
+      stateFormat: DateFormat.Day,
+    },
+  },
 ] as const;

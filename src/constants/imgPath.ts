@@ -1,3 +1,5 @@
+import { DateFormat } from '@/types/date';
+
 export enum TargetPathRegionScope {
   Local = 'local',
   State = 'state',
@@ -18,7 +20,7 @@ export const productTypeMapping = new Map<
       subProduct: [],
       stateSegment: '',
       localSegment: '',
-      dateFormat: 'YYYYMMDDHH',
+      dateFormat: DateFormat.Hour,
     },
   ],
   [
@@ -27,7 +29,7 @@ export const productTypeMapping = new Map<
       subProduct: ['SST', 'SST_ANOM', 'pctiles', 'MMA'],
       stateSegment: 'STATE_daily',
       localSegment: 'DR_SST_daily',
-      dateFormat: 'YYYYMMDD',
+      dateFormat: DateFormat.Day,
     },
   ],
   [
@@ -36,7 +38,7 @@ export const productTypeMapping = new Map<
       subProduct: ['SST_Filled', 'SST', 'SST_Age', 'Wind'],
       stateSegment: undefined,
       localSegment: 'SST_4hr',
-      dateFormat: 'YYYYMMDDHH',
+      dateFormat: DateFormat.Hour,
     },
   ],
   [
@@ -45,7 +47,7 @@ export const productTypeMapping = new Map<
       subProduct: ['SST', 'NMON'],
       stateSegment: 'STATE_CLIM',
       localSegment: 'DR_SST_CLIM',
-      dateFormat: 'MM',
+      dateFormat: DateFormat.MonthOnly,
     },
   ],
   [
@@ -54,7 +56,7 @@ export const productTypeMapping = new Map<
       subProduct: ['CHL', 'CHL_AGE'],
       stateSegment: 'STATE_daily',
       localSegment: null,
-      dateFormat: 'YYYYMMDD',
+      dateFormat: DateFormat.Day,
     },
   ],
   [
@@ -63,7 +65,7 @@ export const productTypeMapping = new Map<
       subProduct: ['SLA', 'SLA_pctiles', 'SLA + SST'],
       stateSegment: 'STATE_daily',
       localSegment: null,
-      dateFormat: 'YYYYMMDD',
+      dateFormat: DateFormat.Day,
     },
   ],
   [
@@ -72,7 +74,7 @@ export const productTypeMapping = new Map<
       subProduct: [],
       stateSegment: 'WAVES',
       localSegment: null,
-      dateFormat: 'YYYYMMDDHH',
+      dateFormat: DateFormat.Hour,
     },
   ],
   [
@@ -81,7 +83,16 @@ export const productTypeMapping = new Map<
       subProduct: ['anomalies', 'CLIM_OFAM3_SSTAARS', 'CLIM_CNESCARS'],
       stateSegment: '30d_MEAN',
       localSegment: null,
-      dateFormat: 'MM',
+      dateFormat: DateFormat.MonthOnly,
+    },
+  ],
+  [
+    'EACMooringArray',
+    {
+      subProduct: ['SST'],
+      stateSegment: 'EAC_array_figures',
+      localSegment: '',
+      dateFormat: DateFormat.Day,
     },
   ],
 ]);
