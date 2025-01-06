@@ -512,4 +512,8 @@ export const productRegionMap: ProductRegionMap = {
     state: ['Au'],
     local: [],
   },
+  EACMooringArray: {
+    state: [],
+    local: ['Brisbane2'],
+  },
 };
