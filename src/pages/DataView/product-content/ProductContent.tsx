@@ -148,40 +148,40 @@ const ProductContent: React.FC = () => {
     setIsPopupOpen(!isPopupOpen);
   };
 
+  if (showVideo) {
+    return (
+      <video
+        onClick={handlePopup}
+        className="max-h-[80vh] w-full select-none object-contain"
+        src={buildMediaUrl()}
+        controls
+        onError={handleError}
+      >
+        <track default kind="captions" srcLang="en" />
+        Your browser does not support the video tag.
+      </video>
+    );
+  }
+
   return (
     <div className="h-full bg-white">
-      {showVideo ? (
-        <video
+      {shouldRenderDataImageWithArgoTags ? (
+        <DataImage
+          src={chooseImg()!}
+          date={useDate}
+          productId={useProductId}
+          regionCode={regionPath}
+          regionScope={regionScope}
+        />
+      ) : (
+        <img
           onClick={handlePopup}
           className="max-h-[80vh] w-full select-none object-contain"
-          src={buildMediaUrl()}
-          controls
+          src={chooseImg()}
+          alt="product"
           onError={handleError}
-        >
-          <track default kind="captions" srcLang="en" />
-          Your browser does not support the video tag.
-        </video>
-      ) : (
-        <>
-          {shouldRenderDataImageWithArgoTags ? (
-            <DataImage
-              src={chooseImg()!}
-              date={useDate}
-              productId={useProductId}
-              regionCode={regionPath}
-              regionScope={regionScope}
-            />
-          ) : (
-            <img
-              onClick={handlePopup}
-              className="max-h-[80vh] w-full select-none object-contain"
-              src={chooseImg()}
-              alt="product"
-              onError={handleError}
-              aria-hidden
-            />
-          )}
-        </>
+          aria-hidden
+        />
       )}
     </div>
   );
