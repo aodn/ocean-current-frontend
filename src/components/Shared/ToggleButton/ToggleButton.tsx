@@ -20,9 +20,9 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({ isOn = false, onToggle, dis
     <button
       onClick={handleToggle}
       disabled={disabled}
-      className={`flex h-6 w-16 cursor-pointer items-center rounded-full p-1 ${
+      className={`flex h-6 w-16 items-center rounded-full p-1 ${
         isToggled ? 'bg-imos-sea-blue' : 'bg-gray-300'
-      } ${disabled ? 'cursor-not-allowed opacity-50' : ''}`}
+      } ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
     >
       <div
         className={`h-4 w-4 transform rounded-full bg-white shadow-md duration-300 ease-in-out ${

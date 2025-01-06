@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:edge": "tsc && vite build --mode edge",
     "test": "vitest --watch=false",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",

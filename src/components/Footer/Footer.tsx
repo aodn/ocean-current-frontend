@@ -1,38 +1,43 @@
 import React from 'react';
-import { footerData } from './data/FooterData';
-import { FooterIcon, FooterLink } from './types/footer.types';
+import logo from '@/assets/images/imos-logo.png';
+import { BrandingText } from '@/constants/textConstant';
+import { copyrightInfo, footerAcknowledgeText, footerLinks, footerSocials } from './consts.ts';
+import { FooterIcon } from './footer.types';
 
 const Footer: React.FC = () => {
   return (
-    <div className="py-6 md:pt-20">
-      <div className="text-2xl font-medium leading-7 text-white">IMOS OceanCurrent</div>
-      <div className="flex flex-col justify-center md:flex md:flex-row">
-        {footerData.map(({ title, links, icons }) => (
-          <div key={title} className="w-full md:mr-4 md:w-1/4">
-            <div className="mt-11 text-base font-semibold leading-6 text-white max-md:mt-10">{title}</div>
-            {links.map(({ name, url }: FooterLink, index: number) => (
-              <div key={index} className="mt-6 leading-6 text-white">
-                {url ? <a href={url}>{name}</a> : name}
-              </div>
-            ))}
-            {icons && (
-              <>
-                <div className="mt-20 flex gap-5 px-0.5 max-md:mt-10">
-                  {icons.map(({ alt, src, url }: FooterIcon, index: number) => (
-                    <a key={index} href={url}>
-                      <img loading="lazy" alt={alt} src={src} className="aspect-square w-5 shrink-0" />
-                    </a>
-                  ))}
-                </div>
-                <div className="mt-10 text-left text-sm leading-5 text-white">
-                  Copyright © 2020. All rights reserved.
-                </div>
-              </>
-            )}
+    <footer className="flex justify-center bg-white px-5 leading-8 sm:px-10">
+      <div className="max-w-8xl py-6 md:pt-10">
+        <div className="flex flex-row items-center pb-10 pt-5">
+          <img src={logo} alt="IMOS logo" className="h-8 sm:h-10 md:h-max" />
+          <div className="px-6 leading-6">
+            <h1 className="text-2xl font-medium text-imos-deep-blue">{BrandingText.OC_PASCAL_CASE}</h1>
+            <h2 className="text-sm font-normal text-imos-subheading-grey">{BrandingText.OC_SUBHEADING}</h2>
           </div>
-        ))}
+        </div>
+
+        <div className="flex flex-col items-center gap-5 border-y border-imos-deeper-blue py-5 sm:flex-row sm:justify-between">
+          {footerLinks.map(({ text, url }) => (
+            <a key={text} href={url} target="_blank" rel="noreferrer">
+              {text}
+            </a>
+          ))}
+        </div>
+
+        <div className="flex flex-col justify-between pt-5 md:flex-row">
+          <p className="md:w-1/2">{footerAcknowledgeText}</p>
+          <div className="flex gap-5 self-center px-0.5 max-md:mt-10 md:self-end xl:self-end">
+            {footerSocials.map(({ alt, src, url }: FooterIcon, index: number) => (
+              <a key={index} href={url} target="_blank" rel="noreferrer">
+                <img loading="lazy" alt={alt} src={src} className="aspect-square w-6 shrink-0" />
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <p className="mt-10 text-center text-sm leading-5 md:text-left">{copyrightInfo}</p>
       </div>
-    </div>
+    </footer>
   );
 };
 

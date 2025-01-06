@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import logo from '@/assets/images/imos-logo.png';
 import { linksData } from '@/data/linksData';
 import { LinkItem, SectionLinks } from '@/types/navbar';
-import { TEXT_CONSTANT } from '@/constants/textConstant';
+import { BrandingText } from '@/constants/textConstant';
 import ArrowIcon from '@/assets/icons/arrow.svg';
 import NavbarMenu from './components/NavbarMenu';
 
@@ -54,7 +54,7 @@ const Navbar: React.FC = () => {
           <div className="mx-7 h-10 w-0.5 bg-imos-title-blue"></div>
           <div className="flex flex-col justify-center text-xl text-imos-title-blue">
             <Link className="mr-auto" to={'/'}>
-              {TEXT_CONSTANT.OC_PASCAL_CASE}
+              {BrandingText.OC_PASCAL_CASE}
             </Link>
           </div>
         </div>
@@ -70,12 +70,23 @@ const Navbar: React.FC = () => {
                 onMouseEnter={(event) => setPositionNavbar(index, event.currentTarget)}
                 className="flex cursor-pointer content-center justify-center py-4 text-black"
               >
-                <span
-                  ref={(el) => (menuItemRefs.current[index] = el)}
-                  className={`decoration-imos-deep-blue decoration-2 underline-offset-[3px] ${hoverIndex === index ? 'underline' : ''}`}
-                >
-                  {item.title}
-                </span>
+                {item.url ? (
+                  <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`decoration-imos-deep-blue decoration-2 underline-offset-[3px] ${hoverIndex === index ? 'underline' : ''}`}
+                  >
+                    {item.title}
+                  </a>
+                ) : (
+                  <span
+                    ref={(el) => (menuItemRefs.current[index] = el)}
+                    className={`decoration-imos-deep-blue decoration-2 underline-offset-[3px] ${hoverIndex === index ? 'underline' : ''}`}
+                  >
+                    {item.title}
+                  </span>
+                )}
                 {isSectionLink(item) && (
                   <img
                     src={ArrowIcon}

@@ -1,28 +1,22 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { setProductId } from '@/stores/product-store/productStore';
-import { getProductByPath } from '@/utils/product-utils/product';
-import { useProductFromUrl, useIsMobile } from '@/hooks';
+import useProductStore, { setProductId } from '@/stores/product-store/productStore';
+import { useDeviceType, useSetProductId, useUrlType } from '@/hooks';
 import MapSidebar from '@/components/MapSidebar/MapSidebar';
-import MapNavbar from '@/components/MapNavbar/MapNavbar';
 import HeaderSideBar from '@/components/DataVisualisationSidebar/components/HeaderSideBar';
+import { Loading } from '@/components/Shared';
+import ProductMenuBar from '@/components/ProductMenuBar/ProductMenuBar';
 
 const MapLayout: React.FC = () => {
-  const product = useProductFromUrl('map');
-  const isMobile = useIsMobile();
+  const { isMobile } = useDeviceType();
+  const productId = useProductStore((state) => state.productParams.productId);
 
-  useEffect(() => {
-    if (product) {
-      const { mainProduct, subProduct } = product;
+  const urlType = useUrlType();
+  useSetProductId(urlType, setProductId);
 
-      const mainProductKey = getProductByPath(mainProduct)!.key;
-      const subProductKey = subProduct ? getProductByPath(mainProduct, subProduct)!.key : null;
-
-      const productId = subProductKey || mainProductKey;
-
-      setProductId(productId);
-    }
-  }, [product]);
+  if (!productId) {
+    return <Loading />;
+  }
 
   return (
     <div className="mx-auto mb-9 mt-4 w-full max-w-8xl">
@@ -37,7 +31,9 @@ const MapLayout: React.FC = () => {
           </div>
         )}
         <div className="w-full md:mx-2">
-          <MapNavbar />
+          {/* we never need to show video when viewing the main map */}
+          <ProductMenuBar setShowVideo={() => false} isMapView={true} />
+
           <div className="w-full">
             <Outlet />
           </div>

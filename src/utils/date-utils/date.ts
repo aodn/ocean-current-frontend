@@ -1,4 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs';
+import { DateFormat, DateUnit } from '@/types/date';
 
 const findMostRecentDateBefore = (dateArray: string[], targetDate: string): string | null => {
   const targetDayjs: Dayjs = dayjs(targetDate);
@@ -16,4 +17,20 @@ const findMostRecentDateBefore = (dateArray: string[], targetDate: string): stri
   }, null);
 };
 
-export { findMostRecentDateBefore };
+const getUnitByFormat = (format: DateFormat): DateUnit => {
+  switch (format) {
+    case DateFormat.Hour:
+      return DateUnit.Hour;
+    case DateFormat.Day:
+      return DateUnit.Day;
+    case DateFormat.Month:
+    case DateFormat.MonthOnly:
+      return DateUnit.Month;
+    case DateFormat.Year:
+      return DateUnit.Year;
+    default:
+      return DateUnit.Day;
+  }
+};
+
+export { findMostRecentDateBefore, getUnitByFormat };

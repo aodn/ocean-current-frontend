@@ -4,7 +4,9 @@ import DataImageLayerRenderer from './DataImageLayerRenderer';
 
 const DataImageLayer: React.FC = () => {
   const useProductId = useProductStore((state) => state.productParams.productId);
-  const urlPath = getEntryImagePathByProductId(useProductId);
+  // client requested to use adjusted SLA map for argo product, see https://github.com/aodn/backlog/issues/5575
+  const correctProductId = useProductId === 'argo' ? 'adjustedSeaLevelAnomaly-sla' : useProductId;
+  const urlPath = getEntryImagePathByProductId(correctProductId);
 
   if (!urlPath) {
     return null;
