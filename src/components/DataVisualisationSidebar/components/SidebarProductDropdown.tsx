@@ -16,18 +16,22 @@ const SidebarProductDropdown: React.FC = () => {
   const selectedDate = dayjs(allDates[selectedDateIndex]?.date).format(formatDate);
   const isProductAvailableInRegion = useProductAvailableInRegion();
 
-  const handleDropdownChange = (selectedElement: DropdownElement) => {
-    if (selectedElement.id === useProductId) {
+  const handleDropdownChange = ({ id }: DropdownElement) => {
+    if (id === useProductId) {
       return;
     }
-    setProductId(selectedElement.id);
+    setProductId(id);
 
     let queryToUpdate = { date: selectedDate } as Record<string, string | null>;
+    // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
+    if (id === 'EACMooringArray') {
+      queryToUpdate = { date: selectedDate, region: 'Brisbane' };
+    }
     if (!isProductAvailableInRegion) {
       queryToUpdate = { date: selectedDate, region: null };
     }
 
-    const targetPath = getProductPathWithSubProduct(selectedElement.id);
+    const targetPath = getProductPathWithSubProduct(id);
     updateQueryParamsAndNavigate(targetPath, queryToUpdate);
   };
 
