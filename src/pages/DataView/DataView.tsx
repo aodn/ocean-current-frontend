@@ -16,14 +16,11 @@ const DataView: React.FC = () => {
   }, [isProductAvailableInRegion]);
 
   const renderView = () => {
-    if (isArgo || isCurrentMeters) {
+    if (isProductAvailableInRegion || isArgo || isCurrentMeters || isEACMooringArray) {
       return <ProductContent />;
     }
 
-    // EAC Mooring Array data is only available in Brisbane
-    return isProductAvailableInRegion || isEACMooringArray ? (
-      <ProductContent />
-    ) : (
+    return (
       <div className="h-[660px]">
         <BasicMap />
       </div>
