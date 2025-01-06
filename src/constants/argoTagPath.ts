@@ -51,7 +51,7 @@ export const argoTagFilePaths: ArgoTagPath = {
     local: null,
   },
   EACMooringArray: {
-    state: 'EAC_array_figures',
-    local: null,
+    state: null,
+    local: 'EAC_array_figures',
   },
 };

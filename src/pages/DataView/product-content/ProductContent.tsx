@@ -38,7 +38,8 @@ const ProductContent: React.FC = () => {
   const { showVideo } = useOutletContext<VideoPlayerOutletContext>();
   const { property, depth: currentMeterDepth, region: currentMeterRegion } = useCurrentMeterStore();
 
-  const region = getRegionByRegionTitle(useRegionTitle);
+  // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
+  const region = getRegionByRegionTitle(isEACMooringArray ? 'Brisbane' : useRegionTitle);
   const regionScope = region?.scope || RegionScope.Au;
   const targetPathRegion = getTargetRegionScopePath(regionScope);
   const regionPath = region?.code || 'Au';
