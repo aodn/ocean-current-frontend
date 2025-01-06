@@ -16,7 +16,7 @@ import ProductMenuBarMobile from '@/components/ProductMenuBar/ProductNavbarMobil
 
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const { isArgo, isEACMooringArray } = useProductCheck();
+  const { isArgo } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const product = useProductFromUrl('product');
   const [showVideo, setShowVideo] = useState(false);
@@ -47,12 +47,11 @@ const DataVisualisationLayout: React.FC = () => {
 
   useEffect(() => {
     const region = getRegionByRegionTitle(regionTitleFromUrl as string);
-    // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
-    const regionName = isEACMooringArray ? 'Brisbane' : region?.title || 'Australia/NZ';
+    const regionName = region?.title || 'Australia/NZ';
     const regionScope = region?.scope || RegionScope.Au;
     setRegionTitle(regionName);
     setRegionScope(regionScope);
-  }, [isEACMooringArray, regionTitleFromUrl]);
+  }, [regionTitleFromUrl]);
 
   useEffect(() => {
     if (!date) return;
