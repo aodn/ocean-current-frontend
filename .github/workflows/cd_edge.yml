@@ -7,15 +7,18 @@ permissions:
 
 on:
   workflow_run:
-    workflows: ["CI"]
-    types:
-      - completed
+    workflows: ['CI']
+    types: [completed]
+    branches:
+      - '6174-implement-githubaction-for-edge-deployment'
+      - 'main'
 
 jobs:
   build:
     name: Build
     environment: edge
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     strategy:
       matrix:
