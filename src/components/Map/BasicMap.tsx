@@ -10,7 +10,7 @@ import { mapConfig } from '@/configs/map';
 import useMapStore, { setMapViewState, updateZoom } from '@/stores/map-store/mapStore';
 import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { useIsMobile } from '@/hooks';
+import { useDeviceType } from '@/hooks';
 import MAP_STYLE from './data/map-style.basic-v8.json';
 import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer, CurrentMeterRegionPolygonLayer } from './layers';
 import { MouseCursorLocationPanel } from './panels';
@@ -32,7 +32,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
   const [cursorLngLat, setCursorLngLat] = useState<{ lng: number; lat: number } | null>(null);
   const useMapViewState = useMapStore((state) => state.mapViewState);
   const { isArgo, isCurrentMeters } = useProductCheck();
-  const isMobile = useIsMobile();
+  const { isMobile } = useDeviceType();
 
   const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
   const interactiveIds = [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID];

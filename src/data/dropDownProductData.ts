@@ -1,18 +1,18 @@
-import SSTIcon from '@/assets/icons/products/SST-icon.svg';
-import SSTWhiteIcon from '@/assets/icons/products/white-icons/SST-white-icon.svg';
-import OceanColourIcon from '@/assets/icons/products/ocean-colour-icon.svg';
-import OceanColourWhiteIcon from '@/assets/icons/products/white-icons/ocean-colour-white-icon.svg';
-import AdjustedSeaLevelAnomalyIcon from '@/assets/icons/products/adjusted-sea-level-anomaly-icon.svg';
-import AdjustedSeaLevelAnomalyWhiteIcon from '@/assets/icons/products/white-icons/adjusted-sea-level-anomaly-white-icon.svg';
-import MonthlyMeansIcon from '@/assets/icons/products/monthly-means-icon.svg';
-import MonthlyMeansWhiteIcon from '@/assets/icons/products/white-icons/monthly-means-white-icon.svg';
-import SurfaceWavesIcon from '@/assets/icons/products/surface-waves-icon.svg';
-import SurfaceWavesWhiteIcon from '@/assets/icons/products/white-icons/surface-waves-white-icon.svg';
-import FourHourSSTIcon from '@/assets/icons/products/4-hour-SST-icon.svg';
-import FourHourSSTWhiteIcon from '@/assets/icons/products/white-icons/4-hour-SST-white-icon.svg';
-import SixHourSSTIcon from '@/assets/icons/products/6-hour-SST-icon.svg';
-import SixHourSSTWhiteIcon from '@/assets/icons/products/white-icons/6-hour-SST-white-icon.svg';
-import ArgoIcon from '@/assets/icons/products/argo-icon.svg';
+import SSTIcon from '@/assets/icons/products/grey-icons/sst-icon-grey.svg';
+import SSTWhiteIcon from '@/assets/icons/products/white-icons/sst-icon-white.svg';
+import OceanColourIcon from '@/assets/icons/products/grey-icons/ocean-colour-icon-grey.svg';
+import OceanColourWhiteIcon from '@/assets/icons/products/white-icons/ocean-colour-icon-white.svg';
+import AdjustedSeaLevelAnomalyIcon from '@/assets/icons/products/grey-icons/adjusted-sea-level-anomaly-icon-grey.svg';
+import AdjustedSeaLevelAnomalyWhiteIcon from '@/assets/icons/products/white-icons/adjusted-sea-level-anomaly-icon-white.svg';
+import MonthlyMeansIcon from '@/assets/icons/products/grey-icons/monthly-means-icon-grey.svg';
+import MonthlyMeansWhiteIcon from '@/assets/icons/products/white-icons/monthly-means-icon-white.svg';
+import SurfaceWavesIcon from '@/assets/icons/products/grey-icons/surface-waves-icon-grey.svg';
+import SurfaceWavesWhiteIcon from '@/assets/icons/products/white-icons/surface-waves-icon-white.svg';
+import FourHourSSTIcon from '@/assets/icons/products/grey-icons/4-hour-sst-icon-grey.svg';
+import FourHourSSTWhiteIcon from '@/assets/icons/products/white-icons/4-hour-sst-icon-white.svg';
+import SixHourSSTIcon from '@/assets/icons/products/grey-icons/6-day-sst-icon-grey.svg';
+import SixHourSSTWhiteIcon from '@/assets/icons/products/white-icons/6-day-sst-icon-white.svg';
+import ArgoIcon from '@/assets/icons/products/grey-icons/argo-icon-grey.svg';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 
 export const mapNavbarDataElements: DropdownElement[] = [

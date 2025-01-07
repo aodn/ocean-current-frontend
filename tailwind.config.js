@@ -21,12 +21,15 @@ export default {
         'imos-light-blue': color.primary5,
         'imos-accent-orange': color.accentOrange,
         'imos-sand': color.sand,
+        'imos-light-grey': color.lightGrey,
         'imos-mid-grey': color.grey2,
         'imos-title-blue': color.blue2,
         'imos-grey': color.grey,
-        'imos-black': color.grey3,
+        'imos-dark-grey': color.grey3,
         'imos-text-grey': color.textGrey,
         'imos-subheading-grey': color.subheadingGrey,
+        'imos-calypso-blue': color.calypsoBlue,
+        'imos-horizon-blue': color.horizonBlue,
       },
       backgroundImage: {
         'background-gradient': 'linear-gradient(180deg, #DCDCDC 0%, rgba(217, 217, 217, 0.34) 100%)',
@@ -43,6 +46,7 @@ export default {
       fontFamily: {
         noto: ['NotoSans', 'sans-serif'],
         lexend: ['Lexend', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
         'open-sans': ['"Open Sans"', 'sans-serif'],
       },
       maxWidth: {

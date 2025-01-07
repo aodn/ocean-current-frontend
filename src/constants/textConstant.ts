@@ -1,5 +1,9 @@
-export enum GeneralText {
+export enum BrandingText {
   OC_PASCAL_CASE = 'OceanCurrent',
+  OC_SUBHEADING = 'Up-to-date ocean information around Australia',
+}
+
+export enum GeneralText {
   READ_MORE = 'Read more',
   START_DATE = 'Start Date',
   END_DATE = 'End Date',
@@ -19,4 +23,9 @@ export enum ProductMenubarText {
   VIDEO = 'Video',
   DOWNLOAD = 'Download',
   ANIMATION_SPEED = 'Animation Speed',
+}
+
+export enum News {
+  NEWS = 'News',
+  ALL_NEWS = 'All news',
 }

@@ -71,7 +71,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
 
   return (
     <div className="mb-2 rounded-md">
-      <div className="mb-2 flex items-center justify-between gap-3 font-sans font-medium text-imos-black">
+      <div className="mb-2 flex items-center justify-between gap-3 font-sans font-medium text-imos-dark-grey">
         <div className="flex h-11 grow items-center justify-between rounded-md bg-white">
           <DatePicker
             startDate={startDate}

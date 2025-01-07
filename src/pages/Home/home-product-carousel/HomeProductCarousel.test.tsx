@@ -1,33 +1,83 @@
-import { describe, expect, it } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import HomeProductCarouselCard from './components/HomeProductCarouselCard';
+import { render, screen, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { describe, it, expect, vi } from 'vitest';
+import HomeProductCarousel from './HomeProductCarousel';
+import { productCarouselData } from './data';
 
-describe('HomeProductCarouselCard', () => {
-  it('should render the product information', () => {
-    // Arrange
-    const title = 'Test Product';
-    const description = 'This is a test product.';
-    const id = 'test-product';
+vi.mock('./data', () => ({
+  productCarouselData: [
+    { id: 1, url: '/product1', imageUrl: 'image1.jpg', description: 'Product 1', title: 'Product 1' },
+    { id: 2, url: '/product2', imageUrl: 'image2.jpg', description: 'Product 2', title: 'Product 2' },
+    { id: 3, url: '/product3', imageUrl: 'image3.jpg', description: 'Product 3', title: 'Product 3' },
+    { id: 4, url: '/product4', imageUrl: 'image4.jpg', description: 'Product 4', title: 'Product 4' },
+    { id: 5, url: '/product5', imageUrl: 'image5.jpg', description: 'Product 5', title: 'Product 5' },
+  ],
+}));
 
-    // Act
-    render(<HomeProductCarouselCard title={title} description={description} selected={false} id={id} />);
+describe('HomeProductCarousel', () => {
+  const renderComponent = () =>
+    render(
+      <Router>
+        <HomeProductCarousel />
+      </Router>,
+    );
 
-    // Assert
-    expect(screen.getByText(title)).toBeInTheDocument();
-    expect(screen.getByText(description)).toBeInTheDocument();
+  it('renders all products', () => {
+    renderComponent();
+
+    productCarouselData.forEach((product) => {
+      expect(screen.getByAltText(product.description)).toBeInTheDocument();
+      expect(screen.getByText(product.title)).toBeInTheDocument();
+    });
   });
 
-  it('should apply the selected border style when selected is true', () => {
-    // Arrange
-    const title = 'Test Product';
-    const description = 'This is a test product.';
-    const id = 'test-product';
+  it('disables the previous button initially', () => {
+    renderComponent();
+    const prevButton = screen.getAllByRole('button')[0];
+    expect(prevButton).toHaveClass('cursor-not-allowed');
+  });
 
-    // Act
-    render(<HomeProductCarouselCard title={title} description={description} selected={true} id={id} />);
+  it('disables the next button when at the end of the carousel', () => {
+    renderComponent();
 
-    // Assert
-    const cardElement = screen.getByTestId(`product-card-${id}`);
-    expect(cardElement).toHaveClass('border-l-8 border-imos-sea-blue border-2');
+    const nextButton = screen.getAllByRole('button')[1];
+
+    // Simulate clicks to reach the last possible index
+    const itemsPerRow = window.innerWidth >= 1280 ? 7 : window.innerWidth >= 768 ? 4 : 1;
+    const maxIndex = productCarouselData.length - itemsPerRow;
+
+    for (let i = 0; i < maxIndex; i++) {
+      fireEvent.click(nextButton);
+    }
+
+    expect(nextButton).toHaveClass('cursor-not-allowed');
+  });
+
+  it('navigates the carousel when next and previous buttons are clicked', async () => {
+    renderComponent();
+
+    const nextButton = screen.getAllByRole('button')[1];
+    const prevButton = screen.getAllByRole('button')[0];
+
+    const carouselContainer = screen.getByTestId('carousel-container');
+
+    await userEvent.click(nextButton);
+
+    expect(carouselContainer).toHaveStyle('transform: translateX(-144px)');
+
+    await userEvent.click(prevButton);
+
+    expect(carouselContainer).toHaveStyle('transform: translateX(0px)');
+  });
+
+  it('adjusts the number of items per row on window resize', () => {
+    renderComponent();
+
+    global.innerWidth = 1024;
+    fireEvent(window, new Event('resize'));
+
+    const totalVisibleItems = window.innerWidth >= 1280 ? 7 : window.innerWidth >= 768 ? 4 : 1;
+    expect(totalVisibleItems).toBe(4);
   });
 });
