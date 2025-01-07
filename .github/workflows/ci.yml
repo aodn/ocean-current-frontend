@@ -1,0 +1,47 @@
+name: CI
+run-name: Lint, run coverage tests and build
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+# cancel currently running workflow from the same PR or branch
+concurrency:
+  group: ${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name : Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+      
+      - name: Install Yarn globally
+        run: npm install -g yarn
+
+      - name: Install dependencies  
+        run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
+
+      - name: Run linting 
+        run: yarn run lint
+
+      - name: Run coverage tests
+        run: yarn run coverage
+
+      - name: Build the front end
+        run: yarn build
