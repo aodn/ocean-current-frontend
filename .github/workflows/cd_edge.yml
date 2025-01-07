@@ -1,5 +1,6 @@
 name: CD - Edge
 run-name: Deploy frontend to Edge environment
+
 permissions:
   actions: read
   contents: read
@@ -10,9 +11,6 @@ on:
       - CI
     types:
       - completed
-    # branches: [6174-implement-githubaction-for-edge-deployment]
-  # push:
-  #   branches: ['main', '6174-implement-githubaction-for-edge-deployment']
 
 jobs:
   build:
