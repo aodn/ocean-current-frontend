@@ -25,7 +25,7 @@ jobs:
         node-version: [18.x]
 
     steps:
-      - name : Checkout code
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up Node.js ${{ matrix.node-version }}
@@ -33,11 +33,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
-      
+
       - name: Install Yarn globally
         run: npm install -g yarn
 
-      - name: Install dependencies  
+      - name: Install dependencies
         run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
 
       - name: Build the front end
@@ -49,9 +49,9 @@ jobs:
         # if: ${{ github.ref == 'refs/heads/main' }}
         uses: actions/upload-artifact@v4
         with:
-            name: yarn_build
-            path: ./dist
-            retention-days: 1
+          name: yarn_build
+          path: ./dist
+          retention-days: 1
 
   edge_deploy:
     name: Deploy to Edge Environment
@@ -79,7 +79,7 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
 
-      - name: Upload website artifacts to S3 bucket 
+      - name: Upload website artifacts to S3 bucket
         run: |
           aws s3 sync --delete ${{ env.DIST }} s3://${{ vars.BUCKET }} --region ${{ vars.AWS_REGION }}
 
