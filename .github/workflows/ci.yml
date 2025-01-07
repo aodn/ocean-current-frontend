@@ -3,9 +3,14 @@ run-name: Lint, run coverage tests and build
 
 on:
   push:
-    branches: ['main', '6174-implement-githubaction-for-edge-deployment']
+    branches: ['main']
   pull_request:
     branches: ['main']
+
+# cancel currently running workflow from the same PR or branch
+concurrency:
+  group: ${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:

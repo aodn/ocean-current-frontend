@@ -7,11 +7,8 @@ permissions:
 
 on:
   workflow_run:
-    workflows: ['CI']
+    workflows: [CI]
     types: [completed]
-    branches:
-      - '6174-implement-githubaction-for-edge-deployment'
-      - 'main'
 
 jobs:
   build:
