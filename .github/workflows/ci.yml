@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: ['main']
 
-# cancel currently running workflow from the same PR or branch
+# Cancel currently running workflow from the same PR or branch
 concurrency:
   group: ${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
