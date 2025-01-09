@@ -6,8 +6,8 @@ import { getUnitByFormat } from '@/utils/date-utils/date';
 interface MockConfig {
   productId: string;
   interVal?: {
-    local: 1 | 4;
-    state: 1 | 4 | 6;
+    local?: 1 | 4;
+    state: 1 | 2 | 4 | 6;
   };
 }
 
@@ -40,17 +40,22 @@ const MOCK_CONFIGS: MockConfig[] = [
       state: 6,
     },
   },
+  {
+    productId: 'surfaceWaves',
+    interVal: {
+      state: 2,
+    },
+  },
 ];
 
 export const generateDateRange = (
   productId: string,
   dateFormat: DateFormat,
   scope: RegionScope,
-  selectedDate?: string,
+  selectedDate: string,
 ): DateItem[] => {
   const mockConfig = MOCK_CONFIGS.find((c) => c.productId === productId);
   const interval = scope === RegionScope.Local ? mockConfig?.interVal?.local || 1 : mockConfig?.interVal?.state || 1;
-
   const centerDate = selectedDate ? dayjs(selectedDate) : dayjs();
   const dates: DateItem[] = [];
   const today = dayjs();
@@ -75,5 +80,7 @@ export const generateDateRange = (
     }
   }
 
-  return dates.sort((a, b) => a.date.localeCompare(b.date));
+  return dates
+    .filter((item, index, self) => index === self.findIndex((obj) => obj.date === item.date))
+    .sort((a, b) => a.date.localeCompare(b.date));
 };

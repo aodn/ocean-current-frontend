@@ -1,67 +1,54 @@
 import React, { useEffect, useCallback } from 'react';
-import ReactDatePicker from 'react-datepicker';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import arrowIcon from '@/assets/icons/arrow.svg';
-import calendarIcon from '@/assets/icons/calendar-icon.svg';
-import 'react-datepicker/dist/react-datepicker.css';
-import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
+import { DateFormat } from '@/types/date';
 import { DatePickerProps } from './types/datePicker.types';
-
-const customInput = () => (
-  <div className="mr-5 mt-1 flex w-full cursor-pointer items-center justify-center">
-    <img src={calendarIcon} alt="calendar icon" className="mr-4" />
-  </div>
-);
-
-const customInputMobile = () => (
-  <div className="mr-5 mt-1 flex w-full cursor-pointer items-center justify-center">
-    <img src={calendarIcon} alt="calendar icon" className="mr-4" />
-  </div>
-);
+import MultiFormatDatePicker from './components/MultiFormatDatePicker';
 
 const DatePicker: React.FC<DatePickerProps> = ({
-  startDate,
-  minDate,
-  maxDate = new Date(),
-  addButtonDisabled = false,
-  handleDateChange,
-  modifyDate,
-  handleYearDateChange,
+  goToPrevious,
+  goToNext,
+  canGoNext = true,
   selectedDate,
-  isLastMonthOfTheYear,
-  isMonthRange,
-  isWeekRange,
-  isYearRange,
+  dateFormat,
+  onChange,
   isMobile,
 }) => {
-  const { isClimatology } = useProductCheck();
-
-  const formattedDate = () => {
-    if (isClimatology) {
-      return dayjs(selectedDate).format('MMM');
-    } else if (isMonthRange) {
-      return dayjs(selectedDate).format('MMM YYYY');
-    } else if (isWeekRange) {
-      return dayjs(selectedDate).format('DD MMM HH:mm ');
-    } else if (isYearRange) {
-      return dayjs(selectedDate).format('YYYY');
-    } else {
-      return dayjs(selectedDate).format('DD MMM YY');
+  const renderDate = (date: Dayjs, dateFormat: DateFormat) => {
+    switch (dateFormat) {
+      case DateFormat.Hour:
+        return date.format('DD MMM YYYY HH:00');
+      case DateFormat.Day:
+        return date.format('DD MMM YY');
+      case DateFormat.Month:
+        return date.format('MMM YYYY');
+      case DateFormat.MonthOnly:
+        return date.format('MMM');
+      case DateFormat.Year:
+        return date.format('YYYY');
+      default:
+        return date.format('DD MMM YY');
     }
   };
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === 'ArrowLeft') {
-        modifyDate('subtract');
+        goToPrevious();
       } else if (event.key === 'ArrowRight') {
-        if (!(isMonthRange ? isLastMonthOfTheYear() : addButtonDisabled)) {
-          modifyDate('add');
+        if (canGoNext) {
+          goToNext();
         }
       }
     },
-    [modifyDate, isMonthRange, isLastMonthOfTheYear, addButtonDisabled],
+    [goToPrevious, canGoNext, goToNext],
   );
+
+  const handleDateChange = (date: Date | null) => {
+    if (date) {
+      onChange(date);
+    }
+  };
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -74,7 +61,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
     <div className="flex h-full w-full items-center justify-between">
       <div className="flex-center h-full w-12 border-r-2 text-lg text-imos-title-blue">
         <button
-          onClick={() => modifyDate('subtract')}
+          onClick={goToPrevious}
           className="hidden cursor-pointer rounded bg-transparent p-2 font-semibold md:block"
         >
           <img className="h-4 w-4 rotate-90" src={arrowIcon} alt="left arrow icon" />
@@ -83,34 +70,20 @@ const DatePicker: React.FC<DatePickerProps> = ({
 
       <div className="flex-center h-full">
         <div className="flex items-center justify-center text-center">
-          {isMonthRange || isYearRange ? (
-            <ReactDatePicker
-              customInput={isMobile ? customInputMobile() : customInput()}
-              selected={startDate}
-              onChange={handleYearDateChange}
-              showYearPicker
-              dateFormat="yyyy"
-            />
-          ) : (
-            <ReactDatePicker
-              customInput={isMobile ? customInputMobile() : customInput()}
-              selected={startDate}
-              onChange={handleDateChange}
-              minDate={minDate}
-              maxDate={maxDate}
-              showYearDropdown
-              showMonthDropdown
-              dropdownMode="select"
-            />
-          )}
+          <MultiFormatDatePicker
+            selectedDate={selectedDate}
+            onChange={handleDateChange}
+            dateFormat={dateFormat}
+            isMobile={isMobile}
+          />
         </div>
-        <div className="text-l">{formattedDate()}</div>
+        <div className="text-l">{renderDate(dayjs(selectedDate), dateFormat)}</div>
       </div>
 
       <div className="flex-center h-full w-12 border-l-2 text-lg text-imos-title-blue">
         <button
-          onClick={() => modifyDate('add')}
-          disabled={isMonthRange ? isLastMonthOfTheYear() : addButtonDisabled}
+          onClick={goToNext}
+          disabled={!canGoNext}
           className="hidden cursor-pointer rounded bg-transparent p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50 md:block"
         >
           <img className="h-4 w-4 -rotate-90" src={arrowIcon} alt="right arrow icon" />
