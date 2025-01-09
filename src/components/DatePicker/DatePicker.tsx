@@ -18,8 +18,6 @@ const DatePicker: React.FC<DatePickerProps> = ({
     switch (dateFormat) {
       case DateFormat.Hour:
         return date.format('DD MMM YYYY HH:00');
-      case DateFormat.Day:
-        return date.format('DD MMM YY');
       case DateFormat.Month:
         return date.format('MMM YYYY');
       case DateFormat.MonthOnly:
