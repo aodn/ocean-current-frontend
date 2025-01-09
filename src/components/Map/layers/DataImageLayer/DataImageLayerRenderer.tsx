@@ -7,8 +7,39 @@ const DataImageLayerRenderer: React.FC<{ imageUrl: string }> = ({ imageUrl }) =>
   const { DATA_IMAGE_SOURCE_ID } = mapboxSourceIds;
   const { DATA_IMAGE_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
 
+  const [hasCycledFirstAdjSLA, setHasCycledFirstAdjSLA] = useState<boolean>(false);
+  const [imageCoords, setImageCoords] = useState([
+    [100, -4.4],
+    [180, -4.4],
+    [180, -48],
+    [100, -48],
+  ]);
   const [layers, setLayers] = useState<string[]>([]);
   const { current: map } = useMap();
+
+  useEffect(() => {
+    if (imageUrl.includes('GSLA_entry')) setHasCycledFirstAdjSLA(true);
+  }, [imageUrl]);
+
+  useEffect(() => {
+    if (hasCycledFirstAdjSLA) {
+      if (imageUrl.includes('GSLA_entry')) {
+        setImageCoords([
+          [100, -4.4],
+          [180, -4.4],
+          [180, -48],
+          [100, -48],
+        ]);
+      } else {
+        setImageCoords([
+          [100, -4.4],
+          [200, -4.4],
+          [200, -55],
+          [100, -55],
+        ]);
+      }
+    }
+  }, [hasCycledFirstAdjSLA, imageUrl]);
 
   useEffect(() => {
     if (!map) return;
@@ -34,7 +65,8 @@ const DataImageLayerRenderer: React.FC<{ imageUrl: string }> = ({ imageUrl }) =>
       map.off('sourcedataloading', repositionImageLayer);
       map.off('sourcedataabort', repositionImageLayer);
     };
-  }, [map]);
+  }, [DATA_IMAGE_LAYER_ID, map]);
+  // console.log('map', map?.getLayer(DATA_IMAGE_LAYER_ID));
 
   useArrayCompareEffect(() => {
     if (!map) return;
@@ -56,12 +88,9 @@ const DataImageLayerRenderer: React.FC<{ imageUrl: string }> = ({ imageUrl }) =>
         type="image"
         url={imageUrl}
         // TODO: read the coordinates from the regionData.ts and convert it to the format below
-        coordinates={[
-          [100, -4.4],
-          [180, -4.4],
-          [180, -48],
-          [100, -48],
-        ]}
+        coordinates={imageCoords}
+        // height={625}
+        // wifth={1000}
       >
         <Layer
           id={DATA_IMAGE_LAYER_ID}
