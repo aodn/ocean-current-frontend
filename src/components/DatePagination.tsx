@@ -15,7 +15,13 @@ interface DatePaginationProps {
   isMobile?: boolean;
 }
 
-const DatePagination: React.FC<DatePaginationProps> = ({ productId, regionScope, dateFormat, initialDate }) => {
+const DatePagination: React.FC<DatePaginationProps> = ({
+  productId,
+  regionScope,
+  dateFormat,
+  initialDate,
+  isMobile,
+}) => {
   const [searchParams] = useSearchParams();
   const dateFromUrl = searchParams.get('date');
 
@@ -43,7 +49,7 @@ const DatePagination: React.FC<DatePaginationProps> = ({ productId, regionScope,
       dateFormat={dateFormat}
       onChange={(date: Date | null) => updateDate(dayjs(date), true)}
       maxDate={new Date()}
-      isMobile
+      isMobile={isMobile}
     />
   );
 };
