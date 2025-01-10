@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import arrowIcon from '@/assets/icons/arrow.svg';
-import { DateFormat } from '@/types/date';
+import { convertDateToDisplayFormattedText } from '@/utils/date-utils/date';
 import { DatePickerProps } from './types/datePicker.types';
 import MultiFormatDatePicker from './components/MultiFormatDatePicker';
 
@@ -14,20 +14,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
   onChange,
   isMobile,
 }) => {
-  const renderDate = (date: Dayjs, dateFormat: DateFormat) => {
-    switch (dateFormat) {
-      case DateFormat.Hour:
-        return date.format('DD MMM YYYY HH:00');
-      case DateFormat.Month:
-        return date.format('MMM YYYY');
-      case DateFormat.MonthOnly:
-        return date.format('MMM');
-      case DateFormat.Year:
-        return date.format('YYYY');
-      default:
-        return date.format('DD MMM YY');
-    }
-  };
+  const formattedSelectedDate = convertDateToDisplayFormattedText(dayjs(selectedDate), dateFormat);
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
@@ -75,7 +62,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
             isMobile={isMobile}
           />
         </div>
-        <div className="text-l">{renderDate(dayjs(selectedDate), dateFormat)}</div>
+        <div className="text-l">{formattedSelectedDate}</div>
       </div>
 
       <div className="flex-center h-full w-12 border-l-2 text-lg text-imos-title-blue">

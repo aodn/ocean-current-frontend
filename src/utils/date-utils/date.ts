@@ -39,18 +39,23 @@ const createDefaultDateForDateFormat = (format: DateFormat, date: string): strin
   switch (format) {
     case DateFormat.Hour:
       return dayjs(date).format('YYYYMMDDHH');
-    case DateFormat.Day:
-      return dayjs().format('YYYYMMDD');
     case DateFormat.Month:
-      return dayjs().format('YYYYMM');
+      return dayjs(date).format('YYYYMM');
     case DateFormat.MonthOnly:
-      return dayjs().format('MM');
+      return dayjs(date).format('MM');
     case DateFormat.Year:
-      return dayjs().format('YYYY');
+      return dayjs(date).format('YYYY');
     default:
-      return dayjs().format('YYYYMMDD');
+      return dayjs(date).format('YYYYMMDD');
   }
 };
+
+const getDateFormatFlags = (format: DateFormat) => ({
+  isMonthFormat: format === DateFormat.Month,
+  isMonthOnlyFormat: format === DateFormat.MonthOnly,
+  isYearFormat: format === DateFormat.Year,
+  isHourFormat: format === DateFormat.Hour,
+});
 
 const getDateFormatByProductIdAndRegionScope = (productId: string, regionScope: RegionScope): DateFormat => {
   const product = getProductByIdFromFlat(productId);
@@ -66,9 +71,26 @@ const getDateFormatByProductIdAndRegionScope = (productId: string, regionScope: 
   return dateFormat;
 };
 
+const convertDateToDisplayFormattedText = (date: Dayjs, dateFormat: DateFormat) => {
+  switch (dateFormat) {
+    case DateFormat.Hour:
+      return date.format('DD MMM YYYY HH:00');
+    case DateFormat.Month:
+      return date.format('MMM YYYY');
+    case DateFormat.MonthOnly:
+      return date.format('MMM');
+    case DateFormat.Year:
+      return date.format('YYYY');
+    default:
+      return date.format('DD MMM YY');
+  }
+};
+
 export {
   findMostRecentDateBefore,
   getUnitByFormat,
   createDefaultDateForDateFormat,
+  getDateFormatFlags,
   getDateFormatByProductIdAndRegionScope,
+  convertDateToDisplayFormattedText,
 };

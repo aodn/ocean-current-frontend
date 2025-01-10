@@ -13,6 +13,7 @@ const CustomInput = forwardRef<HTMLDivElement, CustomInputProps>(({ onClick }, r
     aria-hidden="true"
   >
     <img src={calendarIcon} alt="calendar icon" className="mr-4" />
+    {/* <p className="font-medium text-imos-sea-blue">Time Range</p> */}
   </div>
 ));
 

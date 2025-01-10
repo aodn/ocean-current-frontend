@@ -1,9 +1,10 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { DateFormat } from '@/types/date';
+import { getDateFormatFlags } from '@/utils/date-utils/date';
 import CustomInputMobile from './CustomInputMobile';
 import CustomInput from './CustomInput';
-import 'react-datepicker/dist/react-datepicker.css';
 
 interface MultiFormatDatePickerProps {
   dateFormat: DateFormat;
@@ -17,13 +18,6 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
   onChange,
   isMobile = false,
 }) => {
-  const getDateFormatFlags = (format: DateFormat) => ({
-    isMonthFormat: format === DateFormat.Month,
-    isMonthOnlyFormat: format === DateFormat.MonthOnly,
-    isYearFormat: format === DateFormat.Year,
-    isHourFormat: format === DateFormat.Hour,
-  });
-
   const { isMonthFormat, isMonthOnlyFormat, isYearFormat } = getDateFormatFlags(dateFormat);
 
   if (isMonthFormat) {

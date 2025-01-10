@@ -80,7 +80,7 @@ export const generateDateRange = (
     }
   }
 
-  return dates
-    .filter((item, index, self) => index === self.findIndex((obj) => obj.date === item.date))
-    .sort((a, b) => a.date.localeCompare(b.date));
+  return Array.from(new Map(dates.map((item) => [item.date, item])).values()).sort((a, b) =>
+    a.date.localeCompare(b.date),
+  );
 };
