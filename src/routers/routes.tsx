@@ -1,5 +1,5 @@
 import { Navigate, type RouteObject } from 'react-router-dom';
-import { Home, MapView, DataView, News, NotFound, GuidedTour } from '@/pages';
+import { Home, MapView, DataView, NotFound } from '@/pages';
 import MainLayout from '@/layouts/MainLayout';
 import MapLayout from '@/layouts/MapLayout';
 import DataVisualisationLayout from '@/layouts/DataVisualisationLayout';
@@ -30,10 +30,6 @@ const routes: RouteObject[] = [
             element: <Navigate to="sst" replace />,
           },
           {
-            path: 'climatology',
-            element: <Navigate to="sst" replace />,
-          },
-          {
             path: 'ocean-colour',
             element: <Navigate to="chl-a" replace />,
           },
@@ -42,12 +38,12 @@ const routes: RouteObject[] = [
             element: <Navigate to="sla" replace />,
           },
           {
-            path: 'current-meters',
-            element: <DataView />,
-          },
-          {
             path: 'monthly-means',
             element: <Navigate to="anomalies" replace />,
+          },
+          {
+            path: 'climatology',
+            element: <Navigate to="sst" replace />,
           },
           {
             path: ':product/:subProduct',
@@ -76,14 +72,6 @@ const routes: RouteObject[] = [
             element: <MapView />,
           },
         ],
-      },
-      {
-        path: '/news',
-        element: <News />,
-      },
-      {
-        path: '/guided-tour',
-        element: <GuidedTour />,
       },
     ],
   },

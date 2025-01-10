@@ -50,4 +50,8 @@ export const argoTagFilePaths: ArgoTagPath = {
     state: 'STATE_daily',
     local: null,
   },
+  EACMooringArray: {
+    state: null,
+    local: 'EAC_array_figures',
+  },
 };
