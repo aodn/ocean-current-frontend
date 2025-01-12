@@ -10,6 +10,7 @@ import useArrayCompareEffect from './useArrayCompareEffect/useArrayCompareEffect
 import useDeviceType from './useDeviceType/useDeviceType';
 import useUrlType from './useUrlType/useUrlType';
 import useSetProductId from './useSetProductId/useSetProductId';
+import useDateList from './useDateList/useDateList';
 
 export {
   useProductFromUrl,
@@ -24,4 +25,5 @@ export {
   useDeviceType,
   useUrlType,
   useSetProductId,
+  useDateList,
 };

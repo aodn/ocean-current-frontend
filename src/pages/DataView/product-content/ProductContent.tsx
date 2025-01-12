@@ -8,6 +8,7 @@ import {
   buildProductVideoUrl,
   buildCurrentMeterImageUrl,
   buildSSTTimeseriesImageUrl,
+  buildEACMooringArrayImageUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
@@ -29,7 +30,7 @@ import DataImageCurrentMeterPlotContainer from '../data-image/DataImageCurrentMe
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const { isArgo, isCurrentMeters, isCurrentMetersPlot } = useProductCheck();
+  const { isArgo, isCurrentMeters, isCurrentMetersPlot, isEACMooringArray } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
   const useProductId = useProductStore((state) => state.productParams.productId);
@@ -42,7 +43,8 @@ const ProductContent: React.FC = () => {
   const [searchParams] = useSearchParams();
   const currentMeterPoint = searchParams.get('point');
 
-  const region = getRegionByRegionTitle(useRegionTitle);
+  // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
+  const region = getRegionByRegionTitle(isEACMooringArray ? 'Brisbane' : useRegionTitle);
   const regionScope = region?.scope || RegionScope.Au;
   const targetPathRegion = getTargetRegionScopePath(regionScope);
   const regionPath = region?.code || 'Au';
@@ -112,6 +114,8 @@ const ProductContent: React.FC = () => {
           return buildCurrentMeterImageUrl(currentMeterRegion, useDate, property, currentMeterDepth);
         case useProductId === 'sixDaySst-timeseries':
           return buildSSTTimeseriesImageUrl(regionPath);
+        case isEACMooringArray:
+          return buildEACMooringArrayImageUrl(useDate);
         default:
           return buildProductImageUrl(
             mainProduct.key,
@@ -200,7 +204,7 @@ const ProductContent: React.FC = () => {
       ) : (
         renderDataImageContainer()
       )}
-    </div>
+    </>
   );
 };
 

@@ -114,12 +114,17 @@ export const linksData: LinkItem[] = [
         description: 'Animal-mounted sensors',
         url: 'https://oceancurrent.aodn.org.au/index.php',
       },
+
+      /*
+        EAC Mooring Array has data from only one region
+        We're setting the region automatically so user shouldn't need to manually select the region
+      */
       {
         id: 'eac-mooring-array',
         imageUrl: EACMooringArrayIcon,
         title: 'EAC Mooring Array',
         description: 'Monitoring station network',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
+        url: 'product/eac-mooring-array?region=Brisbane',
       },
     ],
   },

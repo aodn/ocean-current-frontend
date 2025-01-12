@@ -41,22 +41,22 @@ const SixDaySstModalData = () => {
   return (
     <div className="p-4 text-gray-800">
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">SST:</strong> 6-day composite SST (L3S-6d, QL≥2) using night-only SST in a
-        6-day window centred on <strong>t0</strong>, the analysis time. The 6-day window is used to maximise coverage
+        <strong className="text-imos-sea-blue">SST:</strong> 6-day composite SST (L3S-6d, QL≥2) using night-only SST in
+        a 6-day window centred on <strong>t0</strong>, the analysis time. The 6-day window is used to maximise coverage
         and night-only SST is used to minimise bias due to diurnal heating. The 6d composites are produced by the BoM
         for IMOS using GHRSST protocol on a 2x2km grid. All SST is adjusted by the SSES bias before compositing and an
         offset of 0.17C is added to obtain the bulk SST.
       </p>
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">SST Anomaly:</strong> The SSTAARS climatology, calculated for each 2x2km
+        <strong className="text-imos-sea-blue">SST Anomaly:</strong> The SSTAARS climatology, calculated for each 2x2km
         pixel for the analysis date, <strong>t0</strong>, is removed from the SST.
       </p>
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">Percentiles:</strong> The SST anomalies are ranked against almost 25 years of
-        anomalies (1992-2016). The percentiles have been evaluated at each pixel for every day of the year. Anomalies
-        falling in the &lt;10 rank (dark blue) are the coldest 10% of observed anomalies at that pixel for that day of
-        the year. Similarly, anomalies ranked &gt;90 are the hottest 10% of observed anomalies. Green percentiles (two
-        shades) represent the average 20% of temperature anomalies.
+        <strong className="text-imos-sea-blue">Percentiles:</strong> The SST anomalies are ranked against almost 25
+        years of anomalies (1992-2016). The percentiles have been evaluated at each pixel for every day of the year.
+        Anomalies falling in the &lt;10 rank (dark blue) are the coldest 10% of observed anomalies at that pixel for
+        that day of the year. Similarly, anomalies ranked &gt;90 are the hottest 10% of observed anomalies. Green
+        percentiles (two shades) represent the average 20% of temperature anomalies.
       </p>
     </div>
   );
@@ -66,7 +66,7 @@ const AdjustedSeaLevelAnomalyModalData = () => {
   return (
     <div className="p-4 text-gray-800">
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">Adjusted Sea Level:</strong> We used to call this Gridded Sea Level but
+        <strong className="text-imos-sea-blue">Adjusted Sea Level:</strong> We used to call this Gridded Sea Level but
         changed the name in Sep 2021. Adjusted Sea level (like GSL) is sea level minus two rapidly-varying sea level
         signals mostly due to barotropic dynamics: astronomical tides and the ocean&apos;s response to atmospheric
         pressure (which is to rise about 10 cm for each 10 hPa fall of pressure). Adjusted Sea Level is thus a measure
@@ -76,7 +76,7 @@ const AdjustedSeaLevelAnomalyModalData = () => {
         height anomaly.
       </p>
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">Terminology:</strong> The once-traditional term &apos;adjusted&apos; is
+        <strong className="text-imos-sea-blue">Terminology:</strong> The once-traditional term &apos;adjusted&apos; is
         commonly omitted by many agencies and oceanographers. We did this, too, then regretted it, because dropping the
         &apos;adjusted&apos; leaves no short name for &apos;unadjusted sea level&apos;, which is the quantity most
         relevant to users interested in coastal inundation (see our Australia/NZ maps of Non-tidal Sea Level). Another
@@ -85,14 +85,14 @@ const AdjustedSeaLevelAnomalyModalData = () => {
           href="https://link.springer.com/article/10.1007/s10712-019-09525-z"
           target="_blank"
           rel="noreferrer"
-          className="text-[#52BDEC]"
+          className="text-imos-sea-blue"
         >
           ocean dynamic sea level
         </a>
         . Related names include: dynamic height, dynamic topography, and subsurface pressure.
       </p>
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">Adjusted Sea Level Anomaly:</strong> By &apos;anomaly&apos;, we mean the
+        <strong className="text-imos-sea-blue">Adjusted Sea Level Anomaly:</strong> By &apos;anomaly&apos;, we mean the
         departure from the long-term (1993-2012) mean. We (like most users of altimetry) estimate ASLA by subtracting
         the long-term mean of ASL from the altimeter observations. This must be done in order to remove the ~100m sea
         level highs and lows (with respect to a smooth surface) mostly due to gravity perturbations associated with sea
@@ -107,7 +107,9 @@ const AdjustedSeaLevelAnomalyModalData = () => {
         along-track altimetry data closer to its supplied form.
       </p>
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">Centile rankings of (daily, detrended) Adjusted Sea Level Anomaly:</strong>{' '}
+        <strong className="text-imos-sea-blue">
+          Centile rankings of (daily, detrended) Adjusted Sea Level Anomaly:
+        </strong>{' '}
         This is a way of seeing &apos;how anomalous&apos; the anomaly at a particular place and time is, compared with
         past anomalies at the same place. But sea level anomalies are not randomly distributed about a mean value,
         because sea level has a significant trend; about 100mm in the last 28 years (~3.7mm/year). Nor does it have a
@@ -116,7 +118,7 @@ const AdjustedSeaLevelAnomalyModalData = () => {
           href="https://oceancurrent.aodn.org.au/GSLA_stats/DM02/GSLA_Au_h.html"
           target="_blank"
           rel="noreferrer"
-          className="text-[#52BDEC]"
+          className="text-imos-sea-blue"
         >
           [see time series plot of the Australasia-region average adjusted sea level anomaly]
         </a>
@@ -128,7 +130,7 @@ const AdjustedSeaLevelAnomalyModalData = () => {
         high and low ends.
       </p>
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">Centile levels of the 28-year, detrended data set:</strong> This is the
+        <strong className="text-imos-sea-blue">Centile levels of the 28-year, detrended data set:</strong> This is the
         reference data set against which the detrended anomalies for a particular day are compared. For efficiency, it
         is not re-computed every day. Consequently, and because eddies do not follow in each other&apos;s tracks, new
         observations can fall outside the range of the
@@ -136,7 +138,7 @@ const AdjustedSeaLevelAnomalyModalData = () => {
           href="https://oceancurrent.aodn.org.au/GSLA_stats/DM02/"
           target="_blank"
           rel="noreferrer"
-          className="text-[#52BDEC]"
+          className="text-imos-sea-blue"
         >
           centile levels of the reference data set
         </a>
@@ -160,29 +162,29 @@ const FourHourSstModalData = () => {
         <li className="mb-2">VIIRS Suomi-NPP from NOAA</li>
       </ul>
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">Method:</strong> Step 1: 4-hour composites of Him8 SST (with 2-4km
+        <strong className="text-imos-sea-blue">Method:</strong> Step 1: 4-hour composites of Him8 SST (with 2-4km
         resolution) are made, taking the median SST at every pixel. Step 2: the final composite is made using the Him8
         composite and all other available AVHRR and VIIRS SST. The composite is made in two steps so that if the BoM
         Him8 SST is unavailable we can replace it with NOAA hourly Him8 composites. All SST is adjusted by the SSES bias
         before compositing and an offset of 0.17C is added to obtain the bulk SST.
       </p>
       <div className="mb-4">
-        <strong className="text-[#52BDEC]">Available:</strong> 11 Aug 2017 to present
+        <strong className="text-imos-sea-blue">Available:</strong> 11 Aug 2017 to present
       </div>
       <div className="mb-4">
-        <strong className="text-[#52BDEC]">SST:</strong> All SST of QL&gt;=4 (QL=4 or 5 are the BoM&apos;s highest
+        <strong className="text-imos-sea-blue">SST:</strong> All SST of QL&gt;=4 (QL=4 or 5 are the BoM&apos;s highest
         Quality Levels)
       </div>
       <div className="mb-4">
-        <strong className="text-[#52BDEC]">Filled SST:</strong> the gaps in the SST are filled with the most recent
+        <strong className="text-imos-sea-blue">Filled SST:</strong> the gaps in the SST are filled with the most recent
         previous composites
       </div>
       <div className="mb-4">
-        <strong className="text-[#52BDEC]">SST Age:</strong> the age of the Filled SST
+        <strong className="text-imos-sea-blue">SST Age:</strong> the age of the Filled SST
       </div>
       <div className="mb-4">
-        <strong className="text-[#52BDEC]">Wind Speed:</strong> BoM ACCESS-R 3hr average wind speed and direction for
-        the analysis time
+        <strong className="text-imos-sea-blue">Wind Speed:</strong> BoM ACCESS-R 3hr average wind speed and direction
+        for the analysis time
       </div>
     </div>
   );
@@ -198,20 +200,79 @@ const ClimatologyModalData = () => {
         available from the AODN.
       </p>
       <div className="mb-4">
-        <strong className="text-[#52BDEC]">SST:</strong> the annual mean and monthly evaluations of SSTAARS SST (without
-        the trend)
+        <strong className="text-imos-sea-blue">SST:</strong> the annual mean and monthly evaluations of SSTAARS SST
+        (without the trend)
       </div>
       <div className="mb-4">
-        <strong className="text-[#52BDEC]">Data Count:</strong> the total number of days of cloud free SST at each pixel
-        that were available for the climatology for each month - out of a possible 750 days.
+        <strong className="text-imos-sea-blue">Data Count:</strong> the total number of days of cloud free SST at each
+        pixel that were available for the climatology for each month - out of a possible 750 days.
       </div>
       <div className="mb-4">
-        Sea level height: seasonal GSLA + OFAM3 mean sea level height, white contours every 0.1m.
+        <strong className="text-imos-sea-blue">Sea level height:</strong> seasonal GSLA + OFAM3 mean sea level height,
+        white contours every 0.1m.
       </div>
       <div className="mb-4">Geostrophic velocity: estimated from the sea level height</div>
       <p className="mb-4">
-        Bathymetry: We have included a few more bottom contours to help interpret the climatology. The 10m, 200m and
-        1000m contours of bathymetry in cyan and the 50m contour in dark blue.
+        <strong className="text-imos-sea-blue">Bathymetry:</strong> We have included a few more bottom contours to help
+        interpret the climatology. The 10m, 200m and 1000m contours of bathymetry in cyan and the 50m contour in dark
+        blue.
+      </p>
+    </div>
+  );
+};
+
+const EACMooringArrayModalData = () => {
+  return (
+    <div className="p-4 text-gray-800">
+      <p className="mb-4">
+        Daily estimates of East Australian Current (EAC) properties calculated from the CSIRO EAC gridded mooring
+        product.
+      </p>
+      <p className="mb-4">
+        The upper left plot is the time-series of the EAC transport summed from North Stradbroke to the outer EAC
+        mooring and from the sea surface to 1500 m depth (solid black line). The green dot identifies the day being
+        displayed on the page.
+      </p>
+      <p className="mb-4">
+        The map below is our 6-day Sea Surface Temperature (SST) composite product, with the daily cumulative EAC
+        transport from North Stradbroke to the outer EAC mooring overlain (solid black line). The transport value at the
+        mid-point and end of the distance between North Stradbroke to the outer EAC mooring is provided (numbers written
+        near the larger black dots). Black dots show locations of moorings, with larger black dots indicating the
+        mid-point and end of the array.
+      </p>
+      <p className="mb-4">
+        The plots on the right show the EAC mooring array temperature, salinity, and northward and eastward velocity
+        interpolated onto a 1-2 km grid along the mooring line segment (black dashed line on SST map). The first column
+        are the daily property sections, and the second column are the anomalies from the 2012-2022 seasonal
+        climatology. The small black dots show the available data at each mooring which are used to create the filled
+        mooring data and EAC gridded data product. The black dots at the surface indicate the SST and sea surface
+        salinity that are included in the gridded product.
+      </p>
+      <p className="mb-4">
+        <strong className="text-imos-sea-blue">Method (CSIRO EAC gridded mooring product):</strong> (1) A 5-day filter
+        is applied to the hourly-depth mooring data to remove tides and other high frequency processes. (2) Data are
+        interpolated to a common daily time stamp to create the daily-depth temperature and salinity data. (3) An
+        Iterative Completion Self-Organizing Maps (ITCOMPSOM) method, based on the SOM (Self Organising Maps) neural
+        network machine learning algorithm, is used to fill temporal and vertical data gaps. (4) The filled velocity,
+        temperature and salinity are interpolated onto a 1-2 km regular grid between the North Stradbroke Island and
+        outer EAC mooring.
+      </p>
+      <p className="mb-4">
+        For more information on this product see
+        <a
+          href="https://oceancurrent.aodn.org.au/eac_about.php"
+          target="_blank"
+          rel="noreferrer"
+          className="text-imos-sea-blue"
+        >
+          {' '}
+          here
+        </a>{' '}
+        and{' '}
+        <a href="https://doi.org/10.25919/sfw7-hc46" target="_blank" rel="noreferrer" className="text-imos-sea-blue">
+          here
+        </a>
+        .
       </p>
     </div>
   );
@@ -226,15 +287,15 @@ const MonthlyMeansModalData = () => {
         useful for identifying long-term trends and patterns.
       </p>
       <div className="mb-4">
-        <strong className="text-[#52BDEC]">SST:</strong> Monthly averaged sea surface temperature, providing a clearer
-        view of long-term temperature trends.
+        <strong className="text-imos-sea-blue">SST:</strong> Monthly averaged sea surface temperature, providing a
+        clearer view of long-term temperature trends.
       </div>
       <div className="mb-4">
-        <strong className="text-[#52BDEC]">Adjusted Sea Level Anomalies (Adj. SLA):</strong> Monthly means of sea level
-        anomalies adjusted for atmospheric pressure, showing long-term sea level trends.
+        <strong className="text-imos-sea-blue">Adjusted Sea Level Anomalies (Adj. SLA):</strong> Monthly means of sea
+        level anomalies adjusted for atmospheric pressure, showing long-term sea level trends.
       </div>
       <div className="mb-4">
-        <strong className="text-[#52BDEC]">Data Integration:</strong> The data combines satellite observations and
+        <strong className="text-imos-sea-blue">Data Integration:</strong> The data combines satellite observations and
         in-situ measurements for comprehensive coverage.
       </div>
       <p className="mb-4">
@@ -1026,4 +1087,5 @@ export {
   ClimatologyModalData,
   SurfaceWaveModalData,
   MonthlyMeansModalData,
+  EACMooringArrayModalData,
 };

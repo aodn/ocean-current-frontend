@@ -15,9 +15,10 @@ const useProductCheck = () => {
   const isArgo = mainProductId === 'argo';
   const isCurrentMeters = mainProductId === 'currentMeters';
   const isClimatology = mainProductId === 'climatology';
+  const isEACMooringArray = mainProductId === 'EACMooringArray';
   const isCurrentMetersPlot = currentMeterPlots === CurrentMeterPlot.One;
 
-  return { isRegionRequired, isArgo, isCurrentMeters, isClimatology, isCurrentMetersPlot };
+  return { isRegionRequired, isArgo, isCurrentMeters, isClimatology, isEACMooringArray, isCurrentMetersPlot };
 };
 
 export default useProductCheck;

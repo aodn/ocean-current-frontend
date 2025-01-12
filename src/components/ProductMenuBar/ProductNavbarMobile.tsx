@@ -1,13 +1,13 @@
 import React from 'react';
-import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
-import DatePicker from '@/components/DatePicker/DatePicker';
-import { useDateRange } from '@/hooks';
 import { Button } from '@/components/Shared';
 import ResetIcon from '@/assets/icons/reset-icon.svg';
 import MapIcon from '@/assets/icons/map-icon.svg';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
+import useProductStore from '@/stores/product-store/productStore';
+import useProductDateFormat from '@/stores/product-store/hooks/useProductDateFormat';
+import DatePagination from '../DatePagination';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
 const ProductMenuBarMobile: React.FC<ProductMenuBarProps> = () => {
@@ -15,29 +15,12 @@ const ProductMenuBarMobile: React.FC<ProductMenuBarProps> = () => {
   const { isArgo } = useProductCheck();
   const navigate = useNavigate();
 
-  const {
-    startDate,
-    endDate,
-    minDate,
-    maxDate,
-    allDates,
-    selectedDateIndex,
-    handleYearDateChange,
-    handleDateChange,
-    modifyDate,
-    isLastMonthOfTheYear,
-    isMonthRange,
-    resetDateRange,
-    isWeekRange,
-  } = useDateRange();
-
-  const isSelectedDayYesterdayOrLater = dayjs(allDates[selectedDateIndex]?.date).isSameOrAfter(
-    dayjs().subtract(1, 'day'),
-    'day',
-  );
+  const productId = useProductStore((state) => state.productParams.productId);
+  const regionScope = useProductStore((state) => state.productParams.regionScope);
+  const dateFormat = useProductDateFormat();
 
   const handleReset = () => {
-    resetDateRange();
+    // To be implemented
   };
 
   const handleRegionClick = () => {
@@ -65,21 +48,7 @@ const ProductMenuBarMobile: React.FC<ProductMenuBarProps> = () => {
       </div>
       <div className="mb-2 flex items-center justify-between">
         <div className="flex h-11 items-center justify-center rounded-md border border-[#3A6F8F] p-2">
-          <DatePicker
-            isMobile
-            startDate={startDate}
-            endDate={endDate}
-            minDate={minDate}
-            maxDate={maxDate}
-            addButtonDisabled={isSelectedDayYesterdayOrLater}
-            handleDateChange={handleDateChange}
-            handleYearDateChange={handleYearDateChange}
-            modifyDate={modifyDate}
-            selectedDate={allDates[selectedDateIndex]?.date}
-            isLastMonthOfTheYear={isLastMonthOfTheYear}
-            isWeekRange={isWeekRange}
-            isMonthRange={isMonthRange}
-          />
+          <DatePagination productId={productId} regionScope={regionScope} dateFormat={dateFormat} isMobile />
         </div>
 
         <div
@@ -93,13 +62,27 @@ const ProductMenuBarMobile: React.FC<ProductMenuBarProps> = () => {
 
       <div className="flex w-full justify-between">
         <div className="mr-1 w-1/2">
-          <Button borderRadius="small" type="secondary" size="full" onClick={() => modifyDate('add')}>
+          <Button
+            borderRadius="small"
+            type="secondary"
+            size="full"
+            onClick={() => {
+              // To be implemented
+            }}
+          >
             Next image
           </Button>
         </div>
 
         <div className="ml-1 w-1/2">
-          <Button borderRadius="small" type="secondary" size="full" onClick={() => modifyDate('subtract')}>
+          <Button
+            borderRadius="small"
+            type="secondary"
+            size="full"
+            onClick={() => {
+              // To be implemented
+            }}
+          >
             Previous image
           </Button>
         </div>

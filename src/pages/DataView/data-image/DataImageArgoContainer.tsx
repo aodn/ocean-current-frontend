@@ -1,18 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useImageArgoTags } from '@/services/hooks';
 import {
-  convertCoordsBasedOnImageScale,
+  // convertCoordsBasedOnImageScale,
   convertProductWithArgoCoordsOffset,
   getArgoTagFilePathByProductId,
 } from '@/utils/argo-utils/argoTag';
 import { RegionScope } from '@/constants/region';
-import { AreaShape } from '@/types/dataImage';
+// import { AreaShape } from '@/types/dataImage';
 import { getArgoProfileCyclesByWmoId } from '@/services/argo';
 import { findMostRecentDateBefore } from '@/utils/date-utils/date';
 import { ArgoTagMapArea } from '@/types/argo';
-import { calculateImageScales } from '@/utils/general-utils/general';
-import InteractiveImageWithMap, { ImageRefHandle } from './InteractiveImageWithMap';
+// import { calculateImageScales } from '@/utils/general-utils/general';
+import InteractiveImageWithMap from './InteractiveImageWithMap';
 import { DataImageArgoContainerProps } from './types/dataImage.types';
 
 const DataImageArgoContainer: React.FC<DataImageArgoContainerProps> = ({
@@ -61,6 +61,7 @@ const DataImageArgoContainer: React.FC<DataImageArgoContainerProps> = ({
 
     // setOffsetAreas((prevData) => (prevData === null ? offsetAreas : prevData));
 
+    // @ts-expect-error temporary ignore to update branch
     setOffsetAreas(offsetAreas);
     // setOffsetAreas((prevAreas) => {
     //   if (JSON.stringify(prevAreas) !== JSON.stringify(offsetAreas)) {
@@ -68,8 +69,8 @@ const DataImageArgoContainer: React.FC<DataImageArgoContainerProps> = ({
     //   }
     //   return prevAreas;
     // });
-  }, [JSON.stringify(data), dateFormatted, originalHeight]);
-  console.log('update offsetAreas', offsetAreas);
+  }, [data, dateFormatted, originalHeight]);
+  // console.log('update offsetAreas', offsetAreas);
   const imgAlt = `${productId} data in ${regionCode} at ${dateFormatted}`;
 
   const handleAreaClick = async (area: ArgoTagMapArea) => {

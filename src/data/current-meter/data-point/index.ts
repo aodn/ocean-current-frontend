@@ -1,5 +1,6 @@
 import { CurrentMeterRegion } from '@/types/currentMeters';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const currentMeterDataPointTitles = [
   'BMP070',
   'BMP090',

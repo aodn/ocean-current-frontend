@@ -303,4 +303,18 @@ export const OC_PRODUCTS: Product[] = [
     path: 'current-meters-plot',
     latestEntry: null,
   },
+  /*
+    The data below is only for rendering the button for navigation purposes.
+    EAC Mooring Array data is only available in Brisbane region,
+    so the image source url is built here - src/utils/data-image-builder-utils/dataImgBuilder.ts
+  */
+  {
+    title: 'EAC Mooring Array',
+    key: 'EACMooringArray',
+    path: 'eac-mooring-array',
+    dateFormat: {
+      localFormat: DateFormat.Day,
+      stateFormat: DateFormat.Day,
+    },
+  },
 ] as const;

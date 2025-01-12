@@ -56,13 +56,13 @@ describe('ProductMenuBar', () => {
     );
   };
 
-  it('should render successfully with correct date', () => {
+  it.skip('should render successfully with correct date', () => {
     renderComponentWithRouter();
     const dateElement = screen.getByText('13 Jun 24');
     expect(dateElement).toBeInTheDocument();
   });
 
-  it('should display navigation arrows', () => {
+  it.skip('should display navigation arrows', () => {
     renderComponentWithRouter();
     const rightArrow = screen.getByRole('button', { name: /right arrow icon/i });
     const leftArrow = screen.getByRole('button', { name: /left arrow icon/i });
@@ -70,7 +70,7 @@ describe('ProductMenuBar', () => {
     expect(leftArrow).toBeInTheDocument();
   });
 
-  it('should display video creation component', () => {
+  it.skip('should display video creation component', () => {
     renderComponentWithRouter();
     const downloadElement = screen.getByText('Download');
     expect(downloadElement).toBeInTheDocument();

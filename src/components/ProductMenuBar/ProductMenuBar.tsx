@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import dayjs from 'dayjs';
-import DatePicker from '@/components/DatePicker/DatePicker';
 import { useDateRange } from '@/hooks';
 import { ToggleButton } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
@@ -10,31 +8,23 @@ import ResetIcon from '@/assets/icons/reset-icon.svg';
 import VideoCreation from '@/components/VideoCreation/VideoCreation';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { resetCurrentMeterStore } from '@/stores/current-meters-store/currentMeters';
+import useProductStore from '@/stores/product-store/productStore';
+import useProductDateFormat from '@/stores/product-store/hooks/useProductDateFormat';
+import DatePagination from '../DatePagination';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
 const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView = false }) => {
-  const {
-    startDate,
-    endDate,
-    minDate,
-    maxDate,
-    allDates,
-    selectedDateIndex,
-    handleYearDateChange,
-    handleDateChange,
-    modifyDate,
-    isLastMonthOfTheYear,
-    isMonthRange,
-    disableVideoCreation,
-    resetDateRange,
-    isWeekRange,
-  } = useDateRange();
+  const { disableVideoCreation, resetDateRange } = useDateRange();
 
   const [copyButtonText, setCopyButtonText] = useState<string>(ProductMenubarText.SHARE);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [showVideo, setLocalShowVideo] = useState(false);
-  const { isArgo, isCurrentMeters } = useProductCheck();
-  const shouldDisableOption = disableVideoCreation() || isArgo || isMapView || isCurrentMeters;
+  const { isArgo, isCurrentMeters, isEACMooringArray } = useProductCheck();
+  const shouldDisableOption = disableVideoCreation() || isArgo || isMapView || isCurrentMeters || isEACMooringArray;
+
+  const productId = useProductStore((state) => state.productParams.productId);
+  const regionScope = useProductStore((state) => state.productParams.regionScope);
+  const dateFormat = useProductDateFormat();
 
   const handleCopyLink = () => {
     const url = location.href;
@@ -45,11 +35,6 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
       setCopyButtonText(ProductMenubarText.SHARE);
     }, 2000);
   };
-
-  const isSelectedDayYesterdayOrLater = dayjs(allDates[selectedDateIndex]?.date).isSameOrAfter(
-    dayjs().subtract(1, 'day'),
-    'day',
-  );
 
   useEffect(() => {
     return () => {
@@ -73,20 +58,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
     <div className="mb-2 rounded-md">
       <div className="mb-2 flex items-center justify-between gap-3 font-sans font-medium text-imos-dark-grey">
         <div className="flex h-11 grow items-center justify-between rounded-md bg-white">
-          <DatePicker
-            startDate={startDate}
-            endDate={endDate}
-            minDate={minDate}
-            maxDate={maxDate}
-            addButtonDisabled={isSelectedDayYesterdayOrLater}
-            handleDateChange={handleDateChange}
-            handleYearDateChange={handleYearDateChange}
-            modifyDate={modifyDate}
-            selectedDate={allDates[selectedDateIndex]?.date}
-            isLastMonthOfTheYear={isLastMonthOfTheYear}
-            isWeekRange={isWeekRange}
-            isMonthRange={isMonthRange}
-          />
+          <DatePagination productId={productId} regionScope={regionScope} dateFormat={dateFormat} />
         </div>
 
         <div

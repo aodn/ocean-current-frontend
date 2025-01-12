@@ -1,20 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { DateFormat } from '@/types/date';
 import DatePicker from './DatePicker';
+import { DatePickerProps } from './types/datePicker.types';
 
-const mockProps = {
-  startDate: new Date('2024-05-14'),
-  endDate: new Date('2024-06-14'),
-  maxDate: new Date('2024-06-15'),
-  addButtonDisabled: false,
-  handleDateChange: vi.fn(),
-  modifyDate: vi.fn(),
+const mockProps: DatePickerProps = {
   selectedDate: new Date('2024-06-05'),
-  handleYearDateChange: vi.fn(),
-  isSelectedDayYesterdayOrLater: false,
-  isLastMonthOfTheYear: vi.fn(),
-  isMonthRange: false,
-  isWeekRange: false,
+  dateFormat: DateFormat.Day,
+  goToPrevious: vi.fn(),
+  goToNext: vi.fn(),
+  onChange: vi.fn(),
+  isMobile: false,
 };
 
 describe('DatePicker', () => {
@@ -44,7 +40,7 @@ describe('DatePicker', () => {
     expect(screen.getByText(selectedDate)).toBeInTheDocument();
   });
 
-  it.skip('calls modifyDate with "subtract" when left button is clicked', async () => {
+  it('calls "go to previous" when left button is clicked', async () => {
     // Arrange
     const user = userEvent.setup();
     render(<DatePicker {...mockProps} />);
@@ -56,10 +52,10 @@ describe('DatePicker', () => {
 
     // Assert
     expect(leftButton).toContainElement(leftButtonIcon);
-    expect(mockProps.modifyDate).toHaveBeenCalledWith('subtract');
+    expect(mockProps.goToPrevious).toHaveBeenCalled();
   });
 
-  it.skip('calls modifyDate with "add" when right button is clicked', async () => {
+  it('calls "go to next" when right button is clicked', async () => {
     // Arrange
     const user = userEvent.setup();
     render(<DatePicker {...mockProps} />);
@@ -71,12 +67,12 @@ describe('DatePicker', () => {
 
     // Assert
     expect(rightButton).toContainElement(rightButtonIcon);
-    expect(mockProps.modifyDate).toHaveBeenCalledWith('add');
+    expect(mockProps.goToNext).toHaveBeenCalled();
   });
 
-  it.skip('disables right button when addButtonDisabled is true', () => {
+  it('disables right button when can go next is false', () => {
     // Arrange
-    render(<DatePicker {...mockProps} addButtonDisabled={true} />);
+    render(<DatePicker {...mockProps} canGoNext={false} />);
 
     // Act
     const rightButton = screen.getAllByRole('button')[1];
