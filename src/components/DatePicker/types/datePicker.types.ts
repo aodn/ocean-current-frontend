@@ -1,16 +1,14 @@
+import { DateFormat } from '@/types/date';
+
 export interface DatePickerProps {
-  startDate: Date | null;
-  endDate: Date | null;
   minDate?: Date;
   maxDate?: Date;
-  addButtonDisabled?: boolean;
-  handleDateChange: (date: Date | null) => void;
-  handleYearDateChange: (date: Date | null) => void;
-  modifyDate: (modificationType: 'add' | 'subtract') => void;
+  goToPrevious: () => void;
+  goToNext: () => void;
+  canGoNext?: boolean;
+  canGoPrevious?: boolean;
   selectedDate: Date | null;
-  isLastMonthOfTheYear: () => boolean;
-  isMonthRange?: boolean;
-  isWeekRange?: boolean;
-  isYearRange?: boolean;
+  dateFormat: DateFormat;
+  onChange: (date: Date | null) => void;
   isMobile?: boolean;
 }

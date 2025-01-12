@@ -145,6 +145,10 @@ const buildSSTTimeseriesImageUrl = (region: string) => {
   return `${imageBaseUrl}/MM_SSTA/MMA/${region}_Anomaly_1993-latest.gif`;
 };
 
+const buildEACMooringArrayImageUrl = (date: Dayjs) => {
+  return `${imageBaseUrl}/EAC_array_figures/SST/Brisbane/${date.format('YYYYMMDD')}.gif`;
+};
+
 const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle: string, depth: string): string => {
   const profiles = depth === '0' ? 'profiles' : 'profiles_s';
   const formatDate = dayjs(date).format('YYYYMMDD');
@@ -179,4 +183,5 @@ export {
   buildProductVideoUrl,
   buildCurrentMeterImageUrl,
   buildSSTTimeseriesImageUrl,
+  buildEACMooringArrayImageUrl,
 };

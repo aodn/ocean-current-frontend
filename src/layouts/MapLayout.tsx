@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import useProductStore, { setProductId } from '@/stores/product-store/productStore';
 import { useDeviceType, useSetProductId, useUrlType } from '@/hooks';
 import MapSidebar from '@/components/MapSidebar/MapSidebar';
-import HeaderSideBar from '@/components/DataVisualisationSidebar/components/HeaderSideBar';
+import SidebarProductDropdown from '@/components/DataVisualisationSidebar/components/SidebarProductDropdown';
 import { Loading } from '@/components/Shared';
 import ProductMenuBar from '@/components/ProductMenuBar/ProductMenuBar';
 
@@ -23,7 +23,7 @@ const MapLayout: React.FC = () => {
       <div className="w-full md:flex">
         {isMobile ? (
           <div className="mb-2">
-            <HeaderSideBar />
+            <SidebarProductDropdown />
           </div>
         ) : (
           <div className="hidden w-1/3 md:block">

@@ -7,6 +7,7 @@ import {
   SixDaySstModalData,
   SnapshotModalData,
   SurfaceWaveModalData,
+  EACMooringArrayModalData,
 } from '@/components/DataVisualisationSidebar/components/modals/productsModalData';
 import { ProductInfo } from '@/types/product';
 
@@ -65,6 +66,13 @@ const list: ProductInfo[] = [
     summary:
       'Monthly means are time-averaged values of sea surface temperature (SST) and Adjusted Sea Level Anomalies (Adj. SLA) over a month. They provide a stable representation of ocean conditions by averaging short-term variations, useful for identifying long-term trends and patterns.',
     description: MonthlyMeansModalData,
+  },
+  {
+    id: 'EACMooringArray',
+    title: 'EAC Mooring Array',
+    summary:
+      'Daily estimates of East Australian Current (EAC) properties calculated from the CSIRO EAC gridded mooring product.',
+    description: EACMooringArrayModalData,
   },
 ];
 

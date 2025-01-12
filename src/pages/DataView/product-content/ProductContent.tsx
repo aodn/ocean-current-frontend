@@ -8,6 +8,7 @@ import {
   buildProductVideoUrl,
   buildCurrentMeterImageUrl,
   buildSSTTimeseriesImageUrl,
+  buildEACMooringArrayImageUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
@@ -27,7 +28,7 @@ import DataImage from '../data-image/DataImage';
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const { isArgo, isCurrentMeters } = useProductCheck();
+  const { isArgo, isCurrentMeters, isEACMooringArray } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
   const useProductId = useProductStore((state) => state.productParams.productId);
@@ -37,7 +38,8 @@ const ProductContent: React.FC = () => {
   const { showVideo } = useOutletContext<VideoPlayerOutletContext>();
   const { property, depth: currentMeterDepth, region: currentMeterRegion } = useCurrentMeterStore();
 
-  const region = getRegionByRegionTitle(useRegionTitle);
+  // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
+  const region = getRegionByRegionTitle(isEACMooringArray ? 'Brisbane' : useRegionTitle);
   const regionScope = region?.scope || RegionScope.Au;
   const targetPathRegion = getTargetRegionScopePath(regionScope);
   const regionPath = region?.code || 'Au';
@@ -107,6 +109,8 @@ const ProductContent: React.FC = () => {
           return buildCurrentMeterImageUrl(currentMeterRegion, useDate, property, currentMeterDepth);
         case useProductId === 'sixDaySst-timeseries':
           return buildSSTTimeseriesImageUrl(regionPath);
+        case isEACMooringArray:
+          return buildEACMooringArrayImageUrl(useDate);
         default:
           return buildProductImageUrl(
             mainProduct.key,
@@ -145,40 +149,40 @@ const ProductContent: React.FC = () => {
     setIsPopupOpen(!isPopupOpen);
   };
 
+  if (showVideo) {
+    return (
+      <video
+        onClick={handlePopup}
+        className="max-h-[80vh] w-full select-none object-contain"
+        src={buildMediaUrl()}
+        controls
+        onError={handleError}
+      >
+        <track default kind="captions" srcLang="en" />
+        Your browser does not support the video tag.
+      </video>
+    );
+  }
+
   return (
     <div className="h-full bg-white">
-      {showVideo ? (
-        <video
+      {shouldRenderDataImageWithArgoTags ? (
+        <DataImage
+          src={chooseImg()!}
+          date={useDate}
+          productId={useProductId}
+          regionCode={regionPath}
+          regionScope={regionScope}
+        />
+      ) : (
+        <img
           onClick={handlePopup}
           className="max-h-[80vh] w-full select-none object-contain"
-          src={buildMediaUrl()}
-          controls
+          src={chooseImg()}
+          alt="product"
           onError={handleError}
-        >
-          <track default kind="captions" srcLang="en" />
-          Your browser does not support the video tag.
-        </video>
-      ) : (
-        <>
-          {shouldRenderDataImageWithArgoTags ? (
-            <DataImage
-              src={chooseImg()!}
-              date={useDate}
-              productId={useProductId}
-              regionCode={regionPath}
-              regionScope={regionScope}
-            />
-          ) : (
-            <img
-              onClick={handlePopup}
-              className="max-h-[80vh] w-full select-none object-contain"
-              src={chooseImg()}
-              alt="product"
-              onError={handleError}
-              aria-hidden
-            />
-          )}
-        </>
+          aria-hidden
+        />
       )}
     </div>
   );

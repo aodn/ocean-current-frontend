@@ -1,21 +1,15 @@
-import { getProductByIdFromFlat } from '@/utils/product-utils/product';
 import { RegionScope } from '@/constants/region';
-import { DateFormat } from '@/types/date';
+import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { generateDateRange } from './mockData';
 
-const useDateList = (productId: string, regionScope: RegionScope) => {
-  const product = getProductByIdFromFlat(productId);
+const useDateList = (productId: string, regionScope: RegionScope, selectedDate: string) => {
+  const isLoading = false;
 
-  if (!product) {
-    throw new Error(`Invalid product id: ${productId}`);
-  }
+  const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
 
-  const dateFormatFromProduct =
-    regionScope === RegionScope.Local ? product.dateFormat?.localFormat : product.dateFormat?.stateFormat;
+  const dateList = generateDateRange(productId, dateFormat, regionScope, selectedDate);
 
-  const dateFormat = dateFormatFromProduct || DateFormat.Day;
-
-  return generateDateRange(productId, dateFormat, regionScope);
+  return { isLoading, dateList };
 };
 
 export default useDateList;
