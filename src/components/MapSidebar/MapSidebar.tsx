@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import useProductStore, { setProductId } from '@/stores/product-store/productStore';
 import { getProductPathWithSubProduct } from '@/utils/product-utils/product';
-import { mapSidebarElements } from '@/data/dropDownProductData';
+import { sidebarProductsNav } from '@/data/sidebarProductsNav';
 import { useDateRange, useQueryParams } from '@/hooks';
 import { DropdownElement } from '../Shared/Dropdown/types/dropdown.types';
 
@@ -24,7 +24,7 @@ const MapSidebar: React.FC = () => {
 
   return (
     <div className="w-full overflow-hidden rounded bg-[#fff] p-4 shadow" data-testid="drop-down-menu">
-      {mapSidebarElements.map((element) => (
+      {sidebarProductsNav.map((element) => (
         <div
           key={element.id}
           aria-hidden="true"

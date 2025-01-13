@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { Dropdown, Loading } from '@/components/Shared';
 import useProductStore, { setProductId } from '@/stores/product-store/productStore';
-import { mapNavbarDataElements } from '@/data/dropDownProductData';
+import { sidebarProductsNav } from '@/data/sidebarProductsNav';
 import { getProductPathWithSubProduct } from '@/utils/product-utils/product';
 import { useDateRange, useQueryParams } from '@/hooks';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
@@ -43,7 +43,7 @@ const SidebarProductDropdown: React.FC = () => {
     <Dropdown
       showIcons
       header
-      elements={mapNavbarDataElements}
+      elements={sidebarProductsNav}
       selectedId={mainProduct?.key}
       onChange={handleDropdownChange}
     />
