@@ -3,7 +3,12 @@ import { Link } from 'react-router-dom';
 import ArrowIcon from '@/assets/icons/Arrow';
 import { color } from '@/styles/colors';
 import { useDeviceType } from '@/hooks';
-import { productCarouselData } from './data';
+import { linksData } from '@/data/linksData';
+
+const productCarouselData = linksData.flatMap((category) => {
+  if (category.links && category.links.length > 0) return category.links;
+  return [];
+});
 
 const HomeProductCarousel: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -56,13 +61,13 @@ const HomeProductCarousel: React.FC = () => {
             width: `${totalWidth}px`,
           }}
         >
-          {productCarouselData.map(({ id, url, imageUrl, description, title }) => (
+          {productCarouselData.map(({ id, url, blueIcon, description, title }) => (
             <div key={id} className="mt-2 w-24 flex-shrink-0 md:w-32">
               <Link
                 to={url}
                 className="flex h-24 flex-col items-center justify-center rounded-xl bg-imos-light-blue p-4 transition duration-300 ease-in-out hover:border-[3px] hover:border-imos-deep-blue hover:bg-white md:h-32"
               >
-                <img src={imageUrl} alt={description} className="h-full w-full" />
+                <img src={blueIcon} alt={description} className="h-full w-full" />
               </Link>
               <div className="p-2 text-center font-poppins text-sm font-medium text-imos-text-grey md:text-base">
                 {title}

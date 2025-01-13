@@ -1,17 +1,31 @@
-import ArgoIcon from '@/assets/icons/products/grey-icons/argo-icon-grey.svg';
-import SSTIcon from '@/assets/icons/products/grey-icons/sst-icon-grey.svg';
-import OceanColourIcon from '@/assets/icons/products/grey-icons/ocean-colour-icon-grey.svg';
-import AdjustedSeaLevelAnomalyIcon from '@/assets/icons/products/grey-icons/adjusted-sea-level-anomaly-icon-grey.svg';
-import MonthlyMeansIcon from '@/assets/icons/products/grey-icons/monthly-means-icon-grey.svg';
-import SurfaceWavesIcon from '@/assets/icons/products/grey-icons/surface-waves-icon-grey.svg';
-import FourHourSSTIcon from '@/assets/icons/products/grey-icons/4-hour-sst-icon-grey.svg';
-import SixHourSSTIcon from '@/assets/icons/products/grey-icons/6-day-sst-icon-grey.svg';
-import CurrentMetersIcon from '@/assets/icons/products/grey-icons/current-meters-icon-grey.svg';
-import GliderIcon from '@/assets/icons/products/grey-icons/glider-icon-grey.svg';
-import SealCTDIcon from '@/assets/icons/products/grey-icons/seal-ctd-icon-grey.svg';
-import TidalCurrentsIcon from '@/assets/icons/products/grey-icons/tidal-currents-icon-grey.svg';
-import ClimatologyIcon from '@/assets/icons/products/grey-icons/climatology-icon-grey.svg';
-import EACMooringArrayIcon from '@/assets/icons/products/grey-icons/eac-mooring-array-icon-grey.svg';
+import ArgoGreyIcon from '@/assets/icons/products/grey-icons/argo-icon-grey.svg';
+import SSTGreyIcon from '@/assets/icons/products/grey-icons/sst-icon-grey.svg';
+import OceanColourGreyIcon from '@/assets/icons/products/grey-icons/ocean-colour-icon-grey.svg';
+import AdjustedSeaLevelAnomalyGreyIcon from '@/assets/icons/products/grey-icons/adjusted-sea-level-anomaly-icon-grey.svg';
+import MonthlyMeansGreyIcon from '@/assets/icons/products/grey-icons/monthly-means-icon-grey.svg';
+import SurfaceWavesGreyIcon from '@/assets/icons/products/grey-icons/surface-waves-icon-grey.svg';
+import FourHourSSTGreyIcon from '@/assets/icons/products/grey-icons/4-hour-sst-icon-grey.svg';
+import SixHourSSTGreyIcon from '@/assets/icons/products/grey-icons/6-day-sst-icon-grey.svg';
+import CurrentMetersGreyIcon from '@/assets/icons/products/grey-icons/current-meters-icon-grey.svg';
+import GliderGreyIcon from '@/assets/icons/products/grey-icons/glider-icon-grey.svg';
+import SealCTDGreyIcon from '@/assets/icons/products/grey-icons/seal-ctd-icon-grey.svg';
+import TidalCurrentsGreyIcon from '@/assets/icons/products/grey-icons/tidal-currents-icon-grey.svg';
+import ClimatologyGreyIcon from '@/assets/icons/products/grey-icons/climatology-icon-grey.svg';
+import EACMooringArrayGreyIcon from '@/assets/icons/products/grey-icons/eac-mooring-array-icon-grey.svg';
+import ArgoBlueIcon from '@/assets/icons/products/blue-icons/argo-icon-blue.svg';
+import SSTBlueIcon from '@/assets/icons/products/blue-icons/sst-icon-blue.svg';
+import OceanColourBlueIcon from '@/assets/icons/products/blue-icons/ocean-colour-icon-blue.svg';
+import AdjustedSeaLevelAnomalyBlueIcon from '@/assets/icons/products/blue-icons/adjusted-sea-level-anomaly-icon-blue.svg';
+import MonthlyMeansBlueIcon from '@/assets/icons/products/blue-icons/monthly-means-icon-blue.svg';
+import SurfaceWavesBlueIcon from '@/assets/icons/products/blue-icons/surface-waves-icon-blue.svg';
+import FourHourSSTBlueIcon from '@/assets/icons/products/blue-icons/4-hour-sst-icon-blue.svg';
+import SixHourSSTBlueIcon from '@/assets/icons/products/blue-icons/6-day-sst-icon-blue.svg';
+import CurrentMetersBlueIcon from '@/assets/icons/products/blue-icons/current-meters-icon-blue.svg';
+import GliderBlueIcon from '@/assets/icons/products/blue-icons/glider-icon-blue.svg';
+import SealCTDBlueIcon from '@/assets/icons/products/blue-icons/seal-ctd-icon-blue.svg';
+import TidalCurrentsBlueIcon from '@/assets/icons/products/blue-icons/tidal-currents-icon-blue.svg';
+import ClimatologyBlueIcon from '@/assets/icons/products/blue-icons/climatology-icon-blue.svg';
+import EACMooringArrayBlueIcon from '@/assets/icons/products/blue-icons/eac-mooring-array-icon-blue.svg';
 import { LinkItem } from '@/types/navbar';
 
 export const linksData: LinkItem[] = [
@@ -20,56 +34,64 @@ export const linksData: LinkItem[] = [
     links: [
       {
         id: 'snapshotSst',
-        imageUrl: SSTIcon,
+        greyIcon: SSTGreyIcon,
+        blueIcon: SSTBlueIcon,
         title: 'Snapshot SST',
         description: 'Sea Surface Temperature',
         url: '/map/snapshot-sst',
       },
       {
         id: 'four-hour-sst',
-        imageUrl: FourHourSSTIcon,
+        greyIcon: FourHourSSTGreyIcon,
+        blueIcon: FourHourSSTBlueIcon,
         title: 'Four-hour SST',
         description: 'Ocean current observations',
         url: '/map/four-hour-sst/sst',
       },
       {
         id: 'sixDaySst-sst',
-        imageUrl: SixHourSSTIcon,
+        greyIcon: SixHourSSTGreyIcon,
+        blueIcon: SixHourSSTBlueIcon,
         title: 'Daily SST (6-day composite)',
         description: 'Daily sea surface temperature',
         url: '/map/6-day-sst/sst',
       },
       {
         id: 'oceanColour',
-        imageUrl: OceanColourIcon,
+        greyIcon: OceanColourGreyIcon,
+        blueIcon: OceanColourBlueIcon,
         title: 'Chlorophyll-a Concentration',
         description: 'Satellite ocean color',
         url: '/map/ocean-colour/chl-a',
       },
       {
         id: 'adjustedSeaLevelAnomaly',
-        imageUrl: AdjustedSeaLevelAnomalyIcon,
+        greyIcon: AdjustedSeaLevelAnomalyGreyIcon,
+        blueIcon: AdjustedSeaLevelAnomalyBlueIcon,
         title: 'Adj. Sea Level Anomaly',
         description: 'Adjusted Sea Level Anomaly',
         url: '/map/adj-sea-level-anom/sla',
       },
       {
         id: 'surfaceWaves',
-        imageUrl: SurfaceWavesIcon,
+        greyIcon: SurfaceWavesGreyIcon,
+        blueIcon: SurfaceWavesBlueIcon,
         title: 'Surface Waves',
         description: 'Ocean surface wave observations',
         url: '/map/surface-waves',
       },
       {
         id: 'monthlyMeans',
-        imageUrl: MonthlyMeansIcon,
+        greyIcon: MonthlyMeansGreyIcon,
+        blueIcon: MonthlyMeansBlueIcon,
         title: 'Monthly Means',
         description: 'Monthly temperature averages',
         url: '/map/monthly-means/anomalies',
       },
       {
         id: 'climatology-sst',
-        imageUrl: ClimatologyIcon,
+        greyIcon: ClimatologyGreyIcon,
+        blueIcon: ClimatologyBlueIcon,
         title: 'Climatology SST',
         description: 'SSTAARS Climatology',
         url: '/map/climatology/sst',
@@ -81,47 +103,52 @@ export const linksData: LinkItem[] = [
     links: [
       {
         id: 'argo',
-        imageUrl: ArgoIcon,
+        greyIcon: ArgoGreyIcon,
+        blueIcon: ArgoBlueIcon,
         title: 'Argo',
         description: 'Ocean observation network',
         url: '/map/argo',
       },
       {
         id: 'gliders',
-        imageUrl: GliderIcon,
+        greyIcon: GliderGreyIcon,
+        blueIcon: GliderBlueIcon,
         title: 'Gliders',
         description: 'Autonomous underwater vehicles',
         url: 'https://oceancurrent.aodn.org.au/index.php',
       },
       {
         id: 'tidal-currents',
-        imageUrl: TidalCurrentsIcon,
+        greyIcon: TidalCurrentsGreyIcon,
+        blueIcon: TidalCurrentsBlueIcon,
         title: 'Tidal Currents',
         description: 'Oceanic flow patterns',
         url: 'https://oceancurrent.aodn.org.au/index.php',
       },
       {
         id: 'current-meters',
-        imageUrl: CurrentMetersIcon,
+        greyIcon: CurrentMetersGreyIcon,
+        blueIcon: CurrentMetersBlueIcon,
         title: 'Current Meters',
         description: 'Flow measurement devices',
         url: 'product/current-meters',
       },
       {
         id: 'seal-ctd',
-        imageUrl: SealCTDIcon,
+        greyIcon: SealCTDGreyIcon,
+        blueIcon: SealCTDBlueIcon,
         title: 'SealCTD',
         description: 'Animal-mounted sensors',
         url: 'https://oceancurrent.aodn.org.au/index.php',
       },
-
       /*
         EAC Mooring Array has data from only one region
         We're setting the region automatically so user shouldn't need to manually select the region
       */
       {
         id: 'eac-mooring-array',
-        imageUrl: EACMooringArrayIcon,
+        greyIcon: EACMooringArrayGreyIcon,
+        blueIcon: EACMooringArrayBlueIcon,
         title: 'EAC Mooring Array',
         description: 'Monitoring station network',
         url: 'product/eac-mooring-array?region=Brisbane',
