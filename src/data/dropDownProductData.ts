@@ -13,6 +13,8 @@ import FourHourSSTWhiteIcon from '@/assets/icons/products/white-icons/4-hour-sst
 import SixHourSSTIcon from '@/assets/icons/products/grey-icons/6-day-sst-icon-grey.svg';
 import SixHourSSTWhiteIcon from '@/assets/icons/products/white-icons/6-day-sst-icon-white.svg';
 import ArgoIcon from '@/assets/icons/products/grey-icons/argo-icon-grey.svg';
+import CurrentMetersIcon from '@/assets/icons/products/grey-icons/current-meters-icon-grey.svg';
+import CurrentMetersWhiteIcon from '@/assets/icons/products/white-icons/current-meters-icon-white.svg';
 import EACMooringArrayIcon from '@/assets/icons/products/grey-icons/eac-mooring-array-icon-grey.svg';
 import EACMooringArrayWhiteIcon from '@/assets/icons/products/white-icons/eac-mooring-array-icon-white.svg';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
@@ -59,6 +61,12 @@ export const mapNavbarDataElements: DropdownElement[] = [
     label: 'Climatology SST',
     icon: SSTIcon,
     selectedIcon: SSTWhiteIcon,
+  },
+  {
+    id: 'currentMeters',
+    label: 'Current Meters',
+    icon: CurrentMetersIcon,
+    selectedIcon: CurrentMetersWhiteIcon,
   },
   {
     id: 'EACMooringArray',
