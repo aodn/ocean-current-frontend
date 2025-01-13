@@ -561,7 +561,7 @@ describe('buildCurrentMeterImageUrl', () => {
     const region = CurrentMeterRegion.Aust;
     const date = dayjs('2024');
     const property = CurrentMeterProperty.vmean;
-    const depth = CurrentMeterDepth.One;
+    const depth = CurrentMeterDepth.ONE;
 
     // Act
     const videoUrl = buildCurrentMeterImageUrl(region, date, property, depth);

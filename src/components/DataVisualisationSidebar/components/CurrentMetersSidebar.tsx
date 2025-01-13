@@ -8,6 +8,8 @@ import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.typ
 import useCurrentMeterStore, { setProperty, setDepth, setRegion } from '@/stores/current-meters-store/currentMeters';
 import { CurrentMeterProperty, CurrentMeterDepth, CurrentMeterRegion } from '@/types/currentMeters';
 import MiniMap from './MiniMap';
+import SidebarProductDropdown from './SidebarProductDropdown';
+import CurrentMetersDepthOptions from './CurrentMetersDepthOptions';
 
 interface SectionData {
   title: string;
@@ -40,23 +42,13 @@ const CurrentMetersSidebar: React.FC = () => {
       { title: 'K1', id: CurrentMeterProperty.K1 },
     ];
 
-    if (depth === CurrentMeterDepth.One) {
+    if (depth === CurrentMeterDepth.ONE) {
       return allPropertyData;
     }
     return allPropertyData.filter(
       (prop) => prop.id === CurrentMeterProperty.vmean || prop.id === CurrentMeterProperty.vrms,
     );
   }, [depth]);
-
-  const depthOptionsData = [
-    { label: '0-4800m', id: CurrentMeterDepth.One },
-    { label: '0-30m', id: CurrentMeterDepth.Two },
-    { label: '80-150m', id: CurrentMeterDepth.Three },
-    { label: '150-300m', id: CurrentMeterDepth.Four },
-    { label: '300-600m', id: CurrentMeterDepth.Five },
-    { label: '1200-2200m', id: CurrentMeterDepth.Six },
-    { label: '2200-4800m', id: CurrentMeterDepth.Seven },
-  ];
 
   const regionsOptionsData = [
     { label: 'Aust', id: CurrentMeterRegion.Aust },
@@ -96,21 +88,11 @@ const CurrentMetersSidebar: React.FC = () => {
     setRegion(id as CurrentMeterRegion);
   };
 
-  const handleDepthOptions = (selectedElement: DropdownElement) => {
-    const { id } = selectedElement;
-    const shouldResetToDefaultProperty =
-      id !== CurrentMeterDepth.One && property !== CurrentMeterProperty.vmean && property !== CurrentMeterProperty.vrms;
-
-    setDepth(selectedElement.id as CurrentMeterDepth);
-    setSearchParams({ property, depth: id, region, date: date ?? '' });
-
-    if (shouldResetToDefaultProperty) {
-      setProperty(CurrentMeterProperty.vmean);
-    }
-  };
-
   return (
     <div className="rounded-md bg-white">
+      <div className="mb-1">
+        <SidebarProductDropdown />
+      </div>
       <div className="h-60 w-full overflow-hidden">
         <MiniMap />
       </div>
@@ -144,16 +126,7 @@ const CurrentMetersSidebar: React.FC = () => {
           />
         </div>
 
-        <div className="px-4 pb-4">
-          <h3 className="py-2 text-lg font-medium text-imos-grey">Depth Layer</h3>
-          <Dropdown
-            elements={depthOptionsData}
-            selectedId={depth}
-            onChange={handleDepthOptions}
-            showIcons={false}
-            smallDropdown
-          />
-        </div>
+        <CurrentMetersDepthOptions />
 
         <div className="px-4 pb-2">
           <h3 className="py-2 text-lg font-medium text-imos-grey">Property</h3>
