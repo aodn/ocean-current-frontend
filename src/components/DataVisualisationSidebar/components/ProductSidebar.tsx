@@ -11,7 +11,6 @@ import useProductAvailableInRegion from '@/stores/product-store/hooks/useProduct
 import useDateStore from '@/stores/date-store/dateStore';
 import ArrowWithTail from '@/assets/icons/ArrowWithTail';
 import { GeneralText, ProductSidebarText } from '@/constants/textConstant';
-import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
 import SidebarProductDropdown from './SidebarProductDropdown';
@@ -38,7 +37,6 @@ const ProductSideBar: React.FC = () => {
   const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
   const [isDataSourcesCollapsed, setIsDataSourcesCollapsed] = useState(false);
   const useDate = useDateStore((state) => state.date);
-  const { isArgo } = useProductCheck();
 
   if (!mainProduct) {
     return <Loading />;
@@ -94,7 +92,9 @@ const ProductSideBar: React.FC = () => {
 
   return (
     <div className="rounded-md bg-white">
-      <div className="mb-1">{!isArgo && <SidebarProductDropdown />}</div>
+      <div className="mb-1">
+        <SidebarProductDropdown />
+      </div>
 
       {shouldRenderMiniMap && (
         <div className="hidden h-60 w-full overflow-hidden md:block">
