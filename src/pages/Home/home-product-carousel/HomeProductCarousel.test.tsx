@@ -2,16 +2,56 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { describe, it, expect, vi } from 'vitest';
+import { linksData } from '@/data/linksData';
 import HomeProductCarousel from './HomeProductCarousel';
-import { productCarouselData } from './data';
+
+const productCarouselData = linksData.flatMap((category) => {
+  if (category.links && category.links.length > 0) return category.links;
+  return [];
+});
 
 vi.mock('./data', () => ({
   productCarouselData: [
-    { id: 1, url: '/product1', imageUrl: 'image1.jpg', description: 'Product 1', title: 'Product 1' },
-    { id: 2, url: '/product2', imageUrl: 'image2.jpg', description: 'Product 2', title: 'Product 2' },
-    { id: 3, url: '/product3', imageUrl: 'image3.jpg', description: 'Product 3', title: 'Product 3' },
-    { id: 4, url: '/product4', imageUrl: 'image4.jpg', description: 'Product 4', title: 'Product 4' },
-    { id: 5, url: '/product5', imageUrl: 'image5.jpg', description: 'Product 5', title: 'Product 5' },
+    {
+      id: 1,
+      url: '/product1',
+      greyIcon: 'grey1.jpg',
+      blueIcon: 'blue1.jpg',
+      description: 'Product 1',
+      title: 'Product 1',
+    },
+    {
+      id: 2,
+      url: '/product2',
+      greyIcon: 'grey2.jpg',
+      blueIcon: 'blue2.jpg',
+      description: 'Product 2',
+      title: 'Product 2',
+    },
+    {
+      id: 3,
+      url: '/product3',
+      greyIcon: 'grey3.jpg',
+      blueIcon: 'blue3.jpg',
+      description: 'Product 3',
+      title: 'Product 3',
+    },
+    {
+      id: 4,
+      url: '/product4',
+      greyIcon: 'grey4.jpg',
+      blueIcon: 'blue4.jpg',
+      description: 'Product 4',
+      title: 'Product 4',
+    },
+    {
+      id: 5,
+      url: '/product5',
+      greyIcon: 'grey5.jpg',
+      blueIcon: 'blue5.jpg',
+      description: 'Product 5',
+      title: 'Product 5',
+    },
   ],
 }));
 
