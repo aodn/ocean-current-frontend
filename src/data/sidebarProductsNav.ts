@@ -13,13 +13,14 @@ import FourHourSSTWhiteIcon from '@/assets/icons/products/white-icons/4-hour-sst
 import SixHourSSTIcon from '@/assets/icons/products/grey-icons/6-day-sst-icon-grey.svg';
 import SixHourSSTWhiteIcon from '@/assets/icons/products/white-icons/6-day-sst-icon-white.svg';
 import ArgoIcon from '@/assets/icons/products/grey-icons/argo-icon-grey.svg';
+import ArgoWhiteIcon from '@/assets/icons/products/white-icons/argo-icon-white.svg';
 import CurrentMetersIcon from '@/assets/icons/products/grey-icons/current-meters-icon-grey.svg';
 import CurrentMetersWhiteIcon from '@/assets/icons/products/white-icons/current-meters-icon-white.svg';
 import EACMooringArrayIcon from '@/assets/icons/products/grey-icons/eac-mooring-array-icon-grey.svg';
 import EACMooringArrayWhiteIcon from '@/assets/icons/products/white-icons/eac-mooring-array-icon-white.svg';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 
-export const mapNavbarDataElements: DropdownElement[] = [
+export const sidebarProductsNav: DropdownElement[] = [
   {
     id: 'fourHourSst',
     label: 'Four-hour SST',
@@ -63,6 +64,12 @@ export const mapNavbarDataElements: DropdownElement[] = [
     selectedIcon: SSTWhiteIcon,
   },
   {
+    id: 'argo',
+    label: 'Argo',
+    icon: ArgoIcon,
+    selectedIcon: ArgoWhiteIcon,
+  },
+  {
     id: 'currentMeters',
     label: 'Current Meters',
     icon: CurrentMetersIcon,
@@ -75,5 +82,3 @@ export const mapNavbarDataElements: DropdownElement[] = [
     selectedIcon: EACMooringArrayWhiteIcon,
   },
 ];
-
-export const mapSidebarElements = [...mapNavbarDataElements, { id: 'argo', label: 'Argo', icon: ArgoIcon }];
