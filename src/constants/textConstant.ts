@@ -13,6 +13,7 @@ export enum ProductSidebarText {
   LEGEND = 'Legend',
   DATA_SOURCES = 'Data sources',
   OPTIONS = 'Options',
+  DEPTH_LAYER = 'Depth Layer',
 }
 
 export enum ProductMenubarText {
