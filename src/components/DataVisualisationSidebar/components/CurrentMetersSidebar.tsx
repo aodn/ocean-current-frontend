@@ -6,7 +6,7 @@ import ArrowWithTail from '@/assets/icons/ArrowWithTail';
 import { currentMetersDescription, currentMetersDataModal } from '@/data/currentMetersData.tsx';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import useCurrentMeterStore, { setProperty, setDepth, setRegion } from '@/stores/current-meters-store/currentMeters';
-import { CurrentMeterProperty, CurrentMeterDepth, CurrentMeterRegion } from '@/types/currentMeters';
+import { CurrentMetersProperty, CurrentMetersDepth, CurrentMetersRegion } from '@/types/currentMeters';
 import MiniMap from './MiniMap';
 import SidebarProductDropdown from './SidebarProductDropdown';
 import CurrentMetersDepthOptions from './CurrentMetersDepthOptions';
@@ -23,69 +23,69 @@ const CurrentMetersSidebar: React.FC = () => {
   const date = searchParams.get('date');
 
   useEffect(() => {
-    const urlRegion = searchParams.get('region') as CurrentMeterRegion;
-    const urlProperty = searchParams.get('property') as CurrentMeterProperty;
-    const urlDepth = searchParams.get('depth') as CurrentMeterDepth;
-    if (urlRegion && Object.values(CurrentMeterRegion).includes(urlRegion)) setRegion(urlRegion);
-    if (urlProperty && Object.values(CurrentMeterProperty).includes(urlProperty)) setProperty(urlProperty);
-    if (urlDepth && Object.values(CurrentMeterDepth).includes(urlDepth)) setDepth(urlDepth);
+    const urlRegion = searchParams.get('region') as CurrentMetersRegion;
+    const urlProperty = searchParams.get('property') as CurrentMetersProperty;
+    const urlDepth = searchParams.get('depth') as CurrentMetersDepth;
+    if (urlRegion && Object.values(CurrentMetersRegion).includes(urlRegion)) setRegion(urlRegion);
+    if (urlProperty && Object.values(CurrentMetersProperty).includes(urlProperty)) setProperty(urlProperty);
+    if (urlDepth && Object.values(CurrentMetersDepth).includes(urlDepth)) setDepth(urlDepth);
   }, [searchParams]);
 
   const propertyData = useMemo(() => {
     const allPropertyData: SectionData[] = [
-      { title: 'vmean', id: CurrentMeterProperty.vmean },
-      { title: 'vrms', id: CurrentMeterProperty.vrms },
-      { title: 'M2', id: CurrentMeterProperty.M2 },
-      { title: 'S2', id: CurrentMeterProperty.S2 },
-      { title: 'N2', id: CurrentMeterProperty.N2 },
-      { title: 'O1', id: CurrentMeterProperty.O1 },
-      { title: 'K1', id: CurrentMeterProperty.K1 },
+      { title: 'vmean', id: CurrentMetersProperty.vmean },
+      { title: 'vrms', id: CurrentMetersProperty.vrms },
+      { title: 'M2', id: CurrentMetersProperty.M2 },
+      { title: 'S2', id: CurrentMetersProperty.S2 },
+      { title: 'N2', id: CurrentMetersProperty.N2 },
+      { title: 'O1', id: CurrentMetersProperty.O1 },
+      { title: 'K1', id: CurrentMetersProperty.K1 },
     ];
 
-    if (depth === CurrentMeterDepth.ONE) {
+    if (depth === CurrentMetersDepth.ONE) {
       return allPropertyData;
     }
     return allPropertyData.filter(
-      (prop) => prop.id === CurrentMeterProperty.vmean || prop.id === CurrentMeterProperty.vrms,
+      (prop) => prop.id === CurrentMetersProperty.vmean || prop.id === CurrentMetersProperty.vrms,
     );
   }, [depth]);
 
   const regionsOptionsData = [
-    { label: 'Aust', id: CurrentMeterRegion.Aust },
-    { label: 'TimorP', id: CurrentMeterRegion.TimorP },
-    { label: 'Kim', id: CurrentMeterRegion.Kim },
-    { label: 'Row', id: CurrentMeterRegion.Row },
-    { label: 'Pil', id: CurrentMeterRegion.Pil },
-    { label: 'Ning', id: CurrentMeterRegion.Ning },
-    { label: 'Perth', id: CurrentMeterRegion.Perth },
-    { label: 'Esp', id: CurrentMeterRegion.Esp },
-    { label: 'SA', id: CurrentMeterRegion.SA },
-    { label: 'Totten', id: CurrentMeterRegion.Totten },
-    { label: 'SOFS', id: CurrentMeterRegion.SOFS },
-    { label: 'Polynya', id: CurrentMeterRegion.Polynya },
-    { label: 'ETas', id: CurrentMeterRegion.ETas },
-    { label: 'BMP', id: CurrentMeterRegion.BMP },
-    { label: 'Syd', id: CurrentMeterRegion.Syd },
-    { label: 'Coffs', id: CurrentMeterRegion.Coffs },
-    { label: 'SEQ', id: CurrentMeterRegion.SEQ },
-    { label: 'SGBR', id: CurrentMeterRegion.SGBR },
-    { label: 'SGBR2', id: CurrentMeterRegion.SGBR2 },
-    { label: 'CGBR', id: CurrentMeterRegion.CGBR },
-    { label: 'NGBR', id: CurrentMeterRegion.NGBR },
+    { label: 'Aust', id: CurrentMetersRegion.Aust },
+    { label: 'TimorP', id: CurrentMetersRegion.TimorP },
+    { label: 'Kim', id: CurrentMetersRegion.Kim },
+    { label: 'Row', id: CurrentMetersRegion.Row },
+    { label: 'Pil', id: CurrentMetersRegion.Pil },
+    { label: 'Ning', id: CurrentMetersRegion.Ning },
+    { label: 'Perth', id: CurrentMetersRegion.Perth },
+    { label: 'Esp', id: CurrentMetersRegion.Esp },
+    { label: 'SA', id: CurrentMetersRegion.SA },
+    { label: 'Totten', id: CurrentMetersRegion.Totten },
+    { label: 'SOFS', id: CurrentMetersRegion.SOFS },
+    { label: 'Polynya', id: CurrentMetersRegion.Polynya },
+    { label: 'ETas', id: CurrentMetersRegion.ETas },
+    { label: 'BMP', id: CurrentMetersRegion.BMP },
+    { label: 'Syd', id: CurrentMetersRegion.Syd },
+    { label: 'Coffs', id: CurrentMetersRegion.Coffs },
+    { label: 'SEQ', id: CurrentMetersRegion.SEQ },
+    { label: 'SGBR', id: CurrentMetersRegion.SGBR },
+    { label: 'SGBR2', id: CurrentMetersRegion.SGBR2 },
+    { label: 'CGBR', id: CurrentMetersRegion.CGBR },
+    { label: 'NGBR', id: CurrentMetersRegion.NGBR },
   ];
 
   const handlePopup = () => setIsPopupOpen(!isPopupOpen);
 
   const handlePropertyChange = (id: string) => {
     setSearchParams({ property: id, depth, region, date: date ?? '' });
-    setProperty(id as CurrentMeterProperty);
+    setProperty(id as CurrentMetersProperty);
   };
 
   const handleRegionOptions = (selectedElement: DropdownElement) => {
     const { id } = selectedElement;
 
     setSearchParams({ property, depth, region: id, date: date ?? '' });
-    setRegion(id as CurrentMeterRegion);
+    setRegion(id as CurrentMetersRegion);
   };
 
   return (

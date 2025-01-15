@@ -2,7 +2,7 @@ import parse from 'node-html-parser';
 import { LngLatBoundsLike } from 'mapbox-gl';
 import { BoundingBox, GeoJsonPolygon } from '@/types/map';
 import { validateCoords } from '@/utils/validators/map';
-import { CurrentMeterMapArea } from '@/types/currentMeter';
+import { CurrentMetersImageDataPoints } from '@/types/currentMeters';
 
 const calculateAreaFromCoords = (coords: BoundingBox, shouldValidate: boolean = true) => {
   if (shouldValidate) {
@@ -76,7 +76,7 @@ const calculateCenterByCoords = (coords: number[]): number[] => {
 };
 
 // TODO: Refactor this function to be more generic
-const convertCurrentMeterHtmlMapElementStringToObj = (htmlMapElementString: string): CurrentMeterMapArea[] => {
+const convertCurrentMeterHtmlMapElementStringToObj = (htmlMapElementString: string): CurrentMetersImageDataPoints[] => {
   const rootElement = parse(htmlMapElementString.replace(/(\r\n|\n|\r)/gm, ''));
   const areaElements = rootElement!.querySelectorAll('area');
 
@@ -91,7 +91,7 @@ const convertCurrentMeterHtmlMapElementStringToObj = (htmlMapElementString: stri
       coords,
       href: area.getAttribute('href'),
       alt: area.getAttribute('alt'),
-      title: area.getAttribute('title'),
+      name: area.getAttribute('title'),
     };
   });
 };

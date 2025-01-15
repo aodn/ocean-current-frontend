@@ -1,5 +1,5 @@
 // data points coordinates for map
-import { CurrentMeterRegion } from '@/types/currentMeters';
+import { CurrentMetersRegion } from '@/types/currentMeters';
 
 type currentMeterMapDataPointNames =
   | 'BMP070'
@@ -218,28 +218,28 @@ const ngbr: CurrentMeterMapDataPoints[] = [
   { name: 'GBRLSH', coords: [145.63, -14.7] },
 ];
 
-export const currentMeterMapDataPoints: Record<CurrentMeterRegion, CurrentMeterMapDataPoints[]> = {
-  [CurrentMeterRegion.Aust]: [], // data points should only be accessible in region level
-  [CurrentMeterRegion.TimorP]: timorP,
-  [CurrentMeterRegion.Kim]: kim,
-  [CurrentMeterRegion.Row]: row,
-  [CurrentMeterRegion.Pil]: pil,
-  [CurrentMeterRegion.Ning]: ning,
-  [CurrentMeterRegion.Perth]: perth,
-  [CurrentMeterRegion.Esp]: esp,
-  [CurrentMeterRegion.SA]: sa,
-  [CurrentMeterRegion.Totten]: totten,
-  [CurrentMeterRegion.SOFS]: sofs,
-  [CurrentMeterRegion.Polynya]: polynya,
-  [CurrentMeterRegion.ETas]: eTas,
-  [CurrentMeterRegion.BMP]: bmp,
-  [CurrentMeterRegion.Syd]: syd,
-  [CurrentMeterRegion.Coffs]: coffs,
-  [CurrentMeterRegion.SEQ]: seq,
-  [CurrentMeterRegion.SGBR]: sgbr,
-  [CurrentMeterRegion.SGBR2]: sgbr2,
-  [CurrentMeterRegion.CGBR]: cgbr,
-  [CurrentMeterRegion.NGBR]: ngbr,
+export const currentMeterMapDataPoints: Record<CurrentMetersRegion, CurrentMeterMapDataPoints[]> = {
+  [CurrentMetersRegion.Aust]: [], // data points should only be accessible in region level
+  [CurrentMetersRegion.TimorP]: timorP,
+  [CurrentMetersRegion.Kim]: kim,
+  [CurrentMetersRegion.Row]: row,
+  [CurrentMetersRegion.Pil]: pil,
+  [CurrentMetersRegion.Ning]: ning,
+  [CurrentMetersRegion.Perth]: perth,
+  [CurrentMetersRegion.Esp]: esp,
+  [CurrentMetersRegion.SA]: sa,
+  [CurrentMetersRegion.Totten]: totten,
+  [CurrentMetersRegion.SOFS]: sofs,
+  [CurrentMetersRegion.Polynya]: polynya,
+  [CurrentMetersRegion.ETas]: eTas,
+  [CurrentMetersRegion.BMP]: bmp,
+  [CurrentMetersRegion.Syd]: syd,
+  [CurrentMetersRegion.Coffs]: coffs,
+  [CurrentMetersRegion.SEQ]: seq,
+  [CurrentMetersRegion.SGBR]: sgbr,
+  [CurrentMetersRegion.SGBR2]: sgbr2,
+  [CurrentMetersRegion.CGBR]: cgbr,
+  [CurrentMetersRegion.NGBR]: ngbr,
 };
 
 export const currentMeterMapDataPointsFlat = Object.values(currentMeterMapDataPoints).flat();

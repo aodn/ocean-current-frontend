@@ -1,4 +1,12 @@
-export enum CurrentMeterRegion {
+export interface CurrentMetersImageDataPoints {
+  shape: string | undefined;
+  coords: number[];
+  href: string | undefined;
+  alt: string | undefined;
+  name: string | undefined;
+}
+
+export enum CurrentMetersRegion {
   Aust = '01_Aust',
   TimorP = '02_TimorP',
   Kim = '03_Kim',
@@ -22,7 +30,7 @@ export enum CurrentMeterRegion {
   NGBR = '16_NGBR',
 }
 
-export enum CurrentMeterProperty {
+export enum CurrentMetersProperty {
   vmean = 'vmean',
   vrms = 'vrms',
   M2 = 'M2',
@@ -32,7 +40,7 @@ export enum CurrentMeterProperty {
   K1 = 'K1',
 }
 
-export enum CurrentMeterDepth {
+export enum CurrentMetersDepth {
   ONE = '1',
   TWO = '2',
   THREE = '3',

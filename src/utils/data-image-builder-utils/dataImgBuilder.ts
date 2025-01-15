@@ -2,7 +2,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { productTypeMapping, TargetPathRegionScope } from '@/constants/imgPath';
 import { RegionScope } from '@/constants/region';
 import { imageBaseUrl, imageS3BaseUrl } from '@/configs/image';
-import { CurrentMeterDepth, CurrentMeterProperty, CurrentMeterRegion } from '@/types/currentMeters';
+import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/types/currentMeters';
 
 type ProductId = string;
 type SubProductType = string | undefined | null;
@@ -156,10 +156,10 @@ const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle:
 };
 
 const buildCurrentMeterImageUrl = (
-  region: CurrentMeterRegion = CurrentMeterRegion.Aust,
+  region: CurrentMetersRegion = CurrentMetersRegion.Aust,
   date: Dayjs,
-  property: CurrentMeterProperty,
-  depth: CurrentMeterDepth,
+  property: CurrentMetersProperty,
+  depth: CurrentMetersDepth,
 ): string => {
   const formattedDate = date.format('YYYY');
   const year = formattedDate ? `_${formattedDate}` : '';
