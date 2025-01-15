@@ -4,6 +4,7 @@ export interface CurrentMetersImageDataPoints {
   href: string | undefined;
   alt: string | undefined;
   name: string | undefined;
+  isText?: boolean;
 }
 
 export enum CurrentMetersRegion {

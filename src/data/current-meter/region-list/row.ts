@@ -1,3 +1,4 @@
+import { CurrentMetersImageDataPoints } from '@/types/currentMeters';
 import { calculateOffsetByCoords, convertCurrentMeterHtmlMapElementStringToObj } from '@/utils/geo-utils/geo';
 
 const htmlString = `<map name="imap">
@@ -7,25 +8,25 @@ const htmlString = `<map name="imap">
 
 export const rowMapAreas = convertCurrentMeterHtmlMapElementStringToObj(htmlString);
 
-const regionArr = [
+const regionArr: CurrentMetersImageDataPoints[] = [
   {
     shape: 'rect',
     coords: [495, 174, 504, 184],
     href: '../NWSROW/index.html',
     alt: 'NWSROW',
-    title: 'NWSROW',
+    name: 'NWSROW',
   },
   {
     shape: 'rect',
     coords: [852, 498, 909, 509],
     href: '../NWSROW/index.html',
     alt: 'NWSROW',
-    title: 'NWSROW',
+    name: 'NWSROW',
     isText: true,
   },
 ];
 
-const convertedToGeo = regionArr.map((region) => {
+export const convertedToGeo = regionArr.map((region) => {
   const coords = calculateOffsetByCoords(region.coords, {
     imageWidth: 1032,
     imageHeight: 760,
@@ -38,4 +39,4 @@ const convertedToGeo = regionArr.map((region) => {
   };
 });
 
-export default convertedToGeo;
+export default regionArr;
