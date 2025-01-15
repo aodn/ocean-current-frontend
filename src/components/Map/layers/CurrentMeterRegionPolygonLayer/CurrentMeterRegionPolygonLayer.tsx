@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { Layer, Source, useMap } from 'react-map-gl';
-import { currentMeterDataPointsArray } from '@/data/current-meter/dataPoints';
+import { currentMeterMapDataPointsFlat } from '@/data/current-meter/mapDataPoints';
 import { mapboxSourceIds } from '@/constants/mapboxId';
 import { CustomSquareSymbol } from '../../symbols';
 
@@ -17,7 +17,7 @@ const CUSTOM_SQUARE_SYMBOL_IMAGE_NAME = 'outlined-square';
 const CurrentMeterRegionPolygonLayer: React.FC = () => {
   const { CURRENT_METER_ALL_REGIONS_SOURCE_ID } = mapboxSourceIds;
 
-  const regionsMapFeatures = currentMeterDataPointsArray.map((region) => {
+  const regionsMapFeatures = currentMeterMapDataPointsFlat.map((region) => {
     return {
       type: 'Feature',
       properties: {

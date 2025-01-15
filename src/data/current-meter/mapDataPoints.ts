@@ -1,7 +1,7 @@
 // data points coordinates for map
 import { CurrentMeterRegion } from '@/types/currentMeters';
 
-type currentMeterDataPointNames =
+type currentMeterMapDataPointNames =
   | 'BMP070'
   | 'BMP090'
   | 'BMP120'
@@ -81,12 +81,12 @@ type currentMeterDataPointNames =
   | 'WATR20'
   | 'WATR50';
 
-interface CurrentMeterDataPoint {
-  name: currentMeterDataPointNames;
+interface CurrentMeterMapDataPoints {
+  name: currentMeterMapDataPointNames;
   coords: [number, number];
 }
 
-const timorP: CurrentMeterDataPoint[] = [
+const timorP: CurrentMeterMapDataPoints[] = [
   { name: 'NWSLYN', coords: [130.35, -9.939] },
   { name: 'DARBGF', coords: [130.59, -12.11] },
   { name: 'ITFTIS', coords: [127.55, -9.818] },
@@ -100,7 +100,7 @@ const timorP: CurrentMeterDataPoint[] = [
   { name: 'ITFOMB', coords: [125.06, -8.53] },
 ];
 
-const kim: CurrentMeterDataPoint[] = [
+const kim: CurrentMeterMapDataPoints[] = [
   { name: 'KIM050', coords: [121.59, -16.39] },
   { name: 'KIM100', coords: [121.3, -15.68] },
   { name: 'KIM200', coords: [121.24, -155.53] },
@@ -110,21 +110,21 @@ const kim: CurrentMeterDataPoint[] = [
   { name: 'CAM100', coords: [123.6, -14.32] },
 ];
 
-const row: CurrentMeterDataPoint[] = [{ name: 'NWSROW', coords: [119.91, -17.76] }];
+const row: CurrentMeterMapDataPoints[] = [{ name: 'NWSROW', coords: [119.91, -17.76] }];
 
-const pil: CurrentMeterDataPoint[] = [
+const pil: CurrentMeterMapDataPoints[] = [
   { name: 'NWSBAR', coords: [114.76, -20.76] },
   { name: 'PIL050', coords: [116.42, -20.05] },
   { name: 'PIL100', coords: [116.11, -19.69] },
   { name: 'PIL200', coords: [115.92, -19.44] },
 ];
 
-const ning: CurrentMeterDataPoint[] = [
+const ning: CurrentMeterMapDataPoints[] = [
   { name: 'TAN100', coords: [139.91, -21.8] },
   { name: 'NRSNIN', coords: [113.95, -21.8] },
 ];
 
-const perth: CurrentMeterDataPoint[] = [
+const perth: CurrentMeterMapDataPoints[] = [
   { name: 'WATR04', coords: [115.4, -31.72] },
   { name: 'WATR10', coords: [115.2, -31.65] },
   { name: 'WATR15', coords: [115.13, -31.69] },
@@ -134,9 +134,9 @@ const perth: CurrentMeterDataPoint[] = [
   { name: 'NRSROT', coords: [115.42, -32] },
 ];
 
-const esp: CurrentMeterDataPoint[] = [{ name: 'NRSESP', coords: [121.85, -33.9] }];
+const esp: CurrentMeterMapDataPoints[] = [{ name: 'NRSESP', coords: [121.85, -33.9] }];
 
-const sa: CurrentMeterDataPoint[] = [
+const sa: CurrentMeterMapDataPoints[] = [
   { name: 'SAM1DS', coords: [136.24, -36.52] },
   { name: 'SAM2CP', coords: [135.67, -35.28] },
   { name: 'SAM3MS', coords: [135.9, -36.15] },
@@ -148,44 +148,44 @@ const sa: CurrentMeterDataPoint[] = [
   { name: 'NRSKAI', coords: [136.45, -35.84] },
 ];
 
-const totten: CurrentMeterDataPoint[] = [
+const totten: CurrentMeterMapDataPoints[] = [
   { name: 'TOTTEN1', coords: [119.21, -66.54] },
   { name: 'TOTTEN2', coords: [120.63, -66.21] },
   { name: 'TOTTEN3', coords: [120.46, -66.5] },
 ];
 
-const sofs: CurrentMeterDataPoint[] = [
+const sofs: CurrentMeterMapDataPoints[] = [
   // * The coords are same and it's very hard to see them on the map, so offset added *
   { name: 'SOFS', coords: [142.07 - 0.5, -46.67 + 0.15] },
   { name: 'SOTS', coords: [142.07, -46.67] },
 ];
 
-const polynya: CurrentMeterDataPoint[] = [
+const polynya: CurrentMeterMapDataPoints[] = [
   { name: 'POLYNYA1', coords: [143.47, -66.2] },
   { name: 'POLYNYA2', coords: [143.21, -66.2] },
 ];
 
-const eTas: CurrentMeterDataPoint[] = [{ name: 'NRSMAI', coords: [148.23, -42.65] }];
+const eTas: CurrentMeterMapDataPoints[] = [{ name: 'NRSMAI', coords: [148.23, -42.65] }];
 
-const bmp: CurrentMeterDataPoint[] = [
+const bmp: CurrentMeterMapDataPoints[] = [
   { name: 'BMP070', coords: [150.19, -36.19] },
   { name: 'BMP090', coords: [150.23, -36.19] },
   { name: 'BMP120', coords: [150.32, -36.21] },
 ];
 
-const syd: CurrentMeterDataPoint[] = [
+const syd: CurrentMeterMapDataPoints[] = [
   { name: 'SYD100', coords: [151.38, -33.94] },
   { name: 'SYD140', coords: [151.45, -33.99] },
   { name: 'PH100', coords: [151.23, -34.12] },
   { name: 'ORS065', coords: [151.31, -33.89] },
 ];
 
-const coffs: CurrentMeterDataPoint[] = [
+const coffs: CurrentMeterMapDataPoints[] = [
   { name: 'CH070', coords: [153.3, -30.27] },
   { name: 'CH100', coords: [153.39, -30.26] },
 ];
 
-const seq: CurrentMeterDataPoint[] = [
+const seq: CurrentMeterMapDataPoints[] = [
   { name: 'NRSNIN', coords: [153.56, -27.34] },
   { name: 'SEQ200', coords: [153.77, -27.34] },
   { name: 'SEQ400', coords: [153.88, -27.33] },
@@ -198,27 +198,27 @@ const seq: CurrentMeterDataPoint[] = [
   { name: 'EAC4800', coords: [155.31, -27.1] },
 ];
 
-const sgbr: CurrentMeterDataPoint[] = [
+const sgbr: CurrentMeterMapDataPoints[] = [
   { name: 'GBRCCH', coords: [151.99, -22.41] },
   { name: 'GBRHIN', coords: [151.99, -23.38] },
   { name: 'GBRHIS', coords: [151.96, -23.51] },
   { name: 'GBROTE', coords: [152.17, -23.48] },
 ];
 
-const sgbr2: CurrentMeterDataPoint[] = [{ name: 'GBRELR', coords: [152.89, -21.04] }];
+const sgbr2: CurrentMeterMapDataPoints[] = [{ name: 'GBRELR', coords: [152.89, -21.04] }];
 
-const cgbr: CurrentMeterDataPoint[] = [
+const cgbr: CurrentMeterMapDataPoints[] = [
   { name: 'GBRMYR', coords: [147.35, -18.22] },
   { name: 'GBRPPS', coords: [147.17, -18.31] },
   { name: 'NRSYON', coords: [147.62, -19.3] },
 ];
 
-const ngbr: CurrentMeterDataPoint[] = [
+const ngbr: CurrentMeterMapDataPoints[] = [
   { name: 'GBRLSL', coords: [145.34, -14.34] },
   { name: 'GBRLSH', coords: [145.63, -14.7] },
 ];
 
-export const currentMeterDataPointsMap: Record<CurrentMeterRegion, CurrentMeterDataPoint[]> = {
+export const currentMeterMapDataPoints: Record<CurrentMeterRegion, CurrentMeterMapDataPoints[]> = {
   [CurrentMeterRegion.Aust]: [], // data points should only be accessible in region level
   [CurrentMeterRegion.TimorP]: timorP,
   [CurrentMeterRegion.Kim]: kim,
@@ -242,4 +242,4 @@ export const currentMeterDataPointsMap: Record<CurrentMeterRegion, CurrentMeterD
   [CurrentMeterRegion.NGBR]: ngbr,
 };
 
-export const currentMeterDataPointsArray = Object.values(currentMeterDataPointsMap).flat();
+export const currentMeterMapDataPointsFlat = Object.values(currentMeterMapDataPoints).flat();
