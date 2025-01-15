@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { Layer, Source, useMap } from 'react-map-gl';
-import { currentMeterDataPointsArray } from '@/data/current-meter/data-point';
+import { currentMeterDataPointsArray } from '@/data/current-meter/dataPoints';
 import { mapboxSourceIds } from '@/constants/mapboxId';
 import { CustomSquareSymbol } from '../../symbols';
 
@@ -21,7 +21,7 @@ const CurrentMeterRegionPolygonLayer: React.FC = () => {
     return {
       type: 'Feature',
       properties: {
-        title: region.title,
+        title: region.name,
       },
       geometry: {
         type: 'Point',
