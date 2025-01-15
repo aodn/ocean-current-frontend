@@ -1,10 +1,10 @@
 import { Dayjs } from 'dayjs';
 import { RegionScope } from '@/constants/region';
 
-export interface DataImageProps {
+export interface DataImageWithArgoMapProps {
   src: string;
   productId: string;
-  date: Dayjs;
   regionCode: string;
-  regionScope: RegionScope;
+  regionScope?: RegionScope;
+  date: Dayjs;
 }

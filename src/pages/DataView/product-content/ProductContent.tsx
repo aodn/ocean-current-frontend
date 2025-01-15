@@ -23,7 +23,7 @@ import { VideoPlayerOutletContext } from '@/types/router';
 import { checkProductHasArgoTags } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useCurrentMeterStore from '@/stores/current-meters-store/currentMeters';
-import DataImage from '../data-image/DataImage';
+import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
 
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
@@ -164,26 +164,33 @@ const ProductContent: React.FC = () => {
     );
   }
 
+  if (shouldRenderDataImageWithArgoTags) {
+    return (
+      <DataImageWithArgoMap
+        src={chooseImg()!}
+        date={useDate}
+        productId={useProductId}
+        regionCode={regionPath}
+        regionScope={regionScope}
+      />
+    );
+  }
+
+  // to implement
+  // if (isCurrentMeters) {
+  //   return <DataImage src={chooseImg()!} date={useDate} productId={useProductId} regionCode={currentMeterRegion} />;
+  // }
+
   return (
     <div className="h-full bg-white">
-      {shouldRenderDataImageWithArgoTags ? (
-        <DataImage
-          src={chooseImg()!}
-          date={useDate}
-          productId={useProductId}
-          regionCode={regionPath}
-          regionScope={regionScope}
-        />
-      ) : (
-        <img
-          onClick={handlePopup}
-          className="max-h-[80vh] w-full select-none object-contain"
-          src={chooseImg()}
-          alt="product"
-          onError={handleError}
-          aria-hidden
-        />
-      )}
+      <img
+        onClick={handlePopup}
+        className="max-h-[80vh] w-full select-none object-contain"
+        src={chooseImg()}
+        alt="product"
+        onError={handleError}
+        aria-hidden
+      />
     </div>
   );
 };

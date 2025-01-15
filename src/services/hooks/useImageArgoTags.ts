@@ -1,4 +1,5 @@
 import { Dayjs } from 'dayjs';
+import { useMemo } from 'react';
 import { getArgoTags } from '@/services/argo';
 import { parseArgoTagDataFromText } from '@/utils/argo-utils/argoTag';
 import useDataFetch from './useDataFetch';
@@ -18,7 +19,8 @@ const useImageArgoTags = (date: Dayjs, tagPath: string, regionCode: string) => {
   };
 
   const { data, loading, error } = useDataFetch(getArgoTags, [date, tagPath, regionPath()]);
-  const parsedData = data ? parseArgoTagDataFromText(data) : [];
+  // to avoid unnecessary state updates
+  const parsedData = useMemo(() => (data ? parseArgoTagDataFromText(data) : []), [data]);
   return { data: parsedData, loading, error };
 };
 
