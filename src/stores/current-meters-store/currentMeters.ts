@@ -6,7 +6,7 @@ import { State, Actions } from './currentMeters.types';
 const initialState: State = {
   region: CurrentMeterRegion.Aust,
   property: CurrentMeterProperty.vmean,
-  depth: CurrentMeterDepth.One,
+  depth: CurrentMeterDepth.ONE,
 };
 
 const useCurrentMeterStore = create<State & Actions>()(
