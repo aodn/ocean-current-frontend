@@ -6,7 +6,7 @@ import { DatePickerProps } from './types/datePicker.types';
 
 const mockProps: DatePickerProps = {
   selectedDate: new Date('2024-06-05'),
-  dateFormat: DateFormat.Day,
+  dateFormat: DateFormat.DAY,
   goToPrevious: vi.fn(),
   goToNext: vi.fn(),
   onChange: vi.fn(),
