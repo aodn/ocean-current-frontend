@@ -3,10 +3,10 @@ import { useSearchParams } from 'react-router-dom';
 import InfoIcon from '@/assets/icons/info-icon.svg';
 import { Button, Dropdown, Popup, TruncateText } from '@/components/Shared';
 import ArrowWithTail from '@/assets/icons/ArrowWithTail';
-import { currentMetersDescription, currentMetersDataModal } from '@/data/currentMetersData.tsx';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import useCurrentMeterStore, { setProperty, setDepth, setRegion } from '@/stores/current-meters-store/currentMeters';
 import { CurrentMetersProperty, CurrentMetersDepth, CurrentMetersRegion } from '@/types/currentMeters';
+import { productDescription } from '@/constants/productInfo';
 import MiniMap from './MiniMap';
 import SidebarProductDropdown from './SidebarProductDropdown';
 import CurrentMetersDepthOptions from './CurrentMetersDepthOptions';
@@ -30,6 +30,7 @@ const CurrentMetersSidebar: React.FC = () => {
     if (urlProperty && Object.values(CurrentMetersProperty).includes(urlProperty)) setProperty(urlProperty);
     if (urlDepth && Object.values(CurrentMetersDepth).includes(urlDepth)) setDepth(urlDepth);
   }, [searchParams]);
+  const prodInfo = productDescription.filter((prod) => prod.id === 'currentMeters')[0];
 
   const propertyData = useMemo(() => {
     const allPropertyData: SectionData[] = [
@@ -100,7 +101,7 @@ const CurrentMetersSidebar: React.FC = () => {
         <div className="p-4">
           <div className="flex justify-between">
             <img src={InfoIcon} alt="info icon" className="mr-6 mt-1 h-6 w-6 cursor-pointer object-contain" />
-            <TruncateText lines={4} text={currentMetersDescription} />
+            <TruncateText lines={4} text={prodInfo.summary} />
           </div>
           <div aria-hidden onClick={handlePopup} className="mt-3 flex justify-end">
             <p className="mr-2 cursor-pointer font-semibold text-imos-grey">Read More</p>
@@ -110,7 +111,7 @@ const CurrentMetersSidebar: React.FC = () => {
 
         <Popup
           title={'IMOS current meters on coastal and deep water moorings around Australia'}
-          body={currentMetersDataModal}
+          body={prodInfo.description}
           isOpen={isPopupOpen}
           onClose={handlePopup}
         />
