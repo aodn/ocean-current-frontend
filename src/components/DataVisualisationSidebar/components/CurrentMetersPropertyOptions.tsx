@@ -1,49 +1,36 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/Shared';
-import useCurrentMeterStore, { setProperty, setDepth, setRegion } from '@/stores/current-meters-store/currentMeters';
-import { CurrentMetersProperty, CurrentMetersDepth, CurrentMetersRegion } from '@/types/currentMeters';
+import useCurrentMeterStore, { setProperty } from '@/stores/current-meters-store/currentMeters';
+import { CurrentMetersProperty, CurrentMetersDepth } from '@/types/currentMeters';
 
-interface SectionData {
-  title: string;
-  id: string;
-}
+const allPropertyData = [
+  { title: 'vmean', id: CurrentMetersProperty.vmean },
+  { title: 'vrms', id: CurrentMetersProperty.vrms },
+  { title: 'M2', id: CurrentMetersProperty.M2 },
+  { title: 'S2', id: CurrentMetersProperty.S2 },
+  { title: 'N2', id: CurrentMetersProperty.N2 },
+  { title: 'O1', id: CurrentMetersProperty.O1 },
+  { title: 'K1', id: CurrentMetersProperty.K1 },
+];
 
 const CurrentMetersPropertyOptions: React.FC = () => {
   const { property, depth, region } = useCurrentMeterStore();
   const [searchParams, setSearchParams] = useSearchParams();
-  const date = searchParams.get('date');
-
-  useEffect(() => {
-    const urlRegion = searchParams.get('region') as CurrentMetersRegion;
-    const urlProperty = searchParams.get('property') as CurrentMetersProperty;
-    const urlDepth = searchParams.get('depth') as CurrentMetersDepth;
-    if (urlRegion && Object.values(CurrentMetersRegion).includes(urlRegion)) setRegion(urlRegion);
-    if (urlProperty && Object.values(CurrentMetersProperty).includes(urlProperty)) setProperty(urlProperty);
-    if (urlDepth && Object.values(CurrentMetersDepth).includes(urlDepth)) setDepth(urlDepth);
-  }, [searchParams]);
+  const urlDate = searchParams.get('date');
 
   const propertyData = useMemo(() => {
-    const allPropertyData: SectionData[] = [
-      { title: 'vmean', id: CurrentMetersProperty.vmean },
-      { title: 'vrms', id: CurrentMetersProperty.vrms },
-      { title: 'M2', id: CurrentMetersProperty.M2 },
-      { title: 'S2', id: CurrentMetersProperty.S2 },
-      { title: 'N2', id: CurrentMetersProperty.N2 },
-      { title: 'O1', id: CurrentMetersProperty.O1 },
-      { title: 'K1', id: CurrentMetersProperty.K1 },
-    ];
-
-    if (depth === CurrentMetersDepth.ONE) {
+    if (depth === CurrentMetersDepth.ONE && !urlDate) {
       return allPropertyData;
     }
+
     return allPropertyData.filter(
       (prop) => prop.id === CurrentMetersProperty.vmean || prop.id === CurrentMetersProperty.vrms,
     );
-  }, [depth]);
+  }, [depth, urlDate]);
 
   const handlePropertyChange = (id: string) => {
-    setSearchParams({ property: id, depth, region, date: date ?? '' });
+    setSearchParams({ property: id, depth, region, date: urlDate ?? '' });
     setProperty(id as CurrentMetersProperty);
   };
 
