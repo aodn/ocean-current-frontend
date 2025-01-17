@@ -48,7 +48,7 @@ const CurrentMetersDepthOptions: React.FC = () => {
   };
 
   return (
-    <div className="px-4 pb-4">
+    <>
       <h3 className="py-2 text-lg font-medium text-imos-grey">{ProductSidebarText.DEPTH_LAYER}</h3>
       <Dropdown
         elements={depthOptionsData}
@@ -57,7 +57,7 @@ const CurrentMetersDepthOptions: React.FC = () => {
         showIcons={false}
         smallDropdown
       />
-    </div>
+    </>
   );
 };
 
