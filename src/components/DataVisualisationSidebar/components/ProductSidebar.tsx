@@ -14,6 +14,9 @@ import { GeneralText, ProductSidebarText } from '@/constants/textConstant';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
 import SidebarProductDropdown from './SidebarProductDropdown';
+import CurrentMetersDepthOptions from './CurrentMetersDepthOptions';
+import CurrentMetersPropertyOptions from './CurrentMetersPropertyOptions';
+import CurrentMetersRegionOptions from './CurrentMetersRegionOptions';
 
 const buildDataSourceUrl = (type: string, date: Dayjs): string => {
   switch (type) {
@@ -42,6 +45,7 @@ const ProductSideBar: React.FC = () => {
     return <Loading />;
   }
 
+  const isCurrentMeters = mainProduct.key === 'currentMeters';
   const productInfo = getProductInfoByKey(mainProduct.key);
 
   const dataSources = [
@@ -185,25 +189,39 @@ const ProductSideBar: React.FC = () => {
           </div>
         )}
 
-        <div className="px-4">
-          <div
-            className="flex cursor-pointer items-center justify-between px-4 py-2"
-            onClick={() => setIsLegendCollapsed(!isLegendCollapsed)}
-            aria-hidden
-          >
-            <h3 className="text-lg font-medium text-imos-grey">{ProductSidebarText.LEGEND}</h3>
-            <img
-              src={ArrowIcon}
-              alt="arrow icon"
-              className={`h-4 w-4 transform transition-transform duration-300 ${isLegendCollapsed ? 'rotate-180' : ''}`}
-            />
+        {isCurrentMeters ? (
+          <>
+            <div className="px-4 pb-4">
+              <CurrentMetersRegionOptions />
+            </div>
+            <div className="px-4 pb-4">
+              <CurrentMetersDepthOptions />
+            </div>
+            <div className="px-4 pb-4">
+              <CurrentMetersPropertyOptions />
+            </div>
+          </>
+        ) : (
+          <div className="px-4">
+            <div
+              className="flex cursor-pointer items-center justify-between px-4 py-2"
+              onClick={() => setIsLegendCollapsed(!isLegendCollapsed)}
+              aria-hidden
+            >
+              <h3 className="text-lg font-medium text-imos-grey">{ProductSidebarText.LEGEND}</h3>
+              <img
+                src={ArrowIcon}
+                alt="arrow icon"
+                className={`h-4 w-4 transform transition-transform duration-300 ${isLegendCollapsed ? 'rotate-180' : ''}`}
+              />
+            </div>
+            <div
+              className={`overflow-hidden transition-all duration-300 ${isLegendCollapsed ? 'max-h-0' : 'max-h-screen'}`}
+            >
+              <Legend />
+            </div>
           </div>
-          <div
-            className={`overflow-hidden transition-all duration-300 ${isLegendCollapsed ? 'max-h-0' : 'max-h-screen'}`}
-          >
-            <Legend />
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
