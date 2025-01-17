@@ -290,6 +290,10 @@ export const OC_PRODUCTS: Product[] = [
       stateFormat: DateFormat.DAY,
     },
   },
+  /*
+    The data below is only for rendering the options button for navigation purposes.
+    The image source urls are built here - src/utils/data-image-builder-utils/dataImgBuilder.ts
+  */
   {
     title: 'Current Meters',
     key: 'currentMeters',
@@ -299,6 +303,58 @@ export const OC_PRODUCTS: Product[] = [
       localFormat: DateFormat.YEAR_ONLY,
       stateFormat: DateFormat.YEAR_ONLY,
     },
+    children: [
+      {
+        title: 'Moored Instrument Array',
+        key: 'currentMeters-mooredInstrumentArray',
+        path: 'moored-instrument-array',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.MONTH,
+          stateFormat: DateFormat.MONTH,
+        },
+      },
+      {
+        title: 'Shelf',
+        key: 'currentMeters-shelf',
+        path: 'shelf',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.MONTH,
+          stateFormat: DateFormat.MONTH,
+        },
+      },
+      {
+        title: 'Deep (ADCP)',
+        key: 'currentMeters-deepADCP',
+        path: 'deep-adcp',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.MONTH,
+          stateFormat: DateFormat.MONTH,
+        },
+      },
+      {
+        title: 'Deep (ADV)',
+        key: 'currentMeters-deepADV',
+        path: 'deep-adv',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.MONTH,
+          stateFormat: DateFormat.MONTH,
+        },
+      },
+      {
+        title: 'Southern Ocean',
+        key: 'currentMeters-southernOcean',
+        path: 'southern-ocean',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.MONTH,
+          stateFormat: DateFormat.MONTH,
+        },
+      },
+    ],
   },
   /*
     The data below is only for rendering the button for navigation purposes.
