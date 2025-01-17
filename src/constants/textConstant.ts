@@ -14,6 +14,8 @@ export enum ProductSidebarText {
   DATA_SOURCES = 'Data sources',
   OPTIONS = 'Options',
   DEPTH_LAYER = 'Depth Layer',
+  REGION = 'Region',
+  PROPERTY = 'Property',
 }
 
 export enum ProductMenubarText {

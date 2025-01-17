@@ -1,10 +1,6 @@
-import React from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Dropdown } from '@/components/Shared';
-import useCurrentMeterStore, { setRegion } from '@/stores/current-meters-store/currentMeters';
-import { CurrentMetersRegion } from '@/types/currentMeters';
+import { CurrentMetersProperty, CurrentMetersDepth, CurrentMetersRegion } from '@/types/currentMeters';
 
-const regionsOptionsData = [
+export const regionsOptionsData = [
   { label: 'Aust', id: CurrentMetersRegion.Aust },
   { label: 'TimorP', id: CurrentMetersRegion.TimorP },
   { label: 'Kim', id: CurrentMetersRegion.Kim },
@@ -28,28 +24,24 @@ const regionsOptionsData = [
   { label: 'NGBR', id: CurrentMetersRegion.NGBR },
 ];
 
-const CurrentMetersRegionOptions: React.FC = () => {
-  const { property, depth, region } = useCurrentMeterStore();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const date = searchParams.get('date');
+export const depthOptionsData = [
+  { label: '0-4800m', id: CurrentMetersDepth.ONE },
+  { label: '0-30m', id: CurrentMetersDepth.TWO },
+  { label: '30-80m', id: CurrentMetersDepth.THREE },
+  { label: '80-150m', id: CurrentMetersDepth.FOUR },
+  { label: '150-300m', id: CurrentMetersDepth.FIVE },
+  { label: '300-600m', id: CurrentMetersDepth.SIX },
+  { label: '600-1200m', id: CurrentMetersDepth.SEVEN },
+  { label: '1200-2200m', id: CurrentMetersDepth.EIGHT },
+  { label: '2200-4800m', id: CurrentMetersDepth.NINE },
+];
 
-  const handleRegionOptions = (id: string) => {
-    setRegion(id as CurrentMetersRegion);
-    setSearchParams({ property, depth, region: id, date: date ?? '' });
-  };
-
-  return (
-    <>
-      <h3 className="py-2 text-lg font-medium text-imos-grey">Region</h3>
-      <Dropdown
-        elements={regionsOptionsData}
-        selectedId={region}
-        showIcons={false}
-        onChange={(elem) => handleRegionOptions(elem.id)}
-        smallDropdown
-      />
-    </>
-  );
-};
-
-export default CurrentMetersRegionOptions;
+export const propertyOptionsData = [
+  { title: 'vmean', id: CurrentMetersProperty.vmean },
+  { title: 'vrms', id: CurrentMetersProperty.vrms },
+  { title: 'M2', id: CurrentMetersProperty.M2 },
+  { title: 'S2', id: CurrentMetersProperty.S2 },
+  { title: 'N2', id: CurrentMetersProperty.N2 },
+  { title: 'O1', id: CurrentMetersProperty.O1 },
+  { title: 'K1', id: CurrentMetersProperty.K1 },
+];

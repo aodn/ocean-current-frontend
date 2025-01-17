@@ -14,9 +14,7 @@ import { GeneralText, ProductSidebarText } from '@/constants/textConstant';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
 import SidebarProductDropdown from './SidebarProductDropdown';
-import CurrentMetersDepthOptions from './CurrentMetersDepthOptions';
-import CurrentMetersPropertyOptions from './CurrentMetersPropertyOptions';
-import CurrentMetersRegionOptions from './CurrentMetersRegionOptions';
+import CurrentMetersOptions from './CurrentMetersOptions';
 
 const buildDataSourceUrl = (type: string, date: Dayjs): string => {
   switch (type) {
@@ -190,17 +188,7 @@ const ProductSideBar: React.FC = () => {
         )}
 
         {isCurrentMeters ? (
-          <>
-            <div className="px-4 pb-4">
-              <CurrentMetersRegionOptions />
-            </div>
-            <div className="px-4 pb-4">
-              <CurrentMetersDepthOptions />
-            </div>
-            <div className="px-4 pb-4">
-              <CurrentMetersPropertyOptions />
-            </div>
-          </>
+          <CurrentMetersOptions />
         ) : (
           <div className="px-4">
             <div
