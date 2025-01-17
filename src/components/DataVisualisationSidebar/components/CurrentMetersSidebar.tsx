@@ -1,7 +1,7 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import InfoIcon from '@/assets/icons/info-icon.svg';
-import { Button, Dropdown, Popup, TruncateText } from '@/components/Shared';
+import { Dropdown, Popup, TruncateText } from '@/components/Shared';
 import ArrowWithTail from '@/assets/icons/ArrowWithTail';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import useCurrentMeterStore, { setProperty, setDepth, setRegion } from '@/stores/current-meters-store/currentMeters';
@@ -10,11 +10,7 @@ import { productDescription } from '@/constants/productInfo';
 import MiniMap from './MiniMap';
 import SidebarProductDropdown from './SidebarProductDropdown';
 import CurrentMetersDepthOptions from './CurrentMetersDepthOptions';
-
-interface SectionData {
-  title: string;
-  id: string;
-}
+import CurrentMetersPropertyOptions from './CurrentMetersPropertyOptions';
 
 const CurrentMetersSidebar: React.FC = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -31,25 +27,6 @@ const CurrentMetersSidebar: React.FC = () => {
     if (urlDepth && Object.values(CurrentMetersDepth).includes(urlDepth)) setDepth(urlDepth);
   }, [searchParams]);
   const prodInfo = productDescription.filter((prod) => prod.id === 'currentMeters')[0];
-
-  const propertyData = useMemo(() => {
-    const allPropertyData: SectionData[] = [
-      { title: 'vmean', id: CurrentMetersProperty.vmean },
-      { title: 'vrms', id: CurrentMetersProperty.vrms },
-      { title: 'M2', id: CurrentMetersProperty.M2 },
-      { title: 'S2', id: CurrentMetersProperty.S2 },
-      { title: 'N2', id: CurrentMetersProperty.N2 },
-      { title: 'O1', id: CurrentMetersProperty.O1 },
-      { title: 'K1', id: CurrentMetersProperty.K1 },
-    ];
-
-    if (depth === CurrentMetersDepth.ONE) {
-      return allPropertyData;
-    }
-    return allPropertyData.filter(
-      (prop) => prop.id === CurrentMetersProperty.vmean || prop.id === CurrentMetersProperty.vrms,
-    );
-  }, [depth]);
 
   const regionsOptionsData = [
     { label: 'Aust', id: CurrentMetersRegion.Aust },
@@ -76,11 +53,6 @@ const CurrentMetersSidebar: React.FC = () => {
   ];
 
   const handlePopup = () => setIsPopupOpen(!isPopupOpen);
-
-  const handlePropertyChange = (id: string) => {
-    setSearchParams({ property: id, depth, region, date: date ?? '' });
-    setProperty(id as CurrentMetersProperty);
-  };
 
   const handleRegionOptions = (selectedElement: DropdownElement) => {
     const { id } = selectedElement;
@@ -127,25 +99,11 @@ const CurrentMetersSidebar: React.FC = () => {
           />
         </div>
 
-        <CurrentMetersDepthOptions />
-
-        <div className="px-4 pb-2">
-          <h3 className="py-2 text-lg font-medium text-imos-grey">Property</h3>
-
-          <div className="mb-6 mt-2 flex flex-wrap justify-between gap-2">
-            {propertyData.map(({ title, id }, index) => (
-              <div key={id} className={index === propertyData.length - 1 ? 'w-auto' : 'flex-1'}>
-                <Button
-                  size="full"
-                  borderRadius="small"
-                  type={property === id ? 'primary' : 'secondary'}
-                  onClick={() => handlePropertyChange(id)}
-                >
-                  {title}
-                </Button>
-              </div>
-            ))}
-          </div>
+        <div className="px-4 pb-4">
+          <CurrentMetersDepthOptions />
+        </div>
+        <div className="px-4 pb-4">
+          <CurrentMetersPropertyOptions />
         </div>
       </div>
     </div>
