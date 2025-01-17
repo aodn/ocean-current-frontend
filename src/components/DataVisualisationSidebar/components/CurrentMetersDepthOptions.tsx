@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Dropdown } from '@/components/Shared';
-import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import useCurrentMeterStore, { setDepth } from '@/stores/current-meters-store/currentMeters';
 import { CurrentMetersProperty, CurrentMetersDepth } from '@/types/currentMeters';
 import { ProductSidebarText } from '@/constants/textConstant';
@@ -31,9 +30,9 @@ const CurrentMetersDepthOptions: React.FC = () => {
     return [allDepthOptions[0]];
   }, [property]);
 
-  const handleDepthOptions = (selectedElement: DropdownElement) => {
-    setDepth(selectedElement.id as CurrentMetersDepth);
-    setSearchParams({ property, depth: selectedElement.id, region, date: date ?? '' });
+  const handleDepthOptions = (id: string) => {
+    setDepth(id as CurrentMetersDepth);
+    setSearchParams({ property, depth: id, region, date: date ?? '' });
   };
 
   return (
@@ -42,7 +41,7 @@ const CurrentMetersDepthOptions: React.FC = () => {
       <Dropdown
         elements={depthOptions}
         selectedId={depth}
-        onChange={handleDepthOptions}
+        onChange={(elem) => handleDepthOptions(elem.id)}
         showIcons={false}
         smallDropdown
       />

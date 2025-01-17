@@ -30,8 +30,8 @@ const CurrentMetersPropertyOptions: React.FC = () => {
   }, [depth, urlDate]);
 
   const handlePropertyChange = (id: string) => {
-    setSearchParams({ property: id, depth, region, date: urlDate ?? '' });
     setProperty(id as CurrentMetersProperty);
+    setSearchParams({ property: id, depth, region, date: urlDate ?? '' });
   };
 
   return (
