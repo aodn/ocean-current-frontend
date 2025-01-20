@@ -168,9 +168,8 @@ const buildCurrentMetersMapImageUrl = (
 
 const buildCurrentMetersDataImageUrl = (subProduct: string, deploymentPlot: string, type: string, plotId: string) => {
   const folder = subProduct === 'currentMeters-shelf' ? 'ANMN_P49' : 'ANMN_P48';
-  const dataType = type === 'depth-time' ? 'zt' : 'xyz';
 
-  return `${imageBaseUrl}/timeseries/${folder}/${deploymentPlot}/${dataType}/${plotId}.gif`;
+  return `${imageBaseUrl}/timeseries/${folder}/${deploymentPlot}/${type}/${plotId}.gif`;
 };
 
 const buildSurfaceWavesImageUrl = (date: string, imgPath: string): string => {
