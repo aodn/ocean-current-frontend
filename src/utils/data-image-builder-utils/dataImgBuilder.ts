@@ -161,7 +161,7 @@ const buildCurrentMeterImageUrl = (
   property: CurrentMetersProperty,
   depth: CurrentMetersDepth,
 ): string => {
-  const formattedYear = date === 'allTime' ? '' : `_${date}`;
+  const formattedYear = date === '0000' ? '' : `_${date}`;
 
   return `${imageBaseUrl}/timeseries/ANMN_P49/mapst/${region}_${property}_${depth}${formattedYear}.gif`;
 };

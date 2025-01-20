@@ -49,7 +49,7 @@ export const propertyOptionsData = [
 
 // placeholder until a design is available
 export const yearOptionsData = [
-  { label: 'All time', id: 'allTime' },
+  { label: 'All time', id: '0000' },
   { label: '2007', id: '2007' },
   { label: '2008', id: '2008' },
   { label: '2009', id: '2009' },
