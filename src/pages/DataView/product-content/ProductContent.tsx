@@ -6,7 +6,7 @@ import {
   buildArgoImageUrl,
   getTargetRegionScopePath,
   buildProductVideoUrl,
-  buildCurrentMeterImageUrl,
+  buildCurrentMetersMapImageUrl,
   buildSSTTimeseriesImageUrl,
   buildEACMooringArrayImageUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
@@ -26,6 +26,7 @@ import useCurrentMeterStore from '@/stores/current-meters-store/currentMeters';
 import { CurrentMetersSubproductsKey } from '@/types/currentMeters';
 import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
 import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
+import DataImageWithCurrentMetersPlots from '../data-image/DataImageWithCurrentMetersPlots';
 
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
@@ -43,6 +44,7 @@ const ProductContent: React.FC = () => {
     depth: currentMetersDepth,
     region: currentMetersRegion,
     date: currentMetersDate,
+    deploymentPlot,
   } = useCurrentMeterStore();
 
   // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
@@ -113,7 +115,7 @@ const ProductContent: React.FC = () => {
         case isArgo:
           return buildArgoImgUrl();
         case isCurrentMeters:
-          return buildCurrentMeterImageUrl(currentMetersRegion, currentMetersDate, property, currentMetersDepth);
+          return buildCurrentMetersMapImageUrl(currentMetersRegion, currentMetersDate, property, currentMetersDepth);
         case useProductId === 'sixDaySst-timeseries':
           return buildSSTTimeseriesImageUrl(regionPath);
         case isEACMooringArray:
@@ -194,7 +196,7 @@ const ProductContent: React.FC = () => {
         />
       );
     }
-    return <></>;
+    return <DataImageWithCurrentMetersPlots subProduct={useProductId} deploymentPlot={deploymentPlot} />;
   }
 
   return (
