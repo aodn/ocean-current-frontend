@@ -8,11 +8,11 @@ export interface CurrentMetersImageDataPoints {
 }
 
 export enum CurrentMetersSubproductsKey {
-  MOORED_INSTRUMENT_ARRAY = 'mooredInstrumentArray',
-  SHELF = 'shelf',
-  DEEP_ADCP = 'deepADCP',
-  DEEP_ADV = 'deepADV',
-  SOUTHERN_OCEAN = 'southernOcean',
+  MOORED_INSTRUMENT_ARRAY = 'currentMeters-mooredInstrumentArray',
+  SHELF = 'currentMeters-shelf',
+  DEEP_ADCP = 'currentMeters-deepADCP',
+  DEEP_ADV = 'currentMeters-deepADV',
+  SOUTHERN_OCEAN = 'currentMeters-southernOcean',
 }
 
 export enum CurrentMetersRegion {

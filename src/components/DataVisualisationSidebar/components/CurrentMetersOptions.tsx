@@ -31,10 +31,9 @@ const CurrentMetersOptions: React.FC = () => {
   const { property, depth, region, date, deploymentPlot } = useCurrentMeterStore();
   const [_, setSearchParams] = useSearchParams();
   const { subProduct } = useProductConvert();
-  const subProdKey = subProduct?.key.split('-')[1];
 
   const deploymentPlotOptions = useMemo(() => {
-    switch (subProdKey) {
+    switch (subProduct?.key) {
       case CurrentMetersSubproductsKey.SHELF:
         return shelfDeploymentPlotsData;
       case CurrentMetersSubproductsKey.DEEP_ADCP:
@@ -46,13 +45,13 @@ const CurrentMetersOptions: React.FC = () => {
       default:
         return [];
     }
-  }, [subProdKey]);
+  }, [subProduct]);
 
   useEffect(() => {
     if (deploymentPlotOptions.length > 0) {
       setDeploymentPlot(deploymentPlotOptions[0].id);
     }
-  }, [deploymentPlotOptions, subProdKey]);
+  }, [deploymentPlotOptions, subProduct]);
 
   const depthOptions = useMemo(() => {
     if (property === CurrentMetersProperty.vmean || property === CurrentMetersProperty.vrms) {
@@ -97,7 +96,7 @@ const CurrentMetersOptions: React.FC = () => {
     setSearchParams({ property: id, depth, region, date: date ?? '' });
   };
 
-  if (subProdKey !== CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY) {
+  if (subProduct?.key !== CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY) {
     return (
       <div className="px-4 pb-4">
         <h3 className="py-2 text-lg font-medium text-imos-grey">{ProductSidebarText.DEPLOYMENT_PLOT}</h3>
