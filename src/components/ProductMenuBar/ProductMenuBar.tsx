@@ -15,6 +15,7 @@ import useCurrentMeterStore, {
 import useProductStore from '@/stores/product-store/productStore';
 import useProductDateFormat from '@/stores/product-store/hooks/useProductDateFormat';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
+import { CurrentMetersSubproductsKey } from '@/types/currentMeters';
 import DatePagination from '../DatePagination';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
@@ -73,7 +74,11 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
           {isCurrentMeters ? (
             // placeholder until a design is available
             <Dropdown
-              elements={yearOptionsData}
+              elements={
+                productId === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY
+                  ? yearOptionsData
+                  : [yearOptionsData[0]]
+              }
               selectedId={currentMetersDate as string}
               showIcons={false}
               onChange={(elem) => handleCurrentMetersDateChange(elem.id)}
