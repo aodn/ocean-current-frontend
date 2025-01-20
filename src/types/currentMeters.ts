@@ -60,3 +60,8 @@ export enum CurrentMetersDepth {
   EIGHT = '8',
   NINE = '9',
 }
+
+export enum CurrentMetersPlotType {
+  VELOCITY_VECTOR = 'velocity-vector',
+  DEPTH_TIME = 'depth-time',
+}
