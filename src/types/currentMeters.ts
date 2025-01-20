@@ -7,6 +7,14 @@ export interface CurrentMetersImageDataPoints {
   isText?: boolean;
 }
 
+export enum CurrentMetersSubproductsKey {
+  MOORED_INSTRUMENT_ARRAY = 'mooredInstrumentArray',
+  SHELF = 'shelf',
+  DEEP_ADCP = 'deepADCP',
+  DEEP_ADV = 'deepADV',
+  SOUTHERN_OCEAN = 'southernOcean',
+}
+
 export enum CurrentMetersRegion {
   Aust = '01_Aust',
   TimorP = '02_TimorP',
