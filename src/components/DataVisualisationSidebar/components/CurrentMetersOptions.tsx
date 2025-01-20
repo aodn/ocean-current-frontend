@@ -22,6 +22,7 @@ import {
   regionsOptionsData,
   shelfDeploymentPlotsData,
   southernOceanDeploymentPlotsData,
+  yearOptionsData,
 } from '@/data/current-meter/sidebarOptions';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { currentMeterMapDataPointNames } from '@/data/current-meter/mapDataPoints';
@@ -62,7 +63,7 @@ const CurrentMetersOptions: React.FC = () => {
   }, [property]);
 
   const propertyOptions = useMemo(() => {
-    if (depth === CurrentMetersDepth.ONE && !date) {
+    if (depth === CurrentMetersDepth.ONE && date === yearOptionsData[0].id) {
       return propertyOptionsData;
     }
 
