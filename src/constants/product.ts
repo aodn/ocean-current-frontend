@@ -310,8 +310,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'moored-instrument-array',
         imgPath: null,
         dateFormat: {
-          localFormat: DateFormat.MONTH,
-          stateFormat: DateFormat.MONTH,
+          localFormat: DateFormat.YEAR_ONLY,
+          stateFormat: DateFormat.YEAR_ONLY,
         },
       },
       {
@@ -320,8 +320,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'shelf',
         imgPath: null,
         dateFormat: {
-          localFormat: DateFormat.MONTH,
-          stateFormat: DateFormat.MONTH,
+          localFormat: DateFormat.YEAR_ONLY,
+          stateFormat: DateFormat.YEAR_ONLY,
         },
       },
       {
@@ -330,8 +330,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'deep-adcp',
         imgPath: null,
         dateFormat: {
-          localFormat: DateFormat.MONTH,
-          stateFormat: DateFormat.MONTH,
+          localFormat: DateFormat.YEAR_ONLY,
+          stateFormat: DateFormat.YEAR_ONLY,
         },
       },
       {
@@ -340,8 +340,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'deep-adv',
         imgPath: null,
         dateFormat: {
-          localFormat: DateFormat.MONTH,
-          stateFormat: DateFormat.MONTH,
+          localFormat: DateFormat.YEAR_ONLY,
+          stateFormat: DateFormat.YEAR_ONLY,
         },
       },
       {
@@ -350,8 +350,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'southern-ocean',
         imgPath: null,
         dateFormat: {
-          localFormat: DateFormat.MONTH,
-          stateFormat: DateFormat.MONTH,
+          localFormat: DateFormat.YEAR_ONLY,
+          stateFormat: DateFormat.YEAR_ONLY,
         },
       },
     ],
