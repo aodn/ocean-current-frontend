@@ -24,6 +24,7 @@ import { checkProductHasArgoTags } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useCurrentMeterStore from '@/stores/current-meters-store/currentMeters';
 import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
+import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
 
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
@@ -36,7 +37,12 @@ const ProductContent: React.FC = () => {
   const { mainProduct, subProduct } = useProductConvert();
   const { worldMeteorologicalOrgId, cycle, depth } = useArgoStore((state) => state.selectedArgoParams);
   const { showVideo } = useOutletContext<VideoPlayerOutletContext>();
-  const { property, depth: currentMeterDepth, region: currentMeterRegion } = useCurrentMeterStore();
+  const {
+    property,
+    depth: currentMetersDepth,
+    region: currentMetersRegion,
+    date: currentMetersDate,
+  } = useCurrentMeterStore();
 
   // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
   const region = getRegionByRegionTitle(isEACMooringArray ? 'Brisbane' : useRegionTitle);
@@ -106,7 +112,7 @@ const ProductContent: React.FC = () => {
         case isArgo:
           return buildArgoImgUrl();
         case isCurrentMeters:
-          return buildCurrentMeterImageUrl(currentMeterRegion, useDate, property, currentMeterDepth);
+          return buildCurrentMeterImageUrl(currentMetersRegion, currentMetersDate, property, currentMetersDepth);
         case useProductId === 'sixDaySst-timeseries':
           return buildSSTTimeseriesImageUrl(regionPath);
         case isEACMooringArray:
@@ -176,10 +182,16 @@ const ProductContent: React.FC = () => {
     );
   }
 
-  // to implement
-  // if (isCurrentMeters) {
-  //   return <DataImage src={chooseImg()!} date={useDate} productId={useProductId} regionCode={currentMeterRegion} />;
-  // }
+  if (isCurrentMeters) {
+    return (
+      <DataImageWithCurrentMetersMap
+        src={chooseImg()!}
+        date={useDate}
+        productId={useProductId}
+        regionCode={currentMetersRegion}
+      />
+    );
+  }
 
   return (
     <div className="h-full bg-white">

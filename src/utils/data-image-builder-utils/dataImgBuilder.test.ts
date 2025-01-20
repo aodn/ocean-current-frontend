@@ -559,7 +559,7 @@ describe('buildCurrentMeterImageUrl', () => {
   it('should return the correct image url for current Meters', () => {
     // Arrange
     const region = CurrentMetersRegion.Aust;
-    const date = dayjs('2024');
+    const date = '2024';
     const property = CurrentMetersProperty.vmean;
     const depth = CurrentMetersDepth.ONE;
 
@@ -567,6 +567,6 @@ describe('buildCurrentMeterImageUrl', () => {
     const videoUrl = buildCurrentMeterImageUrl(region, date, property, depth);
 
     // Assert
-    expect(videoUrl).toBe(`${imageBaseUrl}/timeseries/ANMN_P48/mapst/01_Aust_vmean_1_2024.gif`);
+    expect(videoUrl).toBe(`${imageBaseUrl}/timeseries/ANMN_P49/mapst/01_Aust_vmean_1_2024.gif`);
   });
 });

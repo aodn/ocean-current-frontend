@@ -157,14 +157,13 @@ const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle:
 
 const buildCurrentMeterImageUrl = (
   region: CurrentMetersRegion = CurrentMetersRegion.Aust,
-  date: Dayjs,
+  date: string,
   property: CurrentMetersProperty,
   depth: CurrentMetersDepth,
 ): string => {
-  const formattedDate = date.format('YYYY');
-  const year = formattedDate ? `_${formattedDate}` : '';
+  const formattedYear = date === 'allTime' ? '' : `_${date}`;
 
-  return `${imageBaseUrl}/timeseries/ANMN_P48/mapst/${region}_${property}_${depth}${year}.gif`;
+  return `${imageBaseUrl}/timeseries/ANMN_P49/mapst/${region}_${property}_${depth}${formattedYear}.gif`;
 };
 
 const buildSurfaceWavesImageUrl = (date: string, imgPath: string): string => {
