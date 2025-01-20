@@ -16,6 +16,7 @@ export enum ProductSidebarText {
   DEPTH_LAYER = 'Depth Layer',
   REGION = 'Region',
   PROPERTY = 'Property',
+  DEPLOYMENT_PLOT = 'Deployment Plot',
 }
 
 export enum ProductMenubarText {

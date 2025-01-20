@@ -1,4 +1,5 @@
 import { CurrentMetersProperty, CurrentMetersDepth, CurrentMetersRegion } from '@/types/currentMeters';
+import { currentMeterMapDataPointNames } from './mapDataPoints';
 
 export const regionsOptionsData = [
   { label: 'Aust', id: CurrentMetersRegion.Aust },
@@ -37,11 +38,144 @@ export const depthOptionsData = [
 ];
 
 export const propertyOptionsData = [
-  { title: 'vmean', id: CurrentMetersProperty.vmean },
   { title: 'vrms', id: CurrentMetersProperty.vrms },
+  { title: 'vmean', id: CurrentMetersProperty.vmean },
   { title: 'M2', id: CurrentMetersProperty.M2 },
   { title: 'S2', id: CurrentMetersProperty.S2 },
   { title: 'N2', id: CurrentMetersProperty.N2 },
   { title: 'O1', id: CurrentMetersProperty.O1 },
   { title: 'K1', id: CurrentMetersProperty.K1 },
+];
+
+// placeholder until a design is available
+export const yearOptionsData = [
+  { label: 'All time', id: 'allTime' },
+  { label: '2007', id: '2007' },
+  { label: '2008', id: '2008' },
+  { label: '2009', id: '2009' },
+  { label: '2010', id: '2010' },
+  { label: '2011', id: '2011' },
+  { label: '2012', id: '2012' },
+  { label: '2013', id: '2013' },
+  { label: '2014', id: '2014' },
+  { label: '2015', id: '2015' },
+  { label: '2016', id: '2016' },
+  { label: '2017', id: '2017' },
+  { label: '2018', id: '2018' },
+  { label: '2019', id: '2019' },
+  { label: '2020', id: '2020' },
+  { label: '2021', id: '2021' },
+  { label: '2022', id: '2022' },
+  { label: '2023', id: '2023' },
+  { label: '2024', id: '2024' },
+  { label: '2025', id: '2025' },
+];
+
+export const shelfDeploymentPlotsData: { label: currentMeterMapDataPointNames; id: currentMeterMapDataPointNames }[] = [
+  { label: 'GBRLSL', id: 'GBRLSL' },
+  { label: 'GBRLSH', id: 'GBRLSH' },
+  { label: 'GBRPPS', id: 'GBRPPS' },
+  { label: 'GBRMYR', id: 'GBRMYR' },
+  { label: 'GBRELR', id: 'GBRELR' },
+  { label: 'GBRCCH', id: 'GBRCCH' },
+  { label: 'GBRHIN', id: 'GBRHIN' },
+  { label: 'GBRHIS', id: 'GBRHIS' },
+  { label: 'GBROTE', id: 'GBROTE' },
+  { label: 'CH070', id: 'CH070' },
+  { label: 'CH100', id: 'CH100' },
+  { label: 'SYD100', id: 'SYD100' },
+  { label: 'SYD140', id: 'SYD140' },
+  { label: 'PH100', id: 'PH100' },
+  { label: 'BMP070', id: 'BMP070' },
+  { label: 'BMP090', id: 'BMP090' },
+  { label: 'BMP120', id: 'BMP120' },
+  { label: 'ORS065', id: 'ORS065' },
+  { label: 'NWSBAR', id: 'NWSBAR' },
+  { label: 'NWSBRW', id: 'NWSBRW' },
+  { label: 'NWSLYN', id: 'NWSLYN' },
+  { label: 'NWSROW', id: 'NWSROW' },
+  { label: 'TAN100', id: 'TAN100' },
+  { label: 'CAM050', id: 'CAM050' },
+  { label: 'CAM100', id: 'CAM100' },
+  { label: 'DARBGF', id: 'DARBGF' },
+  { label: 'ITFTIS', id: 'ITFTIS' },
+  { label: 'ITFMHB', id: 'ITFMHB' },
+  { label: 'ITFJBG', id: 'ITFJBG' },
+  { label: 'ITFFTB', id: 'ITFFTB' },
+  { label: 'KIM400', id: 'KIM400' },
+  { label: 'KIM200', id: 'KIM200' },
+  { label: 'KIM100', id: 'KIM100' },
+  { label: 'KIM050', id: 'KIM050' },
+  { label: 'PIL200', id: 'PIL200' },
+  { label: 'PIL100', id: 'PIL100' },
+  { label: 'PIL050', id: 'PIL050' },
+  { label: 'WATR50', id: 'WATR50' },
+  { label: 'WATR20', id: 'WATR20' },
+  { label: 'WATR15', id: 'WATR15' },
+  { label: 'WATR10', id: 'WATR10' },
+  { label: 'WATR04', id: 'WATR04' },
+  { label: 'WACA20', id: 'WACA20' },
+  { label: 'SAM1DS', id: 'SAM1DS' },
+  { label: 'SAM2CP', id: 'SAM2CP' },
+  { label: 'SAM3MS', id: 'SAM3MS' },
+  { label: 'SAM4CY', id: 'SAM4CY' },
+  { label: 'SAM5CB', id: 'SAM5CB' },
+  { label: 'SAM6IS', id: 'SAM6IS' },
+  { label: 'SAM7DS', id: 'SAM7DS' },
+  { label: 'SAM8SG', id: 'SAM8SG' },
+  { label: 'SEQ400', id: 'SEQ400' },
+  { label: 'SEQ200', id: 'SEQ200' },
+  { label: 'NRSYON', id: 'NRSYON' },
+  { label: 'NRSROT', id: 'NRSROT' },
+  { label: 'NRSNSI', id: 'NRSNSI' },
+  { label: 'NRSNIN', id: 'NRSNIN' },
+  { label: 'NRSMAI', id: 'NRSMAI' },
+  { label: 'NRSKAI', id: 'NRSKAI' },
+  { label: 'NRSESP', id: 'NRSESP' },
+  { label: 'NRSDAR', id: 'NRSDAR' },
+];
+
+export const deepADCPDeploymentPlotsData: {
+  label: currentMeterMapDataPointNames;
+  id: currentMeterMapDataPointNames;
+}[] = [
+  { label: 'ITFTNS', id: 'ITFTNS' },
+  { label: 'ITFTSL', id: 'ITFTSL' },
+  { label: 'ITFTIN', id: 'ITFTIN' },
+  { label: 'ITFOMB', id: 'ITFOMB' },
+  { label: 'EAC0500', id: 'EAC0500' },
+  { label: 'EAC1520', id: 'EAC1520' },
+  { label: 'EAC2000', id: 'EAC2000' },
+  { label: 'EAC3200', id: 'EAC3200' },
+  { label: 'EAC4200', id: 'EAC4200' },
+  { label: 'EAC4700', id: 'EAC4700' },
+  { label: 'EAC4800', id: 'EAC4800' },
+];
+
+export const deepADVDeploymentPlotsData: { label: currentMeterMapDataPointNames; id: currentMeterMapDataPointNames }[] =
+  [
+    { label: 'ITFTNS', id: 'ITFTNS' },
+    { label: 'ITFTSL', id: 'ITFTSL' },
+    { label: 'ITFTIN', id: 'ITFTIN' },
+    { label: 'ITFOMB', id: 'ITFOMB' },
+    { label: 'EAC0500', id: 'EAC0500' },
+    { label: 'EAC1520', id: 'EAC1520' },
+    { label: 'EAC2000', id: 'EAC2000' },
+    { label: 'EAC3200', id: 'EAC3200' },
+    { label: 'EAC4200', id: 'EAC4200' },
+    { label: 'EAC4700', id: 'EAC4700' },
+    { label: 'EAC4800', id: 'EAC4800' },
+  ];
+
+export const southernOceanDeploymentPlotsData: {
+  label: currentMeterMapDataPointNames;
+  id: currentMeterMapDataPointNames;
+}[] = [
+  { label: 'SOTS', id: 'SOTS' },
+  { label: 'SOFS', id: 'SOFS' },
+  { label: 'POLYNYA1', id: 'POLYNYA1' },
+  { label: 'POLYNYA2', id: 'POLYNYA2' },
+  { label: 'TOTTEN1', id: 'TOTTEN1' },
+  { label: 'TOTTEN2', id: 'TOTTEN2' },
+  { label: 'TOTTEN3', id: 'TOTTEN3' },
 ];

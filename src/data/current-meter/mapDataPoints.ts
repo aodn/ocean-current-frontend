@@ -1,7 +1,7 @@
 // data points coordinates for map
 import { CurrentMetersRegion } from '@/types/currentMeters';
 
-type currentMeterMapDataPointNames =
+export type currentMeterMapDataPointNames =
   | 'BMP070'
   | 'BMP090'
   | 'BMP120'
@@ -42,6 +42,7 @@ type currentMeterMapDataPointNames =
   | 'NRSESP'
   | 'NRSKAI'
   | 'NRSMAI'
+  | 'NRSNSI'
   | 'NRSNIN'
   | 'NRSROT'
   | 'NRSYON'
