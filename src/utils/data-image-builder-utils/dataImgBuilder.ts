@@ -155,7 +155,7 @@ const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle:
   return `${imageBaseUrl}/${profiles}/${worldMeteorologicalOrgId}/${formatDate}_${worldMeteorologicalOrgId}_${cycle}.gif`;
 };
 
-const buildCurrentMeterImageUrl = (
+const buildCurrentMetersMapImageUrl = (
   region: CurrentMetersRegion = CurrentMetersRegion.Aust,
   date: string,
   property: CurrentMetersProperty,
@@ -164,6 +164,13 @@ const buildCurrentMeterImageUrl = (
   const formattedYear = date === '0000' ? '' : `_${date}`;
 
   return `${imageBaseUrl}/timeseries/ANMN_P49/mapst/${region}_${property}_${depth}${formattedYear}.gif`;
+};
+
+const buildCurrentMetersDataImageUrl = (subProduct: string, deploymentPlot: string, type: string, plotId: string) => {
+  const folder = subProduct === 'currentMeters-shelf' ? 'ANMN_P49' : 'ANMN_P48';
+  const dataType = type === 'depth-time' ? 'zt' : 'xyz';
+
+  return `${imageBaseUrl}/timeseries/${folder}/${deploymentPlot}/${dataType}/${plotId}.gif`;
 };
 
 const buildSurfaceWavesImageUrl = (date: string, imgPath: string): string => {
@@ -180,7 +187,8 @@ export {
   buildArgoImageUrl,
   buildSurfaceWavesImageUrl,
   buildProductVideoUrl,
-  buildCurrentMeterImageUrl,
+  buildCurrentMetersMapImageUrl,
+  buildCurrentMetersDataImageUrl,
   buildSSTTimeseriesImageUrl,
   buildEACMooringArrayImageUrl,
 };

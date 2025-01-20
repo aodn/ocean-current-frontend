@@ -1,12 +1,19 @@
 import dayjs from 'dayjs';
 import { TargetPathRegionScope } from '@/constants/imgPath';
 import { imageBaseUrl } from '@/configs/image';
-import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/types/currentMeters';
+import {
+  CurrentMetersDepth,
+  CurrentMetersPlotType,
+  CurrentMetersProperty,
+  CurrentMetersRegion,
+  CurrentMetersSubproductsKey,
+} from '@/types/currentMeters';
 import {
   buildProductImageUrl,
   buildArgoImageUrl,
   buildProductVideoUrl,
-  buildCurrentMeterImageUrl,
+  buildCurrentMetersMapImageUrl,
+  buildCurrentMetersDataImageUrl,
   buildSSTTimeseriesImageUrl,
 } from './dataImgBuilder';
 
@@ -555,8 +562,8 @@ describe('buildProductVideoUrl', () => {
   });
 });
 
-describe('buildCurrentMeterImageUrl', () => {
-  it('should return the correct image url for current Meters', () => {
+describe('buildCurrentMetersMapImageUrl', () => {
+  it('should return the correct map image url for current Meters', () => {
     // Arrange
     const region = CurrentMetersRegion.Aust;
     const date = '2024';
@@ -564,9 +571,25 @@ describe('buildCurrentMeterImageUrl', () => {
     const depth = CurrentMetersDepth.ONE;
 
     // Act
-    const videoUrl = buildCurrentMeterImageUrl(region, date, property, depth);
+    const imageUrl = buildCurrentMetersMapImageUrl(region, date, property, depth);
 
     // Assert
-    expect(videoUrl).toBe(`${imageBaseUrl}/timeseries/ANMN_P49/mapst/01_Aust_vmean_1_2024.gif`);
+    expect(imageUrl).toBe(`${imageBaseUrl}/timeseries/ANMN_P49/mapst/01_Aust_vmean_1_2024.gif`);
+  });
+});
+
+describe('buildCurrentMetersDataImageUrl', () => {
+  it('should return the correct data image url for current Meters', () => {
+    // Arrange
+    const subProduct = CurrentMetersSubproductsKey.SOUTHERN_OCEAN;
+    const deploymentPlot = 'TOTTEN1';
+    const type = CurrentMetersPlotType.VELOCITY_VECTOR;
+    const plotId = 'TOTTEN1-WORKHORSE-ADCP-14489_xyz';
+
+    // Act
+    const imageUrl = buildCurrentMetersDataImageUrl(subProduct, deploymentPlot, type, plotId);
+
+    // Assert
+    expect(imageUrl).toBe(`${imageBaseUrl}/timeseries/ANMN_P48/TOTTEN1/xyz/TOTTEN1-WORKHORSE-ADCP-14489_xyz.gif`);
   });
 });
