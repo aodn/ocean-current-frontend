@@ -1,15 +1,57 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Button, Dropdown } from '@/components/Shared';
-import useCurrentMeterStore, { setDepth, setProperty, setRegion } from '@/stores/current-meters-store/currentMeters';
-import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/types/currentMeters';
+import useCurrentMeterStore, {
+  setDepth,
+  setProperty,
+  setRegion,
+  setDeploymentPlot,
+} from '@/stores/current-meters-store/currentMeters';
+import {
+  CurrentMetersDepth,
+  CurrentMetersProperty,
+  CurrentMetersRegion,
+  CurrentMetersSubproductsKey,
+} from '@/types/currentMeters';
 import { ProductSidebarText } from '@/constants/textConstant';
-import { depthOptionsData, propertyOptionsData, regionsOptionsData } from '@/data/current-meter/sidebarOptions';
+import {
+  deepADCPDeploymentPlotsData,
+  deepADVDeploymentPlotsData,
+  depthOptionsData,
+  propertyOptionsData,
+  regionsOptionsData,
+  shelfDeploymentPlotsData,
+  southernOceanDeploymentPlotsData,
+} from '@/data/current-meter/sidebarOptions';
+import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
+import { currentMeterMapDataPointNames } from '@/data/current-meter/mapDataPoints';
 
 const CurrentMetersOptions: React.FC = () => {
-  const { property, depth, region } = useCurrentMeterStore();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const date = searchParams.get('date');
+  const { property, depth, region, date, deploymentPlot } = useCurrentMeterStore();
+  const [_, setSearchParams] = useSearchParams();
+  const { subProduct } = useProductConvert();
+  const subProdKey = subProduct?.key.split('-')[1];
+
+  const deploymentPlotOptions = useMemo(() => {
+    switch (subProdKey) {
+      case CurrentMetersSubproductsKey.SHELF:
+        return shelfDeploymentPlotsData;
+      case CurrentMetersSubproductsKey.DEEP_ADCP:
+        return deepADCPDeploymentPlotsData;
+      case CurrentMetersSubproductsKey.DEEP_ADV:
+        return deepADVDeploymentPlotsData;
+      case CurrentMetersSubproductsKey.SOUTHERN_OCEAN:
+        return southernOceanDeploymentPlotsData;
+      default:
+        return [];
+    }
+  }, [subProdKey]);
+
+  useEffect(() => {
+    if (deploymentPlotOptions.length > 0) {
+      setDeploymentPlot(deploymentPlotOptions[0].id);
+    }
+  }, [deploymentPlotOptions, subProdKey]);
 
   const depthOptions = useMemo(() => {
     if (property === CurrentMetersProperty.vmean || property === CurrentMetersProperty.vrms) {
@@ -31,7 +73,17 @@ const CurrentMetersOptions: React.FC = () => {
 
   const handleRegionChange = (id: string) => {
     setRegion(id as CurrentMetersRegion);
-    setSearchParams({ property, depth, region: id, date: date ?? '' });
+    setSearchParams({
+      property,
+      depth,
+      region: id,
+      date: date ?? '',
+    });
+  };
+
+  const handleDeploymentPlotChange = (id: string) => {
+    setDeploymentPlot(id as currentMeterMapDataPointNames | '');
+    setSearchParams({ deploymentPlot: id });
   };
 
   const handleDepthChange = (id: string) => {
@@ -43,6 +95,21 @@ const CurrentMetersOptions: React.FC = () => {
     setProperty(id as CurrentMetersProperty);
     setSearchParams({ property: id, depth, region, date: date ?? '' });
   };
+
+  if (subProdKey !== CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY) {
+    return (
+      <div className="px-4 pb-4">
+        <h3 className="py-2 text-lg font-medium text-imos-grey">{ProductSidebarText.DEPLOYMENT_PLOT}</h3>
+        <Dropdown
+          elements={deploymentPlotOptions}
+          selectedId={deploymentPlot}
+          showIcons={false}
+          onChange={(elem) => handleDeploymentPlotChange(elem.id)}
+          smallDropdown
+        />
+      </div>
+    );
+  }
 
   return (
     <>
