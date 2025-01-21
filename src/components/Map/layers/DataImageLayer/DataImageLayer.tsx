@@ -1,4 +1,5 @@
 import useProductStore from '@/stores/product-store/productStore';
+import { apiConfig } from '@/configs/api';
 import { getEntryImagePathByProductId } from '@/utils/data-image-builder-utils/latestEntryImage';
 import DataImageLayerRenderer from './DataImageLayerRenderer';
 
@@ -12,7 +13,7 @@ const DataImageLayer: React.FC = () => {
     return null;
   }
 
-  const url = `/api/${urlPath}/latest.gif`;
+  const url = `${apiConfig}/${urlPath}/latest.gif`;
   return <DataImageLayerRenderer imageUrl={url} />;
 };
 
