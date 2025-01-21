@@ -13,7 +13,7 @@ const DataImageLayer: React.FC = () => {
     return null;
   }
 
-  const url = `${apiConfig}/${urlPath}/latest.gif`;
+  const url = `${apiConfig.baseURL}/${urlPath}/latest.gif`;
   return <DataImageLayerRenderer imageUrl={url} />;
 };
 
