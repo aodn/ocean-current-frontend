@@ -26,7 +26,7 @@ const SidebarProductDropdown: React.FC = () => {
     let queryToUpdate = { date: selectedDate, property: null, depth: null } as Record<string, string | null>;
     // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
     if (id === 'EACMooringArray') {
-      queryToUpdate = { date: selectedDate, region: 'Brisbane' };
+      queryToUpdate = { date: selectedDate, region: 'Brisbane', property: null, depth: null };
     } else if (id === 'currentMeters') {
       const { region, property, depth, date } = currentMetersInitialState;
       queryToUpdate = { date, region, property, depth };

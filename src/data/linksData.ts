@@ -131,7 +131,7 @@ export const linksData: LinkItem[] = [
         blueIcon: CurrentMetersBlueIcon,
         title: 'Current Meters',
         description: 'Flow measurement devices',
-        url: 'product/current-meters',
+        url: 'product/current-meters/moored-instrument-array',
       },
       {
         id: 'seal-ctd',
