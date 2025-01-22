@@ -98,4 +98,4 @@ The full list of available emojis and their interpretations are available on [gi
 ### ADR
 
 An architecture decision record (ADR) is a document that captures an important architecture decision made along with its context and consequences.
-If you want more info about this you can check [this link](https://github.com/joelparkerhenderson/architecture-decision-record?tab=readme-ov-file).
+If you want more info about this, you can check [this link](https://github.com/joelparkerhenderson/architecture-decision-record?tab=readme-ov-file).
