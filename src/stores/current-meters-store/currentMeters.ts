@@ -37,6 +37,6 @@ export const {
   reset: resetCurrentMeterStore,
 } = useCurrentMeterStore.getState().actions;
 
-export { useCurrentMeterStore };
+export { useCurrentMeterStore, initialState };
 
 export default useCurrentMeterStore;
