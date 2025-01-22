@@ -2,7 +2,13 @@ import dayjs, { Dayjs } from 'dayjs';
 import { productTypeMapping, TargetPathRegionScope } from '@/constants/imgPath';
 import { RegionScope } from '@/constants/region';
 import { imageBaseUrl, imageS3BaseUrl } from '@/configs/image';
-import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/types/currentMeters';
+import {
+  CurrentMetersDepth,
+  CurrentMetersPlotType,
+  CurrentMetersProperty,
+  CurrentMetersRegion,
+} from '@/types/currentMeters';
+import { currentMeterMapDataPointNames } from '@/data/current-meter/mapDataPoints';
 
 type ProductId = string;
 type SubProductType = string | undefined | null;
@@ -166,7 +172,12 @@ const buildCurrentMetersMapImageUrl = (
   return `${imageBaseUrl}/timeseries/ANMN_P49/mapst/${region}_${property}_${depth}${formattedYear}.gif`;
 };
 
-const buildCurrentMetersDataImageUrl = (subProduct: string, deploymentPlot: string, type: string, plotId: string) => {
+const buildCurrentMetersDataImageUrl = (
+  subProduct: string,
+  deploymentPlot: string | currentMeterMapDataPointNames,
+  type: CurrentMetersPlotType,
+  plotId: string,
+) => {
   const folder = subProduct === 'currentMeters-shelf' ? 'ANMN_P49' : 'ANMN_P48';
 
   return `${imageBaseUrl}/timeseries/${folder}/${deploymentPlot}/${type}/${plotId}.gif`;

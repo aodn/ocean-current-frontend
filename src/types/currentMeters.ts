@@ -4,7 +4,7 @@ export interface CurrentMetersImageDataPoints {
   href: string | undefined;
   alt: string | undefined;
   name: string | undefined;
-  isText?: boolean;
+  type: 'text' | 'region' | 'plot';
 }
 
 export enum CurrentMetersSubproductsKey {
