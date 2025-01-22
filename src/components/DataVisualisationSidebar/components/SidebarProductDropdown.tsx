@@ -7,6 +7,7 @@ import { useDateRange, useQueryParams } from '@/hooks';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
+import { initialState as currentMetersInitialState } from '@/stores/current-meters-store/currentMeters';
 
 const SidebarProductDropdown: React.FC = () => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
@@ -22,13 +23,15 @@ const SidebarProductDropdown: React.FC = () => {
     }
     setProductId(id);
 
-    let queryToUpdate = { date: selectedDate } as Record<string, string | null>;
+    let queryToUpdate = { date: selectedDate, property: null, depth: null } as Record<string, string | null>;
     // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
     if (id === 'EACMooringArray') {
       queryToUpdate = { date: selectedDate, region: 'Brisbane' };
-    }
-    if (!isProductAvailableInRegion) {
-      queryToUpdate = { date: selectedDate, region: null };
+    } else if (id === 'currentMeters') {
+      const { region, property, depth, date } = currentMetersInitialState;
+      queryToUpdate = { date, region, property, depth };
+    } else if (!isProductAvailableInRegion) {
+      queryToUpdate = { date: selectedDate, region: null, property: null, depth: null };
     }
 
     const targetPath = getProductPathWithSubProduct(id);
