@@ -25,7 +25,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
   const [copyButtonText, setCopyButtonText] = useState<string>(ProductMenubarText.SHARE);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [showVideo, setLocalShowVideo] = useState(false);
-  const { date: currentMetersDate, property, depth, region } = useCurrentMeterStore();
+  const { date: currentMetersDate, property, depth, region, deploymentPlot } = useCurrentMeterStore();
   const [_, setSearchParams] = useSearchParams();
   const { isArgo, isCurrentMeters, isEACMooringArray } = useProductCheck();
   const shouldDisableOption = disableVideoCreation() || isArgo || isMapView || isCurrentMeters || isEACMooringArray;
@@ -75,7 +75,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
             // placeholder until a design is available
             <Dropdown
               elements={
-                productId === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY
+                productId === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY && !deploymentPlot
                   ? yearOptionsData
                   : [yearOptionsData[0]]
               }

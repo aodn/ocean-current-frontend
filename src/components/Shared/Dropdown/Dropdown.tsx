@@ -44,7 +44,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   }, [selectElement, selectedId]);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative w-full" ref={dropdownRef}>
       <div
         onClick={toggleDropdown}
         aria-hidden="true"
