@@ -1,192 +1,4 @@
-import { currentMetersImgParams } from '@/constants/imageParameter';
 import { CurrentMetersImageDataPoints } from '@/types/currentMeters';
-import { calculateOffsetByCoords, convertCurrentMeterHtmlMapElementStringToObj } from '@/utils/geo-utils/geo';
-
-const htmlString = `<map name="imap">
-<area shape="rect" coords="193   57  248   68" href="../ITFOMB/index.html" alt="ITFOMB" title="ITFOMB">
-<area shape="rect" coords="390  128  445  139" href="../ITFTIN/index.html" alt="ITFTIN" title="ITFTIN">
-<area shape="rect" coords="390  141  445  152" href="../ITFTNS/index.html" alt="ITFTNS" title="ITFTNS">
-<area shape="rect" coords="390  154  445  165" href="../ITFTSL/index.html" alt="ITFTSL" title="ITFTSL">
-<area shape="rect" coords="390  168  445  179" href="../ITFTIS/index.html" alt="ITFTIS" title="ITFTIS">
-<area shape="rect" coords="390  181  445  192" href="../ITFMHB/index.html" alt="ITFMHB" title="ITFMHB">
-<area shape="rect" coords="390  194  445  205" href="../ITFFTB/index.html" alt="ITFFTB" title="ITFFTB">
-<area shape="rect" coords="390  208  445  219" href="../ITFJBG/index.html" alt="ITFJBG" title="ITFJBG">
-<area shape="rect" coords="390   44  445   55" href="../NWSLYN/index.html" alt="NWSLYN" title="NWSLYN">
-<area shape="rect" coords="390   57  445   68" href="../DARBGF/index.html" alt="DARBGF" title="DARBGF">
-<area shape="rect" coords="390   71  445   82" href="../NRSDAR/index.html" alt="NRSDAR" title="NRSDAR">
-<area shape="rect" coords="287  180  343  191" href="../NWSBRW/index.html" alt="NWSBRW" title="NWSBRW">
-<area shape="rect" coords="287  194  343  205" href="../CAM100/index.html" alt="CAM100" title="CAM100">
-<area shape="rect" coords="287  207  343  218" href="../CAM050/index.html" alt="CAM050" title="CAM050">
-<area shape="rect" coords="287  220  343  231" href="../KIM400/index.html" alt="KIM400" title="KIM400">
-<area shape="rect" coords="287  234  343  245" href="../KIM200/index.html" alt="KIM200" title="KIM200">
-<area shape="rect" coords="287  247  343  258" href="../KIM100/index.html" alt="KIM100" title="KIM100">
-<area shape="rect" coords="287  260  343  271" href="../KIM050/index.html" alt="KIM050" title="KIM050">
-<area shape="rect" coords="216  239  272  250" href="../NWSROW/index.html" alt="NWSROW" title="NWSROW">
-<area shape="rect" coords="161  263  217  274" href="../NWSBAR/index.html" alt="NWSBAR" title="NWSBAR">
-<area shape="rect" coords="161  277  217  288" href="../PIL200/index.html" alt="PIL200" title="PIL200">
-<area shape="rect" coords="161  290  217  301" href="../PIL100/index.html" alt="PIL100" title="PIL100">
-<area shape="rect" coords="161  303  217  314" href="../PIL050/index.html" alt="PIL050" title="PIL050">
-<area shape="rect" coords="137  362  193  373" href="../WATR50/index.html" alt="WATR50" title="WATR50">
-<area shape="rect" coords="137  375  193  386" href="../WATR20/index.html" alt="WATR20" title="WATR20">
-<area shape="rect" coords="137  389  193  400" href="../WATR15/index.html" alt="WATR15" title="WATR15">
-<area shape="rect" coords="137  402  193  413" href="../WATR10/index.html" alt="WATR10" title="WATR10">
-<area shape="rect" coords="137  415  193  426" href="../WATR04/index.html" alt="WATR04" title="WATR04">
-<area shape="rect" coords="145  439  201  450" href="../WACA20/index.html" alt="WACA20" title="WACA20">
-<area shape="rect" coords="418  436  474  447" href="../SAM5CB/index.html" alt="SAM5CB" title="SAM5CB">
-<area shape="rect" coords="429  448  485  459" href="../SAM2CP/index.html" alt="SAM2CP" title="SAM2CP">
-<area shape="rect" coords="500  437  556  448" href="../SAM8SG/index.html" alt="SAM8SG" title="SAM8SG">
-<area shape="rect" coords="500  450  556  461" href="../SAM6IS/index.html" alt="SAM6IS" title="SAM6IS">
-<area shape="rect" coords="500  463  556  474" href="../SAM1DS/index.html" alt="SAM1DS" title="SAM1DS">
-<area shape="rect" coords="500  477  556  488" href="../SAM3MS/index.html" alt="SAM3MS" title="SAM3MS">
-<area shape="rect" coords="500  490  556  501" href="../SAM7DS/index.html" alt="SAM7DS" title="SAM7DS">
-<area shape="rect" coords="516  507  571  518" href="../SAM1DS/index.html" alt="SAM1DS" title="SAM1DS">
-<area shape="rect" coords="531  519  587  530" href="../SAM4CY/index.html" alt="SAM4CY" title="SAM4CY">
-<area shape="rect" coords="543  161  598  172" href="../GBRLSH/index.html" alt="GBRLSH" title="GBRLSH">
-<area shape="rect" coords="543  174  598  185" href="../GBRLSL/index.html" alt="GBRLSL" title="GBRLSL">
-<area shape="rect" coords="547  212  603  223" href="../GBRMYR/index.html" alt="GBRMYR" title="GBRMYR">
-<area shape="rect" coords="547  225  603  236" href="../GBRPPS/index.html" alt="GBRPPS" title="GBRPPS">
-<area shape="rect" coords="602  258  658  269" href="../GBRELR/index.html" alt="GBRELR" title="GBRELR">
-<area shape="rect" coords="626  292  681  303" href="../GBRCCH/index.html" alt="GBRCCH" title="GBRCCH">
-<area shape="rect" coords="626  305  681  316" href="../GBROTE/index.html" alt="GBROTE" title="GBROTE">
-<area shape="rect" coords="626  319  681  330" href="../GBRHIN/index.html" alt="GBRHIN" title="GBRHIN">
-<area shape="rect" coords="626  332  681  343" href="../GBRHIS/index.html" alt="GBRHIS" title="GBRHIS">
-<area shape="rect" coords="669  407  716  418" href="../CH070/index.html" alt="CH070" title="CH070">
-<area shape="rect" coords="669  421  716  432" href="../CH100/index.html" alt="CH100" title="CH100">
-<area shape="rect" coords="626  455  681  466" href="../SYD100/index.html" alt="SYD100" title="SYD100">
-<area shape="rect" coords="626  468  681  479" href="../SYD140/index.html" alt="SYD140" title="SYD140">
-<area shape="rect" coords="635  482  681  493" href="../PH100/index.html" alt="PH100" title="PH100">
-<area shape="rect" coords="603  501  659  512" href="../BMP070/index.html" alt="BMP070" title="BMP070">
-<area shape="rect" coords="603  514  659  525" href="../BMP090/index.html" alt="BMP090" title="BMP090">
-<area shape="rect" coords="603  527  659  538" href="../BMP120/index.html" alt="BMP120" title="BMP120">
-<area shape="rect" coords="103  304  158  315" href="../TAN100/index.html" alt="TAN100" title="TAN100">
-<area shape="rect" coords="103  317  158  328" href="../NRSNIN/index.html" alt="NRSNIN" title="NRSNIN">
-<area shape="rect" coords="661  355  716  366" href="../NRSNSI/index.html" alt="NRSNSI" title="NRSNSI">
-<area shape="rect" coords="661  368  716  379" href="../SEQ200/index.html" alt="SEQ200" title="SEQ200">
-<area shape="rect" coords="661  381  716  392" href="../SEQ400/index.html" alt="SEQ400" title="SEQ400">
-<area shape="rect" coords="579  241  634  252" href="../NRSYON/index.html" alt="NRSYON" title="NRSYON">
-<area shape="rect" coords="137  456  193  467" href="../NRSROT/index.html" alt="NRSROT" title="NRSROT">
-<area shape="rect" coords="661  623  716  634" href="../NRSMAI/index.html" alt="NRSMAI" title="NRSMAI">
-<area shape="rect" coords="531  533  587  544" href="../NRSKAI/index.html" alt="NRSKAI" title="NRSKAI">
-<area shape="rect" coords="200  460  256  471" href="../NRSESP/index.html" alt="NRSESP" title="NRSESP">
-<area shape="rect" coords="768  342  805  353" href="../EAC1/index.html" alt="EAC1" title="EAC1">
-<area shape="rect" coords="768  355  805  366" href="../EAC2/index.html" alt="EAC2" title="EAC2">
-<area shape="rect" coords="768  368  805  379" href="../EAC3/index.html" alt="EAC3" title="EAC3">
-<area shape="rect" coords="768  381  805  392" href="../EAC4/index.html" alt="EAC4" title="EAC4">
-<area shape="rect" coords="768  395  805  406" href="../EAC5/index.html" alt="EAC5" title="EAC5">
-<area shape="rect" coords="216  664  281  675" href="../TOTTEN1/index.html" alt="TOTTEN1" title="TOTTEN1">
-<area shape="rect" coords="216  677  281  688" href="../TOTTEN2/index.html" alt="TOTTEN2" title="TOTTEN2">
-<area shape="rect" coords="216  691  281  702" href="../TOTTEN3/index.html" alt="TOTTEN3" title="TOTTEN3">
-<area shape="rect" coords="610  679  685  690" href="../POLYNYA1/index.html" alt="POLYNYA1" title="POLYNYA1">
-<area shape="rect" coords="610  692  685  703" href="../POLYNYA2/index.html" alt="POLYNYA2" title="POLYNYA2">
-<area shape="rect" coords="468  686  506  697" href="../SOFS/index.html" alt="SOFS" title="SOFS">
-<area shape="rect" coords="595  142  605  152" href="../GBRLSL/index.html" alt="GBRLSL" title="GBRLSL">
-<area shape="rect" coords="600  138  609  148" href="../GBRLSH/index.html" alt="GBRLSH" title="GBRLSH">
-<area shape="rect" coords="624  209  633  219" href="../GBRPPS/index.html" alt="GBRPPS" title="GBRPPS">
-<area shape="rect" coords="627  197  636  207" href="../GBRMYR/index.html" alt="GBRMYR" title="GBRMYR">
-<area shape="rect" coords="714  255  724  265" href="../GBRELR/index.html" alt="GBRELR" title="GBRELR">
-<area shape="rect" coords="700  279  709  289" href="../GBRCCH/index.html" alt="GBRCCH" title="GBRCCH">
-<area shape="rect" coords="700  285  709  295" href="../GBRHIN/index.html" alt="GBRHIN" title="GBRHIN">
-<area shape="rect" coords="700  287  709  297" href="../GBRHIS/index.html" alt="GBRHIS" title="GBRHIS">
-<area shape="rect" coords="703  287  712  297" href="../GBROTE/index.html" alt="GBROTE" title="GBROTE">
-<area shape="rect" coords="721  412  730  422" href="../CH070/index.html" alt="CH070" title="CH070">
-<area shape="rect" coords="722  402  731  412" href="../CH100/index.html" alt="CH100" title="CH100">
-<area shape="rect" coords="690  474  700  484" href="../SYD100/index.html" alt="SYD100" title="SYD100">
-<area shape="rect" coords="692  465  701  475" href="../SYD140/index.html" alt="SYD140" title="SYD140">
-<area shape="rect" coords="688  467  697  477" href="../PH100/index.html" alt="PH100" title="PH100">
-<area shape="rect" coords="672  513  681  523" href="../BMP070/index.html" alt="BMP070" title="BMP070">
-<area shape="rect" coords="672  503  682  513" href="../BMP090/index.html" alt="BMP090" title="BMP090">
-<area shape="rect" coords="674  503  683  513" href="../BMP120/index.html" alt="BMP120" title="BMP120">
-<area shape="rect" coords="689  464  699  474" href="../ORS065/index.html" alt="ORS065" title="ORS065">
-<area shape="rect" coords="113  251  122  261" href="../NWSBAR/index.html" alt="NWSBAR" title="NWSBAR">
-<area shape="rect" coords="246  140  255  150" href="../NWSBRW/index.html" alt="NWSBRW" title="NWSBRW">
-<area shape="rect" coords="359   67  368   77" href="../NWSLYN/index.html" alt="NWSLYN" title="NWSLYN">
-<area shape="rect" coords="194  200  204  210" href="../NWSROW/index.html" alt="NWSROW" title="NWSROW">
-<area shape="rect" coords="100  269  109  279" href="../TAN100/index.html" alt="TAN100" title="TAN100">
-<area shape="rect" coords="256  150  265  160" href="../CAM050/index.html" alt="CAM050" title="CAM050">
-<area shape="rect" coords="252  131  262  141" href="../CAM100/index.html" alt="CAM100" title="CAM100">
-<area shape="rect" coords="363   94  372  104" href="../DARBGF/index.html" alt="DARBGF" title="DARBGF">
-<area shape="rect" coords="315   65  324   75" href="../ITFTIS/index.html" alt="ITFTIS" title="ITFTIS">
-<area shape="rect" coords="322   85  331   95" href="../ITFMHB/index.html" alt="ITFMHB" title="ITFMHB">
-<area shape="rect" coords="337  129  346  139" href="../ITFJBG/index.html" alt="ITFJBG" title="ITFJBG">
-<area shape="rect" coords="329  107  339  117" href="../ITFFTB/index.html" alt="ITFFTB" title="ITFFTB">
-<area shape="rect" coords="213  157  223  167" href="../KIM400/index.html" alt="KIM400" title="KIM400">
-<area shape="rect" coords="215  152  225  162" href="../KIM200/index.html" alt="KIM200" title="KIM200">
-<area shape="rect" coords="216  154  226  164" href="../KIM100/index.html" alt="KIM100" title="KIM100">
-<area shape="rect" coords="221  166  230  176" href="../KIM050/index.html" alt="KIM050" title="KIM050">
-<area shape="rect" coords="131  228  141  238" href="../PIL200/index.html" alt="PIL200" title="PIL200">
-<area shape="rect" coords="135  222  144  232" href="../PIL100/index.html" alt="PIL100" title="PIL100">
-<area shape="rect" coords="139  239  149  249" href="../PIL050/index.html" alt="PIL050" title="PIL050">
-<area shape="rect" coords="116  428  126  438" href="../WATR50/index.html" alt="WATR50" title="WATR50">
-<area shape="rect" coords="118  427  127  437" href="../WATR20/index.html" alt="WATR20" title="WATR20">
-<area shape="rect" coords="119  426  128  436" href="../WATR15/index.html" alt="WATR15" title="WATR15">
-<area shape="rect" coords="120  425  130  435" href="../WATR10/index.html" alt="WATR10" title="WATR10">
-<area shape="rect" coords="123  427  133  437" href="../WATR04/index.html" alt="WATR04" title="WATR04">
-<area shape="rect" coords="121  431  130  441" href="../WACA20/index.html" alt="WACA20" title="WACA20">
-<area shape="rect" coords="452  518  461  528" href="../SAM1DS/index.html" alt="SAM1DS" title="SAM1DS">
-<area shape="rect" coords="443  497  452  507" href="../SAM2CP/index.html" alt="SAM2CP" title="SAM2CP">
-<area shape="rect" coords="446  502  456  512" href="../SAM3MS/index.html" alt="SAM3MS" title="SAM3MS">
-<area shape="rect" coords="462  518  471  528" href="../SAM4CY/index.html" alt="SAM4CY" title="SAM4CY">
-<area shape="rect" coords="432  491  442  501" href="../SAM5CB/index.html" alt="SAM5CB" title="SAM5CB">
-<area shape="rect" coords="457  491  467  501" href="../SAM6IS/index.html" alt="SAM6IS" title="SAM6IS">
-<area shape="rect" coords="445  503  455  513" href="../SAM7DS/index.html" alt="SAM7DS" title="SAM7DS">
-<area shape="rect" coords="459  487  468  497" href="../SAM8SG/index.html" alt="SAM8SG" title="SAM8SG">
-<area shape="rect" coords="730  362  739  372" href="../SEQ400/index.html" alt="SEQ400" title="SEQ400">
-<area shape="rect" coords="728  352  737  362" href="../SEQ200/index.html" alt="SEQ200" title="SEQ200">
-<area shape="rect" coords="631  216  640  226" href="../NRSYON/index.html" alt="NRSYON" title="NRSYON">
-<area shape="rect" coords="124  431  133  441" href="../NRSROT/index.html" alt="NRSROT" title="NRSROT">
-<area shape="rect" coords="725  352  734  362" href="../NRSNSI/index.html" alt="NRSNSI" title="NRSNSI">
-<area shape="rect" coords="100  259  110  269" href="../NRSNIN/index.html" alt="NRSNIN" title="NRSNIN">
-<area shape="rect" coords="641  622  650  632" href="../NRSMAI/index.html" alt="NRSMAI" title="NRSMAI">
-<area shape="rect" coords="455  497  464  507" href="../NRSKAI/index.html" alt="NRSKAI" title="NRSKAI">
-<area shape="rect" coords="225  464  234  474" href="../NRSESP/index.html" alt="NRSESP" title="NRSESP">
-<area shape="rect" coords="365   98  374  108" href="../NRSDAR/index.html" alt="NRSDAR" title="NRSDAR">
-<area shape="rect" coords="310   51  319   61" href="../ITFTNS/index.html" alt="ITFTNS" title="ITFTNS">
-<area shape="rect" coords="312   46  321   56" href="../ITFTSL/index.html" alt="ITFTSL" title="ITFTSL">
-<area shape="rect" coords="309   38  318   48" href="../ITFTIN/index.html" alt="ITFTIN" title="ITFTIN">
-<area shape="rect" coords="276   43  285   53" href="../ITFOMB/index.html" alt="ITFOMB" title="ITFOMB">
-<area shape="rect" coords="730  352  739  362" href="../EAC0500/index.html" alt="EAC0500" title="EAC0500">
-<area shape="rect" coords="731  352  741  362" href="../EAC1520/index.html" alt="EAC1520" title="EAC1520">
-<area shape="rect" coords="732  352  741  362" href="../EAC2000/index.html" alt="EAC2000" title="EAC2000">
-<area shape="rect" coords="734  351  743  361" href="../EAC3200/index.html" alt="EAC3200" title="EAC3200">
-<area shape="rect" coords="736  351  746  361" href="../EAC4200/index.html" alt="EAC4200" title="EAC4200">
-<area shape="rect" coords="742  360  751  370" href="../EAC4700/index.html" alt="EAC4700" title="EAC4700">
-<area shape="rect" coords="752  358  762  368" href="../EAC4800/index.html" alt="EAC4800" title="EAC4800">
-<area shape="rect" coords="310   41  319   51" href="../ITFTNS/index.html" alt="ITFTNS" title="ITFTNS">
-<area shape="rect" coords="312   46  321   56" href="../ITFTSL/index.html" alt="ITFTSL" title="ITFTSL">
-<area shape="rect" coords="309   38  318   48" href="../ITFTIN/index.html" alt="ITFTIN" title="ITFTIN">
-<area shape="rect" coords="276   33  285   43" href="../ITFOMB/index.html" alt="ITFOMB" title="ITFOMB">
-<area shape="rect" coords="730  352  739  362" href="../EAC0500/index.html" alt="EAC0500" title="EAC0500">
-<area shape="rect" coords="731  352  741  362" href="../EAC1520/index.html" alt="EAC1520" title="EAC1520">
-<area shape="rect" coords="732  352  741  362" href="../EAC2000/index.html" alt="EAC2000" title="EAC2000">
-<area shape="rect" coords="734  351  743  361" href="../EAC3200/index.html" alt="EAC3200" title="EAC3200">
-<area shape="rect" coords="736  351  746  361" href="../EAC4200/index.html" alt="EAC4200" title="EAC4200">
-<area shape="rect" coords="742  350  751  360" href="../EAC4700/index.html" alt="EAC4700" title="EAC4700">
-<area shape="rect" coords="752  348  762  358" href="../EAC4800/index.html" alt="EAC4800" title="EAC4800">
-<area shape="rect" coords="537  693  546  703" href="../SOTS/index.html" alt="SOTS" title="SOTS">
-<area shape="rect" coords="544  691  553  701" href="../SOFS/index.html" alt="SOFS" title="SOFS">
-<area shape="rect" coords="248   39  382  144" href="02_TimorP_vrms_1.html" alt="TimorP" title="TimorP">
-<area shape="rect" coords="208  132  271  188" href="03_Kim_vrms_1.html" alt="Kim" title="Kim">
-<area shape="rect" coords="161  192  241  251" href="23_Row_vrms_1.html" alt="Row" title="Row">
-<area shape="rect" coords="114  226  161  261" href="04_Pil_vrms_1.html" alt="Pil" title="Pil">
-<area shape="rect" coords="85  255  125  295" href="05_Ning_vrms_1.html" alt="Ning" title="Ning">
-<area shape="rect" coords="111  430  142  459" href="06_Perth_vrms_1.html" alt="Perth" title="Perth">
-<area shape="rect" coords="215  469  242  494" href="07_Esp_vrms_1.html" alt="Esp" title="Esp">
-<area shape="rect" coords="429  488  487  530" href="08_SA_vrms_1.html" alt="SA" title="SA">
-<area shape="rect" coords="182  1026   216  1041" href="17_Totten_vrms_1.html" alt="Totten" title="Totten">
-<area shape="rect" coords="525  681  569  715" href="19_SOFS_vrms_1.html" alt="SOFS" title="SOFS">
-<area shape="rect" coords="547  1024   587  1041" href="18_Polynya_vrms_1.html" alt="Polynya" title="Polynya">
-<area shape="rect" coords="624  615  659  647" href="09_ETas_vrms_1.html" alt="ETas" title="ETas">
-<area shape="rect" coords="664  506  692  531" href="22_BMP_vrms_1.html" alt="BMP" title="BMP">
-<area shape="rect" coords="681  469  708  495" href="10_Syd_vrms_1.html" alt="Syd" title="Syd">
-<area shape="rect" coords="713  405  747  441" href="11_Coffs_vrms_1.html" alt="Coffs" title="Coffs">
-<area shape="rect" coords="724  356  760  383" href="12_SEQ_vrms_1.html" alt="SEQ" title="SEQ">
-<area shape="rect" coords="680  272  724  315" href="13_SGBR_vrms_1.html" alt="SGBR" title="SGBR">
-<area shape="rect" coords="703  244  743  278" href="14_SGBR2_vrms_1.html" alt="SGBR2" title="SGBR2">
-<area shape="rect" coords="612  202  647  236" href="15_CGBR_vrms_1.html" alt="CGBR" title="CGBR">
-<area shape="rect" coords="583  134  617  166" href="16_NGBR_vrms_1.html" alt="NGBR" title="NGBR">
-</map>`;
-
-export const austMapAreas = convertCurrentMeterHtmlMapElementStringToObj(htmlString);
 
 const regionArr: CurrentMetersImageDataPoints[] = [
   {
@@ -195,7 +7,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFOMB/index.html',
     alt: 'ITFOMB',
     name: 'ITFOMB',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -203,6 +15,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFTIN/index.html',
     alt: 'ITFTIN',
     name: 'ITFTIN',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -210,7 +23,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFTIN/index.html',
     alt: 'ITFTIN',
     name: 'ITFTIN',
-    isText: true,
+    type: 'text',
   },
 
   {
@@ -219,7 +32,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFTNS/index.html',
     alt: 'ITFTNS',
     name: 'ITFTNS',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -227,7 +40,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFTSL/index.html',
     alt: 'ITFTSL',
     name: 'ITFTSL',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -235,7 +48,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFTIS/index.html',
     alt: 'ITFTIS',
     name: 'ITFTIS',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -243,7 +56,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFMHB/index.html',
     alt: 'ITFMHB',
     name: 'ITFMHB',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -251,7 +64,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFFTB/index.html',
     alt: 'ITFFTB',
     name: 'ITFFTB',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -259,7 +72,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFJBG/index.html',
     alt: 'ITFJBG',
     name: 'ITFJBG',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -267,7 +80,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NWSLYN/index.html',
     alt: 'NWSLYN',
     name: 'NWSLYN',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -275,7 +88,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../DARBGF/index.html',
     alt: 'DARBGF',
     name: 'DARBGF',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -283,7 +96,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NRSDAR/index.html',
     alt: 'NRSDAR',
     name: 'NRSDAR',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -291,7 +104,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NWSBRW/index.html',
     alt: 'NWSBRW',
     name: 'NWSBRW',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -299,7 +112,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../CAM100/index.html',
     alt: 'CAM100',
     name: 'CAM100',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -307,7 +120,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../CAM050/index.html',
     alt: 'CAM050',
     name: 'CAM050',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -315,7 +128,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../KIM400/index.html',
     alt: 'KIM400',
     name: 'KIM400',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -323,7 +136,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../KIM200/index.html',
     alt: 'KIM200',
     name: 'KIM200',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -331,7 +144,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../KIM100/index.html',
     alt: 'KIM100',
     name: 'KIM100',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -339,7 +152,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../KIM050/index.html',
     alt: 'KIM050',
     name: 'KIM050',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -347,7 +160,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NWSROW/index.html',
     alt: 'NWSROW',
     name: 'NWSROW',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -355,7 +168,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NWSBAR/index.html',
     alt: 'NWSBAR',
     name: 'NWSBAR',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -363,7 +176,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../PIL200/index.html',
     alt: 'PIL200',
     name: 'PIL200',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -371,7 +184,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../PIL100/index.html',
     alt: 'PIL100',
     name: 'PIL100',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -379,7 +192,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../PIL050/index.html',
     alt: 'PIL050',
     name: 'PIL050',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -387,7 +200,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../WATR50/index.html',
     alt: 'WATR50',
     name: 'WATR50',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -395,7 +208,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../WATR20/index.html',
     alt: 'WATR20',
     name: 'WATR20',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -403,7 +216,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../WATR15/index.html',
     alt: 'WATR15',
     name: 'WATR15',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -411,7 +224,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../WATR10/index.html',
     alt: 'WATR10',
     name: 'WATR10',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -419,7 +232,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../WATR04/index.html',
     alt: 'WATR04',
     name: 'WATR04',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -427,7 +240,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../WACA20/index.html',
     alt: 'WACA20',
     name: 'WACA20',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -435,7 +248,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SAM5CB/index.html',
     alt: 'SAM5CB',
     name: 'SAM5CB',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -443,7 +256,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SAM2CP/index.html',
     alt: 'SAM2CP',
     name: 'SAM2CP',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -451,7 +264,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SAM8SG/index.html',
     alt: 'SAM8SG',
     name: 'SAM8SG',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -459,7 +272,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SAM6IS/index.html',
     alt: 'SAM6IS',
     name: 'SAM6IS',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -467,7 +280,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SAM1DS/index.html',
     alt: 'SAM1DS',
     name: 'SAM1DS',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -475,7 +288,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SAM3MS/index.html',
     alt: 'SAM3MS',
     name: 'SAM3MS',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -483,7 +296,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SAM7DS/index.html',
     alt: 'SAM7DS',
     name: 'SAM7DS',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -491,7 +304,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SAM1DS/index.html',
     alt: 'SAM1DS',
     name: 'SAM1DS',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -499,7 +312,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SAM4CY/index.html',
     alt: 'SAM4CY',
     name: 'SAM4CY',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -507,7 +320,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../GBRLSH/index.html',
     alt: 'GBRLSH',
     name: 'GBRLSH',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -515,7 +328,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../GBRLSL/index.html',
     alt: 'GBRLSL',
     name: 'GBRLSL',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -523,7 +336,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../GBRMYR/index.html',
     alt: 'GBRMYR',
     name: 'GBRMYR',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -531,7 +344,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../GBRPPS/index.html',
     alt: 'GBRPPS',
     name: 'GBRPPS',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -539,7 +352,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../GBRELR/index.html',
     alt: 'GBRELR',
     name: 'GBRELR',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -547,7 +360,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../GBRCCH/index.html',
     alt: 'GBRCCH',
     name: 'GBRCCH',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -555,7 +368,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../GBROTE/index.html',
     alt: 'GBROTE',
     name: 'GBROTE',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -563,7 +376,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../GBRHIN/index.html',
     alt: 'GBRHIN',
     name: 'GBRHIN',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -571,7 +384,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../GBRHIS/index.html',
     alt: 'GBRHIS',
     name: 'GBRHIS',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -579,7 +392,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../CH070/index.html',
     alt: 'CH070',
     name: 'CH070',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -587,7 +400,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../CH100/index.html',
     alt: 'CH100',
     name: 'CH100',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -595,7 +408,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SYD100/index.html',
     alt: 'SYD100',
     name: 'SYD100',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -603,7 +416,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SYD140/index.html',
     alt: 'SYD140',
     name: 'SYD140',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -611,7 +424,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../PH100/index.html',
     alt: 'PH100',
     name: 'PH100',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -619,7 +432,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../BMP070/index.html',
     alt: 'BMP070',
     name: 'BMP070',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -627,7 +440,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../BMP090/index.html',
     alt: 'BMP090',
     name: 'BMP090',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -635,7 +448,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../BMP120/index.html',
     alt: 'BMP120',
     name: 'BMP120',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -643,7 +456,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../TAN100/index.html',
     alt: 'TAN100',
     name: 'TAN100',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -651,7 +464,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NRSNIN/index.html',
     alt: 'NRSNIN',
     name: 'NRSNIN',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -659,7 +472,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NRSNSI/index.html',
     alt: 'NRSNSI',
     name: 'NRSNSI',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -667,7 +480,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SEQ200/index.html',
     alt: 'SEQ200',
     name: 'SEQ200',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -675,7 +488,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SEQ400/index.html',
     alt: 'SEQ400',
     name: 'SEQ400',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -683,7 +496,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NRSYON/index.html',
     alt: 'NRSYON',
     name: 'NRSYON',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -691,7 +504,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NRSROT/index.html',
     alt: 'NRSROT',
     name: 'NRSROT',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -699,7 +512,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NRSMAI/index.html',
     alt: 'NRSMAI',
     name: 'NRSMAI',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -707,7 +520,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NRSKAI/index.html',
     alt: 'NRSKAI',
     name: 'NRSKAI',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -715,7 +528,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NRSESP/index.html',
     alt: 'NRSESP',
     name: 'NRSESP',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -723,7 +536,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC1/index.html',
     alt: 'EAC1',
     name: 'EAC1',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -731,7 +544,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC2/index.html',
     alt: 'EAC2',
     name: 'EAC2',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -739,7 +552,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC3/index.html',
     alt: 'EAC3',
     name: 'EAC3',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -747,7 +560,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC4/index.html',
     alt: 'EAC4',
     name: 'EAC4',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -755,7 +568,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC5/index.html',
     alt: 'EAC5',
     name: 'EAC5',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -763,7 +576,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../TOTTEN1/index.html',
     alt: 'TOTTEN1',
     name: 'TOTTEN1',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -771,7 +584,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../TOTTEN2/index.html',
     alt: 'TOTTEN2',
     name: 'TOTTEN2',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -779,7 +592,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../TOTTEN3/index.html',
     alt: 'TOTTEN3',
     name: 'TOTTEN3',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -787,7 +600,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../POLYNYA1/index.html',
     alt: 'POLYNYA1',
     name: 'POLYNYA1',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -795,7 +608,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../POLYNYA2/index.html',
     alt: 'POLYNYA2',
     name: 'POLYNYA2',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -803,7 +616,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SOFS/index.html',
     alt: 'SOFS',
     name: 'SOFS',
-    isText: true,
+    type: 'text',
   },
   {
     shape: 'rect',
@@ -811,6 +624,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../GBRLSL/index.html',
     alt: 'GBRLSL',
     name: 'GBRLSL',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -818,6 +632,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../GBRLSH/index.html',
     alt: 'GBRLSH',
     name: 'GBRLSH',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -825,6 +640,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../GBRPPS/index.html',
     alt: 'GBRPPS',
     name: 'GBRPPS',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -832,6 +648,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../GBRMYR/index.html',
     alt: 'GBRMYR',
     name: 'GBRMYR',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -839,6 +656,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../GBRELR/index.html',
     alt: 'GBRELR',
     name: 'GBRELR',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -846,6 +664,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../GBRCCH/index.html',
     alt: 'GBRCCH',
     name: 'GBRCCH',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -853,6 +672,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../GBRHIN/index.html',
     alt: 'GBRHIN',
     name: 'GBRHIN',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -860,6 +680,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../GBRHIS/index.html',
     alt: 'GBRHIS',
     name: 'GBRHIS',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -867,6 +688,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../GBROTE/index.html',
     alt: 'GBROTE',
     name: 'GBROTE',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -874,6 +696,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../CH070/index.html',
     alt: 'CH070',
     name: 'CH070',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -881,6 +704,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../CH100/index.html',
     alt: 'CH100',
     name: 'CH100',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -888,6 +712,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SYD100/index.html',
     alt: 'SYD100',
     name: 'SYD100',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -895,6 +720,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SYD140/index.html',
     alt: 'SYD140',
     name: 'SYD140',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -902,6 +728,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../PH100/index.html',
     alt: 'PH100',
     name: 'PH100',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -909,6 +736,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../BMP070/index.html',
     alt: 'BMP070',
     name: 'BMP070',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -916,6 +744,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../BMP090/index.html',
     alt: 'BMP090',
     name: 'BMP090',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -923,6 +752,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../BMP120/index.html',
     alt: 'BMP120',
     name: 'BMP120',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -930,6 +760,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ORS065/index.html',
     alt: 'ORS065',
     name: 'ORS065',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -937,6 +768,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NWSBAR/index.html',
     alt: 'NWSBAR',
     name: 'NWSBAR',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -944,6 +776,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NWSBRW/index.html',
     alt: 'NWSBRW',
     name: 'NWSBRW',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -951,6 +784,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NWSLYN/index.html',
     alt: 'NWSLYN',
     name: 'NWSLYN',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -958,6 +792,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NWSROW/index.html',
     alt: 'NWSROW',
     name: 'NWSROW',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -965,6 +800,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../TAN100/index.html',
     alt: 'TAN100',
     name: 'TAN100',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -972,6 +808,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../CAM050/index.html',
     alt: 'CAM050',
     name: 'CAM050',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -979,6 +816,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../CAM100/index.html',
     alt: 'CAM100',
     name: 'CAM100',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -986,6 +824,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../DARBGF/index.html',
     alt: 'DARBGF',
     name: 'DARBGF',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -993,6 +832,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFTIS/index.html',
     alt: 'ITFTIS',
     name: 'ITFTIS',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1000,6 +840,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFMHB/index.html',
     alt: 'ITFMHB',
     name: 'ITFMHB',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1007,6 +848,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFJBG/index.html',
     alt: 'ITFJBG',
     name: 'ITFJBG',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1014,6 +856,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFFTB/index.html',
     alt: 'ITFFTB',
     name: 'ITFFTB',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1021,6 +864,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../KIM400/index.html',
     alt: 'KIM400',
     name: 'KIM400',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1028,6 +872,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../KIM200/index.html',
     alt: 'KIM200',
     name: 'KIM200',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1035,6 +880,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../KIM100/index.html',
     alt: 'KIM100',
     name: 'KIM100',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1042,6 +888,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../KIM050/index.html',
     alt: 'KIM050',
     name: 'KIM050',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1049,6 +896,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../PIL200/index.html',
     alt: 'PIL200',
     name: 'PIL200',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1056,6 +904,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../PIL100/index.html',
     alt: 'PIL100',
     name: 'PIL100',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1063,6 +912,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../PIL050/index.html',
     alt: 'PIL050',
     name: 'PIL050',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1070,7 +920,8 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../WATR50/index.html',
     alt: 'WATR50',
     name: 'WATR50',
-    // isText: true,
+    type: 'plot',
+    // type: 'text'
   },
   {
     shape: 'rect',
@@ -1078,7 +929,8 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../WATR20/index.html',
     alt: 'WATR20',
     name: 'WATR20',
-    // isText: true,
+    type: 'plot',
+    // type: 'text'
   },
   {
     shape: 'rect',
@@ -1086,7 +938,8 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../WATR15/index.html',
     alt: 'WATR15',
     name: 'WATR15',
-    // isText: true,
+    type: 'plot',
+    // type: 'text'
   },
   {
     shape: 'rect',
@@ -1094,7 +947,8 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../WATR10/index.html',
     alt: 'WATR10',
     name: 'WATR10',
-    // isText: true,
+    type: 'plot',
+    // type: 'text'
   },
   {
     shape: 'rect',
@@ -1102,7 +956,8 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../WATR04/index.html',
     alt: 'WATR04',
     name: 'WATR04',
-    // isText: true,
+    type: 'plot',
+    // type: 'text'
   },
   {
     shape: 'rect',
@@ -1110,6 +965,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../WACA20/index.html',
     alt: 'WACA20',
     name: 'WACA20',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1117,6 +973,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SAM1DS/index.html',
     alt: 'SAM1DS',
     name: 'SAM1DS',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1124,6 +981,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SAM2CP/index.html',
     alt: 'SAM2CP',
     name: 'SAM2CP',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1131,6 +989,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SAM3MS/index.html',
     alt: 'SAM3MS',
     name: 'SAM3MS',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1138,6 +997,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SAM4CY/index.html',
     alt: 'SAM4CY',
     name: 'SAM4CY',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1145,6 +1005,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SAM5CB/index.html',
     alt: 'SAM5CB',
     name: 'SAM5CB',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1152,6 +1013,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SAM6IS/index.html',
     alt: 'SAM6IS',
     name: 'SAM6IS',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1159,6 +1021,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SAM7DS/index.html',
     alt: 'SAM7DS',
     name: 'SAM7DS',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1166,6 +1029,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SAM8SG/index.html',
     alt: 'SAM8SG',
     name: 'SAM8SG',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1173,6 +1037,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SEQ400/index.html',
     alt: 'SEQ400',
     name: 'SEQ400',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1180,6 +1045,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SEQ200/index.html',
     alt: 'SEQ200',
     name: 'SEQ200',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1187,6 +1053,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NRSYON/index.html',
     alt: 'NRSYON',
     name: 'NRSYON',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1194,6 +1061,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NRSROT/index.html',
     alt: 'NRSROT',
     name: 'NRSROT',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1201,6 +1069,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NRSNSI/index.html',
     alt: 'NRSNSI',
     name: 'NRSNSI',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1208,6 +1077,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NRSNIN/index.html',
     alt: 'NRSNIN',
     name: 'NRSNIN',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1215,6 +1085,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NRSMAI/index.html',
     alt: 'NRSMAI',
     name: 'NRSMAI',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1222,6 +1093,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NRSKAI/index.html',
     alt: 'NRSKAI',
     name: 'NRSKAI',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1229,6 +1101,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NRSESP/index.html',
     alt: 'NRSESP',
     name: 'NRSESP',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1236,6 +1109,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../NRSDAR/index.html',
     alt: 'NRSDAR',
     name: 'NRSDAR',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1243,6 +1117,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFTNS/index.html',
     alt: 'ITFTNS',
     name: 'ITFTNS',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1250,6 +1125,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFTSL/index.html',
     alt: 'ITFTSL',
     name: 'ITFTSL',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1257,6 +1133,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFOMB/index.html',
     alt: 'ITFOMB',
     name: 'ITFOMB',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1264,6 +1141,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC0500/index.html',
     alt: 'EAC0500',
     name: 'EAC0500',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1271,6 +1149,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC1520/index.html',
     alt: 'EAC1520',
     name: 'EAC1520',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1278,6 +1157,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC2000/index.html',
     alt: 'EAC2000',
     name: 'EAC2000',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1285,6 +1165,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC3200/index.html',
     alt: 'EAC3200',
     name: 'EAC3200',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1292,6 +1173,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC4200/index.html',
     alt: 'EAC4200',
     name: 'EAC4200',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1299,6 +1181,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC4700/index.html',
     alt: 'EAC4700',
     name: 'EAC4700',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1306,6 +1189,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC4800/index.html',
     alt: 'EAC4800',
     name: 'EAC4800',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1313,6 +1197,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFTNS/index.html',
     alt: 'ITFTNS',
     name: 'ITFTNS',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1320,6 +1205,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFTSL/index.html',
     alt: 'ITFTSL',
     name: 'ITFTSL',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1327,6 +1213,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../ITFOMB/index.html',
     alt: 'ITFOMB',
     name: 'ITFOMB',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1334,6 +1221,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC0500/index.html',
     alt: 'EAC0500',
     name: 'EAC0500',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1341,6 +1229,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC1520/index.html',
     alt: 'EAC1520',
     name: 'EAC1520',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1348,6 +1237,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC2000/index.html',
     alt: 'EAC2000',
     name: 'EAC2000',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1355,6 +1245,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC3200/index.html',
     alt: 'EAC3200',
     name: 'EAC3200',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1362,6 +1253,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC4200/index.html',
     alt: 'EAC4200',
     name: 'EAC4200',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1369,6 +1261,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC4700/index.html',
     alt: 'EAC4700',
     name: 'EAC4700',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1376,6 +1269,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../EAC4800/index.html',
     alt: 'EAC4800',
     name: 'EAC4800',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1383,6 +1277,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SOTS/index.html',
     alt: 'SOTS',
     name: 'SOTS',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1390,6 +1285,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '../SOFS/index.html',
     alt: 'SOFS',
     name: 'SOFS',
+    type: 'plot',
   },
   {
     shape: 'rect',
@@ -1397,6 +1293,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '02_TimorP_vrms_1.html',
     alt: 'TimorP',
     name: 'TimorP',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1404,6 +1301,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '03_Kim_vrms_1.html',
     alt: 'Kim',
     name: 'Kim',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1411,6 +1309,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '23_Row_vrms_1.html',
     alt: 'Row',
     name: 'Row',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1418,6 +1317,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '04_Pil_vrms_1.html',
     alt: 'Pil',
     name: 'Pil',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1425,6 +1325,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '05_Ning_vrms_1.html',
     alt: 'Ning',
     name: 'Ning',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1432,6 +1333,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '06_Perth_vrms_1.html',
     alt: 'Perth',
     name: 'Perth',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1439,6 +1341,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '07_Esp_vrms_1.html',
     alt: 'Esp',
     name: 'Esp',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1446,6 +1349,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '08_SA_vrms_1.html',
     alt: 'SA',
     name: 'SA',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1453,6 +1357,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '17_Totten_vrms_1.html',
     alt: 'Totten',
     name: 'Totten',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1460,6 +1365,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '19_SOFS_vrms_1.html',
     alt: 'SOFS',
     name: 'SOFS',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1467,6 +1373,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '18_Polynya_vrms_1.html',
     alt: 'Polynya',
     name: 'Polynya',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1474,6 +1381,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '09_ETas_vrms_1.html',
     alt: 'ETas',
     name: 'ETas',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1481,6 +1389,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '22_BMP_vrms_1.html',
     alt: 'BMP',
     name: 'BMP',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1488,6 +1397,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '10_Syd_vrms_1.html',
     alt: 'Syd',
     name: 'Syd',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1495,6 +1405,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '11_Coffs_vrms_1.html',
     alt: 'Coffs',
     name: 'Coffs',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1502,6 +1413,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '12_SEQ_vrms_1.html',
     alt: 'SEQ',
     name: 'SEQ',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1509,6 +1421,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '13_SGBR_vrms_1.html',
     alt: 'SGBR',
     name: 'SGBR',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1516,6 +1429,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '14_SGBR2_vrms_1.html',
     alt: 'SGBR2',
     name: 'SGBR2',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1523,6 +1437,7 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '15_CGBR_vrms_1.html',
     alt: 'CGBR',
     name: 'CGBR',
+    type: 'region',
   },
   {
     shape: 'rect',
@@ -1530,15 +1445,8 @@ const regionArr: CurrentMetersImageDataPoints[] = [
     href: '16_NGBR_vrms_1.html',
     alt: 'NGBR',
     name: 'NGBR',
+    type: 'region',
   },
 ];
-
-export const convertedToGeo = regionArr.map((region) => {
-  const coords = calculateOffsetByCoords(region.coords, currentMetersImgParams);
-  return {
-    ...region,
-    coords,
-  };
-});
 
 export default regionArr;
