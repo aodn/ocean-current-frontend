@@ -49,11 +49,12 @@ const useVisibleRegionPolygons = (
       visibleRegions.unshift(nationalRegion);
     }
 
-    const features: GeoJSON.Feature[] = visibleRegions.map(({ title, coords }) => ({
+    const features: GeoJSON.Feature[] = visibleRegions.map(({ title, code, coords }) => ({
       type: 'Feature',
       id: stringToHash(title),
       properties: {
         name: title,
+        code,
       },
       geometry: {
         type: 'Polygon',

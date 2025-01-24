@@ -8,6 +8,8 @@ import { BoundingBox, GeoJsonPolygon } from '@/types/map';
 import useProductStore from '@/stores/product-store/productStore';
 import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo-utils/geo';
+import useCurrentMeterStore from '@/stores/current-meters-store/currentMeters';
+import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
 import useVisibleRegionPolygons from '../../hooks/useVisibleRegionPolygons';
 
@@ -39,6 +41,11 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
   const { searchParams, updateQueryParamsAndNavigate } = useQueryParams();
   const { region: regionTitleFromUrl } = useProductSearchParam();
   const selectedRegion = useRegionTitle || 'Au';
+  const {
+    property: currentMetersProperty,
+    depth: currentMetersDepth,
+    date: currentMetersDate,
+  } = useCurrentMeterStore();
 
   const { current: map } = useMap();
 
@@ -160,15 +167,29 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
         mapFitBounds(regionBounds);
       }
 
-      const { name: regionName } = getPropertyFromMapFeatures<{ name: string }>(map, e, PRODUCT_REGION_BOX_LAYER_ID, [
-        'name',
-      ]);
+      const { name: regionName, code: regionCode } = getPropertyFromMapFeatures<{ name: string; code: string }>(
+        map,
+        e,
+        PRODUCT_REGION_BOX_LAYER_ID,
+        ['name', 'code'],
+      );
 
       if (regionName) {
         const targetPath = `/product/${baseProductPath}`;
 
-        const dateFromQuery = searchParams.date;
-        const queryObject = dateFromQuery ? { region: regionName } : { region: regionName, date: defaultTargetDate };
+        let queryObject = {};
+        if (baseProductPath === 'current-meters/moored-instrument-array') {
+          queryObject = {
+            date: currentMetersDate === yearOptionsData[0].id ? null : currentMetersDate,
+            region: regionCode,
+            depth: currentMetersDepth,
+            property: currentMetersProperty,
+          };
+        } else {
+          const dateFromQuery = searchParams.date;
+          queryObject = dateFromQuery ? { region: regionName } : { region: regionName, date: defaultTargetDate };
+        }
+
         updateQueryParamsAndNavigate(targetPath, queryObject);
       }
     };
@@ -197,6 +218,9 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
     mapFitBounds,
     ARGO_AS_PRODUCT_POINT_LAYER_ID,
     hoveredRegion,
+    currentMetersDate,
+    currentMetersDepth,
+    currentMetersProperty,
   ]);
 
   return (
