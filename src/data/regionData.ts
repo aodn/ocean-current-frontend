@@ -78,6 +78,29 @@ const localRegions: LocalRegion[] = [
   { code: 'Torres', title: 'Torres', coords: [139.5, 144.5, -13, -9] },
   { code: 'Vanuatu', title: 'Vanuatu', coords: [163, 173, -21, -12] },
   { code: 'XmasI', title: 'Christmas Is.', coords: [100, 110, -12, -5] },
+
+  // Current Meters specific regions
+  { code: '01_Aust', title: 'Australia', coords: [102, 165, -48, -4.5] },
+  { code: '02_TimorP', title: 'TimorP', coords: [122.6, 132.6, -14.5, -7.5] },
+  { code: '03_Kim', title: 'Kim', coords: [119.5, 125.5, -18.5, -13.5] },
+  { code: '23_Row', title: 'Row', coords: [116, 124, -21, -16] },
+  { code: '04_Pil', title: 'Pil', coords: [112.5, 118.5, -22.4, -18] },
+  { code: '05_Ning', title: 'Ning', coords: [111.1, 116.8, -24.2, -19.8] },
+  { code: '06_Perth', title: 'Perth', coords: [113, 118, -34.2, -29.7] },
+  { code: '07_Esp', title: 'Esp', coords: [119.3, 124.7, -36.4, -31.7] },
+  { code: '08_SA', title: 'SA', coords: [133.2, 139, -37.5, -33] },
+  // { code: '17_Totten', title: 'Totten', coords: [] }, // not visible on map
+  { code: '19_SOFS', title: 'SOFS', coords: [138.5, 144.5, -48.5, -44.5] },
+  // { code: '18_Polynya', title: 'Polynya', coords: [] }, // not visible on map
+  { code: '09_ETas', title: 'ETas', coords: [145.3, 151, -44.7, -40.3] },
+  { code: '22_BMP', title: 'BMP', coords: [147, 153.5, -38.5, -34.2] },
+  { code: '10_Syd', title: 'Syd', coords: [148.5, 154.5, -36.5, -31.5] },
+  { code: '11_Coffs', title: 'Coffs', coords: [150.5, 156, -32.5, -28] },
+  { code: '12_SEQ', title: 'SEQ', coords: [151, 157.5, -29.2, -25] },
+  { code: '13_SGBR', title: 'SGBR', coords: [148.7, 154.2, -25.6, -21.3] },
+  { code: '14_SGBR2', title: 'SGBR2', coords: [150.8, 155, -22.5, -19.3] },
+  { code: '15_CGBR', title: 'CGBR', coords: [145, 150, -21.2, -16.5] },
+  { code: '16_NGBR', title: 'NGBR', coords: [142.8, 148.5, -16.7, -12.2] },
 ].map((region) => ({ ...region, scope: RegionScope.Local }) as LocalRegion);
 
 const allRegions: Region[] = [
