@@ -12,14 +12,26 @@ const MapSidebar: React.FC = () => {
   const productIdWithoutSubProduct = useProductId.split('-')[0];
   const selectedDate = dayjs(allDates[selectedDateIndex]?.date).format(formatDate);
 
-  const handleProductChange = (selectedElement: DropdownElement) => {
-    if (selectedElement.id === useProductId) {
+  const handleProductChange = ({ id }: DropdownElement) => {
+    if (id === useProductId) {
       return;
     }
-    setProductId(selectedElement.id);
+    setProductId(id);
 
-    const targetPath = getProductPathWithSubProduct(selectedElement.id);
-    updateQueryParamsAndNavigate(targetPath, { date: selectedDate });
+    let queryToUpdate = { date: selectedDate, region: null } as Record<string, string | null>;
+
+    // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
+    if (id === 'EACMooringArray') {
+      queryToUpdate = { date: selectedDate, region: 'Brisbane' };
+    }
+
+    // set date as null as the default is all time period
+    if (id === 'currentMeters') {
+      queryToUpdate = { date: null, region: null };
+    }
+
+    const targetPath = getProductPathWithSubProduct(id);
+    updateQueryParamsAndNavigate(targetPath, queryToUpdate);
   };
 
   return (
