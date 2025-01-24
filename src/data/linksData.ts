@@ -131,7 +131,7 @@ export const linksData: LinkItem[] = [
         blueIcon: CurrentMetersBlueIcon,
         title: 'Current Meters',
         description: 'Flow measurement devices',
-        url: 'product/current-meters/moored-instrument-array',
+        url: 'map/current-meters/moored-instrument-array',
       },
       {
         id: 'seal-ctd',
@@ -151,7 +151,7 @@ export const linksData: LinkItem[] = [
         blueIcon: EACMooringArrayBlueIcon,
         title: 'EAC Mooring Array',
         description: 'Monitoring station network',
-        url: 'product/eac-mooring-array?region=Brisbane',
+        url: 'map/eac-mooring-array?region=Brisbane',
       },
     ],
   },
