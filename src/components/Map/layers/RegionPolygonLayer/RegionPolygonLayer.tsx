@@ -6,7 +6,7 @@ import { useProductSearchParam, useQueryParams, useThrottle } from '@/hooks';
 import useProductPath from '@/stores/product-store/hooks/useProductPath';
 import { BoundingBox, GeoJsonPolygon } from '@/types/map';
 import useProductStore from '@/stores/product-store/productStore';
-import { getRegionByRegionTitle } from '@/utils/region-utils/region';
+import { getRegionByRegionTitleOrCode } from '@/utils/region-utils/region';
 import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo-utils/geo';
 import useCurrentMeterStore from '@/stores/current-meters-store/currentMeters';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
@@ -41,6 +41,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
   const { searchParams, updateQueryParamsAndNavigate } = useQueryParams();
   const { region: regionTitleFromUrl } = useProductSearchParam();
   const selectedRegion = useRegionTitle || 'Au';
+
   const {
     property: currentMetersProperty,
     depth: currentMetersDepth,
@@ -75,7 +76,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
 
     map.on('load', () => {
       const regionTitle = regionTitleFromUrl || 'Australia/NZ';
-      const region = getRegionByRegionTitle(regionTitle);
+      const region = getRegionByRegionTitleOrCode(regionTitle);
 
       if (region && shouldFitNationalRegionBounds) {
         mapFitBounds(region.coords);
