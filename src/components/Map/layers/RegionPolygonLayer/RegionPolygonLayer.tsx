@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Layer, LngLatBounds, MapMouseEvent, Source, useMap } from 'react-map-gl';
 import dayjs from 'dayjs';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
-import { useProductSearchParam, useQueryParams } from '@/hooks';
+import { useDebounce, useProductSearchParam, useQueryParams } from '@/hooks';
 import useProductPath from '@/stores/product-store/hooks/useProductPath';
 import { BoundingBox, GeoJsonPolygon } from '@/types/map';
 import useProductStore from '@/stores/product-store/productStore';
@@ -68,6 +68,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
   useEffect(() => {
     if (!map) return;
 
+    // set initial map bounds
     setMapBounds(map.getBounds());
 
     const regionTitle = regionTitleFromUrl || 'Australia/NZ';
@@ -78,17 +79,21 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
     }
   }, [map, regionTitleFromUrl, mapFitBounds, shouldFitNationalRegionBounds]);
 
+  const debouncedUpdateMapBounds = useDebounce(() => {
+    if (map) {
+      setMapBounds(map.getBounds());
+    }
+  }, 300);
+
   useEffect(() => {
     if (!map) return;
 
-    const updateMapBounds = () => setMapBounds(map.getBounds());
-
-    map.on('zoom', updateMapBounds);
+    map.on('zoom', debouncedUpdateMapBounds);
 
     return () => {
-      map.off('zoom', updateMapBounds);
+      map.off('zoom', debouncedUpdateMapBounds);
     };
-  }, [map]);
+  }, [map, debouncedUpdateMapBounds]);
 
   const geoJsonData = useVisibleRegionPolygons(
     mapBounds,
