@@ -89,9 +89,9 @@ const localRegions: LocalRegion[] = [
   { code: '06_Perth', title: 'Perth', coords: [113, 118, -34.2, -29.7] },
   { code: '07_Esp', title: 'Esp', coords: [119.3, 124.7, -36.4, -31.7] },
   { code: '08_SA', title: 'SA', coords: [133.2, 139, -37.5, -33] },
-  // { code: '17_Totten', title: 'Totten', coords: [] }, // not visible on map
+  { code: '17_Totten', title: 'Totten', coords: [116, 124, -68, -64.9] },
   { code: '19_SOFS', title: 'SOFS', coords: [138.5, 144.5, -48.5, -44.5] },
-  // { code: '18_Polynya', title: 'Polynya', coords: [] }, // not visible on map
+  { code: '18_Polynya', title: 'Polynya', coords: [139, 147.5, -67.8, -64.7] },
   { code: '09_ETas', title: 'ETas', coords: [145.3, 151, -44.7, -40.3] },
   { code: '22_BMP', title: 'BMP', coords: [147, 153.5, -38.5, -34.2] },
   { code: '10_Syd', title: 'Syd', coords: [148.5, 154.5, -36.5, -31.5] },

@@ -551,9 +551,9 @@ export const productRegionMap: ProductRegionMap = {
       '06_Perth',
       '07_Esp',
       '08_SA',
-      // '17_Totten', // not visible on map
+      '17_Totten',
       '19_SOFS',
-      // '18_Polynya', // not visible on map
+      '18_Polynya',
       '09_ETas',
       '22_BMP',
       '10_Syd',
