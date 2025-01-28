@@ -68,6 +68,8 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
   useEffect(() => {
     if (!map) return;
 
+    setMapBounds(map.getBounds());
+
     const regionTitle = regionTitleFromUrl || 'Australia/NZ';
     const region = getRegionByRegionTitleOrCode(regionTitle);
 
