@@ -11,6 +11,7 @@ import useProductAvailableInRegion from '@/stores/product-store/hooks/useProduct
 import useDateStore from '@/stores/date-store/dateStore';
 import ArrowWithTail from '@/assets/icons/ArrowWithTail';
 import { GeneralText, ProductSidebarText } from '@/constants/textConstant';
+import { CurrentMetersRegion } from '@/types/currentMeters';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
 import SidebarProductDropdown from './SidebarProductDropdown';
@@ -32,7 +33,8 @@ const buildDataSourceUrl = (type: string, date: Dayjs): string => {
 const ProductSideBar: React.FC = () => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
   const { mainProduct, subProduct, subProducts } = useProductConvert();
-  const shouldRenderMiniMap = useProductAvailableInRegion();
+  const isCurrentMeters = mainProduct?.key === 'currentMeters';
+  const shouldRenderMiniMap = useProductAvailableInRegion() || isCurrentMeters;
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isSubProductsCollapsed, setIsSubProductsCollapsed] = useState(false);
   const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
@@ -43,7 +45,6 @@ const ProductSideBar: React.FC = () => {
     return <Loading />;
   }
 
-  const isCurrentMeters = mainProduct.key === 'currentMeters';
   const productInfo = getProductInfoByKey(mainProduct.key);
 
   const dataSources = [
@@ -81,7 +82,12 @@ const ProductSideBar: React.FC = () => {
     }
     setProductId(key);
     const targetPath = `${mainProductPath}/${subProductPath}`;
-    updateQueryParamsAndNavigate(targetPath);
+
+    let currentMetersParams = {};
+    if (isCurrentMeters && subProductPath !== 'moored-instrument-array') {
+      currentMetersParams = { region: CurrentMetersRegion.Aust };
+    }
+    updateQueryParamsAndNavigate(targetPath, currentMetersParams);
   };
 
   const handlePopup = () => {
