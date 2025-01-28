@@ -6,7 +6,7 @@ export type State = {
   property: CurrentMetersProperty;
   depth: CurrentMetersDepth;
   date: string;
-  deploymentPlot: currentMeterMapDataPointNames | '';
+  deploymentPlot: currentMeterMapDataPointNames | null;
 };
 
 export type Actions = {
@@ -16,7 +16,7 @@ export type Actions = {
     setDepth: (depth: CurrentMetersDepth) => void;
     setProperty: (property: CurrentMetersProperty) => void;
     setCurrentMetersDate: (date: string) => void;
-    setDeploymentPlot: (deploymentPlot: currentMeterMapDataPointNames | '') => void;
+    setDeploymentPlot: (deploymentPlot: currentMeterMapDataPointNames | null) => void;
     reset: () => void;
   };
 };
