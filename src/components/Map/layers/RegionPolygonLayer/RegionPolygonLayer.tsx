@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Layer, LngLatBounds, MapMouseEvent, Source, useMap } from 'react-map-gl';
 import dayjs from 'dayjs';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
-import { useProductSearchParam, useQueryParams, useThrottle } from '@/hooks';
+import { useProductSearchParam, useQueryParams } from '@/hooks';
 import useProductPath from '@/stores/product-store/hooks/useProductPath';
 import { BoundingBox, GeoJsonPolygon } from '@/types/map';
 import useProductStore from '@/stores/product-store/productStore';
@@ -56,12 +56,6 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
 
   const defaultTargetDate = dayjs().subtract(2, 'day').format('YYYYMMDD');
 
-  const throttleSetMapBounds = useThrottle((bounds: LngLatBounds | null) => {
-    if (bounds) {
-      setMapBounds(bounds);
-    }
-  }, 300);
-
   const mapFitBounds = useCallback(
     (bounds: BoundingBox, padding: number = 50) => {
       if (map) {
@@ -74,31 +68,22 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
   useEffect(() => {
     if (!map) return;
 
-    map.on('load', () => {
-      const regionTitle = regionTitleFromUrl || 'Australia/NZ';
-      const region = getRegionByRegionTitleOrCode(regionTitle);
+    const regionTitle = regionTitleFromUrl || 'Australia/NZ';
+    const region = getRegionByRegionTitleOrCode(regionTitle);
 
-      if (region && shouldFitNationalRegionBounds) {
-        mapFitBounds(region.coords);
-      }
-    });
+    if (region && shouldFitNationalRegionBounds) {
+      mapFitBounds(region.coords);
+    }
   }, [map, regionTitleFromUrl, mapFitBounds, shouldFitNationalRegionBounds]);
 
   useEffect(() => {
     if (!map) return;
 
-    const handleMapChange = () => {
-      const bounds = map.getBounds();
-      throttleSetMapBounds(bounds);
-    };
-
-    map.on('zoom', handleMapChange);
-    setMapBounds(map.getBounds());
+    map.on('zoom', () => setMapBounds(map.getBounds()));
 
     return () => {
-      map.off('zoom', handleMapChange);
+      map.off('zoom', () => setMapBounds(map.getBounds()));
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
 
   const geoJsonData = useVisibleRegionPolygons(
