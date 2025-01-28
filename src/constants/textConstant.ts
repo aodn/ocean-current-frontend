@@ -33,8 +33,3 @@ export enum News {
   NEWS = 'News',
   ALL_NEWS = 'All news',
 }
-
-export enum CurrentMetersPlotTitle {
-  VELOCITY_VECTOR_PLOTS = 'Layer-average velocity vector scatter plots',
-  DEPTH_TIME_PLOTS = 'Depth-time plots',
-}

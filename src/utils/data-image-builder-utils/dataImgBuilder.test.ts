@@ -7,7 +7,7 @@ import {
   CurrentMetersProperty,
   CurrentMetersRegion,
   CurrentMetersSubproductsKey,
-} from '@/types/currentMeters';
+} from '@/constants/currentMeters';
 import {
   buildProductImageUrl,
   buildArgoImageUrl,

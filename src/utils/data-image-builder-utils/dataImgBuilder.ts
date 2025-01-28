@@ -7,8 +7,8 @@ import {
   CurrentMetersPlotType,
   CurrentMetersProperty,
   CurrentMetersRegion,
-} from '@/types/currentMeters';
-import { currentMeterMapDataPointNames } from '@/data/current-meter/mapDataPoints';
+} from '@/constants/currentMeters';
+import { currentMeterMapDataPointNames } from '@/types/currentMeters';
 
 type ProductId = string;
 type SubProductType = string | undefined | null;

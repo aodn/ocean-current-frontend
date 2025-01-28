@@ -16,7 +16,7 @@ import useCurrentMeterStore, {
 import useProductStore from '@/stores/product-store/productStore';
 import useProductDateFormat from '@/stores/product-store/hooks/useProductDateFormat';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
-import { CurrentMetersSubproductsKey } from '@/types/currentMeters';
+import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
 import DatePagination from '../DatePagination';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 

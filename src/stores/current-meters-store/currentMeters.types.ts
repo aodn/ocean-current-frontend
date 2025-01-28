@@ -1,5 +1,5 @@
-import { currentMeterMapDataPointNames } from '@/data/current-meter/mapDataPoints';
-import { CurrentMetersRegion, CurrentMetersProperty, CurrentMetersDepth } from '@/types/currentMeters';
+import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
+import { currentMeterMapDataPointNames } from '@/types/currentMeters';
 
 export type State = {
   region: CurrentMetersRegion;

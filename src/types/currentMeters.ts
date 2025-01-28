@@ -1,3 +1,5 @@
+import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
+
 export interface CurrentMetersImageDataPoints {
   shape: string | undefined;
   coords: number[];
@@ -8,61 +10,105 @@ export interface CurrentMetersImageDataPoints {
   code?: CurrentMetersRegion;
 }
 
-export enum CurrentMetersSubproductsKey {
-  MOORED_INSTRUMENT_ARRAY = 'currentMeters-mooredInstrumentArray',
-  SHELF = 'currentMeters-shelf',
-  DEEP_ADCP = 'currentMeters-deepADCP',
-  DEEP_ADV = 'currentMeters-deepADV',
-  SOUTHERN_OCEAN = 'currentMeters-southernOcean',
-}
+export type CurrentMetersDeploymentPlotsOptions = {
+  label: currentMeterMapDataPointNames;
+  id: currentMeterMapDataPointNames;
+};
+export type CurrentMetersRegionOptions = {
+  label: string;
+  id: CurrentMetersRegion;
+};
+export type CurrentMetersDepthOptions = {
+  label: string;
+  id: CurrentMetersDepth;
+};
+export type CurrentMetersPropertyOptions = {
+  title: string;
+  id: CurrentMetersProperty;
+};
 
-export enum CurrentMetersRegion {
-  Aust = '01_Aust',
-  TimorP = '02_TimorP',
-  Kim = '03_Kim',
-  Row = '23_Row',
-  Pil = '04_Pil',
-  Ning = '05_Ning',
-  Perth = '06_Perth',
-  Esp = '07_Esp',
-  SA = '08_SA',
-  Totten = '17_Totten',
-  SOFS = '19_SOFS',
-  Polynya = '18_Polynya',
-  ETas = '09_ETas',
-  BMP = '22_BMP',
-  Syd = '10_Syd',
-  Coffs = '11_Coffs',
-  SEQ = '12_SEQ',
-  SGBR = '13_SGBR',
-  SGBR2 = '14_SGBR2',
-  CGBR = '15_CGBR',
-  NGBR = '16_NGBR',
-}
+export type currentMeterMapDataPointNames =
+  | 'BMP070'
+  | 'BMP090'
+  | 'BMP120'
+  | 'CAM050'
+  | 'CAM100'
+  | 'CH070'
+  | 'CH100'
+  | 'DARBGF'
+  | 'EAC0500'
+  | 'EAC1520'
+  | 'EAC2000'
+  | 'EAC3200'
+  | 'EAC4200'
+  | 'EAC4700'
+  | 'EAC4800'
+  | 'GBRCCH'
+  | 'GBRELR'
+  | 'GBRHIN'
+  | 'GBRHIS'
+  | 'GBRLSH'
+  | 'GBRLSL'
+  | 'GBRMYR'
+  | 'GBROTE'
+  | 'GBRPPS'
+  | 'ITFFTB'
+  | 'ITFJBG'
+  | 'ITFMHB'
+  | 'ITFOMB'
+  | 'ITFTIN'
+  | 'ITFTIS'
+  | 'ITFTNS'
+  | 'ITFTSL'
+  | 'KIM050'
+  | 'KIM100'
+  | 'KIM200'
+  | 'KIM400'
+  | 'NRSDAR'
+  | 'NRSESP'
+  | 'NRSKAI'
+  | 'NRSMAI'
+  | 'NRSNSI'
+  | 'NRSNIN'
+  | 'NRSROT'
+  | 'NRSYON'
+  | 'NWSBAR'
+  | 'NWSBRW'
+  | 'NWSLYN'
+  | 'NWSROW'
+  | 'ORS065'
+  | 'PH100'
+  | 'PIL050'
+  | 'PIL100'
+  | 'PIL200'
+  | 'POLYNYA1'
+  | 'POLYNYA2'
+  | 'SAM1DS'
+  | 'SAM2CP'
+  | 'SAM3MS'
+  | 'SAM4CY'
+  | 'SAM5CB'
+  | 'SAM6IS'
+  | 'SAM7DS'
+  | 'SAM8SG'
+  | 'SEQ200'
+  | 'SEQ400'
+  | 'SOFS'
+  | 'SOTS'
+  | 'SYD100'
+  | 'SYD140'
+  | 'TAN100'
+  | 'TOTTEN1'
+  | 'TOTTEN2'
+  | 'TOTTEN3'
+  | 'WACA20'
+  | 'WATR04'
+  | 'WATR10'
+  | 'WATR15'
+  | 'WATR20'
+  | 'WATR50';
 
-export enum CurrentMetersProperty {
-  vmean = 'vmean',
-  vrms = 'vrms',
-  M2 = 'M2',
-  S2 = 'S2',
-  N2 = 'N2',
-  O1 = 'O1',
-  K1 = 'K1',
-}
-
-export enum CurrentMetersDepth {
-  ONE = '1',
-  TWO = '2',
-  THREE = '3',
-  FOUR = '4',
-  FIVE = '5',
-  SIX = '6',
-  SEVEN = '7',
-  EIGHT = '8',
-  NINE = '9',
-}
-
-export enum CurrentMetersPlotType {
-  VELOCITY_VECTOR = 'xyz',
-  DEPTH_TIME = 'zt',
+export interface CurrentMeterMapDataPoints {
+  name: currentMeterMapDataPointNames;
+  coords: [number, number];
 }

@@ -1,4 +1,4 @@
-import { CurrentMetersRegion } from '@/types/currentMeters';
+import { CurrentMetersRegion } from '@/constants/currentMeters.ts';
 import aust from './aust';
 import timorP from './timorP';
 import kim from './kim';
