@@ -81,10 +81,12 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
   useEffect(() => {
     if (!map) return;
 
-    map.on('zoom', () => setMapBounds(map.getBounds()));
+    const updateMapBounds = () => setMapBounds(map.getBounds());
+
+    map.on('zoom', updateMapBounds);
 
     return () => {
-      map.off('zoom', () => setMapBounds(map.getBounds()));
+      map.off('zoom', updateMapBounds);
     };
   }, [map]);
 
