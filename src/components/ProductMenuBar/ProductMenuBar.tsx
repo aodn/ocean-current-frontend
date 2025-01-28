@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useDateRange } from '@/hooks';
+import { useDateRange, useQueryParams } from '@/hooks';
 import { Dropdown, ToggleButton } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
 import { ProductMenubarText } from '@/constants/textConstant';
@@ -9,6 +9,7 @@ import ResetIcon from '@/assets/icons/reset-icon.svg';
 import VideoCreation from '@/components/VideoCreation/VideoCreation';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import useCurrentMeterStore, {
+  initialState,
   resetCurrentMeterStore,
   setCurrentMetersDate,
 } from '@/stores/current-meters-store/currentMeters';
@@ -21,6 +22,7 @@ import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
 const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView = false }) => {
   const { disableVideoCreation, resetDateRange } = useDateRange();
+  const { updateQueryParamsAndNavigate } = useQueryParams();
 
   const [copyButtonText, setCopyButtonText] = useState<string>(ProductMenubarText.SHARE);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -58,8 +60,12 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
   };
 
   const handleReset = () => {
-    if (isCurrentMeters) resetCurrentMeterStore();
-    resetDateRange();
+    if (isCurrentMeters) {
+      resetCurrentMeterStore();
+      updateQueryParamsAndNavigate('current-meters/moored-instrument-array', initialState);
+    } else {
+      resetDateRange();
+    }
   };
 
   const handleCurrentMetersDateChange = (id: string) => {
