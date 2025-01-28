@@ -5,6 +5,7 @@ export interface CurrentMetersImageDataPoints {
   alt: string | undefined;
   name: string | undefined;
   type: 'text' | 'region' | 'plot';
+  code?: CurrentMetersRegion;
 }
 
 export enum CurrentMetersSubproductsKey {

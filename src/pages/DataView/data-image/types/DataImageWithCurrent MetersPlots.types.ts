@@ -2,5 +2,5 @@ import { currentMeterMapDataPointNames } from '@/data/current-meter/mapDataPoint
 
 export interface DataImageWithCurrentMetersPlotsProps {
   subProduct: string;
-  deploymentPlot: '' | currentMeterMapDataPointNames;
+  deploymentPlot: null | currentMeterMapDataPointNames;
 }

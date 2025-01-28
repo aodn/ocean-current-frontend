@@ -172,6 +172,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
             region: regionCode,
             depth: currentMetersDepth,
             property: currentMetersProperty,
+            deploymentPlot: null,
           };
         } else {
           const dateFromQuery = searchParams.date;
