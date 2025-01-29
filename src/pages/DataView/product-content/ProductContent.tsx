@@ -196,6 +196,7 @@ const ProductContent: React.FC = () => {
     ) {
       return (
         <DataImageWithCurrentMetersMap
+          mainProduct={mainProduct}
           src={chooseImg()!}
           date={currentMetersDate}
           productId={useProductId}

@@ -1,59 +1,72 @@
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
-// import { getArgoProfileCyclesByWmoId } from '@/services/argo';
-// import { findMostRecentDateBefore } from '@/utils/date-utils/date';
-// import { calculateImageScales } from '@/utils/general-utils/general';
-// import { ArgoTagMapArea } from '@/types/argo';
-// import { convertCoordsBasedOnImageScale } from '@/utils/argo-utils/argoTag';
+import { useSearchParams } from 'react-router-dom';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
-import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
-// import { useImageArgoTags } from '@/services/hooks';
-// import { currentMetersRegionAreasMap } from '@/data/current-meter/region-list';
-import { DataImageWithCurrentMetersMapProps } from './types/DataImageWithCurrentMetersMap.types';
+import { currentMetersRegionAreasMap } from '@/data/current-meter/region-list';
+import { scaleImageMapAreas } from '@/utils/general-utils/general';
+import { setRegion, setDeploymentPlot } from '@/stores/current-meters-store/currentMeters';
+import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
+import { CurrentMeterMapDataPointNames, CurrentMetersImageDataPoints } from '@/types/currentMeters';
+import { Product } from '@/types/product';
+
+interface DataImageWithCurrentMetersMapProps {
+  mainProduct: Product | null;
+  src: string;
+  productId: string;
+  regionCode: string;
+  date: string;
+}
 
 const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps> = ({
+  mainProduct,
   src,
   productId,
   regionCode,
   date,
 }) => {
-  const dateFormatted = dayjs(date).format('YYYYMMDD');
+  const regionArr = currentMetersRegionAreasMap[regionCode as CurrentMetersRegion];
+  const [_, setSearchParams] = useSearchParams();
   const imgRef = useRef<HTMLImageElement | null>(null);
-  // const [coords, setCoords] = useState<ArgoTagMapArea[]>([]);
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
-  const { mainProduct } = useProductConvert();
-  const alt = `${productId} data in ${regionCode} at ${dateFormatted}`;
+  const [areas, setAreas] = useState<CurrentMetersImageDataPoints[]>(regionArr);
 
-  // const regionArr = currentMetersRegionAreasMap[regionCode];
+  const handleAreaClick = (area: CurrentMetersImageDataPoints) => {
+    const { type, code, name } = area;
+    if (type === 'region' && code) {
+      setRegion(code);
+      setSearchParams({
+        property: CurrentMetersProperty.vrms,
+        depth: CurrentMetersDepth.ONE,
+        region: code,
+        date: date,
+        deploymentPlot: '',
+      });
+    }
 
-  // const coords = regionArr.map((item) => ({
-  //   shape: 'rect' as const,
-  //   coords: item.coords,
-  //   title: item.title,
-  //   href: `/product/current-meters?plot=1&point=${item.name}`,
-  // }));
+    if (type === 'plot' || type === 'text') {
+      setDeploymentPlot(name as CurrentMeterMapDataPointNames);
+      setSearchParams({
+        deploymentPlot: name,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (imgRef.current) {
+      const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
+
+      const convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, regionArr as []);
+
+      setAreas(convertedCoords);
+    }
+  }, [regionArr]);
 
   useEffect(() => {
     setImgLoadError(null);
   }, [src]);
 
-  // const handleCircleClick = async (area: ArgoTagMapArea) => {
-  //   const { data } = await getArgoProfileCyclesByWmoId(area.wmoId.toString());
-  //   const dates = data.map((item) => item.date);
-  //   const mostRecentDate = findMostRecentDateBefore(dates, dateFormatted);
-  //   const mostRecentItem = data.find((item) => item.date === mostRecentDate);
-
-  //   if (!mostRecentItem) {
-  //     return;
-  //   }
-
-  //   const newPath = `/product/argo?wmoid=${area.wmoId}&cycle=${mostRecentItem.cycle}&depth=0&date=${mostRecentDate}`;
-
-  //   window.open(newPath, '_blank', 'noopener,noreferrer');
-  // };
-
   if (imgLoadError) {
-    return <ErrorImage product={mainProduct!} date={date} />;
+    return <ErrorImage product={mainProduct!} date={dayjs(date)} />;
   }
 
   return (
@@ -61,26 +74,26 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
       <img
         ref={imgRef}
         src={src}
-        alt={alt}
-        useMap="#argo-tag-map"
+        alt={`${productId} data`}
+        useMap="#current-meters-map"
         className="max-h-[80vh] select-none object-contain"
         onError={() => {
           setImgLoadError('Image not available');
         }}
       />
-      {/* <map name="argo-tag-map">
-        {coords.map((area, index) => (
+      <map name="current-meters-map">
+        {areas.map((area, index) => (
           <area
             key={index}
+            className="cursor-pointer"
             shape={area.shape}
             coords={area.coords.join(',')}
-            alt={area.alt || `Area ${index + 1}`}
-            onClick={() => handleCircleClick(area)}
+            alt={`${area.type === 'region' ? 'Region' : 'Plot'} ${area.name}`}
+            onClick={() => handleAreaClick(area)}
             aria-hidden="true"
-            className="cursor-pointer"
           />
         ))}
-      </map> */}
+      </map>
     </div>
   );
 };
