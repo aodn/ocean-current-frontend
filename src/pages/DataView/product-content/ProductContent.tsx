@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, useSearchParams } from 'react-router-dom';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import {
   buildProductImageUrl,
@@ -12,7 +12,7 @@ import {
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
-import { getRegionByRegionTitle } from '@/utils/region-utils/region';
+import { getRegionByRegionTitleOrCode } from '@/utils/region-utils/region';
 import { RegionScope } from '@/constants/region';
 import { Loading } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
@@ -23,7 +23,7 @@ import { VideoPlayerOutletContext } from '@/types/router';
 import { checkProductHasArgoTags } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useCurrentMeterStore from '@/stores/current-meters-store/currentMeters';
-import { CurrentMetersSubproductsKey } from '@/types/currentMeters';
+import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
 import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
 import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
 import DataImageWithCurrentMetersPlots from '../data-image/DataImageWithCurrentMetersPlots';
@@ -46,9 +46,10 @@ const ProductContent: React.FC = () => {
     date: currentMetersDate,
     deploymentPlot,
   } = useCurrentMeterStore();
+  const [searchParams, _] = useSearchParams();
 
   // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
-  const region = getRegionByRegionTitle(isEACMooringArray ? 'Brisbane' : useRegionTitle);
+  const region = getRegionByRegionTitleOrCode(isEACMooringArray ? 'Brisbane' : useRegionTitle);
   const regionScope = region?.scope || RegionScope.Au;
   const targetPathRegion = getTargetRegionScopePath(regionScope);
   const regionPath = region?.code || 'Au';
@@ -186,11 +187,17 @@ const ProductContent: React.FC = () => {
   }
 
   if (isCurrentMeters) {
-    if (subProduct?.key === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY) {
+    const hasSelectedPlotFromUrl = searchParams.get('deploymentPlot') && searchParams.get('deploymentPlot') !== '';
+
+    if (
+      subProduct?.key === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY &&
+      deploymentPlot === '' &&
+      !hasSelectedPlotFromUrl
+    ) {
       return (
         <DataImageWithCurrentMetersMap
           src={chooseImg()!}
-          date={useDate}
+          date={currentMetersDate}
           productId={useProductId}
           regionCode={currentMetersRegion}
         />
