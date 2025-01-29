@@ -158,7 +158,7 @@ const CurrentMetersOptions: React.FC<CurrentMetersOptionsProp> = ({ subProduct }
         <h3 className="py-2 text-lg font-medium text-imos-grey">{ProductSidebarText.DEPLOYMENT_PLOT}</h3>
         <Dropdown
           elements={deploymentPlotOptions}
-          selectedId={deploymentPlot ?? 'Select'}
+          selectedId={deploymentPlot ?? ''}
           showIcons={false}
           onChange={(elem) => handleDeploymentPlotChange(elem.id)}
           smallDropdown
