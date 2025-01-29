@@ -11,7 +11,8 @@ import useProductAvailableInRegion from '@/stores/product-store/hooks/useProduct
 import useDateStore from '@/stores/date-store/dateStore';
 import ArrowWithTail from '@/assets/icons/ArrowWithTail';
 import { GeneralText, ProductSidebarText } from '@/constants/textConstant';
-import { CurrentMetersRegion } from '@/types/currentMeters';
+import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
+import { setCurrentMetersDate, setDepth, setProperty, setRegion } from '@/stores/current-meters-store/currentMeters';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
 import SidebarProductDropdown from './SidebarProductDropdown';
@@ -83,11 +84,20 @@ const ProductSideBar: React.FC = () => {
     setProductId(key);
     const targetPath = `${mainProductPath}/${subProductPath}`;
 
-    let currentMetersParams = {};
+    let updateParam = {};
     if (isCurrentMeters && subProductPath !== 'moored-instrument-array') {
-      currentMetersParams = { region: CurrentMetersRegion.Aust };
+      setRegion(CurrentMetersRegion.Aust);
+      setDepth(CurrentMetersDepth.ONE);
+      setProperty(CurrentMetersProperty.vrms);
+      setCurrentMetersDate('0000');
+      updateParam = {
+        region: CurrentMetersRegion.Aust,
+        property: CurrentMetersProperty.vrms,
+        date: '0000',
+        depth: CurrentMetersDepth.ONE,
+      };
     }
-    updateQueryParamsAndNavigate(targetPath, currentMetersParams);
+    updateQueryParamsAndNavigate(targetPath, updateParam);
   };
 
   const handlePopup = () => {
@@ -194,7 +204,7 @@ const ProductSideBar: React.FC = () => {
         )}
 
         {isCurrentMeters ? (
-          <CurrentMetersOptions />
+          <CurrentMetersOptions subProduct={subProduct} />
         ) : (
           <div className="px-4">
             <div
