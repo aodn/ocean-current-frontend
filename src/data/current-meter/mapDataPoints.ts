@@ -20,7 +20,7 @@ const timorP: CurrentMetersMapDataPoints[] = [
 const kim: CurrentMetersMapDataPoints[] = [
   { name: 'KIM050', coords: [121.59, -16.39] },
   { name: 'KIM100', coords: [121.3, -15.68] },
-  { name: 'KIM200', coords: [121.24, -155.53] },
+  { name: 'KIM200', coords: [121.24, -15.53] },
   { name: 'KIM400', coords: [121.11, -15.22] },
   { name: 'NWSBRW', coords: [123.16, -14.24] },
   { name: 'CAM050', coords: [123.8, -14.85] },
@@ -37,7 +37,7 @@ const pil: CurrentMetersMapDataPoints[] = [
 ];
 
 const ning: CurrentMetersMapDataPoints[] = [
-  { name: 'TAN100', coords: [139.91, -21.8] },
+  { name: 'TAN100', coords: [113, -21.75] },
   { name: 'NRSNIN', coords: [113.95, -21.8] },
 ];
 
@@ -72,9 +72,8 @@ const totten: CurrentMetersMapDataPoints[] = [
 ];
 
 const sofs: CurrentMetersMapDataPoints[] = [
-  // * The coords are same and it's very hard to see them on the map, so offset added *
-  { name: 'SOFS', coords: [142.07 - 0.5, -46.67 + 0.15] },
-  { name: 'SOTS', coords: [142.07, -46.67] },
+  { name: 'SOTS', coords: [141, -46.97] },
+  { name: 'SOFS', coords: [142.07, -46.67] },
 ];
 
 const polynya: CurrentMetersMapDataPoints[] = [
@@ -103,7 +102,7 @@ const coffs: CurrentMetersMapDataPoints[] = [
 ];
 
 const seq: CurrentMetersMapDataPoints[] = [
-  { name: 'NRSNIN', coords: [153.56, -27.34] },
+  { name: 'NRSNSI', coords: [153.56, -27.34] },
   { name: 'SEQ200', coords: [153.77, -27.34] },
   { name: 'SEQ400', coords: [153.88, -27.33] },
   { name: 'EAC0500', coords: [153.9, -27.33] },
@@ -159,4 +158,4 @@ export const currentMetersMapDataPoints: Record<CurrentMetersRegion, CurrentMete
   [CurrentMetersRegion.NGBR]: ngbr,
 };
 
-export const CurrentMetersMapDataPointsFlat = Object.values(currentMetersMapDataPoints).flat();
+export const currentMetersMapDataPointsFlat = Object.values(currentMetersMapDataPoints).flat();
