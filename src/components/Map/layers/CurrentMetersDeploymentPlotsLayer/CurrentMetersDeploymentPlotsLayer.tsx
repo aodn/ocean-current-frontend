@@ -14,7 +14,7 @@ const SQUARE_SIZE_THRESHOLD_ZOOM = 5;
 
 const CUSTOM_SQUARE_SYMBOL_IMAGE_NAME = 'outlined-square';
 
-const CurrentMeterRegionPolygonLayer: React.FC = () => {
+const CurrentMetersDeploymentPlotsLayer: React.FC = () => {
   const { CURRENT_METER_ALL_REGIONS_SOURCE_ID } = mapboxSourceIds;
 
   const regionsMapFeatures = currentMeterMapDataPointsFlat.map((region) => {
@@ -99,4 +99,4 @@ const CurrentMeterRegionPolygonLayer: React.FC = () => {
   );
 };
 
-export default CurrentMeterRegionPolygonLayer;
+export default CurrentMetersDeploymentPlotsLayer;
