@@ -111,4 +111,5 @@ export type CurrentMetersMapDataPointNames =
 export interface CurrentMetersMapDataPoints {
   name: CurrentMetersMapDataPointNames;
   coords: [number, number];
+  region: CurrentMetersRegion;
 }
