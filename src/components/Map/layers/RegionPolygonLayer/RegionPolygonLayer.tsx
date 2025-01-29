@@ -8,7 +8,7 @@ import { BoundingBox, GeoJsonPolygon } from '@/types/map';
 import useProductStore from '@/stores/product-store/productStore';
 import { getRegionByRegionTitleOrCode } from '@/utils/region-utils/region';
 import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo-utils/geo';
-import useCurrentMeterStore from '@/stores/current-meters-store/currentMeters';
+import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
 import useVisibleRegionPolygons from '../../hooks/useVisibleRegionPolygons';
@@ -46,7 +46,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
     property: currentMetersProperty,
     depth: currentMetersDepth,
     date: currentMetersDate,
-  } = useCurrentMeterStore();
+  } = useCurrentMetersStore();
 
   const { current: map } = useMap();
 

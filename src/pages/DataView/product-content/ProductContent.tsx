@@ -22,7 +22,7 @@ import { getArgoProfileCyclesByWmoId } from '@/services/argo';
 import { VideoPlayerOutletContext } from '@/types/router';
 import { checkProductHasArgoTags } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
-import useCurrentMeterStore from '@/stores/current-meters-store/currentMeters';
+import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
 import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
 import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
 import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
@@ -45,7 +45,7 @@ const ProductContent: React.FC = () => {
     region: currentMetersRegion,
     date: currentMetersDate,
     deploymentPlot,
-  } = useCurrentMeterStore();
+  } = useCurrentMetersStore();
   const [searchParams, _] = useSearchParams();
 
   // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region

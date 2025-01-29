@@ -8,9 +8,9 @@ import ShareIcon from '@/assets/icons/share-icon.svg';
 import ResetIcon from '@/assets/icons/reset-icon.svg';
 import VideoCreation from '@/components/VideoCreation/VideoCreation';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import useCurrentMeterStore, {
+import useCurrentMetersStore, {
   initialState,
-  resetCurrentMeterStore,
+  resetCurrentMetersStore,
   setCurrentMetersDate,
 } from '@/stores/current-meters-store/currentMeters';
 import useProductStore from '@/stores/product-store/productStore';
@@ -27,7 +27,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
   const [copyButtonText, setCopyButtonText] = useState<string>(ProductMenubarText.SHARE);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [showVideo, setLocalShowVideo] = useState(false);
-  const { date: currentMetersDate, property, depth, region, deploymentPlot } = useCurrentMeterStore();
+  const { date: currentMetersDate, property, depth, region, deploymentPlot } = useCurrentMetersStore();
   const [_, setSearchParams] = useSearchParams();
   const { isArgo, isCurrentMeters, isEACMooringArray } = useProductCheck();
   const shouldDisableOption = disableVideoCreation() || isArgo || isMapView || isCurrentMeters || isEACMooringArray;
@@ -61,7 +61,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
 
   const handleReset = () => {
     if (isCurrentMeters) {
-      resetCurrentMeterStore();
+      resetCurrentMetersStore();
       updateQueryParamsAndNavigate('current-meters/moored-instrument-array', initialState);
     } else {
       resetDateRange();

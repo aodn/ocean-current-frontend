@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Button, Dropdown } from '@/components/Shared';
-import useCurrentMeterStore, {
+import useCurrentMetersStore, {
   setDepth,
   setProperty,
   setRegion,
   setDeploymentPlot,
   setCurrentMetersDate,
 } from '@/stores/current-meters-store/currentMeters';
-import { CurrentMeterMapDataPointNames } from '@/types/currentMeters';
+import { CurrentMetersMapDataPointNames } from '@/types/currentMeters';
 import { ProductSidebarText } from '@/constants/textConstant';
 import {
   deepADCPDeploymentPlotsData,
@@ -34,7 +34,7 @@ interface CurrentMetersOptionsProp {
 }
 
 const CurrentMetersOptions: React.FC<CurrentMetersOptionsProp> = ({ subProduct }) => {
-  const { property, depth, region, date, deploymentPlot } = useCurrentMeterStore();
+  const { property, depth, region, date, deploymentPlot } = useCurrentMetersStore();
   const [searchParams, setSearchParams] = useSearchParams();
   const isMooredInstrumentArraySubProduct = subProduct?.key === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY;
 
@@ -82,7 +82,7 @@ const CurrentMetersOptions: React.FC<CurrentMetersOptionsProp> = ({ subProduct }
     const urlDepth = setDefaultValue('depth', CurrentMetersDepth.ONE) as CurrentMetersDepth;
     const urlRegion = setDefaultValue('region', CurrentMetersRegion.Aust) as CurrentMetersRegion;
     const urlDate = setDefaultValue('date', '0000') as string;
-    const urlDeploymentPlot = setDefaultValue('deploymentPlot', '') as CurrentMeterMapDataPointNames | '';
+    const urlDeploymentPlot = setDefaultValue('deploymentPlot', '') as CurrentMetersMapDataPointNames | '';
 
     setProperty(urlProperty);
     setDepth(urlDepth);
@@ -121,7 +121,7 @@ const CurrentMetersOptions: React.FC<CurrentMetersOptionsProp> = ({ subProduct }
       setCurrentMetersDate('0000');
     }
 
-    setDeploymentPlot(id as CurrentMeterMapDataPointNames);
+    setDeploymentPlot(id as CurrentMetersMapDataPointNames);
     setSearchParams({
       ...stdParams,
       deploymentPlot: id,

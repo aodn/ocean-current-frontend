@@ -6,7 +6,7 @@ import { currentMetersRegionAreasMap } from '@/data/current-meter/region-list';
 import { scaleImageMapAreas } from '@/utils/general-utils/general';
 import { setRegion, setDeploymentPlot } from '@/stores/current-meters-store/currentMeters';
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
-import { CurrentMeterMapDataPointNames, CurrentMetersImageDataPoints } from '@/types/currentMeters';
+import { CurrentMetersMapDataPointNames, CurrentMetersImageDataPoints } from '@/types/currentMeters';
 import { Product } from '@/types/product';
 
 interface DataImageWithCurrentMetersMapProps {
@@ -44,7 +44,7 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
     }
 
     if (type === 'plot' || type === 'text') {
-      setDeploymentPlot(name as CurrentMeterMapDataPointNames);
+      setDeploymentPlot(name as CurrentMetersMapDataPointNames);
       setSearchParams({
         deploymentPlot: name,
       });

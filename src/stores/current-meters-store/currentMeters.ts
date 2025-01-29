@@ -12,31 +12,31 @@ const initialState: CurrentMetersStoreState = {
   deploymentPlot: '',
 };
 
-const useCurrentMeterStore = create<CurrentMetersStoreState & CurrentMetersStoreActions>()(
+const useCurrentMetersStore = create<CurrentMetersStoreState & CurrentMetersStoreActions>()(
   devtools((set) => ({
     ...initialState,
     actions: {
-      setSelectedCurrentMeter: (data) => set(data, false, 'setSelectedCurrentMeter'),
+      setSelectedCurrentMeters: (data) => set(data, false, 'setSelectedCurrentMeters'),
       setRegion: (region) => set({ region }, false, 'setRegion'),
       setDepth: (depth) => set({ depth }, false, 'setDepth'),
       setProperty: (property) => set({ property }, false, 'setProperty'),
       setCurrentMetersDate: (date) => set({ date }, false, 'setCurrentMetersDate'),
       setDeploymentPlot: (deploymentPlot) => set({ deploymentPlot }, false, 'setDeploymentPlot'),
-      reset: () => set(initialState, false, 'resetCurrentMeterStore'),
+      reset: () => set(initialState, false, 'resetCurrentMetersStore'),
     },
   })),
 );
 
 export const {
-  setSelectedCurrentMeter,
+  setSelectedCurrentMeters,
   setRegion,
   setDepth,
   setProperty,
   setDeploymentPlot,
   setCurrentMetersDate,
-  reset: resetCurrentMeterStore,
-} = useCurrentMeterStore.getState().actions;
+  reset: resetCurrentMetersStore,
+} = useCurrentMetersStore.getState().actions;
 
-export { useCurrentMeterStore, initialState };
+export { useCurrentMetersStore, initialState };
 
-export default useCurrentMeterStore;
+export default useCurrentMetersStore;

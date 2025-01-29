@@ -11,8 +11,8 @@ export interface CurrentMetersImageDataPoints {
 }
 
 export type CurrentMetersDeploymentPlotsOptions = {
-  label: CurrentMeterMapDataPointNames;
-  id: CurrentMeterMapDataPointNames;
+  label: CurrentMetersMapDataPointNames;
+  id: CurrentMetersMapDataPointNames;
 };
 export type CurrentMetersRegionOptions = {
   label: string;
@@ -27,7 +27,7 @@ export type CurrentMetersPropertyOptions = {
   id: CurrentMetersProperty;
 };
 
-export type CurrentMeterMapDataPointNames =
+export type CurrentMetersMapDataPointNames =
   | 'BMP070'
   | 'BMP090'
   | 'BMP120'
@@ -108,7 +108,7 @@ export type CurrentMeterMapDataPointNames =
   | 'WATR20'
   | 'WATR50';
 
-export interface CurrentMeterMapDataPoints {
-  name: CurrentMeterMapDataPointNames;
+export interface CurrentMetersMapDataPoints {
+  name: CurrentMetersMapDataPointNames;
   coords: [number, number];
 }
