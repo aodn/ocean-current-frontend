@@ -9,7 +9,7 @@ const initialState: State = {
   property: CurrentMetersProperty.vrms,
   depth: CurrentMetersDepth.ONE,
   date: yearOptionsData[0].id, // allTime
-  deploymentPlot: null,
+  deploymentPlot: '',
 };
 
 const useCurrentMeterStore = create<State & Actions>()(

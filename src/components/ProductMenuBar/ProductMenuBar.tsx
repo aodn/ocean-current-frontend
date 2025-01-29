@@ -71,9 +71,9 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
   const handleCurrentMetersDateChange = (id: string) => {
     setCurrentMetersDate(id as string);
     if (isMapView) {
-      setSearchParams({ date: id ?? '' });
+      setSearchParams({ date: id });
     } else {
-      setSearchParams({ property, depth, region, date: id ?? '' });
+      setSearchParams({ property, depth, region, deploymentPlot, date: id });
     }
   };
 
