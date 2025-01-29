@@ -1,7 +1,12 @@
-import { CurrentMetersProperty, CurrentMetersDepth, CurrentMetersRegion } from '@/types/currentMeters';
-import { currentMeterMapDataPointNames } from './mapDataPoints';
+import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
+import {
+  CurrentMetersDeploymentPlotsOptions,
+  CurrentMetersDepthOptions,
+  CurrentMetersPropertyOptions,
+  CurrentMetersRegionOptions,
+} from '@/types/currentMeters';
 
-export const regionsOptionsData = [
+export const regionsOptionsData: CurrentMetersRegionOptions[] = [
   { label: 'Aust', id: CurrentMetersRegion.Aust },
   { label: 'TimorP', id: CurrentMetersRegion.TimorP },
   { label: 'Kim', id: CurrentMetersRegion.Kim },
@@ -25,7 +30,7 @@ export const regionsOptionsData = [
   { label: 'NGBR', id: CurrentMetersRegion.NGBR },
 ];
 
-export const depthOptionsData = [
+export const depthOptionsData: CurrentMetersDepthOptions[] = [
   { label: '0-4800m', id: CurrentMetersDepth.ONE },
   { label: '0-30m', id: CurrentMetersDepth.TWO },
   { label: '30-80m', id: CurrentMetersDepth.THREE },
@@ -37,7 +42,7 @@ export const depthOptionsData = [
   { label: '2200-4800m', id: CurrentMetersDepth.NINE },
 ];
 
-export const propertyOptionsData = [
+export const propertyOptionsData: CurrentMetersPropertyOptions[] = [
   { title: 'vrms', id: CurrentMetersProperty.vrms },
   { title: 'vmean', id: CurrentMetersProperty.vmean },
   { title: 'M2', id: CurrentMetersProperty.M2 },
@@ -71,7 +76,7 @@ export const yearOptionsData = [
   { label: '2025', id: '2025' },
 ];
 
-export const shelfDeploymentPlotsData: { label: currentMeterMapDataPointNames; id: currentMeterMapDataPointNames }[] = [
+export const shelfDeploymentPlotsData: CurrentMetersDeploymentPlotsOptions[] = [
   { label: 'GBRLSL', id: 'GBRLSL' },
   { label: 'GBRLSH', id: 'GBRLSH' },
   { label: 'GBRPPS', id: 'GBRPPS' },
@@ -135,10 +140,7 @@ export const shelfDeploymentPlotsData: { label: currentMeterMapDataPointNames; i
   { label: 'NRSDAR', id: 'NRSDAR' },
 ];
 
-export const deepADCPDeploymentPlotsData: {
-  label: currentMeterMapDataPointNames;
-  id: currentMeterMapDataPointNames;
-}[] = [
+export const deepADCPDeploymentPlotsData: CurrentMetersDeploymentPlotsOptions[] = [
   { label: 'ITFTNS', id: 'ITFTNS' },
   { label: 'ITFTSL', id: 'ITFTSL' },
   { label: 'ITFTIN', id: 'ITFTIN' },
@@ -152,25 +154,21 @@ export const deepADCPDeploymentPlotsData: {
   { label: 'EAC4800', id: 'EAC4800' },
 ];
 
-export const deepADVDeploymentPlotsData: { label: currentMeterMapDataPointNames; id: currentMeterMapDataPointNames }[] =
-  [
-    { label: 'ITFTNS', id: 'ITFTNS' },
-    { label: 'ITFTSL', id: 'ITFTSL' },
-    { label: 'ITFTIN', id: 'ITFTIN' },
-    { label: 'ITFOMB', id: 'ITFOMB' },
-    { label: 'EAC0500', id: 'EAC0500' },
-    { label: 'EAC1520', id: 'EAC1520' },
-    { label: 'EAC2000', id: 'EAC2000' },
-    { label: 'EAC3200', id: 'EAC3200' },
-    { label: 'EAC4200', id: 'EAC4200' },
-    { label: 'EAC4700', id: 'EAC4700' },
-    { label: 'EAC4800', id: 'EAC4800' },
-  ];
+export const deepADVDeploymentPlotsData: CurrentMetersDeploymentPlotsOptions[] = [
+  { label: 'ITFTNS', id: 'ITFTNS' },
+  { label: 'ITFTSL', id: 'ITFTSL' },
+  { label: 'ITFTIN', id: 'ITFTIN' },
+  { label: 'ITFOMB', id: 'ITFOMB' },
+  { label: 'EAC0500', id: 'EAC0500' },
+  { label: 'EAC1520', id: 'EAC1520' },
+  { label: 'EAC2000', id: 'EAC2000' },
+  { label: 'EAC3200', id: 'EAC3200' },
+  { label: 'EAC4200', id: 'EAC4200' },
+  { label: 'EAC4700', id: 'EAC4700' },
+  { label: 'EAC4800', id: 'EAC4800' },
+];
 
-export const southernOceanDeploymentPlotsData: {
-  label: currentMeterMapDataPointNames;
-  id: currentMeterMapDataPointNames;
-}[] = [
+export const southernOceanDeploymentPlotsData: CurrentMetersDeploymentPlotsOptions[] = [
   { label: 'SOTS', id: 'SOTS' },
   { label: 'SOFS', id: 'SOFS' },
   { label: 'POLYNYA1', id: 'POLYNYA1' },
@@ -180,10 +178,7 @@ export const southernOceanDeploymentPlotsData: {
   { label: 'TOTTEN3', id: 'TOTTEN3' },
 ];
 
-export const mooredInstrumentArrayDeploymentPlotsData: {
-  label: currentMeterMapDataPointNames;
-  id: currentMeterMapDataPointNames;
-}[] = [
+export const mooredInstrumentArrayDeploymentPlotsData: CurrentMetersDeploymentPlotsOptions[] = [
   { label: 'ITFTIN', id: 'ITFTIN' },
   { label: 'GBRLSL', id: 'GBRLSL' },
   { label: 'GBRLSH', id: 'GBRLSH' },
@@ -246,16 +241,6 @@ export const mooredInstrumentArrayDeploymentPlotsData: {
   { label: 'NRSKAI', id: 'NRSKAI' },
   { label: 'NRSESP', id: 'NRSESP' },
   { label: 'NRSDAR', id: 'NRSDAR' },
-  { label: 'ITFTNS', id: 'ITFTNS' },
-  { label: 'ITFTSL', id: 'ITFTSL' },
-  { label: 'ITFOMB', id: 'ITFOMB' },
-  { label: 'EAC0500', id: 'EAC0500' },
-  { label: 'EAC1520', id: 'EAC1520' },
-  { label: 'EAC2000', id: 'EAC2000' },
-  { label: 'EAC3200', id: 'EAC3200' },
-  { label: 'EAC4200', id: 'EAC4200' },
-  { label: 'EAC4700', id: 'EAC4700' },
-  { label: 'EAC4800', id: 'EAC4800' },
   { label: 'ITFTNS', id: 'ITFTNS' },
   { label: 'ITFTSL', id: 'ITFTSL' },
   { label: 'ITFOMB', id: 'ITFOMB' },
