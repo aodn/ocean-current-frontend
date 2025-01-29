@@ -2,9 +2,9 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
-import { State, Actions } from './currentMeters.types';
+import { CurrentMetersStoreState, CurrentMetersStoreActions } from './currentMeters.types';
 
-const initialState: State = {
+const initialState: CurrentMetersStoreState = {
   region: CurrentMetersRegion.Aust,
   property: CurrentMetersProperty.vrms,
   depth: CurrentMetersDepth.ONE,
@@ -12,7 +12,7 @@ const initialState: State = {
   deploymentPlot: '',
 };
 
-const useCurrentMeterStore = create<State & Actions>()(
+const useCurrentMeterStore = create<CurrentMetersStoreState & CurrentMetersStoreActions>()(
   devtools((set) => ({
     ...initialState,
     actions: {

@@ -1,7 +1,7 @@
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
 import { CurrentMeterMapDataPointNames } from '@/types/currentMeters';
 
-export type State = {
+export type CurrentMetersStoreState = {
   region: CurrentMetersRegion;
   property: CurrentMetersProperty;
   depth: CurrentMetersDepth;
@@ -9,9 +9,9 @@ export type State = {
   deploymentPlot: CurrentMeterMapDataPointNames | '';
 };
 
-export type Actions = {
+export type CurrentMetersStoreActions = {
   actions: {
-    setSelectedCurrentMeter: (data: State) => void;
+    setSelectedCurrentMeter: (data: CurrentMetersStoreState) => void;
     setRegion: (region: CurrentMetersRegion) => void;
     setDepth: (depth: CurrentMetersDepth) => void;
     setProperty: (property: CurrentMetersProperty) => void;
