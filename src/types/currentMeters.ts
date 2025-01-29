@@ -1,11 +1,11 @@
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
 
 export interface CurrentMetersImageDataPoints {
-  shape: string | undefined;
+  shape: string;
   coords: number[];
-  href: string | undefined;
-  alt: string | undefined;
-  name: string | undefined;
+  href: string;
+  alt: string;
+  name: string;
   type: 'text' | 'region' | 'plot';
   code?: CurrentMetersRegion;
 }
