@@ -8,7 +8,7 @@ import {
   CurrentMetersProperty,
   CurrentMetersRegion,
 } from '@/constants/currentMeters';
-import { currentMeterMapDataPointNames } from '@/types/currentMeters';
+import { CurrentMeterMapDataPointNames } from '@/types/currentMeters';
 
 type ProductId = string;
 type SubProductType = string | undefined | null;
@@ -174,7 +174,7 @@ const buildCurrentMetersMapImageUrl = (
 
 const buildCurrentMetersDataImageUrl = (
   subProduct: string,
-  deploymentPlot: string | currentMeterMapDataPointNames,
+  deploymentPlot: string | CurrentMeterMapDataPointNames,
   type: CurrentMetersPlotType,
   plotId: string,
 ) => {

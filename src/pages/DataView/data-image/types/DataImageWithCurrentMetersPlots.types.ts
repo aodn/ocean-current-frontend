@@ -1,6 +1,6 @@
-import { currentMeterMapDataPointNames } from '@/types/currentMeters';
+import { CurrentMeterMapDataPointNames } from '@/types/currentMeters';
 
 export interface DataImageWithCurrentMetersPlotsProps {
   subProduct: string;
-  deploymentPlot: currentMeterMapDataPointNames | '';
+  deploymentPlot: CurrentMeterMapDataPointNames | '';
 }
