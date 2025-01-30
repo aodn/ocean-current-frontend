@@ -54,11 +54,17 @@ const CurrentMetersOptions: React.FC<CurrentMetersOptionsProp> = ({ subProduct }
     const plotsList = getDeploymentPlotsBySubProduct(subProductKey ?? '');
     setDeploymentPlotOptions(plotsList);
 
-    if (!isMooredInstrumentArraySubProduct) {
-      setDeploymentPlot(plotsList[0].id);
-      setSearchParams({ ...stdParams, deploymentPlot: plotsList[0].id });
+    if (!plotsList.some((plot) => plot.id === deploymentPlot)) {
+      if (!isMooredInstrumentArraySubProduct) {
+        setDeploymentPlot(plotsList[0].id);
+        setSearchParams({ ...stdParams, deploymentPlot: plotsList[0].id });
+      } else {
+        setDeploymentPlot('');
+        setSearchParams({ ...stdParams, deploymentPlot: '' });
+      }
     }
   }, [
+    deploymentPlot,
     deploymentPlotOptions,
     isMooredInstrumentArraySubProduct,
     searchParams,
