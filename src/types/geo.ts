@@ -28,7 +28,7 @@ export type ArgoProfileFeatureCollection = GeoJSON.FeatureCollection<ProfilePoin
 Current Meters Map Points
 */
 
-type CurrentMetersProfileProperties = {
+export type CurrentMetersProfileProperties = {
   title: CurrentMetersMapDataPointNames;
   region: CurrentMetersRegion;
 };
