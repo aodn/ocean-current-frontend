@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Button, Dropdown } from '@/components/Shared';
 import useCurrentMetersStore, {
@@ -8,17 +8,13 @@ import useCurrentMetersStore, {
   setDeploymentPlot,
   setCurrentMetersDate,
 } from '@/stores/current-meters-store/currentMeters';
-import { CurrentMetersMapDataPointNames } from '@/types/currentMeters';
+import { CurrentMetersDeploymentPlotsOptions, CurrentMetersMapDataPointNames } from '@/types/currentMeters';
 import { ProductSidebarText } from '@/constants/textConstant';
 import {
-  deepADCPDeploymentPlotsData,
-  deepADVDeploymentPlotsData,
   depthOptionsData,
   mooredInstrumentArrayDeploymentPlotsData,
   propertyOptionsData,
   regionsOptionsData,
-  shelfDeploymentPlotsData,
-  southernOceanDeploymentPlotsData,
   yearOptionsData,
 } from '@/data/current-meter/sidebarOptions';
 import {
@@ -28,6 +24,7 @@ import {
   CurrentMetersSubproductsKey,
 } from '@/constants/currentMeters';
 import { SubProduct } from '@/types/product';
+import { getDeploymentPlotsBySubProduct } from '@/components/Map/utils/mapUtils';
 
 interface CurrentMetersOptionsProp {
   subProduct: SubProduct | null;
@@ -36,22 +33,12 @@ interface CurrentMetersOptionsProp {
 const CurrentMetersOptions: React.FC<CurrentMetersOptionsProp> = ({ subProduct }) => {
   const { property, depth, region, date, deploymentPlot } = useCurrentMetersStore();
   const [searchParams, setSearchParams] = useSearchParams();
-  const isMooredInstrumentArraySubProduct = subProduct?.key === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY;
+  const [deploymentPlotOptions, setDeploymentPlotOptions] = useState<CurrentMetersDeploymentPlotsOptions[]>(
+    mooredInstrumentArrayDeploymentPlotsData,
+  );
+  const subProductKey = subProduct?.key;
+  const isMooredInstrumentArraySubProduct = subProductKey === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY;
 
-  const deploymentPlotOptions = useMemo(() => {
-    switch (subProduct?.key) {
-      case CurrentMetersSubproductsKey.SHELF:
-        return shelfDeploymentPlotsData;
-      case CurrentMetersSubproductsKey.DEEP_ADCP:
-        return deepADCPDeploymentPlotsData;
-      case CurrentMetersSubproductsKey.DEEP_ADV:
-        return deepADVDeploymentPlotsData;
-      case CurrentMetersSubproductsKey.SOUTHERN_OCEAN:
-        return southernOceanDeploymentPlotsData;
-      default:
-        return mooredInstrumentArrayDeploymentPlotsData;
-    }
-  }, [subProduct]);
   const stdParams = useMemo(() => {
     return {
       depth,
@@ -62,13 +49,23 @@ const CurrentMetersOptions: React.FC<CurrentMetersOptionsProp> = ({ subProduct }
     };
   }, [date, deploymentPlot, depth, property, region]);
 
-  // set default deployment plot when switching subproducts
+  // update deployment plots list and default option when switching subproducts
   useEffect(() => {
+    const plotsList = getDeploymentPlotsBySubProduct(subProductKey ?? '');
+    setDeploymentPlotOptions(plotsList);
+
     if (!isMooredInstrumentArraySubProduct) {
-      setDeploymentPlot(deploymentPlotOptions[0].id);
-      setSearchParams({ ...stdParams, deploymentPlot: deploymentPlotOptions[0].id });
+      setDeploymentPlot(plotsList[0].id);
+      setSearchParams({ ...stdParams, deploymentPlot: plotsList[0].id });
     }
-  }, [deploymentPlotOptions, isMooredInstrumentArraySubProduct, searchParams, setSearchParams, stdParams]);
+  }, [
+    deploymentPlotOptions,
+    isMooredInstrumentArraySubProduct,
+    searchParams,
+    setSearchParams,
+    stdParams,
+    subProductKey,
+  ]);
 
   // update store based on params
   useEffect(() => {
@@ -89,7 +86,7 @@ const CurrentMetersOptions: React.FC<CurrentMetersOptionsProp> = ({ subProduct }
     setRegion(urlRegion);
     setCurrentMetersDate(urlDate);
     setDeploymentPlot(urlDeploymentPlot);
-  }, [date, deploymentPlot, depth, property, region, searchParams, setSearchParams, subProduct?.key]);
+  }, [date, deploymentPlot, depth, property, region, searchParams, setSearchParams, subProductKey]);
 
   const regionsOptions = isMooredInstrumentArraySubProduct ? regionsOptionsData : [regionsOptionsData[0]];
 
