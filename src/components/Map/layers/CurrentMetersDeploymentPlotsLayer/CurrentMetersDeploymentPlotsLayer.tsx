@@ -3,24 +3,12 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { useQueryParams } from '@/hooks';
-import {
-  CurrentMetersProfileFeature,
-  CurrentMetersProfileFeatureCollection,
-  CurrentMetersProfileProperties,
-} from '@/types/geo';
+import { CurrentMetersProfileProperties } from '@/types/geo';
 import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
-import { currentMetersMapDataPointsFlat } from '@/data/current-meter/mapDataPoints';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
-import {
-  deepADCPDeploymentPlotsData,
-  deepADVDeploymentPlotsData,
-  mooredInstrumentArrayDeploymentPlotsData,
-  shelfDeploymentPlotsData,
-  southernOceanDeploymentPlotsData,
-} from '@/data/current-meter/sidebarOptions';
-import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersSubproductsKey } from '@/constants/currentMeters';
-import { CurrentMetersMapDataPoints } from '@/types/currentMeters';
+import { CurrentMetersDepth, CurrentMetersProperty } from '@/constants/currentMeters';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
+import getCurrentMetersDeploymentPlotsData from '../../utils/getCurrentMetersDeploymentPlotsData';
 
 interface ArgoAsProductLayerRendererProps {
   isMiniMap: boolean;
@@ -36,54 +24,13 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
   const { CURRENT_METERS_BOX_LAYER_ID, CURRENT_METERS_SELECTED_BOX_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =
     mapboxLayerIds;
   const { subProduct } = useProductConvert();
-  const [subProductDataSet, setSubProductDataSet] =
-    useState<CurrentMetersMapDataPoints[]>(currentMetersMapDataPointsFlat);
   const [hoveredFeatureId, setHoveredFeatureId] = useState<string | null>(null);
   const { current: map } = useMap();
   const navigate = useNavigate();
   const eventAdded = useRef(false);
   const { updateQueryParams } = useQueryParams();
 
-  // filter out deployment points available for selected subproduct
-  useEffect(() => {
-    const dataSetbySubProduct = currentMetersMapDataPointsFlat.filter((point) => {
-      switch (subProduct?.key) {
-        case CurrentMetersSubproductsKey.SHELF:
-          return shelfDeploymentPlotsData.some((prodPoint) => point.name === prodPoint.id);
-        case CurrentMetersSubproductsKey.DEEP_ADCP:
-          return deepADCPDeploymentPlotsData.some((prodPoint) => point.name === prodPoint.id);
-        case CurrentMetersSubproductsKey.DEEP_ADV:
-          return deepADVDeploymentPlotsData.some((prodPoint) => point.name === prodPoint.id);
-        case CurrentMetersSubproductsKey.SOUTHERN_OCEAN:
-          return southernOceanDeploymentPlotsData.some((prodPoint) => point.name === prodPoint.id);
-        default:
-          return mooredInstrumentArrayDeploymentPlotsData.some((prodPoint) => point.name === prodPoint.id);
-      }
-    });
-    setSubProductDataSet(dataSetbySubProduct);
-  }, [subProduct]);
-
-  const deploymentPlotsMapFeatures = subProductDataSet.map(({ name, region, coords }) => {
-    return {
-      type: 'Feature',
-      id: coords[0], // required for hover to work and must be number, do not use as not unique
-      properties: {
-        title: name,
-        region: region,
-      },
-      geometry: {
-        type: 'Point',
-        coordinates: coords,
-      },
-    };
-  });
-
-  const currentMetersMapPointsGeoJson: CurrentMetersProfileFeatureCollection = useMemo(() => {
-    return {
-      type: 'FeatureCollection',
-      features: deploymentPlotsMapFeatures as CurrentMetersProfileFeature[],
-    };
-  }, [deploymentPlotsMapFeatures]);
+  const currentMetersMapPointsGeoJson = useMemo(() => getCurrentMetersDeploymentPlotsData(subProduct), [subProduct]);
 
   const handleMouseClick = useCallback(
     (e: MapMouseEvent) => {
