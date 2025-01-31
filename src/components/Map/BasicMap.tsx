@@ -38,7 +38,8 @@ const BasicMap: React.FC<BasicMapProps> = ({
   const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
   const interactiveIds = [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID];
 
-  const shouldShowArgoLayer = (!isArgo && !isMiniMap) || isArgo;
+  const shouldShowArgoLayer = ((!isArgo && !isMiniMap) || isArgo) && !isCurrentMeters;
+
   const shouldShowCursorLocationPanel = showCursorLocationPanel && !isMobile && cursorLngLat?.lng && cursorLngLat?.lat;
 
   useEffect(() => {
