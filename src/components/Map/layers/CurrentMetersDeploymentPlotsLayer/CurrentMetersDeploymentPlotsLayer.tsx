@@ -21,30 +21,20 @@ import {
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersSubproductsKey } from '@/constants/currentMeters';
 import { CurrentMetersMapDataPoints } from '@/types/currentMeters';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
-import { CustomSquareSymbol } from '../../symbols';
 
-const SYMBOL_SIZE = 60;
-const SYMBOL_STROKE_WIDTH = 4;
-const SYMBOL_STROKE_STYLE = 'rgba(34,34,34,0.5)';
-
-const SQUARE_SIZE_LARGE = 1;
-const SQUARE_SIZE_SMALL = 0.6;
-const SQUARE_SIZE_THRESHOLD_ZOOM = 5;
-
-const CUSTOM_SQUARE_SYMBOL_IMAGE_NAME = 'outlined-square';
 interface ArgoAsProductLayerRendererProps {
   isMiniMap: boolean;
 }
+
+const circleRadius = 6;
+const hoverCircleRadius = 8;
+const selectedCircleRadius = 12;
+
 const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProps> = ({ isMiniMap }) => {
   const { deploymentPlot: selectedDeploymentPlot, date: currentMetersDate } = useCurrentMetersStore();
   const { CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID } = mapboxSourceIds;
-  const {
-    // CURRENT_METERS_BOX_LAYER_ID,
-    // CURRENT_METERS_BOX_HIGHLIGHT_LAYER_ID,
-    CURRENT_METERS_NAME_LABEL_LAYER_ID,
-    CURRENT_METERS_SELECTED_BOX_LAYER_ID,
-    PRODUCT_REGION_BOX_LAYER_ID,
-  } = mapboxLayerIds;
+  const { CURRENT_METERS_BOX_LAYER_ID, CURRENT_METERS_SELECTED_BOX_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =
+    mapboxLayerIds;
   const { subProduct } = useProductConvert();
   const [subProductDataSet, setSubProductDataSet] =
     useState<CurrentMetersMapDataPoints[]>(currentMetersMapDataPointsFlat);
@@ -103,7 +93,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
         const clickedPlot = getPropertyFromMapFeatures<CurrentMetersProfileProperties>(
           map,
           e,
-          CURRENT_METERS_NAME_LABEL_LAYER_ID,
+          CURRENT_METERS_BOX_LAYER_ID,
           ['title', 'region'],
         );
         const { title, region } = clickedPlot;
@@ -134,7 +124,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
     },
     [
       map,
-      CURRENT_METERS_NAME_LABEL_LAYER_ID,
+      CURRENT_METERS_BOX_LAYER_ID,
       selectedDeploymentPlot,
       isMiniMap,
       navigate,
@@ -148,7 +138,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
       if (!map) return;
 
       const features = map.queryRenderedFeatures(e.point, {
-        layers: [CURRENT_METERS_NAME_LABEL_LAYER_ID],
+        layers: [CURRENT_METERS_BOX_LAYER_ID],
       });
       const isHoveredPlotFeature = features.length > 0 && features[0]?.properties?.title != null;
 
@@ -179,7 +169,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
         setHoveredFeatureId(features[0].properties!.title);
       }
     },
-    [map, hoveredFeatureId, CURRENT_METERS_NAME_LABEL_LAYER_ID, CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID],
+    [map, hoveredFeatureId, CURRENT_METERS_BOX_LAYER_ID, CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID],
   );
 
   const handleMouseLeave = useCallback(() => {
@@ -207,16 +197,16 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
 
     if (!eventAdded.current) {
       eventAdded.current = true;
-      map.on('click', [CURRENT_METERS_NAME_LABEL_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID], handleMouseClick);
-      map.on('mousemove', CURRENT_METERS_NAME_LABEL_LAYER_ID, handleMouseMove);
-      map.on('mouseleave', CURRENT_METERS_NAME_LABEL_LAYER_ID, handleMouseLeave);
+      map.on('click', [CURRENT_METERS_BOX_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID], handleMouseClick);
+      map.on('mousemove', CURRENT_METERS_BOX_LAYER_ID, handleMouseMove);
+      map.on('mouseleave', CURRENT_METERS_BOX_LAYER_ID, handleMouseLeave);
     }
 
     return () => {
       if (map && eventAdded.current) {
-        map.off('click', [CURRENT_METERS_NAME_LABEL_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID], handleMouseClick);
-        map.off('mousemove', CURRENT_METERS_NAME_LABEL_LAYER_ID, handleMouseMove);
-        map.off('mouseleave', CURRENT_METERS_NAME_LABEL_LAYER_ID, handleMouseLeave);
+        map.off('click', [CURRENT_METERS_BOX_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID], handleMouseClick);
+        map.off('mousemove', CURRENT_METERS_BOX_LAYER_ID, handleMouseMove);
+        map.off('mouseleave', CURRENT_METERS_BOX_LAYER_ID, handleMouseLeave);
         eventAdded.current = false;
       }
     };
@@ -225,7 +215,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
     handleMouseClick,
     handleMouseMove,
     handleMouseLeave,
-    CURRENT_METERS_NAME_LABEL_LAYER_ID,
+    CURRENT_METERS_BOX_LAYER_ID,
     PRODUCT_REGION_BOX_LAYER_ID,
   ]);
 
@@ -239,75 +229,41 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
   );
 
   useEffect(() => {
-    if (!map) return;
+    if (!map || !isMiniMap) return;
 
     const deploymentPoints = currentMetersMapPointsGeoJson.features.find(
       (point) => point.properties?.title === selectedDeploymentPlot,
     );
-    if (deploymentPoints?.geometry.coordinates) {
+
+    if (deploymentPoints?.geometry.coordinates && deploymentPoints?.properties.title === hoveredFeatureId) {
       mapFlyToPoint(deploymentPoints?.geometry.coordinates);
     }
-  }, [map, mapFlyToPoint, currentMetersMapPointsGeoJson.features, selectedDeploymentPlot]);
-
-  useEffect(() => {
-    if (!map) {
-      return;
-    }
-
-    const outlinedSquare = new CustomSquareSymbol(SYMBOL_SIZE, SYMBOL_STROKE_STYLE, SYMBOL_STROKE_WIDTH);
-
-    map.addImage(CUSTOM_SQUARE_SYMBOL_IMAGE_NAME, outlinedSquare, { pixelRatio: 2 });
-
-    return () => {
-      if (!map.hasImage(CUSTOM_SQUARE_SYMBOL_IMAGE_NAME)) {
-        return;
-      }
-      map.removeImage(CUSTOM_SQUARE_SYMBOL_IMAGE_NAME);
-    };
-  }, [map]);
-
-  const mapZoom = map?.getZoom();
-  const squareSize = useMemo(() => {
-    if (typeof mapZoom !== 'number') {
-      return SQUARE_SIZE_SMALL;
-    }
-    return mapZoom > SQUARE_SIZE_THRESHOLD_ZOOM ? SQUARE_SIZE_LARGE : SQUARE_SIZE_SMALL;
-  }, [mapZoom]);
+  }, [map, mapFlyToPoint, currentMetersMapPointsGeoJson.features, selectedDeploymentPlot, isMiniMap, hoveredFeatureId]);
 
   return (
-    <Source
-      type="geojson"
-      data={currentMetersMapPointsGeoJson}
-      id={CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID}
-      cluster={true}
-      clusterMaxZoom={4}
-      clusterRadius={10}
-    >
+    <Source type="geojson" data={currentMetersMapPointsGeoJson} id={CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID}>
       <Layer
         id={CURRENT_METERS_SELECTED_BOX_LAYER_ID}
-        type="line"
+        type="circle"
         source={CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID}
-        paint={{ 'line-color': '#000', 'line-width': 2 }}
-        filter={['==', 'name', selectedDeploymentPlot]}
-      />
-      <Layer
-        source={CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID}
-        type="symbol"
-        layout={{
-          'icon-image': CUSTOM_SQUARE_SYMBOL_IMAGE_NAME,
-          'icon-size': squareSize,
-          'icon-allow-overlap': true,
+        paint={{
+          'circle-radius': selectedCircleRadius,
+          'circle-color': 'white',
+          'circle-opacity': 0.5,
+          'circle-stroke-width': 1,
+          'circle-stroke-color': 'white',
         }}
+        filter={['==', 'title', selectedDeploymentPlot]}
       />
       <Layer
-        id={CURRENT_METERS_NAME_LABEL_LAYER_ID}
-        type="symbol"
+        id={CURRENT_METERS_BOX_LAYER_ID}
+        type="circle"
         source={CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID}
-        layout={{
-          'text-field': ['get', 'title'],
-          'text-size': 14,
-          'text-justify': 'center',
-          'text-anchor': 'center',
+        paint={{
+          'circle-radius': ['case', ['boolean', ['feature-state', 'hover'], false], hoverCircleRadius, circleRadius],
+          'circle-color': '#00FF00',
+          'circle-stroke-width': 1,
+          'circle-stroke-color': 'black',
         }}
       />
     </Source>
