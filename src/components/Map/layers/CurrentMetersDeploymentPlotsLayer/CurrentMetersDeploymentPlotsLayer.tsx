@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { useQueryParams } from '@/hooks';
 import { CurrentMetersProfileProperties } from '@/types/geo';
-import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
+import useCurrentMetersStore, { setDeploymentPlot } from '@/stores/current-meters-store/currentMeters';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { CurrentMetersDepth, CurrentMetersProperty } from '@/constants/currentMeters';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
@@ -44,6 +44,8 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
           ['title', 'region'],
         );
         const { title, region } = clickedPlot;
+        setDeploymentPlot(title);
+
         if (selectedDeploymentPlot === title) {
           return;
         }
