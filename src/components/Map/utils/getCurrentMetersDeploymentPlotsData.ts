@@ -30,7 +30,7 @@ const getCurrentMetersDeploymentPlotsData = (subProduct: SubProduct | null) => {
   const deploymentPlotsMapFeatures = dataSetbySubProduct.map(({ name, region, coords }) => {
     return {
       type: 'Feature',
-      id: coords[0], // required for hover to work and must be number, do not use as not unique
+      id: name,
       properties: {
         title: name,
         region: region,

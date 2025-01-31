@@ -89,10 +89,10 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
       const features = map.queryRenderedFeatures(e.point, {
         layers: [CURRENT_METERS_BOX_LAYER_ID],
       });
+
       const isHoveredPlotFeature = features.length > 0 && features[0]?.properties?.title != null;
 
       if (isHoveredPlotFeature) {
-        const hoveredFeature = features[0];
         if (hoveredFeatureId !== null) {
           map.setFeatureState(
             {
@@ -108,14 +108,14 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
         map.setFeatureState(
           {
             source: CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID,
-            id: hoveredFeature.id as number,
+            id: features[0]?.properties?.title,
           },
           {
             hover: true,
           },
         );
 
-        setHoveredFeatureId(features[0].properties!.title);
+        setHoveredFeatureId(features[0]?.properties?.title);
       }
     },
     [map, hoveredFeatureId, CURRENT_METERS_BOX_LAYER_ID, CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID],
@@ -134,9 +134,6 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
           hover: false,
         },
       );
-    }
-
-    if (hoveredFeatureId !== null) {
       setHoveredFeatureId(null);
     }
   }, [map, hoveredFeatureId, CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID]);
@@ -180,14 +177,14 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
   useEffect(() => {
     if (!map || !isMiniMap) return;
 
-    const deploymentPoints = currentMetersMapPointsGeoJson.features.find(
+    const selectedDeploymentPointData = currentMetersMapPointsGeoJson.features.find(
       (point) => point.properties?.title === selectedDeploymentPlot,
     );
 
-    if (deploymentPoints?.geometry.coordinates && deploymentPoints?.properties.title === hoveredFeatureId) {
-      mapFlyToPoint(deploymentPoints?.geometry.coordinates);
+    if (selectedDeploymentPointData?.geometry.coordinates) {
+      mapFlyToPoint(selectedDeploymentPointData?.geometry.coordinates);
     }
-  }, [map, mapFlyToPoint, currentMetersMapPointsGeoJson.features, selectedDeploymentPlot, isMiniMap, hoveredFeatureId]);
+  }, [currentMetersMapPointsGeoJson, isMiniMap, map, mapFlyToPoint, selectedDeploymentPlot]);
 
   return (
     <Source type="geojson" data={currentMetersMapPointsGeoJson} id={CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID}>
