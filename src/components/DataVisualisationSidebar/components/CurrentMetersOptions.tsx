@@ -25,6 +25,7 @@ import {
 } from '@/constants/currentMeters';
 import { SubProduct } from '@/types/product';
 import { getDeploymentPlotsBySubProduct } from '@/components/Map/utils/mapUtils';
+import { currentMetersMapDataPointsFlat } from '@/data/current-meter/mapDataPoints';
 
 interface CurrentMetersOptionsProp {
   subProduct: SubProduct | null;
@@ -123,10 +124,15 @@ const CurrentMetersOptions: React.FC<CurrentMetersOptionsProp> = ({ subProduct }
     if (date !== '0000') {
       setCurrentMetersDate('0000');
     }
+    const correctRegion =
+      currentMetersMapDataPointsFlat.find((point) => point.name === id)?.region ?? CurrentMetersRegion.Aust;
+    if (correctRegion !== region) {
+      setRegion(correctRegion);
+    }
 
     setDeploymentPlot(id as CurrentMetersMapDataPointNames);
     setSearchParams({
-      ...stdParams,
+      region: correctRegion,
       deploymentPlot: id,
       date: '0000',
       property: CurrentMetersProperty.vrms,

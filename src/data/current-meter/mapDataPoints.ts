@@ -142,7 +142,7 @@ const ngbr: CurrentMetersMapDataPoints[] = [
   { name: 'GBRLSH', coords: [145.63, -14.7], region: CurrentMetersRegion.NGBR },
 ];
 
-export const currentMetersMapDataPoints: Record<CurrentMetersRegion, CurrentMetersMapDataPoints[]> = {
+const currentMetersMapDataPoints: Record<CurrentMetersRegion, CurrentMetersMapDataPoints[]> = {
   [CurrentMetersRegion.Aust]: [], // data points should only be accessible in region level
   [CurrentMetersRegion.TimorP]: timorP,
   [CurrentMetersRegion.Kim]: kim,
