@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Map, {
   FullscreenControl,
   MapLayerMouseEvent,
@@ -11,8 +11,9 @@ import useMapStore, { setMapViewState, updateZoom } from '@/stores/map-store/map
 import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useDeviceType } from '@/hooks';
+import { resetCurrentMetersStore } from '@/stores/current-meters-store/currentMeters';
 import MAP_STYLE from './data/map-style.basic-v8.json';
-import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer, CurrentMeterRegionPolygonLayer } from './layers';
+import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer, CurrentMetersDeploymentPlotsLayer } from './layers';
 import { MouseCursorLocationPanel } from './panels';
 import { BasicMapProps } from './types/map.types';
 
@@ -38,8 +39,11 @@ const BasicMap: React.FC<BasicMapProps> = ({
   const interactiveIds = [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID];
 
   const shouldShowArgoLayer = (!isArgo && !isMiniMap) || isArgo;
-  const shouldShowCurrentMetersLayer = isCurrentMeters && isMiniMap;
   const shouldShowCursorLocationPanel = showCursorLocationPanel && !isMobile && cursorLngLat?.lng && cursorLngLat?.lat;
+
+  useEffect(() => {
+    resetCurrentMetersStore();
+  }, []);
 
   const handleMove = useCallback(({ viewState }: ViewStateChangeEvent) => {
     setMapViewState(viewState);
@@ -60,7 +64,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
   const memoizedLayers = useMemo(
     () => ({
       dataImageLayer: <DataImageLayer />,
-      currentMeterLayer: <CurrentMeterRegionPolygonLayer />,
+      currentMetersDeploymentPlotsLayer: <CurrentMetersDeploymentPlotsLayer isMiniMap={isMiniMap} />,
       regionPolygonLayer: (
         <RegionPolygonLayer shouldKeepNationalRegion={!isMiniMap} shouldFitNationalRegionBounds={isMiniMap} />
       ),
@@ -106,7 +110,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
       {memoizedLayers.dataImageLayer}
       {!isArgo && memoizedLayers.regionPolygonLayer}
       {shouldShowArgoLayer && memoizedLayers.argoAsProductLayer}
-      {shouldShowCurrentMetersLayer && memoizedLayers.currentMeterLayer}
+      {isCurrentMeters && memoizedLayers.currentMetersDeploymentPlotsLayer}
     </Map>
   );
 };
