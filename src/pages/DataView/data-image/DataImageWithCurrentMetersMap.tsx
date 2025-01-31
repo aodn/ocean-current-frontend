@@ -51,18 +51,17 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
     }
   };
 
-  useEffect(() => {
+  const handleImageLoad = () => {
     if (imgRef.current) {
       const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
 
       const convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, regionArr as []);
-
       setAreas(convertedCoords);
     }
-  }, [regionArr]);
+  };
 
   useEffect(() => {
-    setImgLoadError(null);
+    if (!src) setImgLoadError('Missing Image');
   }, [src]);
 
   if (imgLoadError) {
@@ -80,19 +79,21 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
         onError={() => {
           setImgLoadError('Image not available');
         }}
+        onLoad={handleImageLoad}
       />
       <map name="current-meters-map">
-        {areas.map((area, index) => (
-          <area
-            key={index}
-            className="cursor-pointer"
-            shape={area.shape}
-            coords={area.coords.join(',')}
-            alt={`${area.type === 'region' ? 'Region' : 'Plot'} ${area.name}`}
-            onClick={() => handleAreaClick(area)}
-            aria-hidden="true"
-          />
-        ))}
+        {areas &&
+          areas.map((area, index) => (
+            <area
+              key={index}
+              className="cursor-pointer"
+              shape={area.shape}
+              coords={area.coords.join(',')}
+              alt={`${area.type === 'region' ? 'Region' : 'Plot'} ${area.name}`}
+              onClick={() => handleAreaClick(area)}
+              aria-hidden="true"
+            />
+          ))}
       </map>
     </div>
   );
