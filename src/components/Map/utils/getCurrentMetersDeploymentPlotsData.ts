@@ -27,10 +27,10 @@ const getCurrentMetersDeploymentPlotsData = (subProduct: SubProduct | null) => {
     }
   });
 
-  const deploymentPlotsMapFeatures = dataSetbySubProduct.map(({ name, region, coords }) => {
+  const deploymentPlotsMapFeatures = dataSetbySubProduct.map(({ name, region, coords }, index) => {
     return {
       type: 'Feature',
-      id: name,
+      id: index,
       properties: {
         title: name,
         region: region,

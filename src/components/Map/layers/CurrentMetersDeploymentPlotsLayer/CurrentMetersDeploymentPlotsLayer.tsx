@@ -24,7 +24,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
   const { CURRENT_METERS_BOX_LAYER_ID, CURRENT_METERS_SELECTED_BOX_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =
     mapboxLayerIds;
   const { subProduct } = useProductConvert();
-  const [hoveredFeatureId, setHoveredFeatureId] = useState<string | null>(null);
+  const [hoveredFeatureId, setHoveredFeatureId] = useState<string | number | null>(null);
   const { current: map } = useMap();
   const navigate = useNavigate();
   const eventAdded = useRef(false);
@@ -90,9 +90,10 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
         layers: [CURRENT_METERS_BOX_LAYER_ID],
       });
 
-      const isHoveredPlotFeature = features.length > 0 && features[0]?.properties?.title != null;
+      const isHoveredPlotFeature = features.length > 0 && features[0]?.id != null;
 
       if (isHoveredPlotFeature) {
+        map.getCanvas().style.cursor = 'pointer';
         if (hoveredFeatureId !== null) {
           map.setFeatureState(
             {
@@ -108,14 +109,16 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
         map.setFeatureState(
           {
             source: CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID,
-            id: features[0]?.properties?.title,
+            id: features[0]?.id as number,
           },
           {
             hover: true,
           },
         );
 
-        setHoveredFeatureId(features[0]?.properties?.title);
+        setHoveredFeatureId(features[0]?.id as number);
+      } else {
+        map.getCanvas().style.cursor = '';
       }
     },
     [map, hoveredFeatureId, CURRENT_METERS_BOX_LAYER_ID, CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID],
@@ -136,6 +139,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
       );
       setHoveredFeatureId(null);
     }
+    map.getCanvas().style.cursor = '';
   }, [map, hoveredFeatureId, CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID]);
 
   useEffect(() => {
