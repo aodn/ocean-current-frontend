@@ -21,8 +21,6 @@ const mapboxLayerIds = {
   PRODUCT_REGION_SELECTED_BOX_LAYER_ID: 'product-region-selected-box-layer-id',
 
   CURRENT_METERS_BOX_LAYER_ID: 'current-meters-box-layer-id',
-  CURRENT_METERS_BOX_HIGHLIGHT_LAYER_ID: 'current-meters-box-highlight-layer-id',
-  CURRENT_METERS_NAME_LABEL_LAYER_ID: 'current-meters-name-label-layer-id',
   CURRENT_METERS_SELECTED_BOX_LAYER_ID: 'current-meters-selected-box-layer-id',
 
   DATA_IMAGE_LAYER_ID: 'data-image-layer-id',
