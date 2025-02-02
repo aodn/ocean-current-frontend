@@ -8,6 +8,7 @@ import { setRegion, setDeploymentPlot } from '@/stores/current-meters-store/curr
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
 import { CurrentMetersMapDataPointNames, CurrentMetersImageDataPoints } from '@/types/currentMeters';
 import { Product } from '@/types/product';
+import { currentMetersMapDataPointsFlat } from '@/data/current-meter/mapDataPoints';
 
 interface DataImageWithCurrentMetersMapProps {
   mainProduct: Product | null;
@@ -32,6 +33,9 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
 
   const handleAreaClick = (area: CurrentMetersImageDataPoints) => {
     const { type, code, name } = area;
+    const getRegion =
+      currentMetersMapDataPointsFlat.find((point) => point.name === name)?.region ?? CurrentMetersRegion.Aust;
+
     if (type === 'region' && code) {
       setRegion(code);
       setSearchParams({
@@ -46,6 +50,10 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
     if (type === 'plot' || type === 'text') {
       setDeploymentPlot(name as CurrentMetersMapDataPointNames);
       setSearchParams({
+        property: CurrentMetersProperty.vrms,
+        depth: CurrentMetersDepth.ONE,
+        region: getRegion,
+        date: date,
         deploymentPlot: name,
       });
     }
