@@ -7,6 +7,7 @@ import {
   CurrentMetersPlotPath,
   CurrentMetersProperty,
   CurrentMetersRegion,
+  CurrentMetersSubproductsKey,
 } from '@/constants/currentMeters';
 import { CurrentMetersMapDataPointNames } from '@/types/currentMeters';
 
@@ -162,7 +163,7 @@ const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle:
 };
 
 const buildCurrentMetersMapImageUrl = (
-  region: CurrentMetersRegion = CurrentMetersRegion.Aust,
+  region: CurrentMetersRegion,
   date: string,
   property: CurrentMetersProperty,
   depth: CurrentMetersDepth,
@@ -173,8 +174,8 @@ const buildCurrentMetersMapImageUrl = (
 };
 
 const buildCurrentMetersDataImageUrl = (
-  subProduct: string,
-  deploymentPlot: string | CurrentMetersMapDataPointNames,
+  subProduct: CurrentMetersSubproductsKey,
+  deploymentPlot: CurrentMetersMapDataPointNames,
   type: CurrentMetersPlotPath,
   plotId: string,
 ) => {

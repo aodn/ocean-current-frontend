@@ -1,6 +1,6 @@
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
 
-export interface CurrentMetersImageDataPoints {
+export type CurrentMetersImageDataPoints = {
   shape: string;
   coords: number[];
   href: string;
@@ -8,7 +8,7 @@ export interface CurrentMetersImageDataPoints {
   name: string;
   type: 'text' | 'region' | 'plot';
   code?: CurrentMetersRegion;
-}
+};
 
 export type CurrentMetersDeploymentPlotsOptions = {
   label: CurrentMetersMapDataPointNames;
@@ -108,8 +108,8 @@ export type CurrentMetersMapDataPointNames =
   | 'WATR20'
   | 'WATR50';
 
-export interface CurrentMetersMapDataPoints {
+export type CurrentMetersMapDataPoints = {
   name: CurrentMetersMapDataPointNames;
   coords: [number, number];
   region: CurrentMetersRegion;
-}
+};

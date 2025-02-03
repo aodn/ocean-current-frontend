@@ -4,11 +4,11 @@ import { Dropdown, Loading } from '@/components/Shared';
 import { getCurrentMetersPlots } from '@/services/currentMeters';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import { buildCurrentMetersDataImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
-import { CurrentMetersPlotTitle, CurrentMetersPlotPath } from '@/constants/currentMeters';
+import { CurrentMetersPlotPath, CurrentMetersPlotTitle, CurrentMetersSubproductsKey } from '@/constants/currentMeters';
 import { DataImageWithCurrentMetersPlotsProps } from './types/DataImageWithCurrentMetersPlots.types';
 
 const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsProps> = ({
-  subProduct,
+  subProductKey,
   deploymentPlot,
 }) => {
   const imgRef = useRef<HTMLImageElement | null>(null);
@@ -17,16 +17,17 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
   const [loading, setLoading] = useState(true);
   const [selectedVelocity, setSelectedVelocity] = useState('');
   const [selectedDepthTime, setSelectedDepthTime] = useState('');
+  const subProdKey = subProductKey as CurrentMetersSubproductsKey;
 
   const velocityList = useCallback(async () => {
-    const list = await getCurrentMetersPlots(subProduct, deploymentPlot ?? '', 'velocity-vector');
+    const list = await getCurrentMetersPlots(subProdKey, deploymentPlot, CurrentMetersPlotPath.VELOCITY_VECTOR);
     return list.map((plot) => ({ label: plot, id: plot }));
-  }, [deploymentPlot, subProduct]);
+  }, [deploymentPlot, subProdKey]);
 
   const depthTimeList = useCallback(async () => {
-    const list = await getCurrentMetersPlots(subProduct, deploymentPlot ?? '', 'depth-time');
+    const list = await getCurrentMetersPlots(subProdKey, deploymentPlot, CurrentMetersPlotPath.DEPTH_TIME);
     return list.map((plot) => ({ label: plot, id: plot }));
-  }, [deploymentPlot, subProduct]);
+  }, [deploymentPlot, subProdKey]);
 
   useEffect(() => {
     (async () => {
@@ -61,8 +62,8 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
           <img
             ref={imgRef}
             src={buildCurrentMetersDataImageUrl(
-              subProduct,
-              deploymentPlot ?? '',
+              subProdKey,
+              deploymentPlot,
               CurrentMetersPlotPath.VELOCITY_VECTOR,
               selectedVelocity,
             )}
@@ -88,8 +89,8 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
           <img
             ref={imgRef}
             src={buildCurrentMetersDataImageUrl(
-              subProduct,
-              deploymentPlot ?? '',
+              subProdKey,
+              deploymentPlot,
               CurrentMetersPlotPath.DEPTH_TIME,
               selectedDepthTime,
             )}

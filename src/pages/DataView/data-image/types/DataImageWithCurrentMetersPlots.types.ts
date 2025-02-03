@@ -1,6 +1,7 @@
+import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
 import { CurrentMetersMapDataPointNames } from '@/types/currentMeters';
 
 export interface DataImageWithCurrentMetersPlotsProps {
-  subProduct: string;
-  deploymentPlot: CurrentMetersMapDataPointNames | '';
+  subProductKey: CurrentMetersSubproductsKey;
+  deploymentPlot: CurrentMetersMapDataPointNames;
 }

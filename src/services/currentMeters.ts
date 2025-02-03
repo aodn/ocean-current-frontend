@@ -1,16 +1,21 @@
 import httpClient from '@/services/httpClient';
 import { ContentType } from '@/constants/request';
+import { CurrentMetersPlotPath, CurrentMetersSubproductsKey } from '@/constants/currentMeters';
+import { CurrentMetersMapDataPointNames } from '@/types/currentMeters';
 
-const getCurrentMetersPlots = async (subproduct: string, deploymentPlot: string, type: string) => {
-  if (!subproduct || !deploymentPlot) {
+const getCurrentMetersPlots = async (
+  subProductKey: CurrentMetersSubproductsKey,
+  deploymentPlot: CurrentMetersMapDataPointNames,
+  type: CurrentMetersPlotPath,
+) => {
+  if (!subProductKey || !deploymentPlot) {
     throw new Error('Mising subproduct and/or deployment plot information.');
   }
 
-  const folder = subproduct === 'currentMeters-shelf' ? 'ANMN_P49' : 'ANMN_P48';
-  const dataType = type === 'depth-time' ? 'zt' : 'xyz';
+  const folder = subProductKey === 'currentMeters-shelf' ? 'ANMN_P49' : 'ANMN_P48';
 
   try {
-    const htmlString = await httpClient.get<string>(`timeseries/${folder}/${deploymentPlot}/${dataType}/`, {
+    const htmlString = await httpClient.get<string>(`timeseries/${folder}/${deploymentPlot}/${type}/`, {
       headers: {
         'Content-Type': ContentType.Text,
       },
@@ -20,7 +25,7 @@ const getCurrentMetersPlots = async (subproduct: string, deploymentPlot: string,
     const ulMatch = htmlString.data.match(ulRegex);
 
     if (!ulMatch) {
-      throw new Error(`No ${type} plots list for deployment plot ${deploymentPlot} for option ${subproduct} found.`);
+      throw new Error(`No ${type} plots list for deployment plot ${deploymentPlot} for option ${subProductKey} found.`);
     }
 
     const ulHtml = ulMatch[0];

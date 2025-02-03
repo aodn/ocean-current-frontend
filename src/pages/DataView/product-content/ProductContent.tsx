@@ -24,6 +24,7 @@ import { checkProductHasArgoTags } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
 import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
+import { CurrentMetersMapDataPointNames } from '@/types/currentMeters';
 import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
 import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
 import DataImageWithCurrentMetersPlots from '../data-image/DataImageWithCurrentMetersPlots';
@@ -204,7 +205,12 @@ const ProductContent: React.FC = () => {
         />
       );
     }
-    return <DataImageWithCurrentMetersPlots subProduct={useProductId} deploymentPlot={deploymentPlot} />;
+    return (
+      <DataImageWithCurrentMetersPlots
+        subProductKey={useProductId as CurrentMetersSubproductsKey}
+        deploymentPlot={deploymentPlot as CurrentMetersMapDataPointNames}
+      />
+    );
   }
 
   return (
