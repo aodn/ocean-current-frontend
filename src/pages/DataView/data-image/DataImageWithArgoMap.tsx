@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { getArgoProfileCyclesByWmoId } from '@/services/argo';
 import { findMostRecentDateBefore } from '@/utils/date-utils/date';
 import { calculateImageScales } from '@/utils/general-utils/general';
@@ -9,7 +9,14 @@ import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { RegionScope } from '@/constants/region';
 import { useImageArgoTags } from '@/services/hooks';
-import { DataImageWithArgoMapProps } from './types/DataImageWithArgoMap.types';
+
+type DataImageWithArgoMapProps = {
+  src: string;
+  productId: string;
+  regionCode: string;
+  regionScope?: RegionScope;
+  date: Dayjs;
+};
 
 const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   src,

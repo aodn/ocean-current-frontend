@@ -9,14 +9,15 @@ import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '
 import { CurrentMetersMapDataPointNames, CurrentMetersImageDataPoints } from '@/types/currentMeters';
 import { Product } from '@/types/product';
 import { currentMetersMapDataPointsFlat } from '@/data/current-meter/mapDataPoints';
+import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 
-interface DataImageWithCurrentMetersMapProps {
+type DataImageWithCurrentMetersMapProps = {
   mainProduct: Product | null;
   src: string;
   productId: string;
-  regionCode: string;
+  regionCode: CurrentMetersRegion;
   date: string;
-}
+};
 
 const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps> = ({
   mainProduct,
@@ -25,11 +26,19 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
   regionCode,
   date,
 }) => {
-  const regionArr = currentMetersRegionAreasMap[regionCode as CurrentMetersRegion];
+  const regionArr = currentMetersRegionAreasMap[regionCode];
   const [_, setSearchParams] = useSearchParams();
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const [areas, setAreas] = useState<CurrentMetersImageDataPoints[]>(regionArr);
+
+  useEffect(() => {
+    if (!src) setImgLoadError('Missing Image');
+  }, [src]);
+
+  if (imgLoadError) {
+    return <ErrorImage product={mainProduct!} date={dayjs(date)} />;
+  }
 
   const handleAreaClick = (area: CurrentMetersImageDataPoints) => {
     const { type, code, name } = area;
@@ -53,7 +62,7 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
         property: CurrentMetersProperty.vrms,
         depth: CurrentMetersDepth.ONE,
         region: getRegion,
-        date: '0000',
+        date: yearOptionsData[0].id, // all time
         deploymentPlot: name,
       });
     }
@@ -67,14 +76,6 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
       setAreas(convertedCoords);
     }
   };
-
-  useEffect(() => {
-    if (!src) setImgLoadError('Missing Image');
-  }, [src]);
-
-  if (imgLoadError) {
-    return <ErrorImage product={mainProduct!} date={dayjs(date)} />;
-  }
 
   return (
     <div className="relative inline-block w-full">
