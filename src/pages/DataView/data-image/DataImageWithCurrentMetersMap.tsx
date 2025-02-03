@@ -53,7 +53,7 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
         property: CurrentMetersProperty.vrms,
         depth: CurrentMetersDepth.ONE,
         region: getRegion,
-        date: date,
+        date: '0000',
         deploymentPlot: name,
       });
     }
