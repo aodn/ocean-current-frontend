@@ -111,7 +111,8 @@ const CurrentMetersOptions: React.FC<CurrentMetersOptionsProp> = ({ subProduct }
 
   const handleRegionChange = (id: string) => {
     setRegion(id as CurrentMetersRegion);
-    setSearchParams({ ...stdParams, region: id });
+    setDeploymentPlot('');
+    setSearchParams({ ...stdParams, region: id, deploymentPlot: '' });
   };
 
   const handleDeploymentPlotChange = (id: string) => {
