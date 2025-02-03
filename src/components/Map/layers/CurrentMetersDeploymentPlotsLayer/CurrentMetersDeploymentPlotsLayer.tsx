@@ -8,7 +8,7 @@ import useCurrentMetersStore, { setDeploymentPlot } from '@/stores/current-meter
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { CurrentMetersDepth, CurrentMetersProperty } from '@/constants/currentMeters';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
-import getCurrentMetersDeploymentPlotsData from '../../utils/getCurrentMetersDeploymentPlotsData';
+import getCurrentMetersDeploymentPlotsGeoJson from '../../utils/getCurrentMetersDeploymentPlotsGeoJson';
 
 interface ArgoAsProductLayerRendererProps {
   isMiniMap: boolean;
@@ -30,7 +30,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
   const eventAdded = useRef(false);
   const { updateQueryParams } = useQueryParams();
 
-  const currentMetersMapPointsGeoJson = useMemo(() => getCurrentMetersDeploymentPlotsData(subProduct), [subProduct]);
+  const currentMetersMapPointsGeoJson = useMemo(() => getCurrentMetersDeploymentPlotsGeoJson(subProduct), [subProduct]);
 
   const handleMouseClick = useCallback(
     (e: MapMouseEvent) => {

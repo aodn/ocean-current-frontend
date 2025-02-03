@@ -10,7 +10,7 @@ import {
 import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
 import { SubProduct } from '@/types/product';
 
-const getCurrentMetersDeploymentPlotsData = (subProduct: SubProduct | null) => {
+const getCurrentMetersDeploymentPlotsGeoJson = (subProduct: SubProduct | null) => {
   // filter out deployment points available for selected subproduct
   const dataSetbySubProduct = currentMetersMapDataPointsFlat.filter((point) => {
     switch (subProduct?.key) {
@@ -50,4 +50,4 @@ const getCurrentMetersDeploymentPlotsData = (subProduct: SubProduct | null) => {
   return currentMetersMapPointsGeoJson;
 };
 
-export default getCurrentMetersDeploymentPlotsData;
+export default getCurrentMetersDeploymentPlotsGeoJson;
