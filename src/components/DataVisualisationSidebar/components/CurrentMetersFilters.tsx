@@ -27,11 +27,11 @@ import { SubProduct } from '@/types/product';
 import { getDeploymentPlotsBySubProduct } from '@/components/Map/utils/mapUtils';
 import { currentMetersMapDataPointsFlat } from '@/data/current-meter/mapDataPoints';
 
-interface CurrentMetersOptionsProp {
+interface CurrentMetersFiltersProp {
   subProduct: SubProduct | null;
 }
 
-const CurrentMetersOptions: React.FC<CurrentMetersOptionsProp> = ({ subProduct }) => {
+const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }) => {
   const { property, depth, region, date, deploymentPlot } = useCurrentMetersStore();
   const [searchParams, setSearchParams] = useSearchParams();
   const [deploymentPlotOptions, setDeploymentPlotOptions] = useState<CurrentMetersDeploymentPlotsOptions[]>(
@@ -209,4 +209,4 @@ const CurrentMetersOptions: React.FC<CurrentMetersOptionsProp> = ({ subProduct }
   );
 };
 
-export default CurrentMetersOptions;
+export default CurrentMetersFilters;
