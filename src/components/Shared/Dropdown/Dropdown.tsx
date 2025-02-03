@@ -4,7 +4,7 @@ import ArrowIcon from '@/assets/icons/Arrow';
 import { DropdownElement, DropdownProps } from './types/dropdown.types';
 
 const Dropdown: React.FC<DropdownProps> = ({
-  showIcons,
+  showIcons = false,
   elements,
   selectedId,
   onChange,

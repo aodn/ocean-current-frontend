@@ -82,7 +82,6 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
       <div className="mb-2 flex items-center justify-between gap-3 font-sans font-medium text-imos-dark-grey">
         <div className="flex h-11 grow items-center justify-between rounded-md bg-white">
           {isCurrentMeters ? (
-            // placeholder until a design is available
             <Dropdown
               elements={
                 productId === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY && !deploymentPlot
@@ -90,7 +89,6 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
                   : [yearOptionsData[0]]
               }
               selectedId={currentMetersDate as string}
-              showIcons={false}
               onChange={(elem) => handleCurrentMetersDateChange(elem.id)}
             />
           ) : (

@@ -6,7 +6,7 @@ import { useQueryParams } from '@/hooks';
 import { CurrentMetersProfileProperties } from '@/types/geo';
 import useCurrentMetersStore, { setDeploymentPlot } from '@/stores/current-meters-store/currentMeters';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
-import { CurrentMetersDepth, CurrentMetersProperty } from '@/constants/currentMeters';
+import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
 import getCurrentMetersDeploymentPlotsGeoJson from '../../utils/getCurrentMetersDeploymentPlotsGeoJson';
 
@@ -19,7 +19,7 @@ const hoverCircleRadius = 8;
 const selectedCircleRadius = 12;
 
 const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProps> = ({ isMiniMap }) => {
-  const { deploymentPlot: selectedDeploymentPlot, date: currentMetersDate } = useCurrentMetersStore();
+  const { deploymentPlot: selectedDeploymentPlot } = useCurrentMetersStore();
   const { CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID } = mapboxSourceIds;
   const { CURRENT_METERS_BOX_LAYER_ID, CURRENT_METERS_SELECTED_BOX_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =
     mapboxLayerIds;
@@ -62,24 +62,14 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
           updateQueryParams({
             deploymentPlot: title,
             region,
-            property: CurrentMetersProperty.vrms,
-            depth: CurrentMetersDepth.ONE,
-            date: currentMetersDate,
+            date: yearOptionsData[0].id, // all time
           });
         }
       } catch (error) {
         console.error(error);
       }
     },
-    [
-      map,
-      CURRENT_METERS_BOX_LAYER_ID,
-      selectedDeploymentPlot,
-      isMiniMap,
-      navigate,
-      updateQueryParams,
-      currentMetersDate,
-    ],
+    [map, CURRENT_METERS_BOX_LAYER_ID, selectedDeploymentPlot, isMiniMap, navigate, updateQueryParams],
   );
 
   const handleMouseMove = useCallback(
@@ -169,17 +159,14 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
     PRODUCT_REGION_BOX_LAYER_ID,
   ]);
 
-  const mapFlyToPoint = useCallback(
-    (coordinates: [number, number]) => {
+  useEffect(() => {
+    if (!map || !isMiniMap) return;
+
+    const mapFlyToPoint = (coordinates: [number, number]) => {
       if (map) {
         map.flyTo({ center: coordinates, duration: 800 });
       }
-    },
-    [map],
-  );
-
-  useEffect(() => {
-    if (!map || !isMiniMap) return;
+    };
 
     const selectedDeploymentPointData = currentMetersMapPointsGeoJson.features.find(
       (point) => point.properties?.title === selectedDeploymentPlot,
@@ -188,7 +175,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
     if (selectedDeploymentPointData?.geometry.coordinates) {
       mapFlyToPoint(selectedDeploymentPointData?.geometry.coordinates);
     }
-  }, [currentMetersMapPointsGeoJson, isMiniMap, map, mapFlyToPoint, selectedDeploymentPlot]);
+  }, [currentMetersMapPointsGeoJson, isMiniMap, map, selectedDeploymentPlot]);
 
   return (
     <Source type="geojson" data={currentMetersMapPointsGeoJson} id={CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID}>

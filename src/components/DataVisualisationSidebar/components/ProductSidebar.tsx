@@ -13,6 +13,7 @@ import ArrowWithTail from '@/assets/icons/ArrowWithTail';
 import { GeneralText, ProductSidebarText } from '@/constants/textConstant';
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
 import { setCurrentMetersDate, setDepth, setProperty, setRegion } from '@/stores/current-meters-store/currentMeters';
+import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
 import SidebarProductDropdown from './SidebarProductDropdown';
@@ -86,14 +87,16 @@ const ProductSideBar: React.FC = () => {
 
     let updateParam = {};
     if (isCurrentMeters && subProductPath !== 'moored-instrument-array') {
+      const allTime = yearOptionsData[0].id;
+
       setRegion(CurrentMetersRegion.Aust);
       setDepth(CurrentMetersDepth.ONE);
       setProperty(CurrentMetersProperty.vrms);
-      setCurrentMetersDate('0000');
+      setCurrentMetersDate(allTime);
       updateParam = {
         region: CurrentMetersRegion.Aust,
         property: CurrentMetersProperty.vrms,
-        date: '0000',
+        date: allTime,
         depth: CurrentMetersDepth.ONE,
       };
     }

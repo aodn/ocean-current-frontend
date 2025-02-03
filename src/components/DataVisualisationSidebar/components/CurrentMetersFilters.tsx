@@ -39,6 +39,7 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
   );
   const subProductKey = subProduct?.key;
   const isMooredInstrumentArraySubProduct = subProductKey === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY;
+  const allTimeOption = yearOptionsData[0].id;
 
   const stdParams = useMemo(() => {
     return {
@@ -52,7 +53,9 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
 
   // update deployment plots list and default option when switching subproducts
   useEffect(() => {
-    const plotsList = getDeploymentPlotsBySubProduct(subProductKey ?? '');
+    if (!subProductKey) return;
+
+    const plotsList = getDeploymentPlotsBySubProduct(subProductKey);
     setDeploymentPlotOptions(plotsList);
 
     if (!plotsList.some((plot) => plot.id === deploymentPlot)) {
@@ -103,12 +106,13 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
       : [depthOptionsData[0]];
 
   const propertyOptions =
-    depth === CurrentMetersDepth.ONE && date === yearOptionsData[0].id
+    depth === CurrentMetersDepth.ONE && date === allTimeOption
       ? propertyOptionsData
       : propertyOptionsData.filter(
           (prop) => prop.id === CurrentMetersProperty.vmean || prop.id === CurrentMetersProperty.vrms,
         );
 
+  // clear deployment plot selection when region changes
   const handleRegionChange = (id: string) => {
     setRegion(id as CurrentMetersRegion);
     setDeploymentPlot('');
@@ -116,15 +120,18 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
   };
 
   const handleDeploymentPlotChange = (id: string) => {
+    // all deployment plots have only one option for depth, property and date
     if (depth !== CurrentMetersDepth.ONE) {
       setDepth(CurrentMetersDepth.ONE);
     }
     if (property !== CurrentMetersProperty.vrms) {
       setProperty(CurrentMetersProperty.vrms);
     }
-    if (date !== '0000') {
-      setCurrentMetersDate('0000');
+    if (date !== allTimeOption) {
+      setCurrentMetersDate(allTimeOption);
     }
+
+    // update the region to the corresponding deployment plot selected
     const correctRegion =
       currentMetersMapDataPointsFlat.find((point) => point.name === id)?.region ?? CurrentMetersRegion.Aust;
     if (correctRegion !== region) {
@@ -135,7 +142,7 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
     setSearchParams({
       region: correctRegion,
       deploymentPlot: id,
-      date: '0000',
+      date: allTimeOption,
       property: CurrentMetersProperty.vrms,
       depth: CurrentMetersDepth.ONE,
     });
@@ -158,7 +165,6 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
         <Dropdown
           elements={regionsOptions}
           selectedId={region}
-          showIcons={false}
           onChange={(elem) => handleRegionChange(elem.id)}
           smallDropdown
         />
@@ -168,8 +174,7 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
         <h3 className="py-2 text-lg font-medium text-imos-grey">{ProductSidebarText.DEPLOYMENT_PLOT}</h3>
         <Dropdown
           elements={deploymentPlotOptions}
-          selectedId={deploymentPlot ?? ''}
-          showIcons={false}
+          selectedId={deploymentPlot}
           onChange={(elem) => handleDeploymentPlotChange(elem.id)}
           smallDropdown
         />
@@ -181,7 +186,6 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
           elements={depthOptions}
           selectedId={depth}
           onChange={(elem) => handleDepthChange(elem.id)}
-          showIcons={false}
           smallDropdown
         />
       </div>

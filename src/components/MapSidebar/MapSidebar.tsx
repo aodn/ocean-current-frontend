@@ -3,6 +3,7 @@ import useProductStore, { setProductId } from '@/stores/product-store/productSto
 import { getProductPathWithSubProduct } from '@/utils/product-utils/product';
 import { sidebarProductsNav } from '@/data/sidebarProductsNav';
 import { useDateRange, useQueryParams } from '@/hooks';
+import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { DropdownElement } from '../Shared/Dropdown/types/dropdown.types';
 
 const MapSidebar: React.FC = () => {
@@ -25,9 +26,8 @@ const MapSidebar: React.FC = () => {
       queryToUpdate = { date: selectedDate, region: 'Brisbane' };
     }
 
-    // set date as null as the default is all time period
     if (id === 'currentMeters') {
-      queryToUpdate = { date: null, region: null };
+      queryToUpdate = { date: yearOptionsData[0].id, region: null };
     }
 
     const targetPath = getProductPathWithSubProduct(id);

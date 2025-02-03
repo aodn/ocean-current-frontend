@@ -9,7 +9,8 @@ const getCurrentMetersPlots = async (
   type: CurrentMetersPlotPath,
 ) => {
   if (!subProductKey || !deploymentPlot) {
-    throw new Error('Mising subproduct and/or deployment plot information.');
+    console.error('Mising subproduct and/or deployment plot information.');
+    return;
   }
 
   const folder = subProductKey === 'currentMeters-shelf' ? 'ANMN_P49' : 'ANMN_P48';
@@ -25,7 +26,8 @@ const getCurrentMetersPlots = async (
     const ulMatch = htmlString.data.match(ulRegex);
 
     if (!ulMatch) {
-      throw new Error(`No ${type} plots list for deployment plot ${deploymentPlot} for option ${subProductKey} found.`);
+      console.error(`No ${type} plots list for deployment plot ${deploymentPlot} for option ${subProductKey} found.`);
+      return;
     }
 
     const ulHtml = ulMatch[0];
