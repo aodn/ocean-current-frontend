@@ -4,7 +4,7 @@ import { RegionScope } from '@/constants/region';
 import { imageBaseUrl, imageS3BaseUrl } from '@/configs/image';
 import {
   CurrentMetersDepth,
-  CurrentMetersPlotType,
+  CurrentMetersPlotPath,
   CurrentMetersProperty,
   CurrentMetersRegion,
 } from '@/constants/currentMeters';
@@ -175,7 +175,7 @@ const buildCurrentMetersMapImageUrl = (
 const buildCurrentMetersDataImageUrl = (
   subProduct: string,
   deploymentPlot: string | CurrentMetersMapDataPointNames,
-  type: CurrentMetersPlotType,
+  type: CurrentMetersPlotPath,
   plotId: string,
 ) => {
   const folder = subProduct === 'currentMeters-shelf' ? 'ANMN_P49' : 'ANMN_P48';

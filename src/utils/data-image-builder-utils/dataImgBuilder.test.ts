@@ -3,7 +3,7 @@ import { TargetPathRegionScope } from '@/constants/imgPath';
 import { imageBaseUrl } from '@/configs/image';
 import {
   CurrentMetersDepth,
-  CurrentMetersPlotType,
+  CurrentMetersPlotPath,
   CurrentMetersProperty,
   CurrentMetersRegion,
   CurrentMetersSubproductsKey,
@@ -583,7 +583,7 @@ describe('buildCurrentMetersDataImageUrl', () => {
     // Arrange
     const subProduct = CurrentMetersSubproductsKey.SOUTHERN_OCEAN;
     const deploymentPlot = 'TOTTEN1';
-    const type = CurrentMetersPlotType.VELOCITY_VECTOR;
+    const type = CurrentMetersPlotPath.VELOCITY_VECTOR;
     const plotId = 'TOTTEN1-WORKHORSE-ADCP-14489_xyz';
 
     // Act

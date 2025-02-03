@@ -52,7 +52,7 @@ export enum CurrentMetersDepth {
   NINE = '9',
 }
 
-export enum CurrentMetersPlotType {
+export enum CurrentMetersPlotPath {
   VELOCITY_VECTOR = 'xyz',
   DEPTH_TIME = 'zt',
 }

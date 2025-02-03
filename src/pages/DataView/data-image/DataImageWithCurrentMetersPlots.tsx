@@ -4,7 +4,7 @@ import { Dropdown, Loading } from '@/components/Shared';
 import { getCurrentMetersPlots } from '@/services/currentMeters';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import { buildCurrentMetersDataImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
-import { CurrentMetersPlotTitle, CurrentMetersPlotType } from '@/constants/currentMeters';
+import { CurrentMetersPlotTitle, CurrentMetersPlotPath } from '@/constants/currentMeters';
 import { DataImageWithCurrentMetersPlotsProps } from './types/DataImageWithCurrentMetersPlots.types';
 
 const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsProps> = ({
@@ -63,7 +63,7 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
             src={buildCurrentMetersDataImageUrl(
               subProduct,
               deploymentPlot ?? '',
-              CurrentMetersPlotType.VELOCITY_VECTOR,
+              CurrentMetersPlotPath.VELOCITY_VECTOR,
               selectedVelocity,
             )}
             alt={`Layer-average velocity vector scatter plots for deployment plot ${deploymentPlot}`}
@@ -90,7 +90,7 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
             src={buildCurrentMetersDataImageUrl(
               subProduct,
               deploymentPlot ?? '',
-              CurrentMetersPlotType.DEPTH_TIME,
+              CurrentMetersPlotPath.DEPTH_TIME,
               selectedDepthTime,
             )}
             alt={`Depth-time plots for deployment plot ${deploymentPlot}`}
