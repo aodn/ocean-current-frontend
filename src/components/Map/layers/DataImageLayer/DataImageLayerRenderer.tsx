@@ -1,108 +1,57 @@
-import React, { useEffect, useState } from 'react';
-import { Layer, Source, useMap } from 'react-map-gl';
-import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
-import { useArrayCompareEffect } from '@/hooks';
+import { useEffect } from 'react';
+import { useMap } from 'react-map-gl';
+import { mapboxLayerIds } from '@/constants/mapboxId';
 
-const DataImageLayerRenderer: React.FC<{ imageUrl: string }> = ({ imageUrl }) => {
-  const { DATA_IMAGE_SOURCE_ID } = mapboxSourceIds;
-  const { DATA_IMAGE_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
+type DataImageLayerRendererProps = {
+  imageUrl: string;
+  productId: string;
+};
 
-  const [hasCycledFirstAdjSLA, setHasCycledFirstAdjSLA] = useState<boolean>(false);
-  const [imageCoords, setImageCoords] = useState([
-    [100, -4.4],
-    [180, -4.4],
-    [180, -48],
-    [100, -48],
-  ]);
-  const [layers, setLayers] = useState<string[]>([]);
+// eslint-disable-next-line react/prop-types
+const DataImageLayerRenderer: React.FC<DataImageLayerRendererProps> = ({ imageUrl, productId }) => {
+  const { PRODUCT_REGION_BOX_LAYER_ID } = mapboxLayerIds;
   const { current: map } = useMap();
 
   useEffect(() => {
-    if (imageUrl.includes('GSLA_entry')) setHasCycledFirstAdjSLA(true);
-  }, [imageUrl]);
+    const mapLayer = map?.getMap();
+    if (!map || !mapLayer || !productId) return;
+    const addLayerToMap = () => {
+      if (mapLayer && !mapLayer.getSource(productId)) {
+        mapLayer.addSource(productId, {
+          type: 'image',
+          url: imageUrl,
+          coordinates: [
+            [100, -4.4],
+            [180, -4.4],
+            [180, -48],
+            [100, -48],
+          ],
+        });
 
-  useEffect(() => {
-    if (hasCycledFirstAdjSLA) {
-      if (imageUrl.includes('GSLA_entry')) {
-        setImageCoords([
-          [100, -4.4],
-          [180, -4.4],
-          [180, -48],
-          [100, -48],
-        ]);
-      } else {
-        setImageCoords([
-          [100, -4.4],
-          [200, -4.4],
-          [200, -55],
-          [100, -55],
-        ]);
+        mapLayer.addLayer({
+          id: productId,
+          type: 'raster',
+          source: productId,
+        });
       }
-    }
-  }, [hasCycledFirstAdjSLA, imageUrl]);
 
-  useEffect(() => {
-    if (!map) return;
-
-    const repositionImageLayer = () => {
-      const layers = map?.getStyle()?.layers;
-      if (map.isStyleLoaded()) {
-        const currentLayers = map?.getStyle()?.layers.map((layer) => layer.id);
-        if (currentLayers && JSON.stringify(currentLayers) !== JSON.stringify(layers)) {
-          setLayers(currentLayers);
-        }
-      }
+      map.moveLayer(productId, PRODUCT_REGION_BOX_LAYER_ID);
     };
 
-    map.on('load', repositionImageLayer);
-    map.on('styledata', repositionImageLayer);
-    map.on('sourcedataloading', repositionImageLayer);
-    map.on('sourcedataabort', repositionImageLayer);
+    map.on('load', addLayerToMap);
+    map.on('styledata', addLayerToMap);
+    map.on('sourcedataloading', addLayerToMap);
+    map.on('sourcedataabort', addLayerToMap);
 
     return () => {
-      map.off('load', repositionImageLayer);
-      map.off('styledata', repositionImageLayer);
-      map.off('sourcedataloading', repositionImageLayer);
-      map.off('sourcedataabort', repositionImageLayer);
+      map.off('load', addLayerToMap);
+      map.off('styledata', addLayerToMap);
+      map.off('sourcedataloading', addLayerToMap);
+      map.off('sourcedataabort', addLayerToMap);
     };
-  }, [DATA_IMAGE_LAYER_ID, map]);
-  // console.log('map', map?.getLayer(DATA_IMAGE_LAYER_ID));
+  }, [PRODUCT_REGION_BOX_LAYER_ID, imageUrl, map, productId]);
 
-  useArrayCompareEffect(() => {
-    if (!map) return;
-    const polygonLayers = layers.filter(
-      (layer) => layer.includes(PRODUCT_REGION_BOX_LAYER_ID) || layer.includes(ARGO_AS_PRODUCT_POINT_LAYER_ID),
-    );
-
-    if (polygonLayers.length > 0 && layers.includes(DATA_IMAGE_LAYER_ID)) {
-      const bottomPolygonLayer = polygonLayers[0];
-
-      map.moveLayer(DATA_IMAGE_LAYER_ID, bottomPolygonLayer);
-    }
-  }, layers);
-
-  return (
-    <div>
-      <Source
-        id={DATA_IMAGE_SOURCE_ID}
-        type="image"
-        url={imageUrl}
-        // TODO: read the coordinates from the regionData.ts and convert it to the format below
-        coordinates={imageCoords}
-        // height={625}
-        // wifth={1000}
-      >
-        <Layer
-          id={DATA_IMAGE_LAYER_ID}
-          type="raster"
-          source={DATA_IMAGE_SOURCE_ID}
-          paint={{
-            'raster-fade-duration': 0,
-          }}
-        />
-      </Source>
-    </div>
-  );
+  return <></>;
 };
 
 export default DataImageLayerRenderer;
