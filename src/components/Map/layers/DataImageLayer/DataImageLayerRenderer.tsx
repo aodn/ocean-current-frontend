@@ -15,6 +15,7 @@ const DataImageLayerRenderer: React.FC<DataImageLayerRendererProps> = ({ imageUr
   useEffect(() => {
     const mapLayer = map?.getMap();
     if (!map || !mapLayer || !productId) return;
+
     const addLayerToMap = () => {
       if (mapLayer && !mapLayer.getSource(productId)) {
         mapLayer.addSource(productId, {
@@ -34,22 +35,38 @@ const DataImageLayerRenderer: React.FC<DataImageLayerRendererProps> = ({ imageUr
           source: productId,
         });
       }
-
-      map.moveLayer(productId, PRODUCT_REGION_BOX_LAYER_ID);
     };
 
-    map.on('load', addLayerToMap);
-    map.on('styledata', addLayerToMap);
-    map.on('sourcedataloading', addLayerToMap);
-    map.on('sourcedataabort', addLayerToMap);
+    // event will make sure other custom layers are loaded before adding image layer
+    // to handle race condition for the addition of region boxes
+    map.on('sourcedata', addLayerToMap);
 
     return () => {
-      map.off('load', addLayerToMap);
-      map.off('styledata', addLayerToMap);
-      map.off('sourcedataloading', addLayerToMap);
-      map.off('sourcedataabort', addLayerToMap);
+      map.off('sourcedata', addLayerToMap);
     };
-  }, [PRODUCT_REGION_BOX_LAYER_ID, imageUrl, map, productId]);
+  }, [imageUrl, map, productId]);
+
+  useEffect(() => {
+    const mapLayer = map?.getMap();
+    if (!map || !mapLayer || !productId) return;
+    const addLayerToMapThenMove = () => {
+      const layers = mapLayer.getStyle()?.layers.map((layer) => layer.id);
+      const currProdLayerIndex = layers?.indexOf(productId) ?? 0;
+      const regionBoxLayerIndex = layers?.indexOf(PRODUCT_REGION_BOX_LAYER_ID) ?? 0;
+
+      // if the current image layer is not immediately before the region box layer, move the image layer
+      if (currProdLayerIndex > 0 && regionBoxLayerIndex > 0 && currProdLayerIndex !== regionBoxLayerIndex - 1) {
+        map.moveLayer(productId, PRODUCT_REGION_BOX_LAYER_ID);
+      }
+    };
+
+    // event detects when image source changes
+    map.on('sourcedataloading', addLayerToMapThenMove);
+
+    return () => {
+      map.off('sourcedataloading', addLayerToMapThenMove);
+    };
+  }, [PRODUCT_REGION_BOX_LAYER_ID, map, productId]);
 
   return <></>;
 };
