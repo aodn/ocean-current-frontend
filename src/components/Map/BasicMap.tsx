@@ -26,7 +26,6 @@ const BasicMap: React.FC<BasicMapProps> = ({
   navigationControl = true,
   showCursorLocationPanel = true,
   minZoom,
-  shouldFitArgoBounds = false,
 }) => {
   const [cursor, setCursor] = useState<string>('grab');
   const [cursorLngLat, setCursorLngLat] = useState<{ lng: number; lat: number } | null>(null);
@@ -64,9 +63,9 @@ const BasicMap: React.FC<BasicMapProps> = ({
       regionPolygonLayer: (
         <RegionPolygonLayer shouldKeepNationalRegion={!isMiniMap} shouldFitNationalRegionBounds={isMiniMap} />
       ),
-      argoAsProductLayer: <ArgoAsProductLayer isMiniMap={isMiniMap} shouldFitBounds={shouldFitArgoBounds} />,
+      argoAsProductLayer: <ArgoAsProductLayer isMiniMap={isMiniMap} isArgo={isArgo} />,
     }),
-    [isMiniMap, shouldFitArgoBounds],
+    [isMiniMap, isArgo],
   );
 
   if (!mapConfig.accessToken) {

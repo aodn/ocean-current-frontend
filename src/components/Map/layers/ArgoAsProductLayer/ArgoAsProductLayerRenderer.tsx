@@ -12,13 +12,9 @@ import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
 interface ArgoAsProductLayerRendererProps {
   isMiniMap: boolean;
   argoData: ArgoProfileFeatureCollection;
-  shouldFitBounds?: boolean;
+  isArgo?: boolean;
 }
-const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
-  isMiniMap,
-  argoData,
-  shouldFitBounds = false,
-}) => {
+const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({ isMiniMap, argoData, isArgo }) => {
   const { worldMeteorologicalOrgId: selectedWorldMeteorologicalOrgId } = useArgoStore(
     (state) => state.selectedArgoParams,
   );
@@ -179,8 +175,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
   }, [map, mapFlyToPoint, argoData, selectedWorldMeteorologicalOrgId, isMiniMap]);
 
   useEffect(() => {
-    const shouldSkipMapBoundsUpdate =
-      !map || !shouldFitBounds || isMiniMap || !argoData || argoData.features.length === 0;
+    const shouldSkipMapBoundsUpdate = !map || !isArgo || isMiniMap || !argoData || argoData.features.length === 0;
     if (shouldSkipMapBoundsUpdate) return;
 
     const allCoordinates = argoData?.features.map((feature) => feature.geometry.coordinates);
@@ -189,35 +184,52 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
     map.fitBounds(bounds, {
       padding: 30,
     });
-  }, [map, argoData, isMiniMap, shouldFitBounds]);
+  }, [map, argoData, isMiniMap, isArgo]);
 
   return (
-    <Source id={ARGO_AS_PRODUCT_SOURCE_ID} type="geojson" data={argoData}>
-      <Layer
-        id={ARGO_AS_PRODUCT_SELECTED_POINT_LAYER_ID}
-        type="circle"
-        source={ARGO_AS_PRODUCT_SOURCE_ID}
-        paint={{
-          'circle-radius': selectedCircleRadius,
-          'circle-color': 'white',
-          'circle-opacity': 0.5,
-          'circle-stroke-width': 1,
-          'circle-stroke-color': 'white',
-        }}
-        filter={['==', 'worldMeteorologicalOrgId', selectedWorldMeteorologicalOrgId]}
-      />
-      <Layer
-        id={ARGO_AS_PRODUCT_POINT_LAYER_ID}
-        type="circle"
-        source={ARGO_AS_PRODUCT_SOURCE_ID}
-        paint={{
-          'circle-radius': ['case', ['boolean', ['feature-state', 'hover'], false], hoverCircleRadius, circleRadius],
-          'circle-color': '#524DAB',
-          'circle-stroke-width': 1,
-          'circle-stroke-color': 'white',
-        }}
-      />
-    </Source>
+    <>
+      <Source id={ARGO_AS_PRODUCT_SOURCE_ID} type="geojson" data={argoData}>
+        <Layer
+          id={ARGO_AS_PRODUCT_SELECTED_POINT_LAYER_ID}
+          type="circle"
+          source={ARGO_AS_PRODUCT_SOURCE_ID}
+          paint={{
+            'circle-radius': selectedCircleRadius,
+            'circle-color': 'white',
+            'circle-opacity': 0.5,
+            'circle-stroke-width': 1,
+            'circle-stroke-color': 'white',
+          }}
+          filter={['==', 'worldMeteorologicalOrgId', selectedWorldMeteorologicalOrgId]}
+        />
+        <Layer
+          id={ARGO_AS_PRODUCT_POINT_LAYER_ID}
+          type="circle"
+          source={ARGO_AS_PRODUCT_SOURCE_ID}
+          paint={{
+            'circle-radius': ['case', ['boolean', ['feature-state', 'hover'], false], hoverCircleRadius, circleRadius],
+            'circle-color': '#524DAB',
+            'circle-stroke-width': 1,
+            'circle-stroke-color': 'white',
+          }}
+        />
+      </Source>
+      {isArgo && (
+        <Source
+          id="adjustedSeaLevelAnomaly-sla"
+          type="image"
+          url="/api/GSLA_entry/latest.gif"
+          coordinates={[
+            [100, -4.4],
+            [180, -4.4],
+            [180, -48],
+            [100, -48],
+          ]}
+        >
+          <Layer id="adjustedSeaLevelAnomaly-sla" type="raster" source="adjustedSeaLevelAnomaly-sla" />
+        </Source>
+      )}
+    </>
   );
 };
 
