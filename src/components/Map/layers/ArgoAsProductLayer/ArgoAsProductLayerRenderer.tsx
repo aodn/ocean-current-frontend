@@ -214,6 +214,10 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
           }}
         />
       </Source>
+      {/* 
+        Argo uses the same image as adjustedSLA.
+        We need this layer here as the change in bounds update breaks the map.
+      */}
       {isArgo && (
         <Source
           id="adjustedSeaLevelAnomaly-sla"
