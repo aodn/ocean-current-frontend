@@ -16,6 +16,7 @@ const productsWithImage = [
   'adjustedSeaLevelAnomaly-sla',
   'oceanColour-chlA',
   'sixDaySst-sst',
+  'snapshotSst',
 ];
 const { PRODUCT_REGION_BOX_LAYER_ID } = mapboxLayerIds;
 
