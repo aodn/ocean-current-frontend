@@ -14,13 +14,14 @@ interface ArgoAsProductLayerRendererProps {
   argoData: ArgoProfileFeatureCollection;
   isArgo?: boolean;
 }
+const { ARGO_AS_PRODUCT_SOURCE_ID } = mapboxSourceIds;
+const { ARGO_AS_PRODUCT_SELECTED_POINT_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =
+  mapboxLayerIds;
+
 const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({ isMiniMap, argoData, isArgo }) => {
   const { worldMeteorologicalOrgId: selectedWorldMeteorologicalOrgId } = useArgoStore(
     (state) => state.selectedArgoParams,
   );
-  const { ARGO_AS_PRODUCT_SELECTED_POINT_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =
-    mapboxLayerIds;
-  const { ARGO_AS_PRODUCT_SOURCE_ID } = mapboxSourceIds;
 
   const [hoveredFeatureId, setHoveredFeatureId] = useState<number | string | null>(null);
 
@@ -75,7 +76,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         console.error(error);
       }
     },
-    [map, selectedWorldMeteorologicalOrgId, navigate, updateQueryParams, isMiniMap, ARGO_AS_PRODUCT_POINT_LAYER_ID],
+    [map, selectedWorldMeteorologicalOrgId, navigate, updateQueryParams, isMiniMap],
   );
 
   const handleMouseMove = useCallback(
@@ -113,7 +114,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         setHoveredFeatureId(hoveredFeature.id!);
       }
     },
-    [map, hoveredFeatureId, ARGO_AS_PRODUCT_POINT_LAYER_ID, ARGO_AS_PRODUCT_SOURCE_ID],
+    [map, hoveredFeatureId],
   );
 
   const handleMouseLeave = useCallback(() => {
@@ -134,7 +135,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
     if (hoveredFeatureId !== null) {
       setHoveredFeatureId(null);
     }
-  }, [map, hoveredFeatureId, ARGO_AS_PRODUCT_SOURCE_ID]);
+  }, [map, hoveredFeatureId]);
 
   useEffect(() => {
     if (!map) return;
@@ -154,14 +155,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         eventAdded.current = false;
       }
     };
-  }, [
-    map,
-    handleMouseClick,
-    handleMouseMove,
-    handleMouseLeave,
-    ARGO_AS_PRODUCT_POINT_LAYER_ID,
-    PRODUCT_REGION_BOX_LAYER_ID,
-  ]);
+  }, [map, handleMouseClick, handleMouseMove, handleMouseLeave]);
 
   useEffect(() => {
     if (!map || !isMiniMap) return;

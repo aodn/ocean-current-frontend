@@ -17,10 +17,10 @@ const productsWithImage = [
   'oceanColour-chlA',
   'sixDaySst-sst',
 ];
+const { PRODUCT_REGION_BOX_LAYER_ID } = mapboxLayerIds;
 
 // eslint-disable-next-line react/prop-types
 const DataImageLayerRenderer: React.FC<DataImageLayerRendererProps> = ({ imageUrl, productId }) => {
-  const { PRODUCT_REGION_BOX_LAYER_ID } = mapboxLayerIds;
   const { current: map } = useMap();
   const shouldHideLayer = productsWithNoImage.includes(productId);
 
@@ -87,7 +87,7 @@ const DataImageLayerRenderer: React.FC<DataImageLayerRendererProps> = ({ imageUr
   useEffect(() => {
     const mapLayer = map?.getMap();
     if (!map || !mapLayer || !productId) return;
-    const addLayerToMapThenMove = () => {
+    const moveImageLayer = () => {
       const layers = mapLayer.getStyle()?.layers.map((layer) => layer.id);
       const currProdLayerIndex = layers?.indexOf(productId) ?? 0;
       const regionBoxLayerIndex = layers?.indexOf(PRODUCT_REGION_BOX_LAYER_ID) ?? 0;
@@ -99,12 +99,12 @@ const DataImageLayerRenderer: React.FC<DataImageLayerRendererProps> = ({ imageUr
     };
 
     // event detects when image source changes
-    map.on('sourcedataloading', addLayerToMapThenMove);
+    map.on('sourcedataloading', moveImageLayer);
 
     return () => {
-      map.off('sourcedataloading', addLayerToMapThenMove);
+      map.off('sourcedataloading', moveImageLayer);
     };
-  }, [PRODUCT_REGION_BOX_LAYER_ID, map, productId]);
+  }, [map, productId]);
 
   return <></>;
 };
