@@ -6,6 +6,8 @@ import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { ArgoProfile } from '@/types/argo';
 import { useQueryParams, useDeviceType } from '@/hooks';
 import { getBoundsFromCoordsArray } from '@/utils/geo-utils/geo';
+import { productsData } from '@/pages/Home/home-map-carousel/data';
+import { getEntryImagePathByProductId } from '@/utils/data-image-builder-utils/latestEntryImage';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
 import useArgoAsProductData from '../../hooks/useArgoAsProductData';
 
@@ -16,7 +18,7 @@ interface ArgoAsProductLayerProps {
 const { ARGO_AS_PRODUCT_SOURCE_ID } = mapboxSourceIds;
 const { ARGO_AS_PRODUCT_SELECTED_POINT_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =
   mapboxLayerIds;
-
+const dataImageId = productsData[2].id;
 const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isArgo }) => {
   const { worldMeteorologicalOrgId: selectedWorldMeteorologicalOrgId } = useArgoStore(
     (state) => state.selectedArgoParams,
@@ -27,7 +29,10 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
   const { current: map } = useMap();
   const navigate = useNavigate();
   const eventAdded = useRef(false);
-
+  const dataImage = {
+    id: dataImageId,
+    url: `/api/${getEntryImagePathByProductId(dataImageId)}/latest.gif`,
+  };
   const { updateQueryParams } = useQueryParams();
   const { isMobile } = useDeviceType();
 
@@ -213,9 +218,9 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
       */}
       {isArgo && (
         <Source
-          id="adjustedSeaLevelAnomaly-sla"
+          id={dataImage.id}
           type="image"
-          url="/api/GSLA_entry/latest.gif"
+          url={dataImage.url}
           coordinates={[
             [100, -4.4],
             [180, -4.4],
@@ -223,7 +228,7 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
             [100, -48],
           ]}
         >
-          <Layer id="adjustedSeaLevelAnomaly-sla" type="raster" source="adjustedSeaLevelAnomaly-sla" />
+          <Layer id={dataImage.id} type="raster" source={dataImage.id} />
         </Source>
       )}
     </>
