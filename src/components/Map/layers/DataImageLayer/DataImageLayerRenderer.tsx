@@ -18,7 +18,7 @@ const productsWithImage = [
   'sixDaySst-sst',
   'snapshotSst',
 ];
-const { PRODUCT_REGION_BOX_LAYER_ID } = mapboxLayerIds;
+const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
 
 // eslint-disable-next-line react/prop-types
 const DataImageLayerRenderer: React.FC<DataImageLayerRendererProps> = ({ imageUrl, productId }) => {
@@ -96,6 +96,7 @@ const DataImageLayerRenderer: React.FC<DataImageLayerRendererProps> = ({ imageUr
       // if the current image layer is not immediately before the region box layer, move the image layer
       if (currProdLayerIndex > 0 && regionBoxLayerIndex > 0 && currProdLayerIndex !== regionBoxLayerIndex - 1) {
         map.moveLayer(productId, PRODUCT_REGION_BOX_LAYER_ID);
+        map.moveLayer(ARGO_AS_PRODUCT_POINT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID); // make sure argo is always on top of image
       }
     };
 
