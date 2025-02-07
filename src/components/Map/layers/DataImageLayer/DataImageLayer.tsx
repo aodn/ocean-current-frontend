@@ -8,10 +8,6 @@ const DataImageLayer: React.FC = () => {
   const correctProductId = useProductId === 'argo' ? 'adjustedSeaLevelAnomaly-sla' : useProductId;
   const urlPath = getEntryImagePathByProductId(correctProductId);
 
-  if (!urlPath) {
-    return null;
-  }
-
   const url = `/api/${urlPath}/latest.gif`;
   return <DataImageLayerRenderer imageUrl={url} productId={useProductId} />;
 };

@@ -9,6 +9,7 @@ vi.mock('react-map-gl', () => ({
   FullscreenControl: () => <div>FullscreenControl</div>,
   NavigationControl: () => <div>NavigationControl</div>,
   ViewStateChangeEvent: () => <div>ViewStateChangeEvent</div>,
+  useMap: vi.fn(() => ({})),
 }));
 
 vi.mock('../layers/RegionPolygonLayer/RegionPolygonLayer', () => {

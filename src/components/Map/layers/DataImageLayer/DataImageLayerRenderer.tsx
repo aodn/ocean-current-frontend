@@ -7,11 +7,24 @@ type DataImageLayerRendererProps = {
   productId: string;
 };
 
+const productsWithNoImage = ['monthlyMeans-anomalies', 'climatology-sst', 'EACMooringArray'];
+const productsWithImage = [
+  'argo',
+  'adjustedSeaLevelAnomaly',
+  'fourHourSst-sstFilled',
+  'surfaceWaves',
+  'adjustedSeaLevelAnomaly-sla',
+  'oceanColour-chlA',
+  'sixDaySst-sst',
+];
+
 // eslint-disable-next-line react/prop-types
 const DataImageLayerRenderer: React.FC<DataImageLayerRendererProps> = ({ imageUrl, productId }) => {
   const { PRODUCT_REGION_BOX_LAYER_ID } = mapboxLayerIds;
   const { current: map } = useMap();
+  const shouldHideLayer = productsWithNoImage.includes(productId);
 
+  // Adding Layers
   useEffect(() => {
     const mapLayer = map?.getMap();
     if (!map || !mapLayer || !productId) return;
@@ -46,6 +59,31 @@ const DataImageLayerRenderer: React.FC<DataImageLayerRendererProps> = ({ imageUr
     };
   }, [imageUrl, map, productId]);
 
+  // Layer Visibility
+  useEffect(() => {
+    const mapLayer = map?.getMap();
+    if (!map || !mapLayer || !productId) return;
+
+    const updateLayerVisibility = () => {
+      if (shouldHideLayer) {
+        productsWithImage.forEach((product) => {
+          if (mapLayer.getLayer(product)) mapLayer.setLayoutProperty(product, 'visibility', 'none');
+        });
+      } else {
+        if (mapLayer.getLayer(productId)) mapLayer.setLayoutProperty(productId, 'visibility', 'visible');
+      }
+    };
+
+    // event will make sure custom layers are done
+    // being added before updating visibility
+    map.on('sourcedata', updateLayerVisibility);
+
+    return () => {
+      map.off('sourcedata', updateLayerVisibility);
+    };
+  }, [map, productId, shouldHideLayer]);
+
+  // Moving Layers
   useEffect(() => {
     const mapLayer = map?.getMap();
     if (!map || !mapLayer || !productId) return;
