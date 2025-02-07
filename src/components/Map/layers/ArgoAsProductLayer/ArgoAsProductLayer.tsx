@@ -15,10 +15,12 @@ interface ArgoAsProductLayerProps {
   isMiniMap: boolean;
   isArgo?: boolean;
 }
+
 const { ARGO_AS_PRODUCT_SOURCE_ID } = mapboxSourceIds;
 const { ARGO_AS_PRODUCT_SELECTED_POINT_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =
   mapboxLayerIds;
 const dataImageId = productsData[2].id;
+
 const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isArgo }) => {
   const { worldMeteorologicalOrgId: selectedWorldMeteorologicalOrgId } = useArgoStore(
     (state) => state.selectedArgoParams,
