@@ -19,7 +19,11 @@ interface ArgoAsProductLayerProps {
 const { ARGO_AS_PRODUCT_SOURCE_ID } = mapboxSourceIds;
 const { ARGO_AS_PRODUCT_SELECTED_POINT_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =
   mapboxLayerIds;
-const dataImageId = productsData[2].id;
+
+const dataImage = {
+  id: productsData[2].id, // adjustedSeaLevelAnomaly-sla
+  url: `/api/${getEntryImagePathByProductId(productsData[2].id)}/latest.gif`,
+};
 
 const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isArgo }) => {
   const { worldMeteorologicalOrgId: selectedWorldMeteorologicalOrgId } = useArgoStore(
@@ -31,10 +35,7 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
   const { current: map } = useMap();
   const navigate = useNavigate();
   const eventAdded = useRef(false);
-  const dataImage = {
-    id: dataImageId,
-    url: `/api/${getEntryImagePathByProductId(dataImageId)}/latest.gif`,
-  };
+
   const { updateQueryParams } = useQueryParams();
   const { isMobile } = useDeviceType();
 
@@ -185,6 +186,21 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
       padding: 30,
     });
   }, [map, argoData, isMiniMap, isArgo]);
+
+  // ensure argo points are visible with the image underneath
+  useEffect(() => {
+    const mapLayer = map?.getMap();
+    if (!map || !mapLayer) return;
+    const moveImageLayer = () => {
+      map.moveLayer(dataImage.id, ARGO_AS_PRODUCT_POINT_LAYER_ID);
+    };
+
+    map.on('sourcedataloading', moveImageLayer);
+
+    return () => {
+      map.off('sourcedataloading', moveImageLayer);
+    };
+  }, [map]);
 
   return (
     <>
