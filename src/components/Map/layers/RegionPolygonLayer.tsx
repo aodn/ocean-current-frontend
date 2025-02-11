@@ -8,8 +8,8 @@ import { BoundingBox, GeoJsonPolygon } from '@/types/map';
 import useProductStore from '@/stores/product-store/productStore';
 import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo-utils/geo';
-import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
-import useVisibleRegionPolygons from '../../hooks/useVisibleRegionPolygons';
+import { getPropertyFromMapFeatures } from '../utils/mapUtils';
+import useVisibleRegionPolygons from '../hooks/useVisibleRegionPolygons';
 
 const DEFAULT_MIN_THRESHOLD_PERCENTAGE = 1.8;
 const DEFAULT_MAX_THRESHOLD_PERCENTAGE = 70;

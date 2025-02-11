@@ -8,8 +8,8 @@ import { useQueryParams, useDeviceType } from '@/hooks';
 import { getBoundsFromCoordsArray } from '@/utils/geo-utils/geo';
 import { productsData } from '@/pages/Home/home-map-carousel/data';
 import { getEntryImagePathByProductId } from '@/utils/data-image-builder-utils/latestEntryImage';
-import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
-import useArgoAsProductData from '../../hooks/useArgoAsProductData';
+import { getPropertyFromMapFeatures } from '../utils/mapUtils';
+import useArgoAsProductData from '../hooks/useArgoAsProductData';
 
 interface ArgoAsProductLayerProps {
   isMiniMap: boolean;

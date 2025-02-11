@@ -1,6 +1,6 @@
-import ArgoAsProductLayer from './ArgoAsProductLayer/ArgoAsProductLayer';
-import RegionPolygonLayer from './RegionPolygonLayer/RegionPolygonLayer';
-import DataImageLayer from './DataImageLayer/DataImageLayer';
-import CurrentMeterRegionPolygonLayer from './CurrentMeterRegionPolygonLayer/CurrentMeterRegionPolygonLayer';
+import ArgoAsProductLayer from './ArgoAsProductLayer';
+import RegionPolygonLayer from './RegionPolygonLayer';
+import DataImageLayer from './DataImageLayer';
+import CurrentMeterRegionPolygonLayer from './CurrentMeterRegionPolygonLayer';
 
 export { ArgoAsProductLayer, RegionPolygonLayer, DataImageLayer, CurrentMeterRegionPolygonLayer };

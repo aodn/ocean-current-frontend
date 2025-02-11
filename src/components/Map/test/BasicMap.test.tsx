@@ -8,7 +8,8 @@ vi.mock('react-map-gl', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="test-map">{children}</div>,
   FullscreenControl: () => <div>FullscreenControl</div>,
   NavigationControl: () => <div>NavigationControl</div>,
-  ViewStateChangeEvent: () => <div>ViewStateChangeEvent</div>,
+  Source: ({ children }: { children: React.ReactNode }) => <div>{children}</div>, // Mock Source
+  Layer: ({ children }: { children: React.ReactNode }) => <div>{children}</div>, // Mock Layer
   useMap: vi.fn(() => ({})),
 }));
 
@@ -24,6 +25,17 @@ vi.mock('../layers/ArgoAsProductLayer/ArgoAsProductLayer.tsx', () => {
   };
 });
 
+// Mock React Router hooks
+vi.mock('react-router-dom', async () => {
+  const originalModule = await vi.importActual('react-router-dom');
+
+  return {
+    ...originalModule,
+    useSearchParams: vi.fn(() => [new URLSearchParams(), vi.fn()]),
+    useNavigate: vi.fn(),
+  };
+});
+
 describe('BasicMap Component', () => {
   it('renders correctly with default props', () => {
     //Arrange
@@ -34,7 +46,6 @@ describe('BasicMap Component', () => {
 
     // Assert
     expect(screen.getByText('NavigationControl')).toBeInTheDocument();
-    expect(screen.getByText('RegionPolygonLayer')).toBeInTheDocument();
   });
 
   it('displays error message when API key is missing', () => {

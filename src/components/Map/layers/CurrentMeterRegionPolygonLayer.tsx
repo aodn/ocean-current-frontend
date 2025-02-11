@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import { Layer, Source, useMap } from 'react-map-gl';
 import { currentMeterDataPointsArray } from '@/data/current-meter/data-point';
 import { mapboxSourceIds } from '@/constants/mapboxId';
-import { CustomSquareSymbol } from '../../symbols';
+import { CustomSquareSymbol } from '../symbols';
 
 const SYMBOL_SIZE = 60;
 const SYMBOL_STROKE_WIDTH = 4;
