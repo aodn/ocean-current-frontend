@@ -1,35 +1,42 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { CurrentMeterRegion, CurrentMeterProperty, CurrentMeterDepth } from '@/types/currentMeters';
-import { State, Actions } from './currentMeters.types';
+import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
+import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
+import { CurrentMetersStoreState, CurrentMetersStoreActions } from './currentMeters.types';
 
-const initialState: State = {
-  region: CurrentMeterRegion.Aust,
-  property: CurrentMeterProperty.vmean,
-  depth: CurrentMeterDepth.One,
+const initialState: CurrentMetersStoreState = {
+  region: CurrentMetersRegion.Aust,
+  property: CurrentMetersProperty.vrms,
+  depth: CurrentMetersDepth.ONE,
+  date: yearOptionsData[0].id, // allTime
+  deploymentPlot: '',
 };
 
-const useCurrentMeterStore = create<State & Actions>()(
+const useCurrentMetersStore = create<CurrentMetersStoreState & CurrentMetersStoreActions>()(
   devtools((set) => ({
     ...initialState,
     actions: {
-      setSelectedCurrentMeter: (data) => set(data, false, 'setSelectedCurrentMeter'),
+      setSelectedCurrentMeters: (data) => set(data, false, 'setSelectedCurrentMeters'),
       setRegion: (region) => set({ region }, false, 'setRegion'),
       setDepth: (depth) => set({ depth }, false, 'setDepth'),
       setProperty: (property) => set({ property }, false, 'setProperty'),
-      reset: () => set(initialState, false, 'resetCurrentMeterStore'),
+      setCurrentMetersDate: (date) => set({ date }, false, 'setCurrentMetersDate'),
+      setDeploymentPlot: (deploymentPlot) => set({ deploymentPlot }, false, 'setDeploymentPlot'),
+      reset: () => set(initialState, false, 'resetCurrentMetersStore'),
     },
   })),
 );
 
 export const {
-  setSelectedCurrentMeter,
+  setSelectedCurrentMeters,
   setRegion,
   setDepth,
   setProperty,
-  reset: resetCurrentMeterStore,
-} = useCurrentMeterStore.getState().actions;
+  setDeploymentPlot,
+  setCurrentMetersDate,
+  reset: resetCurrentMetersStore,
+} = useCurrentMetersStore.getState().actions;
 
-export { useCurrentMeterStore };
+export { useCurrentMetersStore, initialState };
 
-export default useCurrentMeterStore;
+export default useCurrentMetersStore;

@@ -1,9 +1,9 @@
 export enum DateFormat {
-  Hour = 'YYYYMMDDHH',
-  Day = 'YYYYMMDD',
-  Month = 'YYYYMM',
-  MonthOnly = 'MM',
-  Year = 'YYYY',
+  HOUR = 'YYYYMMDDHH',
+  DAY = 'YYYYMMDD',
+  MONTH = 'YYYYMM',
+  MONTH_ONLY = 'MM',
+  YEAR_ONLY = 'YYYY',
 }
 
 export interface DateConfig {

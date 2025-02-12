@@ -2,6 +2,14 @@ import { MapboxGeoJSONFeature, MapMouseEvent, MapRef } from 'react-map-gl';
 import { isNotNullOrUndefined } from '@/utils/general-utils/general';
 import { BoundingBox } from '@/types/map';
 import { calculateAreaFromCoords } from '@/utils/geo-utils/geo';
+import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
+import {
+  deepADCPDeploymentPlotsData,
+  deepADVDeploymentPlotsData,
+  mooredInstrumentArrayDeploymentPlotsData,
+  shelfDeploymentPlotsData,
+  southernOceanDeploymentPlotsData,
+} from '@/data/current-meter/sidebarOptions';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const extractPropertyFromFeatures = <T extends Record<string, any>>(
@@ -50,4 +58,26 @@ const isPolygonWithinBounds = (
   return polygonPercentageOfBounds >= minThresholdPercentage && polygonPercentageOfBounds <= maxThresholdPercentage;
 };
 
-export { extractPropertyFromFeatures, getPropertyFromMapFeatures, isPolygonWithinBounds };
+const getDeploymentPlotsBySubProduct = (subProductKey: string) => {
+  if (!subProductKey) return mooredInstrumentArrayDeploymentPlotsData;
+
+  switch (subProductKey) {
+    case CurrentMetersSubproductsKey.SHELF:
+      return shelfDeploymentPlotsData;
+    case CurrentMetersSubproductsKey.DEEP_ADCP:
+      return deepADCPDeploymentPlotsData;
+    case CurrentMetersSubproductsKey.DEEP_ADV:
+      return deepADVDeploymentPlotsData;
+    case CurrentMetersSubproductsKey.SOUTHERN_OCEAN:
+      return southernOceanDeploymentPlotsData;
+    default:
+      return mooredInstrumentArrayDeploymentPlotsData;
+  }
+};
+
+export {
+  extractPropertyFromFeatures,
+  getPropertyFromMapFeatures,
+  isPolygonWithinBounds,
+  getDeploymentPlotsBySubProduct,
+};

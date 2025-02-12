@@ -67,7 +67,7 @@ export const generateDateRange = (
       break;
     }
 
-    if (dateFormat === DateFormat.Hour) {
+    if (dateFormat === DateFormat.HOUR) {
       if (currentDate.hour() % interval === 0) {
         dates.push({
           date: currentDate.format(dateFormat),

@@ -8,10 +8,11 @@ import {
   SnapshotModalData,
   SurfaceWaveModalData,
   EACMooringArrayModalData,
+  CurrentMetersModalData,
 } from '@/components/DataVisualisationSidebar/components/modals/productsModalData';
 import { ProductInfo } from '@/types/product';
 
-const list: ProductInfo[] = [
+export const productDescription: ProductInfo[] = [
   {
     id: 'snapshotSst',
     title: 'Snapshot Sst',
@@ -74,10 +75,11 @@ const list: ProductInfo[] = [
       'Daily estimates of East Australian Current (EAC) properties calculated from the CSIRO EAC gridded mooring product.',
     description: EACMooringArrayModalData,
   },
+  {
+    id: 'currentMeters',
+    title: 'IMOS current meters on coastal and deep water moorings around Australia',
+    summary:
+      "The overview map is your entry point to a series of maps showing a few properties of Australia's ocean currents: mean (all-time, annual and seasonal), standard deviation for various layers and time-windows, and tidal harmonics for the depth-average flow.",
+    description: CurrentMetersModalData,
+  },
 ];
-
-const productDescription = list.map((item) => {
-  return item;
-});
-
-export { productDescription };

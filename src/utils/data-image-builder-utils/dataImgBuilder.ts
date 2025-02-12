@@ -2,7 +2,14 @@ import dayjs, { Dayjs } from 'dayjs';
 import { productTypeMapping, TargetPathRegionScope } from '@/constants/imgPath';
 import { RegionScope } from '@/constants/region';
 import { imageBaseUrl, imageS3BaseUrl } from '@/configs/image';
-import { CurrentMeterDepth, CurrentMeterProperty, CurrentMeterRegion } from '@/types/currentMeters';
+import {
+  CurrentMetersDepth,
+  CurrentMetersPlotPath,
+  CurrentMetersProperty,
+  CurrentMetersRegion,
+  CurrentMetersSubproductsKey,
+} from '@/constants/currentMeters';
+import { CurrentMetersMapDataPointNames } from '@/types/currentMeters';
 
 type ProductId = string;
 type SubProductType = string | undefined | null;
@@ -155,16 +162,26 @@ const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle:
   return `${imageBaseUrl}/${profiles}/${worldMeteorologicalOrgId}/${formatDate}_${worldMeteorologicalOrgId}_${cycle}.gif`;
 };
 
-const buildCurrentMeterImageUrl = (
-  region: CurrentMeterRegion = CurrentMeterRegion.Aust,
-  date: Dayjs,
-  property: CurrentMeterProperty,
-  depth: CurrentMeterDepth,
+const buildCurrentMetersMapImageUrl = (
+  region: CurrentMetersRegion,
+  date: string,
+  property: CurrentMetersProperty,
+  depth: CurrentMetersDepth,
 ): string => {
-  const formattedDate = date.format('YYYY');
-  const year = formattedDate ? `_${formattedDate}` : '';
+  const formattedYear = date === '0000' ? '' : `_${date}`;
 
-  return `${imageBaseUrl}/timeseries/ANMN_P48/mapst/${region}_${property}_${depth}${year}.gif`;
+  return `${imageBaseUrl}/timeseries/ANMN_P49/mapst/${region}_${property}_${depth}${formattedYear}.gif`;
+};
+
+const buildCurrentMetersDataImageUrl = (
+  subProduct: CurrentMetersSubproductsKey,
+  deploymentPlot: CurrentMetersMapDataPointNames,
+  type: CurrentMetersPlotPath,
+  plotId: string,
+) => {
+  const folder = subProduct === 'currentMeters-shelf' ? 'ANMN_P49' : 'ANMN_P48';
+
+  return `${imageBaseUrl}/timeseries/${folder}/${deploymentPlot}/${type}/${plotId}.gif`;
 };
 
 const buildSurfaceWavesImageUrl = (date: string, imgPath: string): string => {
@@ -181,7 +198,8 @@ export {
   buildArgoImageUrl,
   buildSurfaceWavesImageUrl,
   buildProductVideoUrl,
-  buildCurrentMeterImageUrl,
+  buildCurrentMetersMapImageUrl,
+  buildCurrentMetersDataImageUrl,
   buildSSTTimeseriesImageUrl,
   buildEACMooringArrayImageUrl,
 };

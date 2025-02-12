@@ -7,7 +7,7 @@ import { useDateStore, setStartDate, setEndDate } from '@/stores/date-store/date
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import useProductStore from '@/stores/product-store/productStore';
-import { getRegionByRegionTitle } from '@/utils/region-utils/region';
+import { getRegionByRegionTitleOrCode } from '@/utils/region-utils/region';
 import {
   DateRange,
   DateStoreState,
@@ -34,7 +34,7 @@ const useDateRange = (): UseDateRangeReturn => {
   const useArgoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
   const useWmoid = useArgoStore((state) => state.selectedArgoParams.worldMeteorologicalOrgId);
   const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
-  const region = getRegionByRegionTitle(useRegionTitle);
+  const region = getRegionByRegionTitleOrCode(useRegionTitle);
 
   const [allDates, setAllDates] = useState<DateRange>([]);
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);

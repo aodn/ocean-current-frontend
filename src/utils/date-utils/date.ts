@@ -21,14 +21,14 @@ const findMostRecentDateBefore = (dateArray: string[], targetDate: string): stri
 
 const getUnitByFormat = (format: DateFormat): DateUnit => {
   switch (format) {
-    case DateFormat.Hour:
+    case DateFormat.HOUR:
       return DateUnit.Hour;
-    case DateFormat.Day:
+    case DateFormat.DAY:
       return DateUnit.Day;
-    case DateFormat.Month:
-    case DateFormat.MonthOnly:
+    case DateFormat.MONTH:
+    case DateFormat.MONTH_ONLY:
       return DateUnit.Month;
-    case DateFormat.Year:
+    case DateFormat.YEAR_ONLY:
       return DateUnit.Year;
     default:
       return DateUnit.Day;
@@ -37,13 +37,13 @@ const getUnitByFormat = (format: DateFormat): DateUnit => {
 
 const createDefaultDateForDateFormat = (format: DateFormat, date: string): string => {
   switch (format) {
-    case DateFormat.Hour:
+    case DateFormat.HOUR:
       return dayjs(date).format('YYYYMMDDHH');
-    case DateFormat.Month:
+    case DateFormat.MONTH:
       return dayjs(date).format('YYYYMM');
-    case DateFormat.MonthOnly:
+    case DateFormat.MONTH_ONLY:
       return dayjs(date).format('MM');
-    case DateFormat.Year:
+    case DateFormat.YEAR_ONLY:
       return dayjs(date).format('YYYY');
     default:
       return dayjs(date).format('YYYYMMDD');
@@ -51,10 +51,10 @@ const createDefaultDateForDateFormat = (format: DateFormat, date: string): strin
 };
 
 const getDateFormatFlags = (format: DateFormat) => ({
-  isMonthFormat: format === DateFormat.Month,
-  isMonthOnlyFormat: format === DateFormat.MonthOnly,
-  isYearFormat: format === DateFormat.Year,
-  isHourFormat: format === DateFormat.Hour,
+  isMonthFormat: format === DateFormat.MONTH,
+  isMonthOnlyFormat: format === DateFormat.MONTH_ONLY,
+  isYearFormat: format === DateFormat.YEAR_ONLY,
+  isHourFormat: format === DateFormat.HOUR,
 });
 
 const getDateFormatByProductIdAndRegionScope = (productId: string, regionScope: RegionScope): DateFormat => {
@@ -67,19 +67,19 @@ const getDateFormatByProductIdAndRegionScope = (productId: string, regionScope: 
   const dateFormatFromProduct =
     regionScope === RegionScope.Local ? product.dateFormat?.localFormat : product.dateFormat?.stateFormat;
 
-  const dateFormat = dateFormatFromProduct || DateFormat.Day;
+  const dateFormat = dateFormatFromProduct || DateFormat.DAY;
   return dateFormat;
 };
 
 const convertDateToDisplayFormattedText = (date: Dayjs, dateFormat: DateFormat) => {
   switch (dateFormat) {
-    case DateFormat.Hour:
+    case DateFormat.HOUR:
       return date.format('DD MMM YYYY HH:00');
-    case DateFormat.Month:
+    case DateFormat.MONTH:
       return date.format('MMM YYYY');
-    case DateFormat.MonthOnly:
+    case DateFormat.MONTH_ONLY:
       return date.format('MMM');
-    case DateFormat.Year:
+    case DateFormat.YEAR_ONLY:
       return date.format('YYYY');
     default:
       return date.format('DD MMM YY');

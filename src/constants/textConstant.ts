@@ -13,6 +13,10 @@ export enum ProductSidebarText {
   LEGEND = 'Legend',
   DATA_SOURCES = 'Data sources',
   OPTIONS = 'Options',
+  DEPTH_LAYER = 'Depth Layer',
+  REGION = 'Region',
+  PROPERTY = 'Property',
+  DEPLOYMENT_PLOT = 'Deployment Plot',
 }
 
 export enum ProductMenubarText {
