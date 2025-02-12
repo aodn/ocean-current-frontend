@@ -44,6 +44,7 @@ jobs:
       - name: Build the front end
         env:
           VITE_MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_ACCESS_TOKEN }}
+          VITE_APP_BASE_API: ${{ vars.VITE_APP_BASE_API }}
         run: yarn build
 
       - name: Save build artifacts

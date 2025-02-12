@@ -1,6 +1,6 @@
 import { Region } from '@/types/map';
 import { RegionScope } from '@/constants/region';
-import { getRegionByRegionTitle } from './region';
+import { getRegionByRegionTitleOrCode } from './region';
 
 vi.mock('@/data/regionData', () => {
   const mockedRegions: Region[] = [
@@ -13,13 +13,29 @@ vi.mock('@/data/regionData', () => {
   };
 });
 
-describe('getRegionByRegionTitle', () => {
+describe('getRegionByRegionTitleOrCode', () => {
   it('should return the region object if the region title exists', async () => {
     // Arrange
     const regionTitle = 'Southern NSW';
 
     // Act
-    const region = getRegionByRegionTitle(regionTitle);
+    const region = getRegionByRegionTitleOrCode(regionTitle);
+
+    // Assert
+    expect(region).toEqual({
+      code: 'SNSW',
+      title: 'Southern NSW',
+      coords: [149.5, -37.4, 155.5, -31.6],
+      scope: RegionScope.Local,
+    });
+  });
+
+  it('should return the region object if the region code exists', async () => {
+    // Arrange
+    const regionTitle = 'SNSW';
+
+    // Act
+    const region = getRegionByRegionTitleOrCode(regionTitle);
 
     // Assert
     expect(region).toEqual({
@@ -35,7 +51,7 @@ describe('getRegionByRegionTitle', () => {
     const regionTitle = 'NonExistentRegion';
 
     // Act
-    const region = getRegionByRegionTitle(regionTitle);
+    const region = getRegionByRegionTitleOrCode(regionTitle);
 
     // Assert
     expect(region).toBeUndefined();

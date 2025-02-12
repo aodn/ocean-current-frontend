@@ -1,8 +1,6 @@
-import parse from 'node-html-parser';
 import { LngLatBoundsLike } from 'mapbox-gl';
 import { BoundingBox, GeoJsonPolygon } from '@/types/map';
 import { validateCoords } from '@/utils/validators/map';
-import { CurrentMeterMapArea } from '@/types/currentMeter';
 
 const calculateAreaFromCoords = (coords: BoundingBox, shouldValidate: boolean = true) => {
   if (shouldValidate) {
@@ -75,27 +73,6 @@ const calculateCenterByCoords = (coords: number[]): number[] => {
   return [(x1 + x2) / 2, (y1 + y2) / 2];
 };
 
-// TODO: Refactor this function to be more generic
-const convertCurrentMeterHtmlMapElementStringToObj = (htmlMapElementString: string): CurrentMeterMapArea[] => {
-  const rootElement = parse(htmlMapElementString.replace(/(\r\n|\n|\r)/gm, ''));
-  const areaElements = rootElement!.querySelectorAll('area');
-
-  return areaElements.map((area) => {
-    const coords = area
-      .getAttribute('coords')!
-      .split(/\s+/)
-      .map((coord) => parseInt(coord, 10));
-
-    return {
-      shape: area.getAttribute('shape'),
-      coords,
-      href: area.getAttribute('href'),
-      alt: area.getAttribute('alt'),
-      title: area.getAttribute('title'),
-    };
-  });
-};
-
 const getBoundsFromCoordsArray = (coordinates: [number, number][]): LngLatBoundsLike => {
   if (!coordinates.length) {
     throw new Error('Coordinates array cannot be empty');
@@ -127,6 +104,5 @@ export {
   convertOldOceanCurrentCoordsToBBox,
   calculateOffsetByCoords,
   calculateCenterByCoords,
-  convertCurrentMeterHtmlMapElementStringToObj,
   getBoundsFromCoordsArray,
 };

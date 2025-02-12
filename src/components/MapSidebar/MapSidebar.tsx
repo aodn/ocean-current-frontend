@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
 import useProductStore, { setProductId } from '@/stores/product-store/productStore';
 import { getProductPathWithSubProduct } from '@/utils/product-utils/product';
-import { mapSidebarElements } from '@/data/dropDownProductData';
+import { sidebarProductsNav } from '@/data/sidebarProductsNav';
 import { useDateRange, useQueryParams } from '@/hooks';
+import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { DropdownElement } from '../Shared/Dropdown/types/dropdown.types';
 
 const MapSidebar: React.FC = () => {
@@ -12,19 +13,30 @@ const MapSidebar: React.FC = () => {
   const productIdWithoutSubProduct = useProductId.split('-')[0];
   const selectedDate = dayjs(allDates[selectedDateIndex]?.date).format(formatDate);
 
-  const handleProductChange = (selectedElement: DropdownElement) => {
-    if (selectedElement.id === useProductId) {
+  const handleProductChange = ({ id }: DropdownElement) => {
+    if (id === useProductId) {
       return;
     }
-    setProductId(selectedElement.id);
+    setProductId(id);
 
-    const targetPath = getProductPathWithSubProduct(selectedElement.id);
-    updateQueryParamsAndNavigate(targetPath, { date: selectedDate });
+    let queryToUpdate = { date: selectedDate, region: null } as Record<string, string | null>;
+
+    // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
+    if (id === 'EACMooringArray') {
+      queryToUpdate = { date: selectedDate, region: 'Brisbane' };
+    }
+
+    if (id === 'currentMeters') {
+      queryToUpdate = { date: yearOptionsData[0].id, region: null };
+    }
+
+    const targetPath = getProductPathWithSubProduct(id);
+    updateQueryParamsAndNavigate(targetPath, queryToUpdate);
   };
 
   return (
     <div className="w-full overflow-hidden rounded bg-[#fff] p-4 shadow" data-testid="drop-down-menu">
-      {mapSidebarElements.map((element) => (
+      {sidebarProductsNav.map((element) => (
         <div
           key={element.id}
           aria-hidden="true"

@@ -8,7 +8,8 @@ export interface BasicLink {
 export interface DetailedLink {
   id: string;
   title: string;
-  imageUrl: string;
+  greyIcon: string;
+  blueIcon: string;
   description: string;
   url: string;
 }

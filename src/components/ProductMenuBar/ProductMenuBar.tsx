@@ -1,24 +1,34 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDateRange } from '@/hooks';
-import { ToggleButton } from '@/components/Shared';
+import { useSearchParams } from 'react-router-dom';
+import { useDateRange, useQueryParams } from '@/hooks';
+import { Dropdown, ToggleButton } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
 import { ProductMenubarText } from '@/constants/textConstant';
 import ShareIcon from '@/assets/icons/share-icon.svg';
 import ResetIcon from '@/assets/icons/reset-icon.svg';
 import VideoCreation from '@/components/VideoCreation/VideoCreation';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { resetCurrentMeterStore } from '@/stores/current-meters-store/currentMeters';
+import useCurrentMetersStore, {
+  initialState,
+  resetCurrentMetersStore,
+  setCurrentMetersDate,
+} from '@/stores/current-meters-store/currentMeters';
 import useProductStore from '@/stores/product-store/productStore';
 import useProductDateFormat from '@/stores/product-store/hooks/useProductDateFormat';
+import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
+import { CurrentMetersSubproductsKey, mooredInstrumentArrayPath } from '@/constants/currentMeters';
 import DatePagination from '../DatePagination';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
 const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView = false }) => {
   const { disableVideoCreation, resetDateRange } = useDateRange();
+  const { updateQueryParamsAndNavigate } = useQueryParams();
 
   const [copyButtonText, setCopyButtonText] = useState<string>(ProductMenubarText.SHARE);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [showVideo, setLocalShowVideo] = useState(false);
+  const { date: currentMetersDate, property, depth, region, deploymentPlot } = useCurrentMetersStore();
+  const [_, setSearchParams] = useSearchParams();
   const { isArgo, isCurrentMeters, isEACMooringArray } = useProductCheck();
   const shouldDisableOption = disableVideoCreation() || isArgo || isMapView || isCurrentMeters || isEACMooringArray;
 
@@ -50,15 +60,40 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
   };
 
   const handleReset = () => {
-    if (isCurrentMeters) resetCurrentMeterStore();
-    resetDateRange();
+    if (isCurrentMeters) {
+      resetCurrentMetersStore();
+      updateQueryParamsAndNavigate(`current-meters/${mooredInstrumentArrayPath}`, initialState);
+    } else {
+      resetDateRange();
+    }
+  };
+
+  const handleCurrentMetersDateChange = (id: string) => {
+    setCurrentMetersDate(id as string);
+    if (isMapView) {
+      setSearchParams({ date: id });
+    } else {
+      setSearchParams({ property, depth, region, deploymentPlot, date: id });
+    }
   };
 
   return (
     <div className="mb-2 rounded-md">
       <div className="mb-2 flex items-center justify-between gap-3 font-sans font-medium text-imos-dark-grey">
         <div className="flex h-11 grow items-center justify-between rounded-md bg-white">
-          <DatePagination productId={productId} regionScope={regionScope} dateFormat={dateFormat} />
+          {isCurrentMeters ? (
+            <Dropdown
+              elements={
+                productId === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY && !deploymentPlot
+                  ? yearOptionsData
+                  : [yearOptionsData[0]]
+              }
+              selectedId={currentMetersDate as string}
+              onChange={(elem) => handleCurrentMetersDateChange(elem.id)}
+            />
+          ) : (
+            <DatePagination productId={productId} regionScope={regionScope} dateFormat={dateFormat} />
+          )}
         </div>
 
         <div

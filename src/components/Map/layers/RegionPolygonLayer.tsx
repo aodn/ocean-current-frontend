@@ -2,12 +2,14 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Layer, LngLatBounds, MapMouseEvent, Source, useMap } from 'react-map-gl';
 import dayjs from 'dayjs';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
-import { useProductSearchParam, useQueryParams, useThrottle } from '@/hooks';
+import { useDebounce, useProductSearchParam, useQueryParams } from '@/hooks';
 import useProductPath from '@/stores/product-store/hooks/useProductPath';
 import { BoundingBox, GeoJsonPolygon } from '@/types/map';
 import useProductStore from '@/stores/product-store/productStore';
-import { getRegionByRegionTitle } from '@/utils/region-utils/region';
+import { getRegionByRegionTitleOrCode } from '@/utils/region-utils/region';
 import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo-utils/geo';
+import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
+import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
 import { getPropertyFromMapFeatures } from '../utils/mapUtils';
 import useVisibleRegionPolygons from '../hooks/useVisibleRegionPolygons';
 
@@ -40,6 +42,12 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
   const { region: regionTitleFromUrl } = useProductSearchParam();
   const selectedRegion = useRegionTitle || 'Au';
 
+  const {
+    property: currentMetersProperty,
+    depth: currentMetersDepth,
+    date: currentMetersDate,
+  } = useCurrentMetersStore();
+
   const { current: map } = useMap();
 
   const [hoveredRegion, setHoveredRegion] = useState<string>('');
@@ -47,12 +55,6 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
   const [hoveredId, setHoveredId] = useState<string | number | null>(null);
 
   const defaultTargetDate = dayjs().subtract(2, 'day').format('YYYYMMDD');
-
-  const throttleSetMapBounds = useThrottle((bounds: LngLatBounds | null) => {
-    if (bounds) {
-      setMapBounds(bounds);
-    }
-  }, 300);
 
   const mapFitBounds = useCallback(
     (bounds: BoundingBox, padding: number = 50) => {
@@ -66,32 +68,32 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
   useEffect(() => {
     if (!map) return;
 
-    map.on('load', () => {
-      const regionTitle = regionTitleFromUrl || 'Australia/NZ';
-      const region = getRegionByRegionTitle(regionTitle);
+    // set initial map bounds
+    setMapBounds(map.getBounds());
 
-      if (region && shouldFitNationalRegionBounds) {
-        mapFitBounds(region.coords);
-      }
-    });
+    const regionTitle = regionTitleFromUrl || 'Australia/NZ';
+    const region = getRegionByRegionTitleOrCode(regionTitle);
+
+    if (region && shouldFitNationalRegionBounds) {
+      mapFitBounds(region.coords);
+    }
   }, [map, regionTitleFromUrl, mapFitBounds, shouldFitNationalRegionBounds]);
+
+  const debouncedUpdateMapBounds = useDebounce(() => {
+    if (map) {
+      setMapBounds(map.getBounds());
+    }
+  }, 300);
 
   useEffect(() => {
     if (!map) return;
 
-    const handleMapChange = () => {
-      const bounds = map.getBounds();
-      throttleSetMapBounds(bounds);
-    };
-
-    map.on('zoom', handleMapChange);
-    setMapBounds(map.getBounds());
+    map.on('zoom', debouncedUpdateMapBounds);
 
     return () => {
-      map.off('zoom', handleMapChange);
+      map.off('zoom', debouncedUpdateMapBounds);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map]);
+  }, [map, debouncedUpdateMapBounds]);
 
   const geoJsonData = useVisibleRegionPolygons(
     mapBounds,
@@ -100,11 +102,11 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
     shouldKeepNationalRegion,
   );
 
-  useEffect(() => {
-    if (!map) return;
+  const handleMouseMove = useCallback(
+    (e: MapMouseEvent) => {
+      if (!map) return;
 
-    const handleMouseMove = (e: MapMouseEvent) => {
-      const containsArgoLayer = map?.getStyle()?.layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
+      const containsArgoLayer = map.getStyle()?.layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
       const layersToCheck = containsArgoLayer
         ? [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID]
         : [PRODUCT_REGION_BOX_LAYER_ID];
@@ -136,13 +138,16 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
           setHoveredRegion(regionName);
         }
       }
-    };
+    },
+    [ARGO_AS_PRODUCT_POINT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID, map],
+  );
 
-    const handleMouseClick = (e: MapMouseEvent) => {
+  const handleMouseClick = useCallback(
+    (e: MapMouseEvent) => {
       if (!hoveredRegion || !map) {
         return;
       }
-      const containsArgoLayer = map?.getStyle()?.layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
+      const containsArgoLayer = map.getStyle()?.layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
       const layersToCheck = containsArgoLayer
         ? [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID]
         : [PRODUCT_REGION_BOX_LAYER_ID];
@@ -160,23 +165,57 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
         mapFitBounds(regionBounds);
       }
 
-      const { name: regionName } = getPropertyFromMapFeatures<{ name: string }>(map, e, PRODUCT_REGION_BOX_LAYER_ID, [
-        'name',
-      ]);
+      const { name: regionName, code: regionCode } = getPropertyFromMapFeatures<{ name: string; code: string }>(
+        map,
+        e,
+        PRODUCT_REGION_BOX_LAYER_ID,
+        ['name', 'code'],
+      );
 
       if (regionName) {
         const targetPath = `/product/${baseProductPath}`;
 
-        const dateFromQuery = searchParams.date;
-        const queryObject = dateFromQuery ? { region: regionName } : { region: regionName, date: defaultTargetDate };
+        let queryObject = {};
+        if (baseProductPath.includes(mooredInstrumentArrayPath)) {
+          queryObject = {
+            date: currentMetersDate,
+            region: regionCode,
+            depth: currentMetersDepth,
+            property: currentMetersProperty,
+            deploymentPlot: null,
+          };
+        } else {
+          const dateFromQuery = searchParams.date;
+          queryObject = dateFromQuery ? { region: regionName } : { region: regionName, date: defaultTargetDate };
+        }
+
         updateQueryParamsAndNavigate(targetPath, queryObject);
       }
-    };
+    },
+    [
+      ARGO_AS_PRODUCT_POINT_LAYER_ID,
+      PRODUCT_REGION_BOX_LAYER_ID,
+      baseProductPath,
+      currentMetersDate,
+      currentMetersDepth,
+      currentMetersProperty,
+      defaultTargetDate,
+      hoveredRegion,
+      map,
+      mapFitBounds,
+      searchParams.date,
+      updateQueryParamsAndNavigate,
+    ],
+  );
 
-    const handleMouseLeave = () => {
-      setHoveredRegion('');
-      setHoveredId(null);
-    };
+  const handleMouseLeave = useCallback(() => {
+    if (!map) return;
+    setHoveredRegion('');
+    setHoveredId(null);
+  }, [map]);
+
+  useEffect(() => {
+    if (!map) return;
 
     map.on('mousemove', PRODUCT_REGION_BOX_LAYER_ID, handleMouseMove);
     map.on('mouseleave', PRODUCT_REGION_BOX_LAYER_ID, handleMouseLeave);
@@ -187,17 +226,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
       map.off('mouseleave', PRODUCT_REGION_BOX_LAYER_ID, handleMouseLeave);
       map.off('mousemove', PRODUCT_REGION_BOX_LAYER_ID, handleMouseMove);
     };
-  }, [
-    map,
-    PRODUCT_REGION_BOX_LAYER_ID,
-    searchParams.date,
-    updateQueryParamsAndNavigate,
-    defaultTargetDate,
-    baseProductPath,
-    mapFitBounds,
-    ARGO_AS_PRODUCT_POINT_LAYER_ID,
-    hoveredRegion,
-  ]);
+  }, [PRODUCT_REGION_BOX_LAYER_ID, handleMouseClick, handleMouseLeave, handleMouseMove, map]);
 
   return (
     <Source id={PRODUCT_REGION_BOX_SOURCE_ID} type="geojson" data={geoJsonData}>

@@ -1,12 +1,14 @@
 import dayjs from 'dayjs';
 import { Dropdown, Loading } from '@/components/Shared';
 import useProductStore, { setProductId } from '@/stores/product-store/productStore';
-import { mapNavbarDataElements } from '@/data/dropDownProductData';
+import { sidebarProductsNav } from '@/data/sidebarProductsNav';
 import { getProductPathWithSubProduct } from '@/utils/product-utils/product';
 import { useDateRange, useQueryParams } from '@/hooks';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
+import { initialState as currentMetersInitialState } from '@/stores/current-meters-store/currentMeters';
+import { QueryParams } from '@/hooks/useQueryParams/types/userQueryParams.types';
 
 const SidebarProductDropdown: React.FC = () => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
@@ -22,13 +24,15 @@ const SidebarProductDropdown: React.FC = () => {
     }
     setProductId(id);
 
-    let queryToUpdate = { date: selectedDate } as Record<string, string | null>;
+    let queryToUpdate: QueryParams = { date: selectedDate, property: null, depth: null };
     // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
     if (id === 'EACMooringArray') {
-      queryToUpdate = { date: selectedDate, region: 'Brisbane' };
-    }
-    if (!isProductAvailableInRegion) {
-      queryToUpdate = { date: selectedDate, region: null };
+      queryToUpdate = { date: selectedDate, region: 'Brisbane', property: null, depth: null };
+    } else if (id === 'currentMeters') {
+      const { region, property, depth, date } = currentMetersInitialState;
+      queryToUpdate = { date, region, property, depth };
+    } else if (!isProductAvailableInRegion) {
+      queryToUpdate = { date: selectedDate, region: null, property: null, depth: null };
     }
 
     const targetPath = getProductPathWithSubProduct(id);
@@ -43,7 +47,7 @@ const SidebarProductDropdown: React.FC = () => {
     <Dropdown
       showIcons
       header
-      elements={mapNavbarDataElements}
+      elements={sidebarProductsNav}
       selectedId={mainProduct?.key}
       onChange={handleDropdownChange}
     />

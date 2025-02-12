@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, useSearchParams } from 'react-router-dom';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import {
   buildProductImageUrl,
   buildArgoImageUrl,
   getTargetRegionScopePath,
   buildProductVideoUrl,
-  buildCurrentMeterImageUrl,
+  buildCurrentMetersMapImageUrl,
   buildSSTTimeseriesImageUrl,
   buildEACMooringArrayImageUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
-import { getRegionByRegionTitle } from '@/utils/region-utils/region';
+import { getRegionByRegionTitleOrCode } from '@/utils/region-utils/region';
 import { RegionScope } from '@/constants/region';
 import { Loading } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
@@ -22,8 +22,12 @@ import { getArgoProfileCyclesByWmoId } from '@/services/argo';
 import { VideoPlayerOutletContext } from '@/types/router';
 import { checkProductHasArgoTags } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
-import useCurrentMeterStore from '@/stores/current-meters-store/currentMeters';
-import DataImage from '../data-image/DataImage';
+import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
+import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
+import { CurrentMetersMapDataPointNames } from '@/types/currentMeters';
+import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
+import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
+import DataImageWithCurrentMetersPlots from '../data-image/DataImageWithCurrentMetersPlots';
 
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
@@ -36,10 +40,17 @@ const ProductContent: React.FC = () => {
   const { mainProduct, subProduct } = useProductConvert();
   const { worldMeteorologicalOrgId, cycle, depth } = useArgoStore((state) => state.selectedArgoParams);
   const { showVideo } = useOutletContext<VideoPlayerOutletContext>();
-  const { property, depth: currentMeterDepth, region: currentMeterRegion } = useCurrentMeterStore();
+  const {
+    property,
+    depth: currentMetersDepth,
+    region: currentMetersRegion,
+    date: currentMetersDate,
+    deploymentPlot,
+  } = useCurrentMetersStore();
+  const [searchParams, _] = useSearchParams();
 
   // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
-  const region = getRegionByRegionTitle(isEACMooringArray ? 'Brisbane' : useRegionTitle);
+  const region = getRegionByRegionTitleOrCode(isEACMooringArray ? 'Brisbane' : useRegionTitle);
   const regionScope = region?.scope || RegionScope.Au;
   const targetPathRegion = getTargetRegionScopePath(regionScope);
   const regionPath = region?.code || 'Au';
@@ -106,7 +117,7 @@ const ProductContent: React.FC = () => {
         case isArgo:
           return buildArgoImgUrl();
         case isCurrentMeters:
-          return buildCurrentMeterImageUrl(currentMeterRegion, useDate, property, currentMeterDepth);
+          return buildCurrentMetersMapImageUrl(currentMetersRegion, currentMetersDate, property, currentMetersDepth);
         case useProductId === 'sixDaySst-timeseries':
           return buildSSTTimeseriesImageUrl(regionPath);
         case isEACMooringArray:
@@ -164,26 +175,54 @@ const ProductContent: React.FC = () => {
     );
   }
 
+  if (shouldRenderDataImageWithArgoTags) {
+    return (
+      <DataImageWithArgoMap
+        src={chooseImg()!}
+        date={useDate}
+        productId={useProductId}
+        regionCode={regionPath}
+        regionScope={regionScope}
+      />
+    );
+  }
+
+  if (isCurrentMeters) {
+    const hasSelectedPlotFromUrl = searchParams.get('deploymentPlot') && searchParams.get('deploymentPlot') !== '';
+
+    if (
+      subProduct?.key === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY &&
+      deploymentPlot === '' &&
+      !hasSelectedPlotFromUrl
+    ) {
+      return (
+        <DataImageWithCurrentMetersMap
+          mainProduct={mainProduct}
+          src={chooseImg()!}
+          date={currentMetersDate}
+          productId={useProductId}
+          regionCode={currentMetersRegion}
+        />
+      );
+    }
+    return (
+      <DataImageWithCurrentMetersPlots
+        subProductKey={useProductId as CurrentMetersSubproductsKey}
+        deploymentPlot={deploymentPlot as CurrentMetersMapDataPointNames}
+      />
+    );
+  }
+
   return (
     <div className="h-full bg-white">
-      {shouldRenderDataImageWithArgoTags ? (
-        <DataImage
-          src={chooseImg()!}
-          date={useDate}
-          productId={useProductId}
-          regionCode={regionPath}
-          regionScope={regionScope}
-        />
-      ) : (
-        <img
-          onClick={handlePopup}
-          className="max-h-[80vh] w-full select-none object-contain"
-          src={chooseImg()}
-          alt="product"
-          onError={handleError}
-          aria-hidden
-        />
-      )}
+      <img
+        onClick={handlePopup}
+        className="max-h-[80vh] w-full select-none object-contain"
+        src={chooseImg()}
+        alt="product"
+        onError={handleError}
+        aria-hidden
+      />
     </div>
   );
 };

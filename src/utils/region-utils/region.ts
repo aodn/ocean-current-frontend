@@ -4,16 +4,16 @@ import { allRegions } from '@/data/regionData';
 import { productRegionMap } from '@/data/regionList';
 import { RegionCategories } from '@/types/region';
 
-const getRegionByRegionTitle = (regionTitle: string | null): Region | undefined => {
-  return allRegions.find((region) => region.title === regionTitle);
+const getRegionByRegionTitleOrCode = (regionTitle: string | null): Region | undefined => {
+  return allRegions.find((region) => region.title === regionTitle || region.code === regionTitle);
 };
 
 const getRegionScopeByRegionTitle = (regionTitle: string): RegionScope | undefined => {
-  return getRegionByRegionTitle(regionTitle)?.scope;
+  return getRegionByRegionTitleOrCode(regionTitle)?.scope;
 };
 
 const getRegionCodeByRegionTitle = (regionTitle: string): string | undefined => {
-  return getRegionByRegionTitle(regionTitle)?.code;
+  return getRegionByRegionTitleOrCode(regionTitle)?.code;
 };
 
 const getRegionListByProductId = (productId: string): RegionCategories | undefined => {
@@ -25,7 +25,7 @@ const isProductAvailableInRegion = (regionTitle: string | null, productId: strin
     return false;
   }
 
-  const region = getRegionByRegionTitle(regionTitle);
+  const region = getRegionByRegionTitleOrCode(regionTitle);
   if (!region) {
     return false;
   }
@@ -42,7 +42,7 @@ const isProductAvailableInRegion = (regionTitle: string | null, productId: strin
 };
 
 export {
-  getRegionByRegionTitle,
+  getRegionByRegionTitleOrCode,
   getRegionScopeByRegionTitle,
   getRegionCodeByRegionTitle,
   getRegionListByProductId,

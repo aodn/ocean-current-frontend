@@ -1,20 +1,44 @@
 import React, { useEffect, useRef, useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
 import { getArgoProfileCyclesByWmoId } from '@/services/argo';
 import { findMostRecentDateBefore } from '@/utils/date-utils/date';
 import { calculateImageScales } from '@/utils/general-utils/general';
 import { ArgoTagMapArea } from '@/types/argo';
-import { convertCoordsBasedOnImageScale } from '@/utils/argo-utils/argoTag';
+import { convertCoordsBasedOnImageScale, getArgoTagFilePathByProductId } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
-import useDateStore from '@/stores/date-store/dateStore';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
-import { ImageWithMapProps } from './types/imageWithMap.types';
+import { RegionScope } from '@/constants/region';
+import { useImageArgoTags } from '@/services/hooks';
 
-const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, dateString }) => {
+type DataImageWithArgoMapProps = {
+  src: string;
+  productId: string;
+  regionCode: string;
+  regionScope?: RegionScope;
+  date: Dayjs;
+};
+
+const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
+  src,
+  productId,
+  regionCode,
+  regionScope,
+  date,
+}) => {
+  const argoTagFilePathValue = getArgoTagFilePathByProductId(productId);
+  const argoTagFilePath = regionScope === RegionScope.Local ? argoTagFilePathValue?.local : argoTagFilePathValue?.state;
+
+  if (!argoTagFilePathValue || !argoTagFilePath) {
+    throw new Error(`Argo tag file path not found for product id: ${productId}`);
+  }
+
+  const dateFormatted = dayjs(date).format('YYYYMMDD');
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [coords, setCoords] = useState<ArgoTagMapArea[]>([]);
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
-  const useDate = useDateStore((state) => state.date);
   const { mainProduct } = useProductConvert();
+  const { data } = useImageArgoTags(date, argoTagFilePath, regionCode);
+  const alt = `${productId} data in ${regionCode} at ${dateFormatted}`;
 
   useEffect(() => {
     setImgLoadError(null);
@@ -23,18 +47,20 @@ const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, d
   useEffect(() => {
     const handleLoad = () => {
       if (imgRef.current) {
-        const originalWidth = imgRef.current.naturalWidth;
-        const originalHeight = imgRef.current.naturalHeight;
-        const width = imgRef.current.width;
-        const height = imgRef.current.height;
-
-        const { scaleX, scaleY } = calculateImageScales(originalWidth, originalHeight, width, height);
-
-        const convertedCoords = convertCoordsBasedOnImageScale(originalCoords, scaleX, scaleY, originalHeight);
-
+        const { naturalWidth, naturalHeight, width, height } = imgRef.current;
+        const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
+        const originalCoords = data.map((item) => ({
+          shape: 'circle',
+          coords: [item.coordX, item.coordY, 10],
+          href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0&date=${dateFormatted}`,
+          wmoId: item.wmoId,
+          cycle: item.cycle,
+        }));
+        const convertedCoords = convertCoordsBasedOnImageScale(originalCoords, scaleX, scaleY, naturalHeight);
         setCoords(convertedCoords);
       }
     };
+
     const imageElement = imgRef.current;
     if (imageElement) {
       if (imageElement.complete) {
@@ -49,15 +75,14 @@ const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, d
         imageElement.removeEventListener('load', handleLoad);
       }
     };
-  }, [src, originalCoords]);
+  }, [data, dateFormatted, src]);
 
   const handleCircleClick = async (area: ArgoTagMapArea) => {
     const { data } = await getArgoProfileCyclesByWmoId(area.wmoId.toString());
-
     const dates = data.map((item) => item.date);
-    const mostRecentDate = findMostRecentDateBefore(dates, dateString);
-
+    const mostRecentDate = findMostRecentDateBefore(dates, dateFormatted);
     const mostRecentItem = data.find((item) => item.date === mostRecentDate);
+
     if (!mostRecentItem) {
       return;
     }
@@ -68,7 +93,7 @@ const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, d
   };
 
   if (imgLoadError) {
-    return <ErrorImage product={mainProduct!} date={useDate} />;
+    return <ErrorImage product={mainProduct!} date={date} />;
   }
 
   return (
@@ -100,4 +125,4 @@ const ImageWithMap: React.FC<ImageWithMapProps> = ({ src, alt, originalCoords, d
   );
 };
 
-export default ImageWithMap;
+export default DataImageWithArgoMap;

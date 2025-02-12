@@ -11,10 +11,18 @@ import useProductAvailableInRegion from '@/stores/product-store/hooks/useProduct
 import useDateStore from '@/stores/date-store/dateStore';
 import ArrowWithTail from '@/assets/icons/ArrowWithTail';
 import { GeneralText, ProductSidebarText } from '@/constants/textConstant';
-import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
+import {
+  CurrentMetersDepth,
+  CurrentMetersProperty,
+  CurrentMetersRegion,
+  mooredInstrumentArrayPath,
+} from '@/constants/currentMeters';
+import { setCurrentMetersDate, setDepth, setProperty, setRegion } from '@/stores/current-meters-store/currentMeters';
+import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
 import SidebarProductDropdown from './SidebarProductDropdown';
+import CurrentMetersFilters from './CurrentMetersFilters';
 
 const buildDataSourceUrl = (type: string, date: Dayjs): string => {
   switch (type) {
@@ -32,13 +40,13 @@ const buildDataSourceUrl = (type: string, date: Dayjs): string => {
 const ProductSideBar: React.FC = () => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
   const { mainProduct, subProduct, subProducts } = useProductConvert();
-  const shouldRenderMiniMap = useProductAvailableInRegion();
+  const isCurrentMeters = mainProduct?.key === 'currentMeters';
+  const shouldRenderMiniMap = useProductAvailableInRegion() || isCurrentMeters;
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isSubProductsCollapsed, setIsSubProductsCollapsed] = useState(false);
   const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
   const [isDataSourcesCollapsed, setIsDataSourcesCollapsed] = useState(false);
   const useDate = useDateStore((state) => state.date);
-  const { isArgo } = useProductCheck();
 
   if (!mainProduct) {
     return <Loading />;
@@ -81,7 +89,23 @@ const ProductSideBar: React.FC = () => {
     }
     setProductId(key);
     const targetPath = `${mainProductPath}/${subProductPath}`;
-    updateQueryParamsAndNavigate(targetPath);
+
+    let updateParam = {};
+    if (isCurrentMeters && subProductPath !== mooredInstrumentArrayPath) {
+      const allTime = yearOptionsData[0].id;
+
+      setRegion(CurrentMetersRegion.Aust);
+      setDepth(CurrentMetersDepth.ONE);
+      setProperty(CurrentMetersProperty.vrms);
+      setCurrentMetersDate(allTime);
+      updateParam = {
+        region: CurrentMetersRegion.Aust,
+        property: CurrentMetersProperty.vrms,
+        date: allTime,
+        depth: CurrentMetersDepth.ONE,
+      };
+    }
+    updateQueryParamsAndNavigate(targetPath, updateParam);
   };
 
   const handlePopup = () => {
@@ -94,7 +118,9 @@ const ProductSideBar: React.FC = () => {
 
   return (
     <div className="rounded-md bg-white">
-      <div className="mb-1">{!isArgo && <SidebarProductDropdown />}</div>
+      <div className="mb-1">
+        <SidebarProductDropdown />
+      </div>
 
       {shouldRenderMiniMap && (
         <div className="hidden h-60 w-full overflow-hidden md:block">
@@ -185,25 +211,29 @@ const ProductSideBar: React.FC = () => {
           </div>
         )}
 
-        <div className="px-4">
-          <div
-            className="flex cursor-pointer items-center justify-between px-4 py-2"
-            onClick={() => setIsLegendCollapsed(!isLegendCollapsed)}
-            aria-hidden
-          >
-            <h3 className="text-lg font-medium text-imos-grey">{ProductSidebarText.LEGEND}</h3>
-            <img
-              src={ArrowIcon}
-              alt="arrow icon"
-              className={`h-4 w-4 transform transition-transform duration-300 ${isLegendCollapsed ? 'rotate-180' : ''}`}
-            />
+        {isCurrentMeters ? (
+          <CurrentMetersFilters subProduct={subProduct} />
+        ) : (
+          <div className="px-4">
+            <div
+              className="flex cursor-pointer items-center justify-between px-4 py-2"
+              onClick={() => setIsLegendCollapsed(!isLegendCollapsed)}
+              aria-hidden
+            >
+              <h3 className="text-lg font-medium text-imos-grey">{ProductSidebarText.LEGEND}</h3>
+              <img
+                src={ArrowIcon}
+                alt="arrow icon"
+                className={`h-4 w-4 transform transition-transform duration-300 ${isLegendCollapsed ? 'rotate-180' : ''}`}
+              />
+            </div>
+            <div
+              className={`overflow-hidden transition-all duration-300 ${isLegendCollapsed ? 'max-h-0' : 'max-h-screen'}`}
+            >
+              <Legend />
+            </div>
           </div>
-          <div
-            className={`overflow-hidden transition-all duration-300 ${isLegendCollapsed ? 'max-h-0' : 'max-h-screen'}`}
-          >
-            <Legend />
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

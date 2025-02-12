@@ -4,7 +4,7 @@ import ArrowIcon from '@/assets/icons/Arrow';
 import { DropdownElement, DropdownProps } from './types/dropdown.types';
 
 const Dropdown: React.FC<DropdownProps> = ({
-  showIcons,
+  showIcons = false,
   elements,
   selectedId,
   onChange,
@@ -13,8 +13,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   isOpen = false,
 }: DropdownProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const initialElement = elements.find((element) => element.id === selectedId);
-  const [selectedElement, setSelectedElement] = useState<DropdownElement | undefined>(initialElement);
+  const [selectedElement, setSelectedElement] = useState<DropdownElement | null>(null);
   const [isDropdownOpen, setDropdownOpen] = useState(isOpen);
 
   useOutsideClick<HTMLDivElement>(dropdownRef, () => {
@@ -40,11 +39,15 @@ const Dropdown: React.FC<DropdownProps> = ({
   };
 
   useEffect(() => {
-    if (selectedId) selectElement(selectedId);
+    if (selectedId) {
+      selectElement(selectedId);
+    } else {
+      setSelectedElement(null);
+    }
   }, [selectElement, selectedId]);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative w-full" ref={dropdownRef}>
       <div
         onClick={toggleDropdown}
         aria-hidden="true"

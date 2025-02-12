@@ -8,8 +8,8 @@ export const OC_PRODUCTS: Product[] = [
     path: 'snapshot-sst',
     latestEntry: 'SST_entry',
     dateFormat: {
-      localFormat: DateFormat.Day,
-      stateFormat: DateFormat.Day,
+      localFormat: DateFormat.DAY,
+      stateFormat: DateFormat.DAY,
     },
   },
   {
@@ -25,8 +25,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'sst-filled',
         imgPath: 'SST_Filled',
         dateFormat: {
-          localFormat: DateFormat.Hour,
-          stateFormat: DateFormat.Hour,
+          localFormat: DateFormat.HOUR,
+          stateFormat: DateFormat.HOUR,
         },
       },
       {
@@ -35,8 +35,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'sst',
         imgPath: 'SST',
         dateFormat: {
-          localFormat: DateFormat.Hour,
-          stateFormat: DateFormat.Hour,
+          localFormat: DateFormat.HOUR,
+          stateFormat: DateFormat.HOUR,
         },
       },
       {
@@ -45,8 +45,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'sst-age',
         imgPath: 'SST_Age',
         dateFormat: {
-          localFormat: DateFormat.Hour,
-          stateFormat: DateFormat.Hour,
+          localFormat: DateFormat.HOUR,
+          stateFormat: DateFormat.HOUR,
         },
       },
       {
@@ -55,8 +55,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'wind-speed',
         imgPath: 'Wind',
         dateFormat: {
-          localFormat: DateFormat.Hour,
-          stateFormat: DateFormat.Hour,
+          localFormat: DateFormat.HOUR,
+          stateFormat: DateFormat.HOUR,
         },
       },
     ],
@@ -74,8 +74,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'sst',
         imgPath: 'SST',
         dateFormat: {
-          localFormat: DateFormat.Day,
-          stateFormat: DateFormat.Day,
+          localFormat: DateFormat.DAY,
+          stateFormat: DateFormat.DAY,
         },
       },
       {
@@ -84,8 +84,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'sst-anomaly',
         imgPath: 'SST_ANOM',
         dateFormat: {
-          localFormat: DateFormat.Day,
-          stateFormat: DateFormat.Day,
+          localFormat: DateFormat.DAY,
+          stateFormat: DateFormat.DAY,
         },
       },
       {
@@ -94,8 +94,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'centiles',
         imgPath: 'pctiles',
         dateFormat: {
-          localFormat: DateFormat.Day,
-          stateFormat: DateFormat.Day,
+          localFormat: DateFormat.DAY,
+          stateFormat: DateFormat.DAY,
         },
       },
       /*
@@ -129,8 +129,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'sst',
         imgPath: 'SST',
         dateFormat: {
-          localFormat: DateFormat.MonthOnly,
-          stateFormat: DateFormat.MonthOnly,
+          localFormat: DateFormat.MONTH_ONLY,
+          stateFormat: DateFormat.MONTH_ONLY,
         },
       },
       {
@@ -139,8 +139,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'data-count',
         imgPath: 'NMON',
         dateFormat: {
-          localFormat: DateFormat.MonthOnly,
-          stateFormat: DateFormat.MonthOnly,
+          localFormat: DateFormat.MONTH_ONLY,
+          stateFormat: DateFormat.MONTH_ONLY,
         },
       },
     ],
@@ -165,8 +165,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'sla',
         imgPath: 'SLA',
         dateFormat: {
-          localFormat: DateFormat.Day,
-          stateFormat: DateFormat.Day,
+          localFormat: DateFormat.DAY,
+          stateFormat: DateFormat.DAY,
         },
       },
       {
@@ -175,8 +175,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'centiles',
         imgPath: 'SLA_pctiles',
         dateFormat: {
-          localFormat: DateFormat.Day,
-          stateFormat: DateFormat.Day,
+          localFormat: DateFormat.DAY,
+          stateFormat: DateFormat.DAY,
         },
       },
       {
@@ -185,8 +185,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'sst',
         imgPath: null,
         dateFormat: {
-          localFormat: DateFormat.Day,
-          stateFormat: DateFormat.Day,
+          localFormat: DateFormat.DAY,
+          stateFormat: DateFormat.DAY,
         },
       },
     ],
@@ -198,7 +198,7 @@ export const OC_PRODUCTS: Product[] = [
     latestEntry: null,
     dateFormat: {
       localFormat: null,
-      stateFormat: DateFormat.Hour,
+      stateFormat: DateFormat.HOUR,
     },
   },
   {
@@ -214,8 +214,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'chl-a',
         imgPath: 'CHL',
         dateFormat: {
-          localFormat: DateFormat.Hour,
-          stateFormat: DateFormat.Day,
+          localFormat: DateFormat.HOUR,
+          stateFormat: DateFormat.DAY,
         },
       },
       {
@@ -224,8 +224,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'chl-a-age',
         imgPath: 'CHL_AGE',
         dateFormat: {
-          localFormat: DateFormat.Day,
-          stateFormat: DateFormat.Day,
+          localFormat: DateFormat.DAY,
+          stateFormat: DateFormat.DAY,
         },
       },
     ],
@@ -238,7 +238,7 @@ export const OC_PRODUCTS: Product[] = [
     latestEntry: 'waves_entry',
     dateFormat: {
       localFormat: null,
-      stateFormat: DateFormat.Hour,
+      stateFormat: DateFormat.HOUR,
     },
   },
   {
@@ -254,8 +254,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'anomalies',
         imgPath: null,
         dateFormat: {
-          localFormat: DateFormat.Month,
-          stateFormat: DateFormat.Month,
+          localFormat: DateFormat.MONTH,
+          stateFormat: DateFormat.MONTH,
         },
       },
       {
@@ -264,8 +264,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'CLIM_OFAM3_SSTAARS',
         imgPath: 'CLIM_OFAM3_SSTAARS',
         dateFormat: {
-          localFormat: DateFormat.MonthOnly,
-          stateFormat: DateFormat.MonthOnly,
+          localFormat: DateFormat.MONTH_ONLY,
+          stateFormat: DateFormat.MONTH_ONLY,
         },
       },
       {
@@ -274,8 +274,8 @@ export const OC_PRODUCTS: Product[] = [
         path: 'CLIM_CNESCARS',
         imgPath: 'CLIM_CNESCARS',
         dateFormat: {
-          localFormat: DateFormat.MonthOnly,
-          stateFormat: DateFormat.MonthOnly,
+          localFormat: DateFormat.MONTH_ONLY,
+          stateFormat: DateFormat.MONTH_ONLY,
         },
       },
     ],
@@ -286,16 +286,75 @@ export const OC_PRODUCTS: Product[] = [
     path: 'argo',
     latestEntry: null,
     dateFormat: {
-      localFormat: DateFormat.Day,
-      stateFormat: DateFormat.Day,
+      localFormat: DateFormat.DAY,
+      stateFormat: DateFormat.DAY,
     },
   },
+  /*
+    The data below is only for rendering the options button for navigation purposes.
+    The image source urls are built here - src/utils/data-image-builder-utils/dataImgBuilder.ts
+  */
   {
     title: 'Current Meters',
     key: 'currentMeters',
     path: 'current-meters',
     latestEntry: null,
-    dateFormat: null,
+    dateFormat: {
+      localFormat: DateFormat.YEAR_ONLY,
+      stateFormat: DateFormat.YEAR_ONLY,
+    },
+    children: [
+      {
+        title: 'Moored Instrument Array',
+        key: 'currentMeters-mooredInstrumentArray',
+        path: 'moored-instrument-array',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.YEAR_ONLY,
+          stateFormat: DateFormat.YEAR_ONLY,
+        },
+      },
+      {
+        title: 'Shelf',
+        key: 'currentMeters-shelf',
+        path: 'shelf',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.YEAR_ONLY,
+          stateFormat: DateFormat.YEAR_ONLY,
+        },
+      },
+      {
+        title: 'Deep (ADCP)',
+        key: 'currentMeters-deepADCP',
+        path: 'deep-adcp',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.YEAR_ONLY,
+          stateFormat: DateFormat.YEAR_ONLY,
+        },
+      },
+      {
+        title: 'Deep (ADV)',
+        key: 'currentMeters-deepADV',
+        path: 'deep-adv',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.YEAR_ONLY,
+          stateFormat: DateFormat.YEAR_ONLY,
+        },
+      },
+      {
+        title: 'Southern Ocean',
+        key: 'currentMeters-southernOcean',
+        path: 'southern-ocean',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.YEAR_ONLY,
+          stateFormat: DateFormat.YEAR_ONLY,
+        },
+      },
+    ],
   },
   /*
     The data below is only for rendering the button for navigation purposes.
@@ -307,8 +366,8 @@ export const OC_PRODUCTS: Product[] = [
     key: 'EACMooringArray',
     path: 'eac-mooring-array',
     dateFormat: {
-      localFormat: DateFormat.Day,
-      stateFormat: DateFormat.Day,
+      localFormat: DateFormat.DAY,
+      stateFormat: DateFormat.DAY,
     },
   },
 ] as const;
