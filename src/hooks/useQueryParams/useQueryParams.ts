@@ -1,42 +1,40 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { UseQueryParamsResult } from './types/userQueryParams.types';
+import { UseQueryParamsResult, QueryParams } from './types/userQueryParams.types';
 
-const useQueryParams = <
-  T extends Record<string, string | null>,
-  U extends T & Record<string, string | null> = T,
->(): UseQueryParamsResult<T, U> => {
+const useQueryParams = (): UseQueryParamsResult => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const getParams = (): T => {
-    const params = {} as T;
+  const getParams = (): QueryParams => {
+    const params: QueryParams = {};
     searchParams.forEach((value, key) => {
-      (params[key as keyof T] as unknown) = value;
+      if (key in params) {
+        params[key as keyof QueryParams] = value;
+      }
     });
     return params;
   };
 
-  const buildNewSearchParams = (params: Partial<U>): URLSearchParams => {
+  const buildNewSearchParams = (params: Partial<QueryParams>): URLSearchParams => {
     const newSearchParams = new URLSearchParams(searchParams.toString());
-    for (const key in params) {
-      if (params[key] !== undefined && params[key] !== null) {
-        newSearchParams.set(key, params[key] as string);
-      }
-      if (params[key] === null) {
+
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        newSearchParams.set(key, value);
+      } else if (value === null) {
         newSearchParams.delete(key);
       }
-    }
+    });
+
     return newSearchParams;
   };
 
-  const updateQueryParams = (params: Partial<U>) => {
-    const newSearchParams = buildNewSearchParams(params);
-    setSearchParams(newSearchParams);
+  const updateQueryParams = (params: Partial<QueryParams>) => {
+    setSearchParams(buildNewSearchParams(params));
   };
 
-  const updateQueryParamsAndNavigate = (path: string, params: Partial<U> = {}) => {
-    const newSearchParams = buildNewSearchParams(params);
-    navigate({ pathname: path, search: newSearchParams.toString() });
+  const updateQueryParamsAndNavigate = (path: string, params: Partial<QueryParams> = {}) => {
+    navigate({ pathname: path, search: buildNewSearchParams(params).toString() });
   };
 
   return { searchParams: getParams(), updateQueryParams, updateQueryParamsAndNavigate };

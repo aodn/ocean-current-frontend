@@ -105,7 +105,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
     (e: MapMouseEvent) => {
       if (!map) return;
 
-      const containsArgoLayer = map?.getStyle()?.layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
+      const containsArgoLayer = map.getStyle()?.layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
       const layersToCheck = containsArgoLayer
         ? [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID]
         : [PRODUCT_REGION_BOX_LAYER_ID];
@@ -146,7 +146,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
       if (!hoveredRegion || !map) {
         return;
       }
-      const containsArgoLayer = map?.getStyle()?.layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
+      const containsArgoLayer = map.getStyle()?.layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
       const layersToCheck = containsArgoLayer
         ? [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID]
         : [PRODUCT_REGION_BOX_LAYER_ID];

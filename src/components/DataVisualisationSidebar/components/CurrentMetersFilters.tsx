@@ -67,15 +67,7 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
         setSearchParams({ ...stdParams, deploymentPlot: '' });
       }
     }
-  }, [
-    deploymentPlot,
-    deploymentPlotOptions,
-    isMooredInstrumentArraySubProduct,
-    searchParams,
-    setSearchParams,
-    stdParams,
-    subProductKey,
-  ]);
+  }, [deploymentPlot, isMooredInstrumentArraySubProduct, setSearchParams, stdParams, subProductKey]);
 
   // update store based on params
   useEffect(() => {
@@ -96,7 +88,7 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
     setRegion(urlRegion);
     setCurrentMetersDate(urlDate);
     setDeploymentPlot(urlDeploymentPlot);
-  }, [date, deploymentPlot, depth, property, region, searchParams, setSearchParams, subProductKey]);
+  }, [searchParams]);
 
   const regionsOptions = isMooredInstrumentArraySubProduct ? regionsOptionsData : [regionsOptionsData[0]];
 

@@ -8,6 +8,7 @@ import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.typ
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
 import { initialState as currentMetersInitialState } from '@/stores/current-meters-store/currentMeters';
+import { QueryParams } from '@/hooks/useQueryParams/types/userQueryParams.types';
 
 const SidebarProductDropdown: React.FC = () => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
@@ -23,7 +24,7 @@ const SidebarProductDropdown: React.FC = () => {
     }
     setProductId(id);
 
-    let queryToUpdate = { date: selectedDate, property: null, depth: null } as Record<string, string | null>;
+    let queryToUpdate: QueryParams = { date: selectedDate, property: null, depth: null };
     // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
     if (id === 'EACMooringArray') {
       queryToUpdate = { date: selectedDate, region: 'Brisbane', property: null, depth: null };
