@@ -8,8 +8,8 @@ import useCurrentMetersStore, { setDeploymentPlot } from '@/stores/current-meter
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
-import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
-import getCurrentMetersDeploymentPlotsGeoJson from '../../utils/getCurrentMetersDeploymentPlotsGeoJson';
+import { getPropertyFromMapFeatures } from '../utils/mapUtils';
+import getCurrentMetersDeploymentPlotsGeoJson from '../utils/getCurrentMetersDeploymentPlotsGeoJson';
 
 interface ArgoAsProductLayerRendererProps {
   isMiniMap: boolean;
