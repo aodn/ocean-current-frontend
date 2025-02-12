@@ -16,7 +16,7 @@ import useCurrentMetersStore, {
 import useProductStore from '@/stores/product-store/productStore';
 import useProductDateFormat from '@/stores/product-store/hooks/useProductDateFormat';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
-import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
+import { CurrentMetersSubproductsKey, mooredInstrumentArrayPath } from '@/constants/currentMeters';
 import DatePagination from '../DatePagination';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
@@ -62,7 +62,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
   const handleReset = () => {
     if (isCurrentMeters) {
       resetCurrentMetersStore();
-      updateQueryParamsAndNavigate('current-meters/moored-instrument-array', initialState);
+      updateQueryParamsAndNavigate(`current-meters/${mooredInstrumentArrayPath}`, initialState);
     } else {
       resetDateRange();
     }

@@ -7,6 +7,7 @@ import { CurrentMetersProfileProperties } from '@/types/geo';
 import useCurrentMetersStore, { setDeploymentPlot } from '@/stores/current-meters-store/currentMeters';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
+import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
 import getCurrentMetersDeploymentPlotsGeoJson from '../../utils/getCurrentMetersDeploymentPlotsGeoJson';
 
@@ -54,7 +55,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProp
           deploymentPlot: title,
           region,
         }).toString();
-        const clickedPlotPath = `/product/current-meters/moored-instrument-array?${query}`;
+        const clickedPlotPath = `/product/current-meters/${mooredInstrumentArrayPath}?${query}`;
 
         if (!isMiniMap) {
           navigate(clickedPlotPath);

@@ -9,6 +9,7 @@ import useProductStore from '@/stores/product-store/productStore';
 import { getRegionByRegionTitleOrCode } from '@/utils/region-utils/region';
 import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo-utils/geo';
 import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
+import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
 import useVisibleRegionPolygons from '../../hooks/useVisibleRegionPolygons';
 
@@ -175,7 +176,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
         const targetPath = `/product/${baseProductPath}`;
 
         let queryObject = {};
-        if (baseProductPath === 'current-meters/moored-instrument-array') {
+        if (baseProductPath.includes(mooredInstrumentArrayPath)) {
           queryObject = {
             date: currentMetersDate,
             region: regionCode,

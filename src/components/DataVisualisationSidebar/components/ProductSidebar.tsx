@@ -11,7 +11,12 @@ import useProductAvailableInRegion from '@/stores/product-store/hooks/useProduct
 import useDateStore from '@/stores/date-store/dateStore';
 import ArrowWithTail from '@/assets/icons/ArrowWithTail';
 import { GeneralText, ProductSidebarText } from '@/constants/textConstant';
-import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
+import {
+  CurrentMetersDepth,
+  CurrentMetersProperty,
+  CurrentMetersRegion,
+  mooredInstrumentArrayPath,
+} from '@/constants/currentMeters';
 import { setCurrentMetersDate, setDepth, setProperty, setRegion } from '@/stores/current-meters-store/currentMeters';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import Legend from './Legend';
@@ -86,7 +91,7 @@ const ProductSideBar: React.FC = () => {
     const targetPath = `${mainProductPath}/${subProductPath}`;
 
     let updateParam = {};
-    if (isCurrentMeters && subProductPath !== 'moored-instrument-array') {
+    if (isCurrentMeters && subProductPath !== mooredInstrumentArrayPath) {
       const allTime = yearOptionsData[0].id;
 
       setRegion(CurrentMetersRegion.Aust);

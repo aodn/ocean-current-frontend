@@ -1,3 +1,5 @@
+export const mooredInstrumentArrayPath = 'moored-instrument-array';
+
 export enum CurrentMetersSubproductsKey {
   MOORED_INSTRUMENT_ARRAY = 'currentMeters-mooredInstrumentArray',
   SHELF = 'currentMeters-shelf',
