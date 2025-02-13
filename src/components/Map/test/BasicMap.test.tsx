@@ -8,7 +8,10 @@ vi.mock('react-map-gl', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="test-map">{children}</div>,
   FullscreenControl: () => <div>FullscreenControl</div>,
   NavigationControl: () => <div>NavigationControl</div>,
+  Source: ({ children }: { children: React.ReactNode }) => <div>{children}</div>, // Mock Source
+  Layer: ({ children }: { children: React.ReactNode }) => <div>{children}</div>, // Mock Layer
   ViewStateChangeEvent: () => <div>ViewStateChangeEvent</div>,
+  useMap: vi.fn(() => ({})),
 }));
 
 vi.mock('../layers/RegionPolygonLayer/RegionPolygonLayer', () => {
@@ -20,6 +23,17 @@ vi.mock('../layers/RegionPolygonLayer/RegionPolygonLayer', () => {
 vi.mock('../layers/ArgoAsProductLayer/ArgoAsProductLayer.tsx', () => {
   return {
     default: () => <div>ArgoAsProductLayerLayer</div>,
+  };
+});
+
+// Mock React Router hooks
+vi.mock('react-router-dom', async () => {
+  const originalModule = await vi.importActual('react-router-dom');
+
+  return {
+    ...originalModule,
+    useSearchParams: vi.fn(() => [new URLSearchParams(), vi.fn()]),
+    useNavigate: vi.fn(),
   };
 });
 
