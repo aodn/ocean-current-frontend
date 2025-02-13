@@ -11,7 +11,7 @@ import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
 import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
 import getCurrentMetersDeploymentPlotsGeoJson from '../../utils/getCurrentMetersDeploymentPlotsGeoJson';
 
-interface ArgoAsProductLayerRendererProps {
+interface CurrentMetersDeploymentPlotsLayerProps {
   isMiniMap: boolean;
 }
 
@@ -19,7 +19,7 @@ const circleRadius = 6;
 const hoverCircleRadius = 8;
 const selectedCircleRadius = 12;
 
-const CurrentMetersDeploymentPlotsLayer: React.FC<ArgoAsProductLayerRendererProps> = ({ isMiniMap }) => {
+const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLayerProps> = ({ isMiniMap }) => {
   const { deploymentPlot: selectedDeploymentPlot } = useCurrentMetersStore();
   const { CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID } = mapboxSourceIds;
   const { CURRENT_METERS_BOX_LAYER_ID, CURRENT_METERS_SELECTED_BOX_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =

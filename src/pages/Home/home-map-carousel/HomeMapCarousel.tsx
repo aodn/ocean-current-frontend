@@ -3,7 +3,7 @@ import useMapStore from '@/stores/map-store/mapStore';
 import { setProductId } from '@/stores/product-store/productStore';
 import BasicMap from '@/components/Map/BasicMap';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
-import { INITIAL_MAP_VIEW_STATE } from '@/configs/map';
+import { initialMapViewState } from '@/configs/map';
 import { productsData } from './data';
 
 const HomeMapCarousel: React.FC = () => {
@@ -57,7 +57,7 @@ const HomeMapCarousel: React.FC = () => {
     <>
       <ErrorBoundary>
         <BasicMap
-          minZoom={INITIAL_MAP_VIEW_STATE.mapViewState.zoom}
+          minZoom={initialMapViewState.mapViewState.zoom}
           showCursorLocationPanel={false}
           style={{ borderRadius: '0.75rem 0.75rem 0 0', height: '100%' }}
         />
