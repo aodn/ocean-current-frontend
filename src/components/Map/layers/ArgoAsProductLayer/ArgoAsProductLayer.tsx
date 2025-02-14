@@ -11,14 +11,14 @@ import useArgoAsProductData from '../../hooks/useArgoAsProductData';
 
 interface ArgoAsProductLayerProps {
   isMiniMap: boolean;
-  shouldFitBounds?: boolean;
+  isArgo: boolean;
 }
 
 const { ARGO_AS_PRODUCT_SELECTED_POINT_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =
   mapboxLayerIds;
 const { ARGO_AS_PRODUCT_SOURCE_ID } = mapboxSourceIds;
 
-const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, shouldFitBounds = false }) => {
+const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isArgo }) => {
   const { worldMeteorologicalOrgId: selectedWorldMeteorologicalOrgId } = useArgoStore(
     (state) => state.selectedArgoParams,
   );
@@ -166,8 +166,7 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, shou
   }, [argoData.features, isMiniMap, map, selectedWorldMeteorologicalOrgId]);
 
   useEffect(() => {
-    const shouldSkipMapBoundsUpdate =
-      !map || !shouldFitBounds || isMiniMap || !argoData || argoData.features.length === 0;
+    const shouldSkipMapBoundsUpdate = !map || !isArgo || isMiniMap || !argoData || argoData.features.length === 0;
     if (shouldSkipMapBoundsUpdate) return;
 
     const allCoordinates = argoData?.features.map((feature) => feature.geometry.coordinates);
@@ -176,7 +175,7 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, shou
     map.fitBounds(bounds, {
       padding: 30,
     });
-  }, [map, argoData, isMiniMap, shouldFitBounds]);
+  }, [map, argoData, isMiniMap, isArgo]);
 
   return (
     <Source id={ARGO_AS_PRODUCT_SOURCE_ID} type="geojson" data={argoData}>

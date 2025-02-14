@@ -16,5 +16,4 @@ export interface BasicMapProps {
   navigationControl?: boolean;
   showCursorLocationPanel?: boolean;
   minZoom?: number;
-  shouldFitArgoBounds?: boolean;
 }
