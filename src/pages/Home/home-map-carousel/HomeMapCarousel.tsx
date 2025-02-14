@@ -29,9 +29,14 @@ const HomeMapCarousel: React.FC = () => {
     setSelectedProductIndex(foundIndexById);
   };
 
-  // stops the cycling if user pans the map
+  // stops the cycling if the map detects panning or zooming
   useEffect(() => {
-    if (isMounted.current) {
+    const { zoom, latitude, longitude } = initialMapViewState.mapViewState;
+    const hasChangedZoom = useMapZoom !== zoom;
+    const hasChangedLat = useMapLatitude !== latitude;
+    const hasChangedLong = useMapLongitude !== longitude;
+
+    if (isMounted.current || hasChangedZoom || hasChangedLat || hasChangedLong) {
       stopInterval();
     } else {
       isMounted.current = true;
