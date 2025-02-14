@@ -14,6 +14,11 @@ interface ArgoAsProductLayerRendererProps {
   argoData: ArgoProfileFeatureCollection;
   shouldFitBounds?: boolean;
 }
+
+const { ARGO_AS_PRODUCT_SELECTED_POINT_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =
+  mapboxLayerIds;
+const { ARGO_AS_PRODUCT_SOURCE_ID } = mapboxSourceIds;
+
 const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
   isMiniMap,
   argoData,
@@ -22,9 +27,6 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
   const { worldMeteorologicalOrgId: selectedWorldMeteorologicalOrgId } = useArgoStore(
     (state) => state.selectedArgoParams,
   );
-  const { ARGO_AS_PRODUCT_SELECTED_POINT_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =
-    mapboxLayerIds;
-  const { ARGO_AS_PRODUCT_SOURCE_ID } = mapboxSourceIds;
 
   const [hoveredFeatureId, setHoveredFeatureId] = useState<number | string | null>(null);
 
@@ -38,15 +40,6 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
   const circleRadius = isMobile ? 8 : 6;
   const hoverCircleRadius = isMobile ? 10 : 8;
   const selectedCircleRadius = isMobile ? 14 : 12;
-
-  const mapFlyToPoint = useCallback(
-    (coordinates: [number, number]) => {
-      if (map) {
-        map.flyTo({ center: coordinates, duration: 800 });
-      }
-    },
-    [map],
-  );
 
   const handleMouseClick = useCallback(
     (e: MapMouseEvent) => {
@@ -79,7 +72,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         console.error(error);
       }
     },
-    [map, selectedWorldMeteorologicalOrgId, navigate, updateQueryParams, isMiniMap, ARGO_AS_PRODUCT_POINT_LAYER_ID],
+    [map, selectedWorldMeteorologicalOrgId, navigate, updateQueryParams, isMiniMap],
   );
 
   const handleMouseMove = useCallback(
@@ -89,7 +82,9 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
       const features = map.queryRenderedFeatures(e.point, {
         layers: [ARGO_AS_PRODUCT_POINT_LAYER_ID],
       });
+
       const isHoveredArgoFeature = features.length > 0 && features[0]?.id != null;
+
       if (isHoveredArgoFeature) {
         const hoveredFeature = features[0];
         if (hoveredFeatureId !== null) {
@@ -117,7 +112,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         setHoveredFeatureId(hoveredFeature.id!);
       }
     },
-    [map, hoveredFeatureId, ARGO_AS_PRODUCT_POINT_LAYER_ID, ARGO_AS_PRODUCT_SOURCE_ID],
+    [map, hoveredFeatureId],
   );
 
   const handleMouseLeave = useCallback(() => {
@@ -133,12 +128,9 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
           hover: false,
         },
       );
-    }
-
-    if (hoveredFeatureId !== null) {
       setHoveredFeatureId(null);
     }
-  }, [map, hoveredFeatureId, ARGO_AS_PRODUCT_SOURCE_ID]);
+  }, [map, hoveredFeatureId]);
 
   useEffect(() => {
     if (!map) return;
@@ -158,17 +150,16 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
         eventAdded.current = false;
       }
     };
-  }, [
-    map,
-    handleMouseClick,
-    handleMouseMove,
-    handleMouseLeave,
-    ARGO_AS_PRODUCT_POINT_LAYER_ID,
-    PRODUCT_REGION_BOX_LAYER_ID,
-  ]);
+  }, [map, handleMouseClick, handleMouseMove, handleMouseLeave]);
 
   useEffect(() => {
     if (!map || !isMiniMap) return;
+
+    const mapFlyToPoint = (coordinates: [number, number]) => {
+      if (map) {
+        map.flyTo({ center: coordinates, duration: 800 });
+      }
+    };
 
     const argoPoint = argoData.features.find(
       (element) => element.properties.worldMeteorologicalOrgId === selectedWorldMeteorologicalOrgId,
@@ -176,7 +167,7 @@ const ArgoAsProductLayerRenderer: React.FC<ArgoAsProductLayerRendererProps> = ({
     if (argoPoint?.geometry.coordinates) {
       mapFlyToPoint(argoPoint?.geometry.coordinates);
     }
-  }, [map, mapFlyToPoint, argoData, selectedWorldMeteorologicalOrgId, isMiniMap]);
+  }, [argoData.features, isMiniMap, map, selectedWorldMeteorologicalOrgId]);
 
   useEffect(() => {
     const shouldSkipMapBoundsUpdate =
