@@ -95,9 +95,11 @@ const DataImageLayer: React.FC = () => {
     // event will make sure custom layers are done
     // being added before updating visibility
     map.on('sourcedata', updateLayerVisibility);
+    map.on('styledata', updateLayerVisibility);
 
     return () => {
       map.off('sourcedata', updateLayerVisibility);
+      map.off('styledata', updateLayerVisibility);
     };
   }, [map, useProductId, shouldHideLayer]);
 
@@ -120,9 +122,11 @@ const DataImageLayer: React.FC = () => {
 
     // event detects when image source changes
     map.on('sourcedataloading', moveImageLayer);
+    map.on('styledata', moveImageLayer);
 
     return () => {
       map.off('sourcedataloading', moveImageLayer);
+      map.off('styledata', moveImageLayer);
     };
   }, [map, useProductId]);
 
