@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Dayjs } from 'dayjs';
 import { isAxiosError } from 'axios';
 import { getArgoProfilesByDate } from '@/services/argo';
@@ -17,89 +17,96 @@ const useArgoAsProductData = () => {
   const [currentDate, setCurrentDate] = useState<Dayjs>(useDate);
   const [argoProfiles, setArgoProfiles] = useState<ArgoProfile[]>([]);
 
-  const retryCount = useRef(0);
-
-  const updateCurrentDate = useCallback((newDate: Dayjs) => {
-    setCurrentDate(newDate);
-    setDate(newDate);
-  }, []);
+  const formattedDate = useDate.format('YYYYMMDD');
 
   useEffect(() => {
-    setLoading(true);
-    setCurrentDate(useDate);
-    setArgoProfiles([]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [useDate.format('YYYYMMDD')]);
+    if (!useDate.isSame(currentDate, 'day')) {
+      setLoading(true);
+      setCurrentDate(useDate);
+    }
+  }, [currentDate, formattedDate, useDate]);
 
   useEffect(() => {
-    const fetchData = async (date: Dayjs) => {
-      if (retryCount.current >= MAXIMUM_RETRIES) {
-        console.error('Failed to fetch argo profiles after 5 attempts');
-        setLoading(false);
-        return;
-      }
+    const fetchData = async () => {
+      let retryCount = 0;
+      let profiles: ArgoProfile[] = [];
 
-      try {
-        const response = await getArgoProfilesByDate(date);
-        const data = convertHtmlToArgo(response.data);
-        setArgoProfiles(data);
-        setLoading(false);
-      } catch (error) {
-        if (isAxiosError(error) && error.response?.status === 404) {
-          const previousDay = currentDate.subtract(1, 'day');
-          updateCurrentDate(previousDay);
-          retryCount.current += 1;
-        } else {
-          setLoading(false);
+      while (retryCount < MAXIMUM_RETRIES) {
+        try {
+          const response = await getArgoProfilesByDate(currentDate);
+          profiles = convertHtmlToArgo(response.data);
+          break; // Stop retrying if successful
+        } catch (error) {
+          if (isAxiosError(error) && error.response?.status === 404) {
+            retryCount += 1;
+            const newDate = currentDate.subtract(1, 'day');
+            setCurrentDate((prevDate) => (prevDate.isSame(newDate, 'day') ? prevDate : newDate));
+            setDate(newDate);
+          } else {
+            break; // Stop retrying on non-404 errors
+          }
         }
-        // TODO: Handle error, return error to UI, render notification/warning
       }
+
+      if (retryCount >= MAXIMUM_RETRIES) {
+        console.error('Failed to fetch Argo profiles after 5 attempts');
+      }
+
+      setArgoProfiles(profiles);
+      setLoading(false);
     };
 
     if (loading) {
-      fetchData(currentDate);
+      fetchData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading, currentDate.format('YYYYMMDD'), updateCurrentDate]);
+  }, [currentDate, loading]);
 
   useEffect(() => {
-    if (argoProfiles.length === 0) return;
-    const argoMetaData = argoProfiles.map((data) => {
-      const { coords, ...rest } = data;
-      const center = calculateCenterByCoords(coords);
-      return {
-        ...rest,
-        position: {
-          latitude: center[1],
-          longitude: center[0],
-        },
-      };
-    });
-    setArgoMetaData(argoMetaData);
+    if (argoProfiles.length > 0) {
+      const argoMetaData = argoProfiles.map((data) => {
+        const { coords, ...rest } = data;
+        const center = calculateCenterByCoords(coords);
+        return {
+          ...rest,
+          position: {
+            latitude: center[1],
+            longitude: center[0],
+          },
+        };
+      });
+      setArgoMetaData(argoMetaData);
+    }
   }, [argoProfiles]);
 
-  const features = argoProfiles.map(({ coords, worldMeteorologicalOrgId, cycle, depth, date }) => {
-    const center = calculateCenterByCoords(coords).map((coord) => Math.round(coord));
-    return {
-      type: 'Feature',
-      id: worldMeteorologicalOrgId,
-      properties: {
-        worldMeteorologicalOrgId,
-        cycle,
-        depth,
-        date,
-      },
-      geometry: {
-        type: 'Point',
-        coordinates: [center[0], center[1]],
-      },
-    };
-  });
+  const features = useMemo(
+    () =>
+      argoProfiles.map(({ coords, worldMeteorologicalOrgId, cycle, depth, date }) => {
+        const center = calculateCenterByCoords(coords).map((coord) => Math.round(coord));
+        return {
+          type: 'Feature',
+          id: worldMeteorologicalOrgId,
+          properties: {
+            worldMeteorologicalOrgId,
+            cycle,
+            depth,
+            date,
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [center[0], center[1]],
+          },
+        };
+      }),
+    [argoProfiles],
+  );
 
-  const argoGeoCollection = {
-    type: 'FeatureCollection',
-    features: features,
-  } as ArgoProfileFeatureCollection;
+  const argoGeoCollection = useMemo(
+    () => ({
+      type: 'FeatureCollection',
+      features,
+    }),
+    [features],
+  ) as ArgoProfileFeatureCollection;
 
   return { argoData: argoGeoCollection };
 };
