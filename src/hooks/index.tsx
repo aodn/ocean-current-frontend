@@ -6,7 +6,6 @@ import useScrollToTop from './useScrollToTop/useScrollToTop';
 import useDebounce from './useDebounce/useDebounce';
 import useDateRange from './useDateRange/useDateRange';
 import useVideoCreation from './useVideoCreation/useVideoCreation';
-import useArrayCompareEffect from './useArrayCompareEffect/useArrayCompareEffect';
 import useDeviceType from './useDeviceType/useDeviceType';
 import useUrlType from './useUrlType/useUrlType';
 import useSetProductId from './useSetProductId/useSetProductId';
@@ -21,7 +20,6 @@ export {
   useDebounce,
   useDateRange,
   useVideoCreation,
-  useArrayCompareEffect,
   useDeviceType,
   useUrlType,
   useSetProductId,
