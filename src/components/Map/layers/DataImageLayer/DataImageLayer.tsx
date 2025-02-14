@@ -61,8 +61,6 @@ const DataImageLayer: React.FC = () => {
       }
     };
 
-    // event will make sure other custom layers are loaded before adding image layer
-    // to handle race condition for the addition of region boxes
     map.on('sourcedata', addLayerToMap);
 
     return () => {
@@ -92,8 +90,6 @@ const DataImageLayer: React.FC = () => {
       }
     };
 
-    // event will make sure custom layers are done
-    // being added before updating visibility
     map.on('sourcedata', updateLayerVisibility);
     map.on('styledata', updateLayerVisibility);
 
@@ -120,7 +116,6 @@ const DataImageLayer: React.FC = () => {
       }
     };
 
-    // event detects when image source changes
     map.on('sourcedataloading', moveImageLayer);
     map.on('styledata', moveImageLayer);
 

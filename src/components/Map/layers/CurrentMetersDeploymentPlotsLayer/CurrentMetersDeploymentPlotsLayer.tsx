@@ -18,12 +18,12 @@ interface CurrentMetersDeploymentPlotsLayerProps {
 const circleRadius = 6;
 const hoverCircleRadius = 8;
 const selectedCircleRadius = 12;
+const { CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID } = mapboxSourceIds;
+const { CURRENT_METERS_BOX_LAYER_ID, CURRENT_METERS_SELECTED_BOX_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =
+  mapboxLayerIds;
 
 const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLayerProps> = ({ isMiniMap }) => {
   const { deploymentPlot: selectedDeploymentPlot } = useCurrentMetersStore();
-  const { CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID } = mapboxSourceIds;
-  const { CURRENT_METERS_BOX_LAYER_ID, CURRENT_METERS_SELECTED_BOX_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =
-    mapboxLayerIds;
   const { subProduct } = useProductConvert();
   const [hoveredFeatureId, setHoveredFeatureId] = useState<string | number | null>(null);
   const { current: map } = useMap();
@@ -70,7 +70,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLa
         console.error(error);
       }
     },
-    [map, CURRENT_METERS_BOX_LAYER_ID, selectedDeploymentPlot, isMiniMap, navigate, updateQueryParams],
+    [map, selectedDeploymentPlot, isMiniMap, navigate, updateQueryParams],
   );
 
   const handleMouseMove = useCallback(
@@ -112,7 +112,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLa
         map.getCanvas().style.cursor = '';
       }
     },
-    [map, hoveredFeatureId, CURRENT_METERS_BOX_LAYER_ID, CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID],
+    [map, hoveredFeatureId],
   );
 
   const handleMouseLeave = useCallback(() => {
@@ -131,7 +131,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLa
       setHoveredFeatureId(null);
     }
     map.getCanvas().style.cursor = '';
-  }, [map, hoveredFeatureId, CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID]);
+  }, [map, hoveredFeatureId]);
 
   useEffect(() => {
     if (!map) return;
@@ -151,14 +151,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLa
         eventAdded.current = false;
       }
     };
-  }, [
-    map,
-    handleMouseClick,
-    handleMouseMove,
-    handleMouseLeave,
-    CURRENT_METERS_BOX_LAYER_ID,
-    PRODUCT_REGION_BOX_LAYER_ID,
-  ]);
+  }, [map, handleMouseClick, handleMouseMove, handleMouseLeave]);
 
   useEffect(() => {
     if (!map || !isMiniMap) return;
