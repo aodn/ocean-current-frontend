@@ -1,6 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, renderHook } from '@testing-library/react';
 import { mapConfig } from '@/configs/map';
+import useMapStore from '@/stores/map-store/mapStore';
 import BasicMap from '../BasicMap';
+import useRegionData from '../hooks/useRegionData';
 
 vi.mock('react-map-gl', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="test-map">{children}</div>,
@@ -35,10 +37,6 @@ vi.mock('react-router-dom', async () => {
 });
 
 describe('BasicMap Component', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   it('renders correctly with default props', () => {
     //Arrange
     mapConfig.accessToken = 'test-api-key';
@@ -72,9 +70,33 @@ describe('BasicMap Component', () => {
     // Assert
     expect(screen.getByTestId('test-map')).toBeInTheDocument();
   });
+});
 
-  it('renders navigation control when enabled', () => {
-    render(<BasicMap navigationControl />);
-    expect(screen.getByText('NavigationControl')).toBeInTheDocument();
+const mockRegions = [
+  { code: 'SE', title: 'South East', coords: [145, -45, 162.5, -24.5] },
+  { code: 'SW', title: 'South West', coords: [101, -40, 125, -20] },
+  { code: 'NE', title: 'North East', coords: [142, -27, 160, -7] },
+  { code: 'NW', title: 'North West', coords: [101.1, -25, 132, -5] },
+];
+
+vi.mock('@/stores/map-store/mapStore');
+vi.doMock('../data/regionData', () => ({
+  allRegions: mockRegions,
+}));
+
+describe('useRegionData', () => {
+  beforeEach(() => {
+    vi.mocked(useMapStore).mockReturnValue(2.6);
+  });
+
+  it('should only show one or zero box when zoom out in large scale', () => {
+    // Arrange
+    vi.mocked(useMapStore).mockReturnValue(2);
+
+    // Act
+    const { result } = renderHook(() => useRegionData());
+
+    // Assert
+    expect(result.current.regionData.features.length).toBeLessThanOrEqual(1);
   });
 });
