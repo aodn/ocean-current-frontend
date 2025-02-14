@@ -31,16 +31,18 @@ const DataImageLayer: React.FC = () => {
   const imageUrl = `/api/${urlPath}/latest.gif`;
 
   const { current: map } = useMap();
-  const shouldHideLayer = productsWithNoImage.includes(productId);
+  const shouldHideLayer = productsWithNoImage.includes(useProductId);
 
   // Adding Layers
   useEffect(() => {
     const mapLayer = map?.getMap();
-    if (!map || !mapLayer || !productId) return;
+    const productHasNoImage = !productsWithImage.includes(useProductId);
+
+    if (!map || !mapLayer || !useProductId || productHasNoImage) return;
 
     const addLayerToMap = () => {
-      if (mapLayer && !mapLayer.getSource(productId)) {
-        mapLayer.addSource(productId, {
+      if (mapLayer && !mapLayer.getSource(useProductId)) {
+        mapLayer.addSource(useProductId, {
           type: 'image',
           url: imageUrl,
           coordinates: [
@@ -52,9 +54,9 @@ const DataImageLayer: React.FC = () => {
         });
 
         mapLayer.addLayer({
-          id: productId,
+          id: useProductId,
           type: 'raster',
-          source: productId,
+          source: useProductId,
         });
       }
     };
@@ -66,20 +68,27 @@ const DataImageLayer: React.FC = () => {
     return () => {
       map.off('sourcedata', addLayerToMap);
     };
-  }, [imageUrl, map, productId]);
+  }, [imageUrl, map, useProductId]);
 
   // Layer Visibility
   useEffect(() => {
     const mapLayer = map?.getMap();
-    if (!map || !mapLayer || !productId) return;
+
+    if (!map || !mapLayer || !useProductId) return;
 
     const updateLayerVisibility = () => {
       if (shouldHideLayer) {
+        // hide all layers
         productsWithImage.forEach((product) => {
-          if (mapLayer.getLayer(product)) mapLayer.setLayoutProperty(product, 'visibility', 'none');
+          if (mapLayer.getLayer(product) && mapLayer.getLayoutProperty(product, 'visibility') !== 'none') {
+            mapLayer.setLayoutProperty(product, 'visibility', 'none');
+          }
         });
       } else {
-        if (mapLayer.getLayer(productId)) mapLayer.setLayoutProperty(productId, 'visibility', 'visible');
+        // show relevant layer
+        if (mapLayer.getLayer(useProductId) && mapLayer.getLayoutProperty(useProductId, 'visibility') === 'none') {
+          mapLayer.setLayoutProperty(useProductId, 'visibility', 'visible');
+        }
       }
     };
 
@@ -90,21 +99,22 @@ const DataImageLayer: React.FC = () => {
     return () => {
       map.off('sourcedata', updateLayerVisibility);
     };
-  }, [map, productId, shouldHideLayer]);
+  }, [map, useProductId, shouldHideLayer]);
 
   // Moving Layers
   useEffect(() => {
     const mapLayer = map?.getMap();
-    if (!map || !mapLayer || !productId) return;
+
+    if (!map || !mapLayer || !useProductId) return;
+
     const moveImageLayer = () => {
       const layers = mapLayer.getStyle()?.layers.map((layer) => layer.id);
-      const currProdLayerIndex = layers?.indexOf(productId) ?? 0;
-      const regionBoxLayerIndex = layers?.indexOf(PRODUCT_REGION_BOX_LAYER_ID) ?? 0;
+      const polygonLayers = layers?.filter(
+        (layer) => layer.includes(PRODUCT_REGION_BOX_LAYER_ID) || layer.includes(ARGO_AS_PRODUCT_POINT_LAYER_ID),
+      );
 
-      // if the current image layer is not immediately before the region box layer, move the image layer
-      if (currProdLayerIndex > 0 && regionBoxLayerIndex > 0 && currProdLayerIndex !== regionBoxLayerIndex - 1) {
-        map.moveLayer(productId, PRODUCT_REGION_BOX_LAYER_ID);
-        map.moveLayer(ARGO_AS_PRODUCT_POINT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID); // make sure argo is always on top of image
+      if (polygonLayers && polygonLayers?.length > 0 && layers?.includes(useProductId)) {
+        map.moveLayer(useProductId, polygonLayers[0]);
       }
     };
 
@@ -114,7 +124,7 @@ const DataImageLayer: React.FC = () => {
     return () => {
       map.off('sourcedataloading', moveImageLayer);
     };
-  }, [map, productId]);
+  }, [map, useProductId]);
 
   return <></>;
 };
