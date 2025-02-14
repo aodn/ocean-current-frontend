@@ -6,8 +6,8 @@ import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { ArgoProfile } from '@/types/argo';
 import { useQueryParams, useDeviceType } from '@/hooks';
 import { getBoundsFromCoordsArray } from '@/utils/geo-utils/geo';
-import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
-import useArgoAsProductData from '../../hooks/useArgoAsProductData';
+import { getPropertyFromMapFeatures } from '../utils/mapUtils';
+import useArgoAsProductData from '../hooks/useArgoAsProductData';
 
 interface ArgoAsProductLayerProps {
   isMiniMap: boolean;

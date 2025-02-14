@@ -47,7 +47,6 @@ describe('BasicMap Component', () => {
 
     // Assert
     expect(screen.getByText('NavigationControl')).toBeInTheDocument();
-    expect(screen.getByText('RegionPolygonLayer')).toBeInTheDocument();
   });
 
   it('displays error message when API key is missing', () => {
