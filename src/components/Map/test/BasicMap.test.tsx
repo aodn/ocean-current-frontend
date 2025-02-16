@@ -78,3 +78,5 @@ describe('BasicMap Component', () => {
     expect(screen.getByText('NavigationControl')).toBeInTheDocument();
   });
 });
+
+// TODO: Add tests for other layers, see https://github.com/aodn/backlog/issues/6367
