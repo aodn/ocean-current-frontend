@@ -50,6 +50,7 @@ const useArgoAsProductData = () => {
 
       if (retryCount >= MAXIMUM_RETRIES) {
         console.error('Failed to fetch Argo profiles after 5 attempts');
+        // TODO: Handle error, return error to UI, render notification/warning
       }
 
       setArgoProfiles(profiles);
