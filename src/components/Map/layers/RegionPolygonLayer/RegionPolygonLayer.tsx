@@ -74,10 +74,16 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
     const regionTitle = regionTitleFromUrl || 'Australia/NZ';
     const region = getRegionByRegionTitleOrCode(regionTitle);
 
+    // zoom in on EAC Mooring Array product's only region
+    if (baseProductPath === 'eac-mooring-array' && region) {
+      mapFitBounds(region.coords, 220);
+      return;
+    }
+
     if (region && shouldFitNationalRegionBounds) {
       mapFitBounds(region.coords);
     }
-  }, [map, regionTitleFromUrl, mapFitBounds, shouldFitNationalRegionBounds]);
+  }, [map, regionTitleFromUrl, mapFitBounds, shouldFitNationalRegionBounds, baseProductPath]);
 
   const debouncedUpdateMapBounds = useDebounce(() => {
     if (map) {
