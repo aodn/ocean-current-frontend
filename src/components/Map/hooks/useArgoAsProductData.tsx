@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { Dayjs } from 'dayjs';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
 import { isAxiosError } from 'axios';
 import { getArgoProfilesByDate } from '@/services/argo';
 import { convertHtmlToArgo } from '@/utils/argo-utils/argo';
@@ -16,20 +16,13 @@ const useArgoAsProductData = () => {
   const [loading, setLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState<Dayjs>(useDate);
   const [argoProfiles, setArgoProfiles] = useState<ArgoProfile[]>([]);
-
   const retryCount = useRef(0);
-
-  const updateCurrentDate = useCallback((newDate: Dayjs) => {
-    setCurrentDate(newDate);
-    setDate(newDate);
-  }, []);
 
   useEffect(() => {
     setLoading(true);
     setCurrentDate(useDate);
     setArgoProfiles([]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [useDate.format('YYYYMMDD')]);
+  }, [useDate]);
 
   useEffect(() => {
     const fetchData = async (date: Dayjs) => {
@@ -46,8 +39,9 @@ const useArgoAsProductData = () => {
         setLoading(false);
       } catch (error) {
         if (isAxiosError(error) && error.response?.status === 404) {
-          const previousDay = currentDate.subtract(1, 'day');
-          updateCurrentDate(previousDay);
+          const previousDay = dayjs(currentDate).subtract(1, 'day');
+          setCurrentDate(previousDay);
+          setDate(previousDay);
           retryCount.current += 1;
         } else {
           setLoading(false);
@@ -57,14 +51,13 @@ const useArgoAsProductData = () => {
     };
 
     if (loading) {
-      fetchData(currentDate);
+      fetchData(dayjs(currentDate));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading, currentDate.format('YYYYMMDD'), updateCurrentDate]);
+  }, [loading, currentDate]);
 
   useEffect(() => {
     if (argoProfiles.length === 0) return;
-    const argoMetaData = argoProfiles.map((data) => {
+    const argoMetaData = [].map((data: ArgoProfile) => {
       const { coords, ...rest } = data;
       const center = calculateCenterByCoords(coords);
       return {
@@ -78,23 +71,27 @@ const useArgoAsProductData = () => {
     setArgoMetaData(argoMetaData);
   }, [argoProfiles]);
 
-  const features = argoProfiles.map(({ coords, worldMeteorologicalOrgId, cycle, depth, date }) => {
-    const center = calculateCenterByCoords(coords).map((coord) => Math.round(coord));
-    return {
-      type: 'Feature',
-      id: worldMeteorologicalOrgId,
-      properties: {
-        worldMeteorologicalOrgId,
-        cycle,
-        depth,
-        date,
-      },
-      geometry: {
-        type: 'Point',
-        coordinates: [center[0], center[1]],
-      },
-    };
-  });
+  const features = useMemo(
+    () =>
+      argoProfiles.map(({ coords, worldMeteorologicalOrgId, cycle, depth, date }: ArgoProfile) => {
+        const center = calculateCenterByCoords(coords).map((coord) => Math.round(coord));
+        return {
+          type: 'Feature',
+          id: worldMeteorologicalOrgId,
+          properties: {
+            worldMeteorologicalOrgId,
+            cycle,
+            depth,
+            date,
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [center[0], center[1]],
+          },
+        };
+      }),
+    [argoProfiles],
+  );
 
   const argoGeoCollection = {
     type: 'FeatureCollection',

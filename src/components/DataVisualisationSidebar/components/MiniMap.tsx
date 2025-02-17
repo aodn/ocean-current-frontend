@@ -5,7 +5,7 @@ import NavigateIcon from './NavigateIcon';
 
 const MiniMap: React.FC = () => {
   return (
-    <BasicMap id={mapboxInstanceIds.SIDEBAR_MINI_MAP_ID} isMiniMap navigationControl={false} fullScreenControl={false}>
+    <BasicMap id={mapboxInstanceIds.SIDEBAR_MINI_MAP_ID} isMiniMap navigationControl={false}>
       <NavigateIcon />
     </BasicMap>
   );

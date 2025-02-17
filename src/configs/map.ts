@@ -6,7 +6,7 @@ export const mapConfig = {
   style: MAPBOX_MAP_STYLE,
 };
 
-export const INITIAL_MAP_VIEW_STATE = {
+export const initialMapViewState = {
   mapViewState: {
     latitude: -28.5,
     longitude: 140,
