@@ -1,11 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import Map, {
-  FullscreenControl,
-  MapLayerMouseEvent,
-  MapStyle,
-  NavigationControl,
-  ViewStateChangeEvent,
-} from 'react-map-gl';
+import Map, { MapLayerMouseEvent, MapStyle, NavigationControl, ViewStateChangeEvent } from 'react-map-gl';
 import { mapConfig } from '@/configs/map';
 import useMapStore, { setMapViewState, updateZoom } from '@/stores/map-store/mapStore';
 import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
@@ -23,11 +17,9 @@ const BasicMap: React.FC<BasicMapProps> = ({
   style,
   children,
   isMiniMap = false,
-  fullScreenControl = false,
   navigationControl = true,
   showCursorLocationPanel = true,
   minZoom,
-  shouldFitArgoBounds = false,
 }) => {
   const [cursor, setCursor] = useState<string>('grab');
   const [cursorLngLat, setCursorLngLat] = useState<{ lng: number; lat: number } | null>(null);
@@ -69,9 +61,9 @@ const BasicMap: React.FC<BasicMapProps> = ({
       regionPolygonLayer: (
         <RegionPolygonLayer shouldKeepNationalRegion={!isMiniMap} shouldFitNationalRegionBounds={isMiniMap} />
       ),
-      argoAsProductLayer: <ArgoAsProductLayer isMiniMap={isMiniMap} shouldFitBounds={shouldFitArgoBounds} />,
+      argoAsProductLayer: <ArgoAsProductLayer isMiniMap={isMiniMap} isArgo={isArgo} />,
     }),
-    [isMiniMap, shouldFitArgoBounds],
+    [isMiniMap, isArgo],
   );
 
   if (!mapConfig.accessToken) {
@@ -103,7 +95,6 @@ const BasicMap: React.FC<BasicMapProps> = ({
       minZoom={minZoom}
     >
       {children}
-      {fullScreenControl && <FullscreenControl position="top-right" />}
       {navigationControl && <NavigationControl position="top-right" />}
 
       {shouldShowCursorLocationPanel && <MouseCursorLocationPanel lat={cursorLngLat?.lat} lng={cursorLngLat?.lng} />}

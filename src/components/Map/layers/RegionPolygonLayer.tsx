@@ -10,11 +10,8 @@ import { getRegionByRegionTitleOrCode } from '@/utils/region-utils/region';
 import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo-utils/geo';
 import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
 import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
-import { getPropertyFromMapFeatures } from '../../utils/mapUtils';
-import useVisibleRegionPolygons from '../../hooks/useVisibleRegionPolygons';
-
-const DEFAULT_MIN_THRESHOLD_PERCENTAGE = 1.8;
-const DEFAULT_MAX_THRESHOLD_PERCENTAGE = 70;
+import { getPropertyFromMapFeatures } from '../utils/mapUtils';
+import useVisibleRegionPolygons from '../hooks/useVisibleRegionPolygons';
 
 interface RegionPolygonLayerProps {
   shouldKeepNationalRegion?: boolean;
@@ -22,20 +19,23 @@ interface RegionPolygonLayerProps {
   minThresholdPercentage?: number;
   maxThresholdPercentage?: number;
 }
+
+const DEFAULT_MIN_THRESHOLD_PERCENTAGE = 1.8;
+const DEFAULT_MAX_THRESHOLD_PERCENTAGE = 70;
+const { PRODUCT_REGION_BOX_SOURCE_ID } = mapboxSourceIds;
+const {
+  PRODUCT_REGION_BOX_LAYER_ID,
+  PRODUCT_REGION_NAME_LABEL_LAYER_ID,
+  PRODUCT_REGION_SELECTED_BOX_LAYER_ID,
+  ARGO_AS_PRODUCT_POINT_LAYER_ID,
+} = mapboxLayerIds;
+
 const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
   shouldKeepNationalRegion = false,
   shouldFitNationalRegionBounds = false,
   minThresholdPercentage = DEFAULT_MIN_THRESHOLD_PERCENTAGE,
   maxThresholdPercentage = DEFAULT_MAX_THRESHOLD_PERCENTAGE,
 }) => {
-  const { PRODUCT_REGION_BOX_SOURCE_ID } = mapboxSourceIds;
-  const {
-    PRODUCT_REGION_BOX_LAYER_ID,
-    PRODUCT_REGION_NAME_LABEL_LAYER_ID,
-    PRODUCT_REGION_SELECTED_BOX_LAYER_ID,
-    ARGO_AS_PRODUCT_POINT_LAYER_ID,
-  } = mapboxLayerIds;
-
   const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
   const baseProductPath = useProductPath();
   const { searchParams, updateQueryParamsAndNavigate } = useQueryParams();
@@ -139,7 +139,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
         }
       }
     },
-    [ARGO_AS_PRODUCT_POINT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID, map],
+    [map],
   );
 
   const handleMouseClick = useCallback(
@@ -193,8 +193,6 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
       }
     },
     [
-      ARGO_AS_PRODUCT_POINT_LAYER_ID,
-      PRODUCT_REGION_BOX_LAYER_ID,
       baseProductPath,
       currentMetersDate,
       currentMetersDepth,
@@ -226,7 +224,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
       map.off('mouseleave', PRODUCT_REGION_BOX_LAYER_ID, handleMouseLeave);
       map.off('mousemove', PRODUCT_REGION_BOX_LAYER_ID, handleMouseMove);
     };
-  }, [PRODUCT_REGION_BOX_LAYER_ID, handleMouseClick, handleMouseLeave, handleMouseMove, map]);
+  }, [handleMouseClick, handleMouseLeave, handleMouseMove, map]);
 
   return (
     <Source id={PRODUCT_REGION_BOX_SOURCE_ID} type="geojson" data={geoJsonData}>
