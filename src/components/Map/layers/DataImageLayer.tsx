@@ -3,6 +3,7 @@ import { useMap } from 'react-map-gl';
 import { mapboxLayerIds } from '@/constants/mapboxId';
 import useProductStore from '@/stores/product-store/productStore';
 import { getEntryImagePathByProductId } from '@/utils/data-image-builder-utils/latestEntryImage';
+import { apiConfig } from '@/configs/api';
 
 const productsWithNoImage = [
   'monthlyMeans-anomalies',
@@ -28,7 +29,7 @@ const DataImageLayer: React.FC = () => {
   const productId = useProductId === 'argo' ? 'adjustedSeaLevelAnomaly-sla' : useProductId;
   const urlPath = getEntryImagePathByProductId(productId);
 
-  const imageUrl = `/api/${urlPath}/latest.gif`;
+  const imageUrl = `${apiConfig.baseURL}/${urlPath}/latest.gif`;
 
   const { current: map } = useMap();
   const shouldHideLayer = productsWithNoImage.includes(useProductId);
