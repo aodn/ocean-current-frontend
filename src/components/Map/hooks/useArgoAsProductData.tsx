@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Dayjs } from 'dayjs';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
 import { isAxiosError } from 'axios';
 import { getArgoProfilesByDate } from '@/services/argo';
 import { convertHtmlToArgo } from '@/utils/argo-utils/argo';
@@ -16,72 +16,64 @@ const useArgoAsProductData = () => {
   const [loading, setLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState<Dayjs>(useDate);
   const [argoProfiles, setArgoProfiles] = useState<ArgoProfile[]>([]);
-
-  const formattedDate = useDate.format('YYYYMMDD');
-
-  useEffect(() => {
-    if (!useDate.isSame(currentDate, 'day')) {
-      setLoading(true);
-      setCurrentDate(useDate);
-    }
-  }, [currentDate, formattedDate, useDate]);
+  const retryCount = useRef(0);
 
   useEffect(() => {
-    const fetchData = async () => {
-      let retryCount = 0;
-      let profiles: ArgoProfile[] = [];
+    setLoading(true);
+    setCurrentDate(useDate);
+    setArgoProfiles([]);
+  }, [useDate]);
 
-      while (retryCount < MAXIMUM_RETRIES) {
-        try {
-          const response = await getArgoProfilesByDate(currentDate);
-          profiles = convertHtmlToArgo(response.data);
-          break; // Stop retrying if successful
-        } catch (error) {
-          if (isAxiosError(error) && error.response?.status === 404) {
-            retryCount += 1;
-            const newDate = currentDate.subtract(1, 'day');
-            setCurrentDate((prevDate) => (prevDate.isSame(newDate, 'day') ? prevDate : newDate));
-            setDate(newDate);
-          } else {
-            break; // Stop retrying on non-404 errors
-          }
-        }
+  useEffect(() => {
+    const fetchData = async (date: Dayjs) => {
+      if (retryCount.current >= MAXIMUM_RETRIES) {
+        console.error('Failed to fetch argo profiles after 5 attempts');
+        setLoading(false);
+        return;
       }
 
-      if (retryCount >= MAXIMUM_RETRIES) {
-        console.error('Failed to fetch Argo profiles after 5 attempts');
+      try {
+        const response = await getArgoProfilesByDate(date);
+        const data = convertHtmlToArgo(response.data);
+        setArgoProfiles(data);
+        setLoading(false);
+      } catch (error) {
+        if (isAxiosError(error) && error.response?.status === 404) {
+          const previousDay = dayjs(currentDate).subtract(1, 'day');
+          setCurrentDate(previousDay);
+          setDate(previousDay);
+          retryCount.current += 1;
+        } else {
+          setLoading(false);
+        }
         // TODO: Handle error, return error to UI, render notification/warning
       }
-
-      setArgoProfiles(profiles);
-      setLoading(false);
     };
 
     if (loading) {
-      fetchData();
+      fetchData(dayjs(currentDate));
     }
-  }, [currentDate, loading]);
+  }, [loading, currentDate]);
 
   useEffect(() => {
-    if (argoProfiles.length > 0) {
-      const argoMetaData = argoProfiles.map((data) => {
-        const { coords, ...rest } = data;
-        const center = calculateCenterByCoords(coords);
-        return {
-          ...rest,
-          position: {
-            latitude: center[1],
-            longitude: center[0],
-          },
-        };
-      });
-      setArgoMetaData(argoMetaData);
-    }
+    if (argoProfiles.length === 0) return;
+    const argoMetaData = [].map((data: ArgoProfile) => {
+      const { coords, ...rest } = data;
+      const center = calculateCenterByCoords(coords);
+      return {
+        ...rest,
+        position: {
+          latitude: center[1],
+          longitude: center[0],
+        },
+      };
+    });
+    setArgoMetaData(argoMetaData);
   }, [argoProfiles]);
 
   const features = useMemo(
     () =>
-      argoProfiles.map(({ coords, worldMeteorologicalOrgId, cycle, depth, date }) => {
+      argoProfiles.map(({ coords, worldMeteorologicalOrgId, cycle, depth, date }: ArgoProfile) => {
         const center = calculateCenterByCoords(coords).map((coord) => Math.round(coord));
         return {
           type: 'Feature',
@@ -101,13 +93,10 @@ const useArgoAsProductData = () => {
     [argoProfiles],
   );
 
-  const argoGeoCollection = useMemo(
-    () => ({
-      type: 'FeatureCollection',
-      features,
-    }),
-    [features],
-  ) as ArgoProfileFeatureCollection;
+  const argoGeoCollection = {
+    type: 'FeatureCollection',
+    features: features,
+  } as ArgoProfileFeatureCollection;
 
   return { argoData: argoGeoCollection };
 };
