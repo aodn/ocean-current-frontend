@@ -75,7 +75,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
     const region = getRegionByRegionTitleOrCode(regionTitle);
 
     // zoom in on EAC Mooring Array product's only region
-    if (baseProductPath === 'eac-mooring-array' && region) {
+    if (baseProductPath === 'eac-mooring-array' && region && !shouldFitNationalRegionBounds) {
       mapFitBounds(region.coords, 220);
       return;
     }
