@@ -14,10 +14,7 @@ import { getPropertyFromMapFeatures } from '../utils/mapUtils';
 import useVisibleRegionPolygons from '../hooks/useVisibleRegionPolygons';
 
 interface RegionPolygonLayerProps {
-  shouldKeepNationalRegion?: boolean;
-  shouldFitNationalRegionBounds?: boolean;
-  minThresholdPercentage?: number;
-  maxThresholdPercentage?: number;
+  isMiniMap: boolean;
 }
 
 const DEFAULT_MIN_THRESHOLD_PERCENTAGE = 1.8;
@@ -30,12 +27,7 @@ const {
   ARGO_AS_PRODUCT_POINT_LAYER_ID,
 } = mapboxLayerIds;
 
-const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
-  shouldKeepNationalRegion = false,
-  shouldFitNationalRegionBounds = false,
-  minThresholdPercentage = DEFAULT_MIN_THRESHOLD_PERCENTAGE,
-  maxThresholdPercentage = DEFAULT_MAX_THRESHOLD_PERCENTAGE,
-}) => {
+const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) => {
   const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
   const baseProductPath = useProductPath();
   const { searchParams, updateQueryParamsAndNavigate } = useQueryParams();
@@ -74,16 +66,18 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
     const regionTitle = regionTitleFromUrl || 'Australia/NZ';
     const region = getRegionByRegionTitleOrCode(regionTitle);
 
-    // zoom in on EAC Mooring Array product's only region
-    if (baseProductPath === 'eac-mooring-array' && region && !shouldFitNationalRegionBounds) {
-      mapFitBounds(region.coords, 220);
-      return;
-    }
+    if (region) {
+      if (isMiniMap) {
+        mapFitBounds(region.coords);
+        return;
+      }
 
-    if (region && shouldFitNationalRegionBounds) {
-      mapFitBounds(region.coords);
+      // zoom in on EAC Mooring Array's only region when in main map view
+      if (baseProductPath === 'eac-mooring-array') {
+        mapFitBounds(region.coords, 220);
+      }
     }
-  }, [map, regionTitleFromUrl, mapFitBounds, shouldFitNationalRegionBounds, baseProductPath]);
+  }, [map, regionTitleFromUrl, mapFitBounds, isMiniMap, baseProductPath]);
 
   const debouncedUpdateMapBounds = useDebounce(() => {
     if (map) {
@@ -103,9 +97,9 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({
 
   const geoJsonData = useVisibleRegionPolygons(
     mapBounds,
-    minThresholdPercentage,
-    maxThresholdPercentage,
-    shouldKeepNationalRegion,
+    DEFAULT_MIN_THRESHOLD_PERCENTAGE,
+    DEFAULT_MAX_THRESHOLD_PERCENTAGE,
+    !isMiniMap, // shouldKeepNationalRegion
   );
 
   const handleMouseMove = useCallback(
