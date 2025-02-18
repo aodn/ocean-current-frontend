@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import dayjs from 'dayjs';
 import facebookIcon from '@/assets/icons/facebook-icon.svg';
 import instagramIcon from '@/assets/icons/instagram-icon.svg';
 import linkedinIcon from '@/assets/icons/linkedin-icon.svg';
@@ -93,9 +94,10 @@ describe('Footer Component', () => {
   });
 
   it('should render copyright text', () => {
+    const getYear = dayjs().format('YYYY');
     render(<Footer />);
 
-    const copyrightText = screen.getByText('© IMOS 2024');
+    const copyrightText = screen.getByText(`© IMOS ${getYear}`);
     expect(copyrightText).toBeVisible();
   });
 

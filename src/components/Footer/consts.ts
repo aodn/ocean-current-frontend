@@ -45,4 +45,4 @@ export const footerSocials: FooterIcon[] = [
   },
 ];
 
-export const copyrightInfo: string = '© IMOS 2024';
+export const copyrightText: string = '© IMOS';
