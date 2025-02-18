@@ -58,9 +58,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
     () => ({
       dataImageLayer: <DataImageLayer />,
       currentMetersDeploymentPlotsLayer: <CurrentMetersDeploymentPlotsLayer isMiniMap={isMiniMap} />,
-      regionPolygonLayer: (
-        <RegionPolygonLayer shouldKeepNationalRegion={!isMiniMap} shouldFitNationalRegionBounds={isMiniMap} />
-      ),
+      regionPolygonLayer: <RegionPolygonLayer isMiniMap={isMiniMap} />,
       argoAsProductLayer: <ArgoAsProductLayer isMiniMap={isMiniMap} isArgo={isArgo} />,
     }),
     [isMiniMap, isArgo],

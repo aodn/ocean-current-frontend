@@ -537,7 +537,7 @@ export const productRegionMap: ProductRegionMap = {
   },
   EACMooringArray: {
     state: [],
-    local: ['Brisbane2'],
+    local: ['Brisbane'],
   },
   'currentMeters-mooredInstrumentArray': {
     state: [],
