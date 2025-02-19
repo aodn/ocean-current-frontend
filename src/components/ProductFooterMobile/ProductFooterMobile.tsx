@@ -5,7 +5,6 @@ import { Button, Popup, TruncateText } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import Legend from '@/components/DataVisualisationSidebar/components/Legend';
 import useDateStore from '@/stores/date-store/dateStore';
-import { getProductInfoByKey } from '@/utils/product-utils/product';
 import InfoIcon from '@/assets/icons/info-icon.svg';
 import ArrowWithTail from '@/assets/icons/ArrowWithTail';
 import { setProductId } from '@/stores/product-store/productStore';
@@ -14,6 +13,7 @@ import ArgoIcon from '@/assets/icons/products/grey-icons/argo-icon-grey.svg';
 import ArgoIdIcon from '@/assets/icons/argo-id-icon.svg';
 import useArgoStore, { setArgoDepth } from '@/stores/argo-store/argoStore';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
+import { getProductInfoByKey } from '../DataVisualisationSidebar/utils';
 
 const ProductFooterMobile: React.FC = () => {
   const { isArgo } = useProductCheck();
