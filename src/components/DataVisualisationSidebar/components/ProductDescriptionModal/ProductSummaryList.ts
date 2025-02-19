@@ -9,10 +9,10 @@ import {
   SurfaceWaveModalData,
   EACMooringArrayModalData,
   CurrentMetersModalData,
-} from '@/components/DataVisualisationSidebar/components/modals/productsModalData';
-import { ProductInfo } from '@/types/product';
+} from '@/components/DataVisualisationSidebar/components/ProductDescriptionModal/ProductDescriptionData';
+import { ProductInfo } from '../../types';
 
-export const productDescription: ProductInfo[] = [
+export const productInfoList: ProductInfo[] = [
   {
     id: 'snapshotSst',
     title: 'Snapshot Sst',

@@ -29,13 +29,6 @@ export interface CombinedProduct {
   fullPath: string;
 }
 
-export interface ProductInfo {
-  id: string;
-  summary: string;
-  description: () => JSX.Element;
-  title: string;
-}
-
 export interface FlatProduct extends Product {
   parentId: string | null;
   latestEntry?: string | null;
