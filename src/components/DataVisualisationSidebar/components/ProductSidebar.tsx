@@ -41,7 +41,8 @@ const ProductSideBar: React.FC = () => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
   const { mainProduct, subProduct, subProducts } = useProductConvert();
   const isCurrentMeters = mainProduct?.key === 'currentMeters';
-  const shouldRenderMiniMap = useProductAvailableInRegion() || isCurrentMeters;
+  const isArgo = mainProduct?.key === 'argo';
+  const shouldRenderMiniMap = useProductAvailableInRegion() || isArgo;
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isSubProductsCollapsed, setIsSubProductsCollapsed] = useState(false);
   const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
