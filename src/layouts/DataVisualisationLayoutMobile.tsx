@@ -9,10 +9,10 @@ import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useProductFromUrl, useProductSearchParam } from '@/hooks';
 import { getRegionByRegionTitleOrCode } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
-import DataVisualisationSidebar from '@/components/DataVisualisationSidebar/DataVisualisationSidebar';
 import { RegionScope } from '@/constants/region';
 import ProductFooterMobile from '@/components/ProductFooterMobile/ProductFooterMobile';
 import ProductMenuBarMobile from '@/components/ProductMenuBar/ProductNavbarMobile';
+import ProductSideBar from '@/components/DataVisualisationSidebar/ProductSidebar';
 
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -76,7 +76,7 @@ const DataVisualisationLayout: React.FC = () => {
     <div className="relative mx-auto mb-9 w-full max-w-8xl">
       <div className="p-4">
         <div>
-          <DataVisualisationSidebar />
+          <ProductSideBar />
         </div>
         <div>
           <ProductMenuBarMobile setShowVideo={setShowVideo} />

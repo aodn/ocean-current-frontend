@@ -19,10 +19,10 @@ import {
 } from '@/constants/currentMeters';
 import { setCurrentMetersDate, setDepth, setProperty, setRegion } from '@/stores/current-meters-store/currentMeters';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
-import Legend from './Legend';
-import MiniMap from './MiniMap';
-import ProductDropdown from './ProductDropdown';
-import CurrentMetersFilters from './CurrentMetersFilters';
+import Legend from './components/Legend';
+import MiniMap from './components/MiniMap';
+import ProductDropdown from './components/ProductDropdown';
+import CurrentMetersFilters from './components/CurrentMetersFilters';
 
 const buildDataSourceUrl = (type: string, date: Dayjs): string => {
   switch (type) {
