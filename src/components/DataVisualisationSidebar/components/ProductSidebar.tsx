@@ -122,11 +122,7 @@ const ProductSideBar: React.FC = () => {
         <ProductDropdown />
       </div>
 
-      {shouldRenderMiniMap && (
-        <div className="hidden h-60 w-full overflow-hidden md:block">
-          <MiniMap />
-        </div>
-      )}
+      {shouldRenderMiniMap && <MiniMap />}
 
       <div className="hidden md:block [&>*:last-child]:border-b-0 [&>*]:border-b-2 [&>*]:border-[#e5e7eb]">
         <div className="p-4">
