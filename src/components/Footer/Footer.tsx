@@ -1,7 +1,8 @@
 import React from 'react';
+import dayjs from 'dayjs';
 import logo from '@/assets/images/imos-logo.png';
 import { BrandingText } from '@/constants/textConstant';
-import { copyrightInfo, footerAcknowledgeText, footerLinks, footerSocials } from './consts.ts';
+import { copyrightText, footerAcknowledgeText, footerLinks, footerSocials } from './consts.ts';
 import { FooterIcon } from './footer.types';
 
 const Footer: React.FC = () => {
@@ -35,7 +36,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        <p className="mt-10 text-center text-sm leading-5 md:text-left">{copyrightInfo}</p>
+        <p className="mt-10 text-center text-sm leading-5 md:text-left">{`${copyrightText} ${dayjs().format('YYYY')}`}</p>
       </div>
     </footer>
   );

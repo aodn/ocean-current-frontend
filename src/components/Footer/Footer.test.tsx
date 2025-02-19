@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
+import dayjs from 'dayjs';
 import facebookIcon from '@/assets/icons/facebook-icon.svg';
 import instagramIcon from '@/assets/icons/instagram-icon.svg';
 import linkedinIcon from '@/assets/icons/linkedin-icon.svg';
-import xIcon from '@/assets/icons/x-icon.svg';
 import blueskyIcon from '@/assets/icons/bluesky-icon.svg';
 import { FooterIcon, FooterLink } from './footer.types.ts';
 import Footer from './Footer.tsx';
@@ -33,11 +33,6 @@ export const footerSocials: FooterIcon[] = [
     alt: 'IMOS Instagram',
     src: instagramIcon,
     url: 'https://www.instagram.com/imos_australia/',
-  },
-  {
-    alt: 'IMOS X',
-    src: xIcon,
-    url: 'https://x.com/IMOS_AUS',
   },
   {
     alt: 'IMOS Bluesky',
@@ -99,9 +94,10 @@ describe('Footer Component', () => {
   });
 
   it('should render copyright text', () => {
+    const getYear = dayjs().format('YYYY');
     render(<Footer />);
 
-    const copyrightText = screen.getByText('© IMOS 2024');
+    const copyrightText = screen.getByText(`© IMOS ${getYear}`);
     expect(copyrightText).toBeVisible();
   });
 

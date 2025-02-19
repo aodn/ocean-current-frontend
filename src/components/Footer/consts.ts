@@ -1,7 +1,6 @@
 import facebookIcon from '@/assets/icons/facebook-icon.svg';
 import instagramIcon from '@/assets/icons/instagram-icon.svg';
 import linkedinIcon from '@/assets/icons/linkedin-icon.svg';
-import xIcon from '@/assets/icons/x-icon.svg';
 import blueskyIcon from '@/assets/icons/bluesky-icon.svg';
 import { FooterIcon, FooterLink } from './footer.types';
 
@@ -35,11 +34,6 @@ export const footerSocials: FooterIcon[] = [
     url: 'https://www.instagram.com/imos_australia/',
   },
   {
-    alt: 'IMOS X',
-    src: xIcon,
-    url: 'https://x.com/IMOS_AUS',
-  },
-  {
     alt: 'IMOS Bluesky',
     src: blueskyIcon,
     url: 'https://bsky.app/profile/imos-aus.bsky.social',
@@ -51,4 +45,4 @@ export const footerSocials: FooterIcon[] = [
   },
 ];
 
-export const copyrightInfo: string = '© IMOS 2024';
+export const copyrightText: string = '© IMOS';
