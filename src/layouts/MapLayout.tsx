@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import useProductStore, { setProductId } from '@/stores/product-store/productStore';
 import { useDeviceType, useSetProductId, useUrlType } from '@/hooks';
 import MapSidebar from '@/components/MapSidebar/MapSidebar';
-import SidebarProductDropdown from '@/components/DataVisualisationSidebar/components/SidebarProductDropdown';
+import SidebarProductDropdown from '@/components/DataVisualisationSidebar/components/ProductDropdown';
 import { Loading } from '@/components/Shared';
 import ProductMenuBar from '@/components/ProductMenuBar/ProductMenuBar';
 

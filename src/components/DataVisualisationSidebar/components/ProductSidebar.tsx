@@ -21,7 +21,7 @@ import { setCurrentMetersDate, setDepth, setProperty, setRegion } from '@/stores
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import Legend from './Legend';
 import MiniMap from './MiniMap';
-import SidebarProductDropdown from './SidebarProductDropdown';
+import ProductDropdown from './ProductDropdown';
 import CurrentMetersFilters from './CurrentMetersFilters';
 
 const buildDataSourceUrl = (type: string, date: Dayjs): string => {
@@ -119,7 +119,7 @@ const ProductSideBar: React.FC = () => {
   return (
     <div className="rounded-md bg-white">
       <div className="mb-1">
-        <SidebarProductDropdown />
+        <ProductDropdown />
       </div>
 
       {shouldRenderMiniMap && (
