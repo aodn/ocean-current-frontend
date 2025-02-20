@@ -24,3 +24,13 @@ export interface SubProductOptionsProps {
   subProductKey: string;
   mainProductPath: string;
 }
+
+export type DataSource = {
+  title: string;
+  link: string;
+  product: string[];
+};
+
+export interface DataSourcesProps {
+  filteredDataSources: DataSource[];
+}
