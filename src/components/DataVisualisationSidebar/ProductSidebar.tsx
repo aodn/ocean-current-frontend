@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
+import dayjs from 'dayjs';
 import { Loading } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import ArrowIcon from '@/assets/icons/arrow.svg';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
 import { ProductSidebarText } from '@/constants/textConstant';
 import useDateStore from '@/stores/date-store/dateStore';
+import { useDateRange, useQueryParams } from '@/hooks';
+import useProductStore, { setProductId } from '@/stores/product-store/productStore';
+import { QueryParams } from '@/hooks/useQueryParams/types/userQueryParams.types';
+import { getProductPathWithSubProduct } from '@/utils/product-utils/product';
+import { initialState as currentMetersInitialState } from '@/stores/current-meters-store/currentMeters';
+import { DropdownElement } from '../Shared/Dropdown/types/dropdown.types';
 import Legend from './components/Legend';
 import MiniMap from './components/MiniMap';
 import ProductDropdown from './components/ProductDropdown';
@@ -23,6 +30,13 @@ const ProductSideBar: React.FC = () => {
   const isArgo = mainProduct?.key === 'argo';
   const shouldRenderMiniMap = useProductAvailableInRegion() || isArgo;
 
+  const { updateQueryParamsAndNavigate } = useQueryParams();
+  const useProductId = useProductStore((state) => state.productParams.productId);
+
+  const { allDates, selectedDateIndex, formatDate } = useDateRange();
+  const selectedDate = dayjs(allDates[selectedDateIndex]?.date).format(formatDate);
+  const isProductAvailableInRegion = useProductAvailableInRegion();
+
   if (!mainProduct) {
     return <Loading />;
   }
@@ -34,9 +48,30 @@ const ProductSideBar: React.FC = () => {
   const getDataSources = dataSources(useDate);
   const filteredDataSources = getDataSources.filter((source) => source.product.includes(mainProductKey));
 
+  const handleDropdownChange = ({ id }: DropdownElement) => {
+    if (id === useProductId) {
+      return;
+    }
+    setProductId(id);
+
+    let queryToUpdate: QueryParams = { date: selectedDate, property: null, depth: null, cycle: null, wmoid: null };
+    // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
+    if (id === 'EACMooringArray') {
+      queryToUpdate = { date: selectedDate, region: 'Brisbane', property: null, depth: null };
+    } else if (id === 'currentMeters') {
+      const { region, property, depth, date } = currentMetersInitialState;
+      queryToUpdate = { date, region, property, depth };
+    } else if (!isProductAvailableInRegion) {
+      queryToUpdate = { date: selectedDate, region: null, property: null, depth: null, cycle: null, wmoid: null };
+    }
+
+    const targetPath = getProductPathWithSubProduct(id);
+    updateQueryParamsAndNavigate(targetPath, queryToUpdate);
+  };
+
   return (
     <div className="rounded-md bg-white">
-      <ProductDropdown />
+      <ProductDropdown mainProductKey={mainProductKey} handleDropdownChange={handleDropdownChange} />
 
       {shouldRenderMiniMap && <MiniMap />}
 
