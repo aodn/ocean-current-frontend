@@ -44,13 +44,15 @@ const SidebarProductDropdown: React.FC = () => {
   }
 
   return (
-    <Dropdown
-      showIcons
-      header
-      elements={sidebarProductsNav}
-      selectedId={mainProduct?.key}
-      onChange={handleDropdownChange}
-    />
+    <div className="mb-1">
+      <Dropdown
+        showIcons
+        header
+        elements={sidebarProductsNav}
+        selectedId={mainProduct?.key}
+        onChange={handleDropdownChange}
+      />
+    </div>
   );
 };
 

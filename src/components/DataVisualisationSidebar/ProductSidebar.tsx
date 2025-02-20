@@ -106,9 +106,7 @@ const ProductSideBar: React.FC = () => {
 
   return (
     <div className="rounded-md bg-white">
-      <div className="mb-1">
-        <ProductDropdown />
-      </div>
+      <ProductDropdown />
 
       {shouldRenderMiniMap && <MiniMap />}
 
