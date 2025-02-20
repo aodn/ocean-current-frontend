@@ -2,7 +2,6 @@ import React from 'react';
 import { Button } from '@/components/Shared';
 import { setProductId } from '@/stores/product-store/productStore';
 import { useQueryParams } from '@/hooks';
-import { ProductSidebarText } from '@/constants/textConstant';
 import {
   CurrentMetersDepth,
   CurrentMetersProperty,
@@ -12,7 +11,6 @@ import {
 import { setCurrentMetersDate, setDepth, setProperty, setRegion } from '@/stores/current-meters-store/currentMeters';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { SubProductOptionsProps } from '../types';
-import CollapsibleSection from './CollapsibleSection';
 
 const SubProductOptions: React.FC<SubProductOptionsProps> = ({
   isCurrentMeters,
@@ -48,7 +46,7 @@ const SubProductOptions: React.FC<SubProductOptionsProps> = ({
   };
 
   return (
-    <CollapsibleSection title={ProductSidebarText.OPTIONS}>
+    <>
       {subProducts.map(({ key, title, path }, index) => (
         <div key={key}>
           <Button
@@ -61,7 +59,7 @@ const SubProductOptions: React.FC<SubProductOptionsProps> = ({
           </Button>
         </div>
       ))}
-    </CollapsibleSection>
+    </>
   );
 };
 

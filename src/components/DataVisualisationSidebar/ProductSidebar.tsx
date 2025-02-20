@@ -44,17 +44,21 @@ const ProductSideBar: React.FC = () => {
         <ProductSummary isArgo={isArgo} productInfo={productInfo} />
 
         {subProduct && subProducts.length > 0 && (
-          <SubProductOptions
-            isCurrentMeters={isCurrentMeters}
-            subProducts={subProducts}
-            subProductKey={subProduct.key}
-            mainProductPath={mainProduct.path}
-          />
+          <CollapsibleSection title={ProductSidebarText.OPTIONS}>
+            <SubProductOptions
+              isCurrentMeters={isCurrentMeters}
+              subProducts={subProducts}
+              subProductKey={subProduct.key}
+              mainProductPath={mainProduct.path}
+            />
+          </CollapsibleSection>
         )}
 
-        <CollapsibleSection title={ProductSidebarText.DATA_SOURCES}>
-          <DataSources filteredDataSources={filteredDataSources} />
-        </CollapsibleSection>
+        {filteredDataSources.length > 0 && (
+          <CollapsibleSection title={ProductSidebarText.DATA_SOURCES}>
+            <DataSources filteredDataSources={filteredDataSources} />
+          </CollapsibleSection>
+        )}
 
         {isArgo && <ArgoFilters />}
 
