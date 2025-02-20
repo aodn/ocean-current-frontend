@@ -16,6 +16,8 @@ interface OCColor {
   subheadingGrey: string;
   calypsoBlue: string;
   horizonBlue: string;
+  brightMagenta: string;
+  dodgerBlue: string;
 }
 /*
  We can use this tool to find a more meaningful name for all the colours
@@ -39,6 +41,8 @@ const color: OCColor = {
   subheadingGrey: '#7C7C7C',
   calypsoBlue: '#3a6f8f',
   horizonBlue: '#618CA5',
+  brightMagenta: '#FA10E2',
+  dodgerBlue: '#2972FF',
 };
 
 export { color };

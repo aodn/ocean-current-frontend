@@ -3,6 +3,7 @@ import { Loading, Popup, TruncateText } from '@/components/Shared';
 import InfoIcon from '@/assets/icons/info-icon.svg';
 import ArrowWithTail from '@/assets/icons/ArrowWithTail';
 import { GeneralText } from '@/constants/textConstant';
+import { color } from '@/styles/colors';
 import { ProductSummaryProp } from '../types';
 
 const ProductSummary: React.FC<ProductSummaryProp> = ({ isArgo, productInfo }) => {
@@ -31,7 +32,7 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ isArgo, productInfo }) =
         {!isArgo && (
           <div aria-hidden onClick={handlePopup} className="mt-3 flex justify-end">
             <p className="mr-2 cursor-pointer font-semibold text-imos-grey">{GeneralText.READ_MORE}</p>
-            <ArrowWithTail stroke="#787878" className="mt-2 cursor-pointer" />
+            <ArrowWithTail stroke={color.subheadingGrey} className="mt-2 cursor-pointer" />
           </div>
         )}
       </div>
