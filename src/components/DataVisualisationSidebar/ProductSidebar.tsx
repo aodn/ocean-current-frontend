@@ -1,20 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Loading } from '@/components/Shared';
-import { setProductId } from '@/stores/product-store/productStore';
-import { useQueryParams } from '@/hooks';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import ArrowIcon from '@/assets/icons/arrow.svg';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
 import useDateStore from '@/stores/date-store/dateStore';
 import { ProductSidebarText } from '@/constants/textConstant';
-import {
-  CurrentMetersDepth,
-  CurrentMetersProperty,
-  CurrentMetersRegion,
-  mooredInstrumentArrayPath,
-} from '@/constants/currentMeters';
-import { setCurrentMetersDate, setDepth, setProperty, setRegion } from '@/stores/current-meters-store/currentMeters';
-import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import Legend from './components/Legend';
 import MiniMap from './components/MiniMap';
 import ProductDropdown from './components/ProductDropdown';
@@ -22,14 +12,13 @@ import CurrentMetersFilters from './components/CurrentMetersFilters';
 import { buildDataSourceUrl, getProductInfoByKey } from './utils';
 import ArgoFilters from './components/ArgoFilters';
 import ProductSummary from './components/ProductSummary';
+import SubProductOptions from './components/SubProductOptions';
 
 const ProductSideBar: React.FC = () => {
-  const { updateQueryParamsAndNavigate } = useQueryParams();
   const { mainProduct, subProduct, subProducts } = useProductConvert();
   const isCurrentMeters = mainProduct?.key === 'currentMeters';
   const isArgo = mainProduct?.key === 'argo';
   const shouldRenderMiniMap = useProductAvailableInRegion() || isArgo;
-  const [isSubProductsCollapsed, setIsSubProductsCollapsed] = useState(false);
   const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
   const [isDataSourcesCollapsed, setIsDataSourcesCollapsed] = useState(false);
   const useDate = useDateStore((state) => state.date);
@@ -37,6 +26,7 @@ const ProductSideBar: React.FC = () => {
   if (!mainProduct) {
     return <Loading />;
   }
+
   const dataSources = [
     {
       title: 'SST L3S-6d ngt (1992-2017)',
@@ -67,30 +57,6 @@ const ProductSideBar: React.FC = () => {
 
   const filteredDataSources = dataSources.filter((source) => source.product.includes(mainProduct.key));
 
-  const handleSubProductChange = (key: string, mainProductPath: string, subProductPath: string) => {
-    if (key === subProduct?.key) {
-      return;
-    }
-    setProductId(key);
-    const targetPath = `${mainProductPath}/${subProductPath}`;
-
-    let updateParam = {};
-    if (isCurrentMeters && subProductPath !== mooredInstrumentArrayPath) {
-      const allTime = yearOptionsData[0].id;
-
-      setRegion(CurrentMetersRegion.Aust);
-      setDepth(CurrentMetersDepth.ONE);
-      setProperty(CurrentMetersProperty.vrms);
-      setCurrentMetersDate(allTime);
-      updateParam = {
-        region: CurrentMetersRegion.Aust,
-        property: CurrentMetersProperty.vrms,
-        date: allTime,
-        depth: CurrentMetersDepth.ONE,
-      };
-    }
-    updateQueryParamsAndNavigate(targetPath, updateParam);
-  };
   const productInfo = getProductInfoByKey(mainProduct.key);
 
   return (
@@ -102,41 +68,13 @@ const ProductSideBar: React.FC = () => {
       <div className="hidden md:block [&>*:last-child]:border-b-0 [&>*]:border-b-2 [&>*]:border-[#e5e7eb]">
         <ProductSummary isArgo={isArgo} productInfo={productInfo} />
 
-        {subProducts.length > 0 && (
-          <div className="px-4">
-            <div
-              className="flex cursor-pointer items-center justify-between px-4 py-2"
-              onClick={() => setIsSubProductsCollapsed(!isSubProductsCollapsed)}
-              aria-hidden
-            >
-              <h3 className="text-lg font-medium text-imos-grey">{ProductSidebarText.OPTIONS}</h3>
-              <img
-                src={ArrowIcon}
-                alt="arrow icon"
-                className={`h-4 w-4 transform transition-transform duration-300 ${isSubProductsCollapsed ? 'rotate-180' : ''}`}
-              />
-            </div>
-            <div
-              className={`overflow-hidden transition-all duration-300 ${isSubProductsCollapsed ? 'max-h-0' : 'max-h-screen'}`}
-            >
-              <div className="mb-6 mt-2 grid grid-cols-2 gap-2">
-                {subProducts.map(({ key, title, path }, index) => (
-                  <div key={key}>
-                    <Button
-                      size={index === subProducts.length - 1 && subProducts.length % 2 !== 0 ? 'auto' : 'full'}
-                      borderRadius="small"
-                      type={key === subProduct!.key ? 'primary' : 'secondary'}
-                      onClick={() => handleSubProductChange(key, mainProduct.path, path)}
-                    >
-                      <span className={`text-base ${key === subProduct!.key ? 'text-white' : 'text-imos-text-grey'}`}>
-                        {title}
-                      </span>
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+        {subProduct && subProducts.length > 0 && (
+          <SubProductOptions
+            isCurrentMeters={isCurrentMeters}
+            subProducts={subProducts}
+            subProductKey={subProduct.key}
+            mainProductPath={mainProduct.path}
+          />
         )}
 
         {filteredDataSources.length > 0 && (
