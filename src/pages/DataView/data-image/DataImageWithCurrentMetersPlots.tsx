@@ -1,5 +1,4 @@
-/* eslint-disable react/prop-types */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Dropdown, Loading } from '@/components/Shared';
 import { getCurrentMetersPlots } from '@/services/currentMeters';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
