@@ -10,7 +10,20 @@ import { useDateRange, useQueryParams } from '@/hooks';
 import useProductStore, { setProductId } from '@/stores/product-store/productStore';
 import { QueryParams } from '@/hooks/useQueryParams/types/userQueryParams.types';
 import { getProductPathWithSubProduct } from '@/utils/product-utils/product';
-import { initialState as currentMetersInitialState } from '@/stores/current-meters-store/currentMeters';
+import {
+  initialState as currentMetersInitialState,
+  setCurrentMetersDate,
+  setDepth,
+  setProperty,
+  setRegion,
+} from '@/stores/current-meters-store/currentMeters';
+import {
+  CurrentMetersDepth,
+  CurrentMetersProperty,
+  CurrentMetersRegion,
+  mooredInstrumentArrayPath,
+} from '@/constants/currentMeters';
+import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { DropdownElement } from '../Shared/Dropdown/types/dropdown.types';
 import Legend from './components/Legend';
 import MiniMap from './components/MiniMap';
@@ -42,6 +55,7 @@ const ProductSideBar: React.FC = () => {
   }
 
   const mainProductKey = mainProduct.key;
+  const subProductKey = subProduct?.key ?? '';
   const isCurrentMeters = mainProductKey === 'currentMeters';
   const productInfo = getProductInfoByKey(mainProductKey);
 
@@ -69,6 +83,31 @@ const ProductSideBar: React.FC = () => {
     updateQueryParamsAndNavigate(targetPath, queryToUpdate);
   };
 
+  const handleSubProductChange = (key: string, subProductPath: string) => {
+    if (key === subProductKey) {
+      return;
+    }
+    setProductId(key);
+    const targetPath = `${mainProduct.path}/${subProductPath}`;
+
+    let updateParam = {};
+    if (isCurrentMeters && subProductPath !== mooredInstrumentArrayPath) {
+      const allTime = yearOptionsData[0].id;
+
+      setRegion(CurrentMetersRegion.Aust);
+      setDepth(CurrentMetersDepth.ONE);
+      setProperty(CurrentMetersProperty.vrms);
+      setCurrentMetersDate(allTime);
+      updateParam = {
+        region: CurrentMetersRegion.Aust,
+        property: CurrentMetersProperty.vrms,
+        date: allTime,
+        depth: CurrentMetersDepth.ONE,
+      };
+    }
+    updateQueryParamsAndNavigate(targetPath, updateParam);
+  };
+
   return (
     <div className="rounded-md bg-white">
       <ProductDropdown mainProductKey={mainProductKey} handleDropdownChange={handleDropdownChange} />
@@ -81,10 +120,9 @@ const ProductSideBar: React.FC = () => {
         {subProduct && subProducts.length > 0 && (
           <CollapsibleSection title={ProductSidebarText.OPTIONS}>
             <SubProductOptions
-              isCurrentMeters={isCurrentMeters}
               subProducts={subProducts}
               subProductKey={subProduct.key}
-              mainProductPath={mainProduct.path}
+              handleSubProductChange={handleSubProductChange}
             />
           </CollapsibleSection>
         )}

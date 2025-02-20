@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Loading, Popup, TruncateText } from '@/components/Shared';
+import { Popup, TruncateText } from '@/components/Shared';
 import InfoIcon from '@/assets/icons/info-icon.svg';
 import ArrowWithTail from '@/assets/icons/ArrowWithTail';
 import { GeneralText } from '@/constants/textConstant';
@@ -9,10 +9,6 @@ import { ProductSummaryProp } from '../types';
 const ProductSummary: React.FC<ProductSummaryProp> = ({ isArgo, productInfo }) => {
   const { title, summary, description } = productInfo;
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-
-  if (!productInfo) {
-    return <Loading />;
-  }
 
   const handlePopup = () => {
     setIsPopupOpen(!isPopupOpen);

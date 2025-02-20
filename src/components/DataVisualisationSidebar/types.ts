@@ -20,10 +20,9 @@ export interface CollapsibleSectionProps {
 }
 
 export interface SubProductOptionsProps {
-  isCurrentMeters: boolean;
   subProducts: SubProduct[];
   subProductKey: string;
-  mainProductPath: string;
+  handleSubProductChange: (key: string, subProductPath: string) => void;
 }
 
 export type DataSource = {
