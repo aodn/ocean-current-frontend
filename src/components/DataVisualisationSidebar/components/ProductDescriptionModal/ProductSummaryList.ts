@@ -9,6 +9,7 @@ import {
   SurfaceWaveModalData,
   EACMooringArrayModalData,
   CurrentMetersModalData,
+  ArgoModalData,
 } from '@/components/DataVisualisationSidebar/components/ProductDescriptionModal/ProductDescriptionData';
 import { ProductInfo } from '../../types';
 
@@ -70,10 +71,10 @@ export const productInfoList: ProductInfo[] = [
   },
   {
     id: 'argo',
-    title: 'IMOS current meters on coastal and deep water moorings around Australia',
+    title: 'Argo Profiles',
     summary:
-      "The overview map is your entry point to a series of maps showing a few properties of Australia's ocean currents: mean (all-time, annual and seasonal), standard deviation for various layers and time-windows, and tidal harmonics for the depth-average flow.",
-    description: CurrentMetersModalData,
+      'Temperature and salinity data from the selected float compared with satellite-adjusted climatology, down to 2000m in the Australian region.',
+    description: ArgoModalData, // returns Fragments
   },
   {
     id: 'currentMeters',

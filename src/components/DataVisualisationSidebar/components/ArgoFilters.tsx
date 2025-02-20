@@ -19,14 +19,6 @@ const ArgoFilters: React.FC = () => {
   return (
     <div className="rounded-md bg-white">
       <div className="relative">
-        {/* <div className="flex items-center justify-between bg-white p-2 pb-4">
-          <img className="mx-6 h-16 w-14 object-cover" src={ArgoIcon} alt="argo-icon" />
-          <div>
-            <h2 className="mb-2 text-lg font-semibold text-imos-dark-grey">Argo profiles</h2>
-            <p className="text-imos-grey">Temperature and salinity down to 2000m in the Australian region</p>
-            </div>
-            </div> */}
-
         <div className="p-2">
           <h2 className="mb-2 text-lg font-semibold text-imos-dark-grey">Argo profiles</h2>
           <div className="mb-3 flex gap-3">

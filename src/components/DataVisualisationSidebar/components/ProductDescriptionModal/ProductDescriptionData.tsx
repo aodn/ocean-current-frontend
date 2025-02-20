@@ -278,6 +278,11 @@ const EACMooringArrayModalData = () => {
   );
 };
 
+// argo has no relevant info available, placeholder is for consistency and for there is info in the future
+const ArgoModalData = () => {
+  return <></>;
+};
+
 const CurrentMetersModalData = () => {
   return (
     <div className="p-4 text-gray-800">
@@ -1530,4 +1535,5 @@ export {
   MonthlyMeansModalData,
   EACMooringArrayModalData,
   CurrentMetersModalData,
+  ArgoModalData,
 };
