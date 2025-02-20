@@ -22,6 +22,7 @@ import MiniMap from './components/MiniMap';
 import ProductDropdown from './components/ProductDropdown';
 import CurrentMetersFilters from './components/CurrentMetersFilters';
 import { buildDataSourceUrl, getProductInfoByKey } from './utils';
+import ArgoFilters from './components/ArgoFilters';
 
 const ProductSideBar: React.FC = () => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
@@ -193,6 +194,8 @@ const ProductSideBar: React.FC = () => {
             </div>
           </div>
         )}
+
+        {isArgo && <ArgoFilters />}
 
         {isCurrentMeters ? (
           <CurrentMetersFilters subProduct={subProduct} />
