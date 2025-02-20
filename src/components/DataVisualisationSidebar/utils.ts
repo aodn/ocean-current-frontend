@@ -15,5 +15,5 @@ export const buildDataSourceUrl = (type: string, date: Dayjs): string => {
   }
 };
 
-export const getProductInfoByKey = (productKey: string): ProductInfo | undefined =>
-  productInfoList.find((product) => product.id === productKey);
+export const getProductInfoByKey = (productKey: string): ProductInfo =>
+  productInfoList.filter((product) => product.id === productKey)[0];

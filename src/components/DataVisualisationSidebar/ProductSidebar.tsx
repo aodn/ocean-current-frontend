@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { Button, Loading, Popup, TruncateText } from '@/components/Shared';
+import { Button, Loading } from '@/components/Shared';
 import { setProductId } from '@/stores/product-store/productStore';
 import { useQueryParams } from '@/hooks';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
-import InfoIcon from '@/assets/icons/info-icon.svg';
 import ArrowIcon from '@/assets/icons/arrow.svg';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
 import useDateStore from '@/stores/date-store/dateStore';
-import ArrowWithTail from '@/assets/icons/ArrowWithTail';
-import { GeneralText, ProductSidebarText } from '@/constants/textConstant';
+import { ProductSidebarText } from '@/constants/textConstant';
 import {
   CurrentMetersDepth,
   CurrentMetersProperty,
@@ -23,6 +21,7 @@ import ProductDropdown from './components/ProductDropdown';
 import CurrentMetersFilters from './components/CurrentMetersFilters';
 import { buildDataSourceUrl, getProductInfoByKey } from './utils';
 import ArgoFilters from './components/ArgoFilters';
+import ProductSummary from './components/ProductSummary';
 
 const ProductSideBar: React.FC = () => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
@@ -30,7 +29,6 @@ const ProductSideBar: React.FC = () => {
   const isCurrentMeters = mainProduct?.key === 'currentMeters';
   const isArgo = mainProduct?.key === 'argo';
   const shouldRenderMiniMap = useProductAvailableInRegion() || isArgo;
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isSubProductsCollapsed, setIsSubProductsCollapsed] = useState(false);
   const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
   const [isDataSourcesCollapsed, setIsDataSourcesCollapsed] = useState(false);
@@ -93,16 +91,7 @@ const ProductSideBar: React.FC = () => {
     }
     updateQueryParamsAndNavigate(targetPath, updateParam);
   };
-
-  const handlePopup = () => {
-    setIsPopupOpen(!isPopupOpen);
-  };
-
   const productInfo = getProductInfoByKey(mainProduct.key);
-
-  const PopupBody = () => {
-    return <div className="p-4">{productInfo?.description()}</div>;
-  };
 
   return (
     <div className="rounded-md bg-white">
@@ -111,20 +100,7 @@ const ProductSideBar: React.FC = () => {
       {shouldRenderMiniMap && <MiniMap />}
 
       <div className="hidden md:block [&>*:last-child]:border-b-0 [&>*]:border-b-2 [&>*]:border-[#e5e7eb]">
-        <div className="p-4">
-          <div className="flex justify-between">
-            <img src={InfoIcon} alt="info icon" className="mr-6 mt-1 h-6 w-6 cursor-pointer object-contain" />
-            <TruncateText lines={4} text={productInfo?.summary} />
-          </div>
-          {!isArgo && (
-            <div aria-hidden onClick={handlePopup} className="mt-3 flex justify-end">
-              <p className="mr-2 cursor-pointer font-semibold text-imos-grey">{GeneralText.READ_MORE}</p>
-              <ArrowWithTail stroke="#787878" className="mt-2 cursor-pointer" />
-            </div>
-          )}
-        </div>
-
-        <Popup title={productInfo?.title} body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
+        <ProductSummary isArgo={isArgo} productInfo={productInfo} />
 
         {subProducts.length > 0 && (
           <div className="px-4">
