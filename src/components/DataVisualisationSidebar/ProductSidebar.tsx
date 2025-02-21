@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import dayjs from 'dayjs';
 import { Loading } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
-import ArrowIcon from '@/assets/icons/arrow.svg';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
 import { ProductSidebarText } from '@/constants/textConstant';
 import useDateStore from '@/stores/date-store/dateStore';
@@ -38,7 +37,6 @@ import CollapsibleSection from './components/CollapsibleSection';
 
 const ProductSideBar: React.FC = () => {
   const { mainProduct, subProduct, subProducts } = useProductConvert();
-  const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
   const useDate = useDateStore((state) => state.date);
   const isArgo = mainProduct?.key === 'argo';
   const shouldRenderMiniMap = useProductAvailableInRegion() || isArgo;
@@ -58,6 +56,7 @@ const ProductSideBar: React.FC = () => {
   const subProductKey = subProduct?.key ?? '';
   const isCurrentMeters = mainProductKey === 'currentMeters';
   const productInfo = getProductInfoByKey(mainProductKey);
+  const shouldShowLegend = !isCurrentMeters;
 
   const getDataSources = dataSources(useDate);
   const filteredDataSources = getDataSources.filter((source) => source.product.includes(mainProductKey));
@@ -135,28 +134,12 @@ const ProductSideBar: React.FC = () => {
 
         {isArgo && <ArgoFilters />}
 
-        {isCurrentMeters ? (
-          <CurrentMetersFilters subProduct={subProduct} />
-        ) : (
-          <div className="px-4">
-            <div
-              className="flex cursor-pointer items-center justify-between px-4 py-2"
-              onClick={() => setIsLegendCollapsed(!isLegendCollapsed)}
-              aria-hidden
-            >
-              <h3 className="text-lg font-medium text-imos-grey">{ProductSidebarText.LEGEND}</h3>
-              <img
-                src={ArrowIcon}
-                alt="arrow icon"
-                className={`h-4 w-4 transform transition-transform duration-300 ${isLegendCollapsed ? 'rotate-180' : ''}`}
-              />
-            </div>
-            <div
-              className={`overflow-hidden transition-all duration-300 ${isLegendCollapsed ? 'max-h-0' : 'max-h-screen'}`}
-            >
-              <Legend />
-            </div>
-          </div>
+        {isCurrentMeters && <CurrentMetersFilters subProduct={subProduct} />}
+
+        {shouldShowLegend && (
+          <CollapsibleSection title={ProductSidebarText.LEGEND}>
+            <Legend />
+          </CollapsibleSection>
         )}
       </div>
     </div>
