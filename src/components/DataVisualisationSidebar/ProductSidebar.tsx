@@ -29,7 +29,8 @@ const ProductSideBar: React.FC = () => {
   const { mainProduct, subProduct, subProducts } = useProductConvert();
   const useDate = useDateStore((state) => state.date);
   const isArgo = mainProduct?.key === 'argo';
-  const shouldRenderMiniMap = useProductAvailableInRegion() || isArgo;
+  const isCurrentMeters = mainProduct?.key === 'currentMeters';
+  const shouldRenderMiniMap = useProductAvailableInRegion() || isArgo || isCurrentMeters;
 
   const { updateQueryParamsAndNavigate } = useQueryParams();
 
@@ -39,7 +40,6 @@ const ProductSideBar: React.FC = () => {
 
   const mainProductKey = mainProduct.key;
   const subProductKey = subProduct?.key ?? '';
-  const isCurrentMeters = mainProductKey === 'currentMeters';
   const productInfo = getProductInfoByKey(mainProductKey);
   const shouldShowLegend = !isCurrentMeters;
 
