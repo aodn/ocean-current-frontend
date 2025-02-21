@@ -1,5 +1,10 @@
 import { ArgoTagPath } from '@/types/argo';
 
+export enum ArgoDepths {
+  '400M' = '0-400m',
+  '2000M' = '0-2000m',
+}
+
 export const argoTagFilePaths: ArgoTagPath = {
   // TODO: implement after json files are available
   // snapshotSst: {
