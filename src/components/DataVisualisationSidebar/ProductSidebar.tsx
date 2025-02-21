@@ -96,7 +96,11 @@ const ProductSideBar: React.FC = () => {
           </CollapsibleSection>
         )}
 
-        {isArgo && <ArgoFilters />}
+        {isArgo && (
+          <CollapsibleSection title={ProductSidebarText.ARGO_PROFILES}>
+            <ArgoFilters />
+          </CollapsibleSection>
+        )}
 
         {isCurrentMeters && <CurrentMetersFilters subProduct={subProduct} />}
 

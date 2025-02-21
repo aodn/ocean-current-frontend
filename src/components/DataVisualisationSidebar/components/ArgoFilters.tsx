@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import useArgoStore, { setArgoDepth } from '@/stores/argo-store/argoStore';
 import { Button } from '@/components/Shared';
+import { ArgoDepths } from '@/constants/argo';
 
 const ArgoFilters: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,30 +18,21 @@ const ArgoFilters: React.FC = () => {
   };
 
   return (
-    <div className="rounded-md bg-white">
-      <div className="relative">
-        <div className="p-2">
-          <h2 className="mb-2 text-lg font-semibold text-imos-dark-grey">Argo profiles</h2>
-          <div className="mb-3 flex gap-3">
-            <Button
-              onClick={() => changeDepth('1')}
-              size="full"
-              borderRadius="small"
-              type={useArgo.depth === '1' ? 'primary' : 'secondary'}
-            >
-              0-400m
-            </Button>
-            <Button
-              onClick={() => changeDepth('0')}
-              size="full"
-              borderRadius="small"
-              type={useArgo.depth === '0' ? 'primary' : 'secondary'}
-            >
-              0-2000m
-            </Button>
-          </div>
-        </div>
-      </div>
+    <div className="flex w-full flex-wrap justify-center gap-3">
+      <Button
+        onClick={() => changeDepth('1')}
+        borderRadius="small"
+        type={useArgo.depth === '1' ? 'primary' : 'secondary'}
+      >
+        {ArgoDepths['400M']}
+      </Button>
+      <Button
+        onClick={() => changeDepth('0')}
+        borderRadius="small"
+        type={useArgo.depth === '0' ? 'primary' : 'secondary'}
+      >
+        {ArgoDepths['2000M']}
+      </Button>
     </div>
   );
 };
