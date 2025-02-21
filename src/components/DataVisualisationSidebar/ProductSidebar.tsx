@@ -114,7 +114,7 @@ const ProductSideBar: React.FC = () => {
 
       {shouldRenderMiniMap && <MiniMap />}
 
-      <div className="hidden md:block [&>*:last-child]:border-b-0 [&>*]:border-b-2 [&>*]:border-[#e5e7eb]">
+      <div className="hidden md:block [&>*:last-child]:border-b-0 [&>*]:border-b-2 [&>*]:border-imos-light-grey">
         <ProductSummary isArgo={isArgo} productInfo={productInfo} />
 
         {subProduct && subProducts.length > 0 && (
