@@ -1,9 +1,44 @@
 import React from 'react';
+import dayjs from 'dayjs';
 import { Dropdown } from '@/components/Shared';
+import { setProductId } from '@/stores/product-store/productStore';
 import { sidebarProductsNav } from '@/data/sidebarProductsNav';
-import { SidebarProductDropdownProps } from '../types';
+import { getProductPathWithSubProduct } from '@/utils/product-utils/product';
+import { useDateRange, useQueryParams } from '@/hooks';
+import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
+import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
+import { initialState as currentMetersInitialState } from '@/stores/current-meters-store/currentMeters';
+import { QueryParams } from '@/hooks/useQueryParams/types/userQueryParams.types';
+import { ProductDropdownProps } from '../types';
 
-const SidebarProductDropdown: React.FC<SidebarProductDropdownProps> = ({ mainProductKey, handleDropdownChange }) => {
+const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => {
+  const { updateQueryParamsAndNavigate } = useQueryParams();
+
+  const { allDates, selectedDateIndex, formatDate } = useDateRange();
+  const selectedDate = dayjs(allDates[selectedDateIndex]?.date).format(formatDate);
+  const isProductAvailableInRegion = useProductAvailableInRegion();
+
+  const handleDropdownChange = ({ id }: DropdownElement) => {
+    if (mainProductKey.includes(id)) {
+      return;
+    }
+    setProductId(id);
+
+    let queryToUpdate: QueryParams = { date: selectedDate, property: null, depth: null };
+    // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
+    if (id === 'EACMooringArray') {
+      queryToUpdate = { date: selectedDate, region: 'Brisbane', property: null, depth: null };
+    } else if (id === 'currentMeters') {
+      const { region, property, depth, date } = currentMetersInitialState;
+      queryToUpdate = { date, region, property, depth };
+    } else if (!isProductAvailableInRegion) {
+      queryToUpdate = { date: selectedDate, region: null, property: null, depth: null };
+    }
+
+    const targetPath = getProductPathWithSubProduct(id);
+    updateQueryParamsAndNavigate(targetPath, queryToUpdate);
+  };
+
   return (
     <Dropdown
       showIcons
@@ -15,4 +50,4 @@ const SidebarProductDropdown: React.FC<SidebarProductDropdownProps> = ({ mainPro
   );
 };
 
-export default SidebarProductDropdown;
+export default ProductDropdown;

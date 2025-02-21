@@ -1,6 +1,5 @@
 import { ProductSidebarText } from '@/constants/textConstant';
 import { SubProduct } from '@/types/product';
-import { DropdownElement } from '../Shared/Dropdown/types/dropdown.types';
 
 export type ProductInfo = {
   id: string;
@@ -34,7 +33,6 @@ export type DataSource = {
 export interface DataSourcesProps {
   filteredDataSources: DataSource[];
 }
-export interface SidebarProductDropdownProps {
+export interface ProductDropdownProps {
   mainProductKey: string;
-  handleDropdownChange: ({ id }: DropdownElement) => void;
 }
