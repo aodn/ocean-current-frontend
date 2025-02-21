@@ -27,27 +27,23 @@ import CollapsibleSection from './components/CollapsibleSection';
 
 const ProductSideBar: React.FC = () => {
   const { mainProduct, subProduct, subProducts } = useProductConvert();
+  const { updateQueryParamsAndNavigate } = useQueryParams();
   const useDate = useDateStore((state) => state.date);
   const isArgo = mainProduct?.key === 'argo';
   const isCurrentMeters = mainProduct?.key === 'currentMeters';
   const shouldRenderMiniMap = useProductAvailableInRegion() || isArgo || isCurrentMeters;
-
-  const { updateQueryParamsAndNavigate } = useQueryParams();
+  const shouldShowLegend = !isCurrentMeters;
 
   if (!mainProduct) {
     return <Loading />;
   }
 
-  const mainProductKey = mainProduct.key;
-  const subProductKey = subProduct?.key ?? '';
-  const productInfo = getProductInfoByKey(mainProductKey);
-  const shouldShowLegend = !isCurrentMeters;
-
+  const productInfo = getProductInfoByKey(mainProduct.key);
   const getDataSources = dataSources(useDate);
-  const filteredDataSources = getDataSources.filter((source) => source.product.includes(mainProductKey));
+  const filteredDataSources = getDataSources.filter((source) => source.product.includes(mainProduct.key));
 
   const handleSubProductChange = (key: string, subProductPath: string) => {
-    if (key === subProductKey) {
+    if (key === subProduct?.key) {
       return;
     }
     setProductId(key);
@@ -73,7 +69,7 @@ const ProductSideBar: React.FC = () => {
 
   return (
     <div className="rounded-md bg-white">
-      <ProductDropdown mainProductKey={mainProductKey} />
+      <ProductDropdown mainProductKey={mainProduct.key} />
 
       {shouldRenderMiniMap && <MiniMap />}
 
@@ -84,7 +80,7 @@ const ProductSideBar: React.FC = () => {
           <CollapsibleSection title={ProductSidebarText.OPTIONS}>
             <SubProductOptions
               subProducts={subProducts}
-              subProductKey={subProduct.key}
+              subProductKey={subProduct?.key}
               handleSubProductChange={handleSubProductChange}
             />
           </CollapsibleSection>
