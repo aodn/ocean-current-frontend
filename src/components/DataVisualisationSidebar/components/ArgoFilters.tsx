@@ -18,7 +18,7 @@ const ArgoFilters: React.FC = () => {
   };
 
   return (
-    <div className="flex w-full flex-wrap justify-center gap-3">
+    <>
       <Button
         onClick={() => changeDepth('1')}
         borderRadius="small"
@@ -33,7 +33,7 @@ const ArgoFilters: React.FC = () => {
       >
         {ArgoDepths['2000M']}
       </Button>
-    </div>
+    </>
   );
 };
 
