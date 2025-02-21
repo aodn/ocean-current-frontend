@@ -20,7 +20,7 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({ title, children
         />
       </div>
       <div className={`overflow-hidden transition-all duration-300 ${isSectionCollapsed ? 'max-h-0' : 'max-h-screen'}`}>
-        <div className="mb-6 mt-2 flex flex-wrap justify-between gap-2">{children}</div>
+        <div className="mb-6 mt-2 flex flex-wrap gap-2">{children}</div>
       </div>
     </div>
   );
