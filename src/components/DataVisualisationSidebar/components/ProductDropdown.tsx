@@ -1,25 +1,25 @@
+import React from 'react';
 import dayjs from 'dayjs';
-import { Dropdown, Loading } from '@/components/Shared';
-import useProductStore, { setProductId } from '@/stores/product-store/productStore';
+import { Dropdown } from '@/components/Shared';
+import { setProductId } from '@/stores/product-store/productStore';
 import { sidebarProductsNav } from '@/data/sidebarProductsNav';
 import { getProductPathWithSubProduct } from '@/utils/product-utils/product';
 import { useDateRange, useQueryParams } from '@/hooks';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
-import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
 import { initialState as currentMetersInitialState } from '@/stores/current-meters-store/currentMeters';
 import { QueryParams } from '@/hooks/useQueryParams/types/userQueryParams.types';
+import { ProductDropdownProps } from '../types';
 
-const SidebarProductDropdown: React.FC = () => {
+const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
-  const useProductId = useProductStore((state) => state.productParams.productId);
-  const { mainProduct } = useProductConvert();
+
   const { allDates, selectedDateIndex, formatDate } = useDateRange();
   const selectedDate = dayjs(allDates[selectedDateIndex]?.date).format(formatDate);
   const isProductAvailableInRegion = useProductAvailableInRegion();
 
   const handleDropdownChange = ({ id }: DropdownElement) => {
-    if (id === useProductId) {
+    if (mainProductKey.includes(id)) {
       return;
     }
     setProductId(id);
@@ -39,19 +39,15 @@ const SidebarProductDropdown: React.FC = () => {
     updateQueryParamsAndNavigate(targetPath, queryToUpdate);
   };
 
-  if (!useProductId) {
-    return <Loading loadingSize="w-10 h-10" />;
-  }
-
   return (
     <Dropdown
       showIcons
       header
       elements={sidebarProductsNav}
-      selectedId={mainProduct?.key}
+      selectedId={mainProductKey}
       onChange={handleDropdownChange}
     />
   );
 };
 
-export default SidebarProductDropdown;
+export default ProductDropdown;

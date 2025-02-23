@@ -9,10 +9,11 @@ import {
   SurfaceWaveModalData,
   EACMooringArrayModalData,
   CurrentMetersModalData,
-} from '@/components/DataVisualisationSidebar/components/modals/productsModalData';
-import { ProductInfo } from '@/types/product';
+  ArgoModalData,
+} from '@/components/DataVisualisationSidebar/components/ProductDescriptionModal/ProductDescriptionData';
+import { ProductInfo } from '../../types';
 
-export const productDescription: ProductInfo[] = [
+export const productInfoList: ProductInfo[] = [
   {
     id: 'snapshotSst',
     title: 'Snapshot Sst',
@@ -21,17 +22,24 @@ export const productDescription: ProductInfo[] = [
     description: SnapshotModalData,
   },
   {
-    id: 'oceanColour',
-    title: 'Chlorophyll-a Concentration',
+    id: 'fourHourSst',
+    title: 'Four hour SST',
     summary:
-      'Daily images of chlorophyll-a estimates from the MODIS sensor on NASA’s Aqua satellite indicating the amount of phytoplankton in the water.',
-    description: OceanColourModalData,
+      'Four-hour SST is a 4-hourly 2km resolution composite of sea surface temperatures from various satellites, including Himawari-8, Himawari-9, N15, N18, N19, MetopA, MetopB, and VIIRS Suomi-NPP.',
+    description: FourHourSstModalData,
   },
   {
     id: 'sixDaySst',
     title: 'Six Day Sst',
     summary: 'Sea Surface Temperature (°C) 6-day ngt-only comp QL3',
     description: SixDaySstModalData,
+  },
+  {
+    id: 'oceanColour',
+    title: 'Chlorophyll-a Concentration',
+    summary:
+      'Daily images of chlorophyll-a estimates from the MODIS sensor on NASA’s Aqua satellite indicating the amount of phytoplankton in the water.',
+    description: OceanColourModalData,
   },
   {
     id: 'adjustedSeaLevelAnomaly',
@@ -48,11 +56,11 @@ export const productDescription: ProductInfo[] = [
     description: SurfaceWaveModalData,
   },
   {
-    id: 'fourHourSst',
-    title: 'Four hour SST',
+    id: 'monthlyMeans',
+    title: 'Monthly Means',
     summary:
-      'Four-hour SST is a 4-hourly 2km resolution composite of sea surface temperatures from various satellites, including Himawari-8, Himawari-9, N15, N18, N19, MetopA, MetopB, and VIIRS Suomi-NPP.',
-    description: FourHourSstModalData,
+      'Monthly means are time-averaged values of sea surface temperature (SST) and Adjusted Sea Level Anomalies (Adj. SLA) over a month. They provide a stable representation of ocean conditions by averaging short-term variations, useful for identifying long-term trends and patterns.',
+    description: MonthlyMeansModalData,
   },
   {
     id: 'climatology',
@@ -62,18 +70,11 @@ export const productDescription: ProductInfo[] = [
     description: ClimatologyModalData,
   },
   {
-    id: 'monthlyMeans',
-    title: 'Monthly Means',
+    id: 'argo',
+    title: 'Argo Profiles',
     summary:
-      'Monthly means are time-averaged values of sea surface temperature (SST) and Adjusted Sea Level Anomalies (Adj. SLA) over a month. They provide a stable representation of ocean conditions by averaging short-term variations, useful for identifying long-term trends and patterns.',
-    description: MonthlyMeansModalData,
-  },
-  {
-    id: 'EACMooringArray',
-    title: 'EAC Mooring Array',
-    summary:
-      'Daily estimates of East Australian Current (EAC) properties calculated from the CSIRO EAC gridded mooring product.',
-    description: EACMooringArrayModalData,
+      'Temperature and salinity data from the selected float compared with satellite-adjusted climatology, down to 2000m in the Australian region.',
+    description: ArgoModalData, // returns Fragments
   },
   {
     id: 'currentMeters',
@@ -81,5 +82,12 @@ export const productDescription: ProductInfo[] = [
     summary:
       "The overview map is your entry point to a series of maps showing a few properties of Australia's ocean currents: mean (all-time, annual and seasonal), standard deviation for various layers and time-windows, and tidal harmonics for the depth-average flow.",
     description: CurrentMetersModalData,
+  },
+  {
+    id: 'EACMooringArray',
+    title: 'EAC Mooring Array',
+    summary:
+      'Daily estimates of East Australian Current (EAC) properties calculated from the CSIRO EAC gridded mooring product.',
+    description: EACMooringArrayModalData,
   },
 ];

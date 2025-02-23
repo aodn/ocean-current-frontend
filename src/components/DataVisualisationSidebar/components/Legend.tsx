@@ -13,24 +13,24 @@ const Legend: React.FC = () => {
       <div className="p-4">
         <div>
           <div className="inline-block">
-            <div className="mr-2 inline-block h-3 w-3 rounded-full border border-[#FA10E2] bg-white"></div>
+            <div className="mr-2 inline-block h-3 w-3 rounded-full border border-imos-bright-magenta bg-white"></div>
             <span className="mr-1 inline-block font-bold text-imos-dark-grey">Argo: </span>
             pink circle at the location of any profile made in the window t0 +/- 12hrs; click on the circle to see the
             Argo profiles of temperature and salinity.
           </div>
           <div className="mt-2 inline-block">
-            <div className="mr-2 inline-block h-3 w-3 rotate-45 bg-[#FA10E2]"></div>
+            <div className="mr-2 inline-block h-3 w-3 rotate-45 bg-imos-bright-magenta"></div>
             <span className="mr-1 inline-block font-bold text-imos-dark-grey">Glider: </span>
             small diamonds (pink and black) indicate 6-hourly glider locations, pink when the glider is in the 24hr
             window around t0; click on the diamonds to see the glider profiles.
           </div>
           <div className="mt-2 inline-block">
             <div className="-mt-2 mr-2 inline-flex flex-col">
-              <div className="relative -top-2 h-0.5 w-3 bg-[#FA10E2]">
-                <div className="absolute -top-1 right-0 h-2 w-2 rotate-45 border-t-2 border-[#FA10E2]"></div>
+              <div className="relative -top-2 h-0.5 w-3 bg-imos-bright-magenta">
+                <div className="absolute -top-1 right-0 h-2 w-2 rotate-45 border-t-2 border-imos-bright-magenta"></div>
               </div>
-              <div className="relative -top-2 mt-1 h-0.5 w-3 bg-[#2972FF]">
-                <div className="absolute -top-[2px] right-0 h-2 w-2 rotate-45 border-r-2 border-[#2972FF]"></div>
+              <div className="relative -top-2 mt-1 h-0.5 w-3 bg-imos-dodger-blue">
+                <div className="absolute -top-[2px] right-0 h-2 w-2 rotate-45 border-r-2 border-imos-dodger-blue"></div>
               </div>
             </div>
             <span className="mr-1 inline-block font-bold text-imos-dark-grey">Radar: </span>
@@ -40,13 +40,13 @@ const Legend: React.FC = () => {
             value in the colorbar axis.
           </div>
           <div className="mt-2 inline-block">
-            <div className="mr-2 inline-block h-3 w-3 rotate-45 -skew-x-12 -skew-y-12 border-r-2 border-t-2 border-[#FA10E2]"></div>
+            <div className="mr-2 inline-block h-3 w-3 rotate-45 -skew-x-12 -skew-y-12 border-r-2 border-t-2 border-imos-bright-magenta"></div>
             <span className="mr-1 inline-block font-bold text-imos-dark-grey">Drifter: </span>
             small diamonds (pink and black) indicate 6-hourly glider locations, pink when the glider is in the 24hr
             window around t0; click on the diamonds to see the glider profiles.
           </div>
           <div className="mt-2 inline-block">
-            <div className="mr-2 inline-block h-3 w-3 rounded-full border-2 border-[#838383]"></div>
+            <div className="mr-2 inline-block h-3 w-3 rounded-full border-2 border-imos-subheading-grey"></div>
             <span className="mr-1 inline-block font-bold text-imos-dark-grey">Ship: </span>
             Underway water temperature, plotted hourly, from ships with hull-mounted intake. These include the RV
             Investigator (MNF), RV Solander and RV Cape Ferguson (AIMS), and the Spirit of Tasmania 2, Sea Flyte and
@@ -79,38 +79,38 @@ const Legend: React.FC = () => {
       <div className="mb-6 mt-2 grid grid-cols-2 gap-x-1 gap-y-4 px-6">
         <div className="flex flex-col space-y-2">
           <div className="flex items-center">
-            <div className="mr-3 h-3 w-3 rounded-full border border-[#FA10E2] bg-white"></div>
+            <div className="mr-3 h-3 w-3 rounded-full border border-imos-bright-magenta bg-white"></div>
             <span className="text-imos-grey">Argo</span>
           </div>
           <div className="flex items-center">
-            <div className="mr-3 h-3 w-3 rounded-full bg-[#838383]"></div>
+            <div className="mr-3 h-3 w-3 rounded-full bg-imos-subheading-grey"></div>
             <span className="text-imos-grey">Mooring</span>
           </div>
           <div className="flex items-center">
-            <div className="mr-3 h-3 w-3 rounded-full border-2 border-[#838383]"></div>
+            <div className="mr-3 h-3 w-3 rounded-full border-2 border-imos-subheading-grey"></div>
             <span className="text-imos-grey">Ship</span>
           </div>
         </div>
 
         <div className="flex flex-col space-y-2">
           <div className="flex items-center">
-            <div className="mr-3 h-3 w-3 rotate-45 bg-[#FA10E2]"></div>
+            <div className="mr-3 h-3 w-3 rotate-45 bg-imos-bright-magenta"></div>
             <span className="text-imos-grey">Glider</span>
           </div>
           <div className="flex items-center">
             <div className="mr-3 flex flex-col">
-              <div className="relative h-0.5 w-3 bg-[#FA10E2]">
-                <div className="absolute -top-1 right-0 h-2 w-2 rotate-45 border-t-2 border-[#FA10E2]"></div>
+              <div className="relative h-0.5 w-3 bg-imos-bright-magenta">
+                <div className="absolute -top-1 right-0 h-2 w-2 rotate-45 border-t-2 border-imos-bright-magenta"></div>
               </div>
-              <div className="relative mt-1 h-0.5 w-3 bg-[#2972FF]">
-                <div className="absolute -top-[2px] right-0 h-2 w-2 rotate-45 border-r-2 border-[#2972FF]"></div>
+              <div className="relative mt-1 h-0.5 w-3 bg-imos-dodger-blue">
+                <div className="absolute -top-[2px] right-0 h-2 w-2 rotate-45 border-r-2 border-imos-dodger-blue"></div>
               </div>
             </div>
             <span className="text-imos-grey">Radar</span>
           </div>
 
           <div className="flex items-center">
-            <div className="mr-3 h-3 w-3 rotate-45 -skew-x-12 -skew-y-12 border-r-2 border-t-2 border-[#FA10E2]"></div>
+            <div className="mr-3 h-3 w-3 rotate-45 -skew-x-12 -skew-y-12 border-r-2 border-t-2 border-imos-bright-magenta"></div>
             <span className="text-imos-grey">Drifter</span>
           </div>
         </div>

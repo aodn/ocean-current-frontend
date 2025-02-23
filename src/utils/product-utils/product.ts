@@ -1,7 +1,6 @@
 import { OC_PRODUCTS } from '@/constants/product';
-import { productDescription } from '@/constants/productInfo';
 import { flatProducts } from '@/data/productData';
-import { CombinedProduct, FlatProduct, MainProductWithSubProduct, Product, ProductInfo } from '@/types/product';
+import { CombinedProduct, FlatProduct, MainProductWithSubProduct, Product } from '@/types/product';
 
 const combineProducts = (products: Product[]): CombinedProduct[] => {
   return products.flatMap((product) => {
@@ -105,9 +104,6 @@ const getMainAndSubProductById = (productId: string): MainProductWithSubProduct 
 const checkProductHasSubProduct = (productKey: string | undefined | null): boolean =>
   OC_PRODUCTS.some((p) => p.key === productKey && p.children);
 
-const getProductInfoByKey = (productKey: string): ProductInfo | undefined =>
-  productDescription.find((product) => product.id === productKey);
-
 const constructPath = (product: FlatProduct): string => {
   return `${product.path}`;
 };
@@ -167,7 +163,6 @@ export {
   getMainAndSubProductById,
   validateProductIdentifier,
   checkProductHasSubProduct,
-  getProductInfoByKey,
   constructPath,
   constructParentPath,
   getProductFullPathById,

@@ -1,4 +1,4 @@
-import { argoTagFilePaths } from '@/constants/argoTagPath';
+import { argoTagFilePaths } from '@/constants/argo';
 import { ArgoTagMapArea, ArgoTag, StateLocalPathValue } from '@/types/argo';
 
 const getArgoTagFilePathByProductId = (productId: string): StateLocalPathValue | undefined => {

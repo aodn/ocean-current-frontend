@@ -30,6 +30,8 @@ export default {
         'imos-subheading-grey': color.subheadingGrey,
         'imos-calypso-blue': color.calypsoBlue,
         'imos-horizon-blue': color.horizonBlue,
+        'imos-bright-magenta': color.brightMagenta,
+        'imos-dodger-blue': color.dodgerBlue,
       },
       backgroundImage: {
         'background-gradient': 'linear-gradient(180deg, #DCDCDC 0%, rgba(217, 217, 217, 0.34) 100%)',

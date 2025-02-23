@@ -8,13 +8,14 @@ import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useDeviceType, useProductFromUrl, useProductSearchParam, useSetProductId, useUrlType } from '@/hooks';
 import { getRegionByRegionTitleOrCode } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
-import DataVisualisationSidebar from '@/components/DataVisualisationSidebar/DataVisualisationSidebar';
 import ProductFooterMobile from '@/components/ProductFooterMobile/ProductFooterMobile';
 import ArrowIcon from '@/assets/icons/Arrow';
 import { RegionScope } from '@/constants/region';
 import { Loading } from '@/components/Shared';
 import ProductMenuBar from '@/components/ProductMenuBar/ProductMenuBar';
 import ProductMenuBarMobile from '@/components/ProductMenuBar/ProductNavbarMobile';
+import ProductSideBar from '@/components/DataVisualisationSidebar/ProductSidebar';
+import { ArgoDepths } from '@/constants/argo';
 
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -34,7 +35,7 @@ const DataVisualisationLayout: React.FC = () => {
     const date = searchParams.get('date') || dayjs().format('YYYYMMDD');
     const worldMeteorologicalOrgId = searchParams.get('wmoid') || '';
     const cycle = searchParams.get('cycle') || '';
-    const depth = searchParams.get('depth') === '1' ? '1' : '0';
+    const depth = (searchParams.get('depth') ?? ArgoDepths['2000M']) as ArgoDepths;
     setSelectedArgoParams({ worldMeteorologicalOrgId, cycle, depth });
     setDate(dayjs(date));
   }, [searchParams]);
@@ -73,7 +74,7 @@ const DataVisualisationLayout: React.FC = () => {
       {isMobile ? (
         <div className="p-4">
           <div className="text-imos-text-grey">
-            <DataVisualisationSidebar />
+            <ProductSideBar />
           </div>
           <div>
             <ProductMenuBarMobile setShowVideo={setShowVideo} />
@@ -95,7 +96,7 @@ const DataVisualisationLayout: React.FC = () => {
             />
           </button>
           <div className={`transition-all duration-300 ${isSidebarVisible ? 'w-1/3' : 'w-0 overflow-hidden'}`}>
-            <DataVisualisationSidebar />
+            <ProductSideBar />
           </div>
           <div
             className={`transition-all duration-300 ${isSidebarVisible ? 'ml-4' : 'ml-0'} flex min-h-[800px] w-full min-w-[800px] flex-col`}

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { ArgoProfile } from '@/types/argo';
+import { ArgoDepths } from '@/constants/argo';
 import { convertHtmlToArgo } from './argo';
 
 // TODO: write tests for not mocked functions
@@ -19,14 +20,14 @@ describe('convertHtmlToArgo', () => {
         coords: [34, 152, 39, 158],
         worldMeteorologicalOrgId: '1902055',
         cycle: '153',
-        depth: '0',
+        depth: ArgoDepths['2000M'],
         date: '20240910',
       },
       {
         coords: [570, 167, 575, 173],
         worldMeteorologicalOrgId: '3902358',
         cycle: '60',
-        depth: '0',
+        depth: ArgoDepths['2000M'],
         date: '20240910',
       },
     ];

@@ -17,6 +17,7 @@ export enum ProductSidebarText {
   REGION = 'Region',
   PROPERTY = 'Property',
   DEPLOYMENT_PLOT = 'Deployment Plot',
+  ARGO_PROFILES = 'Argo Profiles',
 }
 
 export enum ProductMenubarText {
