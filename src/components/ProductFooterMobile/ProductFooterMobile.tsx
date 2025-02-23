@@ -13,6 +13,7 @@ import ArgoIcon from '@/assets/icons/products/grey-icons/argo-icon-grey.svg';
 import ArgoIdIcon from '@/assets/icons/argo-id-icon.svg';
 import useArgoStore, { setArgoDepth } from '@/stores/argo-store/argoStore';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
+import { ArgoDepths } from '@/constants/argo';
 import { getProductInfoByKey } from '../DataVisualisationSidebar/utils';
 
 const ProductFooterMobile: React.FC = () => {
@@ -34,7 +35,7 @@ const ProductFooterMobile: React.FC = () => {
     { text: '0.4', position: 90, color: '#ca705c' },
   ];
 
-  const changeDepth = (newDepth: '0' | '1') => {
+  const changeDepth = (newDepth: ArgoDepths) => {
     setSearchParams({ wmoid: worldMeteorologicalOrgId, cycle, depth: newDepth, date });
     setArgoDepth(newDepth);
   };
@@ -145,20 +146,20 @@ const ProductFooterMobile: React.FC = () => {
             </div>
             <div className="mb-3 flex gap-3">
               <Button
-                onClick={() => changeDepth('1')}
+                onClick={() => changeDepth(ArgoDepths['400M'])}
                 size="full"
                 borderRadius="small"
-                type={useArgo.depth === '1' ? 'primary' : 'secondary'}
+                type={useArgo.depth === ArgoDepths['400M'] ? 'primary' : 'secondary'}
               >
-                0-400m
+                {ArgoDepths['400M']}
               </Button>
               <Button
-                onClick={() => changeDepth('0')}
+                onClick={() => changeDepth(ArgoDepths['2000M'])}
                 size="full"
                 borderRadius="small"
-                type={useArgo.depth === '0' ? 'primary' : 'secondary'}
+                type={useArgo.depth === ArgoDepths['2000M'] ? 'primary' : 'secondary'}
               >
-                0-2000m
+                {ArgoDepths['2000M']}
               </Button>
             </div>
           </div>

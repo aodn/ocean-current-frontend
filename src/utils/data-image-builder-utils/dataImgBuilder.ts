@@ -10,6 +10,7 @@ import {
   CurrentMetersSubproductsKey,
 } from '@/constants/currentMeters';
 import { CurrentMetersMapDataPointNames } from '@/types/currentMeters';
+import { ArgoDepths } from '@/constants/argo';
 
 type ProductId = string;
 type SubProductType = string | undefined | null;
@@ -157,7 +158,7 @@ const buildEACMooringArrayImageUrl = (date: Dayjs) => {
 };
 
 const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle: string, depth: string): string => {
-  const profiles = depth === '0' ? 'profiles' : 'profiles_s';
+  const profiles = depth === ArgoDepths['2000M'] ? 'profiles' : 'profiles_s';
   const formatDate = dayjs(date).format('YYYYMMDD');
   return `${imageBaseUrl}/${profiles}/${worldMeteorologicalOrgId}/${formatDate}_${worldMeteorologicalOrgId}_${cycle}.gif`;
 };

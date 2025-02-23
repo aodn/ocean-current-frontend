@@ -8,6 +8,7 @@ import {
   CurrentMetersRegion,
   CurrentMetersSubproductsKey,
 } from '@/constants/currentMeters';
+import { ArgoDepths } from '@/constants/argo';
 import {
   buildProductImageUrl,
   buildArgoImageUrl,
@@ -446,7 +447,7 @@ describe('buildArgoImageUrl', () => {
     const worldMeteorologicalOrgId = '1234';
     const date = dayjs('20240519');
     const cycle = '12';
-    const depth = '0';
+    const depth = ArgoDepths['2000M'];
 
     // Act
     const imageUrl = buildArgoImageUrl(worldMeteorologicalOrgId, date, cycle, depth);
@@ -460,7 +461,7 @@ describe('buildArgoImageUrl', () => {
     const worldMeteorologicalOrgId = '1234';
     const date = dayjs('2024-05-19');
     const cycle = '12';
-    const depth = '0';
+    const depth = ArgoDepths['2000M'];
 
     // Act
     const imageUrl = buildArgoImageUrl(worldMeteorologicalOrgId, date, cycle, depth);

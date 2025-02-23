@@ -1,6 +1,7 @@
 import parse from 'node-html-parser';
 import { ArgoProfile } from '@/types/argo';
 import { argoMapImgParamsNew } from '@/constants/imageParameter';
+import { ArgoDepths } from '@/constants/argo';
 import { calculateOffsetByCoords } from '../geo-utils/geo';
 
 const convertHtmlToArgo = (html: string): ArgoProfile[] => {
@@ -22,7 +23,7 @@ const convertHtmlToArgo = (html: string): ArgoProfile[] => {
       coords: calculateOffsetByCoords(coords, argoMapImgParamsNew),
       worldMeteorologicalOrgId,
       cycle,
-      depth: '0',
+      depth: ArgoDepths['2000M'],
       date,
     };
   });

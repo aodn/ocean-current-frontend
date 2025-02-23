@@ -1,12 +1,13 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
+import { ArgoDepths } from '@/constants/argo';
 import { State, Actions } from './argo.types';
 
 const initialState: State = {
   selectedArgoParams: {
     worldMeteorologicalOrgId: '',
     cycle: '',
-    depth: '0',
+    depth: ArgoDepths['2000M'],
   },
   argoMetaData: [],
   argoProfileCycles: [],

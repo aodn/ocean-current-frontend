@@ -12,7 +12,7 @@ const ArgoFilters: React.FC = () => {
   const { worldMeteorologicalOrgId, cycle } = useArgo;
   const date = searchParams.get('date') || dayjs().format('YYYYMMDD');
 
-  const changeDepth = (newDepth: '0' | '1') => {
+  const changeDepth = (newDepth: ArgoDepths) => {
     setSearchParams({ wmoid: worldMeteorologicalOrgId, cycle, depth: newDepth, date });
     setArgoDepth(newDepth);
   };
@@ -20,16 +20,16 @@ const ArgoFilters: React.FC = () => {
   return (
     <>
       <Button
-        onClick={() => changeDepth('1')}
+        onClick={() => changeDepth(ArgoDepths['400M'])}
         borderRadius="small"
-        type={useArgo.depth === '1' ? 'primary' : 'secondary'}
+        type={useArgo.depth === ArgoDepths['400M'] ? 'primary' : 'secondary'}
       >
         {ArgoDepths['400M']}
       </Button>
       <Button
-        onClick={() => changeDepth('0')}
+        onClick={() => changeDepth(ArgoDepths['2000M'])}
         borderRadius="small"
-        type={useArgo.depth === '0' ? 'primary' : 'secondary'}
+        type={useArgo.depth === ArgoDepths['2000M'] ? 'primary' : 'secondary'}
       >
         {ArgoDepths['2000M']}
       </Button>

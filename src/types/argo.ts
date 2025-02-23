@@ -1,8 +1,10 @@
+import { ArgoDepths } from '@/constants/argo';
+
 export interface ArgoProfile {
   coords: number[];
   worldMeteorologicalOrgId: string;
   cycle: string;
-  depth: '0' | '1';
+  depth: ArgoDepths;
   date?: string;
 }
 

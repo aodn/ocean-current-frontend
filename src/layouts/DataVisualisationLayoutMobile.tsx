@@ -13,6 +13,7 @@ import { RegionScope } from '@/constants/region';
 import ProductFooterMobile from '@/components/ProductFooterMobile/ProductFooterMobile';
 import ProductMenuBarMobile from '@/components/ProductMenuBar/ProductNavbarMobile';
 import ProductSideBar from '@/components/DataVisualisationSidebar/ProductSidebar';
+import { ArgoDepths } from '@/constants/argo';
 
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -25,7 +26,7 @@ const DataVisualisationLayout: React.FC = () => {
     const date = searchParams.get('date') || dayjs().format('YYYYMMDD');
     const worldMeteorologicalOrgId = searchParams.get('wmoid') || '';
     const cycle = searchParams.get('cycle') || '';
-    const depth = searchParams.get('depth') === '1' ? '1' : '0';
+    const depth = (searchParams.get('depth') ?? ArgoDepths['2000M']) as ArgoDepths;
     setSelectedArgoParams({ worldMeteorologicalOrgId, cycle, depth });
     setDate(dayjs(date));
   }, [searchParams]);
