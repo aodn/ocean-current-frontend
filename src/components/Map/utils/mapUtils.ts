@@ -1,7 +1,5 @@
 import { MapboxGeoJSONFeature, MapMouseEvent, MapRef } from 'react-map-gl';
 import { isNotNullOrUndefined } from '@/utils/general-utils/general';
-import { BoundingBox } from '@/types/map';
-import { calculateAreaFromCoords } from '@/utils/geo-utils/geo';
 import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
 import {
   deepADCPDeploymentPlotsData,
@@ -45,19 +43,6 @@ const getPropertyFromMapFeatures = <T extends Record<string, any>>(
   return extractPropertyFromFeatures<T>(features, propName);
 };
 
-const isPolygonWithinBounds = (
-  polygonCoords: BoundingBox,
-  boundsCoords: BoundingBox,
-  minThresholdPercentage: number,
-  maxThresholdPercentage: number,
-): boolean => {
-  const polygonArea = calculateAreaFromCoords(polygonCoords);
-  const boundsArea = calculateAreaFromCoords(boundsCoords, false);
-
-  const polygonPercentageOfBounds = (polygonArea / boundsArea) * 100;
-  return polygonPercentageOfBounds >= minThresholdPercentage && polygonPercentageOfBounds <= maxThresholdPercentage;
-};
-
 const getDeploymentPlotsBySubProduct = (subProductKey: string) => {
   if (!subProductKey) return mooredInstrumentArrayDeploymentPlotsData;
 
@@ -75,9 +60,4 @@ const getDeploymentPlotsBySubProduct = (subProductKey: string) => {
   }
 };
 
-export {
-  extractPropertyFromFeatures,
-  getPropertyFromMapFeatures,
-  isPolygonWithinBounds,
-  getDeploymentPlotsBySubProduct,
-};
+export { extractPropertyFromFeatures, getPropertyFromMapFeatures, getDeploymentPlotsBySubProduct };
