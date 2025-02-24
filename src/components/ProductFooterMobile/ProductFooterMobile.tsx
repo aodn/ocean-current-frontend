@@ -10,7 +10,6 @@ import ArrowWithTail from '@/assets/icons/ArrowWithTail';
 import { setProductId } from '@/stores/product-store/productStore';
 import { useQueryParams } from '@/hooks';
 import ArgoIcon from '@/assets/icons/products/grey-icons/argo-icon-grey.svg';
-import ArgoIdIcon from '@/assets/icons/argo-id-icon.svg';
 import useArgoStore, { setArgoDepth } from '@/stores/argo-store/argoStore';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { ArgoDepths } from '@/constants/argo';
@@ -140,7 +139,7 @@ const ProductFooterMobile: React.FC = () => {
           <div className="p-2">
             <div className="my-5">
               <div className="flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg border bg-imos-mid-grey px-12 py-1 text-lg text-white transition duration-300 ease-in-out">
-                <img src={ArgoIdIcon} alt="argo id icon" />
+                <img src={ArgoIcon} alt="argo id icon" />
                 aoml {worldMeteorologicalOrgId}
               </div>
             </div>
