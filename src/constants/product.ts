@@ -263,11 +263,20 @@ export const OC_PRODUCTS: Product[] = [
       },
     ],
   },
-
   {
     title: 'Argo',
     key: 'argo',
     path: 'argo',
+    latestEntry: null,
+    dateFormat: {
+      localFormat: DateFormat.DAY,
+      stateFormat: DateFormat.DAY,
+    },
+  },
+  {
+    title: 'Tidal Currents',
+    key: 'tidalCurrents',
+    path: 'tidal-currents',
     latestEntry: null,
     dateFormat: {
       localFormat: DateFormat.DAY,
@@ -352,24 +361,6 @@ export const OC_PRODUCTS: Product[] = [
     dateFormat: {
       localFormat: DateFormat.DAY,
       stateFormat: DateFormat.DAY,
-    },
-  },
-
-  {
-    title: 'SST Anom vs Time',
-    key: 'sstAnomVsTime',
-    path: 'sst-anom-vs-time',
-    latestEntry: null,
-    dateFormat: null,
-  },
-  {
-    title: 'Non-Tidal Sea Level Anom.',
-    key: 'nonTidalSeaLevelAnom',
-    path: 'non-tidal-sea-level-anom',
-    latestEntry: null,
-    dateFormat: {
-      localFormat: null,
-      stateFormat: DateFormat.HOUR,
     },
   },
 ] as const;

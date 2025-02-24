@@ -65,11 +65,11 @@ describe('useSetProductId', () => {
   it('should update product ID when dependencies change', () => {
     // Initial mock setup
     vi.mocked(useProductFromUrl).mockReturnValue({
-      mainProduct: 'sst-anom-vs-time',
+      mainProduct: 'current-meters',
       subProduct: null,
     });
     vi.mocked(getProductByPath).mockReturnValue({
-      key: 'sstAnomVsTime',
+      key: 'currentMeters',
       title: '',
       path: '',
     });

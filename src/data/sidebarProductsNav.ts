@@ -41,7 +41,7 @@ export const sidebarProductsNav: DropdownElement[] = [
   },
   {
     id: 'adjustedSeaLevelAnomaly',
-    label: 'Adj. Sea Level Anomaly',
+    label: 'Adjusted Sea Level Anomaly',
     icon: AdjustedSeaLevelAnomalyIcon,
     selectedIcon: AdjustedSeaLevelAnomalyWhiteIcon,
   },
