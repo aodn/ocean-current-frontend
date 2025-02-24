@@ -48,7 +48,7 @@ const localRegions: LocalRegion[] = [
   { code: 'GoC', title: 'Gulf of Carpentaria', coords: [132, 143, -18, -8] },
   { code: 'Indo', title: 'Indonesia', coords: [110, 130, -13, -4] },
   { code: 'JBGulf', title: 'JBGulf', coords: [127.0, 133.0, -15.6, -10.0] },
-  { code: 'Kimberley', title: 'Kimberley', coords: [118.6, 127, -18, -11.7] },
+  { code: 'Kimberley', title: 'Kimberley', coords: [118.6, 127, -18.2, -11.7] },
   { code: 'LordHoweS', title: 'Lord Howe Is.-Sydney', coords: [150, 161, -36, -29.8] },
   { code: 'NewCal', title: 'NewCal', coords: [162.5, 169.8, -24, -18] },
   { code: 'NGBR', title: 'Northern GBR', coords: [141, 151.5, -15.2, -7.5] },
@@ -78,6 +78,18 @@ const localRegions: LocalRegion[] = [
   { code: 'Torres', title: 'Torres', coords: [139.5, 144.5, -13, -9] },
   { code: 'Vanuatu', title: 'Vanuatu', coords: [163, 173, -21, -12] },
   { code: 'XmasI', title: 'Christmas Is.', coords: [100, 110, -12, -5] },
+
+  // Current Meters specific regions
+  { code: 'Aust', title: 'Australia', coords: [102, 165, -48, -4.5] },
+  { code: 'Banks', title: 'Banks', coords: [147.4, 149, -41, -40] },
+  { code: 'PPB', title: 'PPB', coords: [143.5, 146, -39, -37.5] },
+  { code: 'HydrogPass', title: 'HydrogPass', coords: [147.5, 150.2, -21.5, -19.2] },
+  { code: 'Darwin', title: 'Darwin', coords: [128.5, 133.3, -13.5, -10] },
+  { code: 'KingSound', title: 'KingSound', coords: [121.7, 126, -17.5, -13.5] },
+  { code: 'Arnhem', title: 'Arnhem', coords: [126.5, 135, -15.5, -8.3] },
+  { code: 'GOC', title: 'Gulf of Carpentaria', coords: [132, 143, -18, -8] },
+  { code: 'SA', title: 'SA', coords: [133.2, 141, -38, -32] },
+  { code: 'Pilbara', title: 'Pilbara', coords: [110.5, 122, -27.5, -17.8] },
 
   // Current Meters specific regions
   { code: '01_Aust', title: 'Australia', coords: [102, 165, -48, -4.5] },
