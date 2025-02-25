@@ -34,7 +34,7 @@ const routes: RouteObject[] = [
             element: <Navigate to="chl-a" replace />,
           },
           {
-            path: 'adj-sea-level-anom',
+            path: 'adjusted-sea-level-anomaly',
             element: <Navigate to="sla" replace />,
           },
           {

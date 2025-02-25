@@ -148,7 +148,7 @@ export const OC_PRODUCTS: Product[] = [
   {
     title: 'Adjusted Sea Level Anom.',
     key: 'adjustedSeaLevelAnomaly',
-    path: 'adjusted-sea-level-anom',
+    path: 'adjusted-sea-level-anomaly',
     latestEntry: 'GSLA_entry',
     dateFormat: null,
     children: [

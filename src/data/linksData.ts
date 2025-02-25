@@ -70,7 +70,7 @@ export const linksData: LinkItem[] = [
         blueIcon: AdjustedSeaLevelAnomalyBlueIcon,
         title: 'Adjusted Sea Level Anomaly',
         description: 'Adjusted Sea Level Anomaly',
-        url: '/map/adjusted-sea-level-anom/sla',
+        url: '/map/adjusted-sea-level-anomaly/sla',
       },
       {
         id: 'surfaceWaves',
