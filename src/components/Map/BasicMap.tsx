@@ -12,6 +12,19 @@ import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer, CurrentMetersDe
 import { MouseCursorLocationPanel } from './panels';
 import { BasicMapProps } from './types/map.types';
 
+const productsWithArgoData = [
+  'snapshotSst',
+  'fourHourSst',
+  'sixDaySst',
+  'oceanColour',
+  'adjustedSeaLevelAnomaly',
+  'argo',
+  'EACMooringArray',
+  'sealCtd',
+];
+const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
+const interactiveIds = [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID];
+
 const BasicMap: React.FC<BasicMapProps> = ({
   id = mapboxInstanceIds.OCEAN_CURRENT_BASIC_MAP_ID,
   mapStyle = MAP_STYLE as MapStyle,
@@ -27,13 +40,9 @@ const BasicMap: React.FC<BasicMapProps> = ({
   const useMapViewState = useMapStore((state) => state.mapViewState);
   const { isArgo, isCurrentMeters } = useProductCheck();
   const { isMobile } = useDeviceType();
-  const { subProduct } = useProductConvert();
+  const { mainProduct, subProduct } = useProductConvert();
 
-  const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
-  const interactiveIds = [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID];
-
-  const shouldShowArgoLayer = ((!isArgo && !isMiniMap) || isArgo) && !isCurrentMeters;
-
+  const shouldShowArgoLayer = isMiniMap ? isArgo : productsWithArgoData.includes(mainProduct?.key || '');
   const shouldShowCursorLocationPanel = showCursorLocationPanel && !isMobile && cursorLngLat?.lng && cursorLngLat?.lat;
 
   useEffect(() => {
