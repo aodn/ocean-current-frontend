@@ -278,10 +278,10 @@ export const OC_PRODUCTS: Product[] = [
     key: 'tidalCurrents',
     path: 'tidal-currents',
     latestEntry: null,
-    dateFormat: {
-      localFormat: DateFormat.DAY,
-      stateFormat: DateFormat.DAY,
-    },
+    // dateFormat: {
+    //   localFormat: DateFormat.DAY,
+    //   stateFormat: DateFormat.DAY,
+    // },
   },
   /*
     The data below is only for rendering the options button for navigation purposes.
