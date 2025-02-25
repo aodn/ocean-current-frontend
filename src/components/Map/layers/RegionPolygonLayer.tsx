@@ -32,7 +32,6 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
   const { region: regionTitleFromUrl } = useProductSearchParam();
   const selectedRegion = useRegionTitle || 'Au';
   const regionGeoJsonData = useRegionPolygons();
-  const isChla = baseProductPath.includes('ocean-colour');
 
   const {
     property: currentMetersProperty,
@@ -206,12 +205,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
         type="fill"
         source={PRODUCT_REGION_BOX_SOURCE_ID}
         paint={{
-          'fill-color': [
-            'case',
-            ['==', ['id'], hoveredId],
-            isChla ? 'rgba(58, 77, 143, 0.8)' : 'rgba(255,255,255,0.75)',
-            'rgba(19, 40, 113, 0)',
-          ],
+          'fill-color': ['case', ['==', ['id'], hoveredId], 'rgba(58, 77, 143, 0.8)', 'rgba(19, 40, 113, 0)'],
           'fill-outline-color': ['case', ['==', ['id'], hoveredId], 'rgba(58, 92, 143, 0.8)', 'rgba(47, 0, 179, 0.3)'],
         }}
       />
@@ -219,7 +213,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
         type="line"
         source={PRODUCT_REGION_BOX_SOURCE_ID}
         paint={{
-          'line-color': ['case', ['==', ['id'], hoveredId], 'rgba(34,34,34, 0.7)', 'rgba(34,34,34,0.5)'],
+          'line-color': ['case', ['==', ['id'], hoveredId], 'rgba(255,255,255,0.8)', 'rgba(34,34,34,0.5)'],
           'line-width': ['case', ['==', ['id'], hoveredId], 3.5, 2.4],
         }}
       />
@@ -232,23 +226,11 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
           'text-size': 16,
           'text-justify': 'center',
           'text-anchor': 'center',
-          'text-font': ['Open Sans Bold'],
         }}
         paint={{
-          'text-color': isChla ? '#fff' : '#000000',
+          'text-color': '#fff',
         }}
         filter={['==', 'name', hoveredRegion]}
-      />
-
-      <Layer
-        id={PRODUCT_REGION_SELECTED_BOX_LAYER_ID}
-        type="line"
-        source={PRODUCT_REGION_BOX_SOURCE_ID}
-        paint={{
-          'line-color': 'rgba(34,34,34, 1)',
-          'line-width': 5,
-        }}
-        filter={['==', 'name', selectedRegion]}
       />
       <Layer
         type="symbol"
@@ -258,10 +240,19 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
           'text-size': 16,
           'text-justify': 'center',
           'text-anchor': 'center',
-          'text-font': ['Open Sans Bold'],
         }}
         paint={{
-          'text-color': isChla ? '#fff' : '#000000',
+          'text-color': '#fff',
+        }}
+        filter={['==', 'name', selectedRegion]}
+      />
+      <Layer
+        id={PRODUCT_REGION_SELECTED_BOX_LAYER_ID}
+        type="line"
+        source={PRODUCT_REGION_BOX_SOURCE_ID}
+        paint={{
+          'line-color': 'rgba(58, 92, 143, 0.8)',
+          'line-width': 3,
         }}
         filter={['==', 'name', selectedRegion]}
       />
