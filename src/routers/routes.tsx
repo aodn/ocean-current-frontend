@@ -46,6 +46,10 @@ const routes: RouteObject[] = [
             element: <Navigate to="sst" replace />,
           },
           {
+            path: 'current-meters',
+            element: <Navigate to="moored-instrument-array" replace />,
+          },
+          {
             path: ':product/:subProduct',
             element: <DataView />,
           },
