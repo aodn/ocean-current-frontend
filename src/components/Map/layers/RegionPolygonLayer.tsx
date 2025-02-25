@@ -205,7 +205,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
         type="fill"
         source={PRODUCT_REGION_BOX_SOURCE_ID}
         paint={{
-          'fill-color': ['case', ['==', ['id'], hoveredId], 'rgba(58, 77, 143, 0.2)', 'rgba(19, 40, 113, 0)'],
+          'fill-color': ['case', ['==', ['id'], hoveredId], 'rgba(58, 77, 143, 0.8)', 'rgba(19, 40, 113, 0)'],
           'fill-outline-color': ['case', ['==', ['id'], hoveredId], 'rgba(58, 92, 143, 0.8)', 'rgba(47, 0, 179, 0.3)'],
         }}
       />
@@ -213,7 +213,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
         type="line"
         source={PRODUCT_REGION_BOX_SOURCE_ID}
         paint={{
-          'line-color': 'rgba(34,34,34,0.5)',
+          'line-color': ['case', ['==', ['id'], hoveredId], 'rgba(255,255,255,0.8)', 'rgba(34,34,34,0.5)'],
           'line-width': ['case', ['==', ['id'], hoveredId], 3.5, 2.4],
         }}
       />
