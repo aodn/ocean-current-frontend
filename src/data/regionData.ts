@@ -79,7 +79,7 @@ const localRegions: LocalRegion[] = [
   { code: 'Vanuatu', title: 'Vanuatu', coords: [163, 173, -21, -12] },
   { code: 'XmasI', title: 'Christmas Is.', coords: [100, 110, -12, -5] },
 
-  // Current Meters specific regions
+  // Tidal Currents specific regions
   { code: 'Aust', title: 'Australia', coords: [102, 165, -48, -4.5] },
   { code: 'Banks', title: 'Banks', coords: [147.4, 149, -41, -40] },
   { code: 'PPB', title: 'PPB', coords: [143.5, 146, -39, -37.5] },
