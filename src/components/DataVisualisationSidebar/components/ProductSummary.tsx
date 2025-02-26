@@ -7,8 +7,9 @@ import { color } from '@/styles/colors';
 import { ProductSummaryProp } from '../types';
 
 const ProductSummary: React.FC<ProductSummaryProp> = ({ isArgo, productInfo }) => {
-  const { title, summary, description } = productInfo;
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  if (!productInfo) return;
+  const { title, summary, description } = productInfo;
 
   const handlePopup = () => {
     setIsPopupOpen(!isPopupOpen);
