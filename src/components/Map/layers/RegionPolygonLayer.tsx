@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Layer, LngLatBounds, MapMouseEvent, Source, useMap } from 'react-map-gl';
+import { Layer, MapMouseEvent, Source, useMap } from 'react-map-gl';
 import dayjs from 'dayjs';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
-import { useDebounce, useProductSearchParam, useQueryParams } from '@/hooks';
+import { useProductSearchParam, useQueryParams } from '@/hooks';
 import useProductPath from '@/stores/product-store/hooks/useProductPath';
 import { BoundingBox, GeoJsonPolygon } from '@/types/map';
 import useProductStore from '@/stores/product-store/productStore';
@@ -11,14 +11,12 @@ import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo-utils/geo';
 import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
 import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
 import { getPropertyFromMapFeatures } from '../utils/mapUtils';
-import useVisibleRegionPolygons from '../hooks/useVisibleRegionPolygons';
+import useRegionPolygons from '../hooks/useRegionPolygons';
 
 interface RegionPolygonLayerProps {
   isMiniMap: boolean;
 }
 
-const DEFAULT_MIN_THRESHOLD_PERCENTAGE = 1.8;
-const DEFAULT_MAX_THRESHOLD_PERCENTAGE = 70;
 const { PRODUCT_REGION_BOX_SOURCE_ID } = mapboxSourceIds;
 const {
   PRODUCT_REGION_BOX_LAYER_ID,
@@ -33,6 +31,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
   const { searchParams, updateQueryParamsAndNavigate } = useQueryParams();
   const { region: regionTitleFromUrl } = useProductSearchParam();
   const selectedRegion = useRegionTitle || 'Au';
+  const regionGeoJsonData = useRegionPolygons();
 
   const {
     property: currentMetersProperty,
@@ -43,7 +42,6 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
   const { current: map } = useMap();
 
   const [hoveredRegion, setHoveredRegion] = useState<string>('');
-  const [mapBounds, setMapBounds] = useState<LngLatBounds | null>(null);
   const [hoveredId, setHoveredId] = useState<string | number | null>(null);
 
   const defaultTargetDate = dayjs().subtract(2, 'day').format('YYYYMMDD');
@@ -60,9 +58,6 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
   useEffect(() => {
     if (!map) return;
 
-    // set initial map bounds
-    setMapBounds(map.getBounds());
-
     const regionTitle = regionTitleFromUrl || 'Australia/NZ';
     const region = getRegionByRegionTitleOrCode(regionTitle);
 
@@ -78,29 +73,6 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
       }
     }
   }, [map, regionTitleFromUrl, mapFitBounds, isMiniMap, baseProductPath]);
-
-  const debouncedUpdateMapBounds = useDebounce(() => {
-    if (map) {
-      setMapBounds(map.getBounds());
-    }
-  }, 300);
-
-  useEffect(() => {
-    if (!map) return;
-
-    map.on('zoom', debouncedUpdateMapBounds);
-
-    return () => {
-      map.off('zoom', debouncedUpdateMapBounds);
-    };
-  }, [map, debouncedUpdateMapBounds]);
-
-  const geoJsonData = useVisibleRegionPolygons(
-    mapBounds,
-    DEFAULT_MIN_THRESHOLD_PERCENTAGE,
-    DEFAULT_MAX_THRESHOLD_PERCENTAGE,
-    !isMiniMap, // shouldKeepNationalRegion
-  );
 
   const handleMouseMove = useCallback(
     (e: MapMouseEvent) => {
@@ -227,7 +199,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
   }, [handleMouseClick, handleMouseLeave, handleMouseMove, map]);
 
   return (
-    <Source id={PRODUCT_REGION_BOX_SOURCE_ID} type="geojson" data={geoJsonData}>
+    <Source id={PRODUCT_REGION_BOX_SOURCE_ID} type="geojson" data={regionGeoJsonData}>
       <Layer
         id={PRODUCT_REGION_BOX_LAYER_ID}
         type="fill"

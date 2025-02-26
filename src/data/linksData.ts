@@ -68,9 +68,9 @@ export const linksData: LinkItem[] = [
         id: 'adjustedSeaLevelAnomaly',
         greyIcon: AdjustedSeaLevelAnomalyGreyIcon,
         blueIcon: AdjustedSeaLevelAnomalyBlueIcon,
-        title: 'Adj. Sea Level Anomaly',
+        title: 'Adjusted Sea Level Anomaly',
         description: 'Adjusted Sea Level Anomaly',
-        url: '/map/adj-sea-level-anom/sla',
+        url: '/map/adjusted-sea-level-anomaly/sla',
       },
       {
         id: 'surfaceWaves',
@@ -123,7 +123,7 @@ export const linksData: LinkItem[] = [
         blueIcon: TidalCurrentsBlueIcon,
         title: 'Tidal Currents',
         description: 'Oceanic flow patterns',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
+        url: 'map/tidal-currents',
       },
       {
         id: 'current-meters',

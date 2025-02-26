@@ -14,6 +14,8 @@ import SixHourSSTIcon from '@/assets/icons/products/grey-icons/6-day-sst-icon-gr
 import SixHourSSTWhiteIcon from '@/assets/icons/products/white-icons/6-day-sst-icon-white.svg';
 import ArgoIcon from '@/assets/icons/products/grey-icons/argo-icon-grey.svg';
 import ArgoWhiteIcon from '@/assets/icons/products/white-icons/argo-icon-white.svg';
+import TidalCurrentsIcon from '@/assets/icons/products/grey-icons/tidal-currents-icon-grey.svg';
+import TidalCurrentsWhiteIcon from '@/assets/icons/products/white-icons/tidal-currents-icon-white.svg';
 import CurrentMetersIcon from '@/assets/icons/products/grey-icons/current-meters-icon-grey.svg';
 import CurrentMetersWhiteIcon from '@/assets/icons/products/white-icons/current-meters-icon-white.svg';
 import EACMooringArrayIcon from '@/assets/icons/products/grey-icons/eac-mooring-array-icon-grey.svg';
@@ -41,7 +43,7 @@ export const sidebarProductsNav: DropdownElement[] = [
   },
   {
     id: 'adjustedSeaLevelAnomaly',
-    label: 'Adj. Sea Level Anomaly',
+    label: 'Adjusted Sea Level Anomaly',
     icon: AdjustedSeaLevelAnomalyIcon,
     selectedIcon: AdjustedSeaLevelAnomalyWhiteIcon,
   },
@@ -68,6 +70,12 @@ export const sidebarProductsNav: DropdownElement[] = [
     label: 'Argo',
     icon: ArgoIcon,
     selectedIcon: ArgoWhiteIcon,
+  },
+  {
+    id: 'tidalCurrents',
+    label: 'Tidal Currents',
+    icon: TidalCurrentsIcon,
+    selectedIcon: TidalCurrentsWhiteIcon,
   },
   {
     id: 'currentMeters',

@@ -34,7 +34,7 @@ const routes: RouteObject[] = [
             element: <Navigate to="chl-a" replace />,
           },
           {
-            path: 'adj-sea-level-anom',
+            path: 'adjusted-sea-level-anomaly',
             element: <Navigate to="sla" replace />,
           },
           {
@@ -44,6 +44,10 @@ const routes: RouteObject[] = [
           {
             path: 'climatology',
             element: <Navigate to="sst" replace />,
+          },
+          {
+            path: 'current-meters',
+            element: <Navigate to="moored-instrument-array" replace />,
           },
           {
             path: ':product/:subProduct',

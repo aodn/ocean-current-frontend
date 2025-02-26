@@ -1,5 +1,6 @@
 import { CurrentMetersRegion } from '@/constants/currentMeters';
 import { CurrentMetersMapDataPointNames } from './currentMeters';
+import { GeoJsonPolygon, Region } from './map';
 
 /*
   Generic Geo Types
@@ -8,6 +9,24 @@ type ProfilePointGeometry = {
   type: 'Point';
   coordinates: [number, number];
 };
+
+type RegionPolygonGeometry = {
+  type: 'Polygon';
+  coordinates: GeoJsonPolygon;
+};
+
+/*
+  Region Map Polygons
+*/
+
+type RegionPolygonProperties = {
+  name: string;
+  code: Region | string;
+};
+
+export type RegionPolygonFeature = GeoJSON.Feature<RegionPolygonGeometry, RegionPolygonProperties>;
+
+export type RegionPolygonFeatureCollection = GeoJSON.FeatureCollection<RegionPolygonGeometry, RegionPolygonProperties>;
 
 /*
   Argo Map Points

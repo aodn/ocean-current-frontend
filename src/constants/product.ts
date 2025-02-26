@@ -117,45 +117,38 @@ export const OC_PRODUCTS: Product[] = [
     ],
   },
   {
-    title: 'Climatology',
-    key: 'climatology',
-    path: 'climatology',
-    latestEntry: null,
+    title: 'Chlorophyll-a Concentration',
+    key: 'oceanColour',
+    path: 'ocean-colour',
+    latestEntry: 'chla_entry',
     dateFormat: null,
     children: [
       {
-        title: 'SST',
-        key: 'climatology-sst',
-        path: 'sst',
-        imgPath: 'SST',
+        title: 'Chl-A',
+        key: 'oceanColour-chlA',
+        path: 'chl-a',
+        imgPath: 'CHL',
         dateFormat: {
-          localFormat: DateFormat.MONTH_ONLY,
-          stateFormat: DateFormat.MONTH_ONLY,
+          localFormat: DateFormat.HOUR,
+          stateFormat: DateFormat.DAY,
         },
       },
       {
-        title: 'Data Count',
-        key: 'climatology-dataCount',
-        path: 'data-count',
-        imgPath: 'NMON',
+        title: 'Chl-A Age',
+        key: 'oceanColour-chlAAge',
+        path: 'chl-a-age',
+        imgPath: 'CHL_AGE',
         dateFormat: {
-          localFormat: DateFormat.MONTH_ONLY,
-          stateFormat: DateFormat.MONTH_ONLY,
+          localFormat: DateFormat.DAY,
+          stateFormat: DateFormat.DAY,
         },
       },
     ],
   },
   {
-    title: 'SST Anom vs Time',
-    key: 'sstAnomVsTime',
-    path: 'sst-anom-vs-time',
-    latestEntry: null,
-    dateFormat: null,
-  },
-  {
-    title: 'Adj. Sea Level Anom.',
+    title: 'Adjusted Sea Level Anom.',
     key: 'adjustedSeaLevelAnomaly',
-    path: 'adj-sea-level-anom',
+    path: 'adjusted-sea-level-anomaly',
     latestEntry: 'GSLA_entry',
     dateFormat: null,
     children: [
@@ -184,45 +177,6 @@ export const OC_PRODUCTS: Product[] = [
         key: 'adjustedSeaLevelAnomaly-sst',
         path: 'sst',
         imgPath: null,
-        dateFormat: {
-          localFormat: DateFormat.DAY,
-          stateFormat: DateFormat.DAY,
-        },
-      },
-    ],
-  },
-  {
-    title: 'Non-Tidal Sea Level Anom.',
-    key: 'nonTidalSeaLevelAnom',
-    path: 'non-tidal-sea-level-anom',
-    latestEntry: null,
-    dateFormat: {
-      localFormat: null,
-      stateFormat: DateFormat.HOUR,
-    },
-  },
-  {
-    title: 'Chlorophyll-a Concentration',
-    key: 'oceanColour',
-    path: 'ocean-colour',
-    latestEntry: 'chla_entry',
-    dateFormat: null,
-    children: [
-      {
-        title: 'Chl-A',
-        key: 'oceanColour-chlA',
-        path: 'chl-a',
-        imgPath: 'CHL',
-        dateFormat: {
-          localFormat: DateFormat.HOUR,
-          stateFormat: DateFormat.DAY,
-        },
-      },
-      {
-        title: 'Chl-A Age',
-        key: 'oceanColour-chlAAge',
-        path: 'chl-a-age',
-        imgPath: 'CHL_AGE',
         dateFormat: {
           localFormat: DateFormat.DAY,
           stateFormat: DateFormat.DAY,
@@ -281,6 +235,35 @@ export const OC_PRODUCTS: Product[] = [
     ],
   },
   {
+    title: 'Climatology',
+    key: 'climatology',
+    path: 'climatology',
+    latestEntry: null,
+    dateFormat: null,
+    children: [
+      {
+        title: 'SST',
+        key: 'climatology-sst',
+        path: 'sst',
+        imgPath: 'SST',
+        dateFormat: {
+          localFormat: DateFormat.MONTH_ONLY,
+          stateFormat: DateFormat.MONTH_ONLY,
+        },
+      },
+      {
+        title: 'Data Count',
+        key: 'climatology-dataCount',
+        path: 'data-count',
+        imgPath: 'NMON',
+        dateFormat: {
+          localFormat: DateFormat.MONTH_ONLY,
+          stateFormat: DateFormat.MONTH_ONLY,
+        },
+      },
+    ],
+  },
+  {
     title: 'Argo',
     key: 'argo',
     path: 'argo',
@@ -289,6 +272,16 @@ export const OC_PRODUCTS: Product[] = [
       localFormat: DateFormat.DAY,
       stateFormat: DateFormat.DAY,
     },
+  },
+  {
+    title: 'Tidal Currents',
+    key: 'tidalCurrents',
+    path: 'tidal-currents',
+    latestEntry: null,
+    // dateFormat: {
+    //   localFormat: DateFormat.DAY,
+    //   stateFormat: DateFormat.DAY,
+    // },
   },
   /*
     The data below is only for rendering the options button for navigation purposes.
