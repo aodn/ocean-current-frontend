@@ -55,6 +55,18 @@ export const fullLocalList = [
   'Vanuatu',
   'XmasI',
 
+  // Tidal Currents specific code and regions
+  'Banks',
+  'PPB',
+  'HydrogPass',
+  'Darwin',
+  'KingSound',
+  'Arnhem',
+  'GOC',
+  'SA',
+  'Pilbara',
+  'Aust',
+
   // Current Meters specific code and regions
   '01_Aust',
   '02_TimorP',
@@ -538,6 +550,26 @@ export const productRegionMap: ProductRegionMap = {
   EACMooringArray: {
     state: [],
     local: ['Brisbane'],
+  },
+  tidalCurrents: {
+    state: [],
+    local: [
+      'Banks',
+      'PPB',
+      'HydrogPass',
+      'Darwin',
+      'KingSound',
+      'Torres',
+      'SGBR',
+      'CGBR',
+      'Bass',
+      'Arnhem',
+      'Kimberley',
+      'GOC',
+      'SA',
+      'Pilbara',
+      'Aust',
+    ],
   },
   'currentMeters-mooredInstrumentArray': {
     state: [],

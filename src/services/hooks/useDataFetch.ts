@@ -23,7 +23,8 @@ const useDataFetch = <T, Args extends ApiArgs>(fetchFn: FetchFunction<T, Args>, 
     };
 
     fetchData();
-  }, [fetchFn, args]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchFn, ...args]);
 
   return { data, loading, error };
 };

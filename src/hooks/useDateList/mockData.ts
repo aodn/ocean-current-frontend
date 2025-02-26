@@ -34,13 +34,6 @@ const MOCK_CONFIGS: MockConfig[] = [
     },
   },
   {
-    productId: 'nonTidalSeaLevelAnom',
-    interVal: {
-      local: 1,
-      state: 6,
-    },
-  },
-  {
     productId: 'surfaceWaves',
     interVal: {
       state: 2,
