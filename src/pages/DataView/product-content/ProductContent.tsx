@@ -25,9 +25,23 @@ import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
 import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
 import { CurrentMetersMapDataPointNames } from '@/types/currentMeters';
+import { Region } from '@/types/map';
 import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
 import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
 import DataImageWithCurrentMetersPlots from '../data-image/DataImageWithCurrentMetersPlots';
+
+const getRegionPath = (region: Region | undefined) => {
+  if (!region) return 'Au';
+
+  // we have to override the code to get the correct image file path as they have been changed to provide more context in code
+  if (region?.code === 'Bris-Newc') {
+    return 'Brisbane';
+  } else if (region?.code === 'Brisbane') {
+    return 'Brisbane2';
+  } else {
+    return region?.code;
+  }
+};
 
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
@@ -53,7 +67,7 @@ const ProductContent: React.FC = () => {
   const region = getRegionByRegionTitleOrCode(isEACMooringArray ? 'Brisbane' : useRegionTitle);
   const regionScope = region?.scope || RegionScope.Au;
   const targetPathRegion = getTargetRegionScopePath(regionScope);
-  const regionPath = region?.code || 'Au';
+  const regionPath = getRegionPath(region);
 
   const dateString = useDate.format('YYYYMMDD');
 

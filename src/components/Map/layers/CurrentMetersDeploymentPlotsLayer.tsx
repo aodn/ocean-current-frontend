@@ -5,14 +5,15 @@ import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { useQueryParams } from '@/hooks';
 import { CurrentMetersProfileProperties } from '@/types/geo';
 import useCurrentMetersStore, { setDeploymentPlot } from '@/stores/current-meters-store/currentMeters';
-import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
+import { SubProduct } from '@/types/product';
 import { getPropertyFromMapFeatures } from '../utils/mapUtils';
 import getCurrentMetersDeploymentPlotsGeoJson from '../utils/getCurrentMetersDeploymentPlotsGeoJson';
 
 interface CurrentMetersDeploymentPlotsLayerProps {
   isMiniMap: boolean;
+  subProduct: SubProduct | null;
 }
 
 const circleRadius = 6;
@@ -22,9 +23,11 @@ const { CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID } = mapboxSourceIds;
 const { CURRENT_METERS_BOX_LAYER_ID, CURRENT_METERS_SELECTED_BOX_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =
   mapboxLayerIds;
 
-const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLayerProps> = ({ isMiniMap }) => {
+const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLayerProps> = ({
+  isMiniMap,
+  subProduct,
+}) => {
   const { deploymentPlot: selectedDeploymentPlot } = useCurrentMetersStore();
-  const { subProduct } = useProductConvert();
   const [hoveredFeatureId, setHoveredFeatureId] = useState<string | number | null>(null);
   const { current: map } = useMap();
   const navigate = useNavigate();
