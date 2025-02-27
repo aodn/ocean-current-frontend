@@ -6,10 +6,24 @@ import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useDeviceType } from '@/hooks';
 import { resetCurrentMetersStore } from '@/stores/current-meters-store/currentMeters';
+import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import MAP_STYLE from './data/map-style.basic-v8.json';
 import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer, CurrentMetersDeploymentPlotsLayer } from './layers';
 import { MouseCursorLocationPanel } from './panels';
 import { BasicMapProps } from './types/map.types';
+
+const productsWithArgoData = [
+  'snapshotSst',
+  'fourHourSst',
+  'sixDaySst',
+  'oceanColour',
+  'adjustedSeaLevelAnomaly',
+  'argo',
+  'EACMooringArray',
+  'sealCtd',
+];
+const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
+const interactiveIds = [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID];
 
 const BasicMap: React.FC<BasicMapProps> = ({
   id = mapboxInstanceIds.OCEAN_CURRENT_BASIC_MAP_ID,
@@ -26,12 +40,9 @@ const BasicMap: React.FC<BasicMapProps> = ({
   const useMapViewState = useMapStore((state) => state.mapViewState);
   const { isArgo, isCurrentMeters } = useProductCheck();
   const { isMobile } = useDeviceType();
+  const { mainProduct, subProduct } = useProductConvert();
 
-  const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
-  const interactiveIds = [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID];
-
-  const shouldShowArgoLayer = ((!isArgo && !isMiniMap) || isArgo) && !isCurrentMeters;
-
+  const shouldShowArgoLayer = isMiniMap ? isArgo : productsWithArgoData.includes(mainProduct?.key || '');
   const shouldShowCursorLocationPanel = showCursorLocationPanel && !isMobile && cursorLngLat?.lng && cursorLngLat?.lat;
 
   useEffect(() => {
@@ -57,11 +68,13 @@ const BasicMap: React.FC<BasicMapProps> = ({
   const memoizedLayers = useMemo(
     () => ({
       dataImageLayer: <DataImageLayer />,
-      currentMetersDeploymentPlotsLayer: <CurrentMetersDeploymentPlotsLayer isMiniMap={isMiniMap} />,
+      currentMetersDeploymentPlotsLayer: (
+        <CurrentMetersDeploymentPlotsLayer isMiniMap={isMiniMap} subProduct={subProduct} />
+      ),
       regionPolygonLayer: <RegionPolygonLayer isMiniMap={isMiniMap} />,
       argoAsProductLayer: <ArgoAsProductLayer isMiniMap={isMiniMap} isArgo={isArgo} />,
     }),
-    [isMiniMap, isArgo],
+    [isMiniMap, isArgo, subProduct],
   );
 
   if (!mapConfig.accessToken) {

@@ -87,6 +87,15 @@ export const productTypeMapping = new Map<
     },
   ],
   [
+    'currentMeters',
+    {
+      subProduct: ['ANMN_P48', 'ANMN_P49'],
+      stateSegment: 'timeseries',
+      localSegment: '',
+      dateFormat: DateFormat.YEAR_ONLY,
+    },
+  ],
+  [
     'EACMooringArray',
     {
       subProduct: [],
