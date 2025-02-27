@@ -10,6 +10,7 @@ import { getRegionByRegionTitleOrCode } from '@/utils/region-utils/region';
 import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo-utils/geo';
 import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
 import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
+import { color } from '@/styles/colors';
 import { getPropertyFromMapFeatures } from '../utils/mapUtils';
 import useRegionPolygons from '../hooks/useRegionPolygons';
 
@@ -245,7 +246,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
         type="line"
         source={PRODUCT_REGION_BOX_SOURCE_ID}
         paint={{
-          'line-color': 'rgba(34,34,34, 1)',
+          'line-color': color.primary2,
           'line-width': 5,
         }}
         filter={['==', 'name', selectedRegion]}
