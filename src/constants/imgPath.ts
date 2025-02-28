@@ -92,7 +92,7 @@ export const productTypeMapping = new Map<
       subProduct: ['ANMN_P48', 'ANMN_P49'],
       stateSegment: 'timeseries',
       localSegment: '',
-      dateFormat: DateFormat.YEAR_ONLY,
+      dateFormat: DateFormat.MINUTE,
     },
   ],
   [
