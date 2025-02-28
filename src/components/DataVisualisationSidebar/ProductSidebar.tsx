@@ -74,7 +74,7 @@ const ProductSideBar: React.FC = () => {
       {shouldRenderMiniMap && <MiniMap />}
 
       <div className="hidden md:block [&>*:last-child]:border-b-0 [&>*]:border-b-2 [&>*]:border-imos-light-grey">
-        <ProductSummary isArgo={isArgo} productInfo={productInfo} />
+        <ProductSummary productInfo={productInfo} />
 
         {subProduct && subProducts.length > 0 && (
           <CollapsibleSection title={ProductSidebarText.OPTIONS}>

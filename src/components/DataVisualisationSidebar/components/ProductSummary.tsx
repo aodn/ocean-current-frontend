@@ -6,7 +6,7 @@ import { GeneralText } from '@/constants/textConstant';
 import { color } from '@/styles/colors';
 import { ProductSummaryProp } from '../types';
 
-const ProductSummary: React.FC<ProductSummaryProp> = ({ isArgo, productInfo }) => {
+const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   if (!productInfo) return;
   const { title, summary, description } = productInfo;
@@ -26,12 +26,11 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ isArgo, productInfo }) =
           <img src={InfoIcon} alt="info icon" className="mr-6 mt-1 h-6 w-6 object-contain" />
           <TruncateText lines={4} text={summary} />
         </div>
-        {!isArgo && (
-          <div aria-hidden onClick={handlePopup} className="mt-3 flex justify-end">
-            <p className="mr-2 cursor-pointer font-semibold text-imos-grey">{GeneralText.READ_MORE}</p>
-            <ArrowWithTail stroke={color.subheadingGrey} className="mt-2 cursor-pointer" />
-          </div>
-        )}
+
+        <div aria-hidden onClick={handlePopup} className="mt-3 flex justify-end">
+          <p className="mr-2 cursor-pointer font-semibold text-imos-grey">{GeneralText.READ_MORE}</p>
+          <ArrowWithTail stroke={color.subheadingGrey} className="mt-2 cursor-pointer" />
+        </div>
       </div>
 
       <Popup title={title} body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
