@@ -280,6 +280,17 @@ const EACMooringArrayModalData = () => {
 
 // argo has no relevant info available, placeholder is for consistency and for there is info in the future
 const ArgoModalData = () => {
+  return (
+    <div className="p-4 text-gray-800">
+      <p className="mb-4">
+        Temperature and salinity data from the selected float compared with satellite-adjusted climatology, down to
+        2000m in the Australian region.
+      </p>
+    </div>
+  );
+};
+
+const TidalCurrentsModalData = () => {
   return <></>;
 };
 
@@ -1536,4 +1547,5 @@ export {
   EACMooringArrayModalData,
   CurrentMetersModalData,
   ArgoModalData,
+  TidalCurrentsModalData,
 };
