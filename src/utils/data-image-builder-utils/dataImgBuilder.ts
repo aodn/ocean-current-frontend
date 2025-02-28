@@ -193,6 +193,16 @@ const buildSurfaceWavesImageUrl = (date: string, imgPath: string): string => {
   return `${imageS3BaseUrl}/${imgPath}/y${year}/m${month}/${formattedDate}.gif`;
 };
 
+const buildTidalCurrentsMapImageUrl = (region: string, subProduct: string, date: Dayjs): string => {
+  if (region === 'Aust') return `${imageBaseUrl}/tides/tidemapindex.gif`;
+
+  const prodFolder = subProduct === 'tidalCurrents-spd' ? 'spd' : 'hv';
+  const formattedDate = date.format('YYYYMMDDHHmm');
+  const year = date.format('YYYY');
+
+  return `${imageBaseUrl}/tides/${region}_${prodFolder}/${year}/${formattedDate}.gif`;
+};
+
 export {
   getTargetRegionScopePath,
   buildProductImageUrl,
@@ -203,4 +213,5 @@ export {
   buildCurrentMetersDataImageUrl,
   buildSSTTimeseriesImageUrl,
   buildEACMooringArrayImageUrl,
+  buildTidalCurrentsMapImageUrl,
 };
