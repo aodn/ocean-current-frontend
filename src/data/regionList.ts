@@ -22,6 +22,7 @@ export const fullLocalList = [
   'Fiji',
   'Forster',
   'GoC',
+  'GOC',
   'Indo',
   'JBGulf',
   'Kimberley',
