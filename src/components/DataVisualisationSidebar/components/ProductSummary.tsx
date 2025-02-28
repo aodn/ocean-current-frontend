@@ -23,7 +23,7 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ isArgo, productInfo }) =
     <>
       <div className="p-4">
         <div className="flex justify-between">
-          <img src={InfoIcon} alt="info icon" className="mr-6 mt-1 h-6 w-6 cursor-pointer object-contain" />
+          <img src={InfoIcon} alt="info icon" className="mr-6 mt-1 h-6 w-6 object-contain" />
           <TruncateText lines={4} text={summary} />
         </div>
         {!isArgo && (
