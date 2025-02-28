@@ -278,10 +278,29 @@ export const OC_PRODUCTS: Product[] = [
     key: 'tidalCurrents',
     path: 'tidal-currents',
     latestEntry: null,
-    // dateFormat: {
-    //   localFormat: DateFormat.DAY,
-    //   stateFormat: DateFormat.DAY,
-    // },
+    dateFormat: null,
+    children: [
+      {
+        title: 'Speed',
+        key: 'tidalCurrents-spd',
+        path: 'speed',
+        imgPath: 'spd',
+        dateFormat: {
+          localFormat: DateFormat.MINUTE,
+          stateFormat: DateFormat.MINUTE,
+        },
+      },
+      {
+        title: 'Sea Level',
+        key: 'tidalCurrents-sl',
+        path: 'sea-level',
+        imgPath: 'hv',
+        dateFormat: {
+          localFormat: DateFormat.MINUTE,
+          stateFormat: DateFormat.MINUTE,
+        },
+      },
+    ],
   },
   /*
     The data below is only for rendering the options button for navigation purposes.
