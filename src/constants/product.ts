@@ -278,7 +278,10 @@ export const OC_PRODUCTS: Product[] = [
     key: 'tidalCurrents',
     path: 'tidal-currents',
     latestEntry: null,
-    dateFormat: null,
+    dateFormat: {
+      localFormat: DateFormat.MINUTE,
+      stateFormat: DateFormat.MINUTE,
+    },
     children: [
       {
         title: 'Speed',

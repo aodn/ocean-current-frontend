@@ -9,6 +9,7 @@ import {
   buildCurrentMetersMapImageUrl,
   buildSSTTimeseriesImageUrl,
   buildEACMooringArrayImageUrl,
+  buildTidalCurrentsMapImageUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
@@ -46,7 +47,7 @@ const getRegionPath = (region: Region | undefined) => {
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const { isArgo, isCurrentMeters, isEACMooringArray } = useProductCheck();
+  const { isArgo, isCurrentMeters, isEACMooringArray, isTidalCurrents } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
   const useProductId = useProductStore((state) => state.productParams.productId);
@@ -136,6 +137,8 @@ const ProductContent: React.FC = () => {
           return buildSSTTimeseriesImageUrl(regionPath);
         case isEACMooringArray:
           return buildEACMooringArrayImageUrl(useDate);
+        case isTidalCurrents:
+          return buildTidalCurrentsMapImageUrl(regionPath, subProduct?.key ?? '', useDate);
         default:
           return buildProductImageUrl(
             mainProduct.key,
