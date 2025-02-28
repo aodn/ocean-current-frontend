@@ -10,6 +10,7 @@ import {
   EACMooringArrayModalData,
   CurrentMetersModalData,
   ArgoModalData,
+  TidalCurrentsModalData,
 } from '@/components/DataVisualisationSidebar/components/ProductDescriptionModal/ProductDescriptionData';
 import { ProductInfo } from '../../types';
 
@@ -75,6 +76,12 @@ export const productInfoList: ProductInfo[] = [
     summary:
       'Temperature and salinity data from the selected float compared with satellite-adjusted climatology, down to 2000m in the Australian region.',
     description: ArgoModalData, // returns Fragments
+  },
+  {
+    id: 'tidalCurrents',
+    title: 'Tidal current and sea level predictions',
+    summary: 'Oceanic flow patterns.',
+    description: TidalCurrentsModalData,
   },
   {
     id: 'currentMeters',
