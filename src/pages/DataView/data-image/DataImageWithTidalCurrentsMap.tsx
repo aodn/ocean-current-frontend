@@ -6,6 +6,7 @@ import { scaleImageMapAreas } from '@/utils/general-utils/general';
 import { Product } from '@/types/product';
 import regionArr from '@/data/tidalCurrents';
 import { MapImageAreas } from '@/types/dataImage';
+import { DateFormat } from '@/types/date';
 
 type DataImageWithTidalCurrentsMapProps = {
   mainProduct: Product | null;
@@ -38,7 +39,7 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
 
     setSearchParams({
       region: name,
-      date: date.format('YYYYMMDDHHmm'),
+      date: date.format(DateFormat.MINUTE),
     });
   };
 
