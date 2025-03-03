@@ -10,7 +10,7 @@ export interface ImageParameter {
   Map image types
 */
 
-export type MapImageDataPoints = {
+export type MapImageAreas = {
   shape: string;
   coords: number[];
   href: string;
