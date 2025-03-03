@@ -2,6 +2,7 @@ import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '
 import { MapImageDataPoints } from './dataImage';
 
 export type CurrentMetersImageDataPoints = MapImageDataPoints & {
+  type: 'text' | 'region' | 'plot';
   code?: CurrentMetersRegion;
 };
 

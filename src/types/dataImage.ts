@@ -16,5 +16,4 @@ export type MapImageDataPoints = {
   href: string;
   alt: string;
   name: string;
-  type: 'text' | 'region' | 'plot';
 };
