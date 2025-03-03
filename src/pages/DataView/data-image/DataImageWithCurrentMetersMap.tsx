@@ -6,7 +6,7 @@ import { currentMetersRegionAreasMap } from '@/data/current-meter/region-list';
 import { scaleImageMapAreas } from '@/utils/general-utils/general';
 import { setRegion, setDeploymentPlot } from '@/stores/current-meters-store/currentMeters';
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
-import { CurrentMetersMapDataPointNames, CurrentMetersImageDataPoints } from '@/types/currentMeters';
+import { CurrentMetersDeploymentPlotNames, CurrentMetersImageDataPoints } from '@/types/currentMeters';
 import { Product } from '@/types/product';
 import { currentMetersMapDataPointsFlat } from '@/data/current-meter/mapDataPoints';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
@@ -57,7 +57,7 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
     }
 
     if (type === 'plot' || type === 'text') {
-      setDeploymentPlot(name as CurrentMetersMapDataPointNames);
+      setDeploymentPlot(name as CurrentMetersDeploymentPlotNames);
       setSearchParams({
         property: CurrentMetersProperty.vrms,
         depth: CurrentMetersDepth.ONE,

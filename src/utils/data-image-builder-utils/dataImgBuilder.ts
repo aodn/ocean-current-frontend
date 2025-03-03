@@ -9,7 +9,7 @@ import {
   CurrentMetersRegion,
   CurrentMetersSubproductsKey,
 } from '@/constants/currentMeters';
-import { CurrentMetersMapDataPointNames } from '@/types/currentMeters';
+import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 import { ArgoDepths } from '@/constants/argo';
 
 type ProductId = string;
@@ -176,7 +176,7 @@ const buildCurrentMetersMapImageUrl = (
 
 const buildCurrentMetersDataImageUrl = (
   subProduct: CurrentMetersSubproductsKey,
-  deploymentPlot: CurrentMetersMapDataPointNames,
+  deploymentPlot: CurrentMetersDeploymentPlotNames,
   type: CurrentMetersPlotPath,
   plotId: string,
 ) => {
