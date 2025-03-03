@@ -30,6 +30,7 @@ import { Region } from '@/types/map';
 import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
 import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
 import DataImageWithCurrentMetersPlots from '../data-image/DataImageWithCurrentMetersPlots';
+import DataImageWithTidalCurrentsMap from '../data-image/DataImageWithTidalCurrentsMap';
 
 const getRegionPath = (region: Region | undefined) => {
   if (!region) return 'Au';
@@ -200,6 +201,17 @@ const ProductContent: React.FC = () => {
         productId={useProductId}
         regionCode={regionPath}
         regionScope={regionScope}
+      />
+    );
+  }
+
+  if (isTidalCurrents && useRegionTitle === 'Australia') {
+    return (
+      <DataImageWithTidalCurrentsMap
+        mainProduct={mainProduct}
+        src={chooseImg()!}
+        date={useDate}
+        productId={useProductId}
       />
     );
   }
