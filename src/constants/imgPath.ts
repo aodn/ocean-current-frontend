@@ -87,6 +87,15 @@ export const productTypeMapping = new Map<
     },
   ],
   [
+    'tidalCurrents',
+    {
+      subProduct: ['spd', 'hv'],
+      stateSegment: 'tides',
+      localSegment: '',
+      dateFormat: DateFormat.MINUTE,
+    },
+  ],
+  [
     'currentMeters',
     {
       subProduct: ['ANMN_P48', 'ANMN_P49'],
