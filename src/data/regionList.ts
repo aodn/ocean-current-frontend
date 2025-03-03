@@ -22,6 +22,7 @@ export const fullLocalList = [
   'Fiji',
   'Forster',
   'GoC',
+  'GOC',
   'Indo',
   'JBGulf',
   'Kimberley',
@@ -551,7 +552,27 @@ export const productRegionMap: ProductRegionMap = {
     state: [],
     local: ['Brisbane'],
   },
-  tidalCurrents: {
+  'tidalCurrents-spd': {
+    state: [],
+    local: [
+      'Banks',
+      'PPB',
+      'HydrogPass',
+      'Darwin',
+      'KingSound',
+      'Torres',
+      'SGBR',
+      'CGBR',
+      'Bass',
+      'Arnhem',
+      'Kimberley',
+      'GOC',
+      'SA',
+      'Pilbara',
+      'Aust',
+    ],
+  },
+  'tidalCurrents-sl': {
     state: [],
     local: [
       'Banks',

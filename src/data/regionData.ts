@@ -87,7 +87,7 @@ const localRegions: LocalRegion[] = [
   { code: 'Darwin', title: 'Darwin', coords: [128.5, 133.3, -13.5, -10] },
   { code: 'KingSound', title: 'KingSound', coords: [121.7, 126, -17.5, -13.5] },
   { code: 'Arnhem', title: 'Arnhem', coords: [126.5, 135, -15.5, -8.3] },
-  { code: 'GOC', title: 'Gulf of Carpentaria', coords: [132, 143, -18, -8] },
+  { code: 'GOC', title: 'GOC', coords: [132, 143, -18, -8] },
   { code: 'SA', title: 'SA', coords: [133.2, 141, -38, -32] },
   { code: 'Pilbara', title: 'Pilbara', coords: [110.5, 122, -27.5, -17.8] },
 

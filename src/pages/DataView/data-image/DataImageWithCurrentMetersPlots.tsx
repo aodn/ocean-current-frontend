@@ -4,11 +4,11 @@ import { getCurrentMetersPlots } from '@/services/currentMeters';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import { buildCurrentMetersDataImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import { CurrentMetersPlotPath, CurrentMetersPlotTitle, CurrentMetersSubproductsKey } from '@/constants/currentMeters';
-import { CurrentMetersMapDataPointNames } from '@/types/currentMeters';
+import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 
 type DataImageWithCurrentMetersPlotsProps = {
   subProductKey: CurrentMetersSubproductsKey;
-  deploymentPlot: CurrentMetersMapDataPointNames;
+  deploymentPlot: CurrentMetersDeploymentPlotNames;
 };
 
 const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsProps> = ({

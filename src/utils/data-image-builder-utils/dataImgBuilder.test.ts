@@ -16,6 +16,7 @@ import {
   buildCurrentMetersMapImageUrl,
   buildCurrentMetersDataImageUrl,
   buildSSTTimeseriesImageUrl,
+  buildTidalCurrentsMapImageUrl,
 } from './dataImgBuilder';
 
 describe('buildProductImageUrl', () => {
@@ -592,5 +593,20 @@ describe('buildCurrentMetersDataImageUrl', () => {
 
     // Assert
     expect(imageUrl).toBe(`${imageBaseUrl}/timeseries/ANMN_P48/TOTTEN1/xyz/TOTTEN1-WORKHORSE-ADCP-14489_xyz.gif`);
+  });
+});
+
+describe('buildTidalCurrentsMapImageUrl', () => {
+  it('should return the correct map image url for Tidal Currents', () => {
+    // Arrange
+    const subProduct = 'tidalCurrents-sl';
+    const date = dayjs('202502280000');
+    const region = 'GOC';
+
+    // Act
+    const imageUrl = buildTidalCurrentsMapImageUrl(region, subProduct, date);
+
+    // Assert
+    expect(imageUrl).toBe(`${imageBaseUrl}/tides/GOC_hv/2025/202502280000.gif`);
   });
 });

@@ -12,8 +12,16 @@ const useProductCheck = () => {
   const isCurrentMeters = mainProductId === 'currentMeters';
   const isClimatology = mainProductId === 'climatology';
   const isEACMooringArray = mainProductId === 'EACMooringArray';
+  const isTidalCurrents = mainProductId === 'tidalCurrents';
 
-  return { isRegionRequired, isArgo, isCurrentMeters, isClimatology, isEACMooringArray };
+  return {
+    isRegionRequired,
+    isArgo,
+    isCurrentMeters,
+    isClimatology,
+    isEACMooringArray,
+    isTidalCurrents,
+  };
 };
 
 export default useProductCheck;

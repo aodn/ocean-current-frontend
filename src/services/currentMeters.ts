@@ -1,11 +1,11 @@
 import httpClient from '@/services/httpClient';
 import { ContentType } from '@/constants/request';
 import { CurrentMetersPlotPath, CurrentMetersSubproductsKey } from '@/constants/currentMeters';
-import { CurrentMetersMapDataPointNames } from '@/types/currentMeters';
+import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 
 const getCurrentMetersPlots = async (
   subProductKey: CurrentMetersSubproductsKey,
-  deploymentPlot: CurrentMetersMapDataPointNames,
+  deploymentPlot: CurrentMetersDeploymentPlotNames,
   type: CurrentMetersPlotPath,
 ) => {
   if (!subProductKey || !deploymentPlot) {

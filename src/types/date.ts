@@ -1,4 +1,5 @@
 export enum DateFormat {
+  MINUTE = 'YYYYMMDDHHmm',
   HOUR = 'YYYYMMDDHH',
   DAY = 'YYYYMMDD',
   MONTH = 'YYYYMM',
@@ -12,6 +13,7 @@ export interface DateConfig {
 }
 
 export enum DateUnit {
+  Minute = 'minute',
   Hour = 'hour',
   Day = 'day',
   Month = 'month',

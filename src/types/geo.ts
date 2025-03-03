@@ -1,5 +1,5 @@
 import { CurrentMetersRegion } from '@/constants/currentMeters';
-import { CurrentMetersMapDataPointNames } from './currentMeters';
+import { CurrentMetersDeploymentPlotNames } from './currentMeters';
 import { GeoJsonPolygon, Region } from './map';
 
 /*
@@ -48,7 +48,7 @@ Current Meters Map Points
 */
 
 export type CurrentMetersProfileProperties = {
-  title: CurrentMetersMapDataPointNames;
+  title: CurrentMetersDeploymentPlotNames;
   region: CurrentMetersRegion;
 };
 
