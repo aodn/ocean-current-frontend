@@ -1,12 +1,12 @@
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
-import { CurrentMetersMapDataPointNames } from '@/types/currentMeters';
+import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 
 export type CurrentMetersStoreState = {
   region: CurrentMetersRegion;
   property: CurrentMetersProperty;
   depth: CurrentMetersDepth;
   date: string;
-  deploymentPlot: CurrentMetersMapDataPointNames | '';
+  deploymentPlot: CurrentMetersDeploymentPlotNames | '';
 };
 
 export type CurrentMetersStoreActions = {
@@ -16,7 +16,7 @@ export type CurrentMetersStoreActions = {
     setDepth: (depth: CurrentMetersDepth) => void;
     setProperty: (property: CurrentMetersProperty) => void;
     setCurrentMetersDate: (date: string) => void;
-    setDeploymentPlot: (deploymentPlot: CurrentMetersMapDataPointNames | '') => void;
+    setDeploymentPlot: (deploymentPlot: CurrentMetersDeploymentPlotNames | '') => void;
     reset: () => void;
   };
 };

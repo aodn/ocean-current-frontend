@@ -9,6 +9,7 @@ import {
   buildCurrentMetersMapImageUrl,
   buildSSTTimeseriesImageUrl,
   buildEACMooringArrayImageUrl,
+  buildTidalCurrentsMapImageUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
@@ -24,11 +25,12 @@ import { checkProductHasArgoTags } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
 import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
-import { CurrentMetersMapDataPointNames } from '@/types/currentMeters';
+import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 import { Region } from '@/types/map';
 import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
 import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
 import DataImageWithCurrentMetersPlots from '../data-image/DataImageWithCurrentMetersPlots';
+import DataImageWithTidalCurrentsMap from '../data-image/DataImageWithTidalCurrentsMap';
 
 const getRegionPath = (region: Region | undefined) => {
   if (!region) return 'Au';
@@ -46,7 +48,7 @@ const getRegionPath = (region: Region | undefined) => {
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const { isArgo, isCurrentMeters, isEACMooringArray } = useProductCheck();
+  const { isArgo, isCurrentMeters, isEACMooringArray, isTidalCurrents } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
   const useProductId = useProductStore((state) => state.productParams.productId);
@@ -136,6 +138,8 @@ const ProductContent: React.FC = () => {
           return buildSSTTimeseriesImageUrl(regionPath);
         case isEACMooringArray:
           return buildEACMooringArrayImageUrl(useDate);
+        case isTidalCurrents:
+          return buildTidalCurrentsMapImageUrl(regionPath, subProduct?.key ?? '', useDate);
         default:
           return buildProductImageUrl(
             mainProduct.key,
@@ -201,6 +205,17 @@ const ProductContent: React.FC = () => {
     );
   }
 
+  if (isTidalCurrents && useRegionTitle === 'Australia') {
+    return (
+      <DataImageWithTidalCurrentsMap
+        mainProduct={mainProduct}
+        src={chooseImg()!}
+        date={useDate}
+        productId={useProductId}
+      />
+    );
+  }
+
   if (isCurrentMeters) {
     const hasSelectedPlotFromUrl = searchParams.get('deploymentPlot') && searchParams.get('deploymentPlot') !== '';
 
@@ -222,7 +237,7 @@ const ProductContent: React.FC = () => {
     return (
       <DataImageWithCurrentMetersPlots
         subProductKey={useProductId as CurrentMetersSubproductsKey}
-        deploymentPlot={deploymentPlot as CurrentMetersMapDataPointNames}
+        deploymentPlot={deploymentPlot as CurrentMetersDeploymentPlotNames}
       />
     );
   }

@@ -123,7 +123,7 @@ export const linksData: LinkItem[] = [
         blueIcon: TidalCurrentsBlueIcon,
         title: 'Tidal Currents',
         description: 'Oceanic flow patterns',
-        url: 'map/tidal-currents',
+        url: 'map/tidal-currents/speed',
       },
       {
         id: 'current-meters',

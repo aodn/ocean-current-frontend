@@ -1,18 +1,14 @@
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
+import { MapImageAreas } from './dataImage';
 
-export type CurrentMetersImageDataPoints = {
-  shape: string;
-  coords: number[];
-  href: string;
-  alt: string;
-  name: string;
+export type CurrentMetersImageDataPoints = MapImageAreas & {
   type: 'text' | 'region' | 'plot';
   code?: CurrentMetersRegion;
 };
 
 export type CurrentMetersDeploymentPlotsOptions = {
-  label: CurrentMetersMapDataPointNames;
-  id: CurrentMetersMapDataPointNames;
+  label: CurrentMetersDeploymentPlotNames;
+  id: CurrentMetersDeploymentPlotNames;
 };
 export type CurrentMetersRegionOptions = {
   label: string;
@@ -27,7 +23,7 @@ export type CurrentMetersPropertyOptions = {
   id: CurrentMetersProperty;
 };
 
-export type CurrentMetersMapDataPointNames =
+export type CurrentMetersDeploymentPlotNames =
   | 'BMP070'
   | 'BMP090'
   | 'BMP120'
@@ -109,7 +105,7 @@ export type CurrentMetersMapDataPointNames =
   | 'WATR50';
 
 export type CurrentMetersMapDataPoints = {
-  name: CurrentMetersMapDataPointNames;
+  name: CurrentMetersDeploymentPlotNames;
   coords: [number, number];
   region: CurrentMetersRegion;
 };

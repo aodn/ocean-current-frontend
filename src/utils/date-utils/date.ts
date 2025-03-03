@@ -35,21 +35,6 @@ const getUnitByFormat = (format: DateFormat): DateUnit => {
   }
 };
 
-const createDefaultDateForDateFormat = (format: DateFormat, date: string): string => {
-  switch (format) {
-    case DateFormat.HOUR:
-      return dayjs(date).format('YYYYMMDDHH');
-    case DateFormat.MONTH:
-      return dayjs(date).format('YYYYMM');
-    case DateFormat.MONTH_ONLY:
-      return dayjs(date).format('MM');
-    case DateFormat.YEAR_ONLY:
-      return dayjs(date).format('YYYY');
-    default:
-      return dayjs(date).format('YYYYMMDD');
-  }
-};
-
 const getDateFormatFlags = (format: DateFormat) => ({
   isMonthFormat: format === DateFormat.MONTH,
   isMonthOnlyFormat: format === DateFormat.MONTH_ONLY,
@@ -73,6 +58,8 @@ const getDateFormatByProductIdAndRegionScope = (productId: string, regionScope: 
 
 const convertDateToDisplayFormattedText = (date: Dayjs, dateFormat: DateFormat) => {
   switch (dateFormat) {
+    case DateFormat.MINUTE:
+      return date.format('DD MMM YYYY HH:mm');
     case DateFormat.HOUR:
       return date.format('DD MMM YYYY HH:00');
     case DateFormat.MONTH:
@@ -89,7 +76,6 @@ const convertDateToDisplayFormattedText = (date: Dayjs, dateFormat: DateFormat) 
 export {
   findMostRecentDateBefore,
   getUnitByFormat,
-  createDefaultDateForDateFormat,
   getDateFormatFlags,
   getDateFormatByProductIdAndRegionScope,
   convertDateToDisplayFormattedText,

@@ -8,7 +8,7 @@ import useCurrentMetersStore, {
   setDeploymentPlot,
   setCurrentMetersDate,
 } from '@/stores/current-meters-store/currentMeters';
-import { CurrentMetersDeploymentPlotsOptions, CurrentMetersMapDataPointNames } from '@/types/currentMeters';
+import { CurrentMetersDeploymentPlotsOptions, CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 import { ProductSidebarText } from '@/constants/textConstant';
 import {
   depthOptionsData,
@@ -81,7 +81,7 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
     const urlDepth = setDefaultValue('depth', CurrentMetersDepth.ONE) as CurrentMetersDepth;
     const urlRegion = setDefaultValue('region', CurrentMetersRegion.Aust) as CurrentMetersRegion;
     const urlDate = setDefaultValue('date', '0000') as string;
-    const urlDeploymentPlot = setDefaultValue('deploymentPlot', '') as CurrentMetersMapDataPointNames | '';
+    const urlDeploymentPlot = setDefaultValue('deploymentPlot', '') as CurrentMetersDeploymentPlotNames | '';
 
     setProperty(urlProperty);
     setDepth(urlDepth);
@@ -130,7 +130,7 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
       setRegion(correctRegion);
     }
 
-    setDeploymentPlot(id as CurrentMetersMapDataPointNames);
+    setDeploymentPlot(id as CurrentMetersDeploymentPlotNames);
     setSearchParams({
       region: correctRegion,
       deploymentPlot: id,

@@ -9,7 +9,6 @@ export type ProductInfo = {
 };
 
 export interface ProductSummaryProp {
-  isArgo: boolean;
   productInfo: ProductInfo;
 }
 

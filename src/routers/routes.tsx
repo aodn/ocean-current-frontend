@@ -46,6 +46,10 @@ const routes: RouteObject[] = [
             element: <Navigate to="sst" replace />,
           },
           {
+            path: 'tidal-currents',
+            element: <Navigate to="speed" replace />,
+          },
+          {
             path: 'current-meters',
             element: <Navigate to="moored-instrument-array" replace />,
           },
@@ -66,6 +70,38 @@ const routes: RouteObject[] = [
           {
             index: true,
             element: <Navigate to="four-hour-sst/sst" replace />,
+          },
+          {
+            path: 'four-hour-sst',
+            element: <Navigate to="sst" replace />,
+          },
+          {
+            path: '6-day-sst',
+            element: <Navigate to="sst" replace />,
+          },
+          {
+            path: 'ocean-colour',
+            element: <Navigate to="chl-a" replace />,
+          },
+          {
+            path: 'adjusted-sea-level-anomaly',
+            element: <Navigate to="sla" replace />,
+          },
+          {
+            path: 'monthly-means',
+            element: <Navigate to="anomalies" replace />,
+          },
+          {
+            path: 'climatology',
+            element: <Navigate to="sst" replace />,
+          },
+          {
+            path: 'tidal-currents',
+            element: <Navigate to="speed" replace />,
+          },
+          {
+            path: 'current-meters',
+            element: <Navigate to="moored-instrument-array" replace />,
           },
           {
             path: ':product/:subProduct',

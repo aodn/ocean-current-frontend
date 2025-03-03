@@ -5,3 +5,15 @@ export interface ImageParameter {
   imageHeight: number;
   imageBounds: BoundingBox;
 }
+
+/*  
+  Map image types
+*/
+
+export type MapImageAreas = {
+  shape: string;
+  coords: number[];
+  href: string;
+  alt: string;
+  name: string;
+};
