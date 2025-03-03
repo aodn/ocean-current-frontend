@@ -1,4 +1,4 @@
-import { CurrentMetersImageDataPoints } from '@/types/currentMeters';
+import { CurrentMetersImageDataPoints } from '@/types/dataImage';
 
 const isNotNullOrUndefined = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;
 

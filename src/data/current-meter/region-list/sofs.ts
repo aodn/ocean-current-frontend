@@ -1,4 +1,4 @@
-import { CurrentMetersImageDataPoints } from '@/types/currentMeters';
+import { CurrentMetersImageDataPoints } from '@/types/dataImage';
 
 const regionArr: CurrentMetersImageDataPoints[] = [
   { shape: 'rect', coords: [294, 384, 300, 394], href: '../SOTS/index.html', alt: 'SOTS', name: 'SOTS', type: 'plot' },

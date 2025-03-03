@@ -1,4 +1,4 @@
-import { CurrentMetersImageDataPoints } from '@/types/currentMeters';
+import { CurrentMetersImageDataPoints } from '@/types/dataImage';
 
 const regionArr: CurrentMetersImageDataPoints[] = [
   {
