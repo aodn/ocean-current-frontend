@@ -5,7 +5,6 @@ import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { useProductSearchParam, useQueryParams } from '@/hooks';
 import useProductPath from '@/stores/product-store/hooks/useProductPath';
 import { BoundingBox, GeoJsonPolygon } from '@/types/map';
-import useProductStore from '@/stores/product-store/productStore';
 import { getRegionByRegionTitleOrCode } from '@/utils/region-utils/region';
 import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo-utils/geo';
 import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
@@ -27,11 +26,10 @@ const {
 } = mapboxLayerIds;
 
 const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) => {
-  const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
   const baseProductPath = useProductPath();
   const { searchParams, updateQueryParamsAndNavigate } = useQueryParams();
   const { region: regionTitleFromUrl } = useProductSearchParam();
-  const selectedRegion = useRegionTitle || 'Au';
+  const selectedRegion = regionTitleFromUrl || 'Au';
   const regionGeoJsonData = useRegionPolygons();
   const isChla = baseProductPath.includes('ocean-colour');
 
