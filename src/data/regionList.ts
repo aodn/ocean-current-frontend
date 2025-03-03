@@ -552,26 +552,6 @@ export const productRegionMap: ProductRegionMap = {
     state: [],
     local: ['Brisbane'],
   },
-  tidalCurrents: {
-    state: [],
-    local: [
-      'Banks',
-      'PPB',
-      'HydrogPass',
-      'Darwin',
-      'KingSound',
-      'Torres',
-      'SGBR',
-      'CGBR',
-      'Bass',
-      'Arnhem',
-      'Kimberley',
-      'GOC',
-      'SA',
-      'Pilbara',
-      'Aust',
-    ],
-  },
   'tidalCurrents-spd': {
     state: [],
     local: [
