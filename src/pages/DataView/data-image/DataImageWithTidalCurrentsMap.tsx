@@ -71,9 +71,14 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
             className="cursor-pointer"
             shape={area.shape}
             coords={area.coords.join(',')}
-            alt={`Tidal Currents ${area.alt} region`}
+            alt={`Go to Tidal Currents ${area.alt} region`}
             onClick={() => handleAreaClick(area)}
-            onKeyDown={(e) => e.key === 'Enter' && handleAreaClick(area)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleAreaClick(area);
+              }
+            }}
             tabIndex={0}
             title={area.name}
             role="link"
