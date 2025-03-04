@@ -194,14 +194,19 @@ const buildSurfaceWavesImageUrl = (date: string, imgPath: string): string => {
   return `${imageS3BaseUrl}/${imgPath}/y${year}/m${month}/${formattedDate}.gif`;
 };
 
-const buildTidalCurrentsMapImageUrl = (region: string, subProduct: string, date: Dayjs): string => {
+const buildTidalCurrentsMapImageUrl = (
+  region: string,
+  subProduct: string,
+  date: Dayjs,
+  type: 'gif' | 'txt',
+): string => {
   if (region === 'Aust') return `${imageBaseUrl}/tides/tidemapindex.gif`;
 
   const prodFolder = subProduct === 'tidalCurrents-spd' ? 'spd' : 'hv';
   const formattedDate = date.format(DateFormat.MINUTE);
   const year = date.format(DateFormat.YEAR_ONLY);
 
-  return `${imageBaseUrl}/tides/${region}_${prodFolder}/${year}/${formattedDate}.gif`;
+  return `${imageBaseUrl}/tides/${region}_${prodFolder}/${year}/${formattedDate}.${type}`;
 };
 
 export {

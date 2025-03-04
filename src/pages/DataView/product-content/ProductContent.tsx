@@ -139,7 +139,7 @@ const ProductContent: React.FC = () => {
         case isEACMooringArray:
           return buildEACMooringArrayImageUrl(useDate);
         case isTidalCurrents:
-          return buildTidalCurrentsMapImageUrl(regionPath, subProduct?.key ?? '', useDate);
+          return buildTidalCurrentsMapImageUrl(regionPath, subProduct?.key ?? '', useDate, 'gif');
         default:
           return buildProductImageUrl(
             mainProduct.key,

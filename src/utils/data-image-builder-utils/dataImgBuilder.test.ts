@@ -602,9 +602,10 @@ describe('buildTidalCurrentsMapImageUrl', () => {
     const subProduct = 'tidalCurrents-sl';
     const date = dayjs('202502280000');
     const region = 'GOC';
+    const type = 'gif';
 
     // Act
-    const imageUrl = buildTidalCurrentsMapImageUrl(region, subProduct, date);
+    const imageUrl = buildTidalCurrentsMapImageUrl(region, subProduct, date, type);
 
     // Assert
     expect(imageUrl).toBe(`${imageBaseUrl}/tides/GOC_hv/2025/202502280000.gif`);
