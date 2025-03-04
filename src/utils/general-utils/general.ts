@@ -1,4 +1,4 @@
-import { CurrentMetersImageDataPoints } from '@/types/currentMeters';
+import { MapImageAreas } from '@/types/dataImage';
 
 const isNotNullOrUndefined = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;
 
@@ -15,10 +15,10 @@ const calculateImageScales = (
 };
 
 const scaleImageMapAreaCoordinates = (
-  originalAreas: CurrentMetersImageDataPoints[],
+  originalAreas: MapImageAreas[],
   scaleX: number,
   scaleY: number,
-): CurrentMetersImageDataPoints[] => {
+): MapImageAreas[] => {
   return originalAreas.map((area) => {
     if (area.shape === 'rect' || area.shape === 'poly')
       return {

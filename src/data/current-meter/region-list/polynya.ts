@@ -1,6 +1,6 @@
-import { CurrentMetersImageDataPoints } from '@/types/currentMeters';
+import { MapImageAreas } from '@/types/dataImage';
 
-const regionArr: CurrentMetersImageDataPoints[] = [
+const regionArr: MapImageAreas[] = [
   {
     shape: 'rect',
     coords: [438, 161, 442, 171],

@@ -1,3 +1,4 @@
+import { CurrentMetersRegion } from '@/constants/currentMeters';
 import { BoundingBox } from './map';
 
 export interface ImageParameter {
@@ -16,4 +17,6 @@ export type MapImageAreas = {
   href: string;
   alt: string;
   name: string;
+  type: 'text' | 'region' | 'plot' | 'point';
+  code?: CurrentMetersRegion;
 };

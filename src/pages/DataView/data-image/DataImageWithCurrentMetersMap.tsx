@@ -6,10 +6,11 @@ import { currentMetersRegionAreasMap } from '@/data/current-meter/region-list';
 import { scaleImageMapAreas } from '@/utils/general-utils/general';
 import { setRegion, setDeploymentPlot } from '@/stores/current-meters-store/currentMeters';
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
-import { CurrentMetersDeploymentPlotNames, CurrentMetersImageDataPoints } from '@/types/currentMeters';
+import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 import { Product } from '@/types/product';
 import { currentMetersMapDataPointsFlat } from '@/data/current-meter/mapDataPoints';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
+import { MapImageAreas } from '@/types/dataImage';
 
 type DataImageWithCurrentMetersMapProps = {
   mainProduct: Product | null;
@@ -30,7 +31,7 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
   const [_, setSearchParams] = useSearchParams();
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
-  const [areas, setAreas] = useState<CurrentMetersImageDataPoints[]>(regionArr);
+  const [areas, setAreas] = useState<MapImageAreas[]>(regionArr);
 
   useEffect(() => {
     if (!src) setImgLoadError('Missing Image');
@@ -40,7 +41,7 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
     return <ErrorImage product={mainProduct!} date={dayjs(date)} />;
   }
 
-  const handleAreaClick = (area: CurrentMetersImageDataPoints) => {
+  const handleAreaClick = (area: MapImageAreas) => {
     const { type, code, name } = area;
     const getRegion =
       currentMetersMapDataPointsFlat.find((point) => point.name === name)?.region ?? CurrentMetersRegion.Aust;

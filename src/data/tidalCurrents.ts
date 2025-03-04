@@ -1,6 +1,6 @@
-import { TidalCurrentsImageDataPoints } from '@/types/tidalCurrents';
+import { MapImageAreas } from '@/types/dataImage';
 
-const regionArr: TidalCurrentsImageDataPoints[] = [
+const regionArr: MapImageAreas[] = [
   { shape: 'rect', coords: [573, 548, 586, 561], href: 'Banks', alt: 'Banks', name: 'Banks', type: 'region' },
   { shape: 'rect', coords: [524, 509, 547, 523], href: 'PPB', alt: 'PPB', name: 'PPB', type: 'region' },
   {
