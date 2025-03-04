@@ -1,12 +1,12 @@
 import dayjs, { Dayjs } from 'dayjs';
-import httpClient from '@/services/httpClient';
+import { proxyClient } from '@/services/httpClient';
 import { ContentType } from '@/constants/request';
 import { ArgoProfileCycle } from '@/types/argo';
 
 const getArgoProfilesByDate = async (date: Dayjs) => {
   const validatedDate = dayjs(date);
   if (validatedDate.isValid()) {
-    return await httpClient.get<string>(`/profiles/map/${validatedDate.format('YYYYMMDD')}`, {
+    return await proxyClient.get<string>(`/profiles/map/${validatedDate.format('YYYYMMDD')}`, {
       headers: {
         'Content-Type': ContentType.Text,
       },
@@ -17,13 +17,13 @@ const getArgoProfilesByDate = async (date: Dayjs) => {
 };
 
 const getArgoProfileCyclesByWmoId = async (wmoId: string) =>
-  httpClient.get<ArgoProfileCycle[]>(`/profiles/${wmoId}/profiles.json`);
+  proxyClient.get<ArgoProfileCycle[]>(`/profiles/${wmoId}/profiles.json`);
 
 const getArgoTags = async (date: Dayjs, tagPath: string, region: string) => {
   const validateDate = dayjs(date);
 
   if (validateDate.isValid()) {
-    return await httpClient.get<string>(`/${tagPath}/TAGS/${region}/${validateDate.format('YYYYMMDD')}.txt`, {
+    return await proxyClient.get<string>(`/${tagPath}/TAGS/${region}/${validateDate.format('YYYYMMDD')}.txt`, {
       headers: {
         'Content-Type': ContentType.Text,
       },

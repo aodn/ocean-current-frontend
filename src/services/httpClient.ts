@@ -1,27 +1,38 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { apiConfig } from '@/configs/api';
 
-const httpClient = axios.create({
-  baseURL: apiConfig.baseURL,
+const apiClient = axios.create({
+  baseURL: apiConfig.backendURL,
   timeout: 5000,
 });
 
-httpClient.interceptors.request.use(
-  (config) => {
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
+const proxyClient = axios.create({
+  baseURL: apiConfig.proxyURL,
+  timeout: 5000,
+});
 
-httpClient.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
+const applyInterceptors = (client: AxiosInstance) => {
+  client.interceptors.request.use(
+    (config) => {
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    },
+  );
 
-export default httpClient;
+  client.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    (error) => {
+      return Promise.reject(error);
+    },
+  );
+};
+
+applyInterceptors(apiClient);
+applyInterceptors(proxyClient);
+
+export { apiClient, proxyClient };
+export default apiClient;
