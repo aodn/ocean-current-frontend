@@ -206,6 +206,10 @@ const buildTidalCurrentsMapImageUrl = (
   const formattedDate = date.format(DateFormat.MINUTE);
   const year = date.format(DateFormat.YEAR_ONLY);
 
+  if (type === 'txt') {
+    return `tides/${region}_${prodFolder}/${year}/${formattedDate}.${type}`;
+  }
+
   return `${imageBaseUrl}/tides/${region}_${prodFolder}/${year}/${formattedDate}.${type}`;
 };
 
