@@ -1,4 +1,4 @@
-import httpClient from '@/services/httpClient';
+import { proxyClient } from '@/services/httpClient';
 import { ContentType } from '@/constants/request';
 import { CurrentMetersPlotPath, CurrentMetersSubproductsKey } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
@@ -9,14 +9,14 @@ const getCurrentMetersPlots = async (
   type: CurrentMetersPlotPath,
 ) => {
   if (!subProductKey || !deploymentPlot) {
-    console.error('Mising subproduct and/or deployment plot information.');
+    console.error('Missing subproduct and/or deployment plot information.');
     return [];
   }
 
   const folder = subProductKey === 'currentMeters-shelf' ? 'ANMN_P49' : 'ANMN_P48';
 
   try {
-    const htmlString = await httpClient.get<string>(`timeseries/${folder}/${deploymentPlot}/${type}/`, {
+    const htmlString = await proxyClient.get<string>(`timeseries/${folder}/${deploymentPlot}/${type}/`, {
       headers: {
         'Content-Type': ContentType.Text,
       },
