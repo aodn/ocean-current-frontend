@@ -11,6 +11,7 @@ import {
 } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 import { ArgoDepths } from '@/constants/argo';
+import { DateFormat } from '@/types/date';
 
 type ProductId = string;
 type SubProductType = string | undefined | null;
@@ -53,7 +54,7 @@ const getProductSegment = (
 
 const formatDate = (productId: ProductId, subProductType: SubProductType, date: string): string => {
   if (productId === 'monthlyMeans' && !subProductType) {
-    return dayjs(date).format('YYYYMMDD');
+    return dayjs(date).format(DateFormat.DAY);
   }
   const productData = productTypeMapping.get(productId)!;
   return dayjs(date).format(productData.dateFormat);
@@ -76,13 +77,13 @@ const buildProductImageUrl = (
   const productUrl = {
     surfaceWaves: () => {
       const dayjsDate = dayjs(date);
-      const formattedDate = dayjsDate.format('YYYYMMDDHH');
-      const year = dayjsDate.format('YYYY');
-      const month = dayjsDate.format('MM');
+      const formattedDate = dayjsDate.format(DateFormat.HOUR);
+      const year = dayjsDate.format(DateFormat.YEAR_ONLY);
+      const month = dayjsDate.format(DateFormat.MONTH_ONLY);
       return `/s3/WAVES/y${year}/m${month}/${formattedDate}.gif`;
     },
     oceanColourLocal: () => {
-      const dateTimeSegment = dayjs(date).format('YYYYMMDDHH');
+      const dateTimeSegment = dayjs(date).format(DateFormat.HOUR);
       return isApi
         ? `/api/${regionName}_chl/${dateTimeSegment}.gif`
         : `${baseUrl}/${regionName}_chl/${dateTimeSegment}.gif`;
@@ -127,8 +128,8 @@ const buildProductVideoUrl = (
   const productSegment = segment ? `${segment}` : '';
   const subProductSegment = subProductType ? `/${subProductType}` : '';
 
-  const year = dayjs(date).format('YYYY');
-  const month = dayjs(date).format('MM');
+  const year = dayjs(date).format(DateFormat.YEAR_ONLY);
+  const month = dayjs(date).format(DateFormat.MONTH_ONLY);
   const quarter = `Q${Math.ceil((dayjs(date).month() + 1) / 3)}`;
 
   const baseUrl = getBaseUrlByProductId(productId);
@@ -143,7 +144,7 @@ const buildProductVideoUrl = (
   };
 
   if (productId === 'oceanColour' && regionScope === TargetPathRegionScope.Local) {
-    return `${baseUrl}/${regionName}_chl/${regionName}_chl${dayjs(date).format('YYYYMM')}.mp4`;
+    return `${baseUrl}/${regionName}_chl/${regionName}_chl${dayjs(date).format(DateFormat.MONTH)}.mp4`;
   }
 
   return productUrl[productId as keyof typeof productUrl]?.() || productUrl.default();
@@ -154,12 +155,12 @@ const buildSSTTimeseriesImageUrl = (region: string) => {
 };
 
 const buildEACMooringArrayImageUrl = (date: Dayjs) => {
-  return `${imageBaseUrl}/EAC_array_figures/SST/Brisbane/${date.format('YYYYMMDD')}.gif`;
+  return `${imageBaseUrl}/EAC_array_figures/SST/Brisbane/${date.format(DateFormat.DAY)}.gif`;
 };
 
 const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle: string, depth: string): string => {
   const profiles = depth === ArgoDepths['2000M'] ? 'profiles' : 'profiles_s';
-  const formatDate = dayjs(date).format('YYYYMMDD');
+  const formatDate = dayjs(date).format(DateFormat.DAY);
   return `${imageBaseUrl}/${profiles}/${worldMeteorologicalOrgId}/${formatDate}_${worldMeteorologicalOrgId}_${cycle}.gif`;
 };
 
@@ -187,9 +188,9 @@ const buildCurrentMetersDataImageUrl = (
 
 const buildSurfaceWavesImageUrl = (date: string, imgPath: string): string => {
   const dayjsDate = dayjs(date);
-  const formattedDate = dayjsDate.format('YYYYMMDDHH');
-  const year = dayjsDate.format('YYYY');
-  const month = dayjsDate.format('MM');
+  const formattedDate = dayjsDate.format(DateFormat.HOUR);
+  const year = dayjsDate.format(DateFormat.YEAR_ONLY);
+  const month = dayjsDate.format(DateFormat.MONTH_ONLY);
   return `${imageS3BaseUrl}/${imgPath}/y${year}/m${month}/${formattedDate}.gif`;
 };
 
@@ -197,8 +198,8 @@ const buildTidalCurrentsMapImageUrl = (region: string, subProduct: string, date:
   if (region === 'Aust') return `${imageBaseUrl}/tides/tidemapindex.gif`;
 
   const prodFolder = subProduct === 'tidalCurrents-spd' ? 'spd' : 'hv';
-  const formattedDate = date.format('YYYYMMDDHHmm');
-  const year = date.format('YYYY');
+  const formattedDate = date.format(DateFormat.MINUTE);
+  const year = date.format(DateFormat.YEAR_ONLY);
 
   return `${imageBaseUrl}/tides/${region}_${prodFolder}/${year}/${formattedDate}.gif`;
 };
