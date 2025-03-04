@@ -3,7 +3,7 @@ import { ContentType } from '@/constants/request';
 import { CurrentMetersPlotPath, CurrentMetersSubproductsKey } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 
-const getCurrentMetersPlots = async (
+const getCurrentMetersPlotsList = async (
   subProductKey: CurrentMetersSubproductsKey,
   deploymentPlot: CurrentMetersDeploymentPlotNames,
   type: CurrentMetersPlotPath,
@@ -41,4 +41,4 @@ const getCurrentMetersPlots = async (
   }
 };
 
-export { getCurrentMetersPlots };
+export { getCurrentMetersPlotsList };
