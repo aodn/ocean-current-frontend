@@ -10,7 +10,7 @@ const productsWithNoImage = [
   'climatology-sst',
   'EACMooringArray',
   'currentMeters-mooredInstrumentArray',
-  'tidalCurrents',
+  'tidalCurrents-spd',
 ];
 const productsWithImage = [
   'argo',
