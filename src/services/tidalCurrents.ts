@@ -20,7 +20,7 @@ const getTidalCurrentsTagsData = async (date: Dayjs, subProduct: string, region:
 
     const areaMatches = htmlString.data.matchAll(/<area\s+([^>]+)>/g);
 
-    const dataList = Array.from(areaMatches).map((match) => {
+    return Array.from(areaMatches).map((match) => {
       const attributes: Record<string, string | number[]> = {};
       const attrMatches = match[1].matchAll(/(\w+)="([^"]+)"/g);
 
@@ -33,10 +33,10 @@ const getTidalCurrentsTagsData = async (date: Dayjs, subProduct: string, region:
               : attr[2];
         }
       }
+
+      attributes['type'] = 'point';
       return attributes;
     });
-
-    return dataList;
   } catch (error) {
     console.error('Error fetching and parsing Tidal Currents TAG data - ', error);
     throw new Error('Error fetching and parsing Tidal Currents TAG data');
