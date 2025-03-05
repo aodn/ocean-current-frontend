@@ -10,6 +10,7 @@ import {
   buildSSTTimeseriesImageUrl,
   buildEACMooringArrayImageUrl,
   buildTidalCurrentsMapImageUrl,
+  buildTidalCurrentsDataImageUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
@@ -127,6 +128,10 @@ const ProductContent: React.FC = () => {
     return buildArgoImageUrl(worldMeteorologicalOrgId, useDate, selectedCycle, depth);
   };
 
+  // for Tidal Currents points
+  const pointUrlParam = searchParams.get('point');
+  const hasSelectedPointFromUrl = pointUrlParam && pointUrlParam !== '';
+
   const chooseImg = (): string | undefined => {
     try {
       switch (true) {
@@ -138,8 +143,10 @@ const ProductContent: React.FC = () => {
           return buildSSTTimeseriesImageUrl(regionPath);
         case isEACMooringArray:
           return buildEACMooringArrayImageUrl(useDate);
-        case isTidalCurrents:
+        case isTidalCurrents && !hasSelectedPointFromUrl:
           return buildTidalCurrentsMapImageUrl(regionPath, subProduct?.key ?? 'tidalCurrents-spd', useDate);
+        case isTidalCurrents && hasSelectedPointFromUrl:
+          return buildTidalCurrentsDataImageUrl(pointUrlParam, useDate);
         default:
           return buildProductImageUrl(
             mainProduct.key,

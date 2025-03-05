@@ -42,7 +42,7 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   }
 
   const handleAreaClick = (area: MapImageAreas) => {
-    const { name, type } = area;
+    const { type, href } = area;
 
     if (type === 'region') {
       setSearchParams({
@@ -52,10 +52,13 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
     }
 
     if (type === 'point') {
+      const cleanedHref = href.split('/')[3].replace('.html', '');
+      const pointName = cleanedHref.substring(0, cleanedHref.lastIndexOf('_')); // remove the date
+
       setSearchParams({
         region,
         date: date.format(DateFormat.MONTH),
-        point: name,
+        point: pointName,
       });
     }
   };
