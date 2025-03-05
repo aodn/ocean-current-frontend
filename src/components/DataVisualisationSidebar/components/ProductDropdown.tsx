@@ -24,15 +24,15 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
     }
     setProductId(id);
 
-    let queryToUpdate: QueryParams = { date: selectedDate, property: null, depth: null };
+    let queryToUpdate: QueryParams = { date: selectedDate, property: null, depth: null, deploymentPlot: null };
     // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
     if (id === 'EACMooringArray') {
-      queryToUpdate = { date: selectedDate, region: 'Brisbane', property: null, depth: null };
+      queryToUpdate = { date: selectedDate, region: 'Brisbane', property: null, depth: null, deploymentPlot: null };
     } else if (id === 'currentMeters') {
       const { region, property, depth, date } = currentMetersInitialState;
       queryToUpdate = { date, region, property, depth };
     } else if (!isProductAvailableInRegion) {
-      queryToUpdate = { date: selectedDate, region: null, property: null, depth: null };
+      queryToUpdate = { date: selectedDate, region: null, property: null, depth: null, deploymentPlot: null };
     }
 
     const targetPath = getProductPathWithSubProduct(id);
