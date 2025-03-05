@@ -194,23 +194,28 @@ const buildSurfaceWavesImageUrl = (date: string, imgPath: string): string => {
   return `${imageS3BaseUrl}/${imgPath}/y${year}/m${month}/${formattedDate}.gif`;
 };
 
-const buildTidalCurrentsMapImageUrl = (
-  region: string,
-  subProduct: string,
-  date: Dayjs,
-  type: 'gif' | 'txt',
-): string => {
+const buildTidalCurrentsMapImageUrl = (region: string, subProduct: string, date: Dayjs): string => {
   if (region === 'Aust') return `${imageBaseUrl}/tides/tidemapindex.gif`;
 
   const prodFolder = subProduct === 'tidalCurrents-spd' ? 'spd' : 'hv';
   const formattedDate = date.format(DateFormat.MINUTE);
   const year = date.format(DateFormat.YEAR_ONLY);
 
-  if (type === 'txt') {
-    return `tides/${region}_${prodFolder}/${year}/${formattedDate}.${type}`;
-  }
+  return `${imageBaseUrl}/tides/${region}_${prodFolder}/${year}/${formattedDate}.gif`;
+};
 
-  return `${imageBaseUrl}/tides/${region}_${prodFolder}/${year}/${formattedDate}.${type}`;
+const buildTidalCurrentsTagFileUrl = (region: string, subProduct: string, date: Dayjs): string => {
+  const prodFolder = subProduct === 'tidalCurrents-spd' ? 'spd' : 'hv';
+  const formattedDate = date.format(DateFormat.MINUTE);
+  const year = date.format(DateFormat.YEAR_ONLY);
+
+  return `tides/${region}_${prodFolder}/${year}/${formattedDate}.txt`;
+};
+
+const buildTidalCurrentsDataImageUrl = (href: string): string => {
+  const formattedHref = href.split('/')[3].replace('.html', '');
+
+  return `${imageBaseUrl}/tides/monthplots/${formattedHref}.gif`;
 };
 
 export {
@@ -224,4 +229,6 @@ export {
   buildSSTTimeseriesImageUrl,
   buildEACMooringArrayImageUrl,
   buildTidalCurrentsMapImageUrl,
+  buildTidalCurrentsTagFileUrl,
+  buildTidalCurrentsDataImageUrl,
 };

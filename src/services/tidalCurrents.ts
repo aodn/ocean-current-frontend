@@ -1,6 +1,6 @@
 import { Dayjs } from 'dayjs';
 import { ContentType } from '@/constants/request';
-import { buildTidalCurrentsMapImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
+import { buildTidalCurrentsTagFileUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import httpClient from './httpClient';
 
 const getTidalCurrentsTagsData = async (date: Dayjs, subProduct: string, region: string) => {
@@ -9,7 +9,7 @@ const getTidalCurrentsTagsData = async (date: Dayjs, subProduct: string, region:
     return [];
   }
 
-  const url = buildTidalCurrentsMapImageUrl(region, subProduct, date, 'txt');
+  const url = buildTidalCurrentsTagFileUrl(region, subProduct, date);
 
   try {
     const htmlString = await httpClient.get<string>(url, {
