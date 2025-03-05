@@ -158,7 +158,9 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
           };
         } else {
           const dateFromQuery = searchParams.date;
-          queryObject = dateFromQuery ? { region: regionName } : { region: regionName, date: defaultTargetDate };
+          queryObject = dateFromQuery
+            ? { region: regionName, point: null }
+            : { region: regionName, date: defaultTargetDate, point: null };
         }
 
         updateQueryParamsAndNavigate(targetPath, queryObject);
