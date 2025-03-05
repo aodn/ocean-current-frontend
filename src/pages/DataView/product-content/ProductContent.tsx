@@ -139,7 +139,7 @@ const ProductContent: React.FC = () => {
         case isEACMooringArray:
           return buildEACMooringArrayImageUrl(useDate);
         case isTidalCurrents:
-          return buildTidalCurrentsMapImageUrl(regionPath, subProduct?.key ?? '', useDate, 'gif');
+          return buildTidalCurrentsMapImageUrl(regionPath, subProduct?.key ?? 'tidalCurrents-spd', useDate);
         default:
           return buildProductImageUrl(
             mainProduct.key,
@@ -205,13 +205,14 @@ const ProductContent: React.FC = () => {
     );
   }
 
-  if (isTidalCurrents && useRegionTitle === 'Australia') {
+  if (isTidalCurrents) {
     return (
       <DataImageWithTidalCurrentsMap
         mainProduct={mainProduct}
         src={chooseImg()!}
         date={useDate}
         productId={useProductId}
+        region={useRegionTitle ?? 'Australia'}
       />
     );
   }
