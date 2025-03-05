@@ -212,10 +212,10 @@ const buildTidalCurrentsTagFileUrl = (region: string, subProduct: string, date: 
   return `tides/${region}_${prodFolder}/${year}/${formattedDate}.txt`;
 };
 
-const buildTidalCurrentsDataImageUrl = (href: string): string => {
-  const formattedHref = href.split('/')[3].replace('.html', '');
+const buildTidalCurrentsDataImageUrl = (point: string, date: Dayjs): string => {
+  const formattedDate = date.format(DateFormat.MONTH);
 
-  return `${imageBaseUrl}/tides/monthplots/${formattedHref}.gif`;
+  return `${imageBaseUrl}/tides/monthplots/${point}_${formattedDate}.gif`;
 };
 
 export {

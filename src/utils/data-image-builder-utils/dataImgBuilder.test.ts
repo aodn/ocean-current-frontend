@@ -631,12 +631,13 @@ describe('buildTidalCurrentsTagFileUrl', () => {
 describe('buildTidalCurrentsDataImageUrl', () => {
   it('should return the correct data image url for Tidal Currents', () => {
     // Arrange
-    const href = '../../monthplots/NTC_Fenton_patches_202503.html';
+    const point = 'NTC_Fenton_patches';
+    const date = dayjs('202502280000');
 
     // Act
-    const imageUrl = buildTidalCurrentsDataImageUrl(href);
+    const imageUrl = buildTidalCurrentsDataImageUrl(point, date);
 
     // Assert
-    expect(imageUrl).toBe(`${imageBaseUrl}/tides/monthplots/NTC_Fenton_patches_202503.gif`);
+    expect(imageUrl).toBe(`${imageBaseUrl}/tides/monthplots/NTC_Fenton_patches_202502.gif`);
   });
 });
