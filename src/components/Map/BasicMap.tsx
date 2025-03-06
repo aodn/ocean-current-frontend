@@ -11,7 +11,6 @@ import MAP_STYLE from './data/map-style.basic-v8.json';
 import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer, CurrentMetersDeploymentPlotsLayer } from './layers';
 import { MouseCursorLocationPanel } from './panels';
 import { BasicMapProps } from './types/map.types';
-import TidalCurrentsPointsLayer from './layers/TidalCurrentsPointsLayer';
 
 const productsWithArgoData = [
   'snapshotSst',
@@ -74,7 +73,6 @@ const BasicMap: React.FC<BasicMapProps> = ({
       ),
       regionPolygonLayer: <RegionPolygonLayer isMiniMap={isMiniMap} />,
       argoAsProductLayer: <ArgoAsProductLayer isMiniMap={isMiniMap} isArgo={isArgo} />,
-      tidalCurrentsPointsLayer: <TidalCurrentsPointsLayer isMiniMap={isMiniMap} isArgo={isArgo} />,
     }),
     [isMiniMap, isArgo, subProduct],
   );
