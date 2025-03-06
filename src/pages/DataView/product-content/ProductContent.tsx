@@ -14,7 +14,7 @@ import {
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
-import { getRegionByRegionTitleOrCode } from '@/utils/region-utils/region';
+import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import { RegionScope } from '@/constants/region';
 import { Loading } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
@@ -67,7 +67,7 @@ const ProductContent: React.FC = () => {
   const [searchParams, _] = useSearchParams();
 
   // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
-  const region = getRegionByRegionTitleOrCode(isEACMooringArray ? 'Brisbane' : useRegionTitle);
+  const region = getRegionByRegionTitle(isEACMooringArray ? 'Brisbane' : useRegionTitle);
   const regionScope = region?.scope || RegionScope.Au;
   const targetPathRegion = getTargetRegionScopePath(regionScope);
   const regionPath = getRegionPath(region);

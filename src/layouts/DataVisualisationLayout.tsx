@@ -6,7 +6,7 @@ import useDateStore, { setDate } from '@/stores/date-store/dateStore';
 import useProductStore, { setRegionTitle, setProductId, setRegionScope } from '@/stores/product-store/productStore';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useDeviceType, useProductFromUrl, useProductSearchParam, useSetProductId, useUrlType } from '@/hooks';
-import { getRegionByRegionTitleOrCode } from '@/utils/region-utils/region';
+import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 import ProductFooterMobile from '@/components/ProductFooterMobile/ProductFooterMobile';
 import ArrowIcon from '@/assets/icons/Arrow';
@@ -43,7 +43,7 @@ const DataVisualisationLayout: React.FC = () => {
   const { region: regionTitleFromUrl = 'Australia/NZ', date } = useProductSearchParam();
 
   useEffect(() => {
-    const region = getRegionByRegionTitleOrCode(regionTitleFromUrl as string);
+    const region = getRegionByRegionTitle(regionTitleFromUrl as string);
     const regionName = region?.title || 'Australia/NZ';
     const regionScope = region?.scope || RegionScope.Au;
     setRegionTitle(regionName);

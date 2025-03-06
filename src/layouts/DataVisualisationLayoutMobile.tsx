@@ -7,7 +7,7 @@ import { setRegionTitle, setProductId, setRegionScope } from '@/stores/product-s
 import { getProductByPath } from '@/utils/product-utils/product';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useProductFromUrl, useProductSearchParam } from '@/hooks';
-import { getRegionByRegionTitleOrCode } from '@/utils/region-utils/region';
+import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 import { RegionScope } from '@/constants/region';
 import ProductFooterMobile from '@/components/ProductFooterMobile/ProductFooterMobile';
@@ -47,7 +47,7 @@ const DataVisualisationLayout: React.FC = () => {
   }, [product]);
 
   useEffect(() => {
-    const region = getRegionByRegionTitleOrCode(regionTitleFromUrl as string);
+    const region = getRegionByRegionTitle(regionTitleFromUrl as string);
     const regionName = region?.title || 'Australia/NZ';
     const regionScope = region?.scope || RegionScope.Au;
     setRegionTitle(regionName);

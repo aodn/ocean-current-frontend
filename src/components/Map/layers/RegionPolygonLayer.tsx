@@ -5,7 +5,7 @@ import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { useProductSearchParam, useQueryParams } from '@/hooks';
 import useProductPath from '@/stores/product-store/hooks/useProductPath';
 import { BoundingBox, GeoJsonPolygon } from '@/types/map';
-import { getRegionByRegionTitleOrCode } from '@/utils/region-utils/region';
+import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo-utils/geo';
 import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
 import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
@@ -59,7 +59,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
     if (!map) return;
 
     const regionTitle = regionTitleFromUrl || 'Australia/NZ';
-    const region = getRegionByRegionTitleOrCode(regionTitle);
+    const region = getRegionByRegionTitle(regionTitle);
 
     if (region) {
       if (isMiniMap) {
