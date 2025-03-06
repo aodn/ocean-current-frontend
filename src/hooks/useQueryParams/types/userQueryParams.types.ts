@@ -12,4 +12,5 @@ export type QueryParams = {
   depth?: string | null; // Current Meters, Argo
   wmoid?: string | null; // Argo
   cycle?: string | null; // Argo
+  point?: string | null; // Tidal Currents
 };
