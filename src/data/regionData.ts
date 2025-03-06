@@ -33,11 +33,11 @@ const stateMonthlyMeansRegions: StateRegion[] = [
 const localRegions: LocalRegion[] = [
   { code: 'Adelaide', title: 'Adelaide-Melbourne', coords: [135, 147, -44, -33] },
   { code: 'AlbEsp', title: 'Albany-Esperance', coords: [114, 125, -38.5, -33] },
-  { code: 'Bass', title: 'Bass Strait', coords: [143, 151, -42, -37] },
+  { code: 'Bass', title: 'Bass', coords: [143, 151, -42, -37] },
   { code: 'Bris-Newc', title: 'Brisbane-Newcastle', coords: [151, 159, -33, -23] }, // only code that won't be used to build url, this is handled in ProductContent
   { code: 'Brisbane', title: 'Brisbane', coords: [152, 156, -29.5, -24.5] }, // only code that won't be used to build url, this is handled in ProductContent
   { code: 'Bris-Syd', title: 'Brisbane-Sydney', coords: [150.6, 157.5, -34.4, -27] },
-  { code: 'CGBR', title: 'Central GBR', coords: [145, 153, -21.2, -14.5] },
+  { code: 'CGBR', title: 'CGBR', coords: [145, 153, -21.2, -14.5] },
   { code: 'Coffs', title: 'Coffs Harbour', coords: [152.6, 154.9, -31.4, -29.6] },
   { code: 'CLeeu', title: 'Cape Leeuwin', coords: [110, 117.9, -38, -30.1] },
   { code: 'Dongara', title: 'Dongara', coords: [111.3, 115.6, -30.1, -27.1] },
@@ -65,7 +65,7 @@ const localRegions: LocalRegion[] = [
   { code: 'RowleyAtolls', title: 'RowleyAtolls', coords: [118.5, 120.5, -18.5, -16.5] },
   { code: 'SAgulfs', title: 'SA gulfs', coords: [134, 141.3, -39.5, -34.2] },
   { code: 'ScottMore', title: 'ScottMore', coords: [121.5, 124.0, -14.5, -11.3] },
-  { code: 'SGBR', title: 'Southern GBR', coords: [148.9, 157, -26, -20] },
+  { code: 'SGBR', title: 'SGBR', coords: [148.9, 157, -26, -20] },
   { code: 'SGoC', title: 'SGoC', coords: [135.3, 141.8, -18, -12.5] },
   { code: 'SNSW', title: 'Southern NSW', coords: [149.5, 155.5, -37.4, -31.6] },
   { code: 'Solomon', title: 'Solomon', coords: [154, 163, -12.5, -4.7] },
