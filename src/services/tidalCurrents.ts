@@ -1,7 +1,7 @@
 import { Dayjs } from 'dayjs';
 import { ContentType } from '@/constants/request';
 import { buildTidalCurrentsTagFileUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
-import httpClient from './httpClient';
+import { proxyClient } from './httpClient';
 
 const getTidalCurrentsTagsData = async (date: Dayjs, subProduct: string, region: string) => {
   if (!subProduct || !region || !date) {
@@ -12,7 +12,7 @@ const getTidalCurrentsTagsData = async (date: Dayjs, subProduct: string, region:
   const url = buildTidalCurrentsTagFileUrl(region, subProduct, date);
 
   try {
-    const htmlString = await httpClient.get<string>(url, {
+    const htmlString = await proxyClient.get<string>(url, {
       headers: {
         'Content-Type': ContentType.Text,
       },
