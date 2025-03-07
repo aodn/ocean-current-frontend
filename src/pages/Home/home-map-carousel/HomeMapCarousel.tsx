@@ -4,6 +4,7 @@ import { setProductId } from '@/stores/product-store/productStore';
 import BasicMap from '@/components/Map/BasicMap';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 import { initialMapViewState } from '@/configs/map';
+import { ProductID } from '@/types/product';
 import { productsData } from './data';
 
 const HomeMapCarousel: React.FC = () => {
@@ -23,7 +24,7 @@ const HomeMapCarousel: React.FC = () => {
     }
   };
 
-  const handleClick = (id: string) => {
+  const handleClick = (id: ProductID) => {
     stopInterval();
     const foundIndexById = productsData.findIndex((product) => product.id === id);
     setSelectedProductIndex(foundIndexById);

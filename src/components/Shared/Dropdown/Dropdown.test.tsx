@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import Dropdown from './Dropdown';
 import { DropdownElement } from './types/dropdown.types';
 
-const elements: DropdownElement[] = [
+const elements: DropdownElement<string>[] = [
   { id: '1', label: 'Option 1', icon: 'icon-url-1' },
   { id: '2', label: 'Option 2', icon: 'icon-url-2' },
 ];

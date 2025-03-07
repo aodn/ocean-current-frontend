@@ -4,6 +4,7 @@ import '@testing-library/jest-dom';
 import { BrowserRouter } from 'react-router-dom';
 import dayjs from 'dayjs';
 import * as productUtils from '@/utils/product-utils/product';
+import { ProductID } from '@/types/product';
 import ErrorImage from './ErrorImage';
 
 // Mock the product utils
@@ -13,12 +14,12 @@ vi.mock('@/utils/product-utils/product', () => ({
 
 describe('ErrorImage Component', () => {
   const mockDate = dayjs();
-  const mockProduct = { title: 'test-product', path: 'test-product', key: 'test-product' };
+  const mockProduct: ProductID = 'fourHourSst-sst';
 
   it('renders without crashing', () => {
     render(
       <BrowserRouter>
-        <ErrorImage date={mockDate} product={mockProduct} />
+        <ErrorImage date={mockDate} productId={mockProduct} />
       </BrowserRouter>,
     );
 
@@ -28,7 +29,7 @@ describe('ErrorImage Component', () => {
   it('renders the NotFoundIcon', () => {
     const { container } = render(
       <BrowserRouter>
-        <ErrorImage date={mockDate} product={mockProduct} />
+        <ErrorImage date={mockDate} productId={mockProduct} />
       </BrowserRouter>,
     );
 
@@ -39,7 +40,7 @@ describe('ErrorImage Component', () => {
   it('renders the error message', () => {
     render(
       <BrowserRouter>
-        <ErrorImage date={mockDate} product={mockProduct} />
+        <ErrorImage date={mockDate} productId={mockProduct} />
       </BrowserRouter>,
     );
 
@@ -49,7 +50,7 @@ describe('ErrorImage Component', () => {
   it('renders a button with correct link', () => {
     render(
       <BrowserRouter>
-        <ErrorImage date={mockDate} product={mockProduct} />
+        <ErrorImage date={mockDate} productId={mockProduct} />
       </BrowserRouter>,
     );
 
@@ -60,10 +61,10 @@ describe('ErrorImage Component', () => {
   it('calls getProductPathWithSubProduct with correct argument', () => {
     render(
       <BrowserRouter>
-        <ErrorImage date={mockDate} product={mockProduct} />
+        <ErrorImage date={mockDate} productId={mockProduct} />
       </BrowserRouter>,
     );
 
-    expect(productUtils.getProductPathWithSubProduct).toHaveBeenCalledWith('test-product');
+    expect(productUtils.getProductPathWithSubProduct).toHaveBeenCalledWith('fourHourSst-sst');
   });
 });

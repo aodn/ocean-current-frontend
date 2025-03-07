@@ -21,8 +21,9 @@ import CurrentMetersWhiteIcon from '@/assets/icons/products/white-icons/current-
 import EACMooringArrayIcon from '@/assets/icons/products/grey-icons/eac-mooring-array-icon-grey.svg';
 import EACMooringArrayWhiteIcon from '@/assets/icons/products/white-icons/eac-mooring-array-icon-white.svg';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
+import { RootProductID } from '@/types/product';
 
-export const sidebarProductsNav: DropdownElement[] = [
+export const sidebarProductsNav: DropdownElement<RootProductID>[] = [
   {
     id: 'fourHourSst',
     label: 'Four-hour SST',

@@ -5,7 +5,7 @@ import { Actions, State } from './product.types';
 
 const initialState: State = {
   productParams: {
-    productId: '',
+    productId: 'fourHourSst-sst',
     regionScope: RegionScope.State,
     regionTitle: null,
   },

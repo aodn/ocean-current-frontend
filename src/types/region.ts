@@ -1,3 +1,4 @@
+import { ProductID } from '@/types/product';
 import { fullLocalList, fullNationList, fullStateList, fullStateMonthlyMeansList } from '@/data/regionList';
 
 export type NationKey = (typeof fullNationList)[number];
@@ -10,6 +11,6 @@ export interface RegionCategories {
   local: LocalKey[];
 }
 
-export interface ProductRegionMap {
-  [key: string]: RegionCategories;
-}
+export type ProductRegionMap = {
+  [key in ProductID]?: RegionCategories;
+};

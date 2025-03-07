@@ -1,6 +1,13 @@
 import { OC_PRODUCTS } from '@/constants/product';
 import { flatProducts } from '@/data/productData';
-import { CombinedProduct, FlatProduct, MainProductWithSubProduct, Product } from '@/types/product';
+import {
+  CombinedProduct,
+  FlatProduct,
+  MainProductWithSubProduct,
+  Product,
+  StandaloneProductWithoutChildren,
+  SubProduct,
+} from '@/types/product';
 
 const combineProducts = (products: Product[]): CombinedProduct[] => {
   return products.flatMap((product) => {
@@ -37,19 +44,27 @@ const validateProductIdentifier = (identifier: string): boolean => {
   return true;
 };
 
-const getProductByPath = (mainProductPath: string, subProductPath: string | null = null) => {
+const getProductByPath = ((
+  mainProductPath: string,
+  subProductPath?: string | null,
+): StandaloneProductWithoutChildren | SubProduct => {
   const mainProduct = OC_PRODUCTS.find((product) => product.path === mainProductPath);
-  if (!mainProduct) {
+
+  // if subProductPath is provided, mainProduct can't be a standalone product, it must have children
+  if (!mainProduct || (subProductPath && !mainProduct.children)) {
     throw new Error(`Invalid main product path: ${mainProductPath}`);
   }
   if (!subProductPath) {
-    return mainProduct;
+    return mainProduct as StandaloneProductWithoutChildren;
   }
-  const subProduct = mainProduct.children?.find((product) => product.path === subProductPath);
+  const subProduct = mainProduct.children!.find((product) => product.path === subProductPath);
   if (!subProduct) {
     throw new Error(`Invalid sub product path: ${subProductPath}`);
   }
   return subProduct;
+}) as {
+  (mainProductPath: string): StandaloneProductWithoutChildren;
+  (mainProductPath: string, subProductPath: string): SubProduct;
 };
 
 const getProductByKey = (mainProductKey: string, subProductKey: string | null = null): MainProductWithSubProduct => {
@@ -71,23 +86,6 @@ const getProductByKey = (mainProductKey: string, subProductKey: string | null = 
 const getProductByIdFromFlat = (productId: string): FlatProduct | undefined => {
   const product = flatProducts.find((product) => product.key === productId);
   return product;
-};
-
-const getProductByIdFromTree = (productId: string): Product | undefined => {
-  const findProduct = (products: Product[]): Product | undefined => {
-    for (const product of products) {
-      if (product.key === productId) {
-        return product;
-      }
-      if (product.children) {
-        const childProduct = findProduct(product.children);
-        if (childProduct) {
-          return childProduct;
-        }
-      }
-    }
-  };
-  return findProduct(OC_PRODUCTS);
 };
 
 const getMainAndSubProductById = (productId: string): MainProductWithSubProduct => {
@@ -157,7 +155,6 @@ export {
   combineProducts,
   combinedProducts,
   getProductByIdFromFlat,
-  getProductByIdFromTree,
   getProductByPath,
   getProductByKey,
   getMainAndSubProductById,

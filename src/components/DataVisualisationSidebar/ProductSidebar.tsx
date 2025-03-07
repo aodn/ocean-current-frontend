@@ -14,6 +14,7 @@ import {
   mooredInstrumentArrayPath,
 } from '@/constants/currentMeters';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
+import { ProductID } from '@/types/product';
 import Legend from './components/Legend';
 import MiniMap from './components/MiniMap';
 import ProductDropdown from './components/ProductDropdown';
@@ -42,7 +43,7 @@ const ProductSideBar: React.FC = () => {
   const getDataSources = dataSources(useDate);
   const filteredDataSources = getDataSources.filter((source) => source.product.includes(mainProduct.key));
 
-  const handleSubProductChange = (key: string, subProductPath: string) => {
+  const handleSubProductChange = (key: ProductID, subProductPath: string) => {
     if (key === subProduct?.key) {
       return;
     }

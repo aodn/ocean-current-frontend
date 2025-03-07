@@ -1,12 +1,19 @@
+import { ProductID } from '@/types/product';
+
 export const mooredInstrumentArrayPath = 'moored-instrument-array';
 
-export enum CurrentMetersSubproductsKey {
-  MOORED_INSTRUMENT_ARRAY = 'currentMeters-mooredInstrumentArray',
-  SHELF = 'currentMeters-shelf',
-  DEEP_ADCP = 'currentMeters-deepADCP',
-  DEEP_ADV = 'currentMeters-deepADV',
-  SOUTHERN_OCEAN = 'currentMeters-southernOcean',
-}
+const createCurrentMetersSubproductsKey = <T extends Record<string, ProductID>>(obj: T) => obj;
+
+export const CurrentMetersSubproductsKey = createCurrentMetersSubproductsKey({
+  MOORED_INSTRUMENT_ARRAY: 'currentMeters-mooredInstrumentArray',
+  SHELF: 'currentMeters-shelf',
+  DEEP_ADCP: 'currentMeters-deepADCP',
+  DEEP_ADV: 'currentMeters-deepADV',
+  SOUTHERN_OCEAN: 'currentMeters-southernOcean',
+});
+
+export type CurrentMetersSubproductsKeyType =
+  (typeof CurrentMetersSubproductsKey)[keyof typeof CurrentMetersSubproductsKey];
 
 export enum CurrentMetersRegion {
   Aust = '01_Aust',

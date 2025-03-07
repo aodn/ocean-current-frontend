@@ -1,14 +1,14 @@
-export interface DropdownElement {
+export interface DropdownElement<T> {
   label: string;
-  id: string;
+  id: T;
   icon?: string;
   selectedIcon?: string;
 }
 
-export interface DropdownProps {
-  elements: DropdownElement[];
-  selectedId?: string;
-  onChange?: (selectedElement: DropdownElement) => void;
+export interface DropdownProps<T> {
+  elements: DropdownElement<T>[];
+  selectedId?: T;
+  onChange?: (selectedElement: DropdownElement<T>) => void;
   header?: boolean;
   showIcons?: boolean;
   isOpen?: boolean;

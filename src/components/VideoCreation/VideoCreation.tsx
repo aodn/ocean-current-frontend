@@ -64,7 +64,7 @@ const VideoCreation: React.FC<VideoCreationProps> = ({ disabled = false }) => {
     </div>
   );
 
-  const handleFrameRateChange = (selectedElement: DropdownElement): void => {
+  const handleFrameRateChange = (selectedElement: DropdownElement<string>): void => {
     setSelectedFrameRate(Number(selectedElement.id));
   };
 

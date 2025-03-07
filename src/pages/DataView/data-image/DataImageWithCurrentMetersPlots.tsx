@@ -3,11 +3,15 @@ import { Dropdown, Loading } from '@/components/Shared';
 import { getCurrentMetersPlotsList } from '@/services/currentMeters';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import { buildCurrentMetersDataImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
-import { CurrentMetersPlotPath, CurrentMetersPlotTitle, CurrentMetersSubproductsKey } from '@/constants/currentMeters';
+import {
+  CurrentMetersPlotPath,
+  CurrentMetersPlotTitle,
+  CurrentMetersSubproductsKeyType,
+} from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 
 type DataImageWithCurrentMetersPlotsProps = {
-  subProductKey: CurrentMetersSubproductsKey;
+  subProductKey: CurrentMetersSubproductsKeyType;
   deploymentPlot: CurrentMetersDeploymentPlotNames;
 };
 
@@ -16,12 +20,12 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
   deploymentPlot,
 }) => {
   const imgRef = useRef<HTMLImageElement | null>(null);
-  const [velocityElements, setVelocityElements] = useState<DropdownElement[]>([]);
-  const [depthTimeElements, setDepthTimeElements] = useState<DropdownElement[]>([]);
+  const [velocityElements, setVelocityElements] = useState<DropdownElement<string>[]>([]);
+  const [depthTimeElements, setDepthTimeElements] = useState<DropdownElement<string>[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedVelocity, setSelectedVelocity] = useState('');
   const [selectedDepthTime, setSelectedDepthTime] = useState('');
-  const subProdKey = subProductKey as CurrentMetersSubproductsKey;
+  const subProdKey = subProductKey as CurrentMetersSubproductsKeyType;
 
   const velocityList = useCallback(async () => {
     const list = await getCurrentMetersPlotsList(subProdKey, deploymentPlot, CurrentMetersPlotPath.VELOCITY_VECTOR);

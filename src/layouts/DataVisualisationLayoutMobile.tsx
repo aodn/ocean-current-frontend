@@ -14,6 +14,7 @@ import ProductFooterMobile from '@/components/ProductFooterMobile/ProductFooterM
 import ProductMenuBarMobile from '@/components/ProductMenuBar/ProductNavbarMobile';
 import ProductSideBar from '@/components/DataVisualisationSidebar/ProductSidebar';
 import { ArgoDepths } from '@/constants/argo';
+import { ProductID } from '@/types/product';
 
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -42,7 +43,7 @@ const DataVisualisationLayout: React.FC = () => {
 
       const productId = subProductKey || mainProductKey;
 
-      setProductId(productId);
+      setProductId(productId as ProductID);
     }
   }, [product]);
 

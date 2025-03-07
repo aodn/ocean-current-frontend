@@ -38,7 +38,7 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
   }, [src]);
 
   if (imgLoadError) {
-    return <ErrorImage product={mainProduct!} date={dayjs(date)} />;
+    return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
   }
 
   const handleAreaClick = (area: MapImageAreas) => {

@@ -13,6 +13,7 @@ import ArgoIcon from '@/assets/icons/products/grey-icons/argo-icon-grey.svg';
 import useArgoStore, { setArgoDepth } from '@/stores/argo-store/argoStore';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { ArgoDepths } from '@/constants/argo';
+import { ProductID } from '@/types/product';
 import { getProductInfoByKey } from '../DataVisualisationSidebar/utils';
 
 const ProductFooterMobile: React.FC = () => {
@@ -45,7 +46,7 @@ const ProductFooterMobile: React.FC = () => {
     }
   }, [mainProduct]);
 
-  const handleSubProductChange = (key: string, mainProductPath: string, subProductPath: string) => {
+  const handleSubProductChange = (key: ProductID, mainProductPath: string, subProductPath: string) => {
     if (subProduct && key === subProduct.key) {
       return;
     }
