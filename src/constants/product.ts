@@ -386,38 +386,3 @@ export const OC_PRODUCTS: Product[] = [
     },
   },
 ] as const;
-
-/**
- * Type alias for all leaf product IDs in the application
- * Excludes parent IDs that have children
- */
-export type ProductID2 =
-  | 'snapshotSst'
-  | 'fourHourSst-sstFilled'
-  | 'fourHourSst-sst'
-  | 'fourHourSst-sstAge'
-  | 'fourHourSst-windSpeed'
-  | 'sixDaySst-sst'
-  | 'sixDaySst-sstAnomaly'
-  | 'sixDaySst-centiles'
-  | 'sixDaySst-timeseries'
-  | 'oceanColour-chlA'
-  | 'oceanColour-chlAAge'
-  | 'adjustedSeaLevelAnomaly-sla'
-  | 'adjustedSeaLevelAnomaly-centiles'
-  | 'adjustedSeaLevelAnomaly-sst'
-  | 'surfaceWaves'
-  | 'monthlyMeans-anomalies'
-  | 'monthlyMeans-CLIM_OFAM3_SSTAARS'
-  | 'monthlyMeans-CLIM_CNESCARS'
-  | 'climatology-sst'
-  | 'climatology-dataCount'
-  | 'argo'
-  | 'tidalCurrents-spd'
-  | 'tidalCurrents-sl'
-  | 'currentMeters-mooredInstrumentArray'
-  | 'currentMeters-shelf'
-  | 'currentMeters-deepADCP'
-  | 'currentMeters-deepADV'
-  | 'currentMeters-southernOcean'
-  | 'EACMooringArray';
