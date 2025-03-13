@@ -17,6 +17,8 @@ import {
   buildCurrentMetersDataImageUrl,
   buildSSTTimeseriesImageUrl,
   buildTidalCurrentsMapImageUrl,
+  buildTidalCurrentsTagFileUrl,
+  buildTidalCurrentsDataImageUrl,
 } from './dataImgBuilder';
 
 describe('buildProductImageUrl', () => {
@@ -608,5 +610,34 @@ describe('buildTidalCurrentsMapImageUrl', () => {
 
     // Assert
     expect(imageUrl).toBe(`${imageBaseUrl}/tides/GOC_hv/2025/202502280000.gif`);
+  });
+});
+
+describe('buildTidalCurrentsTagFileUrl', () => {
+  it('should return the correct Tidal Currents TAG file url', () => {
+    // Arrange
+    const subProduct = 'tidalCurrents-sl';
+    const date = dayjs('202502280000');
+    const region = 'GOC';
+
+    // Act
+    const imageUrl = buildTidalCurrentsTagFileUrl(region, subProduct, date);
+
+    // Assert
+    expect(imageUrl).toBe('tides/GOC_hv/2025/202502280000.txt');
+  });
+});
+
+describe('buildTidalCurrentsDataImageUrl', () => {
+  it('should return the correct data image url for Tidal Currents', () => {
+    // Arrange
+    const point = 'NTC_Fenton_patches';
+    const date = dayjs('202502280000');
+
+    // Act
+    const imageUrl = buildTidalCurrentsDataImageUrl(point, date);
+
+    // Assert
+    expect(imageUrl).toBe(`${imageBaseUrl}/tides/monthplots/NTC_Fenton_patches_202502.gif`);
   });
 });

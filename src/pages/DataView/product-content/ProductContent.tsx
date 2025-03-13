@@ -10,10 +10,11 @@ import {
   buildSSTTimeseriesImageUrl,
   buildEACMooringArrayImageUrl,
   buildTidalCurrentsMapImageUrl,
+  buildTidalCurrentsDataImageUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
-import { getRegionByRegionTitleOrCode } from '@/utils/region-utils/region';
+import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import { RegionScope } from '@/constants/region';
 import { Loading } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
@@ -66,7 +67,7 @@ const ProductContent: React.FC = () => {
   const [searchParams, _] = useSearchParams();
 
   // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
-  const region = getRegionByRegionTitleOrCode(isEACMooringArray ? 'Brisbane' : useRegionTitle);
+  const region = getRegionByRegionTitle(isEACMooringArray ? 'Brisbane' : useRegionTitle);
   const regionScope = region?.scope || RegionScope.Au;
   const targetPathRegion = getTargetRegionScopePath(regionScope);
   const regionPath = getRegionPath(region);
@@ -127,6 +128,10 @@ const ProductContent: React.FC = () => {
     return buildArgoImageUrl(worldMeteorologicalOrgId, useDate, selectedCycle, depth);
   };
 
+  // for Tidal Currents points
+  const pointUrlParam = searchParams.get('point');
+  const hasSelectedPointFromUrl = pointUrlParam && pointUrlParam !== '';
+
   const chooseImg = (): string | undefined => {
     try {
       switch (true) {
@@ -138,8 +143,14 @@ const ProductContent: React.FC = () => {
           return buildSSTTimeseriesImageUrl(regionPath);
         case isEACMooringArray:
           return buildEACMooringArrayImageUrl(useDate);
-        case isTidalCurrents:
-          return buildTidalCurrentsMapImageUrl(regionPath, subProduct?.key ?? '', useDate);
+        case isTidalCurrents && !hasSelectedPointFromUrl:
+          return buildTidalCurrentsMapImageUrl(
+            useRegionTitle ?? 'Aust',
+            subProduct?.key ?? 'tidalCurrents-spd',
+            useDate,
+          );
+        case isTidalCurrents && hasSelectedPointFromUrl:
+          return buildTidalCurrentsDataImageUrl(pointUrlParam, useDate);
         default:
           return buildProductImageUrl(
             mainProduct.key,
@@ -205,13 +216,14 @@ const ProductContent: React.FC = () => {
     );
   }
 
-  if (isTidalCurrents && useRegionTitle === 'Australia') {
+  if (isTidalCurrents) {
     return (
       <DataImageWithTidalCurrentsMap
         mainProduct={mainProduct}
         src={chooseImg()!}
         date={useDate}
         productId={useProductId}
+        region={useRegionTitle ?? 'Australia'}
       />
     );
   }

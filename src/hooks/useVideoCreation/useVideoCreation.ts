@@ -3,7 +3,7 @@ import { createGIF, CreateGIFOptions, CreateGIFObject } from 'gifshot';
 import dayjs from 'dayjs';
 import { buildProductImageUrl, getTargetRegionScopePath } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useProductStore from '@/stores/product-store/productStore';
-import { getRegionByRegionTitleOrCode } from '@/utils/region-utils/region';
+import { getRegionByRegionTitle } from '@/utils/region-utils/region';
 import { RegionScope } from '@/constants/region';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { useDateRange } from '@/hooks';
@@ -28,7 +28,7 @@ const useVideoCreation = (): UseVideoCreationReturn => {
   const { mainProduct, subProduct } = useProductConvert();
   const useDate = useDateStore((state) => state.date);
 
-  const region = getRegionByRegionTitleOrCode(useProductRegionTitle);
+  const region = getRegionByRegionTitle(useProductRegionTitle);
   const targetPathRegion = getTargetRegionScopePath(region?.scope || RegionScope.Au);
   const regionPath = region?.code;
   const subProductImgPath = subProduct?.imgPath;

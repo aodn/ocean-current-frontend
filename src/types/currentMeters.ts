@@ -1,10 +1,4 @@
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
-import { MapImageAreas } from './dataImage';
-
-export type CurrentMetersImageDataPoints = MapImageAreas & {
-  type: 'text' | 'region' | 'plot';
-  code?: CurrentMetersRegion;
-};
 
 export type CurrentMetersDeploymentPlotsOptions = {
   label: CurrentMetersDeploymentPlotNames;

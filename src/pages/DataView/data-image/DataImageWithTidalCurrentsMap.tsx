@@ -7,12 +7,14 @@ import { Product } from '@/types/product';
 import regionArr from '@/data/tidalCurrents';
 import { MapImageAreas } from '@/types/dataImage';
 import { DateFormat } from '@/types/date';
+import { getTidalCurrentsTagsData } from '@/services/tidalCurrents';
 
 type DataImageWithTidalCurrentsMapProps = {
   mainProduct: Product | null;
   src: string;
   productId: string;
   date: Dayjs;
+  region: string;
 };
 
 const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps> = ({
@@ -20,6 +22,7 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   src,
   productId,
   date,
+  region,
 }) => {
   const [_, setSearchParams] = useSearchParams();
   const imgRef = useRef<HTMLImageElement | null>(null);
@@ -27,7 +30,11 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   const [areas, setAreas] = useState<MapImageAreas[]>(regionArr);
 
   useEffect(() => {
-    if (!src) setImgLoadError('Missing Image');
+    if (!src) {
+      setImgLoadError('Missing Image');
+    } else {
+      setImgLoadError(null);
+    }
   }, [src]);
 
   if (imgLoadError) {
@@ -35,19 +42,38 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   }
 
   const handleAreaClick = (area: MapImageAreas) => {
-    const { name } = area;
+    const { type, href } = area;
 
-    setSearchParams({
-      region: name,
-      date: date.format(DateFormat.MINUTE),
-    });
+    if (type === 'region') {
+      setSearchParams({
+        region: area.name,
+        date: date.format(DateFormat.MINUTE),
+      });
+    }
+
+    if (type === 'point') {
+      const cleanedHref = href.split('/')[3].replace('.html', '');
+      const pointName = cleanedHref.substring(0, cleanedHref.lastIndexOf('_')); // remove the date
+
+      setSearchParams({
+        region,
+        date: date.format(DateFormat.MONTH),
+        point: pointName,
+      });
+    }
   };
 
-  const handleImageLoad = () => {
+  const handleImageLoad = async () => {
     if (imgRef.current) {
       const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
 
-      const convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, regionArr as []);
+      let convertedCoords;
+      if (region === 'Australia') {
+        convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, regionArr as []);
+      } else {
+        const tagData = await getTidalCurrentsTagsData(date, productId, region);
+        convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, tagData as []);
+      }
       setAreas(convertedCoords);
     }
   };
@@ -72,7 +98,7 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
             className="cursor-pointer"
             shape={area.shape}
             coords={area.coords.join(',')}
-            alt={`Go to Tidal Currents ${area.alt} region`}
+            alt={area.alt}
             onClick={() => handleAreaClick(area)}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
