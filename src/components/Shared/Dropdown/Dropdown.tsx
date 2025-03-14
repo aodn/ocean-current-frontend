@@ -3,7 +3,7 @@ import { useOutsideClick } from '@/hooks';
 import ArrowIcon from '@/assets/icons/Arrow';
 import { DropdownElement, DropdownProps } from './types/dropdown.types';
 
-const Dropdown: React.FC<DropdownProps> = ({
+const Dropdown = <T,>({
   showIcons = false,
   elements,
   selectedId,
@@ -11,9 +11,9 @@ const Dropdown: React.FC<DropdownProps> = ({
   header,
   smallDropdown,
   isOpen = false,
-}: DropdownProps) => {
+}: DropdownProps<T>): JSX.Element => {
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [selectedElement, setSelectedElement] = useState<DropdownElement | null>(null);
+  const [selectedElement, setSelectedElement] = useState<DropdownElement<T> | null>(null);
   const [isDropdownOpen, setDropdownOpen] = useState(isOpen);
 
   useOutsideClick<HTMLDivElement>(dropdownRef, () => {
@@ -25,14 +25,14 @@ const Dropdown: React.FC<DropdownProps> = ({
   };
 
   const selectElement = useCallback(
-    (id: string): void => {
+    (id: T): void => {
       const element = elements.find((element) => element.id === id);
       if (element) setSelectedElement(element);
     },
     [elements],
   );
 
-  const handleOnClick = (element: DropdownElement): void => {
+  const handleOnClick = (element: DropdownElement<T>): void => {
     setDropdownOpen(false);
     selectElement(element.id);
     if (onChange) onChange(element);
@@ -73,7 +73,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         >
           {elements.map((element) => (
             <div
-              key={element.id}
+              key={String(element.id)}
               aria-hidden="true"
               className={`${
                 !showIcons ? 'justify-center' : ''

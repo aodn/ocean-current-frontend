@@ -1,7 +1,8 @@
 import { RegionScope } from '@/constants/region';
+import { ProductID } from '@/types/product';
 
 type ProductParamState = {
-  productId: string;
+  productId: ProductID;
   regionScope: RegionScope;
   regionTitle: string | null;
 };
@@ -13,7 +14,7 @@ export type State = {
 export type Actions = {
   actions: {
     setProductData: (product: ProductParamState) => void;
-    setProductId: (productId: string) => void;
+    setProductId: (productId: ProductID) => void;
     setRegionScope: (regionScope: RegionScope) => void;
     setRegionTitle: (regionTitle: string) => void;
   };

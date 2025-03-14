@@ -3,6 +3,7 @@ import { Region } from '@/types/map';
 import { allRegions } from '@/data/regionData';
 import { productRegionMap } from '@/data/regionList';
 import { RegionCategories } from '@/types/region';
+import { ProductID } from '@/types/product';
 
 const getRegionByRegionTitle = (regionTitle: string | null): Region | undefined => {
   return allRegions.find((region) => region.title === regionTitle);
@@ -16,11 +17,11 @@ const getRegionCodeByRegionTitle = (regionTitle: string): string | undefined => 
   return getRegionByRegionTitle(regionTitle)?.code;
 };
 
-const getRegionListByProductId = (productId: string): RegionCategories | undefined => {
+const getRegionListByProductId = (productId: ProductID): RegionCategories | undefined => {
   return productRegionMap[productId];
 };
 
-const isProductAvailableInRegion = (regionTitle: string | null, productId: string): boolean => {
+const isProductAvailableInRegion = (regionTitle: string | null, productId: ProductID): boolean => {
   if (!regionTitle) {
     return false;
   }

@@ -1,7 +1,7 @@
 import { Dayjs } from 'dayjs';
-import { Product } from '@/types/product';
+import { ProductGroupID, ProductID } from '@/types/product';
 
 export interface ErrorImageProps {
   date: Dayjs;
-  product: Product;
+  productId: ProductID | ProductGroupID;
 }

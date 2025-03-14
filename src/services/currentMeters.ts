@@ -1,10 +1,10 @@
 import { proxyClient } from '@/services/httpClient';
 import { ContentType } from '@/constants/request';
-import { CurrentMetersPlotPath, CurrentMetersSubproductsKey } from '@/constants/currentMeters';
+import { CurrentMetersPlotPath, CurrentMetersSubproductsKeyType } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 
 const getCurrentMetersPlotsList = async (
-  subProductKey: CurrentMetersSubproductsKey,
+  subProductKey: CurrentMetersSubproductsKeyType,
   deploymentPlot: CurrentMetersDeploymentPlotNames,
   type: CurrentMetersPlotPath,
 ) => {

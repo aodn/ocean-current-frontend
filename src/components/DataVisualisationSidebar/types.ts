@@ -1,5 +1,5 @@
 import { ProductSidebarText } from '@/constants/textConstant';
-import { SubProduct } from '@/types/product';
+import { ProductID, RootProductID, SubProduct } from '@/types/product';
 
 export type ProductInfo = {
   id: string;
@@ -19,8 +19,8 @@ export interface CollapsibleSectionProps {
 
 export interface SubProductOptionsProps {
   subProducts: SubProduct[];
-  subProductKey: string;
-  handleSubProductChange: (key: string, subProductPath: string) => void;
+  subProductKey: ProductID;
+  handleSubProductChange: (key: ProductID, subProductPath: string) => void;
 }
 
 export type DataSource = {
@@ -33,5 +33,5 @@ export interface DataSourcesProps {
   filteredDataSources: DataSource[];
 }
 export interface ProductDropdownProps {
-  mainProductKey: string;
+  mainProductKey: RootProductID;
 }

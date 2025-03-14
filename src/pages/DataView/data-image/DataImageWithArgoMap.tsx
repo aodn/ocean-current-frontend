@@ -93,7 +93,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   };
 
   if (imgLoadError) {
-    return <ErrorImage product={mainProduct!} date={date} />;
+    return <ErrorImage productId={mainProduct!.key} date={date} />;
   }
 
   return (

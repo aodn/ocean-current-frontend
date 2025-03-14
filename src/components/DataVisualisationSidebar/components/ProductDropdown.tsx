@@ -1,7 +1,6 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import { Dropdown } from '@/components/Shared';
-import { setProductId } from '@/stores/product-store/productStore';
 import { sidebarProductsNav } from '@/data/sidebarProductsNav';
 import { getProductPathWithSubProduct } from '@/utils/product-utils/product';
 import { useDateRange, useQueryParams } from '@/hooks';
@@ -9,6 +8,7 @@ import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.typ
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
 import { initialState as currentMetersInitialState } from '@/stores/current-meters-store/currentMeters';
 import { QueryParams } from '@/hooks/useQueryParams/types/userQueryParams.types';
+import { RootProductID } from '@/types/product';
 import { ProductDropdownProps } from '../types';
 
 const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => {
@@ -18,11 +18,10 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
   const selectedDate = dayjs(allDates[selectedDateIndex]?.date).format(formatDate);
   const isProductAvailableInRegion = useProductAvailableInRegion();
 
-  const handleDropdownChange = ({ id }: DropdownElement) => {
+  const handleDropdownChange = ({ id }: DropdownElement<RootProductID>) => {
     if (mainProductKey.includes(id)) {
       return;
     }
-    setProductId(id);
 
     let queryToUpdate: QueryParams = {
       date: selectedDate,
@@ -64,7 +63,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
       showIcons
       header
       elements={sidebarProductsNav}
-      selectedId={mainProductKey}
+      selectedId={mainProductKey as RootProductID}
       onChange={handleDropdownChange}
     />
   );
