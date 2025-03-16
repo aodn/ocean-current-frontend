@@ -49,7 +49,7 @@ export type ChildProductID =
   | 'currentMeters-deepADV'
   | 'currentMeters-southernOcean'
   // Seal CTD children
-  | 'sealCtd-sealAndArgoLocations'
+  | 'sealCtd-sealTracks'
   | 'sealCtd-timeseriesTemperature'
   | 'sealCtd-timeseriesSalinity';
 
