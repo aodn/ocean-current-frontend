@@ -10,7 +10,8 @@ export type ProductGroupID =
   | 'monthlyMeans'
   | 'climatology'
   | 'tidalCurrents'
-  | 'currentMeters';
+  | 'currentMeters'
+  | 'sealCtd';
 
 // Child products (not at root level)
 export type ChildProductID =
@@ -46,7 +47,11 @@ export type ChildProductID =
   | 'currentMeters-shelf'
   | 'currentMeters-deepADCP'
   | 'currentMeters-deepADV'
-  | 'currentMeters-southernOcean';
+  | 'currentMeters-southernOcean'
+  // Seal CTD children
+  | 'sealCtd-sealAndArgoLocations'
+  | 'sealCtd-timeseriesTemperature'
+  | 'sealCtd-timeseriesSalinity';
 
 // Combined types
 export type RootProductID = StandaloneProductID | ProductGroupID;

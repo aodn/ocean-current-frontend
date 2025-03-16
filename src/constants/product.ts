@@ -372,6 +372,52 @@ export const OC_PRODUCTS: Product[] = [
     ],
   },
   /*
+    The data below is only for rendering the options button for navigation purposes.
+    The image source urls are built here - src/utils/data-image-builder-utils/dataImgBuilder.ts
+  */
+  {
+    title: 'Seal CTD',
+    key: 'sealCtd',
+    path: 'seal-ctd',
+    latestEntry: null,
+    dateFormat: {
+      localFormat: DateFormat.DAY,
+      stateFormat: DateFormat.DAY,
+    },
+    children: [
+      {
+        title: 'Seal and Argo Locations',
+        key: 'sealCtd-sealAndArgoLocations',
+        path: 'seal-and-argo-locations',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.DAY,
+          stateFormat: DateFormat.DAY,
+        },
+      },
+      {
+        title: 'Timeseries (Temperature)',
+        key: 'sealCtd-timeseriesTemperature',
+        path: 'timeseries-temperature',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.YEAR_ONLY,
+          stateFormat: DateFormat.YEAR_ONLY,
+        },
+      },
+      {
+        title: 'Timeseries (Salinity)',
+        key: 'sealCtd-timeseriesSalinity',
+        path: 'timeseries-salinity',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.YEAR_ONLY,
+          stateFormat: DateFormat.YEAR_ONLY,
+        },
+      },
+    ],
+  },
+  /*
     The data below is only for rendering the button for navigation purposes.
     EAC Mooring Array data is only available in Brisbane region,
     so the image source url is built here - src/utils/data-image-builder-utils/dataImgBuilder.ts
