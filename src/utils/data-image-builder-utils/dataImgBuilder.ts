@@ -195,7 +195,7 @@ const buildSurfaceWavesImageUrl = (date: string, imgPath: string): string => {
 };
 
 const buildTidalCurrentsMapImageUrl = (region: string, subProduct: string, date: Dayjs): string => {
-  if (region === 'Aust') return `${imageBaseUrl}/tides/tidemapindex.gif`;
+  if (region === 'Australia') return `${imageBaseUrl}/tides/tidemapindex.gif`;
 
   const prodFolder = subProduct === 'tidalCurrents-spd' ? 'spd' : 'hv';
   const formattedDate = date.format(DateFormat.MINUTE);
