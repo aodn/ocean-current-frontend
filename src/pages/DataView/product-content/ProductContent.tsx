@@ -145,7 +145,7 @@ const ProductContent: React.FC = () => {
           return buildEACMooringArrayImageUrl(useDate);
         case isTidalCurrents && !hasSelectedPointFromUrl:
           return buildTidalCurrentsMapImageUrl(
-            useRegionTitle ?? 'Aust',
+            useRegionTitle ?? 'Australia',
             subProduct?.key ?? 'tidalCurrents-spd',
             useDate,
           );
