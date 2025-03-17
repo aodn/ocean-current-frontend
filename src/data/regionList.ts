@@ -93,6 +93,11 @@ export const fullLocalList = [
   '14_SGBR2',
   '15_CGBR',
   '16_NGBR',
+
+  // SealCTD specific code and regions
+  'Antarctica',
+  'GAB-Seal',
+  'NSW',
 ] as const;
 
 export const productRegionMap: ProductRegionMap = {
@@ -620,5 +625,9 @@ export const productRegionMap: ProductRegionMap = {
       '15_CGBR',
       '16_NGBR',
     ],
+  },
+  'sealCtd-sealTracks': {
+    state: ['Antarctica'],
+    local: ['GAB-Seal', 'NSW'],
   },
 };
