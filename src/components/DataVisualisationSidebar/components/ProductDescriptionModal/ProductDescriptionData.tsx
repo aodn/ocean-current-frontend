@@ -1250,6 +1250,66 @@ const MonthlyMeansModalData = () => {
   );
 };
 
+const SealCtdModalData = () => {
+  return (
+    <div className="p-4 text-gray-800">
+      <p className="mb-4">
+        The IMOS Animal Tracking Facility has deployed over 250 SealCTDs (miniaturized CTD sensors with an ARGOS
+        antenna) on Elephant Seals, Sea Lions, Fur Seals and Weddell Seals since 2009. The data can now be viewed on
+        OceanCurrent. The original motive for the sensors was to provide information about animal behaviour but the
+        physical data they have collected has already been valuable in studies of Antarctic bottom water formation, the
+        global heat budget, Southern Ocean frontal structure and sea ice formation.{' '}
+      </p>
+
+      <p className="mb-4">
+        Argo float and seals provide different styles of profiling. Argo floats (in standard configuration) transmit a
+        2000m deep profile, with high vertical resolution, every 10 days whereas the SealCTDs transmit a profile every 6
+        hours. Each CTD sensor records data from every dive but selects the ascent profile from the deepest dive over
+        the last 6 hours. In order to prolong battery life and to ensure the whole profile is transmitted before the
+        seal dives again, the profile is also compressed (by calculating break-points) before transmission. The SealCTD
+        (or tag) is glued onto the animal&apos;s head and drops off during their moult.{' '}
+      </p>
+
+      <p className="mb-4">
+        The SealCTD product shows near real time location of seals equipped with CTD instruments, overlaid on SST maps
+        and ice coverage. The dots in the maps represent the locations of seals (magenta) and Argo floats (cyan) that
+        reached the surface at the date of plotting. Data access
+        <a
+          href="https://catalogue-imos.aodn.org.au/geonetwork/srv/eng/catalog.search#/metadata/b2548767-514f-4a31-b65e-36bb894382d5"
+          className="mx-1 text-[#52BDEC]"
+        >
+          here
+        </a>
+        .{' '}
+      </p>
+
+      <p className="mb-4">
+        The SST and sea ice area fraction data are obtained from
+        <a href="https://www.remss.com/" className="mx-1 text-[#52BDEC]">
+          REMSS
+        </a>
+        (Remote Sensing Systems). The SST product used here contains data from microwave (MW) and infrared (IR) sensors,
+        optimally interpolated onto a global grid by REMSS.
+      </p>
+
+      <p className="mb-4">
+        The temperature and salinity profiles (right) during a female Elephant Seal&apos;s journey from Kerguelen Island
+        demonstrate the high temporal and spatial resolution possible of the upper 500m of the ocean. During her
+        two-month journey this seal travelled through at least four distinct regions before losing her tag in the
+        melting ice. The time series are also plotted in 10 day sections with the seal&apos;s location indicated.
+      </p>
+
+      <p className="mb-4">
+        Some SealCTDs have been deployed in the Great Australian Bight (GAB) and southern New South Wales. The Sea Lions
+        in the GAB appear to have a different profiling strategy compared to their cousins in Antarctica. One GAB Sea
+        Lion spent 5 months of the 2015/2016 summer repeating a transect across the shelf from the head of the Bight.
+        His travels document the degree of uplifted water coming onto the shelf along the bottom and also the
+        development of a deep water salinity maximum (right).{' '}
+      </p>
+    </div>
+  );
+};
+
 const SurfaceWaveModalData = () => {
   return (
     <div>
@@ -2035,4 +2095,5 @@ export {
   CurrentMetersModalData,
   ArgoModalData,
   TidalCurrentsModalData,
+  SealCtdModalData,
 };

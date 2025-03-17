@@ -11,6 +11,7 @@ import {
   CurrentMetersModalData,
   ArgoModalData,
   TidalCurrentsModalData,
+  SealCtdModalData,
 } from '@/components/DataVisualisationSidebar/components/ProductDescriptionModal/ProductDescriptionData';
 import { ProductInfo } from '../../types';
 
@@ -89,6 +90,13 @@ export const productInfoList: ProductInfo[] = [
     summary:
       "The overview map is your entry point to a series of maps showing a few properties of Australia's ocean currents: mean (all-time, annual and seasonal), standard deviation for various layers and time-windows, and tidal harmonics for the depth-average flow.",
     description: CurrentMetersModalData,
+  },
+  {
+    id: 'sealCtd',
+    title: 'SealCTDs: Temperature and Salinity Profiles from Ocean Mammals',
+    summary:
+      'The IMOS Animal Tracking Facility has deployed over 250 SealCTDs (miniaturized CTD sensors with an ARGOS antenna) on Elephant Seals, Sea Lions, Fur Seals and Weddell Seals since 2009.',
+    description: SealCtdModalData,
   },
   {
     id: 'EACMooringArray',
