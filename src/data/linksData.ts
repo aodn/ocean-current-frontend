@@ -139,7 +139,7 @@ export const linksData: LinkItem[] = [
         blueIcon: SealCTDBlueIcon,
         title: 'SealCTD',
         description: 'Animal-mounted sensors',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
+        url: 'map/seal-ctd/tracks',
       },
       /*
         EAC Mooring Array has data from only one region

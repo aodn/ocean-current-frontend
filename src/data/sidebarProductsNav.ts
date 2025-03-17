@@ -18,6 +18,8 @@ import TidalCurrentsIcon from '@/assets/icons/products/grey-icons/tidal-currents
 import TidalCurrentsWhiteIcon from '@/assets/icons/products/white-icons/tidal-currents-icon-white.svg';
 import CurrentMetersIcon from '@/assets/icons/products/grey-icons/current-meters-icon-grey.svg';
 import CurrentMetersWhiteIcon from '@/assets/icons/products/white-icons/current-meters-icon-white.svg';
+import SealCTDIcon from '@/assets/icons/products/grey-icons/seal-ctd-icon-grey.svg';
+import SealCTDWhiteIcon from '@/assets/icons/products/white-icons/seal-ctd-icon-white.svg';
 import EACMooringArrayIcon from '@/assets/icons/products/grey-icons/eac-mooring-array-icon-grey.svg';
 import EACMooringArrayWhiteIcon from '@/assets/icons/products/white-icons/eac-mooring-array-icon-white.svg';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
@@ -83,6 +85,12 @@ export const sidebarProductsNav: DropdownElement<RootProductID>[] = [
     label: 'Current Meters',
     icon: CurrentMetersIcon,
     selectedIcon: CurrentMetersWhiteIcon,
+  },
+  {
+    id: 'sealCtd',
+    label: 'SealCTD',
+    icon: SealCTDIcon,
+    selectedIcon: SealCTDWhiteIcon,
   },
   {
     id: 'EACMooringArray',

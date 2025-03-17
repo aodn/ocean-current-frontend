@@ -54,6 +54,10 @@ const routes: RouteObject[] = [
             element: <Navigate to="moored-instrument-array" replace />,
           },
           {
+            path: 'seal-ctd',
+            element: <Navigate to="tracks" replace />,
+          },
+          {
             path: ':product/:subProduct',
             element: <DataView />,
           },
@@ -102,6 +106,10 @@ const routes: RouteObject[] = [
           {
             path: 'current-meters',
             element: <Navigate to="moored-instrument-array" replace />,
+          },
+          {
+            path: 'seal-ctd',
+            element: <Navigate to="tracks" replace />,
           },
           {
             path: ':product/:subProduct',
