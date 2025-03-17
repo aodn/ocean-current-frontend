@@ -218,6 +218,20 @@ const buildTidalCurrentsDataImageUrl = (point: string, date: Dayjs): string => {
   return `${imageBaseUrl}/tides/monthplots/${point}_${formattedDate}.gif`;
 };
 
+const buildSealCtdImageUrl = (region: string, date: Dayjs, subProduct: string): string => {
+  const formattedRegion = region === 'Antarctica' ? 'POLAR' : region;
+
+  if (subProduct === 'sealCtd-timeseriesTemperature') {
+    return `${imageBaseUrl}/AATAMS/${formattedRegion}/timeseries/T_${date.format(DateFormat.YEAR_ONLY)}_p0.gif`;
+  }
+
+  if (subProduct === 'sealCtd-timeseriesSalinity') {
+    return `${imageBaseUrl}/AATAMS/${formattedRegion}/timeseries/S_${date.format(DateFormat.YEAR_ONLY)}_p0.gif`;
+  }
+
+  return `${imageBaseUrl}/AATAMS/${formattedRegion}/tracks/${date.format(DateFormat.DAY)}.gif`;
+};
+
 export {
   getTargetRegionScopePath,
   buildProductImageUrl,
@@ -231,4 +245,5 @@ export {
   buildTidalCurrentsMapImageUrl,
   buildTidalCurrentsTagFileUrl,
   buildTidalCurrentsDataImageUrl,
+  buildSealCtdImageUrl,
 };
