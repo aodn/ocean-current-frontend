@@ -139,7 +139,7 @@ export const linksData: LinkItem[] = [
         blueIcon: SealCTDBlueIcon,
         title: 'SealCTD',
         description: 'Animal-mounted sensors',
-        url: 'map/seal-ctd/seal-tracks',
+        url: 'map/seal-ctd/tracks',
       },
       /*
         EAC Mooring Array has data from only one region

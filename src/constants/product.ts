@@ -388,7 +388,7 @@ export const OC_PRODUCTS: Product[] = [
       {
         title: 'SealCTD Tracks',
         key: 'sealCtd-sealTracks',
-        path: 'seal-and-argo-locations',
+        path: 'tracks',
         imgPath: null,
         dateFormat: {
           localFormat: DateFormat.DAY,
