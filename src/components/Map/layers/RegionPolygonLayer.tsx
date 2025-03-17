@@ -62,14 +62,19 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
     const region = getRegionByRegionTitle(regionTitle);
 
     if (region) {
-      if (isMiniMap) {
-        mapFitBounds(region.coords);
-        return;
-      }
-
       // zoom in on EAC Mooring Array's only region when in main map view
       if (baseProductPath === 'eac-mooring-array') {
-        mapFitBounds(region.coords, 220);
+        mapFitBounds(region.coords, 20);
+      }
+
+      // so that Antarctica region is visible in map
+      else if (baseProductPath === 'seal-ctd/tracks') {
+        mapFitBounds(region.coords, 200);
+      }
+
+      // default to selected region
+      else {
+        mapFitBounds(region.coords);
       }
     }
   }, [map, regionTitleFromUrl, mapFitBounds, isMiniMap, baseProductPath]);
