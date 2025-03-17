@@ -105,6 +105,15 @@ export const productTypeMapping = new Map<
     },
   ],
   [
+    'sealCtd',
+    {
+      subProduct: ['tracks', 'timeseries'],
+      stateSegment: 'AATAMS',
+      localSegment: '',
+      dateFormat: DateFormat.DAY,
+    },
+  ],
+  [
     'EACMooringArray',
     {
       subProduct: [],

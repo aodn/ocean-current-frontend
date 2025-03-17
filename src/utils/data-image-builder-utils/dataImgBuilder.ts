@@ -135,19 +135,29 @@ const buildProductVideoUrl = (
   const baseUrl = getBaseUrlByProductId(productId);
 
   const productUrl = {
-    surfaceWaves: () => `${imageBaseUrl}/s3.php?file=WAVES/y${year}/m${month}/Au_wave_m${month}.mp4`,
-    fourHourSst: () =>
-      `${baseUrl}/${productSegment}/${subProductType}/${regionName}/${regionName}_${subProductType}_${year}${month}.mp4`,
-    monthlyMeans: () => `${baseUrl}/${productSegment}/${regionName}/${regionName}.mp4`,
-    default: () =>
-      `${baseUrl}/${productSegment}${subProductSegment}/${regionName}/${regionName}_${subProductType}_${year}_${quarter}.mp4`,
+    surfaceWaves: `${imageBaseUrl}/s3.php?file=WAVES/y${year}/m${month}/Au_wave_m${month}.mp4`,
+    fourHourSst: `${baseUrl}/${productSegment}/${subProductType}/${regionName}/${regionName}_${subProductType}_${year}${month}.mp4`,
+    monthlyMeans: `${baseUrl}/${productSegment}/${regionName}/${regionName}.mp4`,
+    default: `${baseUrl}/${productSegment}${subProductSegment}/${regionName}/${regionName}_${subProductType}_${year}_${quarter}.mp4`,
   };
+
+  if (productId === 'sealCtd' && subProductType === 'tracks') {
+    let sealCtdRegionName = regionName;
+    if (regionName === 'Antarctica') {
+      sealCtdRegionName = 'POLAR';
+    }
+    if (regionName === 'GAB-Seal') {
+      sealCtdRegionName = 'GAB';
+    }
+
+    return `${baseUrl}/AATAMS/${sealCtdRegionName}/${subProductType}/tracks_${year}.mp4`;
+  }
 
   if (productId === 'oceanColour' && regionScope === TargetPathRegionScope.Local) {
     return `${baseUrl}/${regionName}_chl/${regionName}_chl${dayjs(date).format(DateFormat.MONTH)}.mp4`;
   }
 
-  return productUrl[productId as keyof typeof productUrl]?.() || productUrl.default();
+  return productUrl[productId as keyof typeof productUrl] || productUrl.default;
 };
 
 const buildSSTTimeseriesImageUrl = (region: string) => {
