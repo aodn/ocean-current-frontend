@@ -66,9 +66,8 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
       if (baseProductPath === 'eac-mooring-array') {
         mapFitBounds(region.coords, 20);
       }
-
       // so that Antarctica region is visible in map
-      else if (baseProductPath === 'seal-ctd/tracks') {
+      else if (baseProductPath === 'seal-ctd/tracks' && !isMiniMap) {
         mapFitBounds(region.coords, 200);
       }
 
