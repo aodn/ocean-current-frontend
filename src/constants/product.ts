@@ -376,7 +376,7 @@ export const OC_PRODUCTS: Product[] = [
     The image source urls are built here - src/utils/data-image-builder-utils/dataImgBuilder.ts
   */
   {
-    title: 'Seal CTD',
+    title: 'SealCTD',
     key: 'sealCtd',
     path: 'seal-ctd',
     latestEntry: null,
@@ -386,8 +386,8 @@ export const OC_PRODUCTS: Product[] = [
     },
     children: [
       {
-        title: 'Seal and Argo Locations',
-        key: 'sealCtd-sealAndArgoLocations',
+        title: 'SealCTD Tracks',
+        key: 'sealCtd-sealTracks',
         path: 'seal-and-argo-locations',
         imgPath: null,
         dateFormat: {
