@@ -13,6 +13,7 @@ const useProductCheck = () => {
   const isClimatology = mainProductId === 'climatology';
   const isEACMooringArray = mainProductId === 'EACMooringArray';
   const isTidalCurrents = mainProductId === 'tidalCurrents';
+  const isSealCtd = mainProductId === 'sealCtd';
 
   return {
     isRegionRequired,
@@ -21,6 +22,7 @@ const useProductCheck = () => {
     isClimatology,
     isEACMooringArray,
     isTidalCurrents,
+    isSealCtd,
   };
 };
 
