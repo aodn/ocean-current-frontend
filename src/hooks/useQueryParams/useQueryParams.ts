@@ -8,9 +8,7 @@ const useQueryParams = (): UseQueryParamsResult => {
   const getParams = (): QueryParams => {
     const params: QueryParams = {};
     searchParams.forEach((value, key) => {
-      if (key in params) {
-        params[key as keyof QueryParams] = value;
-      }
+      params[key as keyof QueryParams] = value;
     });
     return params;
   };
