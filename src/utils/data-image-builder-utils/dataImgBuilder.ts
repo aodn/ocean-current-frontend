@@ -240,7 +240,7 @@ const buildSealCtdImageUrl = (region: string, date: Dayjs, subProduct: string, p
     return `/AATAMS/${formattedRegion}/timeseries/S_${date.format(DateFormat.YEAR_ONLY)}_p${page}.gif`;
   }
 
-  return `/AATAMS/${formattedRegion}/tracks/${date.format(DateFormat.DAY)}.gif`;
+  return `${imageBaseUrl}/AATAMS/${formattedRegion}/tracks/${date.format(DateFormat.DAY)}.gif`;
 };
 
 export {
