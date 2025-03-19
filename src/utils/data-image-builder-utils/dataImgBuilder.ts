@@ -228,18 +228,19 @@ const buildTidalCurrentsDataImageUrl = (point: string, date: Dayjs): string => {
   return `${imageBaseUrl}/tides/monthplots/${point}_${formattedDate}.gif`;
 };
 
-const buildSealCtdImageUrl = (region: string, date: Dayjs, subProduct: string): string => {
+// the imageBaseUrl is not included below as we need to validate the image urls and will need to be added in once API is implemented
+const buildSealCtdImageUrl = (region: string, date: Dayjs, subProduct: string, page: number = 0): string => {
   const formattedRegion = region === 'Antarctica' ? 'POLAR' : region;
 
   if (subProduct === 'sealCtd-timeseriesTemperature') {
-    return `${imageBaseUrl}/AATAMS/${formattedRegion}/timeseries/T_${date.format(DateFormat.YEAR_ONLY)}_p0.gif`;
+    return `/AATAMS/${formattedRegion}/timeseries/T_${date.format(DateFormat.YEAR_ONLY)}_p${page}.gif`;
   }
 
   if (subProduct === 'sealCtd-timeseriesSalinity') {
-    return `${imageBaseUrl}/AATAMS/${formattedRegion}/timeseries/S_${date.format(DateFormat.YEAR_ONLY)}_p0.gif`;
+    return `/AATAMS/${formattedRegion}/timeseries/S_${date.format(DateFormat.YEAR_ONLY)}_p${page}.gif`;
   }
 
-  return `${imageBaseUrl}/AATAMS/${formattedRegion}/tracks/${date.format(DateFormat.DAY)}.gif`;
+  return `/AATAMS/${formattedRegion}/tracks/${date.format(DateFormat.DAY)}.gif`;
 };
 
 export {
