@@ -33,6 +33,7 @@ import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
 import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
 import DataImageWithCurrentMetersPlots from '../data-image/DataImageWithCurrentMetersPlots';
 import DataImageWithTidalCurrentsMap from '../data-image/DataImageWithTidalCurrentsMap';
+import DataImageWithSealCtdGraphs from '../data-image/DataImageWithSealCtdGraphs';
 
 const getRegionPath = (region: Region | undefined) => {
   if (!region) return 'Au';
@@ -227,6 +228,17 @@ const ProductContent: React.FC = () => {
         date={useDate}
         productId={useProductId}
         region={useRegionTitle ?? 'Australia'}
+      />
+    );
+  }
+
+  if (subProduct?.key === 'sealCtd-timeseriesSalinity' || subProduct?.key === 'sealCtd-timeseriesTemperature') {
+    return (
+      <DataImageWithSealCtdGraphs
+        mainProduct={mainProduct}
+        date={useDate}
+        productId={useProductId}
+        region={useRegionTitle ?? 'Antarctica'}
       />
     );
   }
