@@ -233,10 +233,20 @@ const buildSealCtdImageUrl = (region: string, date: Dayjs, subProduct: string, p
   const formattedRegion = region === 'Antarctica' ? 'POLAR' : region;
 
   if (subProduct === 'sealCtd-timeseriesTemperature') {
+    if (region === 'GAB') {
+      const currYear = date.format(DateFormat.YEAR_ONLY);
+      const prevYear = date.subtract(1, 'year').format(DateFormat.YEAR_ONLY);
+      return `/AATAMS/${formattedRegion}/timeseries/T_${prevYear}_${currYear}_p${page}.gif`;
+    }
     return `/AATAMS/${formattedRegion}/timeseries/T_${date.format(DateFormat.YEAR_ONLY)}_p${page}.gif`;
   }
 
   if (subProduct === 'sealCtd-timeseriesSalinity') {
+    if (region === 'GAB') {
+      const currYear = date.format(DateFormat.YEAR_ONLY);
+      const prevYear = date.subtract(1, 'year').format(DateFormat.YEAR_ONLY);
+      return `/AATAMS/${formattedRegion}/timeseries/S_${prevYear}_${currYear}_p${page}.gif`;
+    }
     return `/AATAMS/${formattedRegion}/timeseries/S_${date.format(DateFormat.YEAR_ONLY)}_p${page}.gif`;
   }
 
