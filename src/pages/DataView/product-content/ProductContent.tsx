@@ -191,16 +191,18 @@ const ProductContent: React.FC = () => {
 
   if (showVideo) {
     return (
-      <video
-        onClick={handlePopup}
-        className="max-h-[80vh] w-full select-none object-contain"
-        src={buildMediaUrl()}
-        controls
-        onError={handleError}
-      >
-        <track default kind="captions" srcLang="en" />
-        Your browser does not support the video tag.
-      </video>
+      <div className="h-full bg-white">
+        <video
+          onClick={handlePopup}
+          className="max-h-[80vh] w-full select-none object-contain"
+          src={buildMediaUrl()}
+          controls
+          onError={handleError}
+        >
+          <track default kind="captions" srcLang="en" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
     );
   }
 
