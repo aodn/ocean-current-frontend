@@ -79,7 +79,7 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   };
 
   return (
-    <div className="relative inline-block w-full">
+    <div className="relative inline-block h-full w-full bg-white">
       <img
         ref={imgRef}
         src={src}
