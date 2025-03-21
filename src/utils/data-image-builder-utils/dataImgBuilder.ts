@@ -135,19 +135,29 @@ const buildProductVideoUrl = (
   const baseUrl = getBaseUrlByProductId(productId);
 
   const productUrl = {
-    surfaceWaves: () => `${imageBaseUrl}/s3.php?file=WAVES/y${year}/m${month}/Au_wave_m${month}.mp4`,
-    fourHourSst: () =>
-      `${baseUrl}/${productSegment}/${subProductType}/${regionName}/${regionName}_${subProductType}_${year}${month}.mp4`,
-    monthlyMeans: () => `${baseUrl}/${productSegment}/${regionName}/${regionName}.mp4`,
-    default: () =>
-      `${baseUrl}/${productSegment}${subProductSegment}/${regionName}/${regionName}_${subProductType}_${year}_${quarter}.mp4`,
+    surfaceWaves: `${imageBaseUrl}/s3.php?file=WAVES/y${year}/m${month}/Au_wave_m${month}.mp4`,
+    fourHourSst: `${baseUrl}/${productSegment}/${subProductType}/${regionName}/${regionName}_${subProductType}_${year}${month}.mp4`,
+    monthlyMeans: `${baseUrl}/${productSegment}/${regionName}/${regionName}.mp4`,
+    default: `${baseUrl}/${productSegment}${subProductSegment}/${regionName}/${regionName}_${subProductType}_${year}_${quarter}.mp4`,
   };
+
+  if (productId === 'sealCtd' && subProductType === 'tracks') {
+    let sealCtdRegionName = regionName;
+    if (regionName === 'Antarctica') {
+      sealCtdRegionName = 'POLAR';
+    }
+    if (regionName === 'GAB-Seal') {
+      sealCtdRegionName = 'GAB';
+    }
+
+    return `${baseUrl}/AATAMS/${sealCtdRegionName}/${subProductType}/tracks_${year}.mp4`;
+  }
 
   if (productId === 'oceanColour' && regionScope === TargetPathRegionScope.Local) {
     return `${baseUrl}/${regionName}_chl/${regionName}_chl${dayjs(date).format(DateFormat.MONTH)}.mp4`;
   }
 
-  return productUrl[productId as keyof typeof productUrl]?.() || productUrl.default();
+  return productUrl[productId as keyof typeof productUrl] || productUrl.default;
 };
 
 const buildSSTTimeseriesImageUrl = (region: string) => {
@@ -218,6 +228,31 @@ const buildTidalCurrentsDataImageUrl = (point: string, date: Dayjs): string => {
   return `${imageBaseUrl}/tides/monthplots/${point}_${formattedDate}.gif`;
 };
 
+// the imageBaseUrl is not included below as we need to validate the image urls and will need to be added in once API is implemented
+const buildSealCtdImageUrl = (region: string, date: Dayjs, subProduct: string, page: number = 0): string => {
+  const formattedRegion = region === 'Antarctica' ? 'POLAR' : region;
+
+  if (subProduct === 'sealCtd-timeseriesTemperature') {
+    if (region === 'GAB') {
+      const currYear = date.format(DateFormat.YEAR_ONLY);
+      const prevYear = date.subtract(1, 'year').format(DateFormat.YEAR_ONLY);
+      return `/AATAMS/${formattedRegion}/timeseries/T_${prevYear}_${currYear}_p${page}.gif`;
+    }
+    return `/AATAMS/${formattedRegion}/timeseries/T_${date.format(DateFormat.YEAR_ONLY)}_p${page}.gif`;
+  }
+
+  if (subProduct === 'sealCtd-timeseriesSalinity') {
+    if (region === 'GAB') {
+      const currYear = date.format(DateFormat.YEAR_ONLY);
+      const prevYear = date.subtract(1, 'year').format(DateFormat.YEAR_ONLY);
+      return `/AATAMS/${formattedRegion}/timeseries/S_${prevYear}_${currYear}_p${page}.gif`;
+    }
+    return `/AATAMS/${formattedRegion}/timeseries/S_${date.format(DateFormat.YEAR_ONLY)}_p${page}.gif`;
+  }
+
+  return `${imageBaseUrl}/AATAMS/${formattedRegion}/tracks/${date.format(DateFormat.DAY)}.gif`;
+};
+
 export {
   getTargetRegionScopePath,
   buildProductImageUrl,
@@ -231,4 +266,5 @@ export {
   buildTidalCurrentsMapImageUrl,
   buildTidalCurrentsTagFileUrl,
   buildTidalCurrentsDataImageUrl,
+  buildSealCtdImageUrl,
 };

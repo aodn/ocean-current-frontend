@@ -630,4 +630,12 @@ export const productRegionMap: ProductRegionMap = {
     state: ['Antarctica'],
     local: ['GAB-Seal', 'NSW'],
   },
+  'sealCtd-timeseriesTemperature': {
+    state: ['Antarctica'],
+    local: ['GAB-Seal', 'NSW'],
+  },
+  'sealCtd-timeseriesSalinity': {
+    state: ['Antarctica'],
+    local: ['GAB-Seal', 'NSW'],
+  },
 };

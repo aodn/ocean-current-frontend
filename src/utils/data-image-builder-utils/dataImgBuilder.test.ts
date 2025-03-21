@@ -19,6 +19,7 @@ import {
   buildTidalCurrentsMapImageUrl,
   buildTidalCurrentsTagFileUrl,
   buildTidalCurrentsDataImageUrl,
+  buildSealCtdImageUrl,
 } from './dataImgBuilder';
 
 describe('buildProductImageUrl', () => {
@@ -639,5 +640,46 @@ describe('buildTidalCurrentsDataImageUrl', () => {
 
     // Assert
     expect(imageUrl).toBe(`${imageBaseUrl}/tides/monthplots/NTC_Fenton_patches_202502.gif`);
+  });
+});
+
+describe('buildSealCtdImageUrl', () => {
+  it('should return the correct url for SealCTD Temperature graph image', () => {
+    // Arrange
+    const region = 'Antarctica';
+    const date = dayjs('202502280000');
+    const subProduct = 'sealCtd-timeseriesTemperature';
+
+    // Act
+    const imageUrl = buildSealCtdImageUrl(region, date, subProduct);
+
+    // Assert
+    expect(imageUrl).toBe('/AATAMS/POLAR/timeseries/T_2025_p0.gif');
+  });
+
+  it('should return the correct url for SealCTD Salinity graph image', () => {
+    // Arrange
+    const region = 'GAB';
+    const date = dayjs('20250228');
+    const subProduct = 'sealCtd-timeseriesSalinity';
+
+    // Act
+    const imageUrl = buildSealCtdImageUrl(region, date, subProduct);
+
+    // Assert
+    expect(imageUrl).toBe('/AATAMS/GAB/timeseries/S_2024_2025_p0.gif');
+  });
+
+  it('should return the correct url for SealCTD Tracks map image', () => {
+    // Arrange
+    const region = 'NSW';
+    const date = dayjs('202502280000');
+    const subProduct = 'sealCtd-sealTracks';
+
+    // Act
+    const imageUrl = buildSealCtdImageUrl(region, date, subProduct);
+
+    // Assert
+    expect(imageUrl).toBe(`${imageBaseUrl}/AATAMS/NSW/tracks/20250228.gif`);
   });
 });

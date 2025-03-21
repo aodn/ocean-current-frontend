@@ -11,6 +11,7 @@ import {
   buildEACMooringArrayImageUrl,
   buildTidalCurrentsMapImageUrl,
   buildTidalCurrentsDataImageUrl,
+  buildSealCtdImageUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
@@ -32,6 +33,7 @@ import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
 import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
 import DataImageWithCurrentMetersPlots from '../data-image/DataImageWithCurrentMetersPlots';
 import DataImageWithTidalCurrentsMap from '../data-image/DataImageWithTidalCurrentsMap';
+import DataImageWithSealCtdGraphs from '../data-image/DataImageWithSealCtdGraphs';
 
 const getRegionPath = (region: Region | undefined) => {
   if (!region) return 'Au';
@@ -49,7 +51,7 @@ const getRegionPath = (region: Region | undefined) => {
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const { isArgo, isCurrentMeters, isEACMooringArray, isTidalCurrents } = useProductCheck();
+  const { isArgo, isCurrentMeters, isEACMooringArray, isTidalCurrents, isSealCtd } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
   const useProductId = useProductStore((state) => state.productParams.productId);
@@ -151,6 +153,8 @@ const ProductContent: React.FC = () => {
           );
         case isTidalCurrents && hasSelectedPointFromUrl:
           return buildTidalCurrentsDataImageUrl(pointUrlParam, useDate);
+        case isSealCtd:
+          return buildSealCtdImageUrl(useRegionTitle ?? 'Antarctica', useDate, subProduct?.key ?? 'sealCtd-sealTracks');
         default:
           return buildProductImageUrl(
             mainProduct.key,
@@ -226,6 +230,17 @@ const ProductContent: React.FC = () => {
         date={useDate}
         productId={useProductId}
         region={useRegionTitle ?? 'Australia'}
+      />
+    );
+  }
+
+  if (subProduct?.key === 'sealCtd-timeseriesSalinity' || subProduct?.key === 'sealCtd-timeseriesTemperature') {
+    return (
+      <DataImageWithSealCtdGraphs
+        mainProduct={mainProduct}
+        date={useDate}
+        productId={useProductId}
+        region={useRegionTitle ?? 'Antarctica'}
       />
     );
   }
