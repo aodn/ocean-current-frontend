@@ -66,13 +66,14 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
       if (baseProductPath === 'eac-mooring-array') {
         mapFitBounds(region.coords, 20);
       }
-      // so that Antarctica region is visible in map
-      else if (baseProductPath === 'seal-ctd/tracks' && !isMiniMap) {
+
+      // so that Antarctica region is visible
+      if (baseProductPath === 'seal-ctd/tracks' && !isMiniMap) {
         mapFitBounds(region.coords, 200);
       }
 
-      // default to selected region
-      else {
+      // focus on region only when in minimap, otherwise the map carousel in landing page breaks the auto cycle
+      if (isMiniMap) {
         mapFitBounds(region.coords);
       }
     }
