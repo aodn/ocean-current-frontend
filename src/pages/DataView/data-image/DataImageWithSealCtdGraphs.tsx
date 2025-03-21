@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import { scaleImageMapAreas } from '@/utils/general-utils/general';
-import { Product } from '@/types/product';
+import { ProductID, Product } from '@/types/product';
 import { MapImageAreas } from '@/types/dataImage';
 import { buildSealCtdImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import { validateSealCtdImgUrl } from '@/services/sealCtd';
@@ -11,14 +11,14 @@ import { Loading } from '@/components/Shared';
 
 type DataImageWithSealCtdGraphsProps = {
   mainProduct: Product | null;
-  productId: string;
+  productId: ProductID;
   date: Dayjs;
   region: string;
 };
 
 // at the moment there's a max of 6 pages of graphs, we can remove these once API is implemented
 const maxPages = 6;
-const getAllImageUrls = (region: string, date: Dayjs, subProductKey: string) => {
+const getAllImageUrls = (region: string, date: Dayjs, subProductKey: ProductID) => {
   const imgUrls = [];
 
   for (let i = 0; i < maxPages; i++) {
