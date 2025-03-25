@@ -76,43 +76,46 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
 
   return (
     <div className="relative inline-block w-full">
-      {imgUrls.map((url) => (
-        <>
-          <img
-            id={url}
-            ref={imgRef}
-            src={`${imageBaseUrl}${url}`}
-            alt={`${altText} data`}
-            useMap={`#seal-ctd-graph-${url}`}
-            className="max-h-[80vh] select-none object-contain"
-            onError={() => {
-              setImgLoadError('Image not available');
-            }}
-            onLoad={handleImageLoad}
-          />
-          <map name={`seal-ctd-graphs-${url}`}>
-            {areas &&
-              areas.map((area, index) => (
-                <area
-                  key={index}
-                  className="cursor-pointer"
-                  shape={area.shape}
-                  coords={area.coords.join(',')}
-                  alt={area.alt}
-                  onClick={() => {}}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                    }
-                  }}
-                  tabIndex={0}
-                  title={area.name}
-                  role="link"
-                />
-              ))}
-          </map>
-        </>
-      ))}
+      {imgUrls.map((url) => {
+        const pageNum = url.split('_')[2].replace('.gif', '');
+        return (
+          <>
+            <img
+              id={pageNum}
+              ref={imgRef}
+              src={`${imageBaseUrl}${url}`}
+              alt={`${altText} data`}
+              useMap={`#seal-ctd-graph-${pageNum}`}
+              className="max-h-[80vh] select-none object-contain"
+              onError={() => {
+                setImgLoadError('Image not available');
+              }}
+              onLoad={handleImageLoad}
+            />
+            <map name={`seal-ctd-graphs-${pageNum}`}>
+              {areas &&
+                areas.map((area) => (
+                  <area
+                    key={area.name}
+                    className="cursor-pointer"
+                    shape={area.shape}
+                    coords={area.coords.join(',')}
+                    alt={area.alt}
+                    onClick={() => {}}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                      }
+                    }}
+                    tabIndex={0}
+                    title={area.name}
+                    role="link"
+                  />
+                ))}
+            </map>
+          </>
+        );
+      })}
     </div>
   );
 };
