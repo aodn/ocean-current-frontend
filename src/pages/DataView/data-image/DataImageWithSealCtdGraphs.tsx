@@ -5,15 +5,21 @@ import { scaleImageMapAreas } from '@/utils/general-utils/general';
 import { ProductID, Product } from '@/types/product';
 import { MapImageAreas } from '@/types/dataImage';
 import { buildSealCtdImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
-import { validateSealCtdImgUrl } from '@/services/sealCtd';
+import { getSealCtdGraphTags, validateSealCtdImgUrl } from '@/services/sealCtd';
 import { imageBaseUrl } from '@/configs/image';
 import { Loading } from '@/components/Shared';
+import { parseSealCtdTagData } from '@/utils/seal-ctd-utils/sealStdTags';
 
 type DataImageWithSealCtdGraphsProps = {
   mainProduct: Product | null;
   productId: ProductID;
   date: Dayjs;
   region: string;
+};
+
+type SealGraphData = {
+  url: string;
+  areas: MapImageAreas[];
 };
 
 // at the moment there's a max of 6 pages of graphs, we can remove these once API is implemented
@@ -36,24 +42,51 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
 }) => {
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
-  const [areas, setAreas] = useState<MapImageAreas[]>();
+  const [imgData, setImgData] = useState<SealGraphData[]>([]);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // generate and validate image urls
   useEffect(() => {
     const getValidImageUrls = async () => {
+      setIsLoading(true);
       const allImgUrls = getAllImageUrls(region, date, productId);
       const validImgUrls = await validateSealCtdImgUrl(allImgUrls);
-      setImgUrls(validImgUrls);
-      setIsLoading(false);
-      if (validImgUrls.length <= 0) {
+
+      if (validImgUrls.length < 1) {
         setImgLoadError('No image available.');
       } else {
         setImgLoadError(null);
+        setImgUrls(validImgUrls);
       }
+      setIsLoading(false);
     };
+
     getValidImageUrls();
   }, [date, productId, region]);
+
+  // fetch image tags if there are valid image urls
+  useEffect(() => {
+    if (imgUrls.length < 1) return;
+
+    const fetchData = async () => {
+      setIsLoading(true);
+      const tempArr = await Promise.all(
+        imgUrls.map(async (url) => {
+          const imgTags = await getSealCtdGraphTags(url);
+          return {
+            url,
+            areas: imgTags && imgTags.length > 0 ? parseSealCtdTagData(imgTags) : [],
+          };
+        }),
+      );
+
+      setImgData(tempArr);
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, [imgUrls]);
 
   if (imgLoadError) {
     return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
@@ -67,8 +100,15 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
     if (imgRef.current) {
       const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
 
-      const convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, []);
-      setAreas(convertedCoords);
+      const tempArr = imgData.map((img) => {
+        const convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, img.areas as []);
+        return {
+          ...img,
+          areas: convertedCoords,
+        };
+      });
+
+      setImgData(tempArr);
     }
   };
 
@@ -76,7 +116,7 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
 
   return (
     <div className="relative inline-block w-full">
-      {imgUrls.map((url) => {
+      {imgData.map(({ url, areas }) => {
         const pageNum = url.split('_')[2].replace('.gif', '');
         return (
           <>
@@ -84,7 +124,7 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
               id={pageNum}
               ref={imgRef}
               src={`${imageBaseUrl}${url}`}
-              alt={`${altText} data`}
+              alt={`${altText} graph ${pageNum}`}
               useMap={`#seal-ctd-graph-${pageNum}`}
               className="max-h-[80vh] select-none object-contain"
               onError={() => {
@@ -92,7 +132,8 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
               }}
               onLoad={handleImageLoad}
             />
-            <map name={`seal-ctd-graphs-${pageNum}`}>
+
+            <map name={`seal-ctd-graph-${pageNum}`}>
               {areas &&
                 areas.map((area) => (
                   <area
@@ -100,7 +141,7 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
                     className="cursor-pointer"
                     shape={area.shape}
                     coords={area.coords.join(',')}
-                    alt={area.alt}
+                    alt={`${altText} for ${area.alt}`}
                     onClick={() => {}}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
