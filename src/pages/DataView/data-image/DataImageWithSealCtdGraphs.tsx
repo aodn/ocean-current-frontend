@@ -45,9 +45,12 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
   const [imgData, setImgData] = useState<SealGraphData[]>([]);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [hasImgLoaded, setHasImgLoaded] = useState<boolean>(false);
 
   // generate and validate image urls
   useEffect(() => {
+    setHasImgLoaded(false);
+
     const getValidImageUrls = async () => {
       setIsLoading(true);
       const allImgUrls = getAllImageUrls(region, date, productId);
@@ -61,7 +64,6 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
       }
       setIsLoading(false);
     };
-
     getValidImageUrls();
   }, [date, productId, region]);
 
@@ -99,7 +101,6 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
   const handleImageLoad = () => {
     if (imgRef.current) {
       const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
-
       const tempArr = imgData.map((img) => {
         const convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, img.areas as []);
         return {
@@ -109,6 +110,7 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
       });
 
       setImgData(tempArr);
+      setHasImgLoaded(true);
     }
   };
 
@@ -133,27 +135,29 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
               onLoad={handleImageLoad}
             />
 
-            <map name={`seal-ctd-graph-${pageNum}`}>
-              {areas &&
-                areas.map((area) => (
-                  <area
-                    key={area.name}
-                    className="cursor-pointer"
-                    shape={area.shape}
-                    coords={area.coords.join(',')}
-                    alt={`${altText} for ${area.alt}`}
-                    onClick={() => {}}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                      }
-                    }}
-                    tabIndex={0}
-                    title={area.name}
-                    role="link"
-                  />
-                ))}
-            </map>
+            {hasImgLoaded && (
+              <map name={`seal-ctd-graph-${pageNum}`}>
+                {areas &&
+                  areas.map((area) => (
+                    <area
+                      key={area.name}
+                      className="cursor-pointer"
+                      shape={area.shape}
+                      coords={area.coords.join(',')}
+                      alt={`${altText} for ${area.alt}`}
+                      onClick={() => {}}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                        }
+                      }}
+                      tabIndex={0}
+                      title={area.name}
+                      role="link"
+                    />
+                  ))}
+              </map>
+            )}
           </>
         );
       })}
