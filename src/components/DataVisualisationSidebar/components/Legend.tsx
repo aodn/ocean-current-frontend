@@ -8,54 +8,10 @@ const Legend: React.FC = () => {
     setIsPopupOpen(!isPopupOpen);
   };
 
-  return (
-    <div className="pb-4">
-      <div className="mb-6 mt-2 grid grid-cols-2 gap-x-1 gap-y-4 px-6">
-        <div className="flex flex-col space-y-2">
-          <div className="flex items-center">
-            <div className="mr-3 h-3 w-3 rounded-full border border-imos-bright-magenta bg-white"></div>
-            <span className="text-imos-grey">Argo</span>
-          </div>
-          <div className="flex items-center">
-            <div className="mr-3 h-3 w-3 rounded-full bg-imos-subheading-grey"></div>
-            <span className="text-imos-grey">Mooring</span>
-          </div>
-          <div className="flex items-center">
-            <div className="mr-3 h-3 w-3 rounded-full border-2 border-imos-subheading-grey"></div>
-            <span className="text-imos-grey">Ship</span>
-          </div>
-        </div>
-
-        <div className="flex flex-col space-y-2">
-          <div className="flex items-center">
-            <div className="mr-3 h-3 w-3 rotate-45 bg-imos-bright-magenta"></div>
-            <span className="text-imos-grey">Glider</span>
-          </div>
-          <div className="flex items-center">
-            <div className="mr-3 flex flex-col">
-              <div className="relative h-0.5 w-3 bg-imos-bright-magenta">
-                <div className="absolute -top-1 right-0 h-2 w-2 rotate-45 border-t-2 border-imos-bright-magenta"></div>
-              </div>
-              <div className="relative mt-1 h-0.5 w-3 bg-imos-dodger-blue">
-                <div className="absolute -top-[2px] right-0 h-2 w-2 rotate-45 border-r-2 border-imos-dodger-blue"></div>
-              </div>
-            </div>
-            <span className="text-imos-grey">Radar</span>
-          </div>
-
-          <div className="flex items-center">
-            <div className="mr-3 h-3 w-3 rotate-45 -skew-x-12 -skew-y-12 border-r-2 border-t-2 border-imos-bright-magenta"></div>
-            <span className="text-imos-grey">Drifter</span>
-          </div>
-        </div>
-      </div>
-      <Button onClick={handlePopup} size="full" borderRadius="small" type="secondary" className="!border">
-        <span className="text-imos-grey">Click for more information</span>
-      </Button>
-
-      <Popup title="Legend" isOpen={isPopupOpen} onClose={handlePopup}>
-        {' '}
-        <>
+  const PopupBody = () => {
+    return (
+      <div className="p-4">
+        <div>
           <div className="inline-block">
             <div className="mr-2 inline-block h-3 w-3 rounded-full border border-imos-bright-magenta bg-white"></div>
             <span className="mr-1 inline-block font-bold text-imos-dark-grey">Argo: </span>
@@ -113,8 +69,57 @@ const Legend: React.FC = () => {
               date of the GSLA and velocity vectors is indicated on the plot.
             </p>
           </div>
-        </>
-      </Popup>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="pb-4">
+      <div className="mb-6 mt-2 grid grid-cols-2 gap-x-1 gap-y-4 px-6">
+        <div className="flex flex-col space-y-2">
+          <div className="flex items-center">
+            <div className="mr-3 h-3 w-3 rounded-full border border-imos-bright-magenta bg-white"></div>
+            <span className="text-imos-grey">Argo</span>
+          </div>
+          <div className="flex items-center">
+            <div className="mr-3 h-3 w-3 rounded-full bg-imos-subheading-grey"></div>
+            <span className="text-imos-grey">Mooring</span>
+          </div>
+          <div className="flex items-center">
+            <div className="mr-3 h-3 w-3 rounded-full border-2 border-imos-subheading-grey"></div>
+            <span className="text-imos-grey">Ship</span>
+          </div>
+        </div>
+
+        <div className="flex flex-col space-y-2">
+          <div className="flex items-center">
+            <div className="mr-3 h-3 w-3 rotate-45 bg-imos-bright-magenta"></div>
+            <span className="text-imos-grey">Glider</span>
+          </div>
+          <div className="flex items-center">
+            <div className="mr-3 flex flex-col">
+              <div className="relative h-0.5 w-3 bg-imos-bright-magenta">
+                <div className="absolute -top-1 right-0 h-2 w-2 rotate-45 border-t-2 border-imos-bright-magenta"></div>
+              </div>
+              <div className="relative mt-1 h-0.5 w-3 bg-imos-dodger-blue">
+                <div className="absolute -top-[2px] right-0 h-2 w-2 rotate-45 border-r-2 border-imos-dodger-blue"></div>
+              </div>
+            </div>
+            <span className="text-imos-grey">Radar</span>
+          </div>
+
+          <div className="flex items-center">
+            <div className="mr-3 h-3 w-3 rotate-45 -skew-x-12 -skew-y-12 border-r-2 border-t-2 border-imos-bright-magenta"></div>
+            <span className="text-imos-grey">Drifter</span>
+          </div>
+        </div>
+      </div>
+      <Button onClick={handlePopup} size="full" borderRadius="small" type="secondary" className="!border">
+        <span className="text-imos-grey">Click for more information</span>
+      </Button>
+
+      <Popup title="Legend" body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
     </div>
   );
 };

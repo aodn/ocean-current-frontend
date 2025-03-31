@@ -3,7 +3,7 @@ import crossImage from '@/assets/icons/cross-icon.svg';
 import { useOutsideClick } from '@/hooks';
 import { PopupProps } from './types/popup.types';
 
-const Popup: React.FC<PopupProps> = ({ title, children, isOpen, onClose, imageUrl, isImage = false }) => {
+const Popup: React.FC<PopupProps> = ({ title, body, isOpen, onClose, imageUrl, isImage = false }) => {
   const popupRef = useRef<HTMLDivElement>(null);
 
   useOutsideClick<HTMLDivElement>(popupRef, () => {
@@ -28,7 +28,7 @@ const Popup: React.FC<PopupProps> = ({ title, children, isOpen, onClose, imageUr
         {!isImage && (
           <div>
             <h2 className="border-b-2 border-imos-grey py-4 text-center text-xl font-bold">{title}</h2>
-            <div className="p-4">{children}</div>
+            <div>{body && body()}</div>
           </div>
         )}
         {isImage && <img src={imageUrl} alt="Popup" className="h-auto w-full" />}

@@ -108,6 +108,10 @@ const ProductFooterMobile: React.FC = () => {
 
   const shouldRenderSubProducts = () => mainProduct && subProducts.length > 0;
 
+  const PopupBody = () => {
+    return <div className="p-4">{productInfo?.description()}</div>;
+  };
+
   if (isArgo) {
     return (
       <div className="rounded-md bg-white">
@@ -177,9 +181,7 @@ const ProductFooterMobile: React.FC = () => {
         </div>
       </div>
 
-      <Popup title={productInfo?.title} isOpen={isPopupOpen} onClose={handlePopup}>
-        {productInfo?.description()}
-      </Popup>
+      <Popup title={productInfo?.title} body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
 
       {shouldRenderSubProducts() && (
         <div className="px-2">
