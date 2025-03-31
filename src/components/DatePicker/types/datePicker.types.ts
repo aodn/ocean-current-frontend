@@ -1,6 +1,7 @@
 import { DateFormat } from '@/types/date';
 
 export interface DatePickerProps {
+  productId?: string;
   minDate?: Date;
   maxDate?: Date;
   goToPrevious: () => void;
