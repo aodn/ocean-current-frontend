@@ -21,6 +21,7 @@ import {
   buildTidalCurrentsDataImageUrl,
   buildSealCtdMapImageUrl,
   buildSealCtdGraphImageUrl,
+  buildSealCtdTagDataImageUrl,
 } from './dataImgBuilder';
 
 describe('buildProductImageUrl', () => {
@@ -683,5 +684,33 @@ describe('buildSealCtdGraphImageUrl', () => {
 
     // Assert
     expect(imageUrl).toBe('/AATAMS/GAB/timeseries/S_2024_2025_p0.gif');
+  });
+});
+
+describe('buildSealCtdTagDataImageUrl', () => {
+  it('should return the correct url for SealCTD 10 days data image', () => {
+    // Arrange
+    const sealTagId = 'Q9902023';
+    const date = dayjs('202502280000');
+    const type = '10 days';
+
+    // Act
+    const imageUrl = buildSealCtdTagDataImageUrl(sealTagId, date, type);
+
+    // Assert
+    expect(imageUrl).toBe(`${imageBaseUrl}/AATAMS/SATTAGS/Q9902023/10days/20250228.gif`);
+  });
+
+  // Arrange
+  it('should return the correct url for SealCTD TS data image', () => {
+    const sealTagId = 'Q9902023';
+    const date = dayjs('20250228');
+    const type = 'ts';
+
+    // Act
+    const imageUrl = buildSealCtdTagDataImageUrl(sealTagId, date, type);
+
+    // Assert
+    expect(imageUrl).toBe(`${imageBaseUrl}/AATAMS/SATTAGS/Q9902023/TS.gif`);
   });
 });
