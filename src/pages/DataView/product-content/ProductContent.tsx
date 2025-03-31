@@ -11,7 +11,7 @@ import {
   buildEACMooringArrayImageUrl,
   buildTidalCurrentsMapImageUrl,
   buildTidalCurrentsDataImageUrl,
-  buildSealCtdImageUrl,
+  buildSealCtdMapImageUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
@@ -154,7 +154,7 @@ const ProductContent: React.FC = () => {
         case isTidalCurrents && hasSelectedPointFromUrl:
           return buildTidalCurrentsDataImageUrl(pointUrlParam, useDate);
         case isSealCtd:
-          return buildSealCtdImageUrl(useRegionTitle ?? 'Antarctica', useDate, subProduct?.key ?? 'sealCtd-sealTracks');
+          return buildSealCtdMapImageUrl(useRegionTitle ?? 'Antarctica', useDate);
         default:
           return buildProductImageUrl(
             mainProduct.key,

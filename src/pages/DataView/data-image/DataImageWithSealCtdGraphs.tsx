@@ -4,7 +4,7 @@ import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import { scaleImageMapAreas } from '@/utils/general-utils/general';
 import { ProductID, Product } from '@/types/product';
 import { MapImageAreas } from '@/types/dataImage';
-import { buildSealCtdImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
+import { buildSealCtdGraphImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import { getSealCtdGraphTags, validateSealCtdImgUrl } from '@/services/sealCtd';
 import { imageBaseUrl } from '@/configs/image';
 import { Loading, Popup } from '@/components/Shared';
@@ -29,7 +29,7 @@ const getAllImageUrls = (region: string, date: Dayjs, subProductKey: ProductID) 
   const imgUrls = [];
 
   for (let i = 0; i < maxPages; i++) {
-    const imgUrl = buildSealCtdImageUrl(region, date, subProductKey, i);
+    const imgUrl = buildSealCtdGraphImageUrl(region, date, subProductKey, i);
     imgUrls.push(imgUrl);
   }
   return imgUrls;

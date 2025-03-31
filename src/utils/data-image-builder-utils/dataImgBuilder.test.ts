@@ -19,7 +19,8 @@ import {
   buildTidalCurrentsMapImageUrl,
   buildTidalCurrentsTagFileUrl,
   buildTidalCurrentsDataImageUrl,
-  buildSealCtdImageUrl,
+  buildSealCtdMapImageUrl,
+  buildSealCtdGraphImageUrl,
 } from './dataImgBuilder';
 
 describe('buildProductImageUrl', () => {
@@ -643,7 +644,21 @@ describe('buildTidalCurrentsDataImageUrl', () => {
   });
 });
 
-describe('buildSealCtdImageUrl', () => {
+describe('buildSealCtdMapImageUrl', () => {
+  it('should return the correct url for SealCTD Tracks map image', () => {
+    // Arrange
+    const region = 'NSW';
+    const date = dayjs('202502280000');
+
+    // Act
+    const imageUrl = buildSealCtdMapImageUrl(region, date);
+
+    // Assert
+    expect(imageUrl).toBe(`${imageBaseUrl}/AATAMS/NSW/tracks/20250228.gif`);
+  });
+});
+
+describe('buildSealCtdGraphImageUrl', () => {
   it('should return the correct url for SealCTD Temperature graph image', () => {
     // Arrange
     const region = 'Antarctica';
@@ -651,7 +666,7 @@ describe('buildSealCtdImageUrl', () => {
     const subProduct = 'sealCtd-timeseriesTemperature';
 
     // Act
-    const imageUrl = buildSealCtdImageUrl(region, date, subProduct);
+    const imageUrl = buildSealCtdGraphImageUrl(region, date, subProduct);
 
     // Assert
     expect(imageUrl).toBe('/AATAMS/POLAR/timeseries/T_2025_p0.gif');
@@ -664,22 +679,9 @@ describe('buildSealCtdImageUrl', () => {
     const subProduct = 'sealCtd-timeseriesSalinity';
 
     // Act
-    const imageUrl = buildSealCtdImageUrl(region, date, subProduct);
+    const imageUrl = buildSealCtdGraphImageUrl(region, date, subProduct);
 
     // Assert
     expect(imageUrl).toBe('/AATAMS/GAB/timeseries/S_2024_2025_p0.gif');
-  });
-
-  it('should return the correct url for SealCTD Tracks map image', () => {
-    // Arrange
-    const region = 'NSW';
-    const date = dayjs('202502280000');
-    const subProduct = 'sealCtd-sealTracks';
-
-    // Act
-    const imageUrl = buildSealCtdImageUrl(region, date, subProduct);
-
-    // Assert
-    expect(imageUrl).toBe(`${imageBaseUrl}/AATAMS/NSW/tracks/20250228.gif`);
   });
 });
