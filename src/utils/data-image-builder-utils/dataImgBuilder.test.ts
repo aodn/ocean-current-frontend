@@ -692,7 +692,7 @@ describe('buildSealCtdTagDataImageUrl', () => {
     // Arrange
     const sealTagId = 'Q9902023';
     const date = dayjs('202502280000');
-    const type = '10 days';
+    const type = '10days';
 
     // Act
     const imageUrl = buildSealCtdTagDataImageUrl(sealTagId, date, type);

@@ -257,7 +257,7 @@ const buildSealCtdGraphImageUrl = (region: string, date: Dayjs, subProduct: stri
 };
 
 const buildSealCtdTagDataImageUrl = (sealTagId: string, date: Dayjs, type: string): string => {
-  if (type === '10 days') {
+  if (type === '10days') {
     return `${imageBaseUrl}/AATAMS/SATTAGS/${sealTagId}/10days/${date.format(DateFormat.DAY)}.gif`;
   }
 
