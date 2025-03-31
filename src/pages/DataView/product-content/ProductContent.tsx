@@ -50,7 +50,6 @@ const getRegionPath = (region: Region | undefined) => {
 
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { isArgo, isCurrentMeters, isEACMooringArray, isTidalCurrents, isSealCtd } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
@@ -189,15 +188,10 @@ const ProductContent: React.FC = () => {
     setImgLoadError('Media not available');
   };
 
-  const handlePopup = () => {
-    setIsPopupOpen(!isPopupOpen);
-  };
-
   if (showVideo) {
     return (
       <div className="h-full bg-white">
         <video
-          onClick={handlePopup}
           className="max-h-[80vh] w-full select-none object-contain"
           src={buildMediaUrl()}
           controls
@@ -274,12 +268,10 @@ const ProductContent: React.FC = () => {
   return (
     <div className="h-full bg-white">
       <img
-        onClick={handlePopup}
         className="max-h-[80vh] w-full select-none object-contain"
         src={chooseImg()}
         alt="product"
         onError={handleError}
-        aria-hidden
       />
     </div>
   );
