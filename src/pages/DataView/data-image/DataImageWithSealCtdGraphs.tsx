@@ -7,7 +7,7 @@ import { MapImageAreas } from '@/types/dataImage';
 import { buildSealCtdImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import { getSealCtdGraphTags, validateSealCtdImgUrl } from '@/services/sealCtd';
 import { imageBaseUrl } from '@/configs/image';
-import { Loading } from '@/components/Shared';
+import { Loading, Popup } from '@/components/Shared';
 import { parseSealCtdTagData } from '@/utils/seal-ctd-utils/sealStdTags';
 
 type DataImageWithSealCtdGraphsProps = {
@@ -46,6 +46,8 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
   const [imgUrls, setImgUrls] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasImgLoaded, setHasImgLoaded] = useState<boolean>(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedSealTag, setSelectedSealTag] = useState<string>('');
 
   // generate and validate image urls
   useEffect(() => {
@@ -98,6 +100,19 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
     return <Loading />;
   }
 
+  const openPopUp = (sealTag: string) => {
+    setSelectedSealTag(sealTag);
+    setIsPopupOpen(true);
+  };
+  const closePopUp = () => {
+    setSelectedSealTag('');
+    setIsPopupOpen(false);
+  };
+
+  const PopupBody = () => {
+    return <div className="p-4">{selectedSealTag} selected</div>;
+  };
+
   const handleImageLoad = () => {
     if (imgRef.current) {
       const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
@@ -145,10 +160,11 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
                       shape={area.shape}
                       coords={area.coords.join(',')}
                       alt={`${altText} for ${area.alt}`}
-                      onClick={() => {}}
+                      onClick={() => openPopUp(area.name)}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                           e.preventDefault();
+                          openPopUp(area.name);
                         }
                       }}
                       tabIndex={0}
@@ -161,6 +177,7 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
           </>
         );
       })}
+      <Popup title="sattags data" body={PopupBody} isOpen={isPopupOpen} onClose={closePopUp} />
     </div>
   );
 };
