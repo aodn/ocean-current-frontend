@@ -9,6 +9,7 @@ import { getSealCtdGraphTags, validateSealCtdImgUrl } from '@/services/sealCtd';
 import { imageBaseUrl } from '@/configs/image';
 import { Loading, Popup } from '@/components/Shared';
 import { parseSealCtdTagData } from '@/utils/seal-ctd-utils/sealStdTags';
+import DataImageWithSealCtdTagDataModal from './DataImageWithSealCtdTagDataModal';
 
 type DataImageWithSealCtdGraphsProps = {
   mainProduct: Product | null;
@@ -173,8 +174,9 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
           </>
         );
       })}
-      <Popup title="sattags data" isOpen={isPopupOpen} onClose={closePopUp}>
-        <div className="p-4">{selectedSealTag} selected</div>
+
+      <Popup title={selectedSealTag} isOpen={isPopupOpen} onClose={closePopUp}>
+        <DataImageWithSealCtdTagDataModal mainProduct={mainProduct} date={date} sealTagId={selectedSealTag} />
       </Popup>
     </div>
   );
