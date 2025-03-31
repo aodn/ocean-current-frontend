@@ -4,5 +4,5 @@ export interface PopupProps {
   imageUrl?: string;
   isImage?: boolean;
   title?: string;
-  body?: () => JSX.Element;
+  children?: React.ReactNode | JSX.Element;
 }

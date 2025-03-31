@@ -15,10 +15,6 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
     setIsPopupOpen(!isPopupOpen);
   };
 
-  const PopupBody = () => {
-    return <div className="p-4">{description()}</div>;
-  };
-
   return (
     <>
       <div className="p-4">
@@ -33,7 +29,9 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
         </div>
       </div>
 
-      <Popup title={title} body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
+      <Popup title={title} isOpen={isPopupOpen} onClose={handlePopup}>
+        {description()}
+      </Popup>
     </>
   );
 };

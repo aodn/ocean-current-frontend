@@ -109,10 +109,6 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
     setIsPopupOpen(false);
   };
 
-  const PopupBody = () => {
-    return <div className="p-4">{selectedSealTag} selected</div>;
-  };
-
   const handleImageLoad = () => {
     if (imgRef.current) {
       const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
@@ -177,7 +173,9 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
           </>
         );
       })}
-      <Popup title="sattags data" body={PopupBody} isOpen={isPopupOpen} onClose={closePopUp} />
+      <Popup title="sattags data" isOpen={isPopupOpen} onClose={closePopUp}>
+        <div className="p-4">{selectedSealTag} selected</div>
+      </Popup>
     </div>
   );
 };
