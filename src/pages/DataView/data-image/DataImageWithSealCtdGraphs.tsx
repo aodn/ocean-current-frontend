@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import { scaleImageMapAreas } from '@/utils/general-utils/general';
 import { ProductID, Product } from '@/types/product';
@@ -9,6 +10,7 @@ import { getSealCtdGraphTags, validateSealCtdImgUrl } from '@/services/sealCtd';
 import { imageBaseUrl } from '@/configs/image';
 import { Loading } from '@/components/Shared';
 import { parseSealCtdTagData } from '@/utils/seal-ctd-utils/sealStdTags';
+import { DateFormat } from '@/types/date';
 
 type DataImageWithSealCtdGraphsProps = {
   mainProduct: Product | null;
@@ -41,6 +43,7 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
   region,
 }) => {
   const imgRef = useRef<HTMLImageElement | null>(null);
+  const navigate = useNavigate();
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const [imgData, setImgData] = useState<SealGraphData[]>([]);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
@@ -114,6 +117,16 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
     }
   };
 
+  const handleImageClick = (sealId: string) => {
+    const query = new URLSearchParams({
+      sealId,
+      region,
+      date: date.format(DateFormat.DAY),
+    }).toString();
+
+    navigate(`/product/seal-ctd-tags/timeseries?${query}`);
+  };
+
   const altText = productId === 'sealCtd-timeseriesSalinity' ? 'Salinity Timeseries' : 'Temperature Timeseries';
 
   return (
@@ -145,10 +158,11 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
                       shape={area.shape}
                       coords={area.coords.join(',')}
                       alt={`${altText} for ${area.alt}`}
-                      onClick={() => {}}
+                      onClick={() => handleImageClick(area.name)}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                           e.preventDefault();
+                          handleImageClick(area.name);
                         }
                       }}
                       tabIndex={0}
