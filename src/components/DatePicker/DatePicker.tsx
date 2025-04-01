@@ -44,9 +44,11 @@ const DatePicker: React.FC<DatePickerProps> = ({
     };
   }, [handleKeyDown]);
 
+  const isNotSealCtdTagsOrYearFormat = !productId?.includes('sealCtdTags') || dateFormat !== DateFormat.YEAR_ONLY;
+
   return (
     <div className="flex h-full w-full items-center justify-between">
-      {(productId !== 'sealCtd-sealTracks' || dateFormat !== DateFormat.YEAR_ONLY) && (
+      {isNotSealCtdTagsOrYearFormat && (
         <div className="flex-center h-full w-12 border-r-2 text-lg text-imos-title-blue">
           <button
             onClick={goToPrevious}
@@ -58,7 +60,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
       )}
 
       <div className="flex-center h-full w-full justify-center">
-        {(productId !== 'sealCtd-sealTracks' || dateFormat !== DateFormat.YEAR_ONLY) && (
+        {isNotSealCtdTagsOrYearFormat && (
           <div className="flex items-center justify-center text-center">
             <MultiFormatDatePicker
               selectedDate={selectedDate}
@@ -72,7 +74,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
         <div className="text-l">{formattedSelectedDate}</div>
       </div>
 
-      {(productId !== 'sealCtd-sealTracks' || dateFormat !== DateFormat.YEAR_ONLY) && (
+      {isNotSealCtdTagsOrYearFormat && (
         <div className="flex-center h-full w-12 border-l-2 text-lg text-imos-title-blue">
           <button
             onClick={goToNext}
