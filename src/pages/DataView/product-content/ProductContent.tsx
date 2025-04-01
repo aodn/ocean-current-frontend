@@ -12,6 +12,7 @@ import {
   buildTidalCurrentsMapImageUrl,
   buildTidalCurrentsDataImageUrl,
   buildSealCtdMapImageUrl,
+  buildSealCtdTagsDataImageUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
@@ -50,7 +51,7 @@ const getRegionPath = (region: Region | undefined) => {
 
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
-  const { isArgo, isCurrentMeters, isEACMooringArray, isTidalCurrents, isSealCtd } = useProductCheck();
+  const { isArgo, isCurrentMeters, isEACMooringArray, isTidalCurrents, isSealCtd, isSealCtdTags } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
   const useProductId = useProductStore((state) => state.productParams.productId);
@@ -133,6 +134,9 @@ const ProductContent: React.FC = () => {
   const pointUrlParam = searchParams.get('point');
   const hasSelectedPointFromUrl = pointUrlParam && pointUrlParam !== '';
 
+  const selectedSealCtdTag = searchParams.get('sealId');
+  const hasSelectedSealCtdTagFromUrl = selectedSealCtdTag && selectedSealCtdTag !== '';
+
   const chooseImg = (): string | undefined => {
     try {
       switch (true) {
@@ -154,6 +158,8 @@ const ProductContent: React.FC = () => {
           return buildTidalCurrentsDataImageUrl(pointUrlParam, useDate);
         case isSealCtd:
           return buildSealCtdMapImageUrl(useRegionTitle ?? 'Antarctica', useDate);
+        case isSealCtdTags && hasSelectedSealCtdTagFromUrl:
+          return buildSealCtdTagsDataImageUrl(selectedSealCtdTag, useDate, useProductId);
         default:
           return buildProductImageUrl(
             mainProduct.key,
