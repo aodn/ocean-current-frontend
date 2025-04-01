@@ -63,7 +63,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
       showIcons
       header
       elements={sidebarProductsNav}
-      selectedId={mainProductKey as RootProductID}
+      selectedId={(mainProductKey === 'sealCtdTags' ? 'sealCtd' : mainProductKey) as RootProductID}
       onChange={handleDropdownChange}
     />
   );
