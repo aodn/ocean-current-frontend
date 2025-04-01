@@ -418,6 +418,73 @@ export const OC_PRODUCTS: Product[] = [
     ],
   },
   /*
+    The data below is only for rendering the options button for navigation purposes.
+    The image source urls are built here - src/utils/data-image-builder-utils/dataImgBuilder.ts
+    The product set below is different/separated from the above as it's the third layer of navigation/data
+    and we need to flatten it to suit our existing structure.
+  */
+  {
+    title: 'SealCTD Tags',
+    key: 'sealCtdTags',
+    path: 'seal-ctd-tags',
+    latestEntry: null,
+    dateFormat: {
+      localFormat: null,
+      stateFormat: null,
+    },
+    children: [
+      {
+        title: 'Timeseries',
+        key: 'sealCtdTags-timeseries',
+        path: 'timeseries',
+        dateFormat: {
+          localFormat: DateFormat.YEAR_ONLY,
+          stateFormat: DateFormat.YEAR_ONLY,
+        },
+      },
+      {
+        title: 'TS',
+        key: 'sealCtdTags-ts',
+        path: 'ts',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.YEAR_ONLY,
+          stateFormat: DateFormat.YEAR_ONLY,
+        },
+      },
+      {
+        title: 'Temperature',
+        key: 'sealCtdTags-temperature',
+        path: 'temperature',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.YEAR_ONLY,
+          stateFormat: DateFormat.YEAR_ONLY,
+        },
+      },
+      {
+        title: 'Salinity',
+        key: 'sealCtdTags-salinity',
+        path: 'salinity',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.YEAR_ONLY,
+          stateFormat: DateFormat.YEAR_ONLY,
+        },
+      },
+      {
+        title: '10 Days',
+        key: 'sealCtdTags-10days',
+        path: '10days',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.DAY,
+          stateFormat: DateFormat.DAY,
+        },
+      },
+    ],
+  },
+  /*
     The data below is only for rendering the button for navigation purposes.
     EAC Mooring Array data is only available in Brisbane region,
     so the image source url is built here - src/utils/data-image-builder-utils/dataImgBuilder.ts
