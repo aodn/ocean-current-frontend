@@ -7,10 +7,6 @@ export enum ArgoDepths {
 
 export const argoTagFilePaths: ArgoTagPath = {
   // TODO: implement after json files are available
-  // snapshotSst: {
-  //   state: null,
-  //   local: 'SnapshotSST',
-  // },
   // 'fourHourSst-sstFilled': {
   //   state: null,
   //   local: 'SST_4hr',
