@@ -11,6 +11,7 @@ import { imageBaseUrl } from '@/configs/image';
 import { Loading } from '@/components/Shared';
 import { parseSealCtdTagData } from '@/utils/seal-ctd-utils/sealStdTags';
 import { DateFormat } from '@/types/date';
+import { ProductPath } from '@/types/router';
 
 type DataImageWithSealCtdGraphsProps = {
   mainProduct: Product | null;
@@ -124,7 +125,7 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
       date: date.format(DateFormat.DAY),
     }).toString();
 
-    navigate(`/product/seal-ctd-tags/timeseries?${query}`);
+    navigate(`/product/${ProductPath.SEAL_CTD_TAGS}/timeseries?${query}`);
   };
 
   const altText = productId === 'sealCtd-timeseriesSalinity' ? 'Salinity Timeseries' : 'Temperature Timeseries';

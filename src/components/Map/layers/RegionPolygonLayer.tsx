@@ -10,6 +10,7 @@ import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo-utils/geo';
 import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
 import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
 import { color } from '@/styles/colors';
+import { ProductPath } from '@/types/router';
 import { getPropertyFromMapFeatures } from '../utils/mapUtils';
 import useRegionPolygons from '../hooks/useRegionPolygons';
 
@@ -150,9 +151,10 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
       );
 
       if (regionName) {
-        const targetPath = `/product/${baseProductPath}`;
-
+        let targetPath = `/product/${baseProductPath}`;
         let queryObject = {};
+        const dateFromQuery = searchParams.date;
+
         if (baseProductPath.includes(mooredInstrumentArrayPath)) {
           queryObject = {
             date: currentMetersDate,
@@ -161,8 +163,10 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
             property: currentMetersProperty,
             deploymentPlot: null,
           };
+        } else if (baseProductPath.includes(ProductPath.SEAL_CTD_TAGS)) {
+          targetPath = `/product/${ProductPath.SEAL_CTD}/tracks`;
+          queryObject = { region: regionName, sealId: null };
         } else {
-          const dateFromQuery = searchParams.date;
           queryObject = dateFromQuery
             ? { region: regionName, point: null }
             : { region: regionName, date: defaultTargetDate, point: null };
