@@ -15,15 +15,6 @@ export const productTypeMapping = new Map<
   }
 >([
   [
-    'snapshot',
-    {
-      subProduct: [],
-      stateSegment: '',
-      localSegment: '',
-      dateFormat: DateFormat.HOUR,
-    },
-  ],
-  [
     'sixDaySst',
     {
       subProduct: ['SST', 'SST_ANOM', 'pctiles', 'MMA'],

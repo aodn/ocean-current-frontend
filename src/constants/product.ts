@@ -3,16 +3,6 @@ import { Product } from '@/types/product';
 
 export const OC_PRODUCTS: Product[] = [
   {
-    title: 'Snapshot SST',
-    key: 'snapshotSst',
-    path: 'snapshot-sst',
-    latestEntry: 'SST_entry',
-    dateFormat: {
-      localFormat: DateFormat.DAY,
-      stateFormat: DateFormat.DAY,
-    },
-  },
-  {
     title: 'Four hour SST',
     path: 'four-hour-sst',
     key: 'fourHourSst',

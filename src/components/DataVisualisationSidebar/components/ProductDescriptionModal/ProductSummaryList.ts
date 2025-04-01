@@ -5,7 +5,6 @@ import {
   MonthlyMeansModalData,
   OceanColourModalData,
   SixDaySstModalData,
-  SnapshotModalData,
   SurfaceWaveModalData,
   EACMooringArrayModalData,
   CurrentMetersModalData,
@@ -16,13 +15,6 @@ import {
 import { ProductInfo } from '../../types';
 
 export const productInfoList: ProductInfo[] = [
-  {
-    id: 'snapshotSst',
-    title: 'Snapshot Sst',
-    summary:
-      'Our legacy system displays SST images from NOAA, MODIS, and VIIRS. Snapshot SST shows detailed individual images without time-averaging, but they often have gaps due to clouds. We fill these gaps with the latest available ocean view to improve animation clarity.',
-    description: SnapshotModalData,
-  },
   {
     id: 'fourHourSst',
     title: 'Four hour SST',
