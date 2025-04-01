@@ -153,7 +153,6 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
       if (regionName) {
         let targetPath = `/product/${baseProductPath}`;
         let queryObject = {};
-        const dateFromQuery = searchParams.date;
 
         if (baseProductPath.includes(mooredInstrumentArrayPath)) {
           queryObject = {
@@ -167,6 +166,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
           targetPath = `/product/${ProductPath.SEAL_CTD}/tracks`;
           queryObject = { region: regionName, sealId: null };
         } else {
+          const dateFromQuery = searchParams.date;
           queryObject = dateFromQuery
             ? { region: regionName, point: null }
             : { region: regionName, date: defaultTargetDate, point: null };

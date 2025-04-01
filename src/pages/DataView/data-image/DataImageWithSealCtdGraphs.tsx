@@ -53,9 +53,8 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
 
   // generate and validate image urls
   useEffect(() => {
-    setHasImgLoaded(false);
-
     const getValidImageUrls = async () => {
+      setHasImgLoaded(false);
       setIsLoading(true);
       const allImgUrls = getAllImageUrls(region, date, productId);
       const validImgUrls = await validateSealCtdImgUrl(allImgUrls);
@@ -76,6 +75,7 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
     if (imgUrls.length < 1) return;
 
     const fetchData = async () => {
+      setHasImgLoaded(false);
       setIsLoading(true);
       const tempArr = await Promise.all(
         imgUrls.map(async (url) => {

@@ -687,7 +687,7 @@ describe('buildSealCtdGraphImageUrl', () => {
   });
 });
 
-describe('buildSealCtdTagDataImageUrl', () => {
+describe('buildSealCtdTagsDataImageUrl', () => {
   it('should return the correct url for SealCTD 10 days data image', () => {
     // Arrange
     const sealTagId = 'Q9902023';
