@@ -251,7 +251,7 @@ describe('useDateRange', () => {
     expect(result2.current.disableVideoCreation()).toBe(true);
 
     vi.mocked(useProductConvert).mockReturnValue({
-      mainProduct: { key: 'snapshotSst', title: 'Snapshot SST', path: '/snapshot-sst' } as Product,
+      mainProduct: { key: 'currentMeters', title: 'Current Meters', path: '/current-meters' } as Product,
       subProduct: null,
       subProducts: [],
     });
@@ -285,7 +285,7 @@ describe('useDateRange', () => {
     const { result: resultFourHour } = renderHook(() => useDateRange());
 
     vi.mocked(useProductConvert).mockReturnValue({
-      mainProduct: { key: 'snapshotSst', title: 'Snapshot SST', path: '/snapshot-sst' } as Product,
+      mainProduct: { key: 'EACMooringArray', title: 'EAC Mooring Array', path: '/eac-mooring-array' } as Product,
       subProduct: null,
       subProducts: [],
     });

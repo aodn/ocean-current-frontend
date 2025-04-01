@@ -5,7 +5,7 @@ import { parseArgoTagDataFromText } from '@/utils/argo-utils/argoTag';
 import useDataFetch from './useDataFetch';
 
 const useImageArgoTags = (date: Dayjs, tagPath: string, regionCode: string) => {
-  // SnapshotCHL is a special case on the server side
+  // SnapshotCHL is a special case on the server side (OceanColour)
   // EAC Mooring Array has data from only one region - Brisbane
   const regionPath = (): string => {
     switch (tagPath) {

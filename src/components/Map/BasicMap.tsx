@@ -13,7 +13,6 @@ import { MouseCursorLocationPanel } from './panels';
 import { BasicMapProps } from './types/map.types';
 
 const productsWithArgoData = [
-  'snapshotSst',
   'fourHourSst',
   'sixDaySst',
   'oceanColour',

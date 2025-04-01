@@ -38,6 +38,6 @@ describe('Navbar component', () => {
     fireEvent.mouseEnter(menuItem[0]);
 
     // Assert
-    expect(await findByText('Snapshot SST')).toBeInTheDocument();
+    expect(await findByText('Four-hour SST')).toBeInTheDocument();
   });
 });

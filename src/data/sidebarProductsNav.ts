@@ -1,5 +1,3 @@
-import SSTIcon from '@/assets/icons/products/grey-icons/sst-icon-grey.svg';
-import SSTWhiteIcon from '@/assets/icons/products/white-icons/sst-icon-white.svg';
 import OceanColourIcon from '@/assets/icons/products/grey-icons/ocean-colour-icon-grey.svg';
 import OceanColourWhiteIcon from '@/assets/icons/products/white-icons/ocean-colour-icon-white.svg';
 import AdjustedSeaLevelAnomalyIcon from '@/assets/icons/products/grey-icons/adjusted-sea-level-anomaly-icon-grey.svg';
@@ -20,6 +18,8 @@ import CurrentMetersIcon from '@/assets/icons/products/grey-icons/current-meters
 import CurrentMetersWhiteIcon from '@/assets/icons/products/white-icons/current-meters-icon-white.svg';
 import SealCTDIcon from '@/assets/icons/products/grey-icons/seal-ctd-icon-grey.svg';
 import SealCTDWhiteIcon from '@/assets/icons/products/white-icons/seal-ctd-icon-white.svg';
+import ClimatologyIcon from '@/assets/icons/products/grey-icons/climatology-icon-grey.svg';
+import ClimatologyWhiteIcon from '@/assets/icons/products/white-icons/climatology-icon-white.svg';
 import EACMooringArrayIcon from '@/assets/icons/products/grey-icons/eac-mooring-array-icon-grey.svg';
 import EACMooringArrayWhiteIcon from '@/assets/icons/products/white-icons/eac-mooring-array-icon-white.svg';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
@@ -65,8 +65,8 @@ export const sidebarProductsNav: DropdownElement<RootProductID>[] = [
   {
     id: 'climatology',
     label: 'Climatology SST',
-    icon: SSTIcon,
-    selectedIcon: SSTWhiteIcon,
+    icon: ClimatologyIcon,
+    selectedIcon: ClimatologyWhiteIcon,
   },
   {
     id: 'argo',

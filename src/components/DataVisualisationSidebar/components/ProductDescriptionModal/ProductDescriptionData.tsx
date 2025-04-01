@@ -22,21 +22,6 @@ const OceanColourModalData = () => {
   );
 };
 
-const SnapshotModalData = () => {
-  return (
-    <div className="p-4 text-gray-800">
-      <p className="mb-4">
-        This is our legacy system for displaying the long archive of SST images from the NOAA Polar-Orbiting
-        Environmental Satellites (and MODIS and VIIRS recently). Snapshot SST, as the name suggests, shows individual
-        SST images without any time-averaging. Where the sky is clear, these images provide great detail. Unfortunately,
-        individual SST images almost always have some gaps due to cloud. For this product, we fill those gaps using the
-        last-available view of the ocean, no matter how old that is. The gap filling helps when viewing the animations
-        as the eye is drawn to the movement of the water in cloud-free areas and not the cloud gaps.
-      </p>
-    </div>
-  );
-};
-
 const SixDaySstModalData = () => {
   return (
     <div className="p-4 text-gray-800">
@@ -2084,7 +2069,6 @@ const SurfaceWaveModalData = () => {
 
 export {
   OceanColourModalData,
-  SnapshotModalData,
   SixDaySstModalData,
   AdjustedSeaLevelAnomalyModalData,
   FourHourSstModalData,

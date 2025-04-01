@@ -15,12 +15,12 @@ const productsWithNoImage = [
 const productsWithImage = [
   'argo',
   'adjustedSeaLevelAnomaly',
+  'fourHourSst-sst',
   'fourHourSst-sstFilled',
   'surfaceWaves',
   'adjustedSeaLevelAnomaly-sla',
   'oceanColour-chlA',
   'sixDaySst-sst',
-  'snapshotSst',
 ];
 const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
 
