@@ -1,5 +1,4 @@
 import ArgoGreyIcon from '@/assets/icons/products/grey-icons/argo-icon-grey.svg';
-import SSTGreyIcon from '@/assets/icons/products/grey-icons/sst-icon-grey.svg';
 import OceanColourGreyIcon from '@/assets/icons/products/grey-icons/ocean-colour-icon-grey.svg';
 import AdjustedSeaLevelAnomalyGreyIcon from '@/assets/icons/products/grey-icons/adjusted-sea-level-anomaly-icon-grey.svg';
 import MonthlyMeansGreyIcon from '@/assets/icons/products/grey-icons/monthly-means-icon-grey.svg';
@@ -13,7 +12,6 @@ import TidalCurrentsGreyIcon from '@/assets/icons/products/grey-icons/tidal-curr
 import ClimatologyGreyIcon from '@/assets/icons/products/grey-icons/climatology-icon-grey.svg';
 import EACMooringArrayGreyIcon from '@/assets/icons/products/grey-icons/eac-mooring-array-icon-grey.svg';
 import ArgoBlueIcon from '@/assets/icons/products/blue-icons/argo-icon-blue.svg';
-import SSTBlueIcon from '@/assets/icons/products/blue-icons/sst-icon-blue.svg';
 import OceanColourBlueIcon from '@/assets/icons/products/blue-icons/ocean-colour-icon-blue.svg';
 import AdjustedSeaLevelAnomalyBlueIcon from '@/assets/icons/products/blue-icons/adjusted-sea-level-anomaly-icon-blue.svg';
 import MonthlyMeansBlueIcon from '@/assets/icons/products/blue-icons/monthly-means-icon-blue.svg';
@@ -32,14 +30,6 @@ export const linksData: LinkItem[] = [
   {
     title: 'Maps',
     links: [
-      {
-        id: 'snapshotSst',
-        greyIcon: SSTGreyIcon,
-        blueIcon: SSTBlueIcon,
-        title: 'Snapshot SST',
-        description: 'Sea Surface Temperature',
-        url: '/map/snapshot-sst',
-      },
       {
         id: 'four-hour-sst',
         greyIcon: FourHourSSTGreyIcon,
