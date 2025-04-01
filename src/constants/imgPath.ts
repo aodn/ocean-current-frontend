@@ -114,6 +114,15 @@ export const productTypeMapping = new Map<
     },
   ],
   [
+    'sealCtdTags',
+    {
+      subProduct: ['timeseries', 'ts', 'temperature', 'salinity', '10days'],
+      stateSegment: 'SATTAGS',
+      localSegment: '',
+      dateFormat: DateFormat.YEAR_ONLY,
+    },
+  ],
+  [
     'EACMooringArray',
     {
       subProduct: [],

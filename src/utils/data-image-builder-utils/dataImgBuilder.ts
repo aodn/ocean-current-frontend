@@ -256,7 +256,8 @@ const buildSealCtdGraphImageUrl = (region: string, date: Dayjs, subProduct: stri
   return `/AATAMS/${formattedRegion}/timeseries/S_${date.format(DateFormat.YEAR_ONLY)}_p${page}.gif`;
 };
 
-const buildSealCtdTagDataImageUrl = (sealTagId: string, date: Dayjs, type: string): string => {
+const buildSealCtdTagsDataImageUrl = (sealTagId: string, date: Dayjs, productId: ProductId): string => {
+  const type = productId.split('-')[1];
   if (type === '10days') {
     return `${imageBaseUrl}/AATAMS/SATTAGS/${sealTagId}/10days/${date.format(DateFormat.DAY)}.gif`;
   }
@@ -292,5 +293,5 @@ export {
   buildTidalCurrentsDataImageUrl,
   buildSealCtdMapImageUrl,
   buildSealCtdGraphImageUrl,
-  buildSealCtdTagDataImageUrl,
+  buildSealCtdTagsDataImageUrl,
 };

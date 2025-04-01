@@ -21,7 +21,7 @@ import {
   buildTidalCurrentsDataImageUrl,
   buildSealCtdMapImageUrl,
   buildSealCtdGraphImageUrl,
-  buildSealCtdTagDataImageUrl,
+  buildSealCtdTagsDataImageUrl,
 } from './dataImgBuilder';
 
 describe('buildProductImageUrl', () => {
@@ -692,10 +692,10 @@ describe('buildSealCtdTagDataImageUrl', () => {
     // Arrange
     const sealTagId = 'Q9902023';
     const date = dayjs('202502280000');
-    const type = '10days';
+    const productId = 'sealCtdTags-10days';
 
     // Act
-    const imageUrl = buildSealCtdTagDataImageUrl(sealTagId, date, type);
+    const imageUrl = buildSealCtdTagsDataImageUrl(sealTagId, date, productId);
 
     // Assert
     expect(imageUrl).toBe(`${imageBaseUrl}/AATAMS/SATTAGS/Q9902023/10days/20250228.gif`);
@@ -705,10 +705,10 @@ describe('buildSealCtdTagDataImageUrl', () => {
   it('should return the correct url for SealCTD TS data image', () => {
     const sealTagId = 'Q9902023';
     const date = dayjs('20250228');
-    const type = 'ts';
+    const productId = 'sealCtdTags-ts';
 
     // Act
-    const imageUrl = buildSealCtdTagDataImageUrl(sealTagId, date, type);
+    const imageUrl = buildSealCtdTagsDataImageUrl(sealTagId, date, productId);
 
     // Assert
     expect(imageUrl).toBe(`${imageBaseUrl}/AATAMS/SATTAGS/Q9902023/TS.gif`);
