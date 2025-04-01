@@ -15,6 +15,7 @@ const productsWithNoImage = [
 const productsWithImage = [
   'argo',
   'adjustedSeaLevelAnomaly',
+  'fourHourSst-sst',
   'fourHourSst-sstFilled',
   'surfaceWaves',
   'adjustedSeaLevelAnomaly-sla',
