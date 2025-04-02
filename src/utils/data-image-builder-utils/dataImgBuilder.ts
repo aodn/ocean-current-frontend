@@ -228,8 +228,14 @@ const buildTidalCurrentsDataImageUrl = (point: string, date: Dayjs): string => {
   return `${imageBaseUrl}/tides/monthplots/${point}_${formattedDate}.gif`;
 };
 
+const buildSealCtdMapImageUrl = (region: string, date: Dayjs): string => {
+  const formattedRegion = region === 'Antarctica' ? 'POLAR' : region;
+
+  return `${imageBaseUrl}/AATAMS/${formattedRegion}/tracks/${date.format(DateFormat.DAY)}.gif`;
+};
+
 // the imageBaseUrl is not included below as we need to validate the image urls and will need to be added in once API is implemented
-const buildSealCtdImageUrl = (region: string, date: Dayjs, subProduct: string, page: number = 0): string => {
+const buildSealCtdGraphImageUrl = (region: string, date: Dayjs, subProduct: string, page: number = 0): string => {
   const formattedRegion = region === 'Antarctica' ? 'POLAR' : region;
 
   if (subProduct === 'sealCtd-timeseriesTemperature') {
@@ -241,16 +247,35 @@ const buildSealCtdImageUrl = (region: string, date: Dayjs, subProduct: string, p
     return `/AATAMS/${formattedRegion}/timeseries/T_${date.format(DateFormat.YEAR_ONLY)}_p${page}.gif`;
   }
 
-  if (subProduct === 'sealCtd-timeseriesSalinity') {
-    if (region === 'GAB') {
-      const currYear = date.format(DateFormat.YEAR_ONLY);
-      const prevYear = date.subtract(1, 'year').format(DateFormat.YEAR_ONLY);
-      return `/AATAMS/${formattedRegion}/timeseries/S_${prevYear}_${currYear}_p${page}.gif`;
-    }
-    return `/AATAMS/${formattedRegion}/timeseries/S_${date.format(DateFormat.YEAR_ONLY)}_p${page}.gif`;
+  // subProduct === 'sealCtd-timeseriesSalinity'
+  if (region === 'GAB') {
+    const currYear = date.format(DateFormat.YEAR_ONLY);
+    const prevYear = date.subtract(1, 'year').format(DateFormat.YEAR_ONLY);
+    return `/AATAMS/${formattedRegion}/timeseries/S_${prevYear}_${currYear}_p${page}.gif`;
+  }
+  return `/AATAMS/${formattedRegion}/timeseries/S_${date.format(DateFormat.YEAR_ONLY)}_p${page}.gif`;
+};
+
+const buildSealCtdTagsDataImageUrl = (sealTagId: string, date: Dayjs, productId: ProductId): string => {
+  const type = productId.split('-')[1];
+  if (type === '10days') {
+    return `${imageBaseUrl}/AATAMS/SATTAGS/${sealTagId}/10days/${date.format(DateFormat.DAY)}.gif`;
   }
 
-  return `${imageBaseUrl}/AATAMS/${formattedRegion}/tracks/${date.format(DateFormat.DAY)}.gif`;
+  const filename = () => {
+    switch (type) {
+      case 'temperature':
+        return 'T';
+      case 'salinity':
+        return 'S';
+      case 'ts':
+        return 'TS';
+      default:
+        return 'timeseries';
+    }
+  };
+
+  return `${imageBaseUrl}/AATAMS/SATTAGS/${sealTagId}/${filename()}.gif`;
 };
 
 export {
@@ -266,5 +291,7 @@ export {
   buildTidalCurrentsMapImageUrl,
   buildTidalCurrentsTagFileUrl,
   buildTidalCurrentsDataImageUrl,
-  buildSealCtdImageUrl,
+  buildSealCtdMapImageUrl,
+  buildSealCtdGraphImageUrl,
+  buildSealCtdTagsDataImageUrl,
 };

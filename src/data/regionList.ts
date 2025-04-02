@@ -638,4 +638,24 @@ export const productRegionMap: ProductRegionMap = {
     state: ['Antarctica'],
     local: ['GAB-Seal', 'NSW'],
   },
+  'sealCtdTags-timeseries': {
+    state: ['Antarctica'],
+    local: ['GAB-Seal', 'NSW'],
+  },
+  'sealCtdTags-ts': {
+    state: ['Antarctica'],
+    local: ['GAB-Seal', 'NSW'],
+  },
+  'sealCtdTags-temperature': {
+    state: ['Antarctica'],
+    local: ['GAB-Seal', 'NSW'],
+  },
+  'sealCtdTags-salinity': {
+    state: ['Antarctica'],
+    local: ['GAB-Seal', 'NSW'],
+  },
+  'sealCtdTags-10days': {
+    state: ['Antarctica'],
+    local: ['GAB-Seal', 'NSW'],
+  },
 };

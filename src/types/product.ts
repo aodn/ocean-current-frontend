@@ -11,7 +11,8 @@ export type ProductGroupID =
   | 'climatology'
   | 'tidalCurrents'
   | 'currentMeters'
-  | 'sealCtd';
+  | 'sealCtd'
+  | 'sealCtdTags';
 
 // Child products (not at root level)
 export type ChildProductID =
@@ -51,7 +52,13 @@ export type ChildProductID =
   // Seal CTD children
   | 'sealCtd-sealTracks'
   | 'sealCtd-timeseriesTemperature'
-  | 'sealCtd-timeseriesSalinity';
+  | 'sealCtd-timeseriesSalinity'
+  // Seal CTD Tags children
+  | 'sealCtdTags-timeseries'
+  | 'sealCtdTags-ts'
+  | 'sealCtdTags-temperature'
+  | 'sealCtdTags-salinity'
+  | 'sealCtdTags-10days';
 
 // Combined types
 export type RootProductID = StandaloneProductID | ProductGroupID;

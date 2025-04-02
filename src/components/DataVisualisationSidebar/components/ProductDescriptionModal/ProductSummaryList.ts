@@ -91,6 +91,13 @@ export const productInfoList: ProductInfo[] = [
     description: SealCtdModalData,
   },
   {
+    id: 'sealCtdTags',
+    title: 'SealCTDs: Temperature and Salinity Profiles from Ocean Mammals',
+    summary:
+      'The IMOS Animal Tracking Facility has deployed over 250 SealCTDs (miniaturized CTD sensors with an ARGOS antenna) on Elephant Seals, Sea Lions, Fur Seals and Weddell Seals since 2009.',
+    description: SealCtdModalData,
+  },
+  {
     id: 'EACMooringArray',
     title: 'EAC Mooring Array',
     summary:
