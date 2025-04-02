@@ -14,6 +14,7 @@ const useProductCheck = () => {
   const isEACMooringArray = mainProductId === 'EACMooringArray';
   const isTidalCurrents = mainProductId === 'tidalCurrents';
   const isSealCtd = mainProductId === 'sealCtd';
+  const isSealCtdTags = mainProductId === 'sealCtdTags';
 
   return {
     isRegionRequired,
@@ -23,6 +24,7 @@ const useProductCheck = () => {
     isEACMooringArray,
     isTidalCurrents,
     isSealCtd,
+    isSealCtdTags,
   };
 };
 

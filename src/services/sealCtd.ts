@@ -1,4 +1,6 @@
 import { apiConfig } from '@/configs/api';
+import { ContentType } from '@/constants/request';
+import { proxyClient } from './httpClient';
 
 // this is only temporary and can be removed when the API is implemented
 // at the moment, there is no way of checking if the urls are valid other than attempt fetching
@@ -21,4 +23,24 @@ const validateSealCtdImgUrl = async (urls: string[]): Promise<string[]> => {
 
   return results.filter((url) => url);
 };
-export { validateSealCtdImgUrl };
+
+const getSealCtdGraphTags = async (imageUrl: string) => {
+  const tagUrl = imageUrl.replace('timeseries', 'timeseries_tag').replace('gif', 'txt');
+
+  try {
+    const response = await proxyClient.get<string>(tagUrl, {
+      headers: {
+        'Content-Type': ContentType.Text,
+      },
+    });
+
+    if (response.data && response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+    throw new Error('Unable to fetch SealCTD graph image TAG file.');
+  }
+};
+
+export { validateSealCtdImgUrl, getSealCtdGraphTags };

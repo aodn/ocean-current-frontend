@@ -11,7 +11,8 @@ import {
   buildEACMooringArrayImageUrl,
   buildTidalCurrentsMapImageUrl,
   buildTidalCurrentsDataImageUrl,
-  buildSealCtdImageUrl,
+  buildSealCtdMapImageUrl,
+  buildSealCtdTagsDataImageUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
@@ -50,8 +51,7 @@ const getRegionPath = (region: Region | undefined) => {
 
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const { isArgo, isCurrentMeters, isEACMooringArray, isTidalCurrents, isSealCtd } = useProductCheck();
+  const { isArgo, isCurrentMeters, isEACMooringArray, isTidalCurrents, isSealCtd, isSealCtdTags } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
   const useProductId = useProductStore((state) => state.productParams.productId);
@@ -134,6 +134,9 @@ const ProductContent: React.FC = () => {
   const pointUrlParam = searchParams.get('point');
   const hasSelectedPointFromUrl = pointUrlParam && pointUrlParam !== '';
 
+  const selectedSealCtdTag = searchParams.get('sealId');
+  const hasSelectedSealCtdTagFromUrl = selectedSealCtdTag && selectedSealCtdTag !== '';
+
   const chooseImg = (): string | undefined => {
     try {
       switch (true) {
@@ -154,7 +157,9 @@ const ProductContent: React.FC = () => {
         case isTidalCurrents && hasSelectedPointFromUrl:
           return buildTidalCurrentsDataImageUrl(pointUrlParam, useDate);
         case isSealCtd:
-          return buildSealCtdImageUrl(useRegionTitle ?? 'Antarctica', useDate, subProduct?.key ?? 'sealCtd-sealTracks');
+          return buildSealCtdMapImageUrl(useRegionTitle ?? 'Antarctica', useDate);
+        case isSealCtdTags && hasSelectedSealCtdTagFromUrl:
+          return buildSealCtdTagsDataImageUrl(selectedSealCtdTag, useDate, useProductId);
         default:
           return buildProductImageUrl(
             mainProduct.key,
@@ -189,15 +194,10 @@ const ProductContent: React.FC = () => {
     setImgLoadError('Media not available');
   };
 
-  const handlePopup = () => {
-    setIsPopupOpen(!isPopupOpen);
-  };
-
   if (showVideo) {
     return (
       <div className="h-full bg-white">
         <video
-          onClick={handlePopup}
           className="max-h-[80vh] w-full select-none object-contain"
           src={buildMediaUrl()}
           controls
@@ -274,12 +274,10 @@ const ProductContent: React.FC = () => {
   return (
     <div className="h-full bg-white">
       <img
-        onClick={handlePopup}
         className="max-h-[80vh] w-full select-none object-contain"
         src={chooseImg()}
         alt="product"
         onError={handleError}
-        aria-hidden
       />
     </div>
   );

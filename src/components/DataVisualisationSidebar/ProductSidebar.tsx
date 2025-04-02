@@ -15,6 +15,7 @@ import {
 } from '@/constants/currentMeters';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { ProductID } from '@/types/product';
+import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import Legend from './components/Legend';
 import MiniMap from './components/MiniMap';
 import ProductDropdown from './components/ProductDropdown';
@@ -30,9 +31,8 @@ const ProductSideBar: React.FC = () => {
   const { mainProduct, subProduct, subProducts } = useProductConvert();
   const { updateQueryParamsAndNavigate } = useQueryParams();
   const useDate = useDateStore((state) => state.date);
-  const isArgo = mainProduct?.key === 'argo';
-  const isCurrentMeters = mainProduct?.key === 'currentMeters';
-  const shouldRenderMiniMap = useProductAvailableInRegion() || isArgo || isCurrentMeters;
+  const { isArgo, isCurrentMeters, isSealCtdTags } = useProductCheck();
+  const shouldRenderMiniMap = useProductAvailableInRegion() || isArgo || isCurrentMeters || isSealCtdTags;
   const shouldShowLegend = !isCurrentMeters;
 
   if (!mainProduct) {

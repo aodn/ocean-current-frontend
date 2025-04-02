@@ -17,6 +17,6 @@ export type MapImageAreas = {
   href: string;
   alt: string;
   name: string;
-  type: 'text' | 'region' | 'plot' | 'point';
+  type: 'text' | 'region' | 'plot' | 'point' | 'graph';
   code?: CurrentMetersRegion;
 };

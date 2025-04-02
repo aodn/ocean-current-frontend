@@ -58,6 +58,10 @@ const routes: RouteObject[] = [
             element: <Navigate to="tracks" replace />,
           },
           {
+            path: 'seal-ctd-tags',
+            element: <Navigate to="timeseries" replace />,
+          },
+          {
             path: ':product/:subProduct',
             element: <DataView />,
           },

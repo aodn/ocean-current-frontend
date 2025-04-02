@@ -41,6 +41,7 @@ const DatePagination: React.FC<DatePaginationProps> = ({
 
   return (
     <DatePicker
+      productId={productId}
       selectedDate={currentDate.toDate()}
       goToNext={goToNext}
       goToPrevious={goToPrevious}
