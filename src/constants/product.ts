@@ -168,7 +168,7 @@ export const OC_PRODUCTS: Product[] = [
         path: 'sst',
         imgPath: null,
         dateFormat: {
-          localFormat: DateFormat.DAY,
+          localFormat: DateFormat.HOUR,
           stateFormat: DateFormat.DAY,
         },
       },
