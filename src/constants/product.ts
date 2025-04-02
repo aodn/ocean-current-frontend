@@ -172,6 +172,16 @@ export const OC_PRODUCTS: Product[] = [
           stateFormat: DateFormat.DAY,
         },
       },
+      {
+        title: 'Non-Tidal SLA',
+        key: 'adjustedSeaLevelAnomaly-nonTidalSla',
+        path: 'non-tidal-sla',
+        imgPath: 'NTSLA',
+        dateFormat: {
+          localFormat: DateFormat.HOUR,
+          stateFormat: DateFormat.HOUR,
+        },
+      },
     ],
   },
   {

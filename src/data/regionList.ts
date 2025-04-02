@@ -521,6 +521,10 @@ export const productRegionMap: ProductRegionMap = {
       'XmasI',
     ],
   },
+  'adjustedSeaLevelAnomaly-nonTidalSla': {
+    state: ['Au'],
+    local: [],
+  },
   'climatology-sst': {
     state: ['Au', 'GAB', 'NE', 'NW', 'NZ', 'SE', 'SO', 'SW'],
     local: [
