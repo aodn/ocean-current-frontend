@@ -52,10 +52,20 @@ const getProductSegment = (
   return segment ? `${segment}` : '';
 };
 
-const formatDate = (productId: ProductId, subProductType: SubProductType, date: string): string => {
+const formatDate = (
+  productId: ProductId,
+  subProductType: SubProductType,
+  date: string,
+  regionScope: TargetPathRegionScope,
+): string => {
   if (productId === 'monthlyMeans' && !subProductType) {
     return dayjs(date).format(DateFormat.DAY);
   }
+
+  if (productId === 'adjustedSeaLevelAnomaly' && regionScope === TargetPathRegionScope.Local) {
+    return dayjs(date).format(DateFormat.HOUR);
+  }
+
   const productData = productTypeMapping.get(productId)!;
   return dayjs(date).format(productData.dateFormat);
 };
@@ -71,7 +81,7 @@ const buildProductImageUrl = (
   validateProductAndSubProduct(productId, subProductType, regionScope);
 
   const productSegment = getProductSegment(productId, subProductType, regionScope);
-  const formattedDate = formatDate(productId, subProductType, date);
+  const formattedDate = formatDate(productId, subProductType, date, regionScope);
   const baseUrl = getBaseUrlByProductId(productId);
 
   const productUrl = {
