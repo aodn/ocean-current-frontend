@@ -62,7 +62,10 @@ const formatDate = (
     return dayjs(date).format(DateFormat.DAY);
   }
 
-  if (productId === 'adjustedSeaLevelAnomaly' && regionScope === TargetPathRegionScope.Local) {
+  if (
+    productId === 'adjustedSeaLevelAnomaly' &&
+    (regionScope === TargetPathRegionScope.Local || subProductType === 'NTSLA')
+  ) {
     return dayjs(date).format(DateFormat.HOUR);
   }
 
