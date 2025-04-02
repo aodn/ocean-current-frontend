@@ -74,7 +74,7 @@ const ProductContent: React.FC = () => {
   const targetPathRegion = getTargetRegionScopePath(regionScope);
   const regionPath = getRegionPath(region);
 
-  const dateString = useDate.format('YYYYMMDD');
+  const dateString = useDate.format('YYYYMMDDHH');
 
   const isImgHasArgoTags = checkProductHasArgoTags(useProductId);
 
