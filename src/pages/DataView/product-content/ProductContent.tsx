@@ -30,11 +30,11 @@ import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
 import { CurrentMetersSubproductsKey, CurrentMetersSubproductsKeyType } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 import { Region } from '@/types/map';
+import DataImageWithArgoAndSealCTDMap from '../data-image/DataImageWithArgoAndSealCTDMap';
 import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
 import DataImageWithCurrentMetersPlots from '../data-image/DataImageWithCurrentMetersPlots';
 import DataImageWithTidalCurrentsMap from '../data-image/DataImageWithTidalCurrentsMap';
 import DataImageWithSealCtdGraphs from '../data-image/DataImageWithSealCtdGraphs';
-import DataImageWithArgoAndSealCTDMap from '../data-image/DataImageWithArgoAndSealCTDMap';
 
 const getRegionPath = (region: Region | undefined) => {
   if (!region) return 'Au';
