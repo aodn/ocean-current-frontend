@@ -490,7 +490,7 @@ export const productRegionMap: ProductRegionMap = {
     local: [],
   },
   'adjustedSeaLevelAnomaly-sst': {
-    state: ['ht', 'GAB', 'NE', 'NW', 'SE', 'SO', 'SW'],
+    state: ['Au', 'GAB', 'NE', 'NW', 'SE', 'SO', 'SW'],
     local: [
       'Adelaide',
       'AlbEsp',
