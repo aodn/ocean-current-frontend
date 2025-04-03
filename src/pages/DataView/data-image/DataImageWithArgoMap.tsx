@@ -10,7 +10,7 @@ import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { RegionScope } from '@/constants/region';
 import { useImageArgoTags } from '@/services/hooks';
 
-type DataImageWithArgoAndSealCTDMapProps = {
+type DataImageWithArgoMapProps = {
   src: string;
   productId: string;
   regionCode: string;
@@ -18,7 +18,7 @@ type DataImageWithArgoAndSealCTDMapProps = {
   date: Dayjs;
 };
 
-const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapProps> = ({
+const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   src,
   productId,
   regionCode,
@@ -103,7 +103,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
         src={src}
         alt={alt}
         useMap="#argo-tag-map"
-        className="max-h-[80vh] w-full select-none object-contain"
+        className="max-h-[80vh] select-none object-contain"
         onError={() => {
           setImgLoadError('Image not available');
         }}
@@ -125,4 +125,4 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
   );
 };
 
-export default DataImageWithArgoAndSealCTDMap;
+export default DataImageWithArgoMap;

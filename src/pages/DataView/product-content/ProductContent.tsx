@@ -30,7 +30,7 @@ import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
 import { CurrentMetersSubproductsKey, CurrentMetersSubproductsKeyType } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 import { Region } from '@/types/map';
-import DataImageWithArgoAndSealCTDMap from '../data-image/DataImageWithArgoAndSealCTDMap';
+import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
 import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
 import DataImageWithCurrentMetersPlots from '../data-image/DataImageWithCurrentMetersPlots';
 import DataImageWithTidalCurrentsMap from '../data-image/DataImageWithTidalCurrentsMap';
@@ -212,7 +212,7 @@ const ProductContent: React.FC = () => {
 
   if (shouldRenderDataImageWithArgoTags) {
     return (
-      <DataImageWithArgoAndSealCTDMap
+      <DataImageWithArgoMap
         src={chooseImg()!}
         date={useDate}
         productId={useProductId}
