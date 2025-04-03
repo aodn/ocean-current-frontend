@@ -9,7 +9,7 @@ import { buildSealCtdGraphImageUrl } from '@/utils/data-image-builder-utils/data
 import { getSealCtdGraphTags, validateSealCtdImgUrl } from '@/services/sealCtd';
 import { imageBaseUrl } from '@/configs/image';
 import { Loading } from '@/components/Shared';
-import { parseSealCtdTagData } from '@/utils/seal-ctd-utils/sealStdTags';
+import { parseSealCtdGraphTagData } from '@/utils/seal-ctd-utils/sealStdTags';
 import { DateFormat } from '@/types/date';
 import { ProductPath } from '@/types/router';
 
@@ -82,7 +82,7 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
           const imgTags = await getSealCtdGraphTags(url);
           return {
             url,
-            areas: imgTags && imgTags.length > 0 ? parseSealCtdTagData(imgTags) : [],
+            areas: imgTags && imgTags.length > 0 ? parseSealCtdGraphTagData(imgTags) : [],
           };
         }),
       );

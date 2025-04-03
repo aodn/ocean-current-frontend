@@ -4,7 +4,7 @@ import { MapImageAreas } from '@/types/dataImage';
 const offY = [101, 181, 261, 341, 421, 501, 581, 661, 741, 821, 901];
 const normalY = [51, 136, 221, 306, 391, 476, 561, 646, 731, 816, 901];
 
-const parseSealCtdTagData = (input: string) => {
+const parseSealCtdGraphTagData = (input: string) => {
   const lines = input.trim().split('\n');
   const result: MapImageAreas[] = [];
   const secondYCoords = lines[1] && lines[1].trim().split(/\s+/)[2]; // this will the determinant if the coords are off or not
@@ -29,4 +29,4 @@ const parseSealCtdTagData = (input: string) => {
   return result;
 };
 
-export { parseSealCtdTagData };
+export { parseSealCtdGraphTagData };
