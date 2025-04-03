@@ -35,6 +35,7 @@ import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMet
 import DataImageWithCurrentMetersPlots from '../data-image/DataImageWithCurrentMetersPlots';
 import DataImageWithTidalCurrentsMap from '../data-image/DataImageWithTidalCurrentsMap';
 import DataImageWithSealCtdGraphs from '../data-image/DataImageWithSealCtdGraphs';
+import DataImageWithArgoAndSealCTDMap from '../data-image/DataImageWithArgoAndSealCTDMap';
 
 const getRegionPath = (region: Region | undefined) => {
   if (!region) return 'Au';
@@ -230,6 +231,17 @@ const ProductContent: React.FC = () => {
         date={useDate}
         productId={useProductId}
         region={useRegionTitle ?? 'Australia'}
+      />
+    );
+  }
+
+  if (subProduct?.key === 'sealCtd-sealTracks') {
+    return (
+      <DataImageWithArgoAndSealCTDMap
+        src={chooseImg()!}
+        date={useDate}
+        productId={useProductId}
+        regionTitle={useRegionTitle ?? 'Antarctica'}
       />
     );
   }
