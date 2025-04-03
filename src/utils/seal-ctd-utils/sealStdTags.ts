@@ -32,8 +32,8 @@ const parseSealCtdGraphTagData = (input: string) => {
 
 const parseArgoAndSealLocationsTagData = (input: string) => {
   const lines = input.trim().split('\n');
-  const argoResult: ArgoTagMapArea[] = [];
-  const sealResult: MapImageAreas[] = [];
+  const argoTags: ArgoTagMapArea[] = [];
+  const sealTags: MapImageAreas[] = [];
 
   for (let i = 0; i < lines.length; i++) {
     const parts = lines[i].trim().split(/\s+/);
@@ -41,15 +41,17 @@ const parseArgoAndSealLocationsTagData = (input: string) => {
     const y = parseFloat(parts[2]);
 
     if (parts[0] === 'Argo') {
-      argoResult.push({
+      argoTags.push({
         shape: 'circle',
         coords: [x, y, 10],
         href: '#',
         wmoId: parseFloat(parts[3]),
         cycle: parseFloat(parts[4]),
       });
-    } else {
-      sealResult.push({
+    }
+
+    if (parts[0] === 'SealCTD') {
+      sealTags.push({
         shape: 'circle',
         coords: [x, y, 10],
         href: '#',
@@ -60,7 +62,7 @@ const parseArgoAndSealLocationsTagData = (input: string) => {
     }
   }
 
-  return { argoResult, sealResult };
+  return { argoTags, sealTags };
 };
 
 export { parseSealCtdGraphTagData, parseArgoAndSealLocationsTagData };
