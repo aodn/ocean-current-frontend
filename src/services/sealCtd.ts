@@ -1,5 +1,7 @@
+import { Dayjs } from 'dayjs';
 import { apiConfig } from '@/configs/api';
 import { ContentType } from '@/constants/request';
+import { DateFormat } from '@/types/date';
 import { proxyClient } from './httpClient';
 
 // this is only temporary and can be removed when the API is implemented
@@ -43,4 +45,34 @@ const getSealCtdGraphTags = async (imageUrl: string) => {
   }
 };
 
-export { validateSealCtdImgUrl, getSealCtdGraphTags };
+const getSealCtdMapTags = async (regionCode: string, date: Dayjs) => {
+  const formattedRegion = () => {
+    switch (regionCode) {
+      case 'Antarctica':
+        return 'POLAR';
+      case 'GAB-Seal':
+        return 'GAB';
+      default:
+        return regionCode;
+    }
+  };
+  const formattedDate = date.format(DateFormat.DAY);
+  const tagUrl = `AATAMS/${formattedRegion()}/tag_html/tracks_${formattedDate}.txt`;
+
+  try {
+    const response = await proxyClient.get<string>(tagUrl, {
+      headers: {
+        'Content-Type': ContentType.Text,
+      },
+    });
+
+    if (response.data && response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+    throw new Error('Unable to fetch SealCTD map image TAG file.');
+  }
+};
+
+export { validateSealCtdImgUrl, getSealCtdGraphTags, getSealCtdMapTags };
