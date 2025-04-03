@@ -51,6 +51,10 @@ export const argoTagFilePaths: ArgoTagPath = {
     state: 'STATE_daily',
     local: null,
   },
+  'sealCtd-sealTracks': {
+    state: 'AATAMS',
+    local: 'AATAMS',
+  },
   EACMooringArray: {
     state: null,
     local: 'EAC_array_figures',
