@@ -1,0 +1,93 @@
+name: CD - Production
+run-name: Deploy frontend to Production environment
+
+permissions:
+  actions: read
+  contents: read
+
+on:
+  push:
+    tags:
+      - v*.*.*
+
+jobs:
+  build:
+    name: Build
+    environment: production
+    runs-on: ubuntu-latest
+    # if: >
+    #   github.event.workflow_run.conclusion == 'success' &&
+    #   github.event.workflow_run.event == 'push' &&
+    #   github.event.workflow_run.head_branch == 'main'
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - name: Install Yarn globally
+        run: npm install -g yarn
+
+      - name: Install dependencies
+        run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
+
+      - name: Build the front end
+        env:
+          VITE_MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_ACCESS_TOKEN }}
+          VITE_API_BACKEND_API: ${{ vars.VITE_API_BACKEND_URL }}
+          VITE_API_PROXY_URL: ${{ vars.VITE_API_PROXY_URL }}
+        run: yarn build
+
+      - name: Save build artifacts
+        # if: ${{ github.ref == 'refs/heads/main' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: yarn_build
+          path: ./dist
+          retention-days: 1
+
+  prod_deploy:
+    name: Deploy to Production Environment
+    needs: build
+    environment: production
+    runs-on: ubuntu-latest
+    env:
+      DIST: ./dist
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: yarn_build
+          path: ./dist
+
+      - name: Configure AWS credentials
+        id: aws_auth
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          audience: sts.amazonaws.com
+          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+
+      - name: Upload website artifacts to S3 bucket
+        run: |
+          aws s3 sync --delete ${{ env.DIST }} s3://${{ vars.BUCKET }} --region ${{ vars.AWS_REGION }}
+
+      - name: Invalidate cloudfront cache
+        run: |
+          aws cloudfront create-invalidation \
+          --distribution-id ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }} \
+          --paths "/*" \
+          --region ${{ vars.AWS_REGION }}
