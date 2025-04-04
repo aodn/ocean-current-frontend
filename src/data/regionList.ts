@@ -490,7 +490,7 @@ export const productRegionMap: ProductRegionMap = {
     local: [],
   },
   'adjustedSeaLevelAnomaly-sst': {
-    state: ['ht', 'GAB', 'NE', 'NW', 'SE', 'SO', 'SW'],
+    state: ['Au', 'GAB', 'NE', 'NW', 'SE', 'SO', 'SW'],
     local: [
       'Adelaide',
       'AlbEsp',
@@ -520,6 +520,10 @@ export const productRegionMap: ProductRegionMap = {
       'TimorP',
       'XmasI',
     ],
+  },
+  'adjustedSeaLevelAnomaly-nonTidalSla': {
+    state: ['Au'],
+    local: [],
   },
   'climatology-sst': {
     state: ['Au', 'GAB', 'NE', 'NW', 'NZ', 'SE', 'SO', 'SW'],

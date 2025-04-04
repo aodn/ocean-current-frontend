@@ -62,7 +62,10 @@ const formatDate = (
     return dayjs(date).format(DateFormat.DAY);
   }
 
-  if (productId === 'adjustedSeaLevelAnomaly' && regionScope === TargetPathRegionScope.Local) {
+  if (
+    productId === 'adjustedSeaLevelAnomaly' &&
+    (regionScope === TargetPathRegionScope.Local || subProductType === 'NTSLA')
+  ) {
     return dayjs(date).format(DateFormat.HOUR);
   }
 
@@ -99,7 +102,10 @@ const buildProductImageUrl = (
         : `${baseUrl}/${regionName}_chl/${dateTimeSegment}.gif`;
     },
     adjustedSeaLevelAnomaly: () => {
-      return isApi ? `/api/${regionName}/${formattedDate}.gif` : `${baseUrl}/${regionName}/${formattedDate}.gif`;
+      const updatedRegionName = regionName === 'Au' ? 'ht' : regionName;
+      return isApi
+        ? `/api/${updatedRegionName}/${formattedDate}.gif`
+        : `${baseUrl}/${updatedRegionName}/${formattedDate}.gif`;
     },
     default: () => {
       const subProductSegment = subProductType ? `/${subProductType}` : '';

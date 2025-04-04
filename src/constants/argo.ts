@@ -43,6 +43,10 @@ export const argoTagFilePaths: ArgoTagPath = {
     state: 'STATE_daily',
     local: null,
   },
+  'adjustedSeaLevelAnomaly-nonTidalSla': {
+    state: 'STATE_daily',
+    local: null,
+  },
   'oceanColour-chlA': {
     state: 'STATE_daily',
     local: 'SnapshotCHL',
