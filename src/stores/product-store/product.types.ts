@@ -4,7 +4,7 @@ import { ProductID } from '@/types/product';
 type ProductParamState = {
   productId: ProductID;
   regionScope: RegionScope;
-  regionTitle: string | null;
+  regionTitle: string;
 };
 
 export type State = {

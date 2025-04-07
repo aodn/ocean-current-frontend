@@ -1,9 +1,8 @@
-import { DateFormat } from '@/types/date';
+import { DateFormat, DateItem } from '@/types/date';
+import { ProductID } from '@/types/product';
 
 export interface DatePickerProps {
-  productId?: string;
-  minDate?: Date;
-  maxDate?: Date;
+  productId: ProductID;
   goToPrevious: () => void;
   goToNext: () => void;
   canGoNext?: boolean;
@@ -12,4 +11,5 @@ export interface DatePickerProps {
   dateFormat: DateFormat;
   onChange: (date: Date | null) => void;
   isMobile?: boolean;
+  dateList: DateItem[];
 }
