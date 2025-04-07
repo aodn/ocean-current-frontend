@@ -72,7 +72,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: yarn_build
-          path: ./dist
+          path: ${{ env.DIST }}
 
       - name: Configure AWS credentials
         id: aws_auth
