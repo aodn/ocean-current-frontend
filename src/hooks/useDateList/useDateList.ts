@@ -16,7 +16,7 @@ const processFilesToDateList = (files: ImageFile[]) => {
     .map((file) => ({
       date: extractDateFromFilename(file.name),
     }))
-    .filter(({ date }) => !isNaN(Number(date)));
+    .filter(({ date }) => /^\d+$/.test(date));
 };
 
 const useDateList = (productId: ProductID, regionScope: RegionScope, region: string) => {
