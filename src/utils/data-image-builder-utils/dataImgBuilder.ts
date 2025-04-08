@@ -59,7 +59,7 @@ const formatDate = (
   regionScope: TargetPathRegionScope,
 ): string => {
   if (productId === 'monthlyMeans' && !subProductType) {
-    return dayjs(date).format(DateFormat.DAY);
+    return dayjs(date).date(15).format(DateFormat.DAY);
   }
 
   if (
@@ -221,7 +221,7 @@ const buildSurfaceWavesImageUrl = (date: string, imgPath: string): string => {
 };
 
 const buildTidalCurrentsMapImageUrl = (region: string, subProduct: string, date: Dayjs): string => {
-  if (region === 'Australia') return `${imageBaseUrl}/tides/tidemapindex.gif`;
+  if (region === 'Aust') return `${imageBaseUrl}/tides/tidemapindex.gif`;
 
   const prodFolder = subProduct === 'tidalCurrents-spd' ? 'spd' : 'hv';
   const formattedDate = date.format(DateFormat.MINUTE);
@@ -245,31 +245,29 @@ const buildTidalCurrentsDataImageUrl = (point: string, date: Dayjs): string => {
 };
 
 const buildSealCtdMapImageUrl = (region: string, date: Dayjs): string => {
-  const formattedRegion = region === 'Antarctica' ? 'POLAR' : region;
+  const formattedRegion = region === 'GAB-Seal' ? 'GAB' : region;
 
   return `${imageBaseUrl}/AATAMS/${formattedRegion}/tracks/${date.format(DateFormat.DAY)}.gif`;
 };
 
 // the imageBaseUrl is not included below as we need to validate the image urls and will need to be added in once API is implemented
 const buildSealCtdGraphImageUrl = (region: string, date: Dayjs, subProduct: string, page: number = 0): string => {
-  const formattedRegion = region === 'Antarctica' ? 'POLAR' : region;
-
   if (subProduct === 'sealCtd-timeseriesTemperature') {
-    if (region === 'GAB') {
+    if (region === 'GAB-Seal') {
       const currYear = date.format(DateFormat.YEAR_ONLY);
       const prevYear = date.subtract(1, 'year').format(DateFormat.YEAR_ONLY);
-      return `/AATAMS/${formattedRegion}/timeseries/T_${prevYear}_${currYear}_p${page}.gif`;
+      return `/AATAMS/GAB/timeseries/T_${prevYear}_${currYear}_p${page}.gif`;
     }
-    return `/AATAMS/${formattedRegion}/timeseries/T_${date.format(DateFormat.YEAR_ONLY)}_p${page}.gif`;
+    return `/AATAMS/${region}/timeseries/T_${date.format(DateFormat.YEAR_ONLY)}_p${page}.gif`;
   }
 
   // subProduct === 'sealCtd-timeseriesSalinity'
-  if (region === 'GAB') {
+  if (region === 'GAB-Seal') {
     const currYear = date.format(DateFormat.YEAR_ONLY);
     const prevYear = date.subtract(1, 'year').format(DateFormat.YEAR_ONLY);
-    return `/AATAMS/${formattedRegion}/timeseries/S_${prevYear}_${currYear}_p${page}.gif`;
+    return `/AATAMS/GAB/timeseries/S_${prevYear}_${currYear}_p${page}.gif`;
   }
-  return `/AATAMS/${formattedRegion}/timeseries/S_${date.format(DateFormat.YEAR_ONLY)}_p${page}.gif`;
+  return `/AATAMS/${region}/timeseries/S_${date.format(DateFormat.YEAR_ONLY)}_p${page}.gif`;
 };
 
 const buildSealCtdTagsDataImageUrl = (sealTagId: string, date: Dayjs, productId: ProductId): string => {
