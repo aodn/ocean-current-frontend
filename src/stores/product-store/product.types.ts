@@ -5,7 +5,7 @@ type ProductParamState = {
   productId: ProductID;
   regionCode: string | null;
   regionScope: RegionScope;
-  regionTitle: string;
+  regionTitle: string | null;
 };
 
 export type State = {

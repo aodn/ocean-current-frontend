@@ -5,10 +5,10 @@ import { Actions, State } from './product.types';
 
 const initialState: State = {
   productParams: {
-    productId: 'sixDaySst-sst',
+    productId: 'fourHourSst-sst',
     regionCode: null,
     regionScope: RegionScope.State,
-    regionTitle: 'Au',
+    regionTitle: null,
   },
 };
 

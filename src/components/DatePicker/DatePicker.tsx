@@ -15,7 +15,6 @@ const DatePicker: React.FC<DatePickerProps> = ({
   dateFormat,
   onChange,
   isMobile,
-  dateList,
 }) => {
   const formattedSelectedDate = convertDateToDisplayFormattedText(dayjs(selectedDate), dateFormat);
 
@@ -64,7 +63,6 @@ const DatePicker: React.FC<DatePickerProps> = ({
         {!isSealCtdTagsAndYearFormat && (
           <div className="flex items-center justify-center text-center">
             <MultiFormatDatePicker
-              dateList={dateList}
               selectedDate={selectedDate}
               onChange={handleDateChange}
               dateFormat={dateFormat}

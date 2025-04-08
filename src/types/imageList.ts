@@ -1,5 +1,6 @@
 interface ImageFile {
   name: string;
+  path: string;
 }
 
 interface ImageListResponse {
@@ -9,4 +10,4 @@ interface ImageListResponse {
   files: ImageFile[];
 }
 
-export type { ImageFile, ImageListResponse };
+export type { ImageListResponse };
