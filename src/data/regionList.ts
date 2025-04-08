@@ -68,9 +68,6 @@ export const fullLocalList = [
   'SA',
   'Pilbara',
   'Aust',
-  'CGBR-td',
-  'SGBR-td',
-  'Bass-td',
 
   // Current Meters specific code and regions
   '01_Aust',
@@ -96,7 +93,7 @@ export const fullLocalList = [
   '16_NGBR',
 
   // SealCTD specific code and regions
-  'Antarctica',
+  'POLAR',
   'GAB-Seal',
   'NSW',
 ] as const;
@@ -602,9 +599,9 @@ export const productRegionMap: ProductRegionMap = {
       'Darwin',
       'KingSound',
       'Torres',
-      'CGBR-td',
-      'SGBR-td',
-      'Bass-td',
+      'CGBR',
+      'SGBR',
+      'Bass',
       'Arnhem',
       'Kimberley',
       'GOC',
@@ -622,9 +619,9 @@ export const productRegionMap: ProductRegionMap = {
       'Darwin',
       'KingSound',
       'Torres',
-      'CGBR-td',
-      'SGBR-td',
-      'Bass-td',
+      'CGBR',
+      'SGBR',
+      'Bass',
       'Arnhem',
       'Kimberley',
       'GOC',
@@ -660,35 +657,35 @@ export const productRegionMap: ProductRegionMap = {
     ],
   },
   'sealCtd-sealTracks': {
-    state: ['Antarctica'],
+    state: ['POLAR'],
     local: ['GAB-Seal', 'NSW'],
   },
   'sealCtd-timeseriesTemperature': {
-    state: ['Antarctica'],
+    state: ['POLAR'],
     local: ['GAB-Seal', 'NSW'],
   },
   'sealCtd-timeseriesSalinity': {
-    state: ['Antarctica'],
+    state: ['POLAR'],
     local: ['GAB-Seal', 'NSW'],
   },
   'sealCtdTags-timeseries': {
-    state: ['Antarctica'],
+    state: ['POLAR'],
     local: ['GAB-Seal', 'NSW'],
   },
   'sealCtdTags-ts': {
-    state: ['Antarctica'],
+    state: ['POLAR'],
     local: ['GAB-Seal', 'NSW'],
   },
   'sealCtdTags-temperature': {
-    state: ['Antarctica'],
+    state: ['POLAR'],
     local: ['GAB-Seal', 'NSW'],
   },
   'sealCtdTags-salinity': {
-    state: ['Antarctica'],
+    state: ['POLAR'],
     local: ['GAB-Seal', 'NSW'],
   },
   'sealCtdTags-10days': {
-    state: ['Antarctica'],
+    state: ['POLAR'],
     local: ['GAB-Seal', 'NSW'],
   },
 };
