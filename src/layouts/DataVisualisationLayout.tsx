@@ -26,7 +26,7 @@ const DataVisualisationLayout: React.FC = () => {
   const [showVideo, setShowVideo] = useState(false);
   const [isSidebarVisible, setSidebarVisible] = useState(true);
   const productId = useProductStore((state) => state.productParams.productId);
-  const toggleSidebar = () => setSidebarVisible(!isSidebarVisible);
+  const toggleSidebar = () => setSidebarVisible((prev) => !prev);
 
   const urlType = useUrlType();
   useSetProductId(urlType, setProductId);
@@ -89,6 +89,7 @@ const DataVisualisationLayout: React.FC = () => {
           <button
             onClick={toggleSidebar}
             className="-left-6 mr-1 flex h-24 items-center justify-center rounded bg-imos-sea-blue p-2 text-white"
+            aria-label="Toggle sidebar"
           >
             <ArrowIcon
               className={`h-5 w-5 transition-transform duration-300 ${isSidebarVisible ? 'rotate-90' : 'h-28 rotate-[270deg]'}`}

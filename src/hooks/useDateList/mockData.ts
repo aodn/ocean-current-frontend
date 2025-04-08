@@ -2,9 +2,10 @@ import dayjs from 'dayjs';
 import { DateFormat, DateItem } from '@/types/date';
 import { RegionScope } from '@/constants/region';
 import { getUnitByFormat } from '@/utils/date-utils/date';
+import { ProductID } from '@/types/product';
 
 interface MockConfig {
-  productId: string;
+  productId: ProductID;
   interVal?: {
     local?: 1 | 4;
     state: 1 | 2 | 4 | 6;
@@ -41,15 +42,10 @@ const MOCK_CONFIGS: MockConfig[] = [
   },
 ];
 
-export const generateDateRange = (
-  productId: string,
-  dateFormat: DateFormat,
-  scope: RegionScope,
-  selectedDate: string,
-): DateItem[] => {
+export const generateDateRange = (productId: ProductID, dateFormat: DateFormat, scope: RegionScope): DateItem[] => {
   const mockConfig = MOCK_CONFIGS.find((c) => c.productId === productId);
   const interval = scope === RegionScope.Local ? mockConfig?.interVal?.local || 1 : mockConfig?.interVal?.state || 1;
-  const centerDate = selectedDate ? dayjs(selectedDate) : dayjs();
+  const centerDate = dayjs();
   const dates: DateItem[] = [];
   const today = dayjs();
 
