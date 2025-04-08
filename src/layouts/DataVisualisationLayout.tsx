@@ -3,10 +3,15 @@ import { Outlet, useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { setSelectedArgoParams } from '@/stores/argo-store/argoStore';
 import useDateStore, { setDate } from '@/stores/date-store/dateStore';
-import useProductStore, { setRegionTitle, setProductId, setRegionScope } from '@/stores/product-store/productStore';
+import useProductStore, {
+  setRegionTitle,
+  setProductId,
+  setRegionScope,
+  setRegionCode,
+} from '@/stores/product-store/productStore';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useDeviceType, useProductFromUrl, useProductSearchParam, useSetProductId, useUrlType } from '@/hooks';
-import { getRegionByRegionTitle } from '@/utils/region-utils/region';
+import { getRegionByRegionCode } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 import ProductFooterMobile from '@/components/ProductFooterMobile/ProductFooterMobile';
 import ArrowIcon from '@/assets/icons/Arrow';
@@ -40,15 +45,17 @@ const DataVisualisationLayout: React.FC = () => {
     setDate(dayjs(date));
   }, [searchParams]);
 
-  const { region: regionTitleFromUrl = 'Australia/NZ', date } = useProductSearchParam();
+  const { region: regionCodeFromUrl = 'Au', date } = useProductSearchParam();
 
   useEffect(() => {
-    const region = getRegionByRegionTitle(regionTitleFromUrl as string);
+    const region = getRegionByRegionCode(regionCodeFromUrl as string);
+    const regionCode = region?.code || 'Au';
     const regionName = region?.title || 'Australia/NZ';
     const regionScope = region?.scope || RegionScope.Au;
+    setRegionCode(regionCode);
     setRegionTitle(regionName);
     setRegionScope(regionScope);
-  }, [regionTitleFromUrl]);
+  }, [regionCodeFromUrl]);
 
   useEffect(() => {
     if (!date) return;
