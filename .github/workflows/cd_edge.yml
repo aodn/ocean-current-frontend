@@ -44,7 +44,7 @@ jobs:
       - name: Build the front end
         env:
           VITE_MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_ACCESS_TOKEN }}
-          VITE_API_BACKEND_URL: ${{ vars.VITE_API_BACKEND_URL }}
+          VITE_API_BACKEND_API: ${{ vars.VITE_API_BACKEND_URL }}
           VITE_API_PROXY_URL: ${{ vars.VITE_API_PROXY_URL }}
         run: yarn build
 
