@@ -5,7 +5,6 @@ import { useDateList } from '@/hooks';
 import { RegionScope } from '@/constants/region';
 import { DateFormat } from '@/types/date';
 import { ProductID } from '@/types/product';
-import { getRegionCodeByRegionTitle } from '@/utils/region-utils/region';
 import useProductStore from '@/stores/product-store/productStore';
 import DatePicker from './DatePicker/DatePicker';
 
@@ -24,10 +23,9 @@ const DatePagination: React.FC<DatePaginationProps> = ({
   initialDate,
   isMobile,
 }) => {
-  const regionTitleFromStore = useProductStore((state) => state.productParams.regionTitle);
-  const regionCode = getRegionCodeByRegionTitle(regionTitleFromStore);
+  const regionCodeFromStore = useProductStore((state) => state.productParams.regionCode);
 
-  const { isLoading, dateList } = useDateList(productId, regionScope, regionCode!);
+  const { isLoading, dateList } = useDateList(productId, regionScope, regionCodeFromStore!);
 
   const { currentDate, updateDate, goToPrevious, goToNext, canGoPrevious, canGoNext } = useDateNavigation({
     availableDates: dateList,
