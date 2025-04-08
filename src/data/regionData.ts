@@ -35,8 +35,8 @@ const localRegions: LocalRegion[] = [
   { code: 'Adelaide', title: 'Adelaide-Melbourne', coords: [135, 147, -44, -33] },
   { code: 'AlbEsp', title: 'Albany-Esperance', coords: [114, 125, -38.5, -33] },
   { code: 'Bass', title: 'Bass Strait', coords: [143, 151, -42, -37] },
-  { code: 'Bris-Newc', title: 'Brisbane-Newcastle', coords: [151, 159, -33, -23] }, // only code that won't be used to build url, this is handled in ProductContent
-  { code: 'Brisbane', title: 'Brisbane', coords: [152, 156, -29.5, -24.5] }, // only code that won't be used to build url, this is handled in ProductContent
+  { code: 'Brisbane', title: 'Brisbane-Newcastle', coords: [151, 159, -33, -23] },
+  { code: 'Brisbane2', title: 'Brisbane', coords: [152, 156, -29.5, -24.5] },
   { code: 'Bris-Syd', title: 'Brisbane-Sydney', coords: [150.6, 157.5, -34.4, -27] },
   { code: 'Broome', title: 'Broome', coords: [115.6, 126, -21.2, -13.7] },
   { code: 'CGBR', title: 'Central GBR', coords: [145, 153, -21.2, -14.5] },
