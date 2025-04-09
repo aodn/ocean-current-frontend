@@ -3,7 +3,7 @@ import { createGIF, CreateGIFOptions, CreateGIFObject } from 'gifshot';
 import dayjs from 'dayjs';
 import { buildProductImageUrl, getTargetRegionScopePath } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useProductStore from '@/stores/product-store/productStore';
-import { getRegionByRegionTitle } from '@/utils/region-utils/region';
+import { getRegionByRegionCode } from '@/utils/region-utils/region';
 import { RegionScope } from '@/constants/region';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { useDateRange } from '@/hooks';
@@ -24,13 +24,12 @@ const useVideoCreation = (): UseVideoCreationReturn => {
     allDates[allDates.length - 1]?.date || dayjs().subtract(1, 'month').toDate(),
   );
 
-  const useProductRegionTitle = useProductStore((state) => state.productParams.regionTitle);
+  const useRegionCode = useProductStore((state) => state.productParams.regionCode);
   const { mainProduct, subProduct } = useProductConvert();
   const useDate = useDateStore((state) => state.date);
 
-  const region = getRegionByRegionTitle(useProductRegionTitle);
+  const region = getRegionByRegionCode(useRegionCode);
   const targetPathRegion = getTargetRegionScopePath(region?.scope || RegionScope.Au);
-  const regionPath = region?.code;
   const subProductImgPath = subProduct?.imgPath;
   const aspectRatioRef = useRef<number>(1);
 
@@ -46,7 +45,7 @@ const useVideoCreation = (): UseVideoCreationReturn => {
 
   useEffect(() => {
     resetState();
-  }, [resetState, mainProduct, subProduct, regionPath]);
+  }, [resetState, mainProduct, subProduct, useRegionCode]);
 
   useEffect(() => {
     if (allDates && allDates.length > 0) {
@@ -66,14 +65,14 @@ const useVideoCreation = (): UseVideoCreationReturn => {
   }, []);
 
   const getProductImageSize = useCallback(async () => {
-    if (!mainProduct || !regionPath || !targetPathRegion || !useDate) {
+    if (!mainProduct || !useRegionCode || !targetPathRegion || !useDate) {
       return;
     }
 
     const imageUrl = buildProductImageUrl(
       mainProduct.key,
       subProductImgPath,
-      regionPath,
+      useRegionCode,
       targetPathRegion,
       useDate.toString(),
     );
@@ -86,7 +85,7 @@ const useVideoCreation = (): UseVideoCreationReturn => {
     } catch (error) {
       console.error('Error loading image:', error);
     }
-  }, [mainProduct, subProductImgPath, regionPath, targetPathRegion, useDate, getImageDimensions]);
+  }, [mainProduct, subProductImgPath, useRegionCode, targetPathRegion, useDate, getImageDimensions]);
 
   useEffect(() => {
     getProductImageSize();
@@ -107,7 +106,7 @@ const useVideoCreation = (): UseVideoCreationReturn => {
       const imageUrl = buildProductImageUrl(
         mainProduct!.key,
         subProductImgPath!,
-        regionPath!,
+        useRegionCode!,
         targetPathRegion,
         formattedDate,
         true,
@@ -122,13 +121,13 @@ const useVideoCreation = (): UseVideoCreationReturn => {
 
     const results = await Promise.all(imagePromises);
     return results.filter((url): url is string => url !== null);
-  }, [allDatesVideoGeneration, formatDate, mainProduct, subProductImgPath, regionPath, targetPathRegion, loadImage]);
+  }, [allDatesVideoGeneration, formatDate, mainProduct, subProductImgPath, useRegionCode, targetPathRegion, loadImage]);
 
   const fileName = useCallback((): string => {
     const formattedDateStart = dayjs(allDatesVideoGeneration[0].date).format(formatDate);
     const formattedDateEnd = dayjs(allDatesVideoGeneration[allDatesVideoGeneration.length - 1].date).format(formatDate);
-    return `${mainProduct!.key}_${subProductImgPath}_${regionPath}_${formattedDateStart}_${formattedDateEnd}.gif`;
-  }, [allDatesVideoGeneration, formatDate, mainProduct, subProductImgPath, regionPath]);
+    return `${mainProduct!.key}_${subProductImgPath}_${useRegionCode}_${formattedDateStart}_${formattedDateEnd}.gif`;
+  }, [allDatesVideoGeneration, formatDate, mainProduct, subProductImgPath, useRegionCode]);
 
   const handleGifDownload = useCallback(async () => {
     setIsLoading(true);

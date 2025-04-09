@@ -5,29 +5,24 @@ import { productRegionMap } from '@/data/regionList';
 import { RegionCategories } from '@/types/region';
 import { ProductID } from '@/types/product';
 
-const getRegionByRegionTitle = (regionTitle: string | null): Region | undefined => {
-  return allRegions.find((region) => region.title === regionTitle);
+const getRegionByRegionCode = (regionCode: string | null): Region | undefined => {
+  return allRegions.find((region) => region.code === regionCode);
 };
 
-const getRegionScopeByRegionTitle = (regionTitle: string): RegionScope | undefined => {
-  return getRegionByRegionTitle(regionTitle)?.scope;
+const getRegionScopeByRegionCode = (regionCode: string): RegionScope | undefined => {
+  return getRegionByRegionCode(regionCode)?.scope;
 };
 
-const getRegionCodeByRegionTitle = (regionTitle: string): string | undefined => {
-  return getRegionByRegionTitle(regionTitle)?.code;
+const getRegionTitleByRegionCode = (regionCode: string | null): string | undefined => {
+  return getRegionByRegionCode(regionCode)?.title;
 };
 
 const getRegionListByProductId = (productId: ProductID): RegionCategories | undefined => {
   return productRegionMap[productId];
 };
 
-const isProductAvailableInRegion = (regionTitle: string | null, productId: ProductID): boolean => {
-  if (!regionTitle) {
-    return false;
-  }
-
-  const region = getRegionByRegionTitle(regionTitle);
-  if (!region) {
+const isProductAvailableInRegion = (regionCode: string | null, productId: ProductID): boolean => {
+  if (!regionCode) {
     return false;
   }
 
@@ -39,13 +34,13 @@ const isProductAvailableInRegion = (regionTitle: string | null, productId: Produ
 
   const allRegions = [...regionList.state, ...regionList.local];
 
-  return allRegions.includes(region.code);
+  return allRegions.includes(regionCode);
 };
 
 export {
-  getRegionByRegionTitle,
-  getRegionScopeByRegionTitle,
-  getRegionCodeByRegionTitle,
+  getRegionByRegionCode,
+  getRegionTitleByRegionCode,
+  getRegionScopeByRegionCode,
   getRegionListByProductId,
   isProductAvailableInRegion,
 };

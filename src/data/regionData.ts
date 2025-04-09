@@ -18,7 +18,7 @@ const stateRegions: StateRegion[] = [
   { code: 'GAB', title: 'South', coords: [120, 150, -46, -30] },
   { code: 'SO', title: 'Southern Ocean', coords: [130, 155, -55, -35] },
   { code: 'NZ', title: 'New Zealand', coords: [160, 180, -50, -30] },
-  { code: 'Antarctica', title: 'Antarctica', coords: [-180, 180, -80, -60] },
+  { code: 'POLAR', title: 'Antarctica', coords: [-180, 180, -80, -60] },
 ].map((region) => ({ ...region, scope: RegionScope.State }) as StateRegion);
 
 const stateMonthlyMeansRegions: StateRegion[] = [
@@ -35,8 +35,8 @@ const localRegions: LocalRegion[] = [
   { code: 'Adelaide', title: 'Adelaide-Melbourne', coords: [135, 147, -44, -33] },
   { code: 'AlbEsp', title: 'Albany-Esperance', coords: [114, 125, -38.5, -33] },
   { code: 'Bass', title: 'Bass Strait', coords: [143, 151, -42, -37] },
-  { code: 'Bris-Newc', title: 'Brisbane-Newcastle', coords: [151, 159, -33, -23] }, // only code that won't be used to build url, this is handled in ProductContent
-  { code: 'Brisbane', title: 'Brisbane', coords: [152, 156, -29.5, -24.5] }, // only code that won't be used to build url, this is handled in ProductContent
+  { code: 'Brisbane', title: 'Brisbane-Newcastle', coords: [151, 159, -33, -23] },
+  { code: 'Brisbane2', title: 'Brisbane', coords: [152, 156, -29.5, -24.5] },
   { code: 'Bris-Syd', title: 'Brisbane-Sydney', coords: [150.6, 157.5, -34.4, -27] },
   { code: 'Broome', title: 'Broome', coords: [115.6, 126, -21.2, -13.7] },
   { code: 'CGBR', title: 'Central GBR', coords: [145, 153, -21.2, -14.5] },
@@ -84,9 +84,6 @@ const localRegions: LocalRegion[] = [
   // Tidal Currents specific regions
   { code: 'Aust', title: 'Australia', coords: [102, 165, -48, -4.5] },
   { code: 'Banks', title: 'Banks', coords: [147.4, 149, -41, -40] },
-  { code: 'Bass-td', title: 'Bass', coords: [143, 151, -42, -37] },
-  { code: 'CGBR-td', title: 'CGBR', coords: [145, 153, -21.2, -14.5] },
-  { code: 'SGBR-td', title: 'SGBR', coords: [148.9, 157, -26, -20] },
   { code: 'PPB', title: 'PPB', coords: [143.5, 146, -39, -37.5] },
   { code: 'HydrogPass', title: 'HydrogPass', coords: [147.5, 150.2, -21.5, -19.2] },
   { code: 'Darwin', title: 'Darwin', coords: [128.5, 133.3, -13.5, -10] },

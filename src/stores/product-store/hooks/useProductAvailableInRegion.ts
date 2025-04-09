@@ -3,9 +3,9 @@ import useProductStore from '../productStore';
 
 const useProductAvailableInRegion = () => {
   const useProductId = useProductStore((state) => state.productParams.productId);
-  const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
+  const useRegionCode = useProductStore((state) => state.productParams.regionCode);
 
-  return isProductAvailableInRegion(useRegionTitle, useProductId);
+  return isProductAvailableInRegion(useRegionCode, useProductId);
 };
 
 export default useProductAvailableInRegion;
