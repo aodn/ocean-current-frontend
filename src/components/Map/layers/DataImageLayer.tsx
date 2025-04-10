@@ -4,15 +4,16 @@ import { mapboxLayerIds } from '@/constants/mapboxId';
 import useProductStore from '@/stores/product-store/productStore';
 import { getEntryImagePathByProductId } from '@/utils/data-image-builder-utils/latestEntryImage';
 import { apiConfig } from '@/configs/api';
+import { AnyProductID } from '@/types/product';
 
-const productsWithNoImage = [
+const productsWithNoImage: AnyProductID[] = [
   'monthlyMeans-anomalies',
   'climatology-sst',
   'EACMooringArray',
   'currentMeters-mooredInstrumentArray',
   'tidalCurrents-spd',
 ];
-const productsWithImage = [
+const productsWithImage: AnyProductID[] = [
   'argo',
   'adjustedSeaLevelAnomaly',
   'fourHourSst-sst',
