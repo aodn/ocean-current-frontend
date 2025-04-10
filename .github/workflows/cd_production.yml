@@ -11,10 +11,15 @@ on:
       - v*.*.*
 
 jobs:
-  build:
-    name: Build
+  prod_build_deploy:
+    name: Build and Deploy to Production Environment
     environment: production
     runs-on: ubuntu-latest
+    env:
+      DIST: ./dist
+    permissions:
+      contents: read
+      id-token: write
 
     strategy:
       matrix:
@@ -48,26 +53,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: yarn_build
-          path: ./dist
+          path: ${{ env.DIST }}
           retention-days: 1
-
-  prod_deploy:
-    name: Deploy to Production Environment
-    needs: build
-    environment: production
-    runs-on: ubuntu-latest
-    env:
-      DIST: ./dist
-    permissions:
-      contents: read
-      id-token: write
-
-    steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: yarn_build
-          path: ./dist
 
       - name: Configure AWS credentials
         id: aws_auth
