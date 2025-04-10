@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { getArgoProfileCyclesByWmoId } from '@/services/argo';
-import { findMostRecentDateBefore } from '@/utils/date-utils/date';
 import { calculateImageScales } from '@/utils/general-utils/general';
 import { ArgoTagMapArea } from '@/types/argo';
-import { convertCoordsBasedOnImageScale, getArgoTagFilePathByProductId } from '@/utils/argo-utils/argoTag';
+import { convertCoordsBasedOnImageScale } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
-import { useImageArgoTags } from '@/services/hooks';
 import { MapImageAreas } from '@/types/dataImage';
 import { ProductID } from '@/types/product';
+import { getSealCtdMapTags } from '@/services/sealCtd';
+import { parseArgoAndSealLocationsTagData } from '@/utils/seal-ctd-utils/sealStdTags';
+import { DateFormat } from '@/types/date';
 
 type DataImageWithArgoAndSealCTDMapProps = {
   src: string;
@@ -23,71 +23,79 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
   regionTitle,
   date,
 }) => {
-  const argoTagFilePathValue = getArgoTagFilePathByProductId(productId);
-  const argoTagFilePath = argoTagFilePathValue?.state;
-
-  if (!argoTagFilePathValue || !argoTagFilePath) {
-    throw new Error(`Argo tag file path not found for product id: ${productId}`);
-  }
-
-  const dateFormatted = dayjs(date).format('YYYYMMDD');
+  const formattedDate = dayjs(date).format(DateFormat.DAY);
   const imgRef = useRef<HTMLImageElement | null>(null);
+  const [argoData, setArgoData] = useState<ArgoTagMapArea[]>([]);
+  const [sealData, setSealData] = useState<MapImageAreas[]>([]);
   const [argoCoords, setArgoCoords] = useState<ArgoTagMapArea[]>([]);
-  const [sealCoords] = useState<MapImageAreas[]>([]);
+  const [sealCoords, setSealCoords] = useState<MapImageAreas[]>([]);
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
-
-  const { data } = useImageArgoTags(date, argoTagFilePath, regionTitle);
 
   useEffect(() => {
     setImgLoadError(null);
   }, [src]);
 
   useEffect(() => {
-    const handleLoad = () => {
-      if (imgRef.current) {
+    const fetchTagsData = async () => {
+      const mapTags = await getSealCtdMapTags(regionTitle, date);
+      if (mapTags) {
+        const { argoTags, sealTags } = parseArgoAndSealLocationsTagData(mapTags);
+        setArgoData(argoTags);
+        setSealData(sealTags);
+      }
+    };
+
+    fetchTagsData();
+  }, [date, regionTitle]);
+
+  useEffect(() => {
+    const handleImageLoad = () => {
+      setArgoCoords([]);
+      setSealCoords([]);
+
+      if (imgRef.current && (argoData.length > 0 || sealData.length > 0)) {
         const { naturalWidth, naturalHeight, width, height } = imgRef.current;
         const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
-        const originalCoords = data.map((item) => ({
-          shape: 'circle',
-          coords: [item.coordX, item.coordY, 10],
-          href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0&date=${dateFormatted}`,
-          wmoId: item.wmoId,
-          cycle: item.cycle,
-        }));
-        const convertedCoords = convertCoordsBasedOnImageScale(originalCoords, scaleX, scaleY, naturalHeight);
-        setArgoCoords(convertedCoords);
+
+        if (argoData.length > 0) {
+          const originalArgoCoords = argoData.map((item) => ({
+            ...item,
+            href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${formattedDate}`,
+          }));
+          const convertedArgoCoords = convertCoordsBasedOnImageScale(originalArgoCoords, scaleX, scaleY, naturalHeight);
+          setArgoCoords(convertedArgoCoords as ArgoTagMapArea[]);
+        }
+
+        if (sealData.length > 0) {
+          const originalSealCoords = sealData.map((item) => ({
+            ...item,
+            href: `/product/seal-ctd-tags/10days?sealId=${item.name}&region=${regionTitle}&date=${formattedDate}`,
+          }));
+          const convertedSealCoords = convertCoordsBasedOnImageScale(originalSealCoords, scaleX, scaleY, naturalHeight);
+
+          setSealCoords(convertedSealCoords as MapImageAreas[]);
+        }
       }
     };
 
     const imageElement = imgRef.current;
     if (imageElement) {
       if (imageElement.complete) {
-        handleLoad();
+        handleImageLoad();
       } else {
-        imageElement.addEventListener('load', handleLoad);
+        imageElement.addEventListener('load', handleImageLoad);
       }
     }
 
     return () => {
       if (imageElement) {
-        imageElement.removeEventListener('load', handleLoad);
+        imageElement.removeEventListener('load', handleImageLoad);
       }
     };
-  }, [data, dateFormatted, src]);
+  }, [argoData, formattedDate, regionTitle, sealData]);
 
-  const handleCircleClick = async (area: ArgoTagMapArea) => {
-    const { data } = await getArgoProfileCyclesByWmoId(area.wmoId.toString());
-    const dates = data.map((item) => item.date);
-    const mostRecentDate = findMostRecentDateBefore(dates, dateFormatted);
-    const mostRecentItem = data.find((item) => item.date === mostRecentDate);
-
-    if (!mostRecentItem) {
-      return;
-    }
-
-    const newPath = `/product/argo?wmoid=${area.wmoId}&cycle=${mostRecentItem.cycle}&depth=0&date=${mostRecentDate}`;
-
-    window.open(newPath, '_blank', 'noopener,noreferrer');
+  const handleCircleClick = async (area: ArgoTagMapArea | MapImageAreas) => {
+    window.open(area.href, '_blank', 'noopener,noreferrer');
   };
 
   if (imgLoadError) {
@@ -132,10 +140,11 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
             shape={area.shape}
             coords={area.coords.join(',')}
             alt={`Seal tag ${area.name}`}
-            onClick={() => {}}
+            onClick={() => handleCircleClick(area)}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
+                handleCircleClick(area);
               }
             }}
             tabIndex={0}
