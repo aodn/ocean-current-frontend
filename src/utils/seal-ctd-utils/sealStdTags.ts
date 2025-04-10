@@ -43,7 +43,7 @@ const parseArgoAndSealLocationsTagData = (input: string) => {
     if (parts[0] === 'Argo') {
       argoTags.push({
         shape: 'circle',
-        coords: [x, y, 10],
+        coords: [x, y, 5],
         href: '#',
         wmoId: parseFloat(parts[3]),
         cycle: parseFloat(parts[4]),
@@ -53,7 +53,7 @@ const parseArgoAndSealLocationsTagData = (input: string) => {
     if (parts[0] === 'SealCTD') {
       sealTags.push({
         shape: 'circle',
-        coords: [x, y, 10],
+        coords: [x, y, 5],
         href: '#',
         alt: parts[3],
         name: parts[3],
