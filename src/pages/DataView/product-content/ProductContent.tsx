@@ -16,7 +16,7 @@ import {
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
-import { getRegionByRegionTitle } from '@/utils/region-utils/region';
+import { getRegionByRegionCode } from '@/utils/region-utils/region';
 import { RegionScope } from '@/constants/region';
 import { Loading } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
@@ -29,31 +29,17 @@ import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
 import { CurrentMetersSubproductsKey, CurrentMetersSubproductsKeyType } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
-import { Region } from '@/types/map';
 import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
 import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
 import DataImageWithCurrentMetersPlots from '../data-image/DataImageWithCurrentMetersPlots';
 import DataImageWithTidalCurrentsMap from '../data-image/DataImageWithTidalCurrentsMap';
 import DataImageWithSealCtdGraphs from '../data-image/DataImageWithSealCtdGraphs';
 
-const getRegionPath = (region: Region | undefined) => {
-  if (!region) return 'Au';
-
-  // we have to override the code to get the correct image file path as they have been changed to provide more context in code
-  if (region?.code === 'Bris-Newc') {
-    return 'Brisbane';
-  } else if (region?.code === 'Brisbane') {
-    return 'Brisbane2';
-  } else {
-    return region?.code;
-  }
-};
-
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const { isArgo, isCurrentMeters, isEACMooringArray, isTidalCurrents, isSealCtd, isSealCtdTags } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
-  const useRegionTitle = useProductStore((state) => state.productParams.regionTitle);
+  const useRegionCode = useProductStore((state) => state.productParams.regionCode);
   const useProductId = useProductStore((state) => state.productParams.productId);
   const useArgoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
   const { mainProduct, subProduct } = useProductConvert();
@@ -69,10 +55,10 @@ const ProductContent: React.FC = () => {
   const [searchParams, _] = useSearchParams();
 
   // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
-  const region = getRegionByRegionTitle(isEACMooringArray ? 'Brisbane' : useRegionTitle);
+  const region = getRegionByRegionCode(isEACMooringArray ? 'Brisbane' : useRegionCode);
   const regionScope = region?.scope || RegionScope.Au;
   const targetPathRegion = getTargetRegionScopePath(regionScope);
-  const regionPath = getRegionPath(region);
+  const regionPath = region?.code;
 
   const dateString = useDate.format('YYYYMMDDHH');
 
@@ -145,26 +131,22 @@ const ProductContent: React.FC = () => {
         case isCurrentMeters:
           return buildCurrentMetersMapImageUrl(currentMetersRegion, currentMetersDate, property, currentMetersDepth);
         case useProductId === 'sixDaySst-timeseries':
-          return buildSSTTimeseriesImageUrl(regionPath);
+          return buildSSTTimeseriesImageUrl(regionPath ?? '');
         case isEACMooringArray:
           return buildEACMooringArrayImageUrl(useDate);
         case isTidalCurrents && !hasSelectedPointFromUrl:
-          return buildTidalCurrentsMapImageUrl(
-            useRegionTitle ?? 'Australia',
-            subProduct?.key ?? 'tidalCurrents-spd',
-            useDate,
-          );
+          return buildTidalCurrentsMapImageUrl(useRegionCode ?? 'Au', subProduct?.key ?? 'tidalCurrents-spd', useDate);
         case isTidalCurrents && hasSelectedPointFromUrl:
           return buildTidalCurrentsDataImageUrl(pointUrlParam, useDate);
         case isSealCtd:
-          return buildSealCtdMapImageUrl(useRegionTitle ?? 'Antarctica', useDate);
+          return buildSealCtdMapImageUrl(useRegionCode ?? 'POLAR', useDate);
         case isSealCtdTags && hasSelectedSealCtdTagFromUrl:
           return buildSealCtdTagsDataImageUrl(selectedSealCtdTag, useDate, useProductId);
         default:
           return buildProductImageUrl(
             mainProduct.key,
             subProductImgPath,
-            regionPath,
+            regionPath ?? 'Au',
             targetPathRegion,
             useDate.toString(),
           );
@@ -182,7 +164,7 @@ const ProductContent: React.FC = () => {
     const videoUrl = buildProductVideoUrl(
       mainProduct.key,
       subProductImgPath,
-      regionPath,
+      regionPath ?? 'Au',
       targetPathRegion,
       useDate.toString(),
     );
@@ -216,7 +198,7 @@ const ProductContent: React.FC = () => {
         src={chooseImg()!}
         date={useDate}
         productId={useProductId}
-        regionCode={regionPath}
+        regionCode={regionPath ?? 'Au'}
         regionScope={regionScope}
       />
     );
@@ -229,7 +211,7 @@ const ProductContent: React.FC = () => {
         src={chooseImg()!}
         date={useDate}
         productId={useProductId}
-        region={useRegionTitle ?? 'Australia'}
+        region={useRegionCode ?? 'Au'}
       />
     );
   }
@@ -240,7 +222,7 @@ const ProductContent: React.FC = () => {
         mainProduct={mainProduct}
         date={useDate}
         productId={useProductId}
-        region={useRegionTitle ?? 'Antarctica'}
+        region={useRegionCode ?? 'POLAR'}
       />
     );
   }

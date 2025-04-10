@@ -5,9 +5,10 @@ import { Actions, State } from './product.types';
 
 const initialState: State = {
   productParams: {
-    productId: 'fourHourSst-sst',
+    productId: 'sixDaySst-sst',
+    regionCode: null,
     regionScope: RegionScope.State,
-    regionTitle: null,
+    regionTitle: 'Au',
   },
 };
 
@@ -18,6 +19,8 @@ const useProductStore = create<State & Actions>()(
       setProductData: (product) => set({ productParams: product }, false, 'setProductData'),
       setProductId: (productId) =>
         set((state) => ({ productParams: { ...state.productParams, productId } }), false, 'setProductId'),
+      setRegionCode: (regionCode) =>
+        set((state) => ({ productParams: { ...state.productParams, regionCode } }), false, 'setRegionCode'),
       setRegionScope: (regionScope) =>
         set((state) => ({ productParams: { ...state.productParams, regionScope } }), false, 'setRegionScope'),
       setRegionTitle: (regionTitle) =>
@@ -26,6 +29,6 @@ const useProductStore = create<State & Actions>()(
   })),
 );
 
-export const { setProductId, setRegionScope, setRegionTitle } = useProductStore.getState().actions;
+export const { setProductId, setRegionScope, setRegionTitle, setRegionCode } = useProductStore.getState().actions;
 
 export default useProductStore;

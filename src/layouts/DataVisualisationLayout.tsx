@@ -3,10 +3,15 @@ import { Outlet, useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { setSelectedArgoParams } from '@/stores/argo-store/argoStore';
 import useDateStore, { setDate } from '@/stores/date-store/dateStore';
-import useProductStore, { setRegionTitle, setProductId, setRegionScope } from '@/stores/product-store/productStore';
+import useProductStore, {
+  setRegionTitle,
+  setProductId,
+  setRegionScope,
+  setRegionCode,
+} from '@/stores/product-store/productStore';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useDeviceType, useProductFromUrl, useProductSearchParam, useSetProductId, useUrlType } from '@/hooks';
-import { getRegionByRegionTitle } from '@/utils/region-utils/region';
+import { getRegionByRegionCode } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 import ProductFooterMobile from '@/components/ProductFooterMobile/ProductFooterMobile';
 import ArrowIcon from '@/assets/icons/Arrow';
@@ -26,7 +31,7 @@ const DataVisualisationLayout: React.FC = () => {
   const [showVideo, setShowVideo] = useState(false);
   const [isSidebarVisible, setSidebarVisible] = useState(true);
   const productId = useProductStore((state) => state.productParams.productId);
-  const toggleSidebar = () => setSidebarVisible(!isSidebarVisible);
+  const toggleSidebar = () => setSidebarVisible((prev) => !prev);
 
   const urlType = useUrlType();
   useSetProductId(urlType, setProductId);
@@ -40,15 +45,17 @@ const DataVisualisationLayout: React.FC = () => {
     setDate(dayjs(date));
   }, [searchParams]);
 
-  const { region: regionTitleFromUrl = 'Australia/NZ', date } = useProductSearchParam();
+  const { region: regionCodeFromUrl = 'Au', date } = useProductSearchParam();
 
   useEffect(() => {
-    const region = getRegionByRegionTitle(regionTitleFromUrl as string);
+    const region = getRegionByRegionCode(regionCodeFromUrl as string);
+    const regionCode = region?.code || 'Au';
     const regionName = region?.title || 'Australia/NZ';
     const regionScope = region?.scope || RegionScope.Au;
+    setRegionCode(regionCode);
     setRegionTitle(regionName);
     setRegionScope(regionScope);
-  }, [regionTitleFromUrl]);
+  }, [regionCodeFromUrl]);
 
   useEffect(() => {
     if (!date) return;
@@ -89,6 +96,7 @@ const DataVisualisationLayout: React.FC = () => {
           <button
             onClick={toggleSidebar}
             className="-left-6 mr-1 flex h-24 items-center justify-center rounded bg-imos-sea-blue p-2 text-white"
+            aria-label="Toggle sidebar"
           >
             <ArrowIcon
               className={`h-5 w-5 transition-transform duration-300 ${isSidebarVisible ? 'rotate-90' : 'h-28 rotate-[270deg]'}`}
