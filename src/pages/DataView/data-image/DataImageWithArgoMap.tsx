@@ -57,7 +57,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
           cycle: item.cycle,
         }));
         const convertedCoords = convertCoordsBasedOnImageScale(originalCoords, scaleX, scaleY, naturalHeight);
-        setCoords(convertedCoords);
+        setCoords(convertedCoords as ArgoTagMapArea[]);
       }
     };
 

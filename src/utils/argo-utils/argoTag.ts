@@ -1,5 +1,6 @@
 import { argoTagFilePaths } from '@/constants/argo';
 import { ArgoTagMapArea, ArgoTag, StateLocalPathValue } from '@/types/argo';
+import { MapImageAreas } from '@/types/dataImage';
 
 const getArgoTagFilePathByProductId = (productId: string): StateLocalPathValue | undefined => {
   return argoTagFilePaths[productId];
@@ -34,7 +35,7 @@ const parseArgoTagDataFromText = (input: string): ArgoTag[] => {
 };
 
 const convertCoordsBasedOnImageScale = (
-  originalCoords: ArgoTagMapArea[],
+  originalCoords: MapImageAreas[] | ArgoTagMapArea[],
   scaleX: number,
   scaleY: number,
   originalHeight: number,
