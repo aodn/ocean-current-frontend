@@ -56,12 +56,6 @@ jobs:
           path: ./dist
           retention-days: 1
 
-      # - name: Download build artifact
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: yarn_build
-      #     path: ${{ env.DIST }}
-
       - name: Configure AWS credentials
         id: aws_auth
         uses: aws-actions/configure-aws-credentials@v4
