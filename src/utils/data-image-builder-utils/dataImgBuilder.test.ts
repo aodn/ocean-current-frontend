@@ -1,13 +1,7 @@
 import dayjs from 'dayjs';
 import { TargetPathRegionScope } from '@/constants/imgPath';
 import { imageBaseUrl } from '@/configs/image';
-import {
-  CurrentMetersDepth,
-  CurrentMetersPlotPath,
-  CurrentMetersProperty,
-  CurrentMetersRegion,
-  CurrentMetersSubproductsKey,
-} from '@/constants/currentMeters';
+import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
 import { ArgoDepths } from '@/constants/argo';
 import {
   buildProductImageUrl,
@@ -588,13 +582,11 @@ describe('buildCurrentMetersMapImageUrl', () => {
 describe('buildCurrentMetersDataImageUrl', () => {
   it('should return the correct data image url for current Meters', () => {
     // Arrange
-    const subProduct = CurrentMetersSubproductsKey.SOUTHERN_OCEAN;
-    const deploymentPlot = 'TOTTEN1';
-    const type = CurrentMetersPlotPath.VELOCITY_VECTOR;
+    const deploymentPlotPath = '/timeseries/ANMN_P48/TOTTEN1/xyz';
     const plotId = 'TOTTEN1-WORKHORSE-ADCP-14489_xyz';
 
     // Act
-    const imageUrl = buildCurrentMetersDataImageUrl(subProduct, deploymentPlot, type, plotId);
+    const imageUrl = buildCurrentMetersDataImageUrl(deploymentPlotPath, plotId);
 
     // Assert
     expect(imageUrl).toBe(`${imageBaseUrl}/timeseries/ANMN_P48/TOTTEN1/xyz/TOTTEN1-WORKHORSE-ADCP-14489_xyz.gif`);

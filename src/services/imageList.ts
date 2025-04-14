@@ -1,6 +1,7 @@
-import { ImageListResponse } from '@/types/imageList';
+import { CurrentMetersPlotsResponse, ImageListResponse } from '@/types/imageList';
 import { ProductID } from '@/types/product';
 import { getApiProductId } from '@/configs/products';
+import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 import apiClient from './httpClient';
 
 const fetchImageListByProductIdAndRegion = async (productId: ProductID, region: string) => {
@@ -15,4 +16,9 @@ const fetchImageListByProductIdAndRegion = async (productId: ProductID, region: 
   return response;
 };
 
-export { fetchImageListByProductIdAndRegion };
+const fetchCurrentMetersPlotsList = async (plotName: CurrentMetersDeploymentPlotNames) => {
+  const response = await apiClient.get<CurrentMetersPlotsResponse>(`/metadata/image-list/current-meters/${plotName}`);
+  return response.data;
+};
+
+export { fetchImageListByProductIdAndRegion, fetchCurrentMetersPlotsList };
