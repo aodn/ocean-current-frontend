@@ -158,13 +158,7 @@ const buildProductVideoUrl = (
   };
 
   if (productId === 'sealCtd' && subProductType === 'tracks') {
-    let sealCtdRegionName = regionName;
-    if (regionName === 'Antarctica') {
-      sealCtdRegionName = 'POLAR';
-    }
-    if (regionName === 'GAB-Seal') {
-      sealCtdRegionName = 'GAB';
-    }
+    const sealCtdRegionName = regionName === 'GAB-Seal' ? 'GAB' : regionName;
 
     return `${baseUrl}/AATAMS/${sealCtdRegionName}/${subProductType}/tracks_${year}.mp4`;
   }

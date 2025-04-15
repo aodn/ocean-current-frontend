@@ -68,7 +68,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
         mapFitBounds(region.coords, 20);
       }
 
-      // so that Antarctica region is visible
+      // so that POLAR region is visible
       if (baseProductPath === 'seal-ctd/tracks' && !isMiniMap) {
         mapFitBounds(region.coords, 200);
       }

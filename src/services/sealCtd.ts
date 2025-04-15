@@ -46,18 +46,9 @@ const getSealCtdGraphTags = async (imageUrl: string) => {
 };
 
 const getSealCtdMapTags = async (regionCode: string, date: Dayjs) => {
-  const formattedRegion = () => {
-    switch (regionCode) {
-      case 'Antarctica':
-        return 'POLAR';
-      case 'GAB-Seal':
-        return 'GAB';
-      default:
-        return regionCode;
-    }
-  };
+  const formattedRegion = regionCode === 'GAB-Seal' ? 'GAB' : regionCode;
   const formattedDate = date.format(DateFormat.DAY);
-  const tagUrl = `AATAMS/${formattedRegion()}/tag_html/tracks_${formattedDate}.txt`;
+  const tagUrl = `AATAMS/${formattedRegion}/tag_html/tracks_${formattedDate}.txt`;
 
   try {
     const response = await proxyClient.get<string>(tagUrl, {

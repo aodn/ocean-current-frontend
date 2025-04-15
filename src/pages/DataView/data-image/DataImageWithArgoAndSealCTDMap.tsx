@@ -66,7 +66,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
           const originalArgoCoords = argoData.map((item) => ({
             ...item,
             coords:
-              regionTitle === 'Antarctica'
+              regionTitle === 'POLAR'
                 ? [
                     Math.floor(item.coords[0] * originalScaleX * scaleX + xcentre),
                     Math.floor(-item.coords[1] * originalScaleY * scaleY + ycentre),
@@ -76,7 +76,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
             href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${formattedDate}`,
           }));
 
-          if (regionTitle === 'Antarctica') {
+          if (regionTitle === 'POLAR') {
             setArgoCoords(originalArgoCoords as ArgoTagMapArea[]);
           } else {
             const convertedArgoCoords = convertCoordsBasedOnImageScale(
@@ -93,7 +93,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
           const originalSealCoords = sealData.map((item) => ({
             ...item,
             coords:
-              regionTitle === 'Antarctica'
+              regionTitle === 'POLAR'
                 ? [
                     Math.floor(item.coords[0] * originalScaleX * scaleX + xcentre),
                     Math.floor(-item.coords[1] * originalScaleY * scaleY + ycentre),
@@ -103,7 +103,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
             href: `/product/seal-ctd-tags/10days?sealId=${item.name}&region=${regionTitle}&date=${formattedDate}`,
           }));
 
-          if (regionTitle === 'Antarctica') {
+          if (regionTitle === 'POLAR') {
             setSealCoords(originalSealCoords as MapImageAreas[]);
           } else {
             const convertedSealCoords = convertCoordsBasedOnImageScale(
