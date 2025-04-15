@@ -13,14 +13,14 @@ import { DateFormat } from '@/types/date';
 type DataImageWithArgoAndSealCTDMapProps = {
   src: string;
   productId: string;
-  regionTitle: string;
+  regionCode: string;
   date: Dayjs;
 };
 
 const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapProps> = ({
   src,
   productId,
-  regionTitle,
+  regionCode,
   date,
 }) => {
   const formattedDate = dayjs(date).format(DateFormat.DAY);
@@ -37,7 +37,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
 
   useEffect(() => {
     const fetchTagsData = async () => {
-      const mapTags = await getSealCtdMapTags(regionTitle, date);
+      const mapTags = await getSealCtdMapTags(regionCode, date);
       if (mapTags) {
         const { argoTags, sealTags } = parseArgoAndSealLocationsTagData(mapTags);
         setArgoData(argoTags);
@@ -46,7 +46,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
     };
 
     fetchTagsData();
-  }, [date, regionTitle]);
+  }, [date, regionCode]);
 
   useEffect(() => {
     const handleImageLoad = () => {
@@ -66,7 +66,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
           const originalArgoCoords = argoData.map((item) => ({
             ...item,
             coords:
-              regionTitle === 'POLAR'
+              regionCode === 'POLAR'
                 ? [
                     Math.floor(item.coords[0] * originalScaleX * scaleX + xcentre),
                     Math.floor(-item.coords[1] * originalScaleY * scaleY + ycentre),
@@ -76,7 +76,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
             href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${formattedDate}`,
           }));
 
-          if (regionTitle === 'POLAR') {
+          if (regionCode === 'POLAR') {
             setArgoCoords(originalArgoCoords as ArgoTagMapArea[]);
           } else {
             const convertedArgoCoords = convertCoordsBasedOnImageScale(
@@ -93,17 +93,17 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
           const originalSealCoords = sealData.map((item) => ({
             ...item,
             coords:
-              regionTitle === 'POLAR'
+              regionCode === 'POLAR'
                 ? [
                     Math.floor(item.coords[0] * originalScaleX * scaleX + xcentre),
                     Math.floor(-item.coords[1] * originalScaleY * scaleY + ycentre),
                     5,
                   ]
                 : item.coords,
-            href: `/product/seal-ctd-tags/10days?sealId=${item.name}&region=${regionTitle}&date=${formattedDate}`,
+            href: `/product/seal-ctd-tags/10days?sealId=${item.name}&region=${regionCode}&date=${formattedDate}`,
           }));
 
-          if (regionTitle === 'POLAR') {
+          if (regionCode === 'POLAR') {
             setSealCoords(originalSealCoords as MapImageAreas[]);
           } else {
             const convertedSealCoords = convertCoordsBasedOnImageScale(
@@ -133,7 +133,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
         imageElement.removeEventListener('load', handleImageLoad);
       }
     };
-  }, [argoData, formattedDate, regionTitle, sealData]);
+  }, [argoData, formattedDate, regionCode, sealData]);
 
   const handleCircleClick = async (area: ArgoTagMapArea | MapImageAreas) => {
     window.open(area.href, '_blank', 'noopener,noreferrer');
@@ -148,7 +148,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
       <img
         ref={imgRef}
         src={src}
-        alt={`Argo and Seal locations in ${regionTitle}`}
+        alt={`Argo and Seal locations in ${regionCode}`}
         useMap="#argo-and-seal-tag-map"
         className="max-h-[80vh] w-full select-none object-contain"
         onError={() => {

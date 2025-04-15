@@ -223,7 +223,7 @@ const ProductContent: React.FC = () => {
         src={chooseImg()!}
         date={useDate}
         productId={useProductId}
-        regionTitle={useRegionCode ?? 'POLAR'}
+        regionCode={useRegionCode ?? 'POLAR'}
       />
     );
   }
