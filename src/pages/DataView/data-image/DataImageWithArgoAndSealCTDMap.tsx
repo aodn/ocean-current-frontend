@@ -57,23 +57,64 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
         const { naturalWidth, naturalHeight, width, height } = imgRef.current;
         const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
 
+        const xcentre = width / 2;
+        const ycentre = height / 2 - 17.5;
+        const originalScaleX = 403;
+        const originalScaleY = 411;
+
         if (argoData.length > 0) {
           const originalArgoCoords = argoData.map((item) => ({
             ...item,
+            coords:
+              regionTitle === 'Antarctica'
+                ? [
+                    Math.floor(item.coords[0] * originalScaleX * scaleX + xcentre),
+                    Math.floor(-item.coords[1] * originalScaleY * scaleY + ycentre),
+                    5,
+                  ]
+                : item.coords,
             href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${formattedDate}`,
           }));
-          const convertedArgoCoords = convertCoordsBasedOnImageScale(originalArgoCoords, scaleX, scaleY, naturalHeight);
-          setArgoCoords(convertedArgoCoords as ArgoTagMapArea[]);
+
+          if (regionTitle === 'Antarctica') {
+            setArgoCoords(originalArgoCoords as ArgoTagMapArea[]);
+          } else {
+            const convertedArgoCoords = convertCoordsBasedOnImageScale(
+              originalArgoCoords,
+              scaleX,
+              scaleY,
+              naturalHeight,
+            );
+            setArgoCoords(convertedArgoCoords as ArgoTagMapArea[]);
+          }
         }
 
         if (sealData.length > 0) {
           const originalSealCoords = sealData.map((item) => ({
             ...item,
+            coords:
+              regionTitle === 'Antarctica'
+                ? [
+                    Math.floor(item.coords[0] * originalScaleX * scaleX + xcentre),
+                    Math.floor(-item.coords[1] * originalScaleY * scaleY + ycentre),
+                    5,
+                  ]
+                : item.coords,
             href: `/product/seal-ctd-tags/10days?sealId=${item.name}&region=${regionTitle}&date=${formattedDate}`,
           }));
-          const convertedSealCoords = convertCoordsBasedOnImageScale(originalSealCoords, scaleX, scaleY, naturalHeight);
 
-          setSealCoords(convertedSealCoords as MapImageAreas[]);
+          if (regionTitle === 'Antarctica') {
+            setSealCoords(originalSealCoords as MapImageAreas[]);
+          } else {
+            const convertedSealCoords = convertCoordsBasedOnImageScale(
+              originalSealCoords,
+              scaleX,
+              scaleY,
+              naturalHeight,
+            );
+
+            setSealCoords(convertedSealCoords as MapImageAreas[]);
+          }
         }
       }
     };
