@@ -1,14 +1,15 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import { useSearchParams } from 'react-router-dom';
 import useDateNavigation from '@/hooks/useDateNavigation/useDateNavigation';
 import { useDateList } from '@/hooks';
 import { RegionScope } from '@/constants/region';
 import { DateFormat } from '@/types/date';
+import { ProductID } from '@/types/product';
+import useProductStore from '@/stores/product-store/productStore';
 import DatePicker from './DatePicker/DatePicker';
 
 interface DatePaginationProps {
-  productId: string;
+  productId: ProductID;
   regionScope: RegionScope;
   dateFormat: DateFormat;
   initialDate?: string;
@@ -22,12 +23,9 @@ const DatePagination: React.FC<DatePaginationProps> = ({
   initialDate,
   isMobile,
 }) => {
-  const [searchParams] = useSearchParams();
-  const dateFromUrl = searchParams.get('date');
+  const regionCodeFromStore = useProductStore((state) => state.productParams.regionCode);
 
-  const selectedDate = dateFromUrl || dayjs().format(dateFormat);
-
-  const { isLoading, dateList } = useDateList(productId, regionScope, selectedDate) || [];
+  const { isLoading, dateList } = useDateList(productId, regionScope, regionCodeFromStore!);
 
   const { currentDate, updateDate, goToPrevious, goToNext, canGoPrevious, canGoNext } = useDateNavigation({
     availableDates: dateList,
@@ -42,6 +40,7 @@ const DatePagination: React.FC<DatePaginationProps> = ({
   return (
     <DatePicker
       productId={productId}
+      dateList={dateList}
       selectedDate={currentDate.toDate()}
       goToNext={goToNext}
       goToPrevious={goToPrevious}
@@ -49,7 +48,6 @@ const DatePagination: React.FC<DatePaginationProps> = ({
       canGoPrevious={canGoPrevious}
       dateFormat={dateFormat}
       onChange={(date: Date | null) => updateDate(dayjs(date), true)}
-      maxDate={new Date()}
       isMobile={isMobile}
     />
   );

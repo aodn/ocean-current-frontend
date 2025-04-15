@@ -5,7 +5,7 @@ import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { useProductSearchParam, useQueryParams } from '@/hooks';
 import useProductPath from '@/stores/product-store/hooks/useProductPath';
 import { BoundingBox, GeoJsonPolygon } from '@/types/map';
-import { getRegionByRegionTitle } from '@/utils/region-utils/region';
+import { getRegionByRegionCode, getRegionTitleByRegionCode } from '@/utils/region-utils/region';
 import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo-utils/geo';
 import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
 import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
@@ -29,8 +29,8 @@ const {
 const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) => {
   const baseProductPath = useProductPath();
   const { searchParams, updateQueryParamsAndNavigate } = useQueryParams();
-  const { region: regionTitleFromUrl } = useProductSearchParam();
-  const selectedRegion = regionTitleFromUrl || 'Au';
+  const { region: regionCodeFromUrl } = useProductSearchParam();
+  const selectedRegionTitle = getRegionTitleByRegionCode(regionCodeFromUrl) || 'Au';
   const regionGeoJsonData = useRegionPolygons();
   const isChla = baseProductPath.includes('ocean-colour');
 
@@ -59,8 +59,8 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
   useEffect(() => {
     if (!map) return;
 
-    const regionTitle = regionTitleFromUrl || 'Australia/NZ';
-    const region = getRegionByRegionTitle(regionTitle);
+    const regionCode = regionCodeFromUrl || 'Au';
+    const region = getRegionByRegionCode(regionCode);
 
     if (region) {
       // zoom in on EAC Mooring Array's only region when in main map view
@@ -78,7 +78,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
         mapFitBounds(region.coords);
       }
     }
-  }, [map, regionTitleFromUrl, mapFitBounds, isMiniMap, baseProductPath]);
+  }, [map, regionCodeFromUrl, mapFitBounds, isMiniMap, baseProductPath]);
 
   const handleMouseMove = useCallback(
     (e: MapMouseEvent) => {
@@ -143,14 +143,14 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
         mapFitBounds(regionBounds);
       }
 
-      const { name: regionName, code: regionCode } = getPropertyFromMapFeatures<{ name: string; code: string }>(
+      const { code: regionCode } = getPropertyFromMapFeatures<{ name: string; code: string }>(
         map,
         e,
         PRODUCT_REGION_BOX_LAYER_ID,
         ['name', 'code'],
       );
 
-      if (regionName) {
+      if (regionCode) {
         let targetPath = `/product/${baseProductPath}`;
         let queryObject = {};
 
@@ -164,12 +164,12 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
           };
         } else if (baseProductPath.includes(ProductPath.SEAL_CTD_TAGS)) {
           targetPath = `/product/${ProductPath.SEAL_CTD}/tracks`;
-          queryObject = { region: regionName, sealId: null };
+          queryObject = { region: regionCode, sealId: null };
         } else {
           const dateFromQuery = searchParams.date;
           queryObject = dateFromQuery
-            ? { region: regionName, point: null }
-            : { region: regionName, date: defaultTargetDate, point: null };
+            ? { region: regionCode, point: null }
+            : { region: regionCode, date: defaultTargetDate, point: null };
         }
 
         updateQueryParamsAndNavigate(targetPath, queryObject);
@@ -258,7 +258,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
           'line-color': color.primary2,
           'line-width': 5,
         }}
-        filter={['==', 'name', selectedRegion]}
+        filter={['==', 'name', selectedRegionTitle]}
       />
       <Layer
         type="symbol"
@@ -273,7 +273,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
         paint={{
           'text-color': isChla ? '#fff' : '#000000',
         }}
-        filter={['==', 'name', selectedRegion]}
+        filter={['==', 'name', selectedRegionTitle]}
       />
     </Source>
   );

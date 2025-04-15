@@ -33,6 +33,7 @@ export type ChildProductID =
   | 'adjustedSeaLevelAnomaly-sla'
   | 'adjustedSeaLevelAnomaly-centiles'
   | 'adjustedSeaLevelAnomaly-sst'
+  | 'adjustedSeaLevelAnomaly-nonTidalSla'
   // Monthly Means children
   | 'monthlyMeans-anomalies'
   | 'monthlyMeans-CLIM_OFAM3_SSTAARS'

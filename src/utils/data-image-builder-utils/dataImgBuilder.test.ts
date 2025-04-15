@@ -662,7 +662,7 @@ describe('buildSealCtdMapImageUrl', () => {
 describe('buildSealCtdGraphImageUrl', () => {
   it('should return the correct url for SealCTD Temperature graph image', () => {
     // Arrange
-    const region = 'Antarctica';
+    const region = 'POLAR';
     const date = dayjs('202502280000');
     const subProduct = 'sealCtd-timeseriesTemperature';
 
@@ -675,7 +675,7 @@ describe('buildSealCtdGraphImageUrl', () => {
 
   it('should return the correct url for SealCTD Salinity graph image', () => {
     // Arrange
-    const region = 'GAB';
+    const region = 'GAB-Seal';
     const date = dayjs('20250228');
     const subProduct = 'sealCtd-timeseriesSalinity';
 

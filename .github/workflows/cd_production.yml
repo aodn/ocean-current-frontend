@@ -1,25 +1,25 @@
-name: CD - Edge
-run-name: Deploy frontend to Edge environment
+name: CD - Production
+run-name: Deploy frontend to Production environment
 
 permissions:
   actions: read
   contents: read
 
 on:
-  workflow_run:
-    workflows: [CI]
-    types: [completed]
-    branches: [main]
+  push:
+    tags:
+      - v*.*.*
 
 jobs:
-  build:
-    name: Build
-    environment: edge
+  prod_build_deploy:
+    name: Build and Deploy to Production Environment
+    environment: production
     runs-on: ubuntu-latest
-    if: >
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main'
+    env:
+      DIST: ./dist
+    permissions:
+      contents: read
+      id-token: write
 
     strategy:
       matrix:
@@ -53,26 +53,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: yarn_build
-          path: ./dist
-          retention-days: 1
-
-  edge_deploy:
-    name: Deploy to Edge Environment
-    needs: build
-    environment: edge
-    runs-on: ubuntu-latest
-    env:
-      DIST: ./dist
-    permissions:
-      contents: read
-      id-token: write
-
-    steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: yarn_build
           path: ${{ env.DIST }}
+          retention-days: 1
 
       - name: Configure AWS credentials
         id: aws_auth
