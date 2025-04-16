@@ -1,54 +1,47 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Dropdown, Loading } from '@/components/Shared';
-import { getCurrentMetersPlotsList } from '@/services/currentMeters';
-import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import { buildCurrentMetersDataImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
-import {
-  CurrentMetersPlotPath,
-  CurrentMetersPlotTitle,
-  CurrentMetersSubproductsKeyType,
-} from '@/constants/currentMeters';
+import { CurrentMetersPlotPath, CurrentMetersPlotTitle } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
+import { fetchCurrentMetersPlotsList } from '@/services/imageList';
+import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
+
+const filterLatestAndRemoveFileExtension = (files: string[] | undefined): DropdownElement<string>[] => {
+  if (!files) return [];
+  return files
+    .filter((file) => !file.includes('latest'))
+    .map((file) => ({ label: file.replace('.gif', ''), id: file.replace('.gif', '') }));
+};
 
 type DataImageWithCurrentMetersPlotsProps = {
-  subProductKey: CurrentMetersSubproductsKeyType;
   deploymentPlot: CurrentMetersDeploymentPlotNames;
 };
 
-const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsProps> = ({
-  subProductKey,
-  deploymentPlot,
-}) => {
+const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsProps> = ({ deploymentPlot }) => {
   const imgRef = useRef<HTMLImageElement | null>(null);
-  const [velocityElements, setVelocityElements] = useState<DropdownElement<string>[]>([]);
-  const [depthTimeElements, setDepthTimeElements] = useState<DropdownElement<string>[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedVelocity, setSelectedVelocity] = useState('');
-  const [selectedDepthTime, setSelectedDepthTime] = useState('');
-  const subProdKey = subProductKey as CurrentMetersSubproductsKeyType;
+  const [selectedVelocityId, setSelectedVelocityId] = useState<string | null>(null);
+  const [selectedDepthTimeId, setSelectedDepthTimeId] = useState<string | null>(null);
 
-  const velocityList = useCallback(async () => {
-    const list = await getCurrentMetersPlotsList(subProdKey, deploymentPlot, CurrentMetersPlotPath.VELOCITY_VECTOR);
-    return list.map((plot) => ({ label: plot, id: plot }));
-  }, [deploymentPlot, subProdKey]);
+  const { data, isLoading } = useQuery({
+    queryKey: ['current-meters-plots', deploymentPlot],
+    queryFn: () => fetchCurrentMetersPlotsList(deploymentPlot),
+    enabled: !!deploymentPlot,
+  });
 
-  const depthTimeList = useCallback(async () => {
-    const list = await getCurrentMetersPlotsList(subProdKey, deploymentPlot, CurrentMetersPlotPath.DEPTH_TIME);
-    return list.map((plot) => ({ label: plot, id: plot }));
-  }, [deploymentPlot, subProdKey]);
+  const velocityList = data?.depthData?.find(({ depth }) => depth === CurrentMetersPlotPath.VELOCITY_VECTOR);
+  const depthTimeList = data?.depthData?.find(({ depth }) => depth === CurrentMetersPlotPath.DEPTH_TIME);
+
+  const velocityElements = useMemo(() => filterLatestAndRemoveFileExtension(velocityList?.files), [velocityList]);
+  const depthTimeElements = useMemo(() => filterLatestAndRemoveFileExtension(depthTimeList?.files), [depthTimeList]);
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      setVelocityElements(await velocityList());
-      setDepthTimeElements(await depthTimeList());
-      setLoading(false);
-    })();
-  }, [depthTimeList, velocityList]);
-
-  useEffect(() => {
-    if (velocityElements.length > 0) setSelectedVelocity(velocityElements[0]?.id);
-    if (depthTimeElements.length > 0) setSelectedDepthTime(depthTimeElements[0]?.id);
+    if (velocityElements && velocityElements.length > 0) {
+      setSelectedVelocityId(velocityElements[0].id);
+    }
+    if (depthTimeElements && depthTimeElements.length > 0) {
+      setSelectedDepthTimeId(depthTimeElements[0].id);
+    }
   }, [depthTimeElements, velocityElements]);
 
   return (
@@ -57,23 +50,18 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
         <h3 className="py-2 text-lg font-medium text-imos-grey">{CurrentMetersPlotTitle.VELOCITY_VECTOR_PLOTS}</h3>
         <Dropdown
           elements={velocityElements}
-          selectedId={selectedVelocity}
+          selectedId={selectedVelocityId}
           onChange={(elem) => {
-            setSelectedVelocity(elem.id);
+            setSelectedVelocityId(elem.id);
           }}
           smallDropdown
         />
-        {loading ? (
+        {isLoading || !selectedVelocityId || !velocityList ? (
           <Loading />
         ) : (
           <img
             ref={imgRef}
-            src={buildCurrentMetersDataImageUrl(
-              subProdKey,
-              deploymentPlot,
-              CurrentMetersPlotPath.VELOCITY_VECTOR,
-              selectedVelocity,
-            )}
+            src={buildCurrentMetersDataImageUrl(velocityList.path, selectedVelocityId)}
             alt={`Layer-average velocity vector scatter plots for deployment plot ${deploymentPlot}`}
             className="mt-2 max-h-[80vh] select-none object-contain"
           />
@@ -83,23 +71,18 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
         <h3 className="py-2 text-lg font-medium text-imos-grey">{CurrentMetersPlotTitle.DEPTH_TIME_PLOTS}</h3>
         <Dropdown
           elements={depthTimeElements}
-          selectedId={selectedDepthTime}
+          selectedId={selectedDepthTimeId}
           onChange={(elem) => {
-            setSelectedDepthTime(elem.id);
+            setSelectedDepthTimeId(elem.id);
           }}
           smallDropdown
         />
-        {loading ? (
+        {isLoading || !selectedDepthTimeId || !depthTimeList ? (
           <Loading />
         ) : (
           <img
             ref={imgRef}
-            src={buildCurrentMetersDataImageUrl(
-              subProdKey,
-              deploymentPlot,
-              CurrentMetersPlotPath.DEPTH_TIME,
-              selectedDepthTime,
-            )}
+            src={buildCurrentMetersDataImageUrl(depthTimeList.path, selectedDepthTimeId)}
             alt={`Depth-time plots for deployment plot ${deploymentPlot}`}
             className="mt-2 max-h-[80vh] select-none object-contain"
           />

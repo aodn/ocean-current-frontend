@@ -2,14 +2,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { productTypeMapping, TargetPathRegionScope } from '@/constants/imgPath';
 import { RegionScope } from '@/constants/region';
 import { imageBaseUrl, imageS3BaseUrl } from '@/configs/image';
-import {
-  CurrentMetersDepth,
-  CurrentMetersPlotPath,
-  CurrentMetersProperty,
-  CurrentMetersRegion,
-  CurrentMetersSubproductsKeyType,
-} from '@/constants/currentMeters';
-import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
+import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
 import { ArgoDepths } from '@/constants/argo';
 import { DateFormat } from '@/types/date';
 
@@ -195,15 +188,8 @@ const buildCurrentMetersMapImageUrl = (
   return `${imageBaseUrl}/timeseries/ANMN_P49/mapst/${region}_${property}_${depth}${formattedYear}.gif`;
 };
 
-const buildCurrentMetersDataImageUrl = (
-  subProduct: CurrentMetersSubproductsKeyType,
-  deploymentPlot: CurrentMetersDeploymentPlotNames,
-  type: CurrentMetersPlotPath,
-  plotId: string,
-) => {
-  const folder = subProduct === 'currentMeters-shelf' ? 'ANMN_P49' : 'ANMN_P48';
-
-  return `${imageBaseUrl}/timeseries/${folder}/${deploymentPlot}/${type}/${plotId}.gif`;
+const buildCurrentMetersDataImageUrl = (deploymentPlotPath: string, plotId: string) => {
+  return `${imageBaseUrl}${deploymentPlotPath}/${plotId}.gif`;
 };
 
 const buildSurfaceWavesImageUrl = (date: string, imgPath: string): string => {

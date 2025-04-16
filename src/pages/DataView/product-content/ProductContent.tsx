@@ -27,7 +27,7 @@ import { VideoPlayerOutletContext } from '@/types/router';
 import { checkProductHasArgoTags } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
-import { CurrentMetersSubproductsKey, CurrentMetersSubproductsKeyType } from '@/constants/currentMeters';
+import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
 import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
@@ -257,12 +257,7 @@ const ProductContent: React.FC = () => {
         />
       );
     }
-    return (
-      <DataImageWithCurrentMetersPlots
-        subProductKey={useProductId as CurrentMetersSubproductsKeyType}
-        deploymentPlot={deploymentPlot as CurrentMetersDeploymentPlotNames}
-      />
-    );
+    return <DataImageWithCurrentMetersPlots deploymentPlot={deploymentPlot as CurrentMetersDeploymentPlotNames} />;
   }
 
   return (
