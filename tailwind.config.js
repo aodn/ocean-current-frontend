@@ -46,8 +46,6 @@ export default {
         h0: ['8rem', { lineHeight: '1.75rem' }],
       },
       fontFamily: {
-        noto: ['NotoSans', 'sans-serif'],
-        lexend: ['Lexend', 'sans-serif'],
         poppins: ['Poppins', 'sans-serif'],
         'open-sans': ['"Open Sans"', 'sans-serif'],
       },

@@ -6,8 +6,8 @@ import { ProductID } from '@/types/product';
  */
 export const FRONTEND_TO_API_ID_MAP: Partial<Record<ProductID, string>> = {
   // Current Meters mappings
-  'currentMeters-mooredInstrumentArray': 'currentMetersPlot-49',
-  'currentMeters-shelf': 'currentMetersRegion-49',
+  'currentMeters-mooredInstrumentArray': 'currentMetersPlot-48',
+  'currentMeters-shelf': 'currentMetersPlot-49',
   'currentMeters-deepADCP': 'currentMetersCalendar-49',
   'currentMeters-deepADV': 'currentMetersPlot-48',
   'currentMeters-southernOcean': 'currentMetersRegion-48',
