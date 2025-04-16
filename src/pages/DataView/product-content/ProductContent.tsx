@@ -34,6 +34,7 @@ import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMet
 import DataImageWithCurrentMetersPlots from '../data-image/DataImageWithCurrentMetersPlots';
 import DataImageWithTidalCurrentsMap from '../data-image/DataImageWithTidalCurrentsMap';
 import DataImageWithSealCtdGraphs from '../data-image/DataImageWithSealCtdGraphs';
+import DataImageWithArgoAndSealCTDMap from '../data-image/DataImageWithArgoAndSealCTDMap';
 
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
@@ -212,6 +213,17 @@ const ProductContent: React.FC = () => {
         date={useDate}
         productId={useProductId}
         region={useRegionCode ?? 'Au'}
+      />
+    );
+  }
+
+  if (subProduct?.key === 'sealCtd-sealTracks') {
+    return (
+      <DataImageWithArgoAndSealCTDMap
+        src={chooseImg()!}
+        date={useDate}
+        productId={useProductId}
+        regionCode={useRegionCode ?? 'POLAR'}
       />
     );
   }

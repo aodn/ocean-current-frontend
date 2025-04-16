@@ -52,12 +52,12 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
         const originalCoords = data.map((item) => ({
           shape: 'circle',
           coords: [item.coordX, item.coordY, 10],
-          href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0&date=${dateFormatted}`,
+          href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${dateFormatted}`,
           wmoId: item.wmoId,
           cycle: item.cycle,
         }));
         const convertedCoords = convertCoordsBasedOnImageScale(originalCoords, scaleX, scaleY, naturalHeight);
-        setCoords(convertedCoords);
+        setCoords(convertedCoords as ArgoTagMapArea[]);
       }
     };
 
@@ -87,7 +87,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
       return;
     }
 
-    const newPath = `/product/argo?wmoid=${area.wmoId}&cycle=${mostRecentItem.cycle}&depth=0&date=${mostRecentDate}`;
+    const newPath = `/product/argo?wmoid=${area.wmoId}&cycle=${mostRecentItem.cycle}&depth=0-2000m&date=${mostRecentDate}`;
 
     window.open(newPath, '_blank', 'noopener,noreferrer');
   };

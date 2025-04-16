@@ -43,4 +43,24 @@ const getSealCtdGraphTags = async (imageUrl: string) => {
   }
 };
 
-export { validateSealCtdImgUrl, getSealCtdGraphTags };
+const getSealCtdMapTags = async (regionCode: string, date: string) => {
+  const formattedRegion = regionCode === 'GAB-Seal' ? 'GAB' : regionCode;
+  const tagUrl = `AATAMS/${formattedRegion}/tag_html/tracks_${date}.txt`;
+
+  try {
+    const response = await proxyClient.get<string>(tagUrl, {
+      headers: {
+        'Content-Type': ContentType.Text,
+      },
+    });
+
+    if (response.data && response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+    throw new Error('Unable to fetch SealCTD map image TAG file.');
+  }
+};
+
+export { validateSealCtdImgUrl, getSealCtdGraphTags, getSealCtdMapTags };
