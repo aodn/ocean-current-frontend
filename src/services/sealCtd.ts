@@ -1,7 +1,5 @@
-import { Dayjs } from 'dayjs';
 import { apiConfig } from '@/configs/api';
 import { ContentType } from '@/constants/request';
-import { DateFormat } from '@/types/date';
 import { proxyClient } from './httpClient';
 
 // this is only temporary and can be removed when the API is implemented
@@ -45,10 +43,9 @@ const getSealCtdGraphTags = async (imageUrl: string) => {
   }
 };
 
-const getSealCtdMapTags = async (regionCode: string, date: Dayjs) => {
+const getSealCtdMapTags = async (regionCode: string, date: string) => {
   const formattedRegion = regionCode === 'GAB-Seal' ? 'GAB' : regionCode;
-  const formattedDate = date.format(DateFormat.DAY);
-  const tagUrl = `AATAMS/${formattedRegion}/tag_html/tracks_${formattedDate}.txt`;
+  const tagUrl = `AATAMS/${formattedRegion}/tag_html/tracks_${date}.txt`;
 
   try {
     const response = await proxyClient.get<string>(tagUrl, {

@@ -69,7 +69,7 @@ const formatDate = (
 const buildProductImageUrl = (
   productId: ProductId,
   subProductType: SubProductType,
-  regionName: string,
+  regionCode: string,
   regionScope: TargetPathRegionScope,
   date: string,
   isApi: boolean = false,
@@ -91,20 +91,20 @@ const buildProductImageUrl = (
     oceanColourLocal: () => {
       const dateTimeSegment = dayjs(date).format(DateFormat.HOUR);
       return isApi
-        ? `/api/${regionName}_chl/${dateTimeSegment}.gif`
-        : `${baseUrl}/${regionName}_chl/${dateTimeSegment}.gif`;
+        ? `/api/${regionCode}_chl/${dateTimeSegment}.gif`
+        : `${baseUrl}/${regionCode}_chl/${dateTimeSegment}.gif`;
     },
     adjustedSeaLevelAnomaly: () => {
-      const updatedRegionName = regionName === 'Au' ? 'ht' : regionName;
+      const updatedRegionCode = regionCode === 'Au' ? 'ht' : regionCode;
       return isApi
-        ? `/api/${updatedRegionName}/${formattedDate}.gif`
-        : `${baseUrl}/${updatedRegionName}/${formattedDate}.gif`;
+        ? `/api/${updatedRegionCode}/${formattedDate}.gif`
+        : `${baseUrl}/${updatedRegionCode}/${formattedDate}.gif`;
     },
     default: () => {
       const subProductSegment = subProductType ? `/${subProductType}` : '';
       return isApi
-        ? `/api/${productSegment}${subProductSegment}/${regionName}/${formattedDate}.gif`
-        : `${baseUrl}/${productSegment}${subProductSegment}/${regionName}/${formattedDate}.gif`;
+        ? `/api/${productSegment}${subProductSegment}/${regionCode}/${formattedDate}.gif`
+        : `${baseUrl}/${productSegment}${subProductSegment}/${regionCode}/${formattedDate}.gif`;
     },
   };
 
@@ -126,7 +126,7 @@ const buildProductImageUrl = (
 const buildProductVideoUrl = (
   productId: ProductId,
   subProductType: SubProductType,
-  regionName: string,
+  regionCode: string,
   regionScope: TargetPathRegionScope,
   date: string,
 ): string => {
@@ -145,19 +145,19 @@ const buildProductVideoUrl = (
 
   const productUrl = {
     surfaceWaves: `${imageBaseUrl}/s3.php?file=WAVES/y${year}/m${month}/Au_wave_m${month}.mp4`,
-    fourHourSst: `${baseUrl}/${productSegment}/${subProductType}/${regionName}/${regionName}_${subProductType}_${year}${month}.mp4`,
-    monthlyMeans: `${baseUrl}/${productSegment}/${regionName}/${regionName}.mp4`,
-    default: `${baseUrl}/${productSegment}${subProductSegment}/${regionName}/${regionName}_${subProductType}_${year}_${quarter}.mp4`,
+    fourHourSst: `${baseUrl}/${productSegment}/${subProductType}/${regionCode}/${regionCode}_${subProductType}_${year}${month}.mp4`,
+    monthlyMeans: `${baseUrl}/${productSegment}/${regionCode}/${regionCode}.mp4`,
+    default: `${baseUrl}/${productSegment}${subProductSegment}/${regionCode}/${regionCode}_${subProductType}_${year}_${quarter}.mp4`,
   };
 
   if (productId === 'sealCtd' && subProductType === 'tracks') {
-    const sealCtdRegionName = regionName === 'GAB-Seal' ? 'GAB' : regionName;
+    const sealCtdRegionCode = regionCode === 'GAB-Seal' ? 'GAB' : regionCode;
 
-    return `${baseUrl}/AATAMS/${sealCtdRegionName}/${subProductType}/tracks_${year}.mp4`;
+    return `${baseUrl}/AATAMS/${sealCtdRegionCode}/${subProductType}/tracks_${year}.mp4`;
   }
 
   if (productId === 'oceanColour' && regionScope === TargetPathRegionScope.Local) {
-    return `${baseUrl}/${regionName}_chl/${regionName}_chl${dayjs(date).format(DateFormat.MONTH)}.mp4`;
+    return `${baseUrl}/${regionCode}_chl/${regionCode}_chl${dayjs(date).format(DateFormat.MONTH)}.mp4`;
   }
 
   return productUrl[productId as keyof typeof productUrl] || productUrl.default;

@@ -12,7 +12,7 @@ import { DateFormat } from '@/types/date';
 
 type DataImageWithArgoAndSealCTDMapProps = {
   src: string;
-  productId: string;
+  productId: ProductID;
   regionCode: string;
   date: Dayjs;
 };
@@ -37,7 +37,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
 
   useEffect(() => {
     const fetchTagsData = async () => {
-      const mapTags = await getSealCtdMapTags(regionCode, date);
+      const mapTags = await getSealCtdMapTags(regionCode, formattedDate);
       if (mapTags) {
         const { argoTags, sealTags } = parseArgoAndSealLocationsTagData(mapTags);
         setArgoData(argoTags);
@@ -46,7 +46,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
     };
 
     fetchTagsData();
-  }, [date, regionCode]);
+  }, [formattedDate, regionCode]);
 
   useEffect(() => {
     const handleImageLoad = () => {
@@ -57,6 +57,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
         const { naturalWidth, naturalHeight, width, height } = imgRef.current;
         const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
 
+        // numbers/calculations below are based on the original php code in handling edge case - POLAR region
         const xcentre = width / 2;
         const ycentre = height / 2 - 17.5;
         const originalScaleX = 403;
@@ -135,12 +136,19 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
     };
   }, [argoData, formattedDate, regionCode, sealData]);
 
-  const handleCircleClick = async (area: ArgoTagMapArea | MapImageAreas) => {
+  const handleCircleClick = (area: ArgoTagMapArea | MapImageAreas) => {
     window.open(area.href, '_blank', 'noopener,noreferrer');
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent, area: ArgoTagMapArea | MapImageAreas) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleCircleClick(area);
+    }
+  };
+
   if (imgLoadError) {
-    return <ErrorImage productId={productId.split('-')[0] as ProductID} date={date} />;
+    return <ErrorImage productId={productId} date={date} />;
   }
 
   return (
@@ -156,38 +164,28 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
         }}
       />
       <map name="argo-and-seal-tag-map">
-        {argoCoords.map((area, index) => (
+        {argoCoords.map((area) => (
           <area
-            key={index}
+            key={area.wmoId}
             shape={area.shape}
             coords={area.coords.join(',')}
             alt={`Argo wmoId ${area.wmoId}`}
             onClick={() => handleCircleClick(area)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleCircleClick(area);
-              }
-            }}
+            onKeyDown={(e) => handleKeyDown(e, area)}
             tabIndex={0}
             title={`Argo wmoId ${area.wmoId}`}
             role="link"
             className="cursor-pointer"
           />
         ))}
-        {sealCoords.map((area, index) => (
+        {sealCoords.map((area) => (
           <area
-            key={index}
+            key={area.name}
             shape={area.shape}
             coords={area.coords.join(',')}
             alt={`Seal tag ${area.name}`}
             onClick={() => handleCircleClick(area)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleCircleClick(area);
-              }
-            }}
+            onKeyDown={(e) => handleKeyDown(e, area)}
             tabIndex={0}
             title={`Seal tag ${area.name}`}
             role="link"
