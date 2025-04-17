@@ -1,6 +1,6 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import logo from '@/assets/images/imos-logo.png';
+import logo from '@/assets/images/full-imos-logo.png';
 import { BrandingText } from '@/constants/textConstant';
 import { copyrightText, footerAcknowledgeText, footerLinks, footerSocials } from './consts.ts';
 import { FooterIcon } from './footer.types';
@@ -10,8 +10,10 @@ const Footer: React.FC = () => {
     <footer className="flex justify-center bg-white px-5 leading-8 sm:px-10">
       <div className="max-w-8xl py-6 md:pt-10">
         <div className="flex flex-row items-center pb-10 pt-5">
-          <img src={logo} alt="IMOS logo" className="h-8 sm:h-10 md:h-max" />
-          <div className="px-6 leading-6">
+          <img src={logo} alt="IMOS logo" className="h-16" />
+          <div className="mx-7 h-14 w-0.5 bg-imos-title-blue opacity-50"></div>
+
+          <div className="leading-6">
             <h1 className="text-2xl font-medium text-imos-deep-blue">{BrandingText.OC_PASCAL_CASE}</h1>
             <h2 className="text-sm font-normal text-imos-subheading-grey">{BrandingText.OC_SUBHEADING}</h2>
           </div>

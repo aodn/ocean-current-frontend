@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '@/assets/images/imos-logo.png';
+import logo from '@/assets/images/full-imos-logo.png';
 import burgerMenu from '@/assets/icons/burger-menu-icon.svg';
 import cross from '@/assets/icons/cross-icon.svg';
 import { linksData } from '@/data/linksData';
@@ -16,7 +16,7 @@ const NavbarBurgerMenu: React.FC = () => {
     <div>
       <nav className="flex items-center justify-between px-6 py-6">
         <Link className="mr-auto" to={'/'}>
-          <img className="h-8" src={logo} alt="IMOS logo navbar" />
+          <img className="h-12" src={logo} alt="IMOS logo navbar" />
         </Link>
         <img
           data-testid="svg-toggle"
