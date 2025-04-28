@@ -11,11 +11,11 @@ import { Product } from '@/types/product';
 import { currentMetersMapDataPointsFlat } from '@/data/current-meter/mapDataPoints';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { MapImageAreas } from '@/types/dataImage';
+import { getRegionTitleByRegionCode } from '@/utils/region-utils/region';
 
 type DataImageWithCurrentMetersMapProps = {
   mainProduct: Product | null;
   src: string;
-  productId: string;
   regionCode: CurrentMetersRegion;
   date: string;
 };
@@ -23,7 +23,6 @@ type DataImageWithCurrentMetersMapProps = {
 const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps> = ({
   mainProduct,
   src,
-  productId,
   regionCode,
   date,
 }) => {
@@ -78,12 +77,14 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
     }
   };
 
+  const regionTitle = getRegionTitleByRegionCode(regionCode);
+
   return (
     <div className="relative inline-block h-full w-full bg-white">
       <img
         ref={imgRef}
         src={src}
-        alt={`${productId} data`}
+        alt={`Current Meters ${regionTitle} map`}
         useMap="#current-meters-map"
         className="max-h-[80vh] select-none object-contain"
         onError={() => {
@@ -101,7 +102,15 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
               coords={area.coords.join(',')}
               alt={`${area.type === 'region' ? 'Region' : 'Plot'} ${area.name}`}
               onClick={() => handleAreaClick(area)}
-              aria-hidden="true"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleAreaClick(area);
+                }
+              }}
+              tabIndex={0}
+              title={area.name}
+              role="link"
             />
           ))}
       </map>
