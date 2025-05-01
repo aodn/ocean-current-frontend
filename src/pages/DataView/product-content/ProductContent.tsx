@@ -252,7 +252,6 @@ const ProductContent: React.FC = () => {
           mainProduct={mainProduct}
           src={chooseImg()!}
           date={currentMetersDate}
-          productId={useProductId}
           regionCode={currentMetersRegion}
         />
       );
