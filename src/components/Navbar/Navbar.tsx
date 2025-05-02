@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '@/assets/images/imos-logo.png';
+import logo from '@/assets/images/full-imos-logo.png';
 import { linksData } from '@/data/linksData';
 import { LinkItem, SectionLinks } from '@/types/navbar';
 import { BrandingText } from '@/constants/textConstant';
@@ -12,22 +12,6 @@ const Navbar: React.FC = () => {
   const [popoverPosition, setPopoverPosition] = useState<{ left: number } | null>(null);
   const [menuItems] = useState<LinkItem[]>(linksData);
   const menuItemRefs = useRef<(HTMLElement | null)[]>([]);
-  const [isScrolled, setIsScrolled] = useState<boolean>(false);
-
-  const handleScroll = () => {
-    if (window.scrollY > 0) {
-      setIsScrolled(true);
-    } else {
-      setIsScrolled(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   const setPositionNavbar = (index: number, element: HTMLElement) => {
     setHoverIndex(index);
@@ -47,11 +31,11 @@ const Navbar: React.FC = () => {
   return (
     <div className="sticky top-0 z-50 w-full bg-white shadow-md transition-all duration-300">
       <nav className="mx-auto flex w-full max-w-8xl items-center justify-between p-3 px-10">
-        <div className="flex items-center">
+        <div className="flex h-14 items-center">
           <Link className="mr-auto" to={'/'}>
-            <img className={`transition-all duration-300 ${isScrolled ? 'h-8' : 'h-12'}`} src={logo} alt="IMOS logo" />
+            <img className="h-14 transition-all duration-300" src={logo} alt="IMOS logo" />
           </Link>
-          <div className="mx-7 h-10 w-0.5 bg-imos-title-blue"></div>
+          <div className="mx-7 h-12 w-0.5 bg-imos-title-blue opacity-50"></div>
           <div className="flex flex-col justify-center text-xl text-imos-title-blue">
             <Link className="mr-auto" to={'/'}>
               {BrandingText.OC_PASCAL_CASE}
