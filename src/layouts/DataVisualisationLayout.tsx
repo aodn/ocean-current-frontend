@@ -36,14 +36,14 @@ const DataVisualisationLayout: React.FC = () => {
   const urlType = useUrlType();
   useSetProductId(urlType, setProductId);
 
+  const dateFromUrl = searchParams.get('date') || dayjs().format('YYYYMMDD');
   const getArgoData = useCallback(() => {
-    const date = searchParams.get('date') || dayjs().format('YYYYMMDD');
     const worldMeteorologicalOrgId = searchParams.get('wmoid') || '';
     const cycle = searchParams.get('cycle') || '';
     const depth = (searchParams.get('depth') ?? ArgoDepths['2000M']) as ArgoDepths;
     setSelectedArgoParams({ worldMeteorologicalOrgId, cycle, depth });
-    setDate(dayjs(date));
-  }, [searchParams]);
+    setDate(dayjs(dateFromUrl));
+  }, [searchParams, dateFromUrl]);
 
   const { region: regionCodeFromUrl = 'Au', date } = useProductSearchParam();
 
@@ -70,7 +70,7 @@ const DataVisualisationLayout: React.FC = () => {
 
   useEffect(() => {
     if (isArgo) getArgoData();
-  }, [getArgoData, isArgo]);
+  }, [getArgoData, isArgo, dateFromUrl]);
 
   if (!productId) {
     return <Loading />;

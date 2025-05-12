@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { isAxiosError } from 'axios';
-import { getArgoProfilesByDate } from '@/services/argo';
+import { fetchArgoProfilesByDate } from '@/services/argo';
 import { convertHtmlToArgo } from '@/utils/argo-utils/argo';
 import { ArgoProfile } from '@/types/argo';
 import { setArgoMetaData } from '@/stores/argo-store/argoStore';
@@ -33,7 +33,7 @@ const useArgoAsProductData = () => {
       }
 
       try {
-        const response = await getArgoProfilesByDate(date);
+        const response = await fetchArgoProfilesByDate(date);
         const data = convertHtmlToArgo(response.data);
         setArgoProfiles(data);
         setLoading(false);

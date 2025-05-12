@@ -16,7 +16,6 @@ const ProductMenuBarMobile: React.FC<ProductMenuBarProps> = () => {
   const navigate = useNavigate();
 
   const productId = useProductStore((state) => state.productParams.productId);
-  const regionScope = useProductStore((state) => state.productParams.regionScope);
   const dateFormat = useProductDateFormat();
 
   const handleReset = () => {
@@ -48,7 +47,7 @@ const ProductMenuBarMobile: React.FC<ProductMenuBarProps> = () => {
       </div>
       <div className="mb-2 flex items-center justify-between">
         <div className="flex h-11 items-center justify-center rounded-md border border-[#3A6F8F] p-2">
-          <DatePagination productId={productId} regionScope={regionScope} dateFormat={dateFormat} isMobile />
+          <DatePagination productId={productId} dateFormat={dateFormat} isMobile />
         </div>
 
         <div

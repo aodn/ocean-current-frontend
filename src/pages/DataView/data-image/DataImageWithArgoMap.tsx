@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { getArgoProfileCyclesByWmoId } from '@/services/argo';
+import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
 import { findMostRecentDateBefore } from '@/utils/date-utils/date';
 import { calculateImageScales } from '@/utils/general-utils/general';
 import { ArgoTagMapArea } from '@/types/argo';
@@ -78,7 +78,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   }, [data, dateFormatted, src]);
 
   const handleCircleClick = async (area: ArgoTagMapArea) => {
-    const { data } = await getArgoProfileCyclesByWmoId(area.wmoId.toString());
+    const { data } = await fetchArgoProfileCyclesByWmoId(area.wmoId.toString());
     const dates = data.map((item) => item.date);
     const mostRecentDate = findMostRecentDateBefore(dates, dateFormatted);
     const mostRecentItem = data.find((item) => item.date === mostRecentDate);

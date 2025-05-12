@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import dayjs, { Dayjs } from 'dayjs';
 import { DateFormat, DateItem } from '@/types/date';
+import { useArgoStore } from '@/stores/argo-store/argoStore';
 
 interface UseDateNavigationProps {
   dateFormat: DateFormat;
@@ -15,6 +16,7 @@ const useDateNavigation = ({ dateFormat, availableDates, initialDate }: UseDateN
 
   const formatDate = useCallback((date: dayjs.Dayjs) => date.format(dateFormat), [dateFormat]);
 
+  const argoProfiles = useArgoStore((state) => state.argoProfileCycles);
   const currentDate = useMemo(() => {
     if (initialDate) {
       return dayjs(initialDate, dateFormat);
@@ -41,14 +43,21 @@ const useDateNavigation = ({ dateFormat, availableDates, initialDate }: UseDateN
       const formatted = formatDate(newDate);
 
       if (dates.includes(formatted) || reStart) {
-        setSearchParams((prev) => {
-          const newParams = new URLSearchParams(prev);
-          newParams.set('date', formatted);
-          return newParams;
-        });
+        setSearchParams(
+          (prev) => {
+            const newParams = new URLSearchParams(prev);
+            newParams.set('date', formatted);
+            const correctCycle = argoProfiles.find(({ date }) => date === formatted)?.cycle;
+            if (correctCycle) {
+              newParams.set('cycle', correctCycle);
+            }
+            return newParams;
+          },
+          { replace: false },
+        );
       }
     },
-    [formatDate, dates, setSearchParams],
+    [formatDate, dates, setSearchParams, argoProfiles],
   );
 
   const currentIndex = useMemo(

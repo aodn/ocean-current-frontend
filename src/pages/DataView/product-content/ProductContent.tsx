@@ -22,7 +22,7 @@ import { Loading } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { checkProductHasSubProduct } from '@/utils/product-utils/product';
 import useDateStore from '@/stores/date-store/dateStore';
-import { getArgoProfileCyclesByWmoId } from '@/services/argo';
+import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
 import { VideoPlayerOutletContext } from '@/types/router';
 import { checkProductHasArgoTags } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
@@ -38,6 +38,7 @@ import DataImageWithArgoAndSealCTDMap from '../data-image/DataImageWithArgoAndSe
 
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
+  const [searchParams] = useSearchParams();
   const { isArgo, isCurrentMeters, isEACMooringArray, isTidalCurrents, isSealCtd, isSealCtdTags } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const useRegionCode = useProductStore((state) => state.productParams.regionCode);
@@ -53,7 +54,6 @@ const ProductContent: React.FC = () => {
     date: currentMetersDate,
     deploymentPlot,
   } = useCurrentMetersStore();
-  const [searchParams, _] = useSearchParams();
 
   // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
   const region = getRegionByRegionCode(isEACMooringArray ? 'Brisbane' : useRegionCode);
@@ -82,14 +82,20 @@ const ProductContent: React.FC = () => {
   ]);
 
   useEffect(() => {
-    const fetchArgoProfileCycles = async (wmoId: string) => {
-      const { data } = await getArgoProfileCyclesByWmoId(wmoId);
+    const getArgoProfileCycles = async (wmoId: string) => {
+      const { data } = await fetchArgoProfileCyclesByWmoId(wmoId);
       setArgoProfileCycles(data);
     };
     if (isArgo && worldMeteorologicalOrgId) {
-      fetchArgoProfileCycles(worldMeteorologicalOrgId);
+      getArgoProfileCycles(worldMeteorologicalOrgId);
     }
   }, [isArgo, worldMeteorologicalOrgId]);
+
+  const selectedCycle = useArgoProfileCycles.find(({ date }) => date === useDate.format('YYYYMMDD'))?.cycle;
+
+  if (isArgo && !selectedCycle) {
+    return <Loading />;
+  }
 
   if (imgLoadError) {
     return <ErrorImage date={useDate} productId={mainProduct!.key} />;
@@ -107,16 +113,6 @@ const ProductContent: React.FC = () => {
   // TODO: give default sub product for subProductImgPath
   const subProductImgPath = subProduct?.imgPath ?? '';
 
-  const buildArgoImgUrl = (): string => {
-    const selectedCycle = useArgoProfileCycles.find(({ date }) => date === useDate.format('YYYYMMDD'))?.cycle;
-
-    if (!selectedCycle) {
-      throw new Error('Argo cycle not available');
-    }
-
-    return buildArgoImageUrl(worldMeteorologicalOrgId, useDate, selectedCycle, depth);
-  };
-
   // for Tidal Currents points
   const pointUrlParam = searchParams.get('point');
   const hasSelectedPointFromUrl = pointUrlParam && pointUrlParam !== '';
@@ -128,7 +124,7 @@ const ProductContent: React.FC = () => {
     try {
       switch (true) {
         case isArgo:
-          return buildArgoImgUrl();
+          return buildArgoImageUrl(worldMeteorologicalOrgId, useDate, cycle, depth);
         case isCurrentMeters:
           return buildCurrentMetersMapImageUrl(currentMetersRegion, currentMetersDate, property, currentMetersDepth);
         case useProductId === 'sixDaySst-timeseries':
