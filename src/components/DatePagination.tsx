@@ -5,6 +5,7 @@ import { useDateList } from '@/hooks';
 import { DateFormat } from '@/types/date';
 import { ProductID } from '@/types/product';
 import DatePicker from './DatePicker/DatePicker';
+import { Loading } from './Shared';
 
 interface DatePaginationProps {
   productId: ProductID;
@@ -23,7 +24,11 @@ const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, 
   });
 
   if (isLoading) {
-    return <span>Loading...</span>;
+    return (
+      <div className="flex h-full w-full items-center justify-center" aria-busy="true" aria-label="Loading content">
+        <Loading loadingSize="h-8 w-8" />
+      </div>
+    );
   }
 
   return (
