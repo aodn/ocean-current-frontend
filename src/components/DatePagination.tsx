@@ -36,7 +36,7 @@ const DatePagination: React.FC<DatePaginationProps> = ({
 
   if (isLoading) {
     return (
-      <div className="flex h-full w-full items-center justify-center">
+      <div className="flex h-full w-full items-center justify-center" aria-busy="true" aria-label="Loading content">
         <Loading loadingSize="h-8 w-8" />
       </div>
     );
