@@ -3,7 +3,7 @@ import { proxyClient } from '@/services/httpClient';
 import { ContentType } from '@/constants/request';
 import { ArgoProfileCycle } from '@/types/argo';
 
-const getArgoProfilesByDate = async (date: Dayjs) => {
+const fetchArgoProfilesByDate = async (date: Dayjs) => {
   const validatedDate = dayjs(date);
   if (validatedDate.isValid()) {
     return await proxyClient.get<string>(`/profiles/map/${validatedDate.format('YYYYMMDD')}`, {
@@ -16,10 +16,10 @@ const getArgoProfilesByDate = async (date: Dayjs) => {
   }
 };
 
-const getArgoProfileCyclesByWmoId = async (wmoId: string) =>
+const fetchArgoProfileCyclesByWmoId = async (wmoId: string) =>
   proxyClient.get<ArgoProfileCycle[]>(`/profiles/${wmoId}/profiles.json`);
 
-const getArgoTags = async (date: Dayjs, tagPath: string, region: string) => {
+const fetchArgoTags = async (date: Dayjs, tagPath: string, region: string) => {
   const validateDate = dayjs(date);
 
   if (validateDate.isValid()) {
@@ -33,4 +33,4 @@ const getArgoTags = async (date: Dayjs, tagPath: string, region: string) => {
   }
 };
 
-export { getArgoProfilesByDate, getArgoProfileCyclesByWmoId, getArgoTags };
+export { fetchArgoProfilesByDate, fetchArgoProfileCyclesByWmoId, fetchArgoTags };

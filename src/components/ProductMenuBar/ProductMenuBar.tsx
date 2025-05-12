@@ -41,7 +41,6 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
     (isSealCtd && productId !== 'sealCtd-sealTracks') ||
     isSealCtdTags;
 
-  const regionScope = useProductStore((state) => state.productParams.regionScope);
   const dateFormat = useProductDateFormat();
 
   const handleCopyLink = () => {
@@ -100,7 +99,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
               onChange={(elem) => handleCurrentMetersDateChange(elem.id)}
             />
           ) : (
-            <DatePagination productId={productId} regionScope={regionScope} dateFormat={dateFormat} />
+            <DatePagination productId={productId} dateFormat={dateFormat} />
           )}
         </div>
 

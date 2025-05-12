@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react';
 import { Dayjs } from 'dayjs';
 import { vi } from 'vitest';
-import { getArgoTags } from '@/services/argo';
+import { fetchArgoTags } from '@/services/argo';
 import { parseArgoTagDataFromText } from '@/utils/argo-utils/argoTag';
 import useDataFetch from './useDataFetch';
 import useImageArgoTags from './useImageArgoTags';
@@ -73,6 +73,6 @@ describe('useImageArgoTags', () => {
     expect(result.current.loading).toBe(false);
     expect(result.current.data).toEqual(parsedData);
     expect(result.current.error).toBeNull();
-    expect(useDataFetch).toHaveBeenCalledWith(getArgoTags, [mockDate, 'SnapshotCHL', `${mockRegionCode}_chl`]);
+    expect(useDataFetch).toHaveBeenCalledWith(fetchArgoTags, [mockDate, 'SnapshotCHL', `${mockRegionCode}_chl`]);
   });
 });

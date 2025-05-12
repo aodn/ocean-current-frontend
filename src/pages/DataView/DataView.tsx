@@ -15,8 +15,11 @@ const DataView: React.FC = () => {
     }
   }, [isProductAvailableInRegion]);
 
+  const shouldRenderProductContent =
+    isProductAvailableInRegion || isArgo || isCurrentMeters || isEACMooringArray || isSealCtdTags;
+
   const renderView = () => {
-    if (isProductAvailableInRegion || isArgo || isCurrentMeters || isEACMooringArray || isSealCtdTags) {
+    if (shouldRenderProductContent) {
       return <ProductContent />;
     }
 

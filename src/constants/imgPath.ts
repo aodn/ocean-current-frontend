@@ -122,4 +122,13 @@ export const productTypeMapping = new Map<
       dateFormat: DateFormat.DAY,
     },
   ],
+  [
+    'argo',
+    {
+      subProduct: [],
+      stateSegment: 'argo',
+      localSegment: null,
+      dateFormat: DateFormat.DAY,
+    },
+  ],
 ]);

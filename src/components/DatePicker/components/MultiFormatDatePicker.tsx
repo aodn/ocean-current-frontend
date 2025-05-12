@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import dayjs from 'dayjs';
@@ -68,10 +68,12 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
 }) => {
   const { isMonthFormat, isMonthOnlyFormat, isYearFormat } = getDateFormatFlags(dateFormat);
 
-  const { missingDates, firstDate, lastDate } = findDateRangeInfo(
-    dateList.map(({ date }) => date),
-    dateFormat,
-  );
+  const { missingDates, firstDate, lastDate } = useMemo(() => {
+    return findDateRangeInfo(
+      dateList.map(({ date }) => date),
+      dateFormat,
+    );
+  }, [dateList, dateFormat]);
 
   if (isMonthFormat) {
     return (
@@ -108,6 +110,22 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
         onChange={onChange}
         dateFormat="yyyy"
         showYearPicker
+      />
+    );
+  }
+
+  if (dateList.length < 500) {
+    return (
+      <DatePicker
+        customInput={isMobile ? <CustomInputMobile /> : <CustomInput />}
+        selected={selectedDate}
+        minDate={firstDate}
+        maxDate={lastDate}
+        includeDates={dateList.map(({ date }) => dayjs(date, dateFormat).toDate())}
+        onChange={onChange}
+        showYearDropdown
+        showMonthDropdown
+        dropdownMode="select"
       />
     );
   }
