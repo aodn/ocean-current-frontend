@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useOutsideClick, useVideoCreation } from '@/hooks';
-import { DropdownElement } from '../Shared/Dropdown/types/dropdown.types';
-import { FrameRateOption } from './types/videoCreation.types';
+import { DropdownElement } from '../../Shared/Dropdown/types/dropdown.types';
+import { FrameRateOption } from '../types/videoCreation.types';
 import VideoCreationUI from './VideoCreationUI';
 
 const ActiveVideoCreation: React.FC = () => {

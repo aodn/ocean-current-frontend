@@ -10,7 +10,7 @@ import { Button, Dropdown } from '@/components/Shared';
 import { GeneralText, ProductMenubarText } from '@/constants/textConstant';
 import { color } from '@/styles/colors';
 import { UseVideoCreationReturn } from '@/hooks/useVideoCreation/types/useVideoCreation.types';
-import { VideoCreationUIProps } from './types/videoCreationUI.types';
+import { VideoCreationUIProps } from '../types/videoCreationUI.types';
 
 const defaultVideoCreationProps: UseVideoCreationReturn = {
   isLoading: false,
