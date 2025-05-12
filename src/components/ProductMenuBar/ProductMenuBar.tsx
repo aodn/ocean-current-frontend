@@ -6,7 +6,7 @@ import VideoIcon from '@/assets/icons/video-icon.svg';
 import { ProductMenubarText } from '@/constants/textConstant';
 import ShareIcon from '@/assets/icons/share-icon.svg';
 import ResetIcon from '@/assets/icons/reset-icon.svg';
-import VideoCreation from '@/components/VideoCreation/VideoCreation';
+import VideoCreation from '@/components/VideoCreation';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import useCurrentMetersStore, {
   initialState,
