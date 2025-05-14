@@ -91,10 +91,8 @@ const ProductContent: React.FC = () => {
     }
   }, [isArgo, worldMeteorologicalOrgId]);
 
-  const selectedCycle = useArgoProfileCycles.find(({ date }) => date === useDate.format('YYYYMMDD'))?.cycle;
-
-  if (isArgo && !selectedCycle) {
-    return <Loading />;
+  if (isArgo && !worldMeteorologicalOrgId) {
+    return <ErrorImage date={useDate} productId="argo" />;
   }
 
   if (imgLoadError) {
