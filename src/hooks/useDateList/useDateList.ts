@@ -16,12 +16,20 @@ const extractDateFromFilename = (filename: string): string => {
 };
 
 const processArgoDateList = (data: ArgoProfileCycle[]): DateItem[] => {
+  if (!data || data.length === 0) {
+    return [];
+  }
+
   return data.map((cycle: ArgoProfileCycle) => ({
     date: cycle.date,
   }));
 };
 
 const processFilesToDateList = (files: ImageFile[]): DateItem[] => {
+  if (!files || files.length === 0) {
+    return [];
+  }
+
   return files
     .map((file) => ({
       date: extractDateFromFilename(file.name),
@@ -64,7 +72,7 @@ const useDateList = (productId: ProductID) => {
       dateList = processArgoDateList(data.data as ArgoProfileCycle[]);
     } else {
       const files = data.data as ImageListResponse[];
-      dateList = processFilesToDateList(files[0]?.files as ImageFile[]);
+      dateList = processFilesToDateList(files[0]?.files as ImageFile[] | []);
     }
   }
 
