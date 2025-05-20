@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import dayjs, { Dayjs } from 'dayjs';
 import { DateFormat, DateItem } from '@/types/date';
 import { useArgoStore } from '@/stores/argo-store/argoStore';
+import { isHourlyFormat, findFirstHourlyDateForDay } from '@/utils/date-utils/hourly';
 
 interface UseDateNavigationProps {
   dateFormat: DateFormat;
@@ -24,10 +25,24 @@ const useDateNavigation = ({ dateFormat, availableDates, initialDate }: UseDateN
 
     const dateParam = searchParams.get('date');
     if (dateParam) {
-      let date: Dayjs = dayjs(dateParam);
+      const date = dayjs(dateParam);
       if (!date.isValid()) {
-        date = dayjs();
+        return dayjs();
       }
+
+      const isDateParamHourly = dayjs(dateParam, DateFormat.HOUR, true).isValid();
+      if (isHourlyFormat(dateFormat) && !isDateParamHourly) {
+        const dayStr = date.format(DateFormat.DAY);
+        const firstHourlyDate = findFirstHourlyDateForDay(dates, dayStr, dateFormat);
+        if (firstHourlyDate) {
+          setSearchParams((prev) => {
+            prev.set('date', firstHourlyDate);
+            return prev;
+          });
+          return dayjs(firstHourlyDate, dateFormat);
+        }
+      }
+
       return date;
     }
 
@@ -36,7 +51,7 @@ const useDateNavigation = ({ dateFormat, availableDates, initialDate }: UseDateN
     }
 
     return dayjs();
-  }, [initialDate, searchParams, dates, dateFormat]);
+  }, [initialDate, searchParams, dates, dateFormat, setSearchParams]);
 
   const updateDate = useCallback(
     (newDate: Dayjs, reStart: boolean = false) => {
