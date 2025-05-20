@@ -2,62 +2,13 @@ import React, { useMemo } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import dayjs from 'dayjs';
-import { DateFormat, DateItem } from '@/types/date';
+import { DateFormat } from '@/types/date';
 import { getDateFormatFlags } from '@/utils/date-utils/date';
+import { isHourlyFormat, findFirstHourlyDateForDay } from '@/utils/date-utils/hourly';
+import { findDateRangeInfo } from '../utils';
+import { MultiFormatDatePickerProps } from '../types/multiFormatDatePicker.types';
 import CustomInputMobile from './CustomInputMobile';
 import CustomInput from './CustomInput';
-
-interface DateRangeResult {
-  missingDates: Date[];
-  firstDate: Date;
-  lastDate: Date;
-}
-const findDateRangeInfo = (dates: string[], format: DateFormat): DateRangeResult => {
-  if (dates.length === 0) {
-    return { missingDates: [], firstDate: new Date(), lastDate: new Date() };
-  }
-
-  const sortedDates = [...dates].sort();
-
-  const firstDateStr = sortedDates[0];
-  const lastDateStr = sortedDates[sortedDates.length - 1];
-
-  const firstDate = dayjs(firstDateStr, format);
-  const lastDate = dayjs(lastDateStr, format);
-
-  const daysWithData = new Set<string>();
-
-  dates.forEach((dateStr) => {
-    const date = dayjs(dateStr, format);
-    const dayStr = date.format(DateFormat.DAY);
-    daysWithData.add(dayStr);
-  });
-
-  const missingDates: Date[] = [];
-
-  let currentDate = firstDate.startOf('day');
-  const endDate = lastDate.endOf('day');
-
-  while (currentDate.isBefore(endDate) || currentDate.isSame(endDate, 'day')) {
-    const dayStr = currentDate.format(DateFormat.DAY);
-
-    if (!daysWithData.has(dayStr)) {
-      missingDates.push(currentDate.toDate());
-    }
-
-    currentDate = currentDate.add(1, 'day');
-  }
-
-  return { missingDates, firstDate: firstDate.toDate(), lastDate: lastDate.toDate() };
-};
-
-interface MultiFormatDatePickerProps {
-  dateFormat: DateFormat;
-  dateList: DateItem[];
-  selectedDate: Date | null;
-  onChange: (date: Date | null) => void;
-  isMobile?: boolean;
-}
 
 const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
   dateFormat,
@@ -67,6 +18,7 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
   isMobile = false,
 }) => {
   const { isMonthFormat, isMonthOnlyFormat, isYearFormat } = getDateFormatFlags(dateFormat);
+  const isHourly = isHourlyFormat(dateFormat);
 
   const { missingDates, firstDate, lastDate } = useMemo(() => {
     return findDateRangeInfo(
@@ -75,12 +27,29 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
     );
   }, [dateList, dateFormat]);
 
+  const handleDateChange = (date: Date | null) => {
+    if (date && isHourly) {
+      const selectedDay = dayjs(date).format(DateFormat.DAY);
+
+      const firstHourlyDate = findFirstHourlyDateForDay(
+        dateList.map(({ date }) => date),
+        selectedDay,
+        dateFormat,
+      );
+      if (firstHourlyDate) {
+        onChange(dayjs(firstHourlyDate, dateFormat).toDate());
+      }
+      return;
+    }
+    onChange(date);
+  };
+
   if (isMonthFormat) {
     return (
       <DatePicker
         customInput={isMobile ? <CustomInputMobile /> : <CustomInput />}
         selected={selectedDate}
-        onChange={onChange}
+        onChange={handleDateChange}
         dateFormat="MM/yyyy"
         showMonthYearPicker
         showTwoColumnMonthYearPicker
@@ -93,7 +62,7 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
       <DatePicker
         customInput={isMobile ? <CustomInputMobile /> : <CustomInput />}
         selected={selectedDate}
-        onChange={onChange}
+        onChange={handleDateChange}
         dateFormat="MM"
         showYearDropdown
         showMonthYearPicker
@@ -107,7 +76,7 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
       <DatePicker
         customInput={isMobile ? <CustomInputMobile /> : <CustomInput />}
         selected={selectedDate}
-        onChange={onChange}
+        onChange={handleDateChange}
         dateFormat="yyyy"
         showYearPicker
       />
@@ -122,7 +91,7 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
         minDate={firstDate}
         maxDate={lastDate}
         includeDates={dateList.map(({ date }) => dayjs(date, dateFormat).toDate())}
-        onChange={onChange}
+        onChange={handleDateChange}
         showYearDropdown
         showMonthDropdown
         dropdownMode="select"
@@ -137,7 +106,7 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
       minDate={firstDate}
       maxDate={lastDate}
       excludeDates={missingDates}
-      onChange={onChange}
+      onChange={handleDateChange}
       showYearDropdown
       showMonthDropdown
       dropdownMode="select"

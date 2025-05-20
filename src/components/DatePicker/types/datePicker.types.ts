@@ -3,13 +3,13 @@ import { ProductID } from '@/types/product';
 
 export interface DatePickerProps {
   productId: ProductID;
-  goToPrevious: () => void;
+  dateList: DateItem[];
+  selectedDate: Date;
   goToNext: () => void;
+  goToPrevious: () => void;
   canGoNext?: boolean;
   canGoPrevious?: boolean;
-  selectedDate: Date | null;
   dateFormat: DateFormat;
-  onChange: (date: Date | null) => void;
+  onChange: (date: Date) => void;
   isMobile?: boolean;
-  dateList: DateItem[];
 }
