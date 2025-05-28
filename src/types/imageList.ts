@@ -23,4 +23,15 @@ interface CurrentMetersPlotsResponse {
   depthData: DepthData[];
 }
 
-export type { ImageFile, ImageListResponse, CurrentMetersPlotsResponse };
+export interface RegionLatestDate {
+  region: string;
+  latestDate: string;
+  path: string;
+}
+
+interface LatestRegionDatesResponse {
+  productId: string;
+  regionLatestDates: RegionLatestDate[];
+}
+
+export type { ImageFile, ImageListResponse, CurrentMetersPlotsResponse, LatestRegionDatesResponse };

@@ -11,8 +11,11 @@ import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
 import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
 import { color } from '@/styles/colors';
 import { ProductPath } from '@/types/router';
-import { getPropertyFromMapFeatures } from '../utils/mapUtils';
+import useProductStore from '@/stores/product-store/productStore';
+import { useRegionLatestDates } from '@/services/hooks';
+import { RegionLatestDate } from '@/types/imageList';
 import useRegionPolygons from '../hooks/useRegionPolygons';
+import { getPropertyFromMapFeatures } from '../utils/mapUtils';
 
 interface RegionPolygonLayerProps {
   isMiniMap: boolean;
@@ -33,6 +36,8 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
   const selectedRegionTitle = getRegionTitleByRegionCode(regionCodeFromUrl) || 'Au';
   const regionGeoJsonData = useRegionPolygons();
   const isChla = baseProductPath.includes('ocean-colour');
+  const productId = useProductStore((state) => state.productParams.productId);
+  const { data: regionLatestDates, isLoading: isLoadingLatestDates } = useRegionLatestDates(productId);
 
   const {
     property: currentMetersProperty,
@@ -45,7 +50,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
   const [hoveredRegion, setHoveredRegion] = useState<string>('');
   const [hoveredId, setHoveredId] = useState<string | number | null>(null);
 
-  const defaultTargetDate = dayjs().subtract(2, 'day').format('YYYYMMDD');
+  const fallbackLatestDate = dayjs().subtract(2, 'day').format('YYYYMMDD');
 
   const mapFitBounds = useCallback(
     (bounds: BoundingBox, padding: number = 50) => {
@@ -82,7 +87,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
 
   const handleMouseMove = useCallback(
     (e: MapMouseEvent) => {
-      if (!map) return;
+      if (!map || isLoadingLatestDates) return;
 
       const containsArgoLayer = map.getStyle()?.layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
       const layersToCheck = containsArgoLayer
@@ -117,12 +122,12 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
         }
       }
     },
-    [map],
+    [map, isLoadingLatestDates],
   );
 
   const handleMouseClick = useCallback(
     (e: MapMouseEvent) => {
-      if (!hoveredRegion || !map) {
+      if (!hoveredRegion || !map || isLoadingLatestDates) {
         return;
       }
       const containsArgoLayer = map.getStyle()?.layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
@@ -167,11 +172,14 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
           queryObject = { region: regionCode, sealId: null };
         } else {
           const dateFromQuery = searchParams.date;
+          const foundRegionLatestDate = regionLatestDates?.regionLatestDates?.find(
+            (item: RegionLatestDate) => item.region === regionCode,
+          )?.latestDate;
+          const latestDate = foundRegionLatestDate || fallbackLatestDate;
           queryObject = dateFromQuery
             ? { region: regionCode, point: null }
-            : { region: regionCode, date: defaultTargetDate, point: null };
+            : { region: regionCode, date: latestDate, point: null };
         }
-
         updateQueryParamsAndNavigate(targetPath, queryObject);
       }
     },
@@ -180,10 +188,12 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
       currentMetersDate,
       currentMetersDepth,
       currentMetersProperty,
-      defaultTargetDate,
+      fallbackLatestDate,
       hoveredRegion,
+      isLoadingLatestDates,
       map,
       mapFitBounds,
+      regionLatestDates?.regionLatestDates,
       searchParams.date,
       updateQueryParamsAndNavigate,
     ],
