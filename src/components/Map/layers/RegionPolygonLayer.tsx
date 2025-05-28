@@ -87,7 +87,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
 
   const handleMouseMove = useCallback(
     (e: MapMouseEvent) => {
-      if (!map || isLoadingLatestDates) return;
+      if (!map) return;
 
       const containsArgoLayer = map.getStyle()?.layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
       const layersToCheck = containsArgoLayer
@@ -122,7 +122,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
         }
       }
     },
-    [map, isLoadingLatestDates],
+    [map],
   );
 
   const handleMouseClick = useCallback(
