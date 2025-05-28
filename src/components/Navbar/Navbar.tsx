@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '@/assets/images/imos-logo.png';
 import { linksData } from '@/data/linksData';
@@ -12,6 +12,23 @@ const Navbar: React.FC = () => {
   const [popoverPosition, setPopoverPosition] = useState<{ left: number } | null>(null);
   const [menuItems] = useState<LinkItem[]>(linksData);
   const menuItemRefs = useRef<(HTMLElement | null)[]>([]);
+
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+
+  const handleScroll = () => {
+    if (window.scrollY > 0) {
+      setIsScrolled(true);
+    } else {
+      setIsScrolled(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const setPositionNavbar = (index: number, element: HTMLElement) => {
     setHoverIndex(index);
@@ -33,9 +50,9 @@ const Navbar: React.FC = () => {
       <nav className="mx-auto flex w-full max-w-8xl items-center justify-between p-3 px-10">
         <div className="flex h-14 items-center">
           <Link className="mr-auto" to={'/'}>
-            <img className="h-14 transition-all duration-300" src={logo} alt="IMOS logo" />
+            <img className={`transition-all duration-300 ${isScrolled ? 'h-10' : 'h-14'}`} src={logo} alt="IMOS logo" />
           </Link>
-          <div className="mx-7 h-12 w-0.5 bg-imos-title-blue opacity-50"></div>
+          <div className="mx-7 h-12 w-0.5 bg-imos-title-blue opacity-50" aria-hidden="true"></div>
           <div className="flex flex-col justify-center text-xl text-imos-title-blue">
             <Link className="mr-auto" to={'/'}>
               {BrandingText.OC_PASCAL_CASE}

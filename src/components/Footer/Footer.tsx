@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
       <div className="max-w-8xl py-6 md:pt-10">
         <div className="flex flex-row items-center pb-10 pt-5">
           <img src={logo} alt="IMOS logo" className="h-16" />
-          <div className="mx-7 h-14 w-0.5 bg-imos-title-blue opacity-50"></div>
+          <div className="mx-7 h-14 w-0.5 bg-imos-title-blue opacity-50" aria-hidden="true"></div>
 
           <div className="leading-6">
             <h1 className="text-2xl font-medium text-imos-deep-blue">{BrandingText.OC_PASCAL_CASE}</h1>
