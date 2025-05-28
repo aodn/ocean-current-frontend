@@ -1,6 +1,17 @@
 import { render, screen } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { mapConfig } from '@/configs/map';
 import BasicMap from '../BasicMap';
+
+// Create a new QueryClient for each test
+const createTestQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
 
 vi.mock('react-map-gl', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="test-map">{children}</div>,
@@ -34,6 +45,12 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
+// Helper function to render with QueryClientProvider
+const renderWithClient = (ui: React.ReactElement) => {
+  const testQueryClient = createTestQueryClient();
+  return render(<QueryClientProvider client={testQueryClient}>{ui}</QueryClientProvider>);
+};
+
 describe('BasicMap Component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -44,7 +61,7 @@ describe('BasicMap Component', () => {
     mapConfig.accessToken = 'test-api-key';
 
     // Act
-    render(<BasicMap />);
+    renderWithClient(<BasicMap />);
 
     // Assert
     expect(screen.getByText('NavigationControl')).toBeInTheDocument();
@@ -55,7 +72,7 @@ describe('BasicMap Component', () => {
     mapConfig.accessToken = '';
 
     // Act
-    render(<BasicMap />);
+    renderWithClient(<BasicMap />);
 
     // Assert
     expect(screen.getByText('Map cannot be loaded.')).toBeInTheDocument();
@@ -67,14 +84,14 @@ describe('BasicMap Component', () => {
     mapConfig.accessToken = 'test-api-key';
 
     // Act
-    render(<BasicMap />);
+    renderWithClient(<BasicMap />);
 
     // Assert
     expect(screen.getByTestId('test-map')).toBeInTheDocument();
   });
 
   it('renders navigation control when enabled', () => {
-    render(<BasicMap navigationControl />);
+    renderWithClient(<BasicMap navigationControl />);
     expect(screen.getByText('NavigationControl')).toBeInTheDocument();
   });
 });
