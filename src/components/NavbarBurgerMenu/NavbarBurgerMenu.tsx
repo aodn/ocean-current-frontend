@@ -16,7 +16,7 @@ const NavbarBurgerMenu: React.FC = () => {
     <div>
       <nav className="flex items-center justify-between px-6 py-6">
         <Link className="mr-auto" to={'/'}>
-          <img className="h-8" src={logo} alt="IMOS logo navbar" />
+          <img className="h-12" src={logo} alt="IMOS logo navbar" />
         </Link>
         <img
           data-testid="svg-toggle"
