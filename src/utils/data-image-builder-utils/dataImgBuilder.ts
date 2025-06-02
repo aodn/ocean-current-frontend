@@ -7,8 +7,6 @@ import { ArgoDepths } from '@/constants/argo';
 import { DateFormat } from '@/types/date';
 import { ProductID, RootProductID } from '@/types/product';
 
-// type ProductId = string;
-
 type SubProductType = string | undefined | null;
 
 const getBaseUrlByProductId = (productId: RootProductID): string =>
