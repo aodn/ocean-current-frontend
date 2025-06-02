@@ -1,4 +1,5 @@
 import { DateFormat } from '@/types/date';
+import { RootProductID } from '@/types/product';
 
 export enum TargetPathRegionScope {
   Local = 'local',
@@ -6,7 +7,7 @@ export enum TargetPathRegionScope {
 }
 
 export const productTypeMapping = new Map<
-  string,
+  RootProductID,
   {
     subProduct: string[];
     stateSegment: string | undefined;

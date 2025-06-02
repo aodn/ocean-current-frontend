@@ -3,6 +3,7 @@ import { TargetPathRegionScope } from '@/constants/imgPath';
 import { imageBaseUrl } from '@/configs/image';
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
 import { ArgoDepths } from '@/constants/argo';
+import { RootProductID } from '@/types/product';
 import {
   buildProductImageUrl,
   buildArgoImageUrl,
@@ -423,7 +424,7 @@ describe('buildProductImageUrl', () => {
     const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date, isApi);
 
     // Assert
-    expect(imageUrl).toBe('/api/DR_SST_daily/SST/Adelaide/20240519.gif');
+    expect(imageUrl).toBe('/ec2/DR_SST_daily/SST/Adelaide/20240519.gif');
   });
 
   it('should throw an error for unsupported product type', () => {
@@ -435,9 +436,9 @@ describe('buildProductImageUrl', () => {
     const date = '20240519';
 
     // Act & Assert
-    expect(() => buildProductImageUrl(productType, subProduct, region, regionScope, date)).toThrowError(
-      `Product type ${productType} is not supported`,
-    );
+    expect(() =>
+      buildProductImageUrl(productType as RootProductID, subProduct, region, regionScope, date),
+    ).toThrowError(`Product type ${productType} is not supported`);
   });
 });
 
@@ -557,9 +558,9 @@ describe('buildProductVideoUrl', () => {
     const date = '2024-05-19';
 
     // Act & Assert
-    expect(() => buildProductVideoUrl(productType, subProduct, region, regionScope, date)).toThrowError(
-      `Product type ${productType} is not supported`,
-    );
+    expect(() =>
+      buildProductVideoUrl(productType as RootProductID, subProduct, region, regionScope, date),
+    ).toThrowError(`Product type ${productType} is not supported`);
   });
 });
 

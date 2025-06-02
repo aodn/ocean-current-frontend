@@ -32,13 +32,13 @@ export default ({ mode }) => {
       port: Number(process.env.VITE_PORT),
       open: Boolean(process.env.VITE_OPEN_BROWSER),
       proxy: {
-        '/api': {
+        '/ec2': {
           target: 'https://oceancurrent.aodn.org.au',
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ''),
+          rewrite: (path) => path.replace(/^\/ec2/, ''),
         },
         '/s3': {
-          target: 'https://oceancurrent-testing.s3.ap-southeast-2.amazonaws.com',
+          target: 'https://oceancurrent.edge.aodn.org.au/storage',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/s3/, ''),
         },
