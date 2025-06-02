@@ -6,6 +6,7 @@ import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '
 import { ArgoDepths } from '@/constants/argo';
 import { DateFormat } from '@/types/date';
 import { ProductID, RootProductID } from '@/types/product';
+import { apiConfig } from '@/configs/api';
 
 type SubProductType = string | undefined | null;
 
@@ -72,13 +73,13 @@ const buildProductImageUrl = (
   regionCode: string,
   regionScope: TargetPathRegionScope,
   date: string,
-  isApi: boolean = false,
+  isProxyRequired: boolean = false,
 ): string => {
   validateProductAndSubProduct(productId, subProductType, regionScope);
 
   const productSegment = getProductSegment(productId, subProductType, regionScope);
   const formattedDate = formatDate(productId, subProductType, date, regionScope);
-  const baseUrl = getBaseUrlByProductId(productId);
+  const remoteBaseUrl = getBaseUrlByProductId(productId);
 
   const productUrl = {
     surfaceWaves: () => {
@@ -86,25 +87,24 @@ const buildProductImageUrl = (
       const formattedDate = dayjsDate.format(DateFormat.HOUR);
       const year = dayjsDate.format(DateFormat.YEAR_ONLY);
       const month = dayjsDate.format(DateFormat.MONTH_ONLY);
-      return `/s3/WAVES/y${year}/m${month}/${formattedDate}.gif`;
+
+      const baseUrl = isProxyRequired ? apiConfig.s3ProxyURL : remoteBaseUrl;
+      return `${baseUrl}/WAVES/y${year}/m${month}/${formattedDate}.gif`;
     },
     oceanColourLocal: () => {
       const dateTimeSegment = dayjs(date).format(DateFormat.HOUR);
-      return isApi
-        ? `/ec2/${regionCode}_chl/${dateTimeSegment}.gif`
-        : `${baseUrl}/${regionCode}_chl/${dateTimeSegment}.gif`;
+      const baseUrl = isProxyRequired ? apiConfig.ec2ProxyURL : remoteBaseUrl;
+      return `${baseUrl}/${regionCode}_chl/${dateTimeSegment}.gif`;
     },
     adjustedSeaLevelAnomaly: () => {
       const updatedRegionCode = regionCode === 'Au' ? 'ht' : regionCode;
-      return isApi
-        ? `/ec2/${updatedRegionCode}/${formattedDate}.gif`
-        : `${baseUrl}/${updatedRegionCode}/${formattedDate}.gif`;
+      const baseUrl = isProxyRequired ? apiConfig.ec2ProxyURL : remoteBaseUrl;
+      return `${baseUrl}/${updatedRegionCode}/${formattedDate}.gif`;
     },
     default: () => {
       const subProductSegment = subProductType ? `/${subProductType}` : '';
-      return isApi
-        ? `/ec2/${productSegment}${subProductSegment}/${regionCode}/${formattedDate}.gif`
-        : `${baseUrl}/${productSegment}${subProductSegment}/${regionCode}/${formattedDate}.gif`;
+      const baseUrl = isProxyRequired ? apiConfig.ec2ProxyURL : remoteBaseUrl;
+      return `${baseUrl}/${productSegment}${subProductSegment}/${regionCode}/${formattedDate}.gif`;
     },
   };
 
@@ -144,7 +144,7 @@ const buildProductVideoUrl = (
   const baseUrl = getBaseUrlByProductId(productId);
 
   const productUrl = {
-    surfaceWaves: `${imageUrlConfig.imageBaseUrl}/s3.php?file=WAVES/y${year}/m${month}/Au_wave_m${month}.mp4`,
+    surfaceWaves: `${baseUrl}/WAVES/y${year}/m${month}/Au_wave_m${month}.mp4`,
     fourHourSst: `${baseUrl}/${productSegment}/${subProductType}/${regionCode}/${regionCode}_${subProductType}_${year}${month}.mp4`,
     monthlyMeans: `${baseUrl}/${productSegment}/${regionCode}/${regionCode}.mp4`,
     default: `${baseUrl}/${productSegment}${subProductSegment}/${regionCode}/${regionCode}_${subProductType}_${year}_${quarter}.mp4`,
