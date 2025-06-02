@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import logo from '@/assets/images/imos-logo.png';
 import { linksData } from '@/data/linksData';
 import { LinkItem, SectionLinks } from '@/types/navbar';

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import { scaleImageMapAreas } from '@/utils/general-utils/general';
 import { ProductID, Product } from '@/types/product';

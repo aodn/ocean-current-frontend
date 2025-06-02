@@ -1,6 +1,6 @@
 import { Layer, MapMouseEvent, Source, useMap } from 'react-map-gl';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { useQueryParams } from '@/hooks';
 import { CurrentMetersProfileProperties } from '@/types/geo';

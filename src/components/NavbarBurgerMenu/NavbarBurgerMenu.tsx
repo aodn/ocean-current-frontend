@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import logo from '@/assets/images/imos-logo.png';
 import burgerMenu from '@/assets/icons/burger-menu-icon.svg';
 import cross from '@/assets/icons/cross-icon.svg';

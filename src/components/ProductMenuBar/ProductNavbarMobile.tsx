@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { Button } from '@/components/Shared';
 import ResetIcon from '@/assets/icons/reset-icon.svg';
 import MapIcon from '@/assets/icons/map-icon.svg';

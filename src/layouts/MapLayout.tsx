@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import { setProductId } from '@/stores/product-store/productStore';
 import { useDeviceType, useSetProductId, useUrlType } from '@/hooks';
 import MapSidebar from '@/components/MapSidebar/MapSidebar';

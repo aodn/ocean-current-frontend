@@ -1,9 +1,9 @@
 import { describe, it, expect, vi } from 'vitest';
 import { renderHook } from '@testing-library/react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import useUrlType from './useUrlType';
 
-vi.mock('react-router-dom', () => ({
+vi.mock('react-router', () => ({
   useLocation: vi.fn(),
 }));
 

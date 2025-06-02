@@ -1,20 +1,13 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router';
 import RootLayout from '@/layouts/RootLayout';
 import routes from './routes';
 
-const router = createBrowserRouter(
-  [
-    {
-      path: '/',
-      element: <RootLayout />,
-      children: routes,
-    },
-  ],
+const router = createBrowserRouter([
   {
-    future: {
-      v7_relativeSplatPath: true,
-    },
+    path: '/',
+    element: <RootLayout />,
+    children: routes,
   },
-);
+]);
 
 export default router;

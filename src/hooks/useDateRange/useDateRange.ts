@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import dayjs from 'dayjs';
 import { useShallow } from 'zustand/react/shallow';
 import { useArgoStore } from '@/stores/argo-store/argoStore';

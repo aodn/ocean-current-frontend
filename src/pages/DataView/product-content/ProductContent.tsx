@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useOutletContext, useSearchParams } from 'react-router-dom';
+import { useOutletContext, useSearchParams } from 'react-router';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import {
   buildProductImageUrl,

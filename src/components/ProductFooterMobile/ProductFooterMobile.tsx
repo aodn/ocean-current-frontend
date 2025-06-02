@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import dayjs from 'dayjs';
 import { Button, Popup, TruncateText } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { useDateRange, useQueryParams } from '@/hooks';
 import { Dropdown, ToggleButton } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';

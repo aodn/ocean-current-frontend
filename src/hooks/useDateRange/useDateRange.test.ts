@@ -1,13 +1,13 @@
 import { renderHook, act } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import dayjs from 'dayjs';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { setStartDate, setEndDate } from '@/stores/date-store/dateStore';
 import { Product } from '@/types/product';
 import useDateRange from './useDateRange';
 
-vi.mock('react-router-dom', () => ({
+vi.mock('react-router', () => ({
   useSearchParams: vi.fn(() => [new URLSearchParams(), vi.fn()]),
 }));
 

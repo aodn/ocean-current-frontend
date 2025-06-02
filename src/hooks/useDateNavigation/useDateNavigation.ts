@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import dayjs, { Dayjs } from 'dayjs';
 import { DateFormat, DateItem } from '@/types/date';
 import { useArgoStore } from '@/stores/argo-store/argoStore';

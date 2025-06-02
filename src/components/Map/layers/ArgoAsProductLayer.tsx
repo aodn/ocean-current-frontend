@@ -1,6 +1,6 @@
 import { Layer, MapMouseEvent, Source, useMap } from 'react-map-gl';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { ArgoProfile } from '@/types/argo';

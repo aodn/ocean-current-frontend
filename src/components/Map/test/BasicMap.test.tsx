@@ -35,8 +35,8 @@ vi.mock('../layers/ArgoAsProductLayer/ArgoAsProductLayer.tsx', () => {
 });
 
 // Mock React Router hooks
-vi.mock('react-router-dom', async () => {
-  const originalModule = await vi.importActual('react-router-dom');
+vi.mock('react-router', async () => {
+  const originalModule = await vi.importActual('react-router');
 
   return {
     ...originalModule,
