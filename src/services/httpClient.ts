@@ -6,8 +6,8 @@ const apiClient = axios.create({
   timeout: 5000,
 });
 
-const proxyClient = axios.create({
-  baseURL: apiConfig.proxyURL,
+const ec2ProxyClient = axios.create({
+  baseURL: apiConfig.ec2ProxyURL,
   timeout: 5000,
 });
 
@@ -32,7 +32,7 @@ const applyInterceptors = (client: AxiosInstance) => {
 };
 
 applyInterceptors(apiClient);
-applyInterceptors(proxyClient);
+applyInterceptors(ec2ProxyClient);
 
-export { apiClient, proxyClient };
+export { apiClient, ec2ProxyClient };
 export default apiClient;

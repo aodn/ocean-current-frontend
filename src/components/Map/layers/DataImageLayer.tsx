@@ -31,7 +31,7 @@ const DataImageLayer: React.FC = () => {
   const productId = useProductId === 'argo' ? 'adjustedSeaLevelAnomaly-sla' : useProductId;
   const urlPath = getEntryImagePathByProductId(productId);
 
-  const imageUrl = `${apiConfig.proxyURL}/${urlPath}/latest.gif`;
+  const imageUrl = `${apiConfig.ec2ProxyURL}/${urlPath}/latest.gif`;
 
   const { current: map } = useMap();
   const shouldHideLayer = productsWithNoImage.includes(useProductId);

@@ -1,22 +1,24 @@
 import dayjs, { Dayjs } from 'dayjs';
 import { productTypeMapping, TargetPathRegionScope } from '@/constants/imgPath';
 import { RegionScope } from '@/constants/region';
-import { imageBaseUrl, imageS3BaseUrl } from '@/configs/image';
+import { imageUrlConfig } from '@/configs/image';
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
 import { ArgoDepths } from '@/constants/argo';
 import { DateFormat } from '@/types/date';
+import { ProductID, RootProductID } from '@/types/product';
 
-type ProductId = string;
+// type ProductId = string;
+
 type SubProductType = string | undefined | null;
 
-const getBaseUrlByProductId = (productId: ProductId): string =>
-  productId === 'surfaceWaves' ? imageS3BaseUrl : imageBaseUrl;
+const getBaseUrlByProductId = (productId: RootProductID): string =>
+  productId === 'surfaceWaves' ? imageUrlConfig.imageS3BaseUrl : imageUrlConfig.imageBaseUrl;
 
 const getTargetRegionScopePath = (regionScope: RegionScope): TargetPathRegionScope =>
   [RegionScope.Au, RegionScope.State].includes(regionScope) ? TargetPathRegionScope.State : TargetPathRegionScope.Local;
 
 const validateProductAndSubProduct = (
-  productId: ProductId,
+  productId: RootProductID,
   subProductType: SubProductType,
   regionScope: TargetPathRegionScope,
 ): void => {
@@ -33,7 +35,7 @@ const validateProductAndSubProduct = (
 };
 
 const getProductSegment = (
-  productId: ProductId,
+  productId: RootProductID,
   subProductType: SubProductType,
   regionScope: TargetPathRegionScope,
 ): string => {
@@ -46,7 +48,7 @@ const getProductSegment = (
 };
 
 const formatDate = (
-  productId: ProductId,
+  productId: RootProductID,
   subProductType: SubProductType,
   date: string,
   regionScope: TargetPathRegionScope,
@@ -67,7 +69,7 @@ const formatDate = (
 };
 
 const buildProductImageUrl = (
-  productId: ProductId,
+  productId: RootProductID,
   subProductType: SubProductType,
   regionCode: string,
   regionScope: TargetPathRegionScope,
@@ -91,19 +93,19 @@ const buildProductImageUrl = (
     oceanColourLocal: () => {
       const dateTimeSegment = dayjs(date).format(DateFormat.HOUR);
       return isApi
-        ? `/api/${regionCode}_chl/${dateTimeSegment}.gif`
+        ? `/ec2/${regionCode}_chl/${dateTimeSegment}.gif`
         : `${baseUrl}/${regionCode}_chl/${dateTimeSegment}.gif`;
     },
     adjustedSeaLevelAnomaly: () => {
       const updatedRegionCode = regionCode === 'Au' ? 'ht' : regionCode;
       return isApi
-        ? `/api/${updatedRegionCode}/${formattedDate}.gif`
+        ? `/ec2/${updatedRegionCode}/${formattedDate}.gif`
         : `${baseUrl}/${updatedRegionCode}/${formattedDate}.gif`;
     },
     default: () => {
       const subProductSegment = subProductType ? `/${subProductType}` : '';
       return isApi
-        ? `/api/${productSegment}${subProductSegment}/${regionCode}/${formattedDate}.gif`
+        ? `/ec2/${productSegment}${subProductSegment}/${regionCode}/${formattedDate}.gif`
         : `${baseUrl}/${productSegment}${subProductSegment}/${regionCode}/${formattedDate}.gif`;
     },
   };
@@ -124,7 +126,7 @@ const buildProductImageUrl = (
 };
 
 const buildProductVideoUrl = (
-  productId: ProductId,
+  productId: RootProductID,
   subProductType: SubProductType,
   regionCode: string,
   regionScope: TargetPathRegionScope,
@@ -144,7 +146,7 @@ const buildProductVideoUrl = (
   const baseUrl = getBaseUrlByProductId(productId);
 
   const productUrl = {
-    surfaceWaves: `${imageBaseUrl}/s3.php?file=WAVES/y${year}/m${month}/Au_wave_m${month}.mp4`,
+    surfaceWaves: `${imageUrlConfig.imageBaseUrl}/s3.php?file=WAVES/y${year}/m${month}/Au_wave_m${month}.mp4`,
     fourHourSst: `${baseUrl}/${productSegment}/${subProductType}/${regionCode}/${regionCode}_${subProductType}_${year}${month}.mp4`,
     monthlyMeans: `${baseUrl}/${productSegment}/${regionCode}/${regionCode}.mp4`,
     default: `${baseUrl}/${productSegment}${subProductSegment}/${regionCode}/${regionCode}_${subProductType}_${year}_${quarter}.mp4`,
@@ -164,17 +166,17 @@ const buildProductVideoUrl = (
 };
 
 const buildSSTTimeseriesImageUrl = (region: string) => {
-  return `${imageBaseUrl}/MM_SSTA/MMA/${region}_Anomaly_1993-latest.gif`;
+  return `${imageUrlConfig.imageBaseUrl}/MM_SSTA/MMA/${region}_Anomaly_1993-latest.gif`;
 };
 
 const buildEACMooringArrayImageUrl = (date: Dayjs) => {
-  return `${imageBaseUrl}/EAC_array_figures/SST/Brisbane/${date.format(DateFormat.DAY)}.gif`;
+  return `${imageUrlConfig.imageBaseUrl}/EAC_array_figures/SST/Brisbane/${date.format(DateFormat.DAY)}.gif`;
 };
 
 const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle: string, depth: string): string => {
   const profiles = depth === ArgoDepths['2000M'] ? 'profiles' : 'profiles_s';
   const formatDate = dayjs(date).format(DateFormat.DAY);
-  return `${imageBaseUrl}/${profiles}/${worldMeteorologicalOrgId}/${formatDate}_${worldMeteorologicalOrgId}_${cycle}.gif`;
+  return `${imageUrlConfig.imageBaseUrl}/${profiles}/${worldMeteorologicalOrgId}/${formatDate}_${worldMeteorologicalOrgId}_${cycle}.gif`;
 };
 
 const buildCurrentMetersMapImageUrl = (
@@ -185,11 +187,11 @@ const buildCurrentMetersMapImageUrl = (
 ): string => {
   const formattedYear = date === '0000' ? '' : `_${date}`;
 
-  return `${imageBaseUrl}/timeseries/ANMN_P49/mapst/${region}_${property}_${depth}${formattedYear}.gif`;
+  return `${imageUrlConfig.imageBaseUrl}/timeseries/ANMN_P49/mapst/${region}_${property}_${depth}${formattedYear}.gif`;
 };
 
 const buildCurrentMetersDataImageUrl = (deploymentPlotPath: string, plotId: string) => {
-  return `${imageBaseUrl}${deploymentPlotPath}/${plotId}.gif`;
+  return `${imageUrlConfig.imageBaseUrl}${deploymentPlotPath}/${plotId}.gif`;
 };
 
 const buildSurfaceWavesImageUrl = (date: string, imgPath: string): string => {
@@ -197,17 +199,17 @@ const buildSurfaceWavesImageUrl = (date: string, imgPath: string): string => {
   const formattedDate = dayjsDate.format(DateFormat.HOUR);
   const year = dayjsDate.format(DateFormat.YEAR_ONLY);
   const month = dayjsDate.format(DateFormat.MONTH_ONLY);
-  return `${imageS3BaseUrl}/${imgPath}/y${year}/m${month}/${formattedDate}.gif`;
+  return `${imageUrlConfig.imageS3BaseUrl}/${imgPath}/y${year}/m${month}/${formattedDate}.gif`;
 };
 
 const buildTidalCurrentsMapImageUrl = (region: string, subProduct: string, date: Dayjs): string => {
-  if (region === 'Aust') return `${imageBaseUrl}/tides/tidemapindex.gif`;
+  if (region === 'Aust') return `${imageUrlConfig.imageBaseUrl}/tides/tidemapindex.gif`;
 
   const prodFolder = subProduct === 'tidalCurrents-spd' ? 'spd' : 'hv';
   const formattedDate = date.format(DateFormat.MINUTE);
   const year = date.format(DateFormat.YEAR_ONLY);
 
-  return `${imageBaseUrl}/tides/${region}_${prodFolder}/${year}/${formattedDate}.gif`;
+  return `${imageUrlConfig.imageBaseUrl}/tides/${region}_${prodFolder}/${year}/${formattedDate}.gif`;
 };
 
 const buildTidalCurrentsTagFileUrl = (region: string, subProduct: string, date: Dayjs): string => {
@@ -221,13 +223,13 @@ const buildTidalCurrentsTagFileUrl = (region: string, subProduct: string, date: 
 const buildTidalCurrentsDataImageUrl = (point: string, date: Dayjs): string => {
   const formattedDate = date.format(DateFormat.MONTH);
 
-  return `${imageBaseUrl}/tides/monthplots/${point}_${formattedDate}.gif`;
+  return `${imageUrlConfig.imageBaseUrl}/tides/monthplots/${point}_${formattedDate}.gif`;
 };
 
 const buildSealCtdMapImageUrl = (region: string, date: Dayjs): string => {
   const formattedRegion = region === 'GAB-Seal' ? 'GAB' : region;
 
-  return `${imageBaseUrl}/AATAMS/${formattedRegion}/tracks/${date.format(DateFormat.DAY)}.gif`;
+  return `${imageUrlConfig.imageBaseUrl}/AATAMS/${formattedRegion}/tracks/${date.format(DateFormat.DAY)}.gif`;
 };
 
 // the imageBaseUrl is not included below as we need to validate the image urls and will need to be added in once API is implemented
@@ -250,10 +252,10 @@ const buildSealCtdGraphImageUrl = (region: string, date: Dayjs, subProduct: stri
   return `/AATAMS/${region}/timeseries/S_${date.format(DateFormat.YEAR_ONLY)}_p${page}.gif`;
 };
 
-const buildSealCtdTagsDataImageUrl = (sealTagId: string, date: Dayjs, productId: ProductId): string => {
+const buildSealCtdTagsDataImageUrl = (sealTagId: string, date: Dayjs, productId: ProductID): string => {
   const type = productId.split('-')[1];
   if (type === '10days') {
-    return `${imageBaseUrl}/AATAMS/SATTAGS/${sealTagId}/10days/${date.format(DateFormat.DAY)}.gif`;
+    return `${imageUrlConfig.imageBaseUrl}/AATAMS/SATTAGS/${sealTagId}/10days/${date.format(DateFormat.DAY)}.gif`;
   }
 
   const filename = () => {
@@ -269,7 +271,7 @@ const buildSealCtdTagsDataImageUrl = (sealTagId: string, date: Dayjs, productId:
     }
   };
 
-  return `${imageBaseUrl}/AATAMS/SATTAGS/${sealTagId}/${filename()}.gif`;
+  return `${imageUrlConfig.imageBaseUrl}/AATAMS/SATTAGS/${sealTagId}/${filename()}.gif`;
 };
 
 export {

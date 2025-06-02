@@ -1,7 +1,7 @@
 import { Dayjs } from 'dayjs';
 import { ContentType } from '@/constants/request';
 import { buildTidalCurrentsTagFileUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
-import { proxyClient } from './httpClient';
+import { ec2ProxyClient } from './httpClient';
 
 const createTagsObjArray = (areaMatches: RegExpStringIterator<RegExpExecArray>) => {
   return Array.from(areaMatches).map((match) => {
@@ -32,7 +32,7 @@ const getTidalCurrentsTagsData = async (date: Dayjs, subProduct: string, region:
   const url = buildTidalCurrentsTagFileUrl(region, subProduct, date);
 
   try {
-    const htmlString = await proxyClient.get<string>(url, {
+    const htmlString = await ec2ProxyClient.get<string>(url, {
       headers: {
         'Content-Type': ContentType.Text,
       },

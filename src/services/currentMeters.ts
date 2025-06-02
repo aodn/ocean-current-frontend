@@ -1,4 +1,4 @@
-import { proxyClient } from '@/services/httpClient';
+import { ec2ProxyClient } from '@/services/httpClient';
 import { ContentType } from '@/constants/request';
 import { CurrentMetersPlotPath, CurrentMetersSubproductsKeyType } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
@@ -16,7 +16,7 @@ const getCurrentMetersPlotsList = async (
   const folder = subProductKey === 'currentMeters-shelf' ? 'ANMN_P49' : 'ANMN_P48';
 
   try {
-    const htmlString = await proxyClient.get<string>(`timeseries/${folder}/${deploymentPlot}/${type}/`, {
+    const htmlString = await ec2ProxyClient.get<string>(`timeseries/${folder}/${deploymentPlot}/${type}/`, {
       headers: {
         'Content-Type': ContentType.Text,
       },

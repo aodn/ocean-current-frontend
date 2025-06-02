@@ -1,6 +1,6 @@
 import { apiConfig } from '@/configs/api';
 import { ContentType } from '@/constants/request';
-import { proxyClient } from './httpClient';
+import { ec2ProxyClient } from './httpClient';
 
 // this is only temporary and can be removed when the API is implemented
 // at the moment, there is no way of checking if the urls are valid other than attempt fetching
@@ -8,7 +8,7 @@ const validateSealCtdImgUrl = async (urls: string[]): Promise<string[]> => {
   const results = await Promise.all(
     urls.map(async (url) => {
       try {
-        const response = await fetch(apiConfig.proxyURL + url, { method: 'HEAD' });
+        const response = await fetch(apiConfig.ec2ProxyURL + url, { method: 'HEAD' });
         if (response.ok) {
           return url;
         } else {
@@ -28,7 +28,7 @@ const getSealCtdGraphTags = async (imageUrl: string) => {
   const tagUrl = imageUrl.replace('timeseries', 'timeseries_tag').replace('gif', 'txt');
 
   try {
-    const response = await proxyClient.get<string>(tagUrl, {
+    const response = await ec2ProxyClient.get<string>(tagUrl, {
       headers: {
         'Content-Type': ContentType.Text,
       },
@@ -48,7 +48,7 @@ const getSealCtdMapTags = async (regionCode: string, date: string) => {
   const tagUrl = `AATAMS/${formattedRegion}/tag_html/tracks_${date}.txt`;
 
   try {
-    const response = await proxyClient.get<string>(tagUrl, {
+    const response = await ec2ProxyClient.get<string>(tagUrl, {
       headers: {
         'Content-Type': ContentType.Text,
       },
