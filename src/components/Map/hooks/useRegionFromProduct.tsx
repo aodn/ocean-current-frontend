@@ -8,7 +8,10 @@ const useRegionFromProduct = () => {
   const useProductId = useProductStore((state) => state.productParams.productId);
 
   const getRegionList = (productId: ProductID): RegionKeyType[] => {
-    const regionFromProduct = getRegionListByProductId(productId) || { local: [], state: [] };
+    const regionFromProduct = getRegionListByProductId(productId) || {
+      local: [],
+      state: [],
+    };
     const { local, state } = regionFromProduct;
     return [...local, ...state];
   };

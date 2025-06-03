@@ -61,5 +61,16 @@ module.exports = {
     ],
     'import/newline-after-import': 'error',
     'no-console': ['warn', { allow: ['error'] }],
+    'max-len': [
+      'warn',
+      {
+        code: 120,
+        ignoreUrls: true,
+        ignoreStrings: true,
+        ignoreTemplateLiterals: true,
+        ignoreRegExpLiterals: true,
+        ignoreComments: true,
+      },
+    ],
   },
 };

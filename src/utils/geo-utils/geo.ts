@@ -54,7 +54,11 @@ const convertOldOceanCurrentCoordsToBBox = (coords: number[]): BoundingBox => {
 
 const calculateOffsetByCoords = (
   coords: number[],
-  imageParameter: { imageWidth: number; imageHeight: number; imageBounds: number[] },
+  imageParameter: {
+    imageWidth: number;
+    imageHeight: number;
+    imageBounds: number[];
+  },
 ): number[] => {
   const { imageWidth, imageHeight, imageBounds } = imageParameter;
   const imageToGeo = (x: number, y: number) => {

@@ -1,4 +1,4 @@
-import { Layer, MapMouseEvent, Source, useMap } from 'react-map-gl';
+import { Layer, MapMouseEvent, Source, useMap } from 'react-map-gl/mapbox';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';

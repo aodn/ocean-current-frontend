@@ -36,7 +36,12 @@ const ProductFooterMobile: React.FC = () => {
   ];
 
   const changeDepth = (newDepth: ArgoDepths) => {
-    setSearchParams({ wmoid: worldMeteorologicalOrgId, cycle, depth: newDepth, date });
+    setSearchParams({
+      wmoid: worldMeteorologicalOrgId,
+      cycle,
+      depth: newDepth,
+      date,
+    });
     setArgoDepth(newDepth);
   };
 

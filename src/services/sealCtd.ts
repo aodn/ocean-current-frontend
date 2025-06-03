@@ -8,7 +8,9 @@ const validateSealCtdImgUrl = async (urls: string[]): Promise<string[]> => {
   const results = await Promise.all(
     urls.map(async (url) => {
       try {
-        const response = await fetch(apiConfig.ec2ProxyURL + url, { method: 'HEAD' });
+        const response = await fetch(apiConfig.ec2ProxyURL + url, {
+          method: 'HEAD',
+        });
         if (response.ok) {
           return url;
         } else {

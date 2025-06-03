@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import Map, { MapLayerMouseEvent, MapStyle, NavigationControl, ViewStateChangeEvent } from 'react-map-gl';
+import Map, { MapMouseEvent, NavigationControl, ViewStateChangeEvent, StyleSpecification } from 'react-map-gl/mapbox';
 import { mapConfig } from '@/configs/map';
 import useMapStore, { setMapViewState, updateZoom } from '@/stores/map-store/mapStore';
 import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
@@ -26,7 +26,7 @@ const interactiveIds = [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER
 
 const BasicMap: React.FC<BasicMapProps> = ({
   id = mapboxInstanceIds.OCEAN_CURRENT_BASIC_MAP_ID,
-  mapStyle = MAP_STYLE as MapStyle,
+  mapStyle = MAP_STYLE as StyleSpecification,
   style,
   children,
   isMiniMap = false,
@@ -35,7 +35,10 @@ const BasicMap: React.FC<BasicMapProps> = ({
   minZoom,
 }) => {
   const [cursor, setCursor] = useState<string>('grab');
-  const [cursorLngLat, setCursorLngLat] = useState<{ lng: number; lat: number } | null>(null);
+  const [cursorLngLat, setCursorLngLat] = useState<{
+    lng: number;
+    lat: number;
+  } | null>(null);
   const useMapViewState = useMapStore((state) => state.mapViewState);
   const { isArgo, isCurrentMeters } = useProductCheck();
   const { isMobile } = useDeviceType();
@@ -56,7 +59,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
     updateZoom(viewState.zoom);
   }, []);
 
-  const handleMouseMove = useCallback((e: MapLayerMouseEvent) => {
+  const handleMouseMove = useCallback((e: MapMouseEvent) => {
     const { lng, lat } = e.lngLat;
     setCursorLngLat({ lng, lat });
   }, []);

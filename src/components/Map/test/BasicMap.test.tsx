@@ -13,7 +13,7 @@ const createTestQueryClient = () =>
     },
   });
 
-vi.mock('react-map-gl', () => ({
+vi.mock('react-map-gl/mapbox', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="test-map">{children}</div>,
   NavigationControl: () => <div>NavigationControl</div>,
   Source: ({ children }: { children: React.ReactNode }) => <div>{children}</div>, // Mock Source

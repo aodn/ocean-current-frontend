@@ -70,7 +70,14 @@ describe('createTagsObjArray', () => {
     ]);
 
     const result = createTagsObjArray(matches);
-    expect(result).toEqual([{ name: '-103cm Daru', coords: [771, 41, 788, 58], shape: 'rect', type: 'point' }]);
+    expect(result).toEqual([
+      {
+        name: '-103cm Daru',
+        coords: [771, 41, 788, 58],
+        shape: 'rect',
+        type: 'point',
+      },
+    ]);
   });
 
   it('should handle empty input gracefully', () => {

@@ -19,9 +19,21 @@ const useArgoStore = create<State & Actions>()(
     actions: {
       setSelectedArgoParams: (argoParams) => set({ selectedArgoParams: argoParams }, false, 'setSelectedArgoParams'),
       setArgoCycle: (cycle) =>
-        set((state) => ({ selectedArgoParams: { ...state.selectedArgoParams, cycle } }), false, 'setArgoCycle'),
+        set(
+          (state) => ({
+            selectedArgoParams: { ...state.selectedArgoParams, cycle },
+          }),
+          false,
+          'setArgoCycle',
+        ),
       setArgoDepth: (depth) =>
-        set((state) => ({ selectedArgoParams: { ...state.selectedArgoParams, depth } }), false, 'setArgoDepth'),
+        set(
+          (state) => ({
+            selectedArgoParams: { ...state.selectedArgoParams, depth },
+          }),
+          false,
+          'setArgoDepth',
+        ),
       setArgoMetaData: (metaData) => set({ argoMetaData: metaData }, false, 'setArgoMetaData'),
       setArgoProfileCycles: (profileCycles) => set({ argoProfileCycles: profileCycles }, false, 'setArgoProfileCycles'),
       reset: () => set(initialState, false, 'resetArgoStore'),

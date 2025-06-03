@@ -32,10 +32,17 @@ const useQueryParams = (): UseQueryParamsResult => {
   };
 
   const updateQueryParamsAndNavigate = (path: string, params: Partial<QueryParams> = {}) => {
-    navigate({ pathname: path, search: buildNewSearchParams(params).toString() });
+    navigate({
+      pathname: path,
+      search: buildNewSearchParams(params).toString(),
+    });
   };
 
-  return { searchParams: getParams(), updateQueryParams, updateQueryParamsAndNavigate };
+  return {
+    searchParams: getParams(),
+    updateQueryParams,
+    updateQueryParamsAndNavigate,
+  };
 };
 
 export default useQueryParams;

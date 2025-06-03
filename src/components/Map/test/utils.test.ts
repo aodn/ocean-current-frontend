@@ -1,4 +1,4 @@
-import { MapboxGeoJSONFeature } from 'react-map-gl';
+import { MapGeoJSONFeature } from 'react-map-gl/mapbox';
 import * as generalUtils from '@/utils/general-utils/general';
 import { extractPropertyFromFeatures } from '../utils/mapUtils';
 
@@ -7,15 +7,15 @@ describe('extractPropertyFromFeatures', async () => {
     vi.restoreAllMocks();
   });
 
-  const mockFeatures: MapboxGeoJSONFeature[] = [
+  const mockFeatures: MapGeoJSONFeature[] = [
     {
       type: 'Feature',
       properties: { id: 1, name: 'Test Feature', value: 42 },
       geometry: { type: 'Point', coordinates: [0, 0] },
     },
-  ] as unknown as MapboxGeoJSONFeature[];
+  ] as unknown as MapGeoJSONFeature[];
 
-  const mockEmptyFeatures = [] as unknown as MapboxGeoJSONFeature[];
+  const mockEmptyFeatures = [] as unknown as MapGeoJSONFeature[];
 
   it('should extract properties when all conditions are met', async () => {
     // Arrange

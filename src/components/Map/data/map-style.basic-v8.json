@@ -6,11 +6,11 @@
   },
   "sources": {
     "mapbox": {
-      "url": "mapbox://mapbox.mapbox-streets-v7",
+      "url": "mapbox://mapbox.mapbox-streets-v8",
       "type": "vector"
     }
   },
-  "sprite": "mapbox://sprites/mapbox/basic-v8",
+  "sprite": "mapbox://sprites/mapbox/streets-v11",
   "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
   "layers": [
     {
@@ -372,40 +372,18 @@
     },
     {
       "interactive": true,
-      "layout": {
-        "line-cap": "round",
-        "line-join": "round"
-      },
-      "filter": ["all", ["==", "$type", "LineString"], ["all", ["<=", "admin_level", 2], ["==", "maritime", 0]]],
-      "type": "line",
-      "source": "mapbox",
-      "id": "admin_country",
-      "paint": {
-        "line-color": "#8b8a8a",
-        "line-width": {
-          "base": 1.3,
-          "stops": [
-            [3, 0.5],
-            [22, 15]
-          ]
-        }
-      },
-      "source-layer": "admin"
-    },
-    {
-      "interactive": true,
       "minzoom": 5,
       "layout": {
-        "icon-image": "{maki}-11",
+        "icon-image": ["concat", ["get", "maki"], "-11"],
         "text-offset": [0, 0.5],
-        "text-field": "{name_en}",
+        "text-field": ["coalesce", ["get", "name_en"], ["get", "name"]],
         "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
         "text-max-width": 8,
         "text-anchor": "top",
         "text-size": 11,
         "icon-size": 1
       },
-      "filter": ["all", ["==", "$type", "Point"], ["all", ["==", "scalerank", 1], ["==", "localrank", 1]]],
+      "filter": ["==", "$type", "Point"],
       "type": "symbol",
       "source": "mapbox",
       "id": "poi_label",
@@ -421,7 +399,7 @@
       "interactive": true,
       "layout": {
         "symbol-placement": "line",
-        "text-field": "{name_en}",
+        "text-field": ["coalesce", ["get", "name_en"], ["get", "name"]],
         "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
         "text-transform": "uppercase",
         "text-letter-spacing": 0.1,
@@ -446,13 +424,13 @@
         "text-halo-color": "rgba(255,255,255,0.75)",
         "text-halo-width": 2
       },
-      "source-layer": "road_label"
+      "source-layer": "road"
     },
     {
       "interactive": true,
       "minzoom": 8,
       "layout": {
-        "text-field": "{name_en}",
+        "text-field": ["coalesce", ["get", "name_en"], ["get", "name"]],
         "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
         "text-max-width": 6,
         "text-size": {
@@ -482,32 +460,6 @@
       "interactive": true,
       "layout": {
         "text-field": "{name_en}",
-        "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
-        "text-max-width": 10,
-        "text-size": {
-          "stops": [
-            [3, 12],
-            [8, 16]
-          ]
-        }
-      },
-      "maxzoom": 16,
-      "filter": ["all", ["==", "$type", "Point"], ["==", "type", "city"]],
-      "type": "symbol",
-      "source": "mapbox",
-      "id": "place_label_city",
-      "paint": {
-        "text-color": "#666",
-        "text-halo-color": "rgba(255,255,255,0.75)",
-        "text-halo-width": 1,
-        "text-halo-blur": 1
-      },
-      "source-layer": "place_label"
-    },
-    {
-      "interactive": true,
-      "layout": {
-        "text-field": "{name_en}",
         "text-font": ["Open Sans Regular", "Arial Unicode MS Regular"],
         "text-max-width": 10,
         "text-size": {
@@ -518,7 +470,7 @@
         }
       },
       "maxzoom": 12,
-      "filter": ["==", "$type", "Point"],
+      "filter": ["all", ["==", "$type", "Point"], ["==", "type", "country"]],
       "type": "symbol",
       "source": "mapbox",
       "id": "country_label",
@@ -528,7 +480,7 @@
         "text-halo-width": 1,
         "text-halo-blur": 1
       },
-      "source-layer": "country_label"
+      "source-layer": "place_label"
     }
   ]
 }

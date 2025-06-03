@@ -64,7 +64,9 @@ describe('ProductMenuBar', () => {
 
   it.skip('should display navigation arrows', () => {
     renderComponentWithRouter();
-    const rightArrow = screen.getByRole('button', { name: /right arrow icon/i });
+    const rightArrow = screen.getByRole('button', {
+      name: /right arrow icon/i,
+    });
     const leftArrow = screen.getByRole('button', { name: /left arrow icon/i });
     expect(rightArrow).toBeInTheDocument();
     expect(leftArrow).toBeInTheDocument();

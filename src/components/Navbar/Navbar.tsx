@@ -9,7 +9,9 @@ import NavbarMenu from './components/NavbarMenu';
 
 const Navbar: React.FC = () => {
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
-  const [popoverPosition, setPopoverPosition] = useState<{ left: number } | null>(null);
+  const [popoverPosition, setPopoverPosition] = useState<{
+    left: number;
+  } | null>(null);
   const [menuItems] = useState<LinkItem[]>(linksData);
   const menuItemRefs = useRef<(HTMLElement | null)[]>([]);
 
