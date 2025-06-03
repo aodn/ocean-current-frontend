@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import { UrlType } from '@/types/router';
 
 const useUrlType = (): UrlType => {

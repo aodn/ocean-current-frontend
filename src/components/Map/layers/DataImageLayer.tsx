@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useMap } from 'react-map-gl';
+import { useMap } from 'react-map-gl/mapbox';
 import { mapboxLayerIds } from '@/constants/mapboxId';
 import useProductStore from '@/stores/product-store/productStore';
 import { getEntryImagePathByProductId } from '@/utils/data-image-builder-utils/latestEntryImage';

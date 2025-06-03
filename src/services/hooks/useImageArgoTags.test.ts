@@ -23,7 +23,11 @@ describe('useImageArgoTags', () => {
   });
 
   it('should return loading true initially', () => {
-    vi.mocked(useDataFetch).mockReturnValue({ data: null, loading: true, error: null });
+    vi.mocked(useDataFetch).mockReturnValue({
+      data: null,
+      loading: true,
+      error: null,
+    });
 
     const { result } = setup();
 
@@ -35,10 +39,30 @@ describe('useImageArgoTags', () => {
   it('should return parsed data when data is fetched', () => {
     const mockData = 'mock data';
     const parsedData = [
-      { type: 'type1', coordX: 1, coordY: 2, wmoId: 123, cycle: 1, institution: 'inst1', dataSource: 'source1' },
-      { type: 'type2', coordX: 3, coordY: 4, wmoId: 456, cycle: 2, institution: 'inst2', dataSource: 'source2' },
+      {
+        type: 'type1',
+        coordX: 1,
+        coordY: 2,
+        wmoId: 123,
+        cycle: 1,
+        institution: 'inst1',
+        dataSource: 'source1',
+      },
+      {
+        type: 'type2',
+        coordX: 3,
+        coordY: 4,
+        wmoId: 456,
+        cycle: 2,
+        institution: 'inst2',
+        dataSource: 'source2',
+      },
     ];
-    vi.mocked(useDataFetch).mockReturnValue({ data: mockData, loading: false, error: null });
+    vi.mocked(useDataFetch).mockReturnValue({
+      data: mockData,
+      loading: false,
+      error: null,
+    });
     vi.mocked(parseArgoTagDataFromText).mockReturnValue(parsedData);
 
     const { result } = setup();
@@ -50,7 +74,11 @@ describe('useImageArgoTags', () => {
 
   it('should handle error state', () => {
     const error = new Error('Fetch error');
-    vi.mocked(useDataFetch).mockReturnValue({ data: null, loading: false, error });
+    vi.mocked(useDataFetch).mockReturnValue({
+      data: null,
+      loading: false,
+      error,
+    });
 
     const { result } = setup();
 
@@ -62,10 +90,30 @@ describe('useImageArgoTags', () => {
   it('should use special regionPath for SnapshotCHL', () => {
     const mockData = 'mock data';
     const parsedData = [
-      { type: 'type1', coordX: 1, coordY: 2, wmoId: 123, cycle: 1, institution: 'inst1', dataSource: 'source1' },
-      { type: 'type2', coordX: 3, coordY: 4, wmoId: 456, cycle: 2, institution: 'inst2', dataSource: 'source2' },
+      {
+        type: 'type1',
+        coordX: 1,
+        coordY: 2,
+        wmoId: 123,
+        cycle: 1,
+        institution: 'inst1',
+        dataSource: 'source1',
+      },
+      {
+        type: 'type2',
+        coordX: 3,
+        coordY: 4,
+        wmoId: 456,
+        cycle: 2,
+        institution: 'inst2',
+        dataSource: 'source2',
+      },
     ];
-    vi.mocked(useDataFetch).mockReturnValue({ data: mockData, loading: false, error: null });
+    vi.mocked(useDataFetch).mockReturnValue({
+      data: mockData,
+      loading: false,
+      error: null,
+    });
     vi.mocked(parseArgoTagDataFromText).mockReturnValue(parsedData);
 
     const { result } = renderHook(() => useImageArgoTags(mockDate, 'SnapshotCHL', mockRegionCode));

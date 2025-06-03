@@ -16,10 +16,18 @@ const useMapStore = create<State & Actions>()(
       updateLongitude: (longitude) =>
         set((state) => ({ mapViewState: { ...state.mapViewState, longitude } }), false, 'updateLongitude'),
       updatePosition: (latitude, longitude) =>
-        set((state) => ({ mapViewState: { ...state.mapViewState, latitude, longitude } }), false, 'updatePosition'),
+        set(
+          (state) => ({
+            mapViewState: { ...state.mapViewState, latitude, longitude },
+          }),
+          false,
+          'updatePosition',
+        ),
       updatePositionAndZoom: (latitude, longitude, zoom) =>
         set(
-          (state) => ({ mapViewState: { ...state.mapViewState, latitude, longitude, zoom } }),
+          (state) => ({
+            mapViewState: { ...state.mapViewState, latitude, longitude, zoom },
+          }),
           false,
           'updatePositionAndZoom',
         ),

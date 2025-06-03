@@ -15,7 +15,7 @@ const createTestQueryClient = () =>
     },
   });
 
-vi.mock('react-map-gl', () => ({
+vi.mock('react-map-gl/mapbox', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="test-map">{children}</div>,
   NavigationControl: () => <div>NavigationControl</div>,
   Source: ({ children }: { children: React.ReactNode }) => <div>{children}</div>, // Mock Source
@@ -37,8 +37,8 @@ vi.mock('../layers/ArgoAsProductLayer/ArgoAsProductLayer.tsx', () => {
 });
 
 // Mock React Router hooks
-vi.mock('react-router-dom', async () => {
-  const originalModule = await vi.importActual('react-router-dom');
+vi.mock('react-router', async () => {
+  const originalModule = await vi.importActual('react-router');
 
   return {
     ...originalModule,

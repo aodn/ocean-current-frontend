@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useLocation, useMatch } from 'react-router-dom';
+import { useLocation, useMatch } from 'react-router';
 import { UrlType } from '@/types/router';
 import { ChildProductID, ProductGroupID, StandaloneProductID } from '@/types/product';
 

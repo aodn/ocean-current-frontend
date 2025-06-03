@@ -1,13 +1,13 @@
 import { renderHook, act } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import dayjs from 'dayjs';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { setStartDate, setEndDate } from '@/stores/date-store/dateStore';
 import { Product } from '@/types/product';
 import useDateRange from './useDateRange';
 
-vi.mock('react-router-dom', () => ({
+vi.mock('react-router', () => ({
   useSearchParams: vi.fn(() => [new URLSearchParams(), vi.fn()]),
 }));
 
@@ -29,7 +29,11 @@ describe('useDateRange', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(useProductConvert).mockReturnValue({
-      mainProduct: { key: 'fourHourSst', title: 'Default Product', path: '/default' } as Product,
+      mainProduct: {
+        key: 'fourHourSst',
+        title: 'Default Product',
+        path: '/default',
+      } as Product,
       subProduct: null,
       subProducts: [],
     });
@@ -127,7 +131,11 @@ describe('useDateRange', () => {
   it('should handle year range correctly for climatology product', () => {
     // Arrange
     vi.mocked(useProductConvert).mockReturnValue({
-      mainProduct: { key: 'climatology', title: 'Climatology', path: '/climatology' } as Product,
+      mainProduct: {
+        key: 'climatology',
+        title: 'Climatology',
+        path: '/climatology',
+      } as Product,
       subProduct: null,
       subProducts: [],
     });
@@ -142,7 +150,11 @@ describe('useDateRange', () => {
   it('should handle year date change correctly', () => {
     // Arrange
     vi.mocked(useProductConvert).mockReturnValue({
-      mainProduct: { key: 'climatology', title: 'Climatology', path: '/climatology' } as Product,
+      mainProduct: {
+        key: 'climatology',
+        title: 'Climatology',
+        path: '/climatology',
+      } as Product,
       subProduct: null,
       subProducts: [],
     });
@@ -163,7 +175,11 @@ describe('useDateRange', () => {
   it('should handle four hour SST product correctly', () => {
     // Arrange
     vi.mocked(useProductConvert).mockReturnValue({
-      mainProduct: { key: 'fourHourSst', title: 'Four Hour SST', path: '/four-hour-sst' } as Product,
+      mainProduct: {
+        key: 'fourHourSst',
+        title: 'Four Hour SST',
+        path: '/four-hour-sst',
+      } as Product,
       subProduct: null,
       subProducts: [],
     });
@@ -179,7 +195,11 @@ describe('useDateRange', () => {
   it('should handle date change for four hour SST product', () => {
     // Arrange
     vi.mocked(useProductConvert).mockReturnValue({
-      mainProduct: { key: 'fourHourSst', title: 'Four Hour SST', path: '/four-hour-sst' } as Product,
+      mainProduct: {
+        key: 'fourHourSst',
+        title: 'Four Hour SST',
+        path: '/four-hour-sst',
+      } as Product,
       subProduct: null,
       subProducts: [],
     });
@@ -199,8 +219,16 @@ describe('useDateRange', () => {
   it('should handle monthly means anomalies correctly', () => {
     // Arrange
     vi.mocked(useProductConvert).mockReturnValue({
-      mainProduct: { key: 'monthlyMeans', title: 'Monthly Means', path: '/monthly-means' } as Product,
-      subProduct: { key: 'monthlyMeans-anomalies', title: 'Anomalies', path: '/anomalies' },
+      mainProduct: {
+        key: 'monthlyMeans',
+        title: 'Monthly Means',
+        path: '/monthly-means',
+      } as Product,
+      subProduct: {
+        key: 'monthlyMeans-anomalies',
+        title: 'Anomalies',
+        path: '/anomalies',
+      },
       subProducts: [],
     });
 
@@ -230,7 +258,11 @@ describe('useDateRange', () => {
   it('should disable video creation for specific products', () => {
     // Arrange
     vi.mocked(useProductConvert).mockReturnValue({
-      mainProduct: { key: 'climatology', title: 'Climatology', path: '/climatology' } as Product,
+      mainProduct: {
+        key: 'climatology',
+        title: 'Climatology',
+        path: '/climatology',
+      } as Product,
       subProduct: null,
       subProducts: [],
     });
@@ -243,15 +275,27 @@ describe('useDateRange', () => {
 
     // Test for other cases
     vi.mocked(useProductConvert).mockReturnValue({
-      mainProduct: { key: 'fourHourSst', title: 'Four Hour SST', path: '/four-hour-sst' } as Product,
-      subProduct: { key: 'fourHourSst-sstAge', title: 'SST Age', path: '/sst-age' },
+      mainProduct: {
+        key: 'fourHourSst',
+        title: 'Four Hour SST',
+        path: '/four-hour-sst',
+      } as Product,
+      subProduct: {
+        key: 'fourHourSst-sstAge',
+        title: 'SST Age',
+        path: '/sst-age',
+      },
       subProducts: [],
     });
     const { result: result2 } = renderHook(() => useDateRange());
     expect(result2.current.disableVideoCreation()).toBe(true);
 
     vi.mocked(useProductConvert).mockReturnValue({
-      mainProduct: { key: 'currentMeters', title: 'Current Meters', path: '/current-meters' } as Product,
+      mainProduct: {
+        key: 'currentMeters',
+        title: 'Current Meters',
+        path: '/current-meters',
+      } as Product,
       subProduct: null,
       subProducts: [],
     });
@@ -262,7 +306,11 @@ describe('useDateRange', () => {
   it('should handle surface waves product correctly', () => {
     // Arrange
     vi.mocked(useProductConvert).mockReturnValue({
-      mainProduct: { key: 'surfaceWaves', title: 'Surface Waves', path: '/surface-waves' } as Product,
+      mainProduct: {
+        key: 'surfaceWaves',
+        title: 'Surface Waves',
+        path: '/surface-waves',
+      } as Product,
       subProduct: null,
       subProducts: [],
     });
@@ -278,14 +326,22 @@ describe('useDateRange', () => {
   it('should use correct format date based on product type', () => {
     // Arrange & Act
     vi.mocked(useProductConvert).mockReturnValue({
-      mainProduct: { key: 'fourHourSst', title: 'Four Hour SST', path: '/four-hour-sst' } as Product,
+      mainProduct: {
+        key: 'fourHourSst',
+        title: 'Four Hour SST',
+        path: '/four-hour-sst',
+      } as Product,
       subProduct: null,
       subProducts: [],
     });
     const { result: resultFourHour } = renderHook(() => useDateRange());
 
     vi.mocked(useProductConvert).mockReturnValue({
-      mainProduct: { key: 'EACMooringArray', title: 'EAC Mooring Array', path: '/eac-mooring-array' } as Product,
+      mainProduct: {
+        key: 'EACMooringArray',
+        title: 'EAC Mooring Array',
+        path: '/eac-mooring-array',
+      } as Product,
       subProduct: null,
       subProducts: [],
     });
@@ -303,7 +359,11 @@ describe('useDateRange', () => {
 
     // Act
     vi.mocked(useProductConvert).mockReturnValue({
-      mainProduct: { key: 'climatology', title: 'Climatology', path: '/climatology' } as Product,
+      mainProduct: {
+        key: 'climatology',
+        title: 'Climatology',
+        path: '/climatology',
+      } as Product,
       subProduct: null,
       subProducts: [],
     });

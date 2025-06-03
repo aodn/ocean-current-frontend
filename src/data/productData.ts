@@ -8,11 +8,21 @@ const flattenProducts = (products: Product[]): FlatProduct[] => {
     const { children, ...flatProduct } = product;
 
     if (!product.children) {
-      flatList.push({ ...(flatProduct as StandaloneProductWithoutChildren), parentId: null });
+      flatList.push({
+        ...(flatProduct as StandaloneProductWithoutChildren),
+        parentId: null,
+      });
     } else {
-      flatList.push({ ...(flatProduct as ProductGroupWithChildren), parentId: null });
+      flatList.push({
+        ...(flatProduct as ProductGroupWithChildren),
+        parentId: null,
+      });
       product.children.forEach((child) => {
-        flatList.push({ ...child, parentId: product.key, latestEntry: product.latestEntry });
+        flatList.push({
+          ...child,
+          parentId: product.key,
+          latestEntry: product.latestEntry,
+        });
       });
     }
   });

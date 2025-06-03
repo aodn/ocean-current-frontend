@@ -36,7 +36,11 @@ vi.mock('@/data/productData', () => ({
 describe('getProductByIdFromFlat', () => {
   it('should return the correct product for a valid id', () => {
     const result = getProductByIdFromFlat('subProduct');
-    expect(result).toEqual({ key: 'subProduct', path: 'sub-product', parentId: 'mainProduct' });
+    expect(result).toEqual({
+      key: 'subProduct',
+      path: 'sub-product',
+      parentId: 'mainProduct',
+    });
   });
 
   it('should return undefined for an invalid id', () => {

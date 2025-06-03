@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { Button, Dropdown } from '@/components/Shared';
 import useCurrentMetersStore, {
   setDepth,

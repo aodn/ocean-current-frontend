@@ -1,4 +1,4 @@
-import { Navigate, type RouteObject } from 'react-router-dom';
+import { Navigate, type RouteObject } from 'react-router';
 import { Home, MapView, DataView, NotFound } from '@/pages';
 import MainLayout from '@/layouts/MainLayout';
 import MapLayout from '@/layouts/MapLayout';

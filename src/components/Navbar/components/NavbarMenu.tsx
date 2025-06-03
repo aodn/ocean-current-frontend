@@ -1,5 +1,5 @@
 import { forwardRef, ForwardedRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { DetailedLink } from '@/types/navbar';
 
 const NavbarMenu = forwardRef(({ items }: { items: DetailedLink[] }, ref: ForwardedRef<HTMLDivElement>) => {

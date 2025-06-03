@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Layer, MapMouseEvent, Source, useMap } from 'react-map-gl';
+import { Layer, MapMouseEvent, Source, useMap } from 'react-map-gl/mapbox';
 import dayjs from 'dayjs';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { useProductSearchParam, useQueryParams } from '@/hooks';
@@ -113,9 +113,9 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
         setHoveredRegion('');
         setHoveredId(null);
       } else {
-        const { name: regionName } = getPropertyFromMapFeatures<{ name: string }>(map, e, PRODUCT_REGION_BOX_LAYER_ID, [
-          'name',
-        ]);
+        const { name: regionName } = getPropertyFromMapFeatures<{
+          name: string;
+        }>(map, e, PRODUCT_REGION_BOX_LAYER_ID, ['name']);
 
         if (regionName) {
           setHoveredRegion(regionName);
@@ -148,12 +148,10 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
         mapFitBounds(regionBounds);
       }
 
-      const { code: regionCode } = getPropertyFromMapFeatures<{ name: string; code: string }>(
-        map,
-        e,
-        PRODUCT_REGION_BOX_LAYER_ID,
-        ['name', 'code'],
-      );
+      const { code: regionCode } = getPropertyFromMapFeatures<{
+        name: string;
+        code: string;
+      }>(map, e, PRODUCT_REGION_BOX_LAYER_ID, ['name', 'code']);
 
       if (regionCode) {
         let targetPath = `/product/${baseProductPath}`;

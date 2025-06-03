@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 import dayjs from 'dayjs';
 import * as productUtils from '@/utils/product-utils/product';
 import { ProductID } from '@/types/product';

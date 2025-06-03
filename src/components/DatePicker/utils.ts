@@ -43,7 +43,11 @@ const findDateRangeInfo = (dates: string[], format: DateFormat): DateRangeResult
     currentDate = currentDate.add(1, 'day');
   }
 
-  return { missingDates, firstDate: firstDate.toDate(), lastDate: lastDate.toDate() };
+  return {
+    missingDates,
+    firstDate: firstDate.toDate(),
+    lastDate: lastDate.toDate(),
+  };
 };
 
 export { findDateRangeInfo };

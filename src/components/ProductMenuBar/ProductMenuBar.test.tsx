@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import '@/configs/dayjs';
 import { useDateRange } from '@/hooks';
 import ProductMenuBar from './ProductMenuBar';
@@ -64,7 +64,9 @@ describe('ProductMenuBar', () => {
 
   it.skip('should display navigation arrows', () => {
     renderComponentWithRouter();
-    const rightArrow = screen.getByRole('button', { name: /right arrow icon/i });
+    const rightArrow = screen.getByRole('button', {
+      name: /right arrow icon/i,
+    });
     const leftArrow = screen.getByRole('button', { name: /left arrow icon/i });
     expect(rightArrow).toBeInTheDocument();
     expect(leftArrow).toBeInTheDocument();

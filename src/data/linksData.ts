@@ -113,7 +113,7 @@ export const linksData: LinkItem[] = [
         blueIcon: TidalCurrentsBlueIcon,
         title: 'Tidal Currents',
         description: 'Oceanic flow patterns',
-        url: 'map/tidal-currents/speed',
+        url: '/map/tidal-currents/speed',
       },
       {
         id: 'current-meters',
@@ -121,7 +121,7 @@ export const linksData: LinkItem[] = [
         blueIcon: CurrentMetersBlueIcon,
         title: 'Current Meters',
         description: 'Flow measurement devices',
-        url: 'map/current-meters/moored-instrument-array',
+        url: '/map/current-meters/moored-instrument-array',
       },
       {
         id: 'seal-ctd',
@@ -129,7 +129,7 @@ export const linksData: LinkItem[] = [
         blueIcon: SealCTDBlueIcon,
         title: 'SealCTD',
         description: 'Animal-mounted sensors',
-        url: 'map/seal-ctd/tracks',
+        url: '/map/seal-ctd/tracks',
       },
       /*
         EAC Mooring Array has data from only one region
@@ -141,7 +141,7 @@ export const linksData: LinkItem[] = [
         blueIcon: EACMooringArrayBlueIcon,
         title: 'EAC Mooring Array',
         description: 'Monitoring station network',
-        url: 'map/eac-mooring-array?region=Brisbane',
+        url: '/map/eac-mooring-array?region=Brisbane',
       },
     ],
   },

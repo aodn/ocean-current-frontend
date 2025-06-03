@@ -4,17 +4,57 @@ import { CurrentMetersRegion } from '@/constants/currentMeters';
 import { CurrentMetersMapDataPoints } from '@/types/currentMeters';
 
 const timorP: CurrentMetersMapDataPoints[] = [
-  { name: 'NWSLYN', coords: [130.35, -9.939], region: CurrentMetersRegion.TimorP },
-  { name: 'DARBGF', coords: [130.59, -12.11], region: CurrentMetersRegion.TimorP },
-  { name: 'ITFTIS', coords: [127.55, -9.818], region: CurrentMetersRegion.TimorP },
+  {
+    name: 'NWSLYN',
+    coords: [130.35, -9.939],
+    region: CurrentMetersRegion.TimorP,
+  },
+  {
+    name: 'DARBGF',
+    coords: [130.59, -12.11],
+    region: CurrentMetersRegion.TimorP,
+  },
+  {
+    name: 'ITFTIS',
+    coords: [127.55, -9.818],
+    region: CurrentMetersRegion.TimorP,
+  },
   { name: 'ITFMHB', coords: [128, -11.5], region: CurrentMetersRegion.TimorP },
-  { name: 'ITFJBG', coords: [128.97, -13.61], region: CurrentMetersRegion.TimorP },
-  { name: 'ITFFTB', coords: [128.48, -12.29], region: CurrentMetersRegion.TimorP },
-  { name: 'NRSDAR', coords: [130.72, -12.34], region: CurrentMetersRegion.TimorP },
-  { name: 'ITFTNS', coords: [127.25, -9.002], region: CurrentMetersRegion.TimorP },
-  { name: 'ITFTSL', coords: [127.36, -9.274], region: CurrentMetersRegion.TimorP },
-  { name: 'ITFTIN', coords: [127.19, -8.86], region: CurrentMetersRegion.TimorP },
-  { name: 'ITFOMB', coords: [125.06, -8.53], region: CurrentMetersRegion.TimorP },
+  {
+    name: 'ITFJBG',
+    coords: [128.97, -13.61],
+    region: CurrentMetersRegion.TimorP,
+  },
+  {
+    name: 'ITFFTB',
+    coords: [128.48, -12.29],
+    region: CurrentMetersRegion.TimorP,
+  },
+  {
+    name: 'NRSDAR',
+    coords: [130.72, -12.34],
+    region: CurrentMetersRegion.TimorP,
+  },
+  {
+    name: 'ITFTNS',
+    coords: [127.25, -9.002],
+    region: CurrentMetersRegion.TimorP,
+  },
+  {
+    name: 'ITFTSL',
+    coords: [127.36, -9.274],
+    region: CurrentMetersRegion.TimorP,
+  },
+  {
+    name: 'ITFTIN',
+    coords: [127.19, -8.86],
+    region: CurrentMetersRegion.TimorP,
+  },
+  {
+    name: 'ITFOMB',
+    coords: [125.06, -8.53],
+    region: CurrentMetersRegion.TimorP,
+  },
 ];
 
 const kim: CurrentMetersMapDataPoints[] = [
@@ -44,12 +84,36 @@ const ning: CurrentMetersMapDataPoints[] = [
 ];
 
 const perth: CurrentMetersMapDataPoints[] = [
-  { name: 'WATR04', coords: [115.4, -31.72], region: CurrentMetersRegion.Perth },
-  { name: 'WATR10', coords: [115.2, -31.65], region: CurrentMetersRegion.Perth },
-  { name: 'WATR15', coords: [115.13, -31.69], region: CurrentMetersRegion.Perth },
-  { name: 'WATR20', coords: [115.04, -31.73], region: CurrentMetersRegion.Perth },
-  { name: 'WATR50', coords: [114.96, -31.77], region: CurrentMetersRegion.Perth },
-  { name: 'WACA20', coords: [115.23, -31.98], region: CurrentMetersRegion.Perth },
+  {
+    name: 'WATR04',
+    coords: [115.4, -31.72],
+    region: CurrentMetersRegion.Perth,
+  },
+  {
+    name: 'WATR10',
+    coords: [115.2, -31.65],
+    region: CurrentMetersRegion.Perth,
+  },
+  {
+    name: 'WATR15',
+    coords: [115.13, -31.69],
+    region: CurrentMetersRegion.Perth,
+  },
+  {
+    name: 'WATR20',
+    coords: [115.04, -31.73],
+    region: CurrentMetersRegion.Perth,
+  },
+  {
+    name: 'WATR50',
+    coords: [114.96, -31.77],
+    region: CurrentMetersRegion.Perth,
+  },
+  {
+    name: 'WACA20',
+    coords: [115.23, -31.98],
+    region: CurrentMetersRegion.Perth,
+  },
   { name: 'NRSROT', coords: [115.42, -32], region: CurrentMetersRegion.Perth },
 ];
 
@@ -70,9 +134,21 @@ const sa: CurrentMetersMapDataPoints[] = [
 ];
 
 const totten: CurrentMetersMapDataPoints[] = [
-  { name: 'TOTTEN1', coords: [119.21, -66.54], region: CurrentMetersRegion.Totten },
-  { name: 'TOTTEN2', coords: [120.63, -66.21], region: CurrentMetersRegion.Totten },
-  { name: 'TOTTEN3', coords: [120.46, -66.5], region: CurrentMetersRegion.Totten },
+  {
+    name: 'TOTTEN1',
+    coords: [119.21, -66.54],
+    region: CurrentMetersRegion.Totten,
+  },
+  {
+    name: 'TOTTEN2',
+    coords: [120.63, -66.21],
+    region: CurrentMetersRegion.Totten,
+  },
+  {
+    name: 'TOTTEN3',
+    coords: [120.46, -66.5],
+    region: CurrentMetersRegion.Totten,
+  },
 ];
 
 const sofs: CurrentMetersMapDataPoints[] = [
@@ -81,12 +157,24 @@ const sofs: CurrentMetersMapDataPoints[] = [
 ];
 
 const polynya: CurrentMetersMapDataPoints[] = [
-  { name: 'POLYNYA1', coords: [143.47, -66.2], region: CurrentMetersRegion.Polynya },
-  { name: 'POLYNYA2', coords: [143.21, -66.2], region: CurrentMetersRegion.Polynya },
+  {
+    name: 'POLYNYA1',
+    coords: [143.47, -66.2],
+    region: CurrentMetersRegion.Polynya,
+  },
+  {
+    name: 'POLYNYA2',
+    coords: [143.21, -66.2],
+    region: CurrentMetersRegion.Polynya,
+  },
 ];
 
 const eTas: CurrentMetersMapDataPoints[] = [
-  { name: 'NRSMAI', coords: [148.23, -42.65], region: CurrentMetersRegion.ETas },
+  {
+    name: 'NRSMAI',
+    coords: [148.23, -42.65],
+    region: CurrentMetersRegion.ETas,
+  },
 ];
 
 const bmp: CurrentMetersMapDataPoints[] = [
@@ -104,7 +192,11 @@ const syd: CurrentMetersMapDataPoints[] = [
 
 const coffs: CurrentMetersMapDataPoints[] = [
   { name: 'CH070', coords: [153.3, -30.27], region: CurrentMetersRegion.Coffs },
-  { name: 'CH100', coords: [153.39, -30.26], region: CurrentMetersRegion.Coffs },
+  {
+    name: 'CH100',
+    coords: [153.39, -30.26],
+    region: CurrentMetersRegion.Coffs,
+  },
 ];
 
 const seq: CurrentMetersMapDataPoints[] = [
@@ -112,33 +204,77 @@ const seq: CurrentMetersMapDataPoints[] = [
   { name: 'SEQ200', coords: [153.77, -27.34], region: CurrentMetersRegion.SEQ },
   { name: 'SEQ400', coords: [153.88, -27.33], region: CurrentMetersRegion.SEQ },
   { name: 'EAC0500', coords: [153.9, -27.33], region: CurrentMetersRegion.SEQ },
-  { name: 'EAC1520', coords: [153.97, -27.31], region: CurrentMetersRegion.SEQ },
+  {
+    name: 'EAC1520',
+    coords: [153.97, -27.31],
+    region: CurrentMetersRegion.SEQ,
+  },
   { name: 'EAC2000', coords: [154, -27.31], region: CurrentMetersRegion.SEQ },
-  { name: 'EAC3200', coords: [154.13, -27.28], region: CurrentMetersRegion.SEQ },
-  { name: 'EAC4200', coords: [154.29, -27.24], region: CurrentMetersRegion.SEQ },
+  {
+    name: 'EAC3200',
+    coords: [154.13, -27.28],
+    region: CurrentMetersRegion.SEQ,
+  },
+  {
+    name: 'EAC4200',
+    coords: [154.29, -27.24],
+    region: CurrentMetersRegion.SEQ,
+  },
   { name: 'EAC4700', coords: [154.64, -27.2], region: CurrentMetersRegion.SEQ },
   { name: 'EAC4800', coords: [155.31, -27.1], region: CurrentMetersRegion.SEQ },
 ];
 
 const sgbr: CurrentMetersMapDataPoints[] = [
-  { name: 'GBRCCH', coords: [151.99, -22.41], region: CurrentMetersRegion.SGBR },
-  { name: 'GBRHIN', coords: [151.99, -23.38], region: CurrentMetersRegion.SGBR },
-  { name: 'GBRHIS', coords: [151.96, -23.51], region: CurrentMetersRegion.SGBR },
-  { name: 'GBROTE', coords: [152.17, -23.48], region: CurrentMetersRegion.SGBR },
+  {
+    name: 'GBRCCH',
+    coords: [151.99, -22.41],
+    region: CurrentMetersRegion.SGBR,
+  },
+  {
+    name: 'GBRHIN',
+    coords: [151.99, -23.38],
+    region: CurrentMetersRegion.SGBR,
+  },
+  {
+    name: 'GBRHIS',
+    coords: [151.96, -23.51],
+    region: CurrentMetersRegion.SGBR,
+  },
+  {
+    name: 'GBROTE',
+    coords: [152.17, -23.48],
+    region: CurrentMetersRegion.SGBR,
+  },
 ];
 
 const sgbr2: CurrentMetersMapDataPoints[] = [
-  { name: 'GBRELR', coords: [152.89, -21.04], region: CurrentMetersRegion.SGBR2 },
+  {
+    name: 'GBRELR',
+    coords: [152.89, -21.04],
+    region: CurrentMetersRegion.SGBR2,
+  },
 ];
 
 const cgbr: CurrentMetersMapDataPoints[] = [
-  { name: 'GBRMYR', coords: [147.35, -18.22], region: CurrentMetersRegion.CGBR },
-  { name: 'GBRPPS', coords: [147.17, -18.31], region: CurrentMetersRegion.CGBR },
+  {
+    name: 'GBRMYR',
+    coords: [147.35, -18.22],
+    region: CurrentMetersRegion.CGBR,
+  },
+  {
+    name: 'GBRPPS',
+    coords: [147.17, -18.31],
+    region: CurrentMetersRegion.CGBR,
+  },
   { name: 'NRSYON', coords: [147.62, -19.3], region: CurrentMetersRegion.CGBR },
 ];
 
 const ngbr: CurrentMetersMapDataPoints[] = [
-  { name: 'GBRLSL', coords: [145.34, -14.34], region: CurrentMetersRegion.NGBR },
+  {
+    name: 'GBRLSL',
+    coords: [145.34, -14.34],
+    region: CurrentMetersRegion.NGBR,
+  },
   { name: 'GBRLSH', coords: [145.63, -14.7], region: CurrentMetersRegion.NGBR },
 ];
 

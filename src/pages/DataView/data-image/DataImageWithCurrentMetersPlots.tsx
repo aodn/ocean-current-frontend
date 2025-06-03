@@ -11,7 +11,10 @@ const filterLatestAndRemoveFileExtension = (files: string[] | undefined): Dropdo
   if (!files) return [];
   return files
     .filter((file) => !file.includes('latest'))
-    .map((file) => ({ label: file.replace('.gif', ''), id: file.replace('.gif', '') }));
+    .map((file) => ({
+      label: file.replace('.gif', ''),
+      id: file.replace('.gif', ''),
+    }));
 };
 
 type DataImageWithCurrentMetersPlotsProps = {

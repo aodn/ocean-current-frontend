@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import dayjs from 'dayjs';
 import useArgoStore, { setArgoDepth } from '@/stores/argo-store/argoStore';
 import { Button } from '@/components/Shared';
@@ -13,7 +13,12 @@ const ArgoFilters: React.FC = () => {
   const date = searchParams.get('date') || dayjs().format('YYYYMMDD');
 
   const changeDepth = (newDepth: ArgoDepths) => {
-    setSearchParams({ wmoid: worldMeteorologicalOrgId, cycle, depth: newDepth, date });
+    setSearchParams({
+      wmoid: worldMeteorologicalOrgId,
+      cycle,
+      depth: newDepth,
+      date,
+    });
     setArgoDepth(newDepth);
   };
 

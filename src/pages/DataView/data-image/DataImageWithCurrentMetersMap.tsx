@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import { currentMetersRegionAreasMap } from '@/data/current-meter/region-list';
 import { scaleImageMapAreas } from '@/utils/general-utils/general';

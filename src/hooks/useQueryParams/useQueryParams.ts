@@ -1,4 +1,4 @@
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router';
 import { UseQueryParamsResult, QueryParams } from './types/userQueryParams.types';
 
 const useQueryParams = (): UseQueryParamsResult => {
@@ -32,10 +32,17 @@ const useQueryParams = (): UseQueryParamsResult => {
   };
 
   const updateQueryParamsAndNavigate = (path: string, params: Partial<QueryParams> = {}) => {
-    navigate({ pathname: path, search: buildNewSearchParams(params).toString() });
+    navigate({
+      pathname: path,
+      search: buildNewSearchParams(params).toString(),
+    });
   };
 
-  return { searchParams: getParams(), updateQueryParams, updateQueryParamsAndNavigate };
+  return {
+    searchParams: getParams(),
+    updateQueryParams,
+    updateQueryParamsAndNavigate,
+  };
 };
 
 export default useQueryParams;

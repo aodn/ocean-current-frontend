@@ -1344,9 +1344,10 @@ const SurfaceWaveModalData = () => {
         3 hrs. The colour shown inside the circles (colourbar) represents significant wave height (SWH). The wedge in
         the middle indicates wave direction, with the wave coming from the broad side of wedge. The wedge thickness
         represents directional spread, and its colour (white, grey, black) represents three regimes of mean wave period
-        in sec (T<sub>z</sub> ≤ 8, 8 &lt; T<sub>z</sub> ≤ 12, T<sub>z</sub> &gt; 12, respectively). An empty circle with
-        a dot in the middle represents absent or suspect data. Data are classed as suspect if SWH is greater than twice
-        the maximum wave height.
+        in sec (T
+        <sub>z</sub> ≤ 8, 8 &lt; T<sub>z</sub> ≤ 12, T<sub>z</sub> &gt; 12, respectively). An empty circle with a dot in
+        the middle represents absent or suspect data. Data are classed as suspect if SWH is greater than twice the
+        maximum wave height.
       </p>
 
       <p className="font-sans leading-relaxed text-gray-800">

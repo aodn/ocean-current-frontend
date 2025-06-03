@@ -20,11 +20,29 @@ const useProductStore = create<State & Actions>()(
       setProductId: (productId) =>
         set((state) => ({ productParams: { ...state.productParams, productId } }), false, 'setProductId'),
       setRegionCode: (regionCode) =>
-        set((state) => ({ productParams: { ...state.productParams, regionCode } }), false, 'setRegionCode'),
+        set(
+          (state) => ({
+            productParams: { ...state.productParams, regionCode },
+          }),
+          false,
+          'setRegionCode',
+        ),
       setRegionScope: (regionScope) =>
-        set((state) => ({ productParams: { ...state.productParams, regionScope } }), false, 'setRegionScope'),
+        set(
+          (state) => ({
+            productParams: { ...state.productParams, regionScope },
+          }),
+          false,
+          'setRegionScope',
+        ),
       setRegionTitle: (regionTitle) =>
-        set((state) => ({ productParams: { ...state.productParams, regionTitle } }), false, 'setRegionTitle'),
+        set(
+          (state) => ({
+            productParams: { ...state.productParams, regionTitle },
+          }),
+          false,
+          'setRegionTitle',
+        ),
     },
   })),
 );

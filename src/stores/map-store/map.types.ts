@@ -1,4 +1,4 @@
-import { ViewState } from 'react-map-gl';
+import { ViewState } from 'react-map-gl/mapbox';
 
 export type State = {
   mapViewState: ViewState;

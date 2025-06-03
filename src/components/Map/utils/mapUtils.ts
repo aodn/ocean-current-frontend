@@ -1,4 +1,4 @@
-import { MapboxGeoJSONFeature, MapMouseEvent, MapRef } from 'react-map-gl';
+import { MapGeoJSONFeature, MapMouseEvent, MapRef } from 'react-map-gl/mapbox';
 import { isNotNullOrUndefined } from '@/utils/general-utils/general';
 import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
 import {
@@ -11,7 +11,7 @@ import {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const extractPropertyFromFeatures = <T extends Record<string, any>>(
-  features: MapboxGeoJSONFeature[],
+  features: MapGeoJSONFeature[],
   propNames: (keyof T)[],
 ): T => {
   const result: Partial<T> = {};
@@ -38,7 +38,9 @@ const getPropertyFromMapFeatures = <T extends Record<string, any>>(
   layerId: string,
   propName: (keyof T)[],
 ): T => {
-  const features = map.queryRenderedFeatures(event.point, { layers: [layerId] }) as MapboxGeoJSONFeature[];
+  const features = map.queryRenderedFeatures(event.point, {
+    layers: [layerId],
+  }) as MapGeoJSONFeature[];
 
   return extractPropertyFromFeatures<T>(features, propName);
 };

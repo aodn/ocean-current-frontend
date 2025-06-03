@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router';
 import { describe, it, expect, vi } from 'vitest';
 import { linksData } from '@/data/linksData';
 import HomeProductCarousel from './HomeProductCarousel';

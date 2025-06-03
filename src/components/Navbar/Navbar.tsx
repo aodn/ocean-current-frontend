@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import logo from '@/assets/images/imos-logo.png';
 import { linksData } from '@/data/linksData';
 import { LinkItem, SectionLinks } from '@/types/navbar';
@@ -9,7 +9,9 @@ import NavbarMenu from './components/NavbarMenu';
 
 const Navbar: React.FC = () => {
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
-  const [popoverPosition, setPopoverPosition] = useState<{ left: number } | null>(null);
+  const [popoverPosition, setPopoverPosition] = useState<{
+    left: number;
+  } | null>(null);
   const [menuItems] = useState<LinkItem[]>(linksData);
   const menuItemRefs = useRef<(HTMLElement | null)[]>([]);
 
