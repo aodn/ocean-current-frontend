@@ -6,9 +6,11 @@ const useRegionLatestDates = (productId: ProductID) => {
   return useQuery({
     queryKey: ['regionLatestDates', productId],
     queryFn: () => fetchRegionLatestDatesByProductId(productId),
-    staleTime: 5 * 60 * 1000,
-    gcTime: 30 * 60 * 1000,
-    refetchOnWindowFocus: true,
+    staleTime: 2 * 60 * 60 * 1000,
+    gcTime: 6 * 60 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
   });
 };
 

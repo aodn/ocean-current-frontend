@@ -37,6 +37,14 @@ const processFilesToDateList = (files: ImageFile[]): DateItem[] => {
     .filter(({ date }) => /^\d+$/.test(date));
 };
 
+const sharedQueryConfig = {
+  staleTime: 6 * 60 * 60 * 1000,
+  gcTime: 12 * 60 * 60 * 1000,
+  refetchOnWindowFocus: false,
+  refetchOnReconnect: false,
+  refetchOnMount: false,
+};
+
 const useDateList = (productId: ProductID) => {
   const shouldUseApi = API_ENABLED_PRODUCTS.includes(productId) && !FIXED_DATA_PRODUCTS.includes(productId);
 
@@ -55,12 +63,14 @@ const useDateList = (productId: ProductID) => {
     queryKey: ['argoDateList', wmoId],
     queryFn: () => fetchArgoProfileCyclesByWmoId(wmoId),
     enabled: isArgo && !!wmoId,
+    ...sharedQueryConfig,
   });
 
   const standardQuery = useQuery({
     queryKey: ['dateList', productId, region],
     queryFn: () => fetchImageListByProductIdAndRegion(productId, region),
     enabled: shouldUseApi && !isArgo,
+    ...sharedQueryConfig,
   });
 
   const { data, isLoading, error } = isArgo ? argoQuery : standardQuery;
