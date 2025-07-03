@@ -6,7 +6,7 @@ import { resetMapStore } from '@/stores/map-store/mapStore';
 import ProductContent from './product-content/ProductContent';
 
 const DataView: React.FC = () => {
-  const { isArgo, isCurrentMeters, isEACMooringArray, isSealCtdTags } = useProductCheck();
+  const { isArgo, isCurrentMeters, isEACMooringArray, isSealCtdTags, isWavesTimeseries } = useProductCheck();
   const isProductAvailableInRegion = useProductAvailableInRegion();
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const DataView: React.FC = () => {
   }, [isProductAvailableInRegion]);
 
   const shouldRenderProductContent =
-    isProductAvailableInRegion || isArgo || isCurrentMeters || isEACMooringArray || isSealCtdTags;
+    isProductAvailableInRegion || isArgo || isCurrentMeters || isEACMooringArray || isSealCtdTags || isWavesTimeseries;
 
   const renderView = () => {
     if (shouldRenderProductContent) {

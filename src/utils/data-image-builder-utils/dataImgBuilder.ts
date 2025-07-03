@@ -272,6 +272,14 @@ const buildSealCtdTagsDataImageUrl = (sealTagId: string, date: Dayjs, productId:
   return `${imageUrlConfig.imageBaseUrl}/AATAMS/SATTAGS/${sealTagId}/${filename()}.gif`;
 };
 
+const buildBuoyTimeseriesImageUrl = (title: string, date: Dayjs): string => {
+  const year = date.format(DateFormat.YEAR_ONLY);
+  const month = date.format(DateFormat.MONTH_ONLY);
+  const formattedDate = date.format('YYYYMMDD[T0000]');
+
+  return `${imageUrlConfig.imageS3BaseUrl}/WAVES_TS/${title}/y${year}/m${month}/${formattedDate}_BuoyTS.png`;
+};
+
 export {
   getTargetRegionScopePath,
   buildProductImageUrl,
@@ -288,4 +296,5 @@ export {
   buildSealCtdMapImageUrl,
   buildSealCtdGraphImageUrl,
   buildSealCtdTagsDataImageUrl,
+  buildBuoyTimeseriesImageUrl,
 };

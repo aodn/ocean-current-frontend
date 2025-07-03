@@ -1,6 +1,6 @@
 import { DateConfig } from './date';
 
-export type StandaloneProductID = 'surfaceWaves' | 'argo' | 'EACMooringArray';
+export type StandaloneProductID = 'surfaceWaves' | 'argo' | 'EACMooringArray' | 'wavesTimeseries';
 
 export type ProductGroupID =
   | 'fourHourSst'

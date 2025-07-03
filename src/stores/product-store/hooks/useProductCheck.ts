@@ -15,6 +15,7 @@ const useProductCheck = () => {
   const isTidalCurrents = mainProductId === 'tidalCurrents';
   const isSealCtd = mainProductId === 'sealCtd';
   const isSealCtdTags = mainProductId === 'sealCtdTags';
+  const isWavesTimeseries = mainProductId === 'wavesTimeseries';
 
   return {
     isRegionRequired,
@@ -25,6 +26,7 @@ const useProductCheck = () => {
     isTidalCurrents,
     isSealCtd,
     isSealCtdTags,
+    isWavesTimeseries,
   };
 };
 

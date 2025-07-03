@@ -35,6 +35,7 @@ import DataImageWithCurrentMetersPlots from '../data-image/DataImageWithCurrentM
 import DataImageWithTidalCurrentsMap from '../data-image/DataImageWithTidalCurrentsMap';
 import DataImageWithSealCtdGraphs from '../data-image/DataImageWithSealCtdGraphs';
 import DataImageWithArgoAndSealCTDMap from '../data-image/DataImageWithArgoAndSealCTDMap';
+import DataImageWithBuoyMap from '../data-image/DataImageWithBuoyMap';
 
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
@@ -209,6 +210,10 @@ const ProductContent: React.FC = () => {
         region={useRegionCode ?? 'Au'}
       />
     );
+  }
+
+  if (mainProduct.key === 'surfaceWaves') {
+    return <DataImageWithBuoyMap src={chooseImg()!} date={useDate} productId={useProductId} />;
   }
 
   if (subProduct?.key === 'sealCtd-sealTracks') {
