@@ -38,7 +38,7 @@ export default ({ mode }) => {
           rewrite: (path) => path.replace(/^\/ec2/, ''),
         },
         '/s3': {
-          target: process.env.VITE_S3_BUCKET_URL || 'https://oceancurrent.edge.aodn.org.au/storage',
+          target: process.env.VITE_API_S3_PROXY_URL || 'https://oceancurrent.edge.aodn.org.au/storage',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/s3/, ''),
         },
