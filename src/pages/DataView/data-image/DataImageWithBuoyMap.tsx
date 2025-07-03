@@ -94,9 +94,9 @@ const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, produc
         }}
       />
       <map name="buoy-tag-map">
-        {coords.map((area, index) => (
+        {coords.map((area) => (
           <area
-            key={index}
+            key={`${area.title}-${area.href}`}
             shape={area.shape}
             coords={area.coords.join(',')}
             alt={area.alt || `${area.title} buoy`}

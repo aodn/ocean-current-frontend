@@ -271,5 +271,3 @@ const ProductContent: React.FC = () => {
 };
 
 export default ProductContent;
-
-// ELASTICSEARCH.CLOUD.O0PTIMIZED.INDEX_NAME;
