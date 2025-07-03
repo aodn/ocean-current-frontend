@@ -498,4 +498,13 @@ export const OC_PRODUCTS: Product[] = [
       stateFormat: DateFormat.DAY,
     },
   },
+  {
+    title: 'Waves timeseries',
+    key: 'wavesTimeseries',
+    path: 'waves-ts',
+    dateFormat: {
+      localFormat: DateFormat.HOUR,
+      stateFormat: null,
+    },
+  },
 ] as const;

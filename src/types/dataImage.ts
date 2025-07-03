@@ -7,16 +7,21 @@ export interface ImageParameter {
   imageBounds: BoundingBox;
 }
 
-/*  
-  Map image types
-*/
+export type ImageAreaType = 'text' | 'region' | 'plot' | 'point' | 'graph' | 'seal-tag';
 
-export type MapImageAreas = {
-  shape: string;
+export interface ImageArea {
+  shape: 'circle' | 'rect' | 'poly';
   coords: number[];
   href: string;
   alt: string;
+}
+
+/*
+  Map image types
+*/
+
+export interface MapImageAreas extends ImageArea {
   name: string;
-  type: 'text' | 'region' | 'plot' | 'point' | 'graph' | 'seal-tag';
+  type: ImageAreaType;
   code?: CurrentMetersRegion;
-};
+}
