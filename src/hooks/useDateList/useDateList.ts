@@ -50,7 +50,7 @@ const useDateList = (productId: ProductID) => {
 
   const regionScope = useProductStore((state) => state.productParams.regionScope);
   const regionCodeFromStore = useProductStore((state) => state.productParams.regionCode);
-  const region = regionCodeFromStore!;
+  const region = regionCodeFromStore;
   const metaData = useArgoStore((state) => state);
   const wmoId = metaData.selectedArgoParams.worldMeteorologicalOrgId;
 
@@ -68,8 +68,8 @@ const useDateList = (productId: ProductID) => {
 
   const standardQuery = useQuery({
     queryKey: ['dateList', productId, region],
-    queryFn: () => fetchImageListByProductIdAndRegion(productId, region),
-    enabled: shouldUseApi && !isArgo,
+    queryFn: () => fetchImageListByProductIdAndRegion(productId, region!),
+    enabled: shouldUseApi && !isArgo && Boolean(region),
     ...sharedQueryConfig,
   });
 
