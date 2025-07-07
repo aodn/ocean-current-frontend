@@ -1,17 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
+import { useNavigate } from 'react-router';
 import { calculateImageScales } from '@/utils/general-utils/general';
 import { BuoyTagMapArea } from '@/types/buoy';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import useBuoyTags from '@/services/hooks/useBuoyTags';
-import { buildBuoyTimeseriesImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
 
-type DataImageWithBuoyMapProps = {
+const buildBuoyTimeseriesImagePath = (buoyLocation: string, date: Dayjs): string => {
+  const formattedDate = date.format('YYYYMMDDHH');
+  const formattedTitle = encodeURIComponent(buoyLocation.replace(' ', '_'));
+  return `/product/surface-waves?buoy=${formattedTitle}&date=${formattedDate}`;
+};
+
+interface DataImageWithBuoyMapProps {
   src: string;
   productId: string;
   date: Dayjs;
-};
+}
 
 const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, productId, date }) => {
   const dateFormatted = dayjs(date).format('YYYYMMDD');
@@ -20,6 +26,8 @@ const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, produc
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const { mainProduct } = useProductConvert();
   const { data } = useBuoyTags(date);
+  const navigate = useNavigate();
+
   const alt = `${productId} data at ${dateFormatted}`;
 
   useEffect(() => {
@@ -37,12 +45,14 @@ const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, produc
           const scaledY = item.y * scaleY;
           const scaledSize = item.sz * Math.min(scaleX, scaleY);
 
+          const href = item.url.startsWith('TS ')
+            ? buildBuoyTimeseriesImagePath(item.title, date)
+            : item.url.replace('TS ', '');
+
           return {
             shape: 'circle',
             coords: [scaledX, scaledY, scaledSize],
-            href: item.url.startsWith('TS ')
-              ? buildBuoyTimeseriesImageUrl(item.title, date)
-              : item.url.replace('TS ', ''),
+            href,
             title: item.title,
             alt: `${item.title} buoy`,
           };
@@ -71,9 +81,11 @@ const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, produc
   const handleCircleClick = (e: React.MouseEvent<HTMLAreaElement>, area: BuoyTagMapArea) => {
     e.preventDefault();
     e.stopPropagation();
-    if (area.href.startsWith('http') || area.href.startsWith('https')) {
-      // TODO: External URL - open in new tab, Internal URL - open in current view
+    const isExternalUrl = area.href.startsWith('http') || area.href.startsWith('https');
+    if (isExternalUrl) {
       window.open(area.href, '_blank', 'noopener,noreferrer');
+    } else {
+      navigate(area.href);
     }
   };
 
