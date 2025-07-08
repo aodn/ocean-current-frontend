@@ -204,7 +204,7 @@ const buildSurfaceWavesBuoyTimeseriesImageUrl = (buoyLocation: string, date: Day
   const formattedDate = date.format('YYYYMMDD[T0000]');
   const year = date.format(DateFormat.YEAR_ONLY);
   const month = date.format(DateFormat.MONTH_ONLY);
-  const formattedBuoyLocation = encodeURIComponent(buoyLocation.replace('_', ' '));
+  const formattedBuoyLocation = encodeURIComponent(buoyLocation.replaceAll('_', ' '));
 
   return `${imageUrlConfig.imageS3BaseUrl}/WAVES_TS/${formattedBuoyLocation}/y${year}/m${month}/${formattedDate}_BuoyTS.png`;
 };

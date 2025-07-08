@@ -9,7 +9,7 @@ import useBuoyTags from '@/services/hooks/useBuoyTags';
 
 const buildBuoyTimeseriesImagePath = (buoyLocation: string, date: Dayjs): string => {
   const formattedDate = date.format('YYYYMMDDHH');
-  const formattedTitle = encodeURIComponent(buoyLocation.replace(' ', '_'));
+  const formattedTitle = encodeURIComponent(buoyLocation.replaceAll(' ', '_'));
   return `/product/surface-waves?buoy=${formattedTitle}&date=${formattedDate}`;
 };
 
