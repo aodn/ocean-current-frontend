@@ -13,8 +13,8 @@ const useQueryParams = (): UseQueryParamsResult => {
     return params;
   };
 
-  const buildNewSearchParams = (params: Partial<QueryParams>): URLSearchParams => {
-    const newSearchParams = new URLSearchParams(searchParams.toString());
+  const buildNewSearchParams = (params: Partial<QueryParams>, replace: boolean = false): URLSearchParams => {
+    const newSearchParams = replace ? new URLSearchParams() : new URLSearchParams(searchParams.toString());
 
     Object.entries(params).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
@@ -31,17 +31,28 @@ const useQueryParams = (): UseQueryParamsResult => {
     setSearchParams(buildNewSearchParams(params));
   };
 
-  const updateQueryParamsAndNavigate = (path: string, params: Partial<QueryParams> = {}) => {
-    navigate({
-      pathname: path,
-      search: buildNewSearchParams(params).toString(),
-    });
+  const isSameUrlWithParams = (path: string, params: Partial<QueryParams> = {}, replace: boolean = false): boolean => {
+    const currentPath = window.location.pathname;
+    const currentSearchString = searchParams.toString();
+    const newSearchString = buildNewSearchParams(params, replace).toString();
+
+    return currentPath === path && currentSearchString === newSearchString;
+  };
+
+  const updateQueryParamsAndNavigate = (path: string, params: Partial<QueryParams> = {}, replace: boolean = false) => {
+    if (!isSameUrlWithParams(path, params, replace)) {
+      navigate({
+        pathname: path,
+        search: buildNewSearchParams(params, replace).toString(),
+      });
+    }
   };
 
   return {
     searchParams: getParams(),
     updateQueryParams,
     updateQueryParamsAndNavigate,
+    isSameUrlWithParams,
   };
 };
 

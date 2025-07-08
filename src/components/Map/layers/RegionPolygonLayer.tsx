@@ -156,6 +156,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
       if (regionCode) {
         let targetPath = `/product/${baseProductPath}`;
         let queryObject = {};
+        let replace = false;
 
         if (baseProductPath.includes(mooredInstrumentArrayPath)) {
           queryObject = {
@@ -177,8 +178,13 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
           queryObject = dateFromQuery
             ? { region: regionCode, point: null }
             : { region: regionCode, date: latestDate, point: null };
+
+          if (productId === 'surfaceWaves') {
+            replace = true;
+            queryObject = { region: regionCode, date: latestDate };
+          }
         }
-        updateQueryParamsAndNavigate(targetPath, queryObject);
+        updateQueryParamsAndNavigate(targetPath, queryObject, replace);
       }
     },
     [
@@ -194,6 +200,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
       regionLatestDates?.regionLatestDates,
       searchParams.date,
       updateQueryParamsAndNavigate,
+      productId,
     ],
   );
 

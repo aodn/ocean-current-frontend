@@ -1,11 +1,4 @@
-vi.mock('@/configs/image', () => ({
-  imageBaseUrl: 'https://oceancurrent.aodn.org.au',
-  imageUrlConfig: {
-    imageBaseUrl: 'https://oceancurrent.aodn.org.au',
-    imageS3BaseUrl: '/s3',
-  },
-}));
-
+import { vi } from 'vitest';
 import dayjs from 'dayjs';
 import { TargetPathRegionScope } from '@/constants/imgPath';
 import { imageBaseUrl } from '@/configs/image';
@@ -26,6 +19,14 @@ import {
   buildSealCtdGraphImageUrl,
   buildSealCtdTagsDataImageUrl,
 } from './dataImgBuilder';
+
+vi.mock('@/configs/image', () => ({
+  imageBaseUrl: 'https://oceancurrent.test.com',
+  imageUrlConfig: {
+    imageBaseUrl: 'https://oceancurrent.test.com',
+    imageS3BaseUrl: '/s3',
+  },
+}));
 
 describe('buildProductImageUrl', () => {
   describe('sixDaySst', () => {

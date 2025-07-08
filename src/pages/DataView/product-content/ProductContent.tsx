@@ -13,6 +13,7 @@ import {
   buildTidalCurrentsDataImageUrl,
   buildSealCtdMapImageUrl,
   buildSealCtdTagsDataImageUrl,
+  buildSurfaceWavesBuoyTimeseriesImageUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
@@ -36,6 +37,7 @@ import DataImageWithTidalCurrentsMap from '../data-image/DataImageWithTidalCurre
 import DataImageWithSealCtdGraphs from '../data-image/DataImageWithSealCtdGraphs';
 import DataImageWithArgoAndSealCTDMap from '../data-image/DataImageWithArgoAndSealCTDMap';
 import DataImageWithBuoyMap from '../data-image/DataImageWithBuoyMap';
+import DataImage from '../data-image/DataImage';
 
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
@@ -119,6 +121,10 @@ const ProductContent: React.FC = () => {
   const selectedSealCtdTag = searchParams.get('sealId');
   const hasSelectedSealCtdTagFromUrl = selectedSealCtdTag && selectedSealCtdTag !== '';
 
+  // for Surface Waves buoy
+  const buoyUrlParam = searchParams.get('buoy');
+  const hasSelectedBuoyFromUrl = buoyUrlParam && buoyUrlParam !== '';
+
   const chooseImg = (): string | undefined => {
     try {
       switch (true) {
@@ -138,6 +144,8 @@ const ProductContent: React.FC = () => {
           return buildSealCtdMapImageUrl(useRegionCode ?? 'POLAR', useDate);
         case isSealCtdTags && hasSelectedSealCtdTagFromUrl:
           return buildSealCtdTagsDataImageUrl(selectedSealCtdTag, useDate, useProductId);
+        case useProductId === 'surfaceWaves' && hasSelectedBuoyFromUrl:
+          return buildSurfaceWavesBuoyTimeseriesImageUrl(buoyUrlParam, useDate);
         default:
           return buildProductImageUrl(
             mainProduct.key,
@@ -213,6 +221,9 @@ const ProductContent: React.FC = () => {
   }
 
   if (mainProduct.key === 'surfaceWaves') {
+    if (hasSelectedBuoyFromUrl) {
+      return <DataImage src={chooseImg()!} onError={handleError} />;
+    }
     return <DataImageWithBuoyMap src={chooseImg()!} date={useDate} productId={useProductId} />;
   }
 
@@ -258,16 +269,7 @@ const ProductContent: React.FC = () => {
     return <DataImageWithCurrentMetersPlots deploymentPlot={deploymentPlot as CurrentMetersDeploymentPlotNames} />;
   }
 
-  return (
-    <div className="h-full bg-white">
-      <img
-        className="max-h-[80vh] w-full select-none object-contain"
-        src={chooseImg()}
-        alt="product"
-        onError={handleError}
-      />
-    </div>
-  );
+  return <DataImage src={chooseImg()!} onError={handleError} />;
 };
 
 export default ProductContent;

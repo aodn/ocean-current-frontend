@@ -200,6 +200,15 @@ const buildSurfaceWavesImageUrl = (date: string, imgPath: string): string => {
   return `${imageUrlConfig.imageS3BaseUrl}/${imgPath}/y${year}/m${month}/${formattedDate}.gif`;
 };
 
+const buildSurfaceWavesBuoyTimeseriesImageUrl = (buoyLocation: string, date: Dayjs): string => {
+  const formattedDate = date.format('YYYYMMDD[T0000]');
+  const year = date.format(DateFormat.YEAR_ONLY);
+  const month = date.format(DateFormat.MONTH_ONLY);
+  const formattedBuoyLocation = encodeURIComponent(buoyLocation.replaceAll('_', ' '));
+
+  return `${imageUrlConfig.imageS3BaseUrl}/WAVES_TS/${formattedBuoyLocation}/y${year}/m${month}/${formattedDate}_BuoyTS.png`;
+};
+
 const buildTidalCurrentsMapImageUrl = (region: string, subProduct: string, date: Dayjs): string => {
   if (region === 'Aust') return `${imageUrlConfig.imageBaseUrl}/tides/tidemapindex.gif`;
 
@@ -272,14 +281,6 @@ const buildSealCtdTagsDataImageUrl = (sealTagId: string, date: Dayjs, productId:
   return `${imageUrlConfig.imageBaseUrl}/AATAMS/SATTAGS/${sealTagId}/${filename()}.gif`;
 };
 
-const buildBuoyTimeseriesImageUrl = (title: string, date: Dayjs): string => {
-  const year = date.format(DateFormat.YEAR_ONLY);
-  const month = date.format(DateFormat.MONTH_ONLY);
-  const formattedDate = date.format('YYYYMMDD[T0000]');
-
-  return `${imageUrlConfig.imageS3BaseUrl}/WAVES_TS/${title}/y${year}/m${month}/${formattedDate}_BuoyTS.png`;
-};
-
 export {
   getTargetRegionScopePath,
   buildProductImageUrl,
@@ -296,5 +297,5 @@ export {
   buildSealCtdMapImageUrl,
   buildSealCtdGraphImageUrl,
   buildSealCtdTagsDataImageUrl,
-  buildBuoyTimeseriesImageUrl,
+  buildSurfaceWavesBuoyTimeseriesImageUrl,
 };
