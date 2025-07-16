@@ -1,6 +1,6 @@
 import { DateConfig } from './date';
 
-export type StandaloneProductID = 'surfaceWaves' | 'argo' | 'EACMooringArray' | 'wavesTimeseries';
+export type StandaloneProductID = 'argo' | 'EACMooringArray';
 
 export type ProductGroupID =
   | 'fourHourSst'
@@ -12,7 +12,8 @@ export type ProductGroupID =
   | 'tidalCurrents'
   | 'currentMeters'
   | 'sealCtd'
-  | 'sealCtdTags';
+  | 'sealCtdTags'
+  | 'surfaceWaves'; // Add surfaceWaves as a ProductGroupID
 
 // Child products (not at root level)
 export type ChildProductID =
@@ -59,7 +60,10 @@ export type ChildProductID =
   | 'sealCtdTags-ts'
   | 'sealCtdTags-temperature'
   | 'sealCtdTags-salinity'
-  | 'sealCtdTags-10days';
+  | 'sealCtdTags-10days'
+  // Surface Waves children
+  | 'surfaceWaves-wave' // Main wave conditions view
+  | 'surfaceWaves-buoyTimeseries'; // Buoy time series data
 
 // Combined types
 export type RootProductID = StandaloneProductID | ProductGroupID;

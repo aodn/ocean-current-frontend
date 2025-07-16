@@ -188,12 +188,30 @@ export const OC_PRODUCTS: Product[] = [
     title: 'Surface Waves',
     key: 'surfaceWaves',
     path: 'surface-waves',
-    imgPath: 'WAVES',
     latestEntry: 'waves_entry',
-    dateFormat: {
-      localFormat: null,
-      stateFormat: DateFormat.HOUR,
-    },
+    dateFormat: null,
+    children: [
+      {
+        title: 'Wave',
+        key: 'surfaceWaves-wave',
+        path: 'wave',
+        imgPath: 'WAVES',
+        dateFormat: {
+          localFormat: null,
+          stateFormat: DateFormat.HOUR,
+        },
+      },
+      {
+        title: 'Buoy Timeseries',
+        key: 'surfaceWaves-buoyTimeseries',
+        path: 'buoy-timeseries',
+        imgPath: 'WAVES_TS',
+        dateFormat: {
+          localFormat: DateFormat.HOUR,
+          stateFormat: DateFormat.HOUR,
+        },
+      },
+    ],
   },
   {
     title: 'Monthly Means',
@@ -496,15 +514,6 @@ export const OC_PRODUCTS: Product[] = [
     dateFormat: {
       localFormat: DateFormat.DAY,
       stateFormat: DateFormat.DAY,
-    },
-  },
-  {
-    title: 'Waves timeseries',
-    key: 'wavesTimeseries',
-    path: 'waves-ts',
-    dateFormat: {
-      localFormat: DateFormat.HOUR,
-      stateFormat: null,
     },
   },
 ] as const;

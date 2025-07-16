@@ -62,6 +62,10 @@ const routes: RouteObject[] = [
             element: <Navigate to="timeseries" replace />,
           },
           {
+            path: 'surface-waves',
+            element: <Navigate to="wave" replace />,
+          },
+          {
             path: ':product/:subProduct',
             element: <DataView />,
           },

@@ -31,8 +31,9 @@ const ProductSideBar: React.FC = () => {
   const { mainProduct, subProduct, subProducts } = useProductConvert();
   const { updateQueryParamsAndNavigate } = useQueryParams();
   const useDate = useDateStore((state) => state.date);
-  const { isArgo, isCurrentMeters, isSealCtdTags } = useProductCheck();
-  const shouldRenderMiniMap = useProductAvailableInRegion() || isArgo || isCurrentMeters || isSealCtdTags;
+  const { isArgo, isCurrentMeters, isSealCtdTags, isSurfaceWaves } = useProductCheck();
+  const shouldRenderMiniMap =
+    useProductAvailableInRegion() || isArgo || isCurrentMeters || isSealCtdTags || isSurfaceWaves;
   const shouldShowLegend = !isCurrentMeters;
 
   if (!mainProduct) {

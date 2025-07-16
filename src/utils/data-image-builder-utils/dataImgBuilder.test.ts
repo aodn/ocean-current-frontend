@@ -499,7 +499,7 @@ describe('buildProductImageUrl', () => {
   it('should return the correct image url for surface waves', () => {
     // Arrange
     const date = '2024-05-19T12:00:00';
-    const subProduct = null;
+    const subProduct = 'WAVES';
     const productType = 'surfaceWaves';
     const region = 'Au';
     const regionScope = TargetPathRegionScope.State;
@@ -514,13 +514,13 @@ describe('buildProductImageUrl', () => {
   it('should handle different date formats correctly', () => {
     // Arrange
     const date = '20240519120000';
-    const subProduct = null;
-    const productType = 'surfaceWaves';
+    const subProduct = 'WAVES';
+    const productId = 'surfaceWaves';
     const region = 'Au';
     const regionScope = TargetPathRegionScope.State;
 
     // Act
-    const imageUrl = buildProductImageUrl(productType, subProduct, region, regionScope, date);
+    const imageUrl = buildProductImageUrl(productId, subProduct, region, regionScope, date);
 
     // Assert
     expect(imageUrl).toBe('/s3/WAVES/y2024/m05/2024051912.gif');

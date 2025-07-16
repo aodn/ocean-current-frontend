@@ -32,7 +32,7 @@ const {
 const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) => {
   const baseProductPath = useProductPath();
   const { searchParams, updateQueryParamsAndNavigate } = useQueryParams();
-  const { region: regionCodeFromUrl } = useProductSearchParam();
+  const { region: regionCodeFromUrl, date: dateFromUrl } = useProductSearchParam();
   const selectedRegionTitle = getRegionTitleByRegionCode(regionCodeFromUrl) || 'Au';
   const regionGeoJsonData = useRegionPolygons();
   const isChla = baseProductPath.includes('ocean-colour');
@@ -179,28 +179,35 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
             ? { region: regionCode, point: null }
             : { region: regionCode, date: latestDate, point: null };
 
-          if (productId === 'surfaceWaves') {
+          if (productId === 'surfaceWaves-wave') {
             replace = true;
             queryObject = { region: regionCode, date: latestDate };
+          }
+
+          if (productId === 'surfaceWaves-buoyTimeseries') {
+            replace = true;
+            queryObject = { region: 'Au', date: dateFromUrl };
+            targetPath = '/product/surface-waves/wave';
           }
         }
         updateQueryParamsAndNavigate(targetPath, queryObject, replace);
       }
     },
     [
+      hoveredRegion,
+      map,
+      isLoadingLatestDates,
+      mapFitBounds,
       baseProductPath,
+      updateQueryParamsAndNavigate,
       currentMetersDate,
       currentMetersDepth,
       currentMetersProperty,
-      fallbackLatestDate,
-      hoveredRegion,
-      isLoadingLatestDates,
-      map,
-      mapFitBounds,
-      regionLatestDates?.regionLatestDates,
       searchParams.date,
-      updateQueryParamsAndNavigate,
+      regionLatestDates?.regionLatestDates,
+      fallbackLatestDate,
       productId,
+      dateFromUrl,
     ],
   );
 
