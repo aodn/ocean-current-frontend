@@ -108,7 +108,7 @@ const buildProductImageUrl = (
     },
   };
 
-  if (productId === 'surfaceWaves') {
+  if (productId === 'surfaceWaves' && subProductType === 'WAVES') {
     return productUrl.surfaceWaves();
   }
 
@@ -192,19 +192,18 @@ const buildCurrentMetersDataImageUrl = (deploymentPlotPath: string, plotId: stri
   return `${imageUrlConfig.imageBaseUrl}${deploymentPlotPath}/${plotId}.gif`;
 };
 
-const buildSurfaceWavesImageUrl = (date: string, imgPath: string): string => {
-  const dayjsDate = dayjs(date);
-  const formattedDate = dayjsDate.format(DateFormat.HOUR);
-  const year = dayjsDate.format(DateFormat.YEAR_ONLY);
-  const month = dayjsDate.format(DateFormat.MONTH_ONLY);
-  return `${imageUrlConfig.imageS3BaseUrl}/${imgPath}/y${year}/m${month}/${formattedDate}.gif`;
-};
-
-const buildSurfaceWavesBuoyTimeseriesImageUrl = (buoyLocation: string, date: Dayjs): string => {
-  const formattedDate = date.format('YYYYMMDD[T0000]');
+const buildSurfaceWavesImageUrl = (date: Dayjs): string => {
+  const formattedDate = date.format(DateFormat.HOUR);
   const year = date.format(DateFormat.YEAR_ONLY);
   const month = date.format(DateFormat.MONTH_ONLY);
-  const formattedBuoyLocation = encodeURIComponent(buoyLocation.replaceAll('_', ' '));
+  return `${imageUrlConfig.imageS3BaseUrl}/WAVES/y${year}/m${month}/${formattedDate}.gif`;
+};
+
+const buildSurfaceWavesBuoyTimeseriesImageUrl = (buoyRegion: string, date: Dayjs): string => {
+  const formattedDate = date.format('YYYYMMDD[T]HH00');
+  const year = date.format(DateFormat.YEAR_ONLY);
+  const month = date.format(DateFormat.MONTH_ONLY);
+  const formattedBuoyLocation = encodeURIComponent(buoyRegion.replaceAll('_', ' '));
 
   return `${imageUrlConfig.imageS3BaseUrl}/WAVES_TS/${formattedBuoyLocation}/y${year}/m${month}/${formattedDate}_BuoyTS.png`;
 };

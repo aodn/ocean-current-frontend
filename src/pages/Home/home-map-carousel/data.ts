@@ -27,9 +27,9 @@ export const productsData: HomeProductData[] = [
   },
   {
     title: 'Surface Waves',
-    id: 'surfaceWaves',
-    mainProduct: 'surface-waves',
-    subProduct: null,
+    id: 'surfaceWaves-wave',
+    mainProduct: 'surfaceWaves',
+    subProduct: 'surfaceWaves-wave',
     description: 'Monitors wave heights and patterns, important for marine navigation and coastal management.',
   },
 ];

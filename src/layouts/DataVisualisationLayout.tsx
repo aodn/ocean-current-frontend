@@ -25,7 +25,7 @@ import { ArgoDepths } from '@/constants/argo';
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
   const { isMobile } = useDeviceType();
-  const { isArgo } = useProductCheck();
+  const { isArgo, isSurfaceWavesBuoyTimeseries } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const product = useProductFromUrl('product');
   const [showVideo, setShowVideo] = useState(false);
@@ -49,13 +49,16 @@ const DataVisualisationLayout: React.FC = () => {
 
   useEffect(() => {
     const region = getRegionByRegionCode(regionCodeFromUrl as string);
-    const regionCode = region?.code || 'Au';
+    let regionCode: string = region?.code || 'Au';
+    if (isSurfaceWavesBuoyTimeseries && regionCodeFromUrl) {
+      regionCode = regionCodeFromUrl as string;
+    }
     const regionName = region?.title || 'Australia/NZ';
     const regionScope = region?.scope || RegionScope.Au;
     setRegionCode(regionCode);
     setRegionTitle(regionName);
     setRegionScope(regionScope);
-  }, [regionCodeFromUrl]);
+  }, [regionCodeFromUrl, isSurfaceWavesBuoyTimeseries]);
 
   useEffect(() => {
     if (!date) return;

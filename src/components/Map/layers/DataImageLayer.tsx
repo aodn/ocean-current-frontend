@@ -4,24 +4,27 @@ import { mapboxLayerIds } from '@/constants/mapboxId';
 import useProductStore from '@/stores/product-store/productStore';
 import { getEntryImagePathByProductId } from '@/utils/data-image-builder-utils/latestEntryImage';
 import { apiConfig } from '@/configs/api';
-import { AnyProductID } from '@/types/product';
+import { ProductID } from '@/types/product';
 
-const productsWithNoImage: AnyProductID[] = [
+const productsWithNoImage: ProductID[] = [
   'monthlyMeans-anomalies',
   'climatology-sst',
   'EACMooringArray',
   'currentMeters-mooredInstrumentArray',
   'tidalCurrents-spd',
 ];
-const productsWithImage: AnyProductID[] = [
+const productsWithImage: ProductID[] = [
   'argo',
-  'adjustedSeaLevelAnomaly',
   'fourHourSst-sst',
   'fourHourSst-sstFilled',
-  'surfaceWaves',
-  'adjustedSeaLevelAnomaly-sla',
+  'surfaceWaves-wave',
+  'surfaceWaves-buoyTimeseries',
   'oceanColour-chlA',
   'sixDaySst-sst',
+  'adjustedSeaLevelAnomaly-sla',
+  'adjustedSeaLevelAnomaly-centiles',
+  'adjustedSeaLevelAnomaly-sst',
+  'adjustedSeaLevelAnomaly-nonTidalSla',
 ];
 const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
 

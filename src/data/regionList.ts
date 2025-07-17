@@ -582,7 +582,11 @@ export const productRegionMap: ProductRegionMap = {
       'TimorP',
     ],
   },
-  surfaceWaves: {
+  'surfaceWaves-wave': {
+    state: ['Au'],
+    local: [],
+  },
+  'surfaceWaves-buoyTimeseries': {
     state: ['Au'],
     local: [],
   },

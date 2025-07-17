@@ -10,7 +10,7 @@ import useBuoyTags from '@/services/hooks/useBuoyTags';
 const buildBuoyTimeseriesImagePath = (buoyLocation: string, date: Dayjs): string => {
   const formattedDate = date.format('YYYYMMDDHH');
   const formattedTitle = encodeURIComponent(buoyLocation.replaceAll(' ', '_'));
-  return `/product/surface-waves?buoy=${formattedTitle}&date=${formattedDate}`;
+  return `/product/surface-waves/buoy-timeseries?region=${formattedTitle}&date=${formattedDate}`;
 };
 
 interface DataImageWithBuoyMapProps {

@@ -63,7 +63,7 @@ export const productTypeMapping = new Map<
   [
     'surfaceWaves',
     {
-      subProduct: [],
+      subProduct: ['WAVES', 'WAVES_TS'],
       stateSegment: 'WAVES',
       localSegment: null,
       dateFormat: DateFormat.HOUR,

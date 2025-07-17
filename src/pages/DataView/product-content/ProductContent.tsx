@@ -14,6 +14,7 @@ import {
   buildSealCtdMapImageUrl,
   buildSealCtdTagsDataImageUrl,
   buildSurfaceWavesBuoyTimeseriesImageUrl,
+  buildSurfaceWavesImageUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
@@ -42,12 +43,21 @@ import DataImage from '../data-image/DataImage';
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const [searchParams] = useSearchParams();
-  const { isArgo, isCurrentMeters, isEACMooringArray, isTidalCurrents, isSealCtd, isSealCtdTags } = useProductCheck();
+  const {
+    isArgo,
+    isCurrentMeters,
+    isEACMooringArray,
+    isTidalCurrents,
+    isSealCtd,
+    isSealCtdTags,
+    isSurfaceWavesBuoyTimeseries,
+  } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const useRegionCode = useProductStore((state) => state.productParams.regionCode);
   const useProductId = useProductStore((state) => state.productParams.productId);
   const useArgoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
   const { mainProduct, subProduct } = useProductConvert();
+
   const { worldMeteorologicalOrgId, cycle, depth } = useArgoStore((state) => state.selectedArgoParams);
   const { showVideo } = useOutletContext<VideoPlayerOutletContext>();
   const {
@@ -57,6 +67,10 @@ const ProductContent: React.FC = () => {
     date: currentMetersDate,
     deploymentPlot,
   } = useCurrentMetersStore();
+
+  // for Surface Waves buoy
+  const buoyRegionUrlParam = searchParams.get('region');
+  const hasSelectedBuoyRegionFromUrl = buoyRegionUrlParam && buoyRegionUrlParam !== '';
 
   // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
   const region = getRegionByRegionCode(isEACMooringArray ? 'Brisbane' : useRegionCode);
@@ -98,6 +112,10 @@ const ProductContent: React.FC = () => {
     return <ErrorImage date={useDate} productId="argo" />;
   }
 
+  if (isSurfaceWavesBuoyTimeseries && !hasSelectedBuoyRegionFromUrl) {
+    return <ErrorImage date={useDate} productId="surfaceWaves-buoyTimeseries" />;
+  }
+
   if (imgLoadError) {
     return <ErrorImage date={useDate} productId={mainProduct!.key} />;
   }
@@ -121,10 +139,6 @@ const ProductContent: React.FC = () => {
   const selectedSealCtdTag = searchParams.get('sealId');
   const hasSelectedSealCtdTagFromUrl = selectedSealCtdTag && selectedSealCtdTag !== '';
 
-  // for Surface Waves buoy
-  const buoyUrlParam = searchParams.get('buoy');
-  const hasSelectedBuoyFromUrl = buoyUrlParam && buoyUrlParam !== '';
-
   const chooseImg = (): string | undefined => {
     try {
       switch (true) {
@@ -144,8 +158,10 @@ const ProductContent: React.FC = () => {
           return buildSealCtdMapImageUrl(useRegionCode ?? 'POLAR', useDate);
         case isSealCtdTags && hasSelectedSealCtdTagFromUrl:
           return buildSealCtdTagsDataImageUrl(selectedSealCtdTag, useDate, useProductId);
-        case useProductId === 'surfaceWaves' && hasSelectedBuoyFromUrl:
-          return buildSurfaceWavesBuoyTimeseriesImageUrl(buoyUrlParam, useDate);
+        case useProductId === 'surfaceWaves-wave':
+          return buildSurfaceWavesImageUrl(useDate);
+        case useProductId === 'surfaceWaves-buoyTimeseries' && hasSelectedBuoyRegionFromUrl:
+          return buildSurfaceWavesBuoyTimeseriesImageUrl(buoyRegionUrlParam, useDate);
         default:
           return buildProductImageUrl(
             mainProduct.key,
@@ -221,9 +237,10 @@ const ProductContent: React.FC = () => {
   }
 
   if (mainProduct.key === 'surfaceWaves') {
-    if (hasSelectedBuoyFromUrl) {
+    if (useProductId === 'surfaceWaves-buoyTimeseries') {
       return <DataImage src={chooseImg()!} onError={handleError} />;
     }
+
     return <DataImageWithBuoyMap src={chooseImg()!} date={useDate} productId={useProductId} />;
   }
 

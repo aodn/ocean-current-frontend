@@ -17,7 +17,8 @@ export const API_ENABLED_PRODUCTS: ProductID[] = [
   'adjustedSeaLevelAnomaly-sla',
   'adjustedSeaLevelAnomaly-centiles',
   'adjustedSeaLevelAnomaly-sst',
-  'surfaceWaves',
+  'surfaceWaves-wave',
+  'surfaceWaves-buoyTimeseries',
   'argo',
 ];
 

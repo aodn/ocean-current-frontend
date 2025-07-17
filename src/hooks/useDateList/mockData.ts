@@ -35,7 +35,7 @@ const MOCK_CONFIGS: MockConfig[] = [
     },
   },
   {
-    productId: 'surfaceWaves',
+    productId: 'surfaceWaves-wave',
     interVal: {
       state: 2,
     },

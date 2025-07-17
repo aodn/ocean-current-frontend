@@ -1,11 +1,11 @@
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 
 const useProductCheck = () => {
-  const { mainProduct } = useProductConvert();
+  const { mainProduct, subProduct } = useProductConvert();
 
   const mainProductId = mainProduct?.key || '';
 
-  const productsWithoutRegion = ['argo', 'surfaceWaves'];
+  const productsWithoutRegion = ['argo', 'surfaceWaves-wave'];
 
   const isRegionRequired = !productsWithoutRegion.includes(mainProductId);
   const isArgo = mainProductId === 'argo';
@@ -15,7 +15,9 @@ const useProductCheck = () => {
   const isTidalCurrents = mainProductId === 'tidalCurrents';
   const isSealCtd = mainProductId === 'sealCtd';
   const isSealCtdTags = mainProductId === 'sealCtdTags';
-  const isWavesTimeseries = mainProductId === 'wavesTimeseries';
+  const isSurfaceWaves = mainProductId === 'surfaceWaves';
+  const isSurfaceWavesBuoyTimeseries =
+    mainProductId === 'surfaceWaves' && subProduct?.key === 'surfaceWaves-buoyTimeseries';
 
   return {
     isRegionRequired,
@@ -26,7 +28,8 @@ const useProductCheck = () => {
     isTidalCurrents,
     isSealCtd,
     isSealCtdTags,
-    isWavesTimeseries,
+    isSurfaceWaves,
+    isSurfaceWavesBuoyTimeseries,
   };
 };
 
