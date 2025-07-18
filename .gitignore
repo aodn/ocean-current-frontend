@@ -37,3 +37,9 @@ dist-ssr
 coverage
 
 .eslintcache
+
+
+# Playwright
+# Ignore Playwright test artifacts
+playwright-report
+test-results
