@@ -120,6 +120,10 @@ const routes: RouteObject[] = [
             element: <Navigate to="tracks" replace />,
           },
           {
+            path: 'surface-waves',
+            element: <Navigate to="wave" replace />,
+          },
+          {
             path: ':product/:subProduct',
             element: <MapView />,
           },

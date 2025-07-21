@@ -1,19 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import BasicMap from '@/components/Map/BasicMap';
-import { resetMapStore } from '@/stores/map-store/mapStore';
 import ProductContent from './product-content/ProductContent';
 
 const DataView: React.FC = () => {
   const { isArgo, isCurrentMeters, isEACMooringArray, isSealCtdTags, isSurfaceWaves } = useProductCheck();
   const isProductAvailableInRegion = useProductAvailableInRegion();
-
-  useEffect(() => {
-    if (!isProductAvailableInRegion) {
-      resetMapStore();
-    }
-  }, [isProductAvailableInRegion]);
 
   const shouldRenderProductContent =
     isProductAvailableInRegion || isArgo || isCurrentMeters || isEACMooringArray || isSealCtdTags || isSurfaceWaves;

@@ -63,9 +63,15 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
 
   useEffect(() => {
     if (!map) return;
-
     const regionCode = regionCodeFromUrl || 'Au';
     const region = getRegionByRegionCode(regionCode);
+
+    const fitToAuRegion = () => {
+      const auRegion = getRegionByRegionCode('Au');
+      if (auRegion) {
+        mapFitBounds(auRegion.coords);
+      }
+    };
 
     if (region) {
       // zoom in on EAC Mooring Array's only region when in main map view
@@ -80,8 +86,14 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
 
       // focus on region only when in minimap, otherwise the map carousel in landing page breaks the auto cycle
       if (isMiniMap) {
-        mapFitBounds(region.coords);
+        if (baseProductPath.includes('surface-waves')) {
+          fitToAuRegion();
+        } else {
+          mapFitBounds(region.coords);
+        }
       }
+    } else {
+      fitToAuRegion();
     }
   }, [map, regionCodeFromUrl, mapFitBounds, isMiniMap, baseProductPath]);
 
