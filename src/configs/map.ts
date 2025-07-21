@@ -21,3 +21,10 @@ export const initialMapViewState = {
     },
   },
 };
+
+export const initialMiniMapViewState = {
+  mapViewState: {
+    ...initialMapViewState.mapViewState,
+    zoom: 1.3,
+  },
+};

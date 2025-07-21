@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { initialMapViewState } from '@/configs/map';
+import { initialMapViewState, initialMiniMapViewState } from '@/configs/map';
 import { State, Actions } from './map.types';
 
 const useMapStore = create<State & Actions>()(
@@ -31,7 +31,13 @@ const useMapStore = create<State & Actions>()(
           false,
           'updatePositionAndZoom',
         ),
-      reset: () => set(initialMapViewState, false, 'resetMapStore'),
+      reset: (isMiniMap = false) => {
+        if (isMiniMap) {
+          set(initialMiniMapViewState, false, 'resetMapStore (mini map)');
+        } else {
+          set(initialMapViewState, false, 'resetMapStore (normal map)');
+        }
+      },
     },
   })),
 );
