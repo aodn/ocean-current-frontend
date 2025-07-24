@@ -202,6 +202,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
             targetPath = '/product/surface-waves/wave';
           }
         }
+
         updateQueryParamsAndNavigate(targetPath, queryObject, replace);
       }
     },
