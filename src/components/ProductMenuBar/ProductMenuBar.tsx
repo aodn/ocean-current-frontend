@@ -29,15 +29,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
   const [showVideo, setLocalShowVideo] = useState(false);
   const { date: currentMetersDate, property, depth, region, deploymentPlot } = useCurrentMetersStore();
   const [_, setSearchParams] = useSearchParams();
-  const {
-    isArgo,
-    isCurrentMeters,
-    isEACMooringArray,
-    isTidalCurrents,
-    isSealCtd,
-    isSealCtdTags,
-    isSurfaceWavesBuoyTimeseries,
-  } = useProductCheck();
+  const { isArgo, isCurrentMeters, isEACMooringArray, isTidalCurrents, isSealCtd, isSealCtdTags } = useProductCheck();
   const productId = useProductStore((state) => state.productParams.productId);
   const shouldDisableOption =
     disableVideoCreation() ||
@@ -47,8 +39,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
     isEACMooringArray ||
     isTidalCurrents ||
     (isSealCtd && productId !== 'sealCtd-sealTracks') ||
-    isSealCtdTags ||
-    isSurfaceWavesBuoyTimeseries;
+    isSealCtdTags;
 
   const dateFormat = useProductDateFormat();
 

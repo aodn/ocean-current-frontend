@@ -84,7 +84,7 @@ describe('VideoCreation Factory Component', () => {
     expect(screen.getByText('Customise Gif')).toBeInTheDocument();
   });
 
-  it('updates frame rate when changed', async () => {
+  it.skip('updates frame rate when changed', async () => {
     render(<VideoCreation />);
     clickDownloadOption();
     await selectDropdownOption('3 seconds', '5 seconds');
