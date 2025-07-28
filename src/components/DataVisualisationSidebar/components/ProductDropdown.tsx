@@ -91,9 +91,9 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
                   ?.latestDate
               : null;
 
-          const isDateInPast = dayjs(regionLatestDate).isBefore(dayjs(selectedDate), 'day');
+          const isDateInPast = regionLatestDate ? dayjs(regionLatestDate).isBefore(dayjs(selectedDate), 'day') : false;
 
-          const dateToUse = isDateInPast && regionLatestDate ? regionLatestDate : selectedDate;
+          const dateToUse = isDateInPast ? regionLatestDate : selectedDate;
 
           queryToUpdate = {
             date: dateToUse,

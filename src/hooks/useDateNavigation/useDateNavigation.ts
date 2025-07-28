@@ -14,7 +14,14 @@ interface UseDateNavigationProps {
 
 const useDateNavigation = ({ dateFormat, availableDates, initialDate }: UseDateNavigationProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  // TODO: the order needs to be sorted by backend API
+  // The `availableDates` array must be sorted by the backend API to ensure correct functionality.
+  // A runtime assertion is added to verify this requirement during development and testing.
+  if (process.env.NODE_ENV !== 'production') {
+    const isSorted = availableDates.every((item, index, arr) => index === 0 || arr[index - 1].date <= item.date);
+    if (!isSorted) {
+      console.error('The `availableDates` array is not sorted. Ensure the backend API returns sorted data.');
+    }
+  }
   const dates = useMemo(() => availableDates.map((item) => item.date).sort(), [availableDates]);
 
   const formatDate = useCallback((date: dayjs.Dayjs) => date.format(dateFormat), [dateFormat]);
