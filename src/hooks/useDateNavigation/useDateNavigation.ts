@@ -4,6 +4,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { DateFormat, DateItem } from '@/types/date';
 import { useArgoStore } from '@/stores/argo-store/argoStore';
 import { isHourlyFormat, findFirstHourlyDateForDay } from '@/utils/date-utils/hourly';
+import { findClosestDateIndex } from '@/utils/date-utils/date';
 
 interface UseDateNavigationProps {
   dateFormat: DateFormat;
@@ -13,6 +14,14 @@ interface UseDateNavigationProps {
 
 const useDateNavigation = ({ dateFormat, availableDates, initialDate }: UseDateNavigationProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  // The `availableDates` array must be sorted by the backend API to ensure correct functionality.
+  // A runtime assertion is added to verify this requirement during development and testing.
+  if (process.env.NODE_ENV !== 'production') {
+    const isSorted = availableDates.every((item, index, arr) => index === 0 || arr[index - 1].date <= item.date);
+    if (!isSorted) {
+      console.error('The `availableDates` array is not sorted. Ensure the backend API returns sorted data.');
+    }
+  }
   const dates = useMemo(() => availableDates.map((item) => item.date).sort(), [availableDates]);
 
   const formatDate = useCallback((date: dayjs.Dayjs) => date.format(dateFormat), [dateFormat]);
@@ -81,20 +90,38 @@ const useDateNavigation = ({ dateFormat, availableDates, initialDate }: UseDateN
   );
 
   const goToPrevious = useCallback(() => {
+    if (currentIndex === -1) {
+      // Handle case when currentDate is not in the dates list
+      const currentDateStr = formatDate(currentDate);
+      const prevIndex = findClosestDateIndex(dates, currentDateStr, 'previous');
+
+      if (prevIndex !== -1) {
+        updateDate(dayjs(dates[prevIndex], dateFormat));
+      }
+      return;
+    }
     if (currentIndex > 0) {
       const prevDate = dayjs(dates[currentIndex - 1], dateFormat);
       updateDate(prevDate);
     }
-    return null;
-  }, [currentIndex, dateFormat, dates, updateDate]);
+  }, [currentIndex, dateFormat, dates, updateDate, currentDate, formatDate]);
 
   const goToNext = useCallback(() => {
+    if (currentIndex === -1) {
+      // Handle case when currentDate is not in the dates list
+      const currentDateStr = formatDate(currentDate);
+      const nextIndex = findClosestDateIndex(dates, currentDateStr, 'next');
+
+      if (nextIndex !== -1) {
+        updateDate(dayjs(dates[nextIndex], dateFormat));
+      }
+      return;
+    }
     if (currentIndex < dates.length - 1) {
       const nextDate = dayjs(dates[currentIndex + 1], dateFormat);
       updateDate(nextDate);
     }
-    return null;
-  }, [currentIndex, dateFormat, dates, updateDate]);
+  }, [currentIndex, dateFormat, dates, updateDate, currentDate, formatDate]);
 
   return {
     currentDate,

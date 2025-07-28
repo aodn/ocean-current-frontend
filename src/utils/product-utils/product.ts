@@ -1,3 +1,4 @@
+import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
 import { OC_PRODUCTS } from '@/constants/product';
 import { flatProducts } from '@/data/productData';
 import {
@@ -5,6 +6,9 @@ import {
   FlatProduct,
   MainProductWithSubProduct,
   Product,
+  ProductGroupID,
+  ProductID,
+  RootProductID,
   StandaloneProductWithoutChildren,
   SubProduct,
 } from '@/types/product';
@@ -159,6 +163,46 @@ const getProductPathWithSubProduct = (productId: string): string => {
   return `${mainProduct.path}/${product.path}`;
 };
 
+/**
+ * Determines the actual target ProductID that will be used after routing redirects
+ * For main products with children, returns the child that matches the default sub-product path
+ * defined in the router configuration
+ * For standalone products, returns the product key itself
+ */
+const getTargetProductIdAfterRouting = (rootProductId: RootProductID): ProductID => {
+  const product = getProductByIdFromFlat(rootProductId);
+
+  if (!product) {
+    throw new Error(`Product with id ${rootProductId} not found`);
+  }
+
+  // If it's already a child product, return it as-is
+  if (product.parentId) {
+    return rootProductId as ProductID;
+  }
+
+  const mainProduct = OC_PRODUCTS.find((p) => p.key === product.key);
+  if (!mainProduct) {
+    throw new Error(`Main product with key ${product.key} not found`);
+  }
+
+  // If it has children, find the default child according to router configuration
+  if (mainProduct.children && mainProduct.children.length > 0) {
+    const defaultSubProductPath = DEFAULT_SUB_PRODUCT_ROUTES[mainProduct.key as ProductGroupID];
+
+    if (defaultSubProductPath) {
+      const defaultChild = mainProduct.children.find((child) => child.path === defaultSubProductPath);
+      if (defaultChild) {
+        return defaultChild.key as ProductID;
+      }
+    }
+
+    return mainProduct.children[0].key as ProductID;
+  }
+
+  return mainProduct.key as ProductID;
+};
+
 export {
   combineProducts,
   combinedProducts,
@@ -172,4 +216,5 @@ export {
   constructParentPath,
   getProductFullPathById,
   getProductPathWithSubProduct,
+  getTargetProductIdAfterRouting,
 };

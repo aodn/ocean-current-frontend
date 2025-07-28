@@ -3,59 +3,17 @@ import dayjs from 'dayjs';
 import { useQueryClient } from '@tanstack/react-query';
 import { Dropdown } from '@/components/Shared';
 import { sidebarProductsNav } from '@/data/sidebarProductsNav';
-import { getProductPathWithSubProduct, getProductByIdFromFlat } from '@/utils/product-utils/product';
+import { getProductPathWithSubProduct, getTargetProductIdAfterRouting } from '@/utils/product-utils/product';
 import { useDateRange, useQueryParams } from '@/hooks';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
 import { initialState as currentMetersInitialState } from '@/stores/current-meters-store/currentMeters';
 import { QueryParams } from '@/hooks/useQueryParams/types/userQueryParams.types';
-import { RootProductID, ProductID, ProductGroupID } from '@/types/product';
-import { OC_PRODUCTS } from '@/constants/product';
+import { RootProductID } from '@/types/product';
 import useProductStore from '@/stores/product-store/productStore';
 import { regionLatestDatesOptions } from '@/services/hooks/useRegionLatestDates';
 import { LatestRegionDatesResponse, RegionLatestDate } from '@/types/imageList';
-import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
 import { ProductDropdownProps } from '../types';
-
-/**
- * Determines the actual target ProductID that will be used after routing redirects
- * For main products with children, returns the child that matches the default sub-product path
- * defined in the router configuration
- * For standalone products, returns the product key itself
- */
-const getTargetProductIdAfterRouting = (rootProductId: RootProductID): ProductID => {
-  const product = getProductByIdFromFlat(rootProductId);
-
-  if (!product) {
-    throw new Error(`Product with id ${rootProductId} not found`);
-  }
-
-  // If it's already a child product, return it as-is
-  if (product.parentId) {
-    return rootProductId as ProductID;
-  }
-
-  const mainProduct = OC_PRODUCTS.find((p) => p.key === product.key);
-  if (!mainProduct) {
-    throw new Error(`Main product with key ${product.key} not found`);
-  }
-
-  // If it has children, find the default child according to router configuration
-  if (mainProduct.children && mainProduct.children.length > 0) {
-    const defaultSubProductPath = DEFAULT_SUB_PRODUCT_ROUTES[mainProduct.key as ProductGroupID];
-
-    if (defaultSubProductPath) {
-      const defaultChild = mainProduct.children.find((child) => child.path === defaultSubProductPath);
-      if (defaultChild) {
-        return defaultChild.key as ProductID;
-      }
-    }
-
-    return mainProduct.children[0].key as ProductID;
-  }
-
-  return mainProduct.key as ProductID;
-};
 
 const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
@@ -133,7 +91,9 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
                   ?.latestDate
               : null;
 
-          const dateToUse = regionLatestDate || selectedDate;
+          const isDateInPast = regionLatestDate ? dayjs(regionLatestDate).isBefore(dayjs(selectedDate), 'day') : false;
+
+          const dateToUse = isDateInPast ? regionLatestDate : selectedDate;
 
           queryToUpdate = {
             date: dateToUse,
