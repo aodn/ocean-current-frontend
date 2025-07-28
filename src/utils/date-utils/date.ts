@@ -3,6 +3,44 @@ import { DateFormat, DateUnit } from '@/types/date';
 import { RegionScope } from '@/constants/region';
 import { getProductByIdFromFlat } from '../product-utils/product';
 
+type SearchDirection = 'next' | 'previous';
+
+/**
+ * Find the index of the closest date in a sorted array relative to a target date
+ * @param dates - Sorted array of date strings
+ * @param targetDateStr - The target date string to compare against
+ * @param searchDirection - Whether to find the next ('next') or previous ('previous') closest date
+ * @returns The index of the closest date or -1 if not found
+ */
+const findClosestDateIndex = (dates: string[], targetDateStr: string, searchDirection: SearchDirection): number => {
+  let left = 0;
+  let right = dates.length - 1;
+  let insertionPoint = -1;
+
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    if (searchDirection === 'next') {
+      // Find next date (greater than target)
+      if (dates[mid] > targetDateStr) {
+        insertionPoint = mid;
+        right = mid - 1;
+      } else {
+        left = mid + 1;
+      }
+    } else {
+      // Find previous date (less than target)
+      if (dates[mid] < targetDateStr) {
+        insertionPoint = mid;
+        left = mid + 1;
+      } else {
+        right = mid - 1;
+      }
+    }
+  }
+
+  return insertionPoint;
+};
+
 const findMostRecentDateBefore = (dateArray: string[], targetDate: string): string | null => {
   const targetDayjs: Dayjs = dayjs(targetDate);
 
@@ -74,6 +112,7 @@ const convertDateToDisplayFormattedText = (date: Dayjs, dateFormat: DateFormat) 
 };
 
 export {
+  findClosestDateIndex,
   findMostRecentDateBefore,
   getUnitByFormat,
   getDateFormatFlags,
