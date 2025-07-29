@@ -41,7 +41,7 @@ const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, 
       canGoNext={canGoNext}
       canGoPrevious={canGoPrevious}
       dateFormat={dateFormat}
-      onChange={(date: Date | null) => updateDate(dayjs(date), true)}
+      onChange={(date: Date | null) => updateDate(dayjs(date), { reStart: true })}
       isMobile={isMobile}
     />
   );

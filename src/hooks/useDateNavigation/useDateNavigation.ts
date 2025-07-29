@@ -63,7 +63,8 @@ const useDateNavigation = ({ dateFormat, availableDates, initialDate }: UseDateN
   }, [initialDate, searchParams, dates, dateFormat, setSearchParams]);
 
   const updateDate = useCallback(
-    (newDate: Dayjs, reStart: boolean = false, replace: boolean = false) => {
+    (newDate: Dayjs, options?: { reStart?: boolean; replace?: boolean }) => {
+      const { reStart = false, replace = false } = options || {};
       const formatted = formatDate(newDate);
 
       if (dates.includes(formatted) || reStart) {
@@ -96,7 +97,7 @@ const useDateNavigation = ({ dateFormat, availableDates, initialDate }: UseDateN
       const prevIndex = findClosestDateIndex(dates, currentDateStr, 'previous');
 
       if (prevIndex !== -1) {
-        updateDate(dayjs(dates[prevIndex], dateFormat), false, true);
+        updateDate(dayjs(dates[prevIndex], dateFormat), { replace: true });
       }
       return;
     }
@@ -113,7 +114,7 @@ const useDateNavigation = ({ dateFormat, availableDates, initialDate }: UseDateN
       const nextIndex = findClosestDateIndex(dates, currentDateStr, 'next');
 
       if (nextIndex !== -1) {
-        updateDate(dayjs(dates[nextIndex], dateFormat), false, true);
+        updateDate(dayjs(dates[nextIndex], dateFormat), { replace: true });
       }
       return;
     }
