@@ -400,10 +400,10 @@ export const productRegionMap: ProductRegionMap = {
     ],
   },
   /*
-  The regions, Broome and Tas2, are not accessible on the map and therefore not included in the list below
+  The region `Tas2`, is not accessible on the map and therefore not included in the list below
   */
   'sixDaySst-timeseries': {
-    state: ['Au', 'GAB', 'NE', 'NW', 'NZ', 'SE', 'SO', 'SW'],
+    state: [],
     local: [
       'Adelaide',
       'AlbEsp',
@@ -411,6 +411,7 @@ export const productRegionMap: ProductRegionMap = {
       'Bris-Syd',
       'Brisbane',
       'Brisbane2',
+      'Broome',
       'CGBR',
       'CLeeu',
       'Coffs',
@@ -422,11 +423,11 @@ export const productRegionMap: ProductRegionMap = {
       'Kimberley',
       'LordHoweS',
       'NGBR',
+      'NingLeeu',
+      'Ningaloo',
       'NWS',
       'NZNI',
       'NZSI',
-      'Ningaloo',
-      'NingLeeu',
       'Perth',
       'RechEyre',
       'Rowley',

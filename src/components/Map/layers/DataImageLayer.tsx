@@ -21,6 +21,9 @@ const productsWithImage: ProductID[] = [
   'surfaceWaves-buoyTimeseries',
   'oceanColour-chlA',
   'sixDaySst-sst',
+  'sixDaySst-sstAnomaly',
+  'sixDaySst-centiles',
+  'sixDaySst-timeseries',
   'adjustedSeaLevelAnomaly-sla',
   'adjustedSeaLevelAnomaly-centiles',
   'adjustedSeaLevelAnomaly-sst',
@@ -42,9 +45,9 @@ const DataImageLayer: React.FC = () => {
   // Adding Layers
   useEffect(() => {
     const mapLayer = map?.getMap();
-    const productHasNoImage = !productsWithImage.includes(useProductId);
+    const productHasImage = productsWithImage.includes(useProductId);
 
-    if (!map || !mapLayer || !useProductId || productHasNoImage) return;
+    if (!map || !mapLayer || !useProductId || !productHasImage) return;
 
     const addLayerToMap = () => {
       if (mapLayer && !mapLayer.getSource(useProductId)) {
