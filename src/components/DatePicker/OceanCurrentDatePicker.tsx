@@ -24,6 +24,9 @@ const OceanCurrentDatePicker: React.FC<OceanCurrentDatePickerProps> = ({
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
+      if (isDatePickerDisabled) {
+        return;
+      }
       if (event.key === 'ArrowLeft') {
         if (canGoPrevious) {
           goToPrevious();
@@ -34,21 +37,26 @@ const OceanCurrentDatePicker: React.FC<OceanCurrentDatePickerProps> = ({
         }
       }
     },
-    [goToPrevious, canGoPrevious, canGoNext, goToNext],
+    [goToPrevious, canGoPrevious, canGoNext, goToNext, isDatePickerDisabled],
   );
 
   const handleDateChange = (date: Date | null) => {
+    if (isDatePickerDisabled) {
+      return;
+    }
     if (date) {
       onChange(date);
     }
   };
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [handleKeyDown]);
+    if (!isDatePickerDisabled) {
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [handleKeyDown, isDatePickerDisabled]);
 
   const isSealCtdTagsAndYearFormat = productId?.includes('sealCtdTags') && dateFormat === DateFormat.YEAR_ONLY;
 
