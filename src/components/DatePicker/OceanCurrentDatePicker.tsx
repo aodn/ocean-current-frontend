@@ -3,33 +3,38 @@ import dayjs from 'dayjs';
 import arrowIcon from '@/assets/icons/arrow.svg';
 import { convertDateToDisplayFormattedText } from '@/utils/date-utils/date';
 import { DateFormat } from '@/types/date';
-import { DatePickerProps } from './types/datePicker.types';
+import { OceanCurrentDatePickerProps } from './types/datePicker.types';
 import MultiFormatDatePicker from './components/MultiFormatDatePicker';
 
-const DatePicker: React.FC<DatePickerProps> = ({
+const OceanCurrentDatePicker: React.FC<OceanCurrentDatePickerProps> = ({
   productId,
   goToPrevious,
   goToNext,
   canGoNext = true,
+  canGoPrevious = true,
   selectedDate,
   dateFormat,
   onChange,
   isMobile,
   dateList,
+  isDatePickerDisabled = false,
+  displayText,
 }) => {
-  const formattedSelectedDate = convertDateToDisplayFormattedText(dayjs(selectedDate), dateFormat);
+  const formattedSelectedDate = displayText || convertDateToDisplayFormattedText(dayjs(selectedDate), dateFormat);
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === 'ArrowLeft') {
-        goToPrevious();
+        if (canGoPrevious) {
+          goToPrevious();
+        }
       } else if (event.key === 'ArrowRight') {
         if (canGoNext) {
           goToNext();
         }
       }
     },
-    [goToPrevious, canGoNext, goToNext],
+    [goToPrevious, canGoPrevious, canGoNext, goToNext],
   );
 
   const handleDateChange = (date: Date | null) => {
@@ -53,7 +58,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
         <div className="flex-center h-full w-12 border-r-2 text-lg text-imos-title-blue">
           <button
             onClick={goToPrevious}
-            className="hidden cursor-pointer rounded bg-transparent p-2 font-semibold md:block"
+            disabled={!canGoPrevious}
+            className="hidden cursor-pointer rounded bg-transparent p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50 md:block"
           >
             <img className="h-4 w-4 rotate-90" src={arrowIcon} alt="left arrow icon" />
           </button>
@@ -69,6 +75,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
               onChange={handleDateChange}
               dateFormat={dateFormat}
               isMobile={isMobile}
+              isDisabled={isDatePickerDisabled}
             />
           </div>
         )}
@@ -91,4 +98,4 @@ const DatePicker: React.FC<DatePickerProps> = ({
   );
 };
 
-export default DatePicker;
+export default OceanCurrentDatePicker;

@@ -4,7 +4,8 @@ import useDateNavigation from '@/hooks/useDateNavigation/useDateNavigation';
 import { useDateList } from '@/hooks';
 import { DateFormat } from '@/types/date';
 import { ProductID } from '@/types/product';
-import DatePicker from './DatePicker/DatePicker';
+import { ProductMenubarText } from '@/constants/textConstant';
+import OceanCurrentDatePicker from './DatePicker/OceanCurrentDatePicker';
 import { Loading } from './Shared';
 
 interface DatePaginationProps {
@@ -23,6 +24,15 @@ const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, 
     initialDate,
   });
 
+  // Product-specific logic moved from OceanCurrentDatePicker
+  const isSstTimeseries = productId === 'sixDaySst-timeseries';
+  const isDatePickerDisabled = isSstTimeseries;
+  const displayText = isSstTimeseries ? ProductMenubarText.SIX_DAY_SST_TIMESERIES_DATE : undefined;
+
+  // Adjust navigation capabilities based on product
+  const adjustedCanGoNext = canGoNext && !isSstTimeseries;
+  const adjustedCanGoPrevious = canGoPrevious && !isSstTimeseries;
+
   if (isLoading) {
     return (
       <div className="flex h-full w-full items-center justify-center" aria-busy="true" aria-label="Loading content">
@@ -32,17 +42,19 @@ const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, 
   }
 
   return (
-    <DatePicker
+    <OceanCurrentDatePicker
       productId={productId}
       dateList={dateList}
       selectedDate={currentDate.toDate()}
       goToNext={goToNext}
       goToPrevious={goToPrevious}
-      canGoNext={canGoNext}
-      canGoPrevious={canGoPrevious}
+      canGoNext={adjustedCanGoNext}
+      canGoPrevious={adjustedCanGoPrevious}
       dateFormat={dateFormat}
       onChange={(date: Date | null) => updateDate(dayjs(date), { reStart: true })}
       isMobile={isMobile}
+      isDatePickerDisabled={isDatePickerDisabled}
+      displayText={displayText}
     />
   );
 };

@@ -1,7 +1,7 @@
 import { DateFormat, DateItem } from '@/types/date';
 import { ProductID } from '@/types/product';
 
-export interface DatePickerProps {
+export interface OceanCurrentDatePickerProps {
   productId: ProductID;
   dateList: DateItem[];
   selectedDate: Date;
@@ -12,4 +12,6 @@ export interface DatePickerProps {
   dateFormat: DateFormat;
   onChange: (date: Date) => void;
   isMobile?: boolean;
+  isDatePickerDisabled?: boolean;
+  displayText?: string;
 }
