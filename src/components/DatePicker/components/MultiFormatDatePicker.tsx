@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import DatePicker from 'react-datepicker';
+import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import dayjs from 'dayjs';
 import { DateFormat } from '@/types/date';
@@ -16,6 +16,7 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
   selectedDate,
   onChange,
   isMobile = false,
+  isDisabled = false,
 }) => {
   const { isMonthFormat, isMonthOnlyFormat, isYearFormat } = getDateFormatFlags(dateFormat);
   const isHourly = isHourlyFormat(dateFormat);
@@ -28,6 +29,8 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
   }, [dateList, dateFormat]);
 
   const handleDateChange = (date: Date | null) => {
+    if (isDisabled) return;
+
     if (date && isHourly) {
       const selectedDay = dayjs(date).format(DateFormat.DAY);
 
@@ -46,47 +49,50 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
 
   if (isMonthFormat) {
     return (
-      <DatePicker
-        customInput={isMobile ? <CustomInputMobile /> : <CustomInput />}
+      <ReactDatePicker
+        customInput={isMobile ? <CustomInputMobile disabled={isDisabled} /> : <CustomInput disabled={isDisabled} />}
         selected={selectedDate}
         onChange={handleDateChange}
         dateFormat="MM/yyyy"
         showMonthYearPicker
         showTwoColumnMonthYearPicker
+        disabled={isDisabled}
       />
     );
   }
 
   if (isMonthOnlyFormat) {
     return (
-      <DatePicker
-        customInput={isMobile ? <CustomInputMobile /> : <CustomInput />}
+      <ReactDatePicker
+        customInput={isMobile ? <CustomInputMobile disabled={isDisabled} /> : <CustomInput disabled={isDisabled} />}
         selected={selectedDate}
         onChange={handleDateChange}
         dateFormat="MM"
         showYearDropdown
         showMonthYearPicker
         showTwoColumnMonthYearPicker
+        disabled={isDisabled}
       />
     );
   }
 
   if (isYearFormat) {
     return (
-      <DatePicker
-        customInput={isMobile ? <CustomInputMobile /> : <CustomInput />}
+      <ReactDatePicker
+        customInput={isMobile ? <CustomInputMobile disabled={isDisabled} /> : <CustomInput disabled={isDisabled} />}
         selected={selectedDate}
         onChange={handleDateChange}
         dateFormat="yyyy"
         showYearPicker
+        disabled={isDisabled}
       />
     );
   }
 
   if (dateList.length < 500) {
     return (
-      <DatePicker
-        customInput={isMobile ? <CustomInputMobile /> : <CustomInput />}
+      <ReactDatePicker
+        customInput={isMobile ? <CustomInputMobile disabled={isDisabled} /> : <CustomInput disabled={isDisabled} />}
         selected={selectedDate}
         minDate={firstDate}
         maxDate={lastDate}
@@ -95,13 +101,14 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
         showYearDropdown
         showMonthDropdown
         dropdownMode="select"
+        disabled={isDisabled}
       />
     );
   }
 
   return (
-    <DatePicker
-      customInput={isMobile ? <CustomInputMobile /> : <CustomInput />}
+    <ReactDatePicker
+      customInput={isMobile ? <CustomInputMobile disabled={isDisabled} /> : <CustomInput disabled={isDisabled} />}
       selected={selectedDate}
       minDate={firstDate}
       maxDate={lastDate}
@@ -110,6 +117,7 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
       showYearDropdown
       showMonthDropdown
       dropdownMode="select"
+      disabled={isDisabled}
     />
   );
 };

@@ -3,13 +3,14 @@ import calendarIcon from '@/assets/icons/calendar-icon.svg';
 
 interface CustomInputProps {
   onClick?: () => void;
+  disabled?: boolean;
 }
 
-const CustomInput = forwardRef<HTMLDivElement, CustomInputProps>(({ onClick }, ref) => (
+const CustomInput = forwardRef<HTMLDivElement, CustomInputProps>(({ onClick, disabled = false }, ref) => (
   <div
     ref={ref}
-    onClick={onClick}
-    className="mr-5 mt-1 flex w-full cursor-pointer items-center justify-center"
+    onClick={disabled ? undefined : onClick}
+    className={`mr-5 mt-1 flex w-full items-center justify-center ${!disabled && 'cursor-pointer'}`}
     aria-hidden="true"
   >
     <img src={calendarIcon} alt="calendar icon" className="mr-4" />
