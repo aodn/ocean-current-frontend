@@ -1,5 +1,6 @@
 import { DateFormat, DateItem } from '@/types/date';
 import { ProductID } from '@/types/product';
+import { ProductMenubarText } from '@/constants/textConstant';
 
 export interface OceanCurrentDatePickerProps {
   productId: ProductID;
@@ -13,5 +14,5 @@ export interface OceanCurrentDatePickerProps {
   onChange: (date: Date) => void;
   isMobile?: boolean;
   isDatePickerDisabled?: boolean;
-  displayText?: string;
+  displayText?: ProductMenubarText;
 }

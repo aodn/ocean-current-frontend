@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { DateFormat } from '@/types/date';
 import { ProductID } from '@/types/product';
+import { ProductMenubarText } from '@/constants/textConstant';
 import OceanCurrentDatePicker from './OceanCurrentDatePicker';
 import { OceanCurrentDatePickerProps } from './types/datePicker.types';
 
@@ -110,11 +111,11 @@ describe('OceanCurrentDatePicker', () => {
 
   it('uses custom display text when provided', () => {
     // Arrange
-    const customText = 'Custom Date Range';
+    const customText = ProductMenubarText.SIX_DAY_SST_TIMESERIES_DATE;
     render(<OceanCurrentDatePicker {...mockProps} displayText={customText} />);
 
     // Assert
-    expect(screen.getByText(customText)).toBeInTheDocument();
+    expect(screen.getByText('1993 - latest')).toBeInTheDocument();
   });
 
   // New tests for the recent updates
@@ -186,13 +187,13 @@ describe('OceanCurrentDatePicker', () => {
 
   it('applies displayText instead of formatted date when provided', () => {
     // Arrange
-    const customText = '1993 - latest';
+    const displayText = ProductMenubarText.SIX_DAY_SST_TIMESERIES_DATE;
 
     // Act
-    render(<OceanCurrentDatePicker {...mockProps} displayText={customText} />);
+    render(<OceanCurrentDatePicker {...mockProps} displayText={displayText} />);
 
     // Assert
-    expect(screen.getByText(customText)).toBeInTheDocument();
+    expect(screen.getByText('1993 - latest')).toBeInTheDocument();
     // The formatted date should not be present
     const formattedDate = '05 Jun 24';
     expect(screen.queryByText(formattedDate)).not.toBeInTheDocument();
@@ -200,13 +201,13 @@ describe('OceanCurrentDatePicker', () => {
 
   it('handles both isDatePickerDisabled and displayText together', () => {
     // Arrange
-    const customText = 'Custom Range';
+    const displayText = ProductMenubarText.SIX_DAY_SST_TIMESERIES_DATE;
 
     // Act
-    render(<OceanCurrentDatePicker {...mockProps} isDatePickerDisabled={true} displayText={customText} />);
+    render(<OceanCurrentDatePicker {...mockProps} isDatePickerDisabled={true} displayText={displayText} />);
 
     // Assert
-    expect(screen.getByText(customText)).toBeInTheDocument();
+    expect(screen.getByText('1993 - latest')).toBeInTheDocument();
     // Calendar icon should be present but not clickable
     expect(screen.getByAltText('calendar icon')).toBeInTheDocument();
   });
@@ -218,7 +219,7 @@ describe('OceanCurrentDatePicker', () => {
       canGoPrevious: false,
       canGoNext: false,
       productId: 'sixDaySst-timeseries' as ProductID,
-      displayText: '1993 - latest',
+      displayText: ProductMenubarText.SIX_DAY_SST_TIMESERIES_DATE,
       isDatePickerDisabled: true,
     };
 

@@ -24,12 +24,11 @@ const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, 
     initialDate,
   });
 
-  // Product-specific logic moved from OceanCurrentDatePicker
+  // For product only with fixed date range (sst timeseries)
   const isSstTimeseries = productId === 'sixDaySst-timeseries';
   const isDatePickerDisabled = isSstTimeseries;
   const displayText = isSstTimeseries ? ProductMenubarText.SIX_DAY_SST_TIMESERIES_DATE : undefined;
 
-  // Adjust navigation capabilities based on product
   const adjustedCanGoNext = canGoNext && !isSstTimeseries;
   const adjustedCanGoPrevious = canGoPrevious && !isSstTimeseries;
 
