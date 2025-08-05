@@ -10,6 +10,9 @@ import { MultiFormatDatePickerProps } from '../types/multiFormatDatePicker.types
 import CustomInputMobile from './CustomInputMobile';
 import CustomInput from './CustomInput';
 
+// Threshold for switching from includeDates to excludeDates strategy for performance
+const LARGE_DATE_LIST_THRESHOLD = 500;
+
 const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
   dateFormat,
   dateList = [],
@@ -22,7 +25,7 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
   const isHourly = isHourlyFormat(dateFormat);
 
   const { missingDates, firstDate, lastDate } = useMemo(() => {
-    if (dateList.length >= 500) {
+    if (dateList.length >= LARGE_DATE_LIST_THRESHOLD) {
       return findDateRangeInfo(
         dateList.map(({ date }) => date),
         dateFormat,
@@ -108,7 +111,7 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
     );
   }
 
-  if (dateList.length < 500) {
+  if (dateList.length < LARGE_DATE_LIST_THRESHOLD) {
     return (
       <ReactDatePicker
         customInput={isMobile ? <CustomInputMobile disabled={isDisabled} /> : <CustomInput disabled={isDisabled} />}
