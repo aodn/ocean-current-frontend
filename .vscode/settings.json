@@ -54,6 +54,5 @@
   "cSpell.ignoreWords": ["Bonney", "datepicker"],
   "cSpell.ignorePaths": ["package.json"],
   "git.branchProtection": ["main"],
-  "cSpell.language": "en-AU",
-  "turboConsoleLog.quote": "'"
+  "cSpell.language": "en-AU"
 }
