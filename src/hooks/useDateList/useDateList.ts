@@ -55,7 +55,6 @@ const useDateList = (productId: ProductID) => {
   const wmoId = metaData.selectedArgoParams.worldMeteorologicalOrgId;
 
   const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
-  const fixedDateList = generateDateRange(productId, dateFormat, regionScope);
 
   const isArgo = productId === 'argo';
 
@@ -87,7 +86,7 @@ const useDateList = (productId: ProductID) => {
   }
 
   if (dateList.length === 0) {
-    dateList = fixedDateList;
+    dateList = generateDateRange(productId, dateFormat, regionScope);
   }
 
   return { isLoading, dateList, error };

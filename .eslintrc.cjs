@@ -60,7 +60,7 @@ module.exports = {
       },
     ],
     'import/newline-after-import': 'error',
-    'no-console': ['warn', { allow: ['error'] }],
+    'no-console': ['warn', { allow: ['error', 'warn'] }],
     'max-len': [
       'warn',
       {

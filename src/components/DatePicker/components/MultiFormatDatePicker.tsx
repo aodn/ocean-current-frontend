@@ -22,10 +22,27 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
   const isHourly = isHourlyFormat(dateFormat);
 
   const { missingDates, firstDate, lastDate } = useMemo(() => {
-    return findDateRangeInfo(
-      dateList.map(({ date }) => date),
-      dateFormat,
-    );
+    if (dateList.length >= 500) {
+      return findDateRangeInfo(
+        dateList.map(({ date }) => date),
+        dateFormat,
+      );
+    }
+
+    const dates = dateList.map(({ date }) => date);
+    if (dates.length === 0) {
+      return { missingDates: [], firstDate: new Date(), lastDate: new Date() };
+    }
+
+    const sortedDates = [...dates].sort();
+    const firstDateStr = sortedDates[0];
+    const lastDateStr = sortedDates[sortedDates.length - 1];
+
+    return {
+      missingDates: [],
+      firstDate: dayjs(firstDateStr, dateFormat).toDate(),
+      lastDate: dayjs(lastDateStr, dateFormat).toDate(),
+    };
   }, [dateList, dateFormat]);
 
   const handleDateChange = (date: Date | null) => {
@@ -53,6 +70,8 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
         customInput={isMobile ? <CustomInputMobile disabled={isDisabled} /> : <CustomInput disabled={isDisabled} />}
         selected={selectedDate}
         onChange={handleDateChange}
+        minDate={firstDate}
+        maxDate={lastDate}
         dateFormat="MM/yyyy"
         showMonthYearPicker
         showTwoColumnMonthYearPicker

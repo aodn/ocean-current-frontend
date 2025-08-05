@@ -12,6 +12,11 @@
       "sourceMaps": true,
       "sourceMapPathOverrides": {
         "/__vite-browser-external:*": "${webRoot}/*"
+      },
+      "trace": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "pathMapping": {
+        "@": "${workspaceFolder}/src"
       }
     },
     // This project will be running on a port which read from .env file
@@ -21,10 +26,15 @@
       "request": "launch",
       "name": "Launch Chrome & debug on port 3000",
       "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/src",
+      "webRoot": "${workspaceFolder}",
       "sourceMaps": true,
       "sourceMapPathOverrides": {
         "/__vite-browser-external:*": "${webRoot}/*"
+      },
+      "trace": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "pathMapping": {
+        "@": "${workspaceFolder}/src"
       }
     },
     {

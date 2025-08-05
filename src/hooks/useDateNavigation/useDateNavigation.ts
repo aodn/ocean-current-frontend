@@ -34,7 +34,20 @@ const useDateNavigation = ({ dateFormat, availableDates, initialDate }: UseDateN
 
     const dateParam = searchParams.get('date');
     if (dateParam) {
-      const date = dayjs(dateParam);
+      let date = dayjs(dateParam, dateFormat, true);
+
+      if (!date.isValid()) {
+        if (dateFormat === DateFormat.MONTH_ONLY && dateParam.length === 2) {
+          const year = dayjs().year();
+          date = dayjs(`${year}${dateParam.padStart(2, '0')}01`, DateFormat.DAY);
+        } else if (dateFormat === DateFormat.MONTH && dateParam.length === 2) {
+          const year = dayjs().year();
+          date = dayjs(`${year}${dateParam.padStart(2, '0')}`, DateFormat.MONTH);
+        } else {
+          date = dayjs(dateParam);
+        }
+      }
+
       if (!date.isValid()) {
         return dayjs();
       }
