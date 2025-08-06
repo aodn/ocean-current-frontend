@@ -53,6 +53,7 @@
   ],
   "cSpell.ignoreWords": ["Bonney", "datepicker"],
   "cSpell.ignorePaths": ["package.json"],
+  "cSpell.ignoreRegExpList": ["/class=\"[^\"]*\"/g", "/className=\"[^\"]*\"/g"],
   "git.branchProtection": ["main"],
   "cSpell.language": "en-AU"
 }
