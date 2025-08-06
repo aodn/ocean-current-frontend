@@ -114,6 +114,15 @@ const useDateNavigation = ({ dateFormat, availableDates, initialDate }: UseDateN
       }
       return;
     }
+
+    // Handle circular navigation for month-only format
+    if (dateFormat === DateFormat.MONTH_ONLY && currentIndex === 0 && dates.length > 0) {
+      // If we're at January, go to December
+      const prevDate = dayjs(currentDate).subtract(1, 'month');
+      updateDate(prevDate);
+      return;
+    }
+
     if (currentIndex > 0) {
       const prevDate = dayjs(dates[currentIndex - 1], dateFormat);
       updateDate(prevDate);
@@ -131,6 +140,15 @@ const useDateNavigation = ({ dateFormat, availableDates, initialDate }: UseDateN
       }
       return;
     }
+
+    // Handle circular navigation for month-only format
+    if (dateFormat === DateFormat.MONTH_ONLY && currentIndex === dates.length - 1 && dates.length > 0) {
+      // If we're at December, go to January
+      const nextDate = dayjs(currentDate).add(1, 'month');
+      updateDate(nextDate);
+      return;
+    }
+
     if (currentIndex < dates.length - 1) {
       const nextDate = dayjs(dates[currentIndex + 1], dateFormat);
       updateDate(nextDate);
@@ -143,8 +161,8 @@ const useDateNavigation = ({ dateFormat, availableDates, initialDate }: UseDateN
     formatDate,
     goToPrevious,
     goToNext,
-    canGoPrevious: currentIndex > 0,
-    canGoNext: currentIndex < dates.length - 1,
+    canGoPrevious: dateFormat === DateFormat.MONTH_ONLY || currentIndex > 0,
+    canGoNext: dateFormat === DateFormat.MONTH_ONLY || currentIndex < dates.length - 1,
     currentIndex,
   };
 };

@@ -37,3 +37,7 @@ dist-ssr
 coverage
 
 .eslintcache
+
+# AI
+.claude
+CLAUDE.md

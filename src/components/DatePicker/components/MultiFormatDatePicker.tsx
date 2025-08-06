@@ -9,6 +9,7 @@ import { findDateRangeInfo } from '../utils';
 import { MultiFormatDatePickerProps } from '../types/multiFormatDatePicker.types';
 import CustomInputMobile from './CustomInputMobile';
 import CustomInput from './CustomInput';
+import MonthOnlyHeader from './MonthOnlyHeader';
 
 // Threshold for switching from includeDates to excludeDates strategy for performance
 const LARGE_DATE_LIST_THRESHOLD = 500;
@@ -90,9 +91,8 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
         selected={selectedDate}
         onChange={handleDateChange}
         dateFormat="MM"
-        showYearDropdown
         showMonthYearPicker
-        showTwoColumnMonthYearPicker
+        renderCustomHeader={({ date }) => <MonthOnlyHeader date={date} />}
         disabled={isDisabled}
       />
     );

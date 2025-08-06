@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MonthOnlyHeader > matches snapshot 1`] = `
+<div
+  class="flex items-center justify-center"
+>
+  <div
+    class="text-center"
+  >
+    May
+  </div>
+</div>
+`;
