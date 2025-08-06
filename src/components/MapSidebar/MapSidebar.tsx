@@ -1,28 +1,25 @@
-import dayjs from 'dayjs';
 import useProductStore from '@/stores/product-store/productStore';
 import { getProductPathWithSubProduct } from '@/utils/product-utils/product';
 import { sidebarProductsNav } from '@/data/sidebarProductsNav';
-import { useDateRange, useQueryParams } from '@/hooks';
+import { useQueryParams } from '@/hooks';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { RootProductID } from '@/types/product';
 
 const MapSidebar: React.FC = () => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
-  const { allDates, selectedDateIndex, formatDate } = useDateRange();
   const useProductId = useProductStore((state) => state.productParams.productId);
   const productIdWithoutSubProduct = useProductId.split('-')[0];
-  const selectedDate = dayjs(allDates[selectedDateIndex]?.date).format(formatDate);
 
   const handleProductChange = (id: RootProductID) => {
-    if (id === useProductId) {
+    if (id === productIdWithoutSubProduct) {
       return;
     }
 
-    let queryToUpdate = { date: selectedDate, region: null } as Record<string, string | null>;
+    let queryToUpdate = { region: null } as Record<string, string | null>;
 
     // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
     if (id === 'EACMooringArray') {
-      queryToUpdate = { date: selectedDate, region: 'Brisbane' };
+      queryToUpdate = { region: 'Brisbane' };
     }
 
     if (id === 'currentMeters') {

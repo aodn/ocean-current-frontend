@@ -4,7 +4,6 @@ import { setProductId } from '@/stores/product-store/productStore';
 import { useDeviceType, useSetProductId, useUrlType } from '@/hooks';
 import MapSidebar from '@/components/MapSidebar/MapSidebar';
 import { Loading } from '@/components/Shared';
-import ProductMenuBar from '@/components/ProductMenuBar/ProductMenuBar';
 import ProductDropdown from '@/components/DataVisualisationSidebar/components/ProductDropdown';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 
@@ -32,9 +31,6 @@ const MapLayout: React.FC = () => {
           </div>
         )}
         <div className="w-full md:mx-2">
-          {/* we never need to show video when viewing the main map */}
-          <ProductMenuBar setShowVideo={() => false} isMapView={true} />
-
           <div className="w-full">
             <Outlet />
           </div>

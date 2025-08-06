@@ -52,6 +52,19 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
 
   const fallbackLatestDate = dayjs().subtract(2, 'day').format('YYYYMMDD');
 
+  const getMonthlyMeansDate = useCallback(() => {
+    const today = dayjs();
+    const currentDay = today.date();
+
+    // If today is before the 15th of the month, use the 15th of the previous month
+    // Otherwise, use the 15th of the current month
+    if (currentDay < 15) {
+      return today.subtract(1, 'month').date(15).format('YYYYMMDD');
+    } else {
+      return today.date(15).format('YYYYMMDD');
+    }
+  }, []);
+
   const mapFitBounds = useCallback(
     (bounds: BoundingBox, padding: number = 50) => {
       if (map) {
@@ -183,17 +196,30 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
           queryObject = { region: regionCode, sealId: null };
         } else {
           const dateFromQuery = searchParams.date;
-          const foundRegionLatestDate = regionLatestDates?.regionLatestDates?.find(
-            (item: RegionLatestDate) => item.region === regionCode,
-          )?.latestDate;
-          const latestDate = foundRegionLatestDate || fallbackLatestDate;
-          queryObject = dateFromQuery
-            ? { region: regionCode, point: null }
-            : { region: regionCode, date: latestDate, point: null };
+
+          if (productId === 'monthlyMeans-anomalies') {
+            const monthlyMeansDate = getMonthlyMeansDate();
+
+            queryObject = { region: regionCode, date: monthlyMeansDate, point: null };
+            replace = true;
+          } else {
+            const foundRegionLatestDate = regionLatestDates?.regionLatestDates?.find(
+              (item: RegionLatestDate) => item.region === regionCode,
+            )?.latestDate;
+
+            const latestDate = foundRegionLatestDate || fallbackLatestDate;
+            queryObject = dateFromQuery
+              ? { region: regionCode, point: null }
+              : { region: regionCode, date: latestDate, point: null };
+          }
 
           if (productId === 'surfaceWaves-wave') {
+            const waveLatestDate =
+              regionLatestDates?.regionLatestDates?.find((item: RegionLatestDate) => item.region === regionCode)
+                ?.latestDate || fallbackLatestDate;
+
             replace = true;
-            queryObject = { region: regionCode, date: latestDate };
+            queryObject = { region: regionCode, date: waveLatestDate };
           }
 
           if (productId === 'surfaceWaves-buoyTimeseries') {
@@ -221,6 +247,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
       fallbackLatestDate,
       productId,
       dateFromUrl,
+      getMonthlyMeansDate,
     ],
   );
 

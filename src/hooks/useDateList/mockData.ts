@@ -10,6 +10,8 @@ interface MockConfig {
     local?: 1 | 4;
     state: 1 | 2 | 4 | 6;
   };
+  startDate?: string;
+  endDateLogic?: 'default' | 'day-15-cutoff';
 }
 
 const MOCK_CONFIGS: MockConfig[] = [
@@ -40,22 +42,39 @@ const MOCK_CONFIGS: MockConfig[] = [
       state: 2,
     },
   },
+  {
+    productId: 'monthlyMeans-anomalies',
+    startDate: '199301', // January 1993 hardcoded on the server
+    endDateLogic: 'day-15-cutoff',
+  },
 ];
 
 export const generateDateRange = (productId: ProductID, dateFormat: DateFormat, scope: RegionScope): DateItem[] => {
   const mockConfig = MOCK_CONFIGS.find((c) => c.productId === productId);
   const interval = scope === RegionScope.Local ? mockConfig?.interVal?.local || 1 : mockConfig?.interVal?.state || 1;
-  const centerDate = dayjs();
-  const dates: DateItem[] = [];
+
+  let startDate;
   const today = dayjs();
 
-  for (let i = -50; dates.length < 100; i++) {
-    const currentDate = centerDate.add(i, getUnitByFormat(dateFormat));
+  let endDate = today;
+  if (mockConfig?.endDateLogic === 'day-15-cutoff') {
+    // If day >= 15, use current month; if day < 15, use previous month
+    endDate = today.date() >= 15 ? today : today.subtract(1, 'month');
+  }
 
-    if (currentDate.isAfter(today)) {
-      break;
-    }
+  if (mockConfig?.startDate) {
+    startDate = dayjs(mockConfig.startDate, dateFormat);
+  } else {
+    startDate = dayjs().subtract(50, getUnitByFormat(dateFormat));
+  }
 
+  const dates: DateItem[] = [];
+
+  let currentDate = startDate;
+
+  const shouldGenerateAllDates = !!(mockConfig?.startDate && mockConfig?.endDateLogic);
+
+  while ((shouldGenerateAllDates || dates.length < 100) && !currentDate.isAfter(endDate)) {
     if (dateFormat === DateFormat.HOUR) {
       if (currentDate.hour() % interval === 0) {
         dates.push({
@@ -67,6 +86,7 @@ export const generateDateRange = (productId: ProductID, dateFormat: DateFormat, 
         date: currentDate.format(dateFormat),
       });
     }
+    currentDate = currentDate.add(1, getUnitByFormat(dateFormat));
   }
 
   return Array.from(new Map(dates.map((item) => [item.date, item])).values()).sort((a, b) =>

@@ -53,7 +53,19 @@ const formatDate = (
   regionScope: TargetPathRegionScope,
 ): string => {
   if (productId === 'monthlyMeans' && !subProductType) {
-    return dayjs(date).date(15).format(DateFormat.DAY);
+    const inputDate = dayjs(date);
+    const currentDate = dayjs();
+
+    // Only check if before 15th for the current month
+    if (inputDate.month() === currentDate.month() && inputDate.year() === currentDate.year()) {
+      if (inputDate.date() < 15) {
+        // If current month and before the 15th, return the 15th of last month
+        return inputDate.subtract(1, 'month').date(15).format(DateFormat.DAY);
+      }
+    }
+
+    // For past months or current month on/after the 15th, return the 15th of that month
+    return inputDate.date(15).format(DateFormat.DAY);
   }
 
   if (
@@ -79,6 +91,7 @@ const buildProductImageUrl = (
 
   const productSegment = getProductSegment(productId, subProductType, regionScope);
   const formattedDate = formatDate(productId, subProductType, date, regionScope);
+
   const remoteBaseUrl = getBaseUrlByProductId(productId);
 
   const productUrl = {
