@@ -24,7 +24,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.claude
 
 .pnp.*
 .yarn/*
@@ -38,3 +37,7 @@ dist-ssr
 coverage
 
 .eslintcache
+
+# AI
+.claude
+CLAUDE.md

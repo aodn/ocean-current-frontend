@@ -161,8 +161,8 @@ const useDateNavigation = ({ dateFormat, availableDates, initialDate }: UseDateN
     formatDate,
     goToPrevious,
     goToNext,
-    canGoPrevious: dateFormat === DateFormat.MONTH_ONLY ? true : currentIndex > 0,
-    canGoNext: dateFormat === DateFormat.MONTH_ONLY ? true : currentIndex < dates.length - 1,
+    canGoPrevious: dateFormat === DateFormat.MONTH_ONLY || currentIndex > 0,
+    canGoNext: dateFormat === DateFormat.MONTH_ONLY || currentIndex < dates.length - 1,
     currentIndex,
   };
 };
