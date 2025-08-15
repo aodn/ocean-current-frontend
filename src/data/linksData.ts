@@ -105,7 +105,7 @@ export const linksData: LinkItem[] = [
         blueIcon: GliderBlueIcon,
         title: 'Gliders',
         description: 'Autonomous underwater vehicles',
-        url: 'https://oceancurrent.aodn.org.au/index.php',
+        url: 'https://oceancurrent.aodn.org.au/gliders',
       },
       {
         id: 'tidal-currents',
