@@ -1,5 +1,4 @@
 import { forwardRef, ForwardedRef } from 'react';
-// import { Link } from 'react-router';
 import { DetailedLink } from '@/types/navbar';
 import { LinkOrAnchor } from '@/components/Shared';
 
