@@ -4,6 +4,7 @@ import logo from '@/assets/images/imos-logo.png';
 import burgerMenu from '@/assets/icons/burger-menu-icon.svg';
 import cross from '@/assets/icons/cross-icon.svg';
 import { linksData } from '@/data/linksData';
+import { LinkOrAnchor } from '@/components/Shared';
 
 const NavbarBurgerMenu: React.FC = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -38,9 +39,9 @@ const NavbarBurgerMenu: React.FC = () => {
           {linksData.map((item) => (
             <div key={item.title}>
               {item.url ? (
-                <a className="mb-4 text-base text-gray-400" href={item.url} target="_blank" rel="noreferrer">
+                <LinkOrAnchor className="mb-4 text-base text-gray-400" to={item.url}>
                   {item.title}
-                </a>
+                </LinkOrAnchor>
               ) : (
                 <span className="mb-4 text-base text-gray-400">{item.title}</span>
               )}
@@ -48,9 +49,9 @@ const NavbarBurgerMenu: React.FC = () => {
                 <div className="ml-4">
                   {item.links?.length > 0 &&
                     item.links.map((subLink) => (
-                      <Link key={subLink.id} className="mr-auto block text-gray-400" to={subLink.url}>
+                      <LinkOrAnchor key={subLink.id} className="mr-auto block text-gray-400" to={subLink.url}>
                         {subLink.title}
-                      </Link>
+                      </LinkOrAnchor>
                     ))}
                 </div>
               )}

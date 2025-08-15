@@ -5,6 +5,7 @@ import { linksData } from '@/data/linksData';
 import { LinkItem, SectionLinks } from '@/types/navbar';
 import { BrandingText } from '@/constants/textConstant';
 import ArrowIcon from '@/assets/icons/arrow.svg';
+import { LinkOrAnchor } from '@/components/Shared';
 import NavbarMenu from './components/NavbarMenu';
 
 const Navbar: React.FC = () => {
@@ -74,14 +75,12 @@ const Navbar: React.FC = () => {
                 className="flex cursor-pointer content-center justify-center py-4 text-black"
               >
                 {item.url ? (
-                  <a
-                    href={item.url}
-                    target="_blank"
-                    rel="noreferrer"
+                  <LinkOrAnchor
+                    to={item.url}
                     className={`decoration-imos-deep-blue decoration-2 underline-offset-[3px] ${hoverIndex === index ? 'underline' : ''}`}
                   >
                     {item.title}
-                  </a>
+                  </LinkOrAnchor>
                 ) : (
                   <span
                     ref={(el) => (menuItemRefs.current[index] = el)}

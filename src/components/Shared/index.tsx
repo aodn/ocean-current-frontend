@@ -5,5 +5,6 @@ import Loading from './Loading/Loading';
 import Popup from './Popup/Popup';
 import ToggleButton from './ToggleButton/ToggleButton';
 import TruncateText from './TruncateText/TruncateText';
+import LinkOrAnchor from './LinkOrAnchor/LinkOrAnchor';
 
-export { Button, Dropdown, Slider, Loading, Popup, ToggleButton, TruncateText };
+export { Button, Dropdown, Slider, Loading, Popup, ToggleButton, TruncateText, LinkOrAnchor };
