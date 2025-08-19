@@ -1,5 +1,4 @@
 import dayjs, { Dayjs } from 'dayjs';
-// import { RegionScope } from '@/constants/imgPath';
 import { RegionScope } from '@/constants/region';
 import { imageUrlConfig } from '@/configs/image';
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
@@ -144,14 +143,10 @@ const buildProductImageUrl = (
 
 const buildProductVideoUrl = (
   productId: ProductID,
-  // subProductType: SubProductType,
   regionCode: string,
   regionScope: RegionScope,
   date: string,
 ): string => {
-  // validateProductAndSubProduct(productId, subProductType, regionScope);
-
-  // const productData = productTypeMapping.get(productId)!;
   const productData = findLeafFlatProductById(productId);
 
   if (!productData) {
