@@ -1,9 +1,11 @@
 import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
 import { OC_PRODUCTS } from '@/constants/product';
-import { flatProducts } from '@/data/productData';
+import { flattenedProducts, flattenedLeafProducts } from '@/data/productData';
 import {
+  AnyProductID,
   CombinedProduct,
   FlatProduct,
+  LeafFlatProduct,
   MainProductWithSubProduct,
   Product,
   ProductGroupID,
@@ -95,13 +97,18 @@ const getProductByKey = (mainProductKey: string, subProductKey: string | null = 
   return { mainProduct, subProduct };
 };
 
-const getProductByIdFromFlat = (productId: string): FlatProduct | undefined => {
-  const product = flatProducts.find((product) => product.key === productId);
+const findFlatProductById = (productId: AnyProductID): FlatProduct | undefined => {
+  const product = flattenedProducts.find((product) => product.key === productId);
   return product;
 };
 
-const getMainAndSubProductById = (productId: string): MainProductWithSubProduct => {
-  const product = getProductByIdFromFlat(productId);
+const findLeafFlatProductById = (productId: ProductID): LeafFlatProduct | undefined => {
+  const product = flattenedLeafProducts.find((product) => product.key === productId);
+  return product;
+};
+
+const getMainAndSubProductById = (productId: AnyProductID): MainProductWithSubProduct => {
+  const product = findFlatProductById(productId);
   if (!product) {
     throw new Error(`Invalid product id: ${productId}`);
   }
@@ -122,12 +129,12 @@ const constructParentPath = (product: FlatProduct): string => {
   if (!product.parentId) {
     return '';
   }
-  const parentProductPath = getProductByIdFromFlat(product.parentId)?.path || '';
+  const parentProductPath = findFlatProductById(product.parentId)?.path || '';
   return `${parentProductPath}/${product.path}`;
 };
 
-const getProductFullPathById = (productId: string) => {
-  const product = getProductByIdFromFlat(productId);
+const getProductFullPathById = (productId: AnyProductID) => {
+  const product = findFlatProductById(productId);
 
   // TODO: throw error if product is not found
   if (!product) return '';
@@ -135,8 +142,8 @@ const getProductFullPathById = (productId: string) => {
   return product.parentId ? constructParentPath(product) : constructPath(product);
 };
 
-const getProductPathWithSubProduct = (productId: string): string => {
-  const product = getProductByIdFromFlat(productId);
+const getProductPathWithSubProduct = (productId: AnyProductID): string => {
+  const product = findFlatProductById(productId);
 
   if (!product) {
     throw new Error(`Product with id ${productId} not found`);
@@ -170,7 +177,7 @@ const getProductPathWithSubProduct = (productId: string): string => {
  * For standalone products, returns the product key itself
  */
 const getTargetProductIdAfterRouting = (rootProductId: RootProductID): ProductID => {
-  const product = getProductByIdFromFlat(rootProductId);
+  const product = findFlatProductById(rootProductId);
 
   if (!product) {
     throw new Error(`Product with id ${rootProductId} not found`);
@@ -206,7 +213,8 @@ const getTargetProductIdAfterRouting = (rootProductId: RootProductID): ProductID
 export {
   combineProducts,
   combinedProducts,
-  getProductByIdFromFlat,
+  findFlatProductById,
+  findLeafFlatProductById,
   getProductByPath,
   getProductByKey,
   getMainAndSubProductById,

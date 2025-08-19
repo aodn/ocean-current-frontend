@@ -1,7 +1,13 @@
 import { OC_PRODUCTS } from '@/constants/product';
-import { FlatProduct, Product, ProductGroupWithChildren, StandaloneProductWithoutChildren } from '@/types/product';
+import {
+  FlatProduct,
+  LeafFlatProduct,
+  Product,
+  ProductGroupWithChildren,
+  StandaloneProductWithoutChildren,
+} from '@/types/product';
 
-const flattenProducts = (products: Product[]): FlatProduct[] => {
+const buildFlattenedProducts = (products: Product[]): FlatProduct[] => {
   const flatList: FlatProduct[] = [];
 
   products.forEach((product) => {
@@ -29,6 +35,32 @@ const flattenProducts = (products: Product[]): FlatProduct[] => {
   return flatList;
 };
 
-const flatProducts = flattenProducts(OC_PRODUCTS);
+const buildFlattenedLeafProducts = (products: Product[]): LeafFlatProduct[] => {
+  const flatList: LeafFlatProduct[] = [];
 
-export { flatProducts };
+  products.forEach((product) => {
+    if (!product.children) {
+      flatList.push({
+        ...(product as StandaloneProductWithoutChildren),
+        parentId: null,
+      });
+    } else {
+      product.children.forEach((child) => {
+        flatList.push({
+          ...child,
+          parentId: product.key,
+          latestEntry: product.latestEntry,
+          localSegment: product.localSegment,
+          stateSegment: product.stateSegment,
+        });
+      });
+    }
+  });
+
+  return flatList;
+};
+
+const flattenedProducts = buildFlattenedProducts(OC_PRODUCTS);
+const flattenedLeafProducts = buildFlattenedLeafProducts(OC_PRODUCTS);
+
+export { flattenedProducts, flattenedLeafProducts };

@@ -1,7 +1,7 @@
-import { flatProducts } from '@/data/productData';
+import { flattenedProducts } from '@/data/productData';
 
 const getEntryImagePathByProductId = (productId: string): string | null | undefined => {
-  const product = flatProducts.find((product) => product.key === productId);
+  const product = flattenedProducts.find((product) => product.key === productId);
 
   return product?.latestEntry;
 };

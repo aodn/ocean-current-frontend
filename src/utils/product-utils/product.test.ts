@@ -1,7 +1,8 @@
 import { vi, describe, it, expect } from 'vitest';
 import { OC_PRODUCTS } from '@/constants/product';
+import { AnyProductID } from '@/types/product';
 import {
-  getProductByIdFromFlat,
+  findFlatProductById,
   getProductByKey,
   getMainAndSubProductById,
   checkProductHasSubProduct,
@@ -12,46 +13,54 @@ import {
 vi.mock('@/constants/product', () => ({
   OC_PRODUCTS: [
     {
-      title: 'Main Product',
-      key: 'mainProduct',
-      path: 'main-product',
-      children: [{ title: 'Sub Product', key: 'subProduct', path: 'sub-product' }],
+      title: 'Six Day SST & Centiles',
+      key: 'sixDaySst',
+      path: '6-day-sst',
+      children: [
+        {
+          title: 'SST',
+          key: 'sixDaySst-sst',
+          path: 'sst',
+          imgPath: 'SST',
+        },
+      ],
     },
     {
-      title: 'Single Product',
-      key: 'singleProduct',
-      path: 'single-product',
+      title: 'Argo',
+      key: 'argo',
+      path: 'argo',
     },
   ],
 }));
 
 vi.mock('@/data/productData', () => ({
-  flatProducts: [
-    { key: 'mainProduct', path: 'main-product', parentId: null },
-    { key: 'subProduct', path: 'sub-product', parentId: 'mainProduct' },
-    { key: 'singleProduct', path: 'single-product', parentId: null },
+  flattenedProducts: [
+    { key: 'sixDaySst', path: '6-day-sst', parentId: null },
+    { key: 'sixDaySst-sst', path: 'sst', parentId: 'sixDaySst', imgPath: 'SST' },
+    { key: 'argo', path: 'argo', parentId: null },
   ],
 }));
 
-describe('getProductByIdFromFlat', () => {
+describe('findFlatProductById', () => {
   it('should return the correct product for a valid id', () => {
-    const result = getProductByIdFromFlat('subProduct');
+    const result = findFlatProductById('sixDaySst-sst');
     expect(result).toEqual({
-      key: 'subProduct',
-      path: 'sub-product',
-      parentId: 'mainProduct',
+      key: 'sixDaySst-sst',
+      path: 'sst',
+      parentId: 'sixDaySst',
+      imgPath: 'SST',
     });
   });
 
   it('should return undefined for an invalid id', () => {
-    const result = getProductByIdFromFlat('nonExistentProduct');
+    const result = findFlatProductById('nonExistentProduct' as unknown as AnyProductID);
     expect(result).toBeUndefined();
   });
 });
 
 describe('getProductByKey', () => {
   it('should return the correct main product and sub product', () => {
-    const result = getProductByKey('mainProduct', 'subProduct');
+    const result = getProductByKey('sixDaySst', 'sixDaySst-sst');
     expect(result).toEqual({
       mainProduct: OC_PRODUCTS[0],
       subProduct: OC_PRODUCTS[0].children?.[0],
@@ -59,7 +68,7 @@ describe('getProductByKey', () => {
   });
 
   it('should return only the main product when no sub product is specified', () => {
-    const result = getProductByKey('singleProduct');
+    const result = getProductByKey('argo');
     expect(result).toEqual({
       mainProduct: OC_PRODUCTS[1],
       subProduct: null,
@@ -67,13 +76,15 @@ describe('getProductByKey', () => {
   });
 
   it('should throw an error for an invalid main product key', () => {
-    expect(() => getProductByKey('nonExistentProduct')).toThrow('Invalid main product key: nonExistentProduct');
+    expect(() => getProductByKey('nonExistentProduct' as unknown as AnyProductID)).toThrow(
+      'Invalid main product key: nonExistentProduct',
+    );
   });
 });
 
 describe('getMainAndSubProductById', () => {
   it('should return the correct main and sub product for a sub product id', () => {
-    const result = getMainAndSubProductById('subProduct');
+    const result = getMainAndSubProductById('sixDaySst-sst');
     expect(result).toEqual({
       mainProduct: OC_PRODUCTS[0],
       subProduct: OC_PRODUCTS[0].children?.[0],
@@ -81,7 +92,7 @@ describe('getMainAndSubProductById', () => {
   });
 
   it('should return only the main product for a main product id', () => {
-    const result = getMainAndSubProductById('singleProduct');
+    const result = getMainAndSubProductById('argo');
     expect(result).toEqual({
       mainProduct: OC_PRODUCTS[1],
       subProduct: null,
@@ -89,18 +100,20 @@ describe('getMainAndSubProductById', () => {
   });
 
   it('should throw an error for an invalid product id', () => {
-    expect(() => getMainAndSubProductById('nonExistentProduct')).toThrow('Invalid product id: nonExistentProduct');
+    expect(() => getMainAndSubProductById('nonExistentProduct' as unknown as AnyProductID)).toThrow(
+      'Invalid product id: nonExistentProduct',
+    );
   });
 });
 
 describe('checkProductHasSubProduct', () => {
   it('should return true for a product with sub-products', () => {
-    const result = checkProductHasSubProduct('mainProduct');
+    const result = checkProductHasSubProduct('sixDaySst');
     expect(result).toBe(true);
   });
 
   it('should return false for a product without sub-products', () => {
-    const result = checkProductHasSubProduct('singleProduct');
+    const result = checkProductHasSubProduct('argo');
     expect(result).toBe(false);
   });
 
@@ -112,39 +125,39 @@ describe('checkProductHasSubProduct', () => {
 
 describe('getProductFullPathById', () => {
   it('should return the correct path for a main product', () => {
-    const result = getProductFullPathById('mainProduct');
-    expect(result).toBe('main-product');
+    const result = getProductFullPathById('sixDaySst');
+    expect(result).toBe('6-day-sst');
   });
 
   it('should return the correct path for a sub product', () => {
-    const result = getProductFullPathById('subProduct');
-    expect(result).toBe('main-product/sub-product');
+    const result = getProductFullPathById('sixDaySst-sst');
+    expect(result).toBe('6-day-sst/sst');
   });
 
   it('should return an empty string for a non-existent product', () => {
-    const result = getProductFullPathById('nonExistentProduct');
+    const result = getProductFullPathById('nonExistentProduct' as unknown as AnyProductID);
     expect(result).toBe('');
   });
 });
 
 describe('getProductPathWithSubProduct', () => {
   it('should return the correct path for a main product with sub-products', () => {
-    const result = getProductPathWithSubProduct('mainProduct');
-    expect(result).toBe('main-product/sub-product');
+    const result = getProductPathWithSubProduct('sixDaySst');
+    expect(result).toBe('6-day-sst/sst');
   });
 
   it('should return the correct path for a single product without sub-products', () => {
-    const result = getProductPathWithSubProduct('singleProduct');
-    expect(result).toBe('single-product');
+    const result = getProductPathWithSubProduct('argo');
+    expect(result).toBe('argo');
   });
 
   it('should return the correct path for a sub product', () => {
-    const result = getProductPathWithSubProduct('subProduct');
-    expect(result).toBe('main-product/sub-product');
+    const result = getProductPathWithSubProduct('sixDaySst-sst');
+    expect(result).toBe('6-day-sst/sst');
   });
 
   it('should throw an error for a non-existent product', () => {
-    expect(() => getProductPathWithSubProduct('nonExistentProduct')).toThrow(
+    expect(() => getProductPathWithSubProduct('nonExistentProduct' as unknown as AnyProductID)).toThrow(
       'Product with id nonExistentProduct not found',
     );
   });

@@ -1,7 +1,8 @@
 import dayjs, { Dayjs } from 'dayjs';
 import { DateFormat, DateUnit } from '@/types/date';
 import { RegionScope } from '@/constants/region';
-import { getProductByIdFromFlat } from '../product-utils/product';
+import { ProductID } from '@/types/product';
+import { findLeafFlatProductById } from '../product-utils/product';
 
 type SearchDirection = 'next' | 'previous';
 
@@ -80,8 +81,8 @@ const getDateFormatFlags = (format: DateFormat) => ({
   isHourFormat: format === DateFormat.HOUR,
 });
 
-const getDateFormatByProductIdAndRegionScope = (productId: string, regionScope: RegionScope): DateFormat => {
-  const product = getProductByIdFromFlat(productId);
+const getDateFormatByProductIdAndRegionScope = (productId: ProductID, regionScope: RegionScope): DateFormat => {
+  const product = findLeafFlatProductById(productId);
 
   if (!product) {
     throw new Error(`Invalid product id: ${productId}`);
