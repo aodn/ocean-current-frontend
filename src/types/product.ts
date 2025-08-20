@@ -74,6 +74,8 @@ interface BaseProduct {
   title: string;
   path: string;
   dateFormat?: DateConfig | null;
+  localSegment?: string | null;
+  stateSegment?: string;
 }
 
 export interface SubProduct extends BaseProduct {
@@ -112,6 +114,11 @@ export interface CombinedProduct {
 }
 
 export type FlatProduct = AnyProduct & {
-  parentId: string | null;
+  parentId: ProductGroupID | null;
+  latestEntry?: string | null;
+};
+
+export type LeafFlatProduct = (StandaloneProductWithoutChildren | SubProduct) & {
+  parentId: ProductGroupID | null;
   latestEntry?: string | null;
 };

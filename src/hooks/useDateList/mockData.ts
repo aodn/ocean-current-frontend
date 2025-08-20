@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { DateFormat, DateItem } from '@/types/date';
 import { RegionScope } from '@/constants/region';
 import { getUnitByFormat } from '@/utils/date-utils/date';
@@ -49,7 +49,12 @@ const MOCK_CONFIGS: MockConfig[] = [
   },
 ];
 
-export const generateDateRange = (productId: ProductID, dateFormat: DateFormat, scope: RegionScope): DateItem[] => {
+export const generateDateRange = (
+  productId: ProductID,
+  dateFormat: DateFormat,
+  scope: RegionScope,
+  endDateOverride?: Dayjs,
+): DateItem[] => {
   const mockConfig = MOCK_CONFIGS.find((c) => c.productId === productId);
   const interval = scope === RegionScope.Local ? mockConfig?.interVal?.local || 1 : mockConfig?.interVal?.state || 1;
 
@@ -60,6 +65,10 @@ export const generateDateRange = (productId: ProductID, dateFormat: DateFormat, 
   if (mockConfig?.endDateLogic === 'day-15-cutoff') {
     // If day >= 15, use current month; if day < 15, use previous month
     endDate = today.date() >= 15 ? today : today.subtract(1, 'month');
+  }
+
+  if (endDateOverride) {
+    endDate = endDateOverride;
   }
 
   if (mockConfig?.startDate) {

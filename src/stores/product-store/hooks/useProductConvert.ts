@@ -1,5 +1,5 @@
 import { FlatProduct, MainProductWithSubProduct, Product, SubProduct } from '@/types/product';
-import { getProductByIdFromFlat, getProductByKey } from '@/utils/product-utils/product';
+import { findFlatProductById, getProductByKey } from '@/utils/product-utils/product';
 import useProductStore from '../productStore';
 
 const useProductConvert = () => {
@@ -12,7 +12,7 @@ const useProductConvert = () => {
 
   let parentProduct: FlatProduct | undefined;
 
-  const flatProduct = getProductByIdFromFlat(useProductId);
+  const flatProduct = findFlatProductById(useProductId);
 
   const checkMainProductKeyAndSubProductKey = (flatProduct: FlatProduct | undefined) => {
     let mainProductId: string | undefined;
@@ -26,7 +26,7 @@ const useProductConvert = () => {
       mainProductId = flatProduct.key;
       subProductId = undefined;
     } else if (flatProduct.parentId) {
-      parentProduct = getProductByIdFromFlat(flatProduct.parentId);
+      parentProduct = findFlatProductById(flatProduct.parentId);
       mainProductId = parentProduct?.key;
       subProductId = flatProduct?.key;
     }

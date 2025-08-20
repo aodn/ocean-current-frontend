@@ -129,9 +129,6 @@ const ProductContent: React.FC = () => {
     return <Loading />;
   }
 
-  // TODO: give default sub product for subProductImgPath
-  const subProductImgPath = subProduct?.imgPath ?? '';
-
   // for Tidal Currents points
   const pointUrlParam = searchParams.get('point');
   const hasSelectedPointFromUrl = pointUrlParam && pointUrlParam !== '';
@@ -163,13 +160,7 @@ const ProductContent: React.FC = () => {
         case useProductId === 'surfaceWaves-buoyTimeseries' && hasSelectedBuoyRegionFromUrl:
           return buildSurfaceWavesBuoyTimeseriesImageUrl(buoyRegionUrlParam, useDate);
         default:
-          return buildProductImageUrl(
-            mainProduct.key,
-            subProductImgPath,
-            regionPath ?? 'Au',
-            targetPathRegion,
-            useDate.toString(),
-          );
+          return buildProductImageUrl(useProductId, regionPath ?? 'Au', targetPathRegion, useDate.toString());
       }
     } catch (e) {
       if (e instanceof Error) {
@@ -181,13 +172,7 @@ const ProductContent: React.FC = () => {
 
   const buildMediaUrl = (): string => {
     const imgUrl = chooseImg();
-    const videoUrl = buildProductVideoUrl(
-      mainProduct.key,
-      subProductImgPath,
-      regionPath ?? 'Au',
-      targetPathRegion,
-      useDate.toString(),
-    );
+    const videoUrl = buildProductVideoUrl(useProductId, regionPath ?? 'Au', targetPathRegion, useDate.toString());
 
     return showVideo ? videoUrl : imgUrl!;
   };

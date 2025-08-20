@@ -25,6 +25,7 @@ const useVideoCreation = (): UseVideoCreationReturn => {
   );
 
   const useRegionCode = useProductStore((state) => state.productParams.regionCode);
+  const useProductId = useProductStore((state) => state.productParams.productId);
   const { mainProduct, subProduct } = useProductConvert();
   const useDate = useDateStore((state) => state.date);
 
@@ -69,13 +70,7 @@ const useVideoCreation = (): UseVideoCreationReturn => {
       return;
     }
 
-    const imageUrl = buildProductImageUrl(
-      mainProduct.key,
-      subProductImgPath,
-      useRegionCode,
-      targetPathRegion,
-      useDate.toString(),
-    );
+    const imageUrl = buildProductImageUrl(useProductId, useRegionCode, targetPathRegion, useDate.toString());
 
     try {
       const { width, height } = await getImageDimensions(imageUrl);
@@ -85,7 +80,7 @@ const useVideoCreation = (): UseVideoCreationReturn => {
     } catch (error) {
       console.error('Error loading image:', error);
     }
-  }, [mainProduct, subProductImgPath, useRegionCode, targetPathRegion, useDate, getImageDimensions]);
+  }, [useProductId, useRegionCode, targetPathRegion, useDate, getImageDimensions, mainProduct]);
 
   useEffect(() => {
     getProductImageSize();
@@ -103,14 +98,7 @@ const useVideoCreation = (): UseVideoCreationReturn => {
   const generateImageArray = useCallback(async (): Promise<string[]> => {
     const imagePromises = allDatesVideoGeneration.map(({ date }, index) => {
       const formattedDate = dayjs(date).format(formatDate);
-      const imageUrl = buildProductImageUrl(
-        mainProduct!.key,
-        subProductImgPath!,
-        useRegionCode!,
-        targetPathRegion,
-        formattedDate,
-        true,
-      );
+      const imageUrl = buildProductImageUrl(useProductId, useRegionCode!, targetPathRegion, formattedDate, true);
       return loadImage(imageUrl)
         .then((url) => {
           setProgress(Math.round(((index + 1) / allDatesVideoGeneration.length) * 90));
@@ -121,7 +109,7 @@ const useVideoCreation = (): UseVideoCreationReturn => {
 
     const results = await Promise.all(imagePromises);
     return results.filter((url): url is string => url !== null);
-  }, [allDatesVideoGeneration, formatDate, mainProduct, subProductImgPath, useRegionCode, targetPathRegion, loadImage]);
+  }, [allDatesVideoGeneration, formatDate, useProductId, useRegionCode, targetPathRegion, loadImage]);
 
   const fileName = useCallback((): string => {
     const formattedDateStart = dayjs(allDatesVideoGeneration[0].date).format(formatDate);

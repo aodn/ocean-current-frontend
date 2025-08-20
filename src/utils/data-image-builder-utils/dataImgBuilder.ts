@@ -1,58 +1,53 @@
 import dayjs, { Dayjs } from 'dayjs';
-import { productTypeMapping, TargetPathRegionScope } from '@/constants/imgPath';
 import { RegionScope } from '@/constants/region';
 import { imageUrlConfig } from '@/configs/image';
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
 import { ArgoDepths } from '@/constants/argo';
 import { DateFormat } from '@/types/date';
-import { ProductID, RootProductID } from '@/types/product';
+import { AnyProductID, ProductID, RootProductID } from '@/types/product';
 import { apiConfig } from '@/configs/api';
+import { findLeafFlatProductById } from '../product-utils/product';
 
-type SubProductType = string | undefined | null;
-
-const getBaseUrlByProductId = (productId: RootProductID): string =>
+const getBaseUrlByProductId = (productId: AnyProductID): string =>
   productId === 'surfaceWaves' ? imageUrlConfig.imageS3BaseUrl : imageUrlConfig.imageBaseUrl;
 
-const getTargetRegionScopePath = (regionScope: RegionScope): TargetPathRegionScope =>
-  [RegionScope.Au, RegionScope.State].includes(regionScope) ? TargetPathRegionScope.State : TargetPathRegionScope.Local;
+const getTargetRegionScopePath = (regionScope: RegionScope): RegionScope =>
+  [RegionScope.Au, RegionScope.State].includes(regionScope) ? RegionScope.State : RegionScope.Local;
 
-const validateProductAndSubProduct = (
-  productId: RootProductID,
-  subProductType: SubProductType,
-  regionScope: TargetPathRegionScope,
-): void => {
-  const productData = productTypeMapping.get(productId);
+const validateProductAndSubProduct = (productId: ProductID, regionScope: RegionScope): void => {
+  const productData = findLeafFlatProductById(productId);
   if (!productData) {
     throw new Error(`Product type ${productId} is not supported`);
   }
-  if (subProductType && !productData.subProduct.includes(subProductType)) {
-    throw new Error(`Sub product type ${subProductType} is not supported`);
-  }
-  if (regionScope === TargetPathRegionScope.State && productData.stateSegment === undefined) {
+
+  if (regionScope === RegionScope.State && productData.stateSegment === undefined) {
     throw new Error(`Product ${productId} does not support state region`);
   }
 };
 
-const getProductSegment = (
-  productId: RootProductID,
-  subProductType: SubProductType,
-  regionScope: TargetPathRegionScope,
-): string => {
-  const productData = productTypeMapping.get(productId)!;
-  const segment = regionScope === TargetPathRegionScope.State ? productData.stateSegment : productData.localSegment;
-  if (productId === 'monthlyMeans' && subProductType === 'CLIM_CNESCARS') {
+const getProductSegmentByProductId = (productId: ProductID, regionScope: RegionScope): string => {
+  const product = findLeafFlatProductById(productId);
+
+  if (!product) {
+    throw new Error(`Product with id ${productId} not found`);
+  }
+
+  if (productId === 'monthlyMeans-CLIM_CNESCARS') {
     return '30d_MEAN_v1';
   }
+
+  const segment = regionScope === RegionScope.State ? product.stateSegment : product.localSegment;
   return segment ? `${segment}` : '';
 };
 
-const formatDate = (
-  productId: RootProductID,
-  subProductType: SubProductType,
-  date: string,
-  regionScope: TargetPathRegionScope,
-): string => {
-  if (productId === 'monthlyMeans' && !subProductType) {
+const formatDateByProductId = (productId: ProductID, date: string, regionScope: RegionScope): string => {
+  const product = findLeafFlatProductById(productId);
+
+  if (!product) {
+    throw new Error(`Product with id ${productId} not found`);
+  }
+
+  if (productId === 'monthlyMeans-anomalies') {
     const inputDate = dayjs(date);
     const currentDate = dayjs();
 
@@ -69,30 +64,40 @@ const formatDate = (
   }
 
   if (
-    productId === 'adjustedSeaLevelAnomaly' &&
-    (regionScope === TargetPathRegionScope.Local || subProductType === 'NTSLA')
+    (productId === 'adjustedSeaLevelAnomaly-sla' && regionScope === RegionScope.Local) ||
+    productId === 'adjustedSeaLevelAnomaly-nonTidalSla'
   ) {
     return dayjs(date).format(DateFormat.HOUR);
   }
 
-  const productData = productTypeMapping.get(productId)!;
-  return dayjs(date).format(productData.dateFormat);
+  const dateFormat = product.dateFormat
+    ? regionScope === RegionScope.State
+      ? product.dateFormat.stateFormat
+      : product.dateFormat.localFormat
+    : DateFormat.DAY;
+
+  return dayjs(date).format(dateFormat || DateFormat.DAY);
 };
 
 const buildProductImageUrl = (
-  productId: RootProductID,
-  subProductType: SubProductType,
+  productId: ProductID,
   regionCode: string,
-  regionScope: TargetPathRegionScope,
+  regionScope: RegionScope,
   date: string,
   isProxyRequired: boolean = false,
 ): string => {
-  validateProductAndSubProduct(productId, subProductType, regionScope);
+  const product = findLeafFlatProductById(productId);
 
-  const productSegment = getProductSegment(productId, subProductType, regionScope);
-  const formattedDate = formatDate(productId, subProductType, date, regionScope);
+  if (!product) {
+    throw new Error(`Product with id ${productId} not found`);
+  }
 
-  const remoteBaseUrl = getBaseUrlByProductId(productId);
+  const productSegment = getProductSegmentByProductId(productId, regionScope);
+  const formattedDate = formatDateByProductId(productId, date, regionScope);
+
+  // Determine the root product ID for base URL selection
+  const rootProductId = product.parentId || productId;
+  const remoteBaseUrl = getBaseUrlByProductId(rootProductId as RootProductID);
 
   const productUrl = {
     surfaceWaves: () => {
@@ -115,21 +120,21 @@ const buildProductImageUrl = (
       return `${baseUrl}/${updatedRegionCode}/${formattedDate}.gif`;
     },
     default: () => {
-      const subProductSegment = subProductType ? `/${subProductType}` : '';
+      const subProductSegment = product.imgPath ? `/${product.imgPath}` : '';
       const baseUrl = isProxyRequired ? apiConfig.ec2ProxyURL : remoteBaseUrl;
       return `${baseUrl}/${productSegment}${subProductSegment}/${regionCode}/${formattedDate}.gif`;
     },
   };
 
-  if (productId === 'surfaceWaves' && subProductType === 'WAVES') {
+  if (productId === 'surfaceWaves-wave') {
     return productUrl.surfaceWaves();
   }
 
-  if (productId === 'oceanColour' && regionScope === TargetPathRegionScope.Local) {
+  if (productId.startsWith('oceanColour-') && regionScope === RegionScope.Local) {
     return productUrl.oceanColourLocal();
   }
 
-  if (productId === 'adjustedSeaLevelAnomaly' && !subProductType) {
+  if (productId === 'adjustedSeaLevelAnomaly-sla') {
     return productUrl.adjustedSeaLevelAnomaly();
   }
 
@@ -137,18 +142,21 @@ const buildProductImageUrl = (
 };
 
 const buildProductVideoUrl = (
-  productId: RootProductID,
-  subProductType: SubProductType,
+  productId: ProductID,
   regionCode: string,
-  regionScope: TargetPathRegionScope,
+  regionScope: RegionScope,
   date: string,
 ): string => {
-  validateProductAndSubProduct(productId, subProductType, regionScope);
+  const productData = findLeafFlatProductById(productId);
 
-  const productData = productTypeMapping.get(productId)!;
-  const segment = regionScope === TargetPathRegionScope.State ? productData.stateSegment : productData.localSegment;
+  if (!productData) {
+    throw new Error(`Product with id ${productId} not found`);
+  }
+
+  const segment = regionScope === RegionScope.State ? productData.stateSegment : productData.localSegment;
   const productSegment = segment ? `${segment}` : '';
-  const subProductSegment = subProductType ? `/${subProductType}` : '';
+  const subProductSegment = productData.imgPath ? `/${productData.imgPath}` : '';
+  const imgPath = productData.imgPath ?? '';
 
   const year = dayjs(date).format(DateFormat.YEAR_ONLY);
   const month = dayjs(date).format(DateFormat.MONTH_ONLY);
@@ -158,22 +166,22 @@ const buildProductVideoUrl = (
 
   const productUrl = {
     surfaceWaves: `${baseUrl}/WAVES/y${year}/m${month}/Au_wave_m${month}.mp4`,
-    fourHourSst: `${baseUrl}/${productSegment}/${subProductType}/${regionCode}/${regionCode}_${subProductType}_${year}${month}.mp4`,
+    fourHourSst: `${baseUrl}/${productSegment}/${imgPath}/${regionCode}/${regionCode}_${imgPath}_${year}${month}.mp4`,
     monthlyMeans: `${baseUrl}/${productSegment}/${regionCode}/${regionCode}.mp4`,
-    default: `${baseUrl}/${productSegment}${subProductSegment}/${regionCode}/${regionCode}_${subProductType}_${year}_${quarter}.mp4`,
+    default: `${baseUrl}/${productSegment}${subProductSegment}/${regionCode}/${regionCode}_${imgPath}_${year}_${quarter}.mp4`,
   };
 
-  if (productId === 'sealCtd' && subProductType === 'tracks') {
+  if (productId === 'sealCtd-sealTracks') {
     const sealCtdRegionCode = regionCode === 'GAB-Seal' ? 'GAB' : regionCode;
 
-    return `${baseUrl}/AATAMS/${sealCtdRegionCode}/${subProductType}/tracks_${year}.mp4`;
+    return `${baseUrl}/AATAMS/${sealCtdRegionCode}/tracks/tracks_${year}.mp4`;
   }
 
-  if (productId === 'oceanColour' && regionScope === TargetPathRegionScope.Local) {
+  if (productId.startsWith('oceanColour-') && regionScope === RegionScope.Local) {
     return `${baseUrl}/${regionCode}_chl/${regionCode}_chl${dayjs(date).format(DateFormat.MONTH)}.mp4`;
   }
 
-  return productUrl[productId as keyof typeof productUrl] || productUrl.default;
+  return productUrl[productData.parentId as keyof typeof productUrl] || productUrl.default;
 };
 
 const buildSSTTimeseriesImageUrl = (region: string) => {
@@ -295,6 +303,9 @@ const buildSealCtdTagsDataImageUrl = (sealTagId: string, date: Dayjs, productId:
 
 export {
   getTargetRegionScopePath,
+  getProductSegmentByProductId,
+  formatDateByProductId,
+  validateProductAndSubProduct,
   buildProductImageUrl,
   buildArgoImageUrl,
   buildSurfaceWavesImageUrl,

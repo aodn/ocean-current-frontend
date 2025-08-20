@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import dayjs from 'dayjs';
 import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { ProductID } from '@/types/product';
 import { API_ENABLED_PRODUCTS, FIXED_DATA_PRODUCTS } from '@/configs/products';
@@ -9,6 +10,8 @@ import { ArgoProfileCycle } from '@/types/argo';
 import { DateItem } from '@/types/date';
 import useProductStore from '@/stores/product-store/productStore';
 import useArgoStore from '@/stores/argo-store/argoStore';
+import { buildProductImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
+import { RegionScope } from '@/constants/region';
 import { generateDateRange } from './mockData';
 
 const extractDateFromFilename = (filename: string): string => {
@@ -72,7 +75,31 @@ const useDateList = (productId: ProductID) => {
     ...sharedQueryConfig,
   });
 
-  const { data, isLoading, error } = isArgo ? argoQuery : standardQuery;
+  const { data } = isArgo ? argoQuery : standardQuery;
+
+  // Async mock date list for monthlyMeans-anomalies to validate latest available month
+  const monthlyMeansMockQuery = useQuery({
+    queryKey: ['mockDateList', productId, region, dateFormat, regionScope],
+    queryFn: async () => {
+      const today = dayjs();
+      const firstCandidate = today.date() >= 15 ? today : today.subtract(1, 'month');
+      const candidateDateStr = firstCandidate.date(15).format('YYYYMMDD');
+      const candidateUrl = buildProductImageUrl('monthlyMeans-anomalies', region!, RegionScope.State, candidateDateStr);
+
+      const exists = await new Promise<boolean>((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.decoding = 'async';
+        img.src = candidateUrl;
+      });
+
+      const endDateOverride = exists ? firstCandidate : firstCandidate.subtract(1, 'month');
+      return generateDateRange(productId, dateFormat, regionScope, endDateOverride);
+    },
+    enabled: !isArgo && !shouldUseApi && productId === 'monthlyMeans-anomalies' && Boolean(region),
+    ...sharedQueryConfig,
+  });
 
   let dateList: DateItem[] = [];
 
@@ -86,10 +113,25 @@ const useDateList = (productId: ProductID) => {
   }
 
   if (dateList.length === 0) {
-    dateList = generateDateRange(productId, dateFormat, regionScope);
+    if (!isArgo && !shouldUseApi && productId === 'monthlyMeans-anomalies') {
+      const mockData = (monthlyMeansMockQuery.data as DateItem[] | undefined) || [];
+      if (mockData.length > 0) {
+        dateList = mockData;
+      }
+    }
+    if (dateList.length === 0) {
+      dateList = generateDateRange(productId, dateFormat, regionScope);
+    }
   }
 
-  return { isLoading, dateList, error };
+  const combinedLoading = isArgo
+    ? argoQuery.isLoading
+    : shouldUseApi
+      ? standardQuery.isLoading
+      : monthlyMeansMockQuery.isLoading;
+  const combinedError = isArgo ? argoQuery.error : shouldUseApi ? standardQuery.error : monthlyMeansMockQuery.error;
+
+  return { isLoading: combinedLoading, dateList, error: combinedError };
 };
 
 export default useDateList;

@@ -8,6 +8,8 @@ export const OC_PRODUCTS: Product[] = [
     key: 'fourHourSst',
     latestEntry: 'SST_entry',
     dateFormat: null,
+    localSegment: 'SST_4hr',
+    stateSegment: undefined,
     children: [
       {
         title: 'SST Filled',
@@ -57,6 +59,8 @@ export const OC_PRODUCTS: Product[] = [
     path: '6-day-sst',
     latestEntry: 'SST_entry',
     dateFormat: null,
+    localSegment: 'DR_SST_daily',
+    stateSegment: 'STATE_daily',
     children: [
       {
         title: 'SST',
@@ -112,6 +116,8 @@ export const OC_PRODUCTS: Product[] = [
     path: 'ocean-colour',
     latestEntry: 'chla_entry',
     dateFormat: null,
+    localSegment: null,
+    stateSegment: 'STATE_daily',
     children: [
       {
         title: 'Chl-A',
@@ -141,6 +147,8 @@ export const OC_PRODUCTS: Product[] = [
     path: 'adjusted-sea-level-anomaly',
     latestEntry: 'GSLA_entry',
     dateFormat: null,
+    localSegment: null,
+    stateSegment: 'STATE_daily',
     children: [
       {
         title: 'SLA',
@@ -190,6 +198,8 @@ export const OC_PRODUCTS: Product[] = [
     path: 'surface-waves',
     latestEntry: 'waves_entry',
     dateFormat: null,
+    localSegment: null,
+    stateSegment: 'WAVES',
     children: [
       {
         title: 'Wave',
@@ -219,6 +229,8 @@ export const OC_PRODUCTS: Product[] = [
     path: 'monthly-means',
     latestEntry: null,
     dateFormat: null,
+    localSegment: null,
+    stateSegment: '30d_MEAN',
     children: [
       {
         title: 'Anomalies',
@@ -258,6 +270,8 @@ export const OC_PRODUCTS: Product[] = [
     path: 'climatology',
     latestEntry: null,
     dateFormat: null,
+    localSegment: 'DR_SST_CLIM',
+    stateSegment: 'STATE_CLIM',
     children: [
       {
         title: 'SST',
@@ -290,6 +304,8 @@ export const OC_PRODUCTS: Product[] = [
       localFormat: DateFormat.DAY,
       stateFormat: DateFormat.DAY,
     },
+    localSegment: null,
+    stateSegment: 'argo',
   },
   {
     title: 'Tidal Currents',
@@ -300,6 +316,8 @@ export const OC_PRODUCTS: Product[] = [
       localFormat: DateFormat.MINUTE,
       stateFormat: DateFormat.MINUTE,
     },
+    localSegment: '',
+    stateSegment: 'tides',
     children: [
       {
         title: 'Speed',
@@ -336,6 +354,8 @@ export const OC_PRODUCTS: Product[] = [
       localFormat: DateFormat.YEAR_ONLY,
       stateFormat: DateFormat.YEAR_ONLY,
     },
+    localSegment: '',
+    stateSegment: 'timeseries',
     children: [
       {
         title: 'Moored Instrument Array',
@@ -402,6 +422,8 @@ export const OC_PRODUCTS: Product[] = [
       localFormat: DateFormat.DAY,
       stateFormat: DateFormat.DAY,
     },
+    localSegment: '',
+    stateSegment: 'AATAMS',
     children: [
       {
         title: 'SealCTD Tracks',
@@ -450,6 +472,8 @@ export const OC_PRODUCTS: Product[] = [
       localFormat: null,
       stateFormat: null,
     },
+    localSegment: '',
+    stateSegment: 'SATTAGS',
     children: [
       {
         title: 'Timeseries',
@@ -515,5 +539,7 @@ export const OC_PRODUCTS: Product[] = [
       localFormat: DateFormat.DAY,
       stateFormat: DateFormat.DAY,
     },
+    localSegment: '',
+    stateSegment: 'EAC_array_figures/SST/Brisbane',
   },
 ] as const;

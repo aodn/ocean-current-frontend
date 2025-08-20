@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Layer, MapMouseEvent, Source, useMap } from 'react-map-gl/mapbox';
 import dayjs from 'dayjs';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
+import { buildProductImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import { useProductSearchParam, useQueryParams } from '@/hooks';
 import useProductPath from '@/stores/product-store/hooks/useProductPath';
 import { BoundingBox, GeoJsonPolygon } from '@/types/map';
@@ -14,6 +15,7 @@ import { ProductPath } from '@/types/router';
 import useProductStore from '@/stores/product-store/productStore';
 import { useRegionLatestDates } from '@/services/hooks';
 import { RegionLatestDate } from '@/types/imageList';
+import { RegionScope } from '@/constants/region';
 import useRegionPolygons from '../hooks/useRegionPolygons';
 import { getPropertyFromMapFeatures } from '../utils/mapUtils';
 
@@ -63,6 +65,16 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
     } else {
       return today.date(15).format('YYYYMMDD');
     }
+  }, []);
+
+  const validateImageExists = useCallback((url: string): Promise<boolean> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.decoding = 'async';
+      img.src = url;
+    });
   }, []);
 
   const mapFitBounds = useCallback(
@@ -179,57 +191,72 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
       }>(map, e, PRODUCT_REGION_BOX_LAYER_ID, ['name', 'code']);
 
       if (regionCode) {
-        let targetPath = `/product/${baseProductPath}`;
-        let queryObject = {};
-        let replace = false;
+        (async () => {
+          let targetPath = `/product/${baseProductPath}`;
+          let queryObject: Record<string, unknown> = {};
+          let replace = false;
 
-        if (baseProductPath.includes(mooredInstrumentArrayPath)) {
-          queryObject = {
-            date: currentMetersDate,
-            region: regionCode,
-            depth: currentMetersDepth,
-            property: currentMetersProperty,
-            deploymentPlot: null,
-          };
-        } else if (baseProductPath.includes(ProductPath.SEAL_CTD_TAGS)) {
-          targetPath = `/product/${ProductPath.SEAL_CTD}/tracks`;
-          queryObject = { region: regionCode, sealId: null };
-        } else {
-          const dateFromQuery = searchParams.date;
-
-          if (productId === 'monthlyMeans-anomalies') {
-            const monthlyMeansDate = getMonthlyMeansDate();
-
-            queryObject = { region: regionCode, date: monthlyMeansDate, point: null };
-            replace = true;
+          if (baseProductPath.includes(mooredInstrumentArrayPath)) {
+            queryObject = {
+              date: currentMetersDate,
+              region: regionCode,
+              depth: currentMetersDepth,
+              property: currentMetersProperty,
+              deploymentPlot: null,
+            };
+          } else if (baseProductPath.includes(ProductPath.SEAL_CTD_TAGS)) {
+            targetPath = `/product/${ProductPath.SEAL_CTD}/tracks`;
+            queryObject = { region: regionCode, sealId: null };
           } else {
-            const foundRegionLatestDate = regionLatestDates?.regionLatestDates?.find(
-              (item: RegionLatestDate) => item.region === regionCode,
-            )?.latestDate;
+            const dateFromQuery = searchParams.date;
 
-            const latestDate = foundRegionLatestDate || fallbackLatestDate;
-            queryObject = dateFromQuery
-              ? { region: regionCode, point: null }
-              : { region: regionCode, date: latestDate, point: null };
+            if (productId === 'monthlyMeans-anomalies') {
+              const today = dayjs();
+              let monthlyMeansDate = getMonthlyMeansDate();
+              if (today.date() >= 15) {
+                const candidateUrl = buildProductImageUrl(
+                  'monthlyMeans-anomalies',
+                  regionCode,
+                  RegionScope.State,
+                  monthlyMeansDate,
+                );
+                const exists = await validateImageExists(candidateUrl);
+                if (!exists) {
+                  monthlyMeansDate = today.subtract(1, 'month').date(15).format('YYYYMMDD');
+                }
+              }
+
+              queryObject = { region: regionCode, date: monthlyMeansDate, point: null };
+              replace = true;
+            } else {
+              const foundRegionLatestDate = regionLatestDates?.regionLatestDates?.find(
+                (item: RegionLatestDate) => item.region === regionCode,
+              )?.latestDate;
+
+              const latestDate = foundRegionLatestDate || fallbackLatestDate;
+              queryObject = dateFromQuery
+                ? { region: regionCode, point: null }
+                : { region: regionCode, date: latestDate, point: null };
+            }
+
+            if (productId === 'surfaceWaves-wave') {
+              const waveLatestDate =
+                regionLatestDates?.regionLatestDates?.find((item: RegionLatestDate) => item.region === regionCode)
+                  ?.latestDate || fallbackLatestDate;
+
+              replace = true;
+              queryObject = { region: regionCode, date: waveLatestDate };
+            }
+
+            if (productId === 'surfaceWaves-buoyTimeseries') {
+              replace = true;
+              queryObject = { region: 'Au', date: dateFromUrl };
+              targetPath = '/product/surface-waves/wave';
+            }
           }
 
-          if (productId === 'surfaceWaves-wave') {
-            const waveLatestDate =
-              regionLatestDates?.regionLatestDates?.find((item: RegionLatestDate) => item.region === regionCode)
-                ?.latestDate || fallbackLatestDate;
-
-            replace = true;
-            queryObject = { region: regionCode, date: waveLatestDate };
-          }
-
-          if (productId === 'surfaceWaves-buoyTimeseries') {
-            replace = true;
-            queryObject = { region: 'Au', date: dateFromUrl };
-            targetPath = '/product/surface-waves/wave';
-          }
-        }
-
-        updateQueryParamsAndNavigate(targetPath, queryObject, replace);
+          updateQueryParamsAndNavigate(targetPath, queryObject, replace);
+        })();
       }
     },
     [
@@ -248,6 +275,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
       productId,
       dateFromUrl,
       getMonthlyMeansDate,
+      validateImageExists,
     ],
   );
 
