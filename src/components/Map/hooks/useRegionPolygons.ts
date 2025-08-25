@@ -2,11 +2,13 @@ import { useMemo } from 'react';
 import { calculateAreaFromCoords, convertAreaCoordsToGeoJsonCoordinates } from '@/utils/geo-utils/geo';
 import { stringToHash } from '@/utils/math-utils/math';
 import { RegionPolygonFeatureCollection } from '@/types/geo';
+import useProductStore from '@/stores/product-store/productStore';
 import { Region } from '../types/map.types';
 import useRegionFromProduct from './useRegionFromProduct';
 
 const useRegionPolygons = () => {
   const { regions } = useRegionFromProduct();
+  const productId = useProductStore((state) => state.productParams.productId);
 
   const features = useMemo(() => {
     const sortedRegions = regions.sort((a, b) => {
@@ -16,12 +18,15 @@ const useRegionPolygons = () => {
     });
 
     return sortedRegions.map(({ title, code, coords }: Region) => {
+      const uniqueId = stringToHash(`${productId}-${code}-${title}`);
+
       return {
         type: 'Feature',
-        id: stringToHash(title),
+        id: uniqueId,
         properties: {
           name: title,
           code,
+          productId,
         },
         geometry: {
           type: 'Polygon',
@@ -30,7 +35,7 @@ const useRegionPolygons = () => {
       };
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(regions)]);
+  }, [JSON.stringify(regions), productId]);
 
   const regionGeoJsonData = {
     type: 'FeatureCollection',

@@ -18,6 +18,9 @@ const extractDateFromFilename = (filename: string): string => {
   return filename.split('.')[0];
 };
 
+// Shared, precompiled regex for SealCTD graph filenames like T_2014_p3.gif or S_2023_2024_p0.gif
+const SEAL_CTD_FILENAME_REGEX = /^(?:T|S)_(\d{4})(?:_(\d{4}))?_p\d+\.gif$/i;
+
 const processArgoDateList = (data: ArgoProfileCycle[]): DateItem[] => {
   if (!data || data.length === 0) {
     return [];
@@ -26,6 +29,24 @@ const processArgoDateList = (data: ArgoProfileCycle[]): DateItem[] => {
   return data.map((cycle: ArgoProfileCycle) => ({
     date: cycle.date,
   }));
+};
+
+const processSealCtdDateList = (files: ImageFile[]): DateItem[] => {
+  if (!files || files.length === 0) {
+    return [];
+  }
+  const yearSet = new Set<string>();
+  files.forEach((file) => {
+    const match = SEAL_CTD_FILENAME_REGEX.exec(file.name);
+    if (match) {
+      const year = match[1]; // always use the first year (e.g., 2023 from S_2023_2024_p0.gif)
+      if (year) yearSet.add(year);
+    }
+  });
+
+  return Array.from(yearSet)
+    .sort((a, b) => Number(a) - Number(b))
+    .map((year) => ({ date: year }));
 };
 
 const processFilesToDateList = (files: ImageFile[]): DateItem[] => {
@@ -38,6 +59,16 @@ const processFilesToDateList = (files: ImageFile[]): DateItem[] => {
       date: extractDateFromFilename(file.name),
     }))
     .filter(({ date }) => /^\d+$/.test(date));
+};
+
+const shouldUseSealCtdProcessor = (productId: ProductID, files: ImageFile[]): boolean => {
+  const isSealCtdTimeseriesProduct =
+    productId === 'sealCtd-timeseriesTemperature' || productId === 'sealCtd-timeseriesSalinity';
+
+  if (isSealCtdTimeseriesProduct) return true;
+
+  // Fallback heuristic by filename pattern (T_YYYY_pN.gif or S_YYYY[_YYYY]_pN.gif)
+  return files.some(({ name }) => SEAL_CTD_FILENAME_REGEX.test(name));
 };
 
 const sharedQueryConfig = {
@@ -108,7 +139,11 @@ const useDateList = (productId: ProductID) => {
       dateList = processArgoDateList(data.data as ArgoProfileCycle[]);
     } else {
       const files = data.data as ImageListResponse[];
-      dateList = processFilesToDateList(files[0]?.files as ImageFile[] | []);
+      const fileList = (files[0]?.files as ImageFile[]) || [];
+
+      dateList = shouldUseSealCtdProcessor(productId, fileList)
+        ? processSealCtdDateList(fileList)
+        : processFilesToDateList(fileList);
     }
   }
 

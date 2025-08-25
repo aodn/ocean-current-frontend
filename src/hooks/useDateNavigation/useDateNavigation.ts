@@ -155,14 +155,26 @@ const useDateNavigation = ({ dateFormat, availableDates, initialDate }: UseDateN
     }
   }, [currentIndex, dateFormat, dates, updateDate, currentDate, formatDate]);
 
+  const canGoPrevious = useMemo(() => {
+    if (dateFormat === DateFormat.MONTH_ONLY) {
+      return true;
+    }
+
+    return currentIndex > 0 || currentIndex === -1;
+  }, [dateFormat, currentIndex]);
+
+  const canGoNext = useMemo(() => {
+    return dateFormat === DateFormat.MONTH_ONLY || currentIndex < dates.length - 1;
+  }, [dateFormat, currentIndex, dates]);
+
   return {
     currentDate,
     updateDate,
     formatDate,
     goToPrevious,
     goToNext,
-    canGoPrevious: dateFormat === DateFormat.MONTH_ONLY || currentIndex > 0,
-    canGoNext: dateFormat === DateFormat.MONTH_ONLY || currentIndex < dates.length - 1,
+    canGoPrevious,
+    canGoNext,
     currentIndex,
   };
 };
