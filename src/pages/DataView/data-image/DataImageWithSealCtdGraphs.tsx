@@ -1,17 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { useNavigate } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import { scaleImageMapAreas } from '@/utils/general-utils/general';
 import { ProductID, Product } from '@/types/product';
 import { MapImageAreas } from '@/types/dataImage';
-import { buildSealCtdGraphImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
-import { getSealCtdGraphTags, validateSealCtdImgUrl } from '@/services/sealCtd';
+import { getSealCtdGraphTags } from '@/services/sealCtd';
 import { imageBaseUrl } from '@/configs/image';
 import { Loading } from '@/components/Shared';
 import { parseSealCtdGraphTagData } from '@/utils/seal-ctd-utils/sealStdTags';
 import { DateFormat } from '@/types/date';
 import { ProductPath } from '@/types/router';
+import { fetchImageListByProductIdAndRegion } from '@/services/imageList';
+import { ImageListResponse } from '@/types/imageList';
+import { sharedQueryConfig } from '@/configs/query';
 
 type DataImageWithSealCtdGraphsProps = {
   mainProduct: Product | null;
@@ -25,16 +28,22 @@ type SealGraphData = {
   areas: MapImageAreas[];
 };
 
-// at the moment there's a max of 6 pages of graphs, we can remove these once API is implemented
-const maxPages = 6;
-const getAllImageUrls = (region: string, date: Dayjs, subProductKey: ProductID) => {
-  const imgUrls = [];
+const getImageUrlsFromDateList = (files: { name: string }[], region: string, productId: ProductID, year: string) => {
+  const prefix = productId === 'sealCtd-timeseriesTemperature' ? 'T_' : 'S_';
+  const formattedRegion = region === 'GAB-Seal' ? 'GAB' : region;
 
-  for (let i = 0; i < maxPages; i++) {
-    const imgUrl = buildSealCtdGraphImageUrl(region, date, subProductKey, i);
-    imgUrls.push(imgUrl);
-  }
-  return imgUrls;
+  return files
+    .filter((file) => {
+      if (!file.name.startsWith(prefix) || !file.name.endsWith('.gif')) {
+        return false;
+      }
+
+      // Match patterns like T_2014_p0.gif, S_2023_2024_p0.gif, etc.
+      // The year should match the first year in the filename
+      const yearMatch = file.name.match(new RegExp(`^${prefix}(\\d{4})`));
+      return yearMatch && yearMatch[1] === year;
+    })
+    .map((file) => `/AATAMS/${formattedRegion}/timeseries/${file.name}`);
 };
 
 const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
@@ -48,35 +57,38 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const [imgData, setImgData] = useState<SealGraphData[]>([]);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasImgLoaded, setHasImgLoaded] = useState<boolean>(false);
 
-  // generate and validate image urls
+  const imageListQuery = useQuery({
+    queryKey: ['dateList', productId, region],
+    queryFn: () => fetchImageListByProductIdAndRegion(productId, region!),
+    enabled: Boolean(region),
+    ...sharedQueryConfig,
+  });
+
   useEffect(() => {
-    const getValidImageUrls = async () => {
-      setHasImgLoaded(false);
-      setIsLoading(true);
-      const allImgUrls = getAllImageUrls(region, date, productId);
-      const validImgUrls = await validateSealCtdImgUrl(allImgUrls);
+    if (!imageListQuery.data) {
+      setImgUrls([]);
+      return;
+    }
 
-      if (validImgUrls.length < 1) {
-        setImgLoadError('No image available.');
-      } else {
-        setImgLoadError(null);
-        setImgUrls(validImgUrls);
-      }
-      setIsLoading(false);
-    };
-    getValidImageUrls();
-  }, [date, productId, region]);
+    const files = (imageListQuery.data.data as ImageListResponse[])[0]?.files || [];
+    const currentYear = date.format('YYYY');
+    const imageUrls = getImageUrlsFromDateList(files, region, productId, currentYear);
 
-  // fetch image tags if there are valid image urls
+    if (imageUrls.length < 1) {
+      setImgLoadError('No image available.');
+    } else {
+      setImgLoadError(null);
+      setImgUrls(imageUrls);
+    }
+  }, [imageListQuery.data, region, productId, date]);
+
   useEffect(() => {
     if (imgUrls.length < 1) return;
 
     const fetchData = async () => {
       setHasImgLoaded(false);
-      setIsLoading(true);
       const tempArr = await Promise.all(
         imgUrls.map(async (url) => {
           const imgTags = await getSealCtdGraphTags(url);
@@ -88,7 +100,6 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
       );
 
       setImgData(tempArr);
-      setIsLoading(false);
     };
 
     fetchData();
@@ -98,8 +109,12 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
     return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
   }
 
-  if (isLoading) {
+  if (imageListQuery.isLoading) {
     return <Loading />;
+  }
+
+  if (imageListQuery.error) {
+    return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
   }
 
   const handleImageLoad = () => {
@@ -132,10 +147,14 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
 
   return (
     <div className="relative inline-block w-full">
-      {imgData.map(({ url, areas }) => {
-        const pageNum = url.split('_')[2].replace('.gif', '');
+      {imgData.map(({ url, areas }, index) => {
+        // Extract page number from the filename (e.g., "T_2023_p0.gif" -> "0")
+        const filename = url.split('/').pop() || '';
+        const pageMatch = filename.match(/_p(\d+)\.gif$/);
+        const pageNum = pageMatch ? pageMatch[1] : index.toString();
+
         return (
-          <>
+          <div key={url}>
             <img
               id={pageNum}
               ref={imgRef}
@@ -173,7 +192,7 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
                   ))}
               </map>
             )}
-          </>
+          </div>
         );
       })}
     </div>
