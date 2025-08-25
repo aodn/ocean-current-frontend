@@ -19,6 +19,14 @@ export const API_ENABLED_PRODUCTS: ProductID[] = [
   'adjustedSeaLevelAnomaly-sst',
   'surfaceWaves-wave',
   'surfaceWaves-buoyTimeseries',
+  'sealCtd-sealTracks',
+  'sealCtd-timeseriesTemperature',
+  'sealCtd-timeseriesSalinity',
+  'sealCtdTags-timeseries',
+  'sealCtdTags-ts',
+  'sealCtdTags-temperature',
+  'sealCtdTags-salinity',
+  'sealCtdTags-10days',
   'argo',
 ];
 

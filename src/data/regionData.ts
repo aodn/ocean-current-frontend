@@ -18,7 +18,6 @@ const stateRegions: StateRegion[] = [
   { code: 'GAB', title: 'South', coords: [120, 150, -46, -30] },
   { code: 'SO', title: 'Southern Ocean', coords: [130, 155, -55, -35] },
   { code: 'NZ', title: 'New Zealand', coords: [160, 180, -50, -30] },
-  { code: 'POLAR', title: 'Antarctica', coords: [-180, 180, -80, -60] },
 ].map((region) => ({ ...region, scope: RegionScope.State }) as StateRegion);
 
 const stateMonthlyMeansRegions: StateRegion[] = [
@@ -175,11 +174,13 @@ const localRegions: LocalRegion[] = [
   { code: '14_SGBR2', title: 'SGBR2', coords: [150.8, 155, -22.5, -19.3] },
   { code: '15_CGBR', title: 'CGBR', coords: [145, 150, -21.2, -16.5] },
   { code: '16_NGBR', title: 'NGBR', coords: [142.8, 148.5, -16.7, -12.2] },
-
-  // SealCTD specific regions
-  { code: 'GAB-Seal', title: 'GAB', coords: [131.2, 141, -39, -31] },
-  { code: 'NSW', title: 'NSW', coords: [148.5, 156.5, -38.4, -31.2] },
 ].map((region) => ({ ...region, scope: RegionScope.Local }) as LocalRegion);
+
+const sealCtdRegions: (LocalRegion | StateRegion)[] = [
+  { code: 'POLAR', title: 'Antarctica', coords: [-180, 180, -80, -60], scope: RegionScope.State } as StateRegion,
+  { code: 'GAB', title: 'GAB', coords: [131.2, 141, -39, -31], scope: RegionScope.Local } as LocalRegion,
+  { code: 'NSW', title: 'NSW', coords: [148.5, 156.5, -38.4, -31.2], scope: RegionScope.Local } as LocalRegion,
+];
 
 const allRegions: Region[] = [
   ...nationRegions,
@@ -187,9 +188,23 @@ const allRegions: Region[] = [
   ...localRegions,
   ...stateMonthlyMeansRegions,
   ...nationBigRegion,
+  ...sealCtdRegions,
 ].map((region) => ({
   ...region,
   coords: convertOldOceanCurrentCoordsToBBox(region.coords),
 }));
 
-export { nationRegions, stateRegions, localRegions, allRegions, stateMonthlyMeansRegions, nationBigRegion };
+const convertedSealCtdRegions: (LocalRegion | StateRegion)[] = sealCtdRegions.map((region) => ({
+  ...region,
+  coords: convertOldOceanCurrentCoordsToBBox(region.coords),
+}));
+
+export {
+  nationRegions,
+  stateRegions,
+  localRegions,
+  allRegions,
+  stateMonthlyMeansRegions,
+  nationBigRegion,
+  convertedSealCtdRegions,
+};

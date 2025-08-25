@@ -2,7 +2,7 @@ import { ProductRegionMap } from '@/types/region';
 
 export const fullNationList = ['Au'] as const;
 
-export const fullStateList = ['GAB', 'NE', 'NW', 'NZ', 'SE', 'SO', 'SW'] as const;
+export const fullStateList = ['GAB', 'NE', 'NW', 'NZ', 'SE', 'SO', 'SW', 'POLAR'] as const;
 
 export const fullStateMonthlyMeansList = [...fullStateList.map((state) => `${state}_mm`), 'SLA30d', 'SST30d'] as const;
 
@@ -93,8 +93,7 @@ export const fullLocalList = [
   '16_NGBR',
 
   // SealCTD specific code and regions
-  'POLAR',
-  'GAB-Seal',
+  'GAB',
   'NSW',
 ] as const;
 
@@ -663,34 +662,34 @@ export const productRegionMap: ProductRegionMap = {
   },
   'sealCtd-sealTracks': {
     state: ['POLAR'],
-    local: ['GAB-Seal', 'NSW'],
+    local: ['NSW', 'GAB'],
   },
   'sealCtd-timeseriesTemperature': {
     state: ['POLAR'],
-    local: ['GAB-Seal', 'NSW'],
+    local: ['NSW', 'GAB'],
   },
   'sealCtd-timeseriesSalinity': {
     state: ['POLAR'],
-    local: ['GAB-Seal', 'NSW'],
+    local: ['NSW', 'GAB'],
   },
   'sealCtdTags-timeseries': {
     state: ['POLAR'],
-    local: ['GAB-Seal', 'NSW'],
+    local: ['NSW', 'GAB'],
   },
   'sealCtdTags-ts': {
     state: ['POLAR'],
-    local: ['GAB-Seal', 'NSW'],
+    local: ['NSW', 'GAB'],
   },
   'sealCtdTags-temperature': {
     state: ['POLAR'],
-    local: ['GAB-Seal', 'NSW'],
+    local: ['NSW', 'GAB'],
   },
   'sealCtdTags-salinity': {
     state: ['POLAR'],
-    local: ['GAB-Seal', 'NSW'],
+    local: ['NSW', 'GAB'],
   },
   'sealCtdTags-10days': {
     state: ['POLAR'],
-    local: ['GAB-Seal', 'NSW'],
+    local: ['NSW', 'GAB'],
   },
 };

@@ -1,13 +1,13 @@
-import { allRegions } from '@/data/regionData';
+import { allRegions, convertedSealCtdRegions } from '@/data/regionData';
 import useProductStore from '@/stores/product-store/productStore';
 import { Region, RegionKeyType } from '@/types/map';
-import { ProductID } from '@/types/product';
+import { ProductGroupID, ProductID } from '@/types/product';
 import { getRegionListByProductId } from '@/utils/region-utils/region';
 
 const useRegionFromProduct = () => {
   const useProductId = useProductStore((state) => state.productParams.productId);
 
-  const getRegionList = (productId: ProductID): RegionKeyType[] => {
+  const getRegionCodeList = (productId: ProductID): RegionKeyType[] => {
     const regionFromProduct = getRegionListByProductId(productId) || {
       local: [],
       state: [],
@@ -15,11 +15,17 @@ const useRegionFromProduct = () => {
     const { local, state } = regionFromProduct;
     return [...local, ...state];
   };
-  const mixedRegions = getRegionList(useProductId);
+  const mixedRegionCodeList = getRegionCodeList(useProductId);
 
-  const getRegions = (regionKey: RegionKeyType[]): Region[] =>
-    allRegions.filter(({ code }) => regionKey.includes(code));
-  const newRegions = getRegions(mixedRegions);
+  const getRegions = (regionCodeList: RegionKeyType[]): Region[] => {
+    const sealCtd: ProductGroupID = 'sealCtd';
+    if (useProductId.includes(sealCtd)) {
+      return convertedSealCtdRegions.filter(({ code }) => regionCodeList.includes(code));
+    }
+    return allRegions.filter(({ code }) => regionCodeList.includes(code));
+  };
+
+  const newRegions = getRegions(mixedRegionCodeList);
 
   return { regions: newRegions };
 };
