@@ -12,6 +12,7 @@ import useProductStore from '@/stores/product-store/productStore';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import { buildProductImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import { RegionScope } from '@/constants/region';
+import { sharedQueryConfig } from '@/configs/query';
 import { generateDateRange } from './mockData';
 
 const extractDateFromFilename = (filename: string): string => {
@@ -69,14 +70,6 @@ const shouldUseSealCtdProcessor = (productId: ProductID, files: ImageFile[]): bo
 
   // Fallback heuristic by filename pattern (T_YYYY_pN.gif or S_YYYY[_YYYY]_pN.gif)
   return files.some(({ name }) => SEAL_CTD_FILENAME_REGEX.test(name));
-};
-
-const sharedQueryConfig = {
-  staleTime: 6 * 60 * 60 * 1000,
-  gcTime: 12 * 60 * 60 * 1000,
-  refetchOnWindowFocus: false,
-  refetchOnReconnect: false,
-  refetchOnMount: false,
 };
 
 const useDateList = (productId: ProductID) => {

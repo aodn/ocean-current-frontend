@@ -105,6 +105,8 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
         selected={selectedDate}
         onChange={handleDateChange}
         dateFormat="yyyy"
+        minDate={firstDate}
+        maxDate={lastDate}
         showYearPicker
         disabled={isDisabled}
       />
