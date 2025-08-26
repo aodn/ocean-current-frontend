@@ -49,3 +49,6 @@ export const footerSocials: FooterIcon[] = [
 ];
 
 export const copyrightText: string = `© IMOS ${dayjs().year()}`;
+
+export const contactEmail: string = 'info@aodn.org.au';
+export const contactSubject: string = 'Ocean Current Enquiry';

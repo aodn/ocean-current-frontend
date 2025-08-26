@@ -1,12 +1,26 @@
 import React from 'react';
 import logo from '@/assets/images/imos-logo.png';
-import { BrandingText, FooterText } from '@/constants/textConstant';
-import { copyrightText, footerAcknowledgeText, footerLinks, footerSocials } from './consts';
+import EmailIcon from '@/assets/icons/EmailIcon.tsx';
+import { BrandingText, FooterText } from '@/constants/textConstant.ts';
+import { Button } from '../Shared/index.tsx';
+import {
+  contactEmail,
+  contactSubject,
+  copyrightText,
+  footerAcknowledgeText,
+  footerLinks,
+  footerSocials,
+} from './consts.ts';
 import { FooterIcon } from './footer.types';
 
 const Footer: React.FC = () => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleContactUs = () => {
+    const mailtoUrl = `mailto:${contactEmail}?subject=${encodeURIComponent(contactSubject)}`;
+    window.open(mailtoUrl, '_self');
   };
 
   return (
@@ -45,19 +59,19 @@ const Footer: React.FC = () => {
           <p className="text-base leading-relaxed text-gray-900">{footerAcknowledgeText}</p>
 
           <div className="flex h-20 flex-col gap-4 border-y border-imos-deeper-blue py-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center">
-              <button
-                type="button"
-                className="flex items-center gap-2 border-none bg-transparent text-black transition-colors hover:text-gray-600"
+            <div className="items-cente flex h-12 w-[200px]">
+              <Button
+                type="primary"
+                size="full"
+                borderRadius="small"
+                onClick={handleContactUs}
+                className="border-none bg-imos-deeper-blue px-4 py-2"
               >
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24">
-                  <path
-                    d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 14H4V8l8 5 8-5zm-8-7L4 6h16z"
-                    fill="currentColor"
-                  />
-                </svg>
-                <p className="text-base">{FooterText.CONTACT_US}</p>
-              </button>
+                <div className="flex items-center justify-center gap-2 leading-8">
+                  <EmailIcon className="h-6 w-6" />
+                  <p className="text-base">{FooterText.CONTACT_US}</p>
+                </div>
+              </Button>
             </div>
             <div className="flex flex-wrap gap-4">
               {footerLinks.map(({ text, url }) => (
