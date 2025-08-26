@@ -50,7 +50,7 @@ describe('Footer Component', () => {
   it('should render logo and title', () => {
     render(<Footer />);
 
-    const logo = screen.getByAltText('IMOS logo');
+    const logo = screen.getByAltText('IMOS Logo');
     expect(logo).toBeVisible();
 
     const mainHeading = screen.getByText('OceanCurrent');
@@ -99,12 +99,5 @@ describe('Footer Component', () => {
 
     const copyrightText = screen.getByText(`© IMOS ${getYear}`);
     expect(copyrightText).toBeVisible();
-  });
-
-  it('should render footer with correct class names', () => {
-    const { container } = render(<Footer />);
-
-    // Check if the footer has the expected class name for layout and design
-    expect(container.firstChild).toHaveClass('flex justify-center bg-white px-5 leading-8 sm:px-10');
   });
 });

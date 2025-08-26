@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import facebookIcon from '@/assets/icons/facebook-icon.svg';
 import instagramIcon from '@/assets/icons/instagram-icon.svg';
 import linkedinIcon from '@/assets/icons/linkedin-icon.svg';
@@ -20,7 +21,9 @@ export const footerLinks: FooterLink[] = [
 ];
 
 export const footerAcknowledgeText: string =
-  'IMOS acknowledges the Traditional Custodians and Elders of the land and sea on which we work and observe and recognise their unique connection to land and sea. We pay our respects to Aboriginal and Torres Strait Islander peoples past and present.';
+  'IMOS acknowledges the Traditional Custodians and Elders of the land and sea on which we work and observe and ' +
+  'recognise their unique connection to land and sea. We pay our respects to Aboriginal and Torres Strait Islander ' +
+  'peoples past and present.';
 
 export const footerSocials: FooterIcon[] = [
   {
@@ -45,4 +48,4 @@ export const footerSocials: FooterIcon[] = [
   },
 ];
 
-export const copyrightText: string = '© IMOS';
+export const copyrightText: string = `© IMOS ${dayjs().year()}`;
