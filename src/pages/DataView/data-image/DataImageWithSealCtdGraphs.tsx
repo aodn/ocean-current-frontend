@@ -13,7 +13,6 @@ import { parseSealCtdGraphTagData } from '@/utils/seal-ctd-utils/sealStdTags';
 import { DateFormat } from '@/types/date';
 import { ProductPath } from '@/types/router';
 import { fetchImageListByProductIdAndRegion } from '@/services/imageList';
-import { ImageListResponse } from '@/types/imageList';
 import { sharedQueryConfig } from '@/configs/query';
 
 type DataImageWithSealCtdGraphsProps = {
@@ -28,9 +27,16 @@ type SealGraphData = {
   areas: MapImageAreas[];
 };
 
+const hasFilesWithNames = (value: unknown): value is { files: { name: string }[] } => {
+  if (typeof value !== 'object' || value === null) return false;
+  const files = (value as { files?: unknown }).files;
+  return Array.isArray(files) && files.every((f) => f && typeof (f as { name?: unknown }).name === 'string');
+};
+
 const getImageUrlsFromDateList = (files: { name: string }[], region: string, productId: ProductID, year: string) => {
   const prefix = productId === 'sealCtd-timeseriesTemperature' ? 'T_' : 'S_';
   const formattedRegion = region === 'GAB-Seal' ? 'GAB' : region;
+  const yearPrefixRegex = prefix === 'T_' ? /^T_(\d{4})/ : /^S_(\d{4})/;
 
   return files
     .filter((file) => {
@@ -40,7 +46,7 @@ const getImageUrlsFromDateList = (files: { name: string }[], region: string, pro
 
       // Match patterns like T_2014_p0.gif, S_2023_2024_p0.gif, etc.
       // The year should match the first year in the filename
-      const yearMatch = file.name.match(new RegExp(`^${prefix}(\\d{4})`));
+      const yearMatch = file.name.match(yearPrefixRegex);
       return yearMatch && yearMatch[1] === year;
     })
     .map((file) => `/AATAMS/${formattedRegion}/timeseries/${file.name}`);
@@ -72,7 +78,9 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
       return;
     }
 
-    const files = (imageListQuery.data.data as ImageListResponse[])[0]?.files || [];
+    const raw = imageListQuery.data?.data;
+    const first = Array.isArray(raw) ? raw[0] : undefined;
+    const files = first && hasFilesWithNames(first) ? first.files : [];
     const currentYear = date.format('YYYY');
     const imageUrls = getImageUrlsFromDateList(files, region, productId, currentYear);
 
@@ -154,7 +162,7 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
         const pageNum = pageMatch ? pageMatch[1] : index.toString();
 
         return (
-          <div key={url}>
+          <div key={`${filename}-${pageNum}`}>
             <img
               id={pageNum}
               ref={imgRef}
