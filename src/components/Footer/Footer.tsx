@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
           <p className="text-base leading-relaxed text-gray-900">{footerAcknowledgeText}</p>
 
           <div className="flex h-20 flex-col gap-4 border-y border-imos-deeper-blue py-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="items-cente flex h-12 w-[200px]">
+            <div className="items-center flex h-12 w-[200px]">
               <Button
                 type="primary"
                 size="full"
