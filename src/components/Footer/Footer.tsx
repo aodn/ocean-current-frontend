@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from '@/assets/images/imos-logo.png';
-import { BrandingText, FooterText } from '@/constants/textConstant.ts';
+import { BrandingText, FooterText } from '@/constants/textConstant';
 import { copyrightText, footerAcknowledgeText, footerLinks, footerSocials } from './consts.ts';
 import { FooterIcon } from './footer.types';
 
