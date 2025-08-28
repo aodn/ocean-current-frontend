@@ -35,3 +35,8 @@ export enum News {
   NEWS = 'News',
   ALL_NEWS = 'All news',
 }
+
+export enum FooterText {
+  BACK_TO_TOP = 'Back to Top',
+  CONTACT_US = 'Contact Us',
+}
