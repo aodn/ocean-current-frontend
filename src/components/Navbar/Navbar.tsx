@@ -52,9 +52,9 @@ const Navbar: React.FC = () => {
     <div className="sticky top-0 z-50 w-full bg-white shadow-md transition-all duration-300">
       <nav className="mx-auto flex w-full max-w-8xl items-center justify-between p-3 px-10">
         <div className="flex h-14 items-center">
-          <Link className="mr-auto" to={'/'}>
+          <LinkOrAnchor className="mr-auto" to="https://imos.org.au/">
             <img className={`transition-all duration-300 ${isScrolled ? 'h-10' : 'h-14'}`} src={logo} alt="IMOS logo" />
-          </Link>
+          </LinkOrAnchor>
           <div className="mx-7 h-12 w-0.5 bg-imos-title-blue opacity-50" aria-hidden="true"></div>
           <div className="flex flex-col justify-center text-xl text-imos-title-blue">
             <Link className="mr-auto" to={'/'}>
