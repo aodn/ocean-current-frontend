@@ -26,7 +26,7 @@ const Button: React.FC<ButtonProps> = ({
       } ${className}`}
     >
       {icon && <span className="absolute left-4 flex items-center">{icon}</span>}
-      <span className="flex-grow text-center">{children}</span>
+      {children}
     </button>
   );
 };
