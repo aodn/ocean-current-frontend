@@ -160,6 +160,7 @@ const ProductContent: React.FC = () => {
         case useProductId === 'surfaceWaves-buoyTimeseries' && hasSelectedBuoyRegionFromUrl:
           return buildSurfaceWavesBuoyTimeseriesImageUrl(buoyRegionUrlParam, useDate);
         default:
+          //asla sst and sla comes here
           return buildProductImageUrl(useProductId, regionPath ?? 'Au', targetPathRegion, useDate.toString());
       }
     } catch (e) {
@@ -198,6 +199,7 @@ const ProductContent: React.FC = () => {
   }
 
   if (shouldRenderDataImageWithArgoTags) {
+    //asla comes here
     return (
       <DataImageWithArgoMap
         src={chooseImg()!}
@@ -271,7 +273,7 @@ const ProductContent: React.FC = () => {
     return <DataImageWithCurrentMetersPlots deploymentPlot={deploymentPlot as CurrentMetersDeploymentPlotNames} />;
   }
 
-  return <DataImage src={chooseImg()!} onError={handleError} />;
+  return <DataImage src={chooseImg()!} onError={handleError} />; //asla sst comes here
 };
 
 export default ProductContent;
