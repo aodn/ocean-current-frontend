@@ -31,7 +31,8 @@ const useQueryParams = (): UseQueryParamsResult => {
     setSearchParams(buildNewSearchParams(params));
   };
 
-  const updateUrlParamsByKey = (key: keyof QueryParams, newValue: string) => {
+  const updateUrlParamsByKey = (key: keyof QueryParams, newValue: QueryParams[keyof QueryParams]) => {
+    if (newValue === undefined || newValue === null) return;
     const newSearchParams = new URLSearchParams(searchParams.toString());
     newSearchParams.set(key, newValue);
     setSearchParams(newSearchParams);
