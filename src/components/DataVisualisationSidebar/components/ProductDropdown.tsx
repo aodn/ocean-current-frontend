@@ -37,7 +37,6 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
     if (mainProductKey.includes(id) || isLoading) {
       return;
     }
-
     setIsLoading(true);
     setLoadingProductId(id);
 
@@ -75,7 +74,6 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
       } else {
         try {
           const targetProductId = getTargetProductIdAfterRouting(id);
-
           const queryOptions = regionLatestDatesOptions(targetProductId);
 
           let latestDatesData: LatestRegionDatesResponse | undefined =

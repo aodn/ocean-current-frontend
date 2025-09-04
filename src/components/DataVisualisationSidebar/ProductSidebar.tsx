@@ -29,6 +29,7 @@ import CollapsibleSection from './components/CollapsibleSection';
 
 const ProductSideBar: React.FC = () => {
   const { mainProduct, subProduct, subProducts } = useProductConvert();
+  //TODO: 1. contitionally call react query to get lastedReionDates for all seal regions and subProducts when current product is seal-ctd. 2. use the latest date of the selected region and subProduct as the target date when user switch to seal-ctd-tags other sub product.
   const { updateQueryParamsAndNavigate } = useQueryParams();
   const useDate = useDateStore((state) => state.date);
   const { isArgo, isCurrentMeters, isSealCtdTags, isSurfaceWaves } = useProductCheck();
