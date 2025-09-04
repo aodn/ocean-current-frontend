@@ -17,7 +17,6 @@ interface DatePaginationProps {
 
 const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, initialDate, isMobile }) => {
   const { isLoading, dateList } = useDateList(productId);
-
   const { currentDate, updateDate, goToPrevious, goToNext, canGoPrevious, canGoNext } = useDateNavigation({
     availableDates: dateList,
     dateFormat,

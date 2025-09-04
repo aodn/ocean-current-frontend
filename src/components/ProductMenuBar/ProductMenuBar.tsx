@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
-import { useDateRange, useQueryParams } from '@/hooks';
-import { Dropdown, ToggleButton } from '@/components/Shared';
+import { useDateList, useDateRange, useQueryParams } from '@/hooks';
+import { Dropdown, ToggleButton, Button } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
 import { ProductMenubarText } from '@/constants/textConstant';
 import ShareIcon from '@/assets/icons/share-icon.svg';
@@ -21,8 +21,8 @@ import DatePagination from '../DatePagination';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
 const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView = false }) => {
-  const { disableVideoCreation, resetDateRange } = useDateRange();
-  const { updateQueryParamsAndNavigate } = useQueryParams();
+  const { disableVideoCreation } = useDateRange();
+  const { updateQueryParamsAndNavigate, updateUrlParamsByKey } = useQueryParams();
 
   const [copyButtonText, setCopyButtonText] = useState<string>(ProductMenubarText.SHARE);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -52,6 +52,8 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
 
   const dateFormat = useProductDateFormat();
 
+  const { isLoading, dateList } = useDateList(productId);
+
   const handleCopyLink = () => {
     const url = location.href;
     navigator.clipboard.writeText(url);
@@ -80,7 +82,10 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
       resetCurrentMetersStore();
       updateQueryParamsAndNavigate(`current-meters/${mooredInstrumentArrayPath}`, initialState);
     } else {
-      resetDateRange();
+      if (isLoading) return;
+      const latestDate = dateList?.[dateList.length - 1]?.date;
+      if (!latestDate) return;
+      updateUrlParamsByKey('date', latestDate);
     }
   };
 
@@ -112,13 +117,14 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
           )}
         </div>
 
-        <div
+        <Button
           onClick={() => handleReset()}
           aria-hidden
-          className="flex-center h-11 w-12 cursor-pointer rounded-md bg-white p-2"
+          className="flex-center h-11 w-12 rounded-md border-none bg-white p-2"
+          aria-label="Reset to latest date"
         >
-          <img src={ResetIcon} alt="" srcSet="" />
-        </div>
+          <img src={ResetIcon} alt="reset icon" srcSet="" />
+        </Button>
         <div
           className={`flex-center h-11 w-1/5 rounded-md bg-white p-3 ${shouldDisableOption && 'cursor-not-allowed opacity-50'}`}
         >
@@ -128,15 +134,15 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
         </div>
 
         <div className="w-1/6">
-          <div
+          <Button
             onClick={() => handleCopyLink()}
             aria-hidden
-            className="flex h-11 cursor-pointer items-center justify-between rounded-md bg-white p-3"
+            className="flex h-11 w-full flex-row items-center justify-between rounded-md border-none bg-white p-3"
           >
             <img className="mr-6 h-6 w-6" src={ShareIcon} alt="share icon" />
-            <p className="flex-grow text-center">{copyButtonText}</p>
-            <div className="w-6"></div>
-          </div>
+            <p className="flex-grow text-center text-imos-dark-grey">{copyButtonText}</p>
+            <div className="w-6" />
+          </Button>
         </div>
         <div className="w-1/6">
           <VideoCreation disabled={shouldDisableOption} />

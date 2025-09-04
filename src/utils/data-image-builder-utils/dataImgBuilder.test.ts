@@ -226,7 +226,7 @@ describe('buildProductImageUrlByProductId', () => {
   describe('adjustedSeaLevelAnomaly', () => {
     it('should return the correct image URL for SLA', () => {
       // Arrange
-      const productId = 'adjustedSeaLevelAnomaly-sla';
+      const productId = 'adjustedSeaLevelAnomaly-sst';
       const region = 'Au';
       const regionScope = RegionScope.State;
       const date = '20240717';

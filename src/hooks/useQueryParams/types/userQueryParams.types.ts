@@ -3,6 +3,7 @@ export type UseQueryParamsResult = {
   updateQueryParams: (params: Partial<QueryParams>) => void;
   updateQueryParamsAndNavigate: (path: string, params?: Partial<QueryParams>, replace?: boolean) => void;
   isSameUrlWithParams: (path: string, params?: Partial<QueryParams>, replace?: boolean) => boolean;
+  updateUrlParamsByKey: (key: keyof QueryParams, newValue: string) => void;
 };
 
 export type QueryParams = {

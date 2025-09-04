@@ -134,10 +134,9 @@ const buildProductImageUrl = (
     return productUrl.oceanColourLocal();
   }
 
-  if (productId === 'adjustedSeaLevelAnomaly-sla') {
+  if (productId === 'adjustedSeaLevelAnomaly-sst') {
     return productUrl.adjustedSeaLevelAnomaly();
   }
-
   return productUrl.default();
 };
 
