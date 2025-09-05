@@ -74,6 +74,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
       } else {
         try {
           const targetProductId = getTargetProductIdAfterRouting(id);
+
           const queryOptions = regionLatestDatesOptions(targetProductId);
 
           let latestDatesData: LatestRegionDatesResponse | undefined =

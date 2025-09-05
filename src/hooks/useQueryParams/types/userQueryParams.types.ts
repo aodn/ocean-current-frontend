@@ -1,5 +1,6 @@
 export type UseQueryParamsResult = {
   searchParams: QueryParams;
+  getQueryParamsByKey: (key: keyof QueryParams) => QueryParams[keyof QueryParams];
   updateQueryParams: (params: Partial<QueryParams>) => void;
   updateQueryParamsAndNavigate: (path: string, params?: Partial<QueryParams>, replace?: boolean) => void;
   isSameUrlWithParams: (path: string, params?: Partial<QueryParams>, replace?: boolean) => boolean;
