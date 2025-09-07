@@ -6,6 +6,7 @@ const SubProductOptions: React.FC<SubProductOptionsProps> = ({
   subProducts,
   subProductKey,
   handleSubProductChange,
+  disabled,
 }) => {
   return (
     <>
@@ -16,6 +17,7 @@ const SubProductOptions: React.FC<SubProductOptionsProps> = ({
             borderRadius="small"
             type={key === subProductKey ? 'primary' : 'secondary'}
             onClick={() => handleSubProductChange(key, path)}
+            disabled={disabled}
           >
             <span className={`text-base ${key === subProductKey ? 'text-white' : 'text-imos-text-grey'}`}>{title}</span>
           </Button>

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Loading } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
 import { ProductSidebarText } from '@/constants/textConstant';
 import useDateStore from '@/stores/date-store/dateStore';
+import { useMultipleRegionLatestDates } from '@/services/hooks';
 import { useQueryParams } from '@/hooks';
 import { setProductId } from '@/stores/product-store/productStore';
 import { setCurrentMetersDate, setDepth, setProperty, setRegion } from '@/stores/current-meters-store/currentMeters';
@@ -29,12 +30,26 @@ import CollapsibleSection from './components/CollapsibleSection';
 
 const ProductSideBar: React.FC = () => {
   const { mainProduct, subProduct, subProducts } = useProductConvert();
-  const { updateQueryParamsAndNavigate } = useQueryParams();
+  const { updateQueryParamsAndNavigate, getQueryParamsByKey } = useQueryParams();
   const useDate = useDateStore((state) => state.date);
-  const { isArgo, isCurrentMeters, isSealCtdTags, isSurfaceWaves } = useProductCheck();
+  const { isArgo, isCurrentMeters, isSealCtdTags, isSealCtd, isSurfaceWaves } = useProductCheck();
   const shouldRenderMiniMap =
     useProductAvailableInRegion() || isArgo || isCurrentMeters || isSealCtdTags || isSurfaceWaves;
   const shouldShowLegend = !isCurrentMeters;
+
+  const latestDatesRegionQueries = useMultipleRegionLatestDates(
+    subProducts.map((s) => s.key),
+    isSealCtd,
+  );
+  const latestDatesRegionData = latestDatesRegionQueries.map((q) => q.data);
+  const isLatestDatesRegionLoading = latestDatesRegionQueries.some((q) => q.isLoading);
+
+  const subProductOptionButtonDisable = useMemo(() => {
+    if (isSealCtd) {
+      return isLatestDatesRegionLoading;
+    }
+    return false;
+  }, [isLatestDatesRegionLoading, isSealCtd]);
 
   if (!mainProduct) {
     return <Loading />;
@@ -50,11 +65,10 @@ const ProductSideBar: React.FC = () => {
     }
     setProductId(key);
     const targetPath = `${mainProduct.path}/${subProductPath}`;
-
     let updateParam = {};
+
     if (isCurrentMeters && subProductPath !== mooredInstrumentArrayPath) {
       const allTime = yearOptionsData[0].id;
-
       setRegion(CurrentMetersRegion.Aust);
       setDepth(CurrentMetersDepth.ONE);
       setProperty(CurrentMetersProperty.vrms);
@@ -66,6 +80,19 @@ const ProductSideBar: React.FC = () => {
         depth: CurrentMetersDepth.ONE,
       };
     }
+
+    if (isSealCtd) {
+      const currentRegion = getQueryParamsByKey('region');
+      const targetLatestDate = latestDatesRegionData
+        .find((p) => p?.productId === key)
+        ?.regionLatestDates.find((r) => r.region === currentRegion)?.latestDate;
+      updateParam = targetLatestDate
+        ? {
+            date: targetLatestDate,
+          }
+        : {};
+    }
+
     updateQueryParamsAndNavigate(targetPath, updateParam);
   };
 
@@ -84,6 +111,7 @@ const ProductSideBar: React.FC = () => {
               subProducts={subProducts}
               subProductKey={subProduct?.key}
               handleSubProductChange={handleSubProductChange}
+              disabled={subProductOptionButtonDisable}
             />
           </CollapsibleSection>
         )}

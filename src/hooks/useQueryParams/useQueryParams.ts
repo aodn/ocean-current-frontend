@@ -38,6 +38,10 @@ const useQueryParams = (): UseQueryParamsResult => {
     setSearchParams(newSearchParams);
   };
 
+  const getQueryParamsByKey = (key: keyof QueryParams): QueryParams[keyof QueryParams] => {
+    return searchParams.get(key);
+  };
+
   const isSameUrlWithParams = (path: string, params: Partial<QueryParams> = {}, replace: boolean = false): boolean => {
     const currentPath = window.location.pathname;
     const currentSearchString = searchParams.toString();
@@ -57,6 +61,7 @@ const useQueryParams = (): UseQueryParamsResult => {
 
   return {
     searchParams: getParams(),
+    getQueryParamsByKey,
     updateQueryParams,
     updateUrlParamsByKey,
     updateQueryParamsAndNavigate,

@@ -37,7 +37,6 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
     if (mainProductKey.includes(id) || isLoading) {
       return;
     }
-
     setIsLoading(true);
     setLoadingProductId(id);
 
