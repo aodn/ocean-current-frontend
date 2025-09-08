@@ -31,13 +31,6 @@ const useQueryParams = (): UseQueryParamsResult => {
     setSearchParams(buildNewSearchParams(params));
   };
 
-  const updateUrlParamsByKey = (key: keyof QueryParams, newValue: QueryParams[keyof QueryParams]) => {
-    if (newValue === undefined || newValue === null) return;
-    const newSearchParams = new URLSearchParams(searchParams.toString());
-    newSearchParams.set(key, newValue);
-    setSearchParams(newSearchParams);
-  };
-
   const getQueryParamsByKey = (key: keyof QueryParams): QueryParams[keyof QueryParams] => {
     return searchParams.get(key);
   };
@@ -63,7 +56,6 @@ const useQueryParams = (): UseQueryParamsResult => {
     searchParams: getParams(),
     getQueryParamsByKey,
     updateQueryParams,
-    updateUrlParamsByKey,
     updateQueryParamsAndNavigate,
     isSameUrlWithParams,
   };

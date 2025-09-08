@@ -17,12 +17,14 @@ import useProductStore from '@/stores/product-store/productStore';
 import useProductDateFormat from '@/stores/product-store/hooks/useProductDateFormat';
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { CurrentMetersSubproductsKey, mooredInstrumentArrayPath } from '@/constants/currentMeters';
+import useArgoStore from '@/stores/argo-store/argoStore';
 import DatePagination from '../DatePagination';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
 const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView = false }) => {
   const { disableVideoCreation } = useDateRange();
-  const { updateQueryParamsAndNavigate, updateUrlParamsByKey } = useQueryParams();
+  const { updateQueryParamsAndNavigate, updateQueryParams } = useQueryParams();
+  const argoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
 
   const [copyButtonText, setCopyButtonText] = useState<string>(ProductMenubarText.SHARE);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -83,9 +85,19 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
       updateQueryParamsAndNavigate(`current-meters/${mooredInstrumentArrayPath}`, initialState);
     } else {
       if (isLoading) return;
+
       const latestDate = dateList?.[dateList.length - 1]?.date;
+
       if (!latestDate) return;
-      updateUrlParamsByKey('date', latestDate);
+
+      if (isArgo) {
+        const latestArgoProfileCycle = argoProfileCycles.find((cycle) => cycle.date === latestDate)?.cycle;
+
+        if (latestArgoProfileCycle !== undefined)
+          return updateQueryParams({ cycle: latestArgoProfileCycle, date: latestDate });
+      }
+
+      updateQueryParams({ date: latestDate });
     }
   };
 
