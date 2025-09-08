@@ -100,7 +100,7 @@ const ProductContent: React.FC = () => {
 
   useEffect(() => {
     const getArgoProfileCycles = async (wmoId: string) => {
-      const { data } = await fetchArgoProfileCyclesByWmoId(wmoId);
+      const data = await fetchArgoProfileCyclesByWmoId(wmoId);
       setArgoProfileCycles(data);
     };
     if (isArgo && worldMeteorologicalOrgId) {
