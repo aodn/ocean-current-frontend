@@ -78,7 +78,7 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
       return;
     }
 
-    const raw = imageListQuery.data?.data;
+    const raw = imageListQuery.data;
     const first = Array.isArray(raw) ? raw[0] : undefined;
     const files = first && hasFilesWithNames(first) ? first.files : [];
     const currentYear = date.format('YYYY');

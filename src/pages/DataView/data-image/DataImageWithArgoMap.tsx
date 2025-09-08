@@ -78,7 +78,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   }, [data, dateFormatted, src]);
 
   const handleCircleClick = async (area: ArgoTagMapArea) => {
-    const { data } = await fetchArgoProfileCyclesByWmoId(area.wmoId.toString());
+    const data = await fetchArgoProfileCyclesByWmoId(area.wmoId.toString());
     const dates = data.map((item) => item.date);
     const mostRecentDate = findMostRecentDateBefore(dates, dateFormatted);
     const mostRecentItem = data.find((item) => item.date === mostRecentDate);

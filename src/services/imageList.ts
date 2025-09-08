@@ -13,7 +13,7 @@ const fetchImageListByProductIdAndRegion = async (productId: ProductID, region: 
   queryParams.set('region', region);
 
   const response = await apiClient.get<ImageListResponse[]>(`/metadata/image-list/${apiProductId}?${queryParams}`);
-  return response;
+  return response.data;
 };
 
 const fetchCurrentMetersPlotsList = async (plotName: CurrentMetersDeploymentPlotNames) => {

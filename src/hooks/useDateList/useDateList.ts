@@ -88,6 +88,9 @@ const useDateList = (productId: ProductID) => {
   const argoQuery = useQuery({
     queryKey: ['argoDateList', wmoId],
     queryFn: () => fetchArgoProfileCyclesByWmoId(wmoId),
+    select: (data) => {
+      return [...data].sort((a, b) => a.date.localeCompare(b.date));
+    },
     enabled: isArgo && !!wmoId,
     ...sharedQueryConfig,
   });
@@ -129,9 +132,9 @@ const useDateList = (productId: ProductID) => {
 
   if (shouldUseApi && data) {
     if (isArgo) {
-      dateList = processArgoDateList(data.data as ArgoProfileCycle[]);
+      dateList = processArgoDateList(data as ArgoProfileCycle[]);
     } else {
-      const files = data.data as ImageListResponse[];
+      const files = data as ImageListResponse[];
       const fileList = (files[0]?.files as ImageFile[]) || [];
 
       dateList = shouldUseSealCtdProcessor(productId, fileList)
