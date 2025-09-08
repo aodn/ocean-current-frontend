@@ -18,7 +18,7 @@ const fetchArgoProfilesByDate = async (date: Dayjs) => {
 
 const fetchArgoProfileCyclesByWmoId = async (wmoId: string): Promise<ArgoProfileCycle[]> => {
   const res = await ec2ProxyClient.get<ArgoProfileCycle[]>(`/profiles/${wmoId}/profiles.json`);
-  return res.data;
+  return res.data.sort((a, b) => a.date.localeCompare(b.date));
 };
 
 const fetchArgoTags = async (date: Dayjs, tagPath: string, region: string) => {

@@ -88,9 +88,6 @@ const useDateList = (productId: ProductID) => {
   const argoQuery = useQuery({
     queryKey: ['argoDateList', wmoId],
     queryFn: () => fetchArgoProfileCyclesByWmoId(wmoId),
-    select: (data) => {
-      return [...data].sort((a, b) => a.date.localeCompare(b.date));
-    },
     enabled: isArgo && !!wmoId,
     ...sharedQueryConfig,
   });
