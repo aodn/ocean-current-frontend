@@ -149,6 +149,7 @@ const useDateList = (productId: ProductID) => {
     }
     if (dateList.length === 0) {
       dateList = generateDateRange(productId, dateFormat, regionScope);
+      //TODO: currently this is to generate mock date range. 1. for argo, set 20200101 as start date; 2. call api to get latest argo date. 3. set this date range  and apply to date picker.
     }
   }
 
