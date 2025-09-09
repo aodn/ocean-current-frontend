@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
-import { useDateList, useDateRange, useQueryParams } from '@/hooks';
+import { useDateList, useDateRange, useQueryParams, useProductValidQueryParams } from '@/hooks';
 import { Dropdown, ToggleButton, Button } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
 import { ProductMenubarText } from '@/constants/textConstant';
@@ -18,6 +18,7 @@ import useProductDateFormat from '@/stores/product-store/hooks/useProductDateFor
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { CurrentMetersSubproductsKey, mooredInstrumentArrayPath } from '@/constants/currentMeters';
 import useArgoStore from '@/stores/argo-store/argoStore';
+import { useRegionLatestDates } from '@/services/hooks';
 import DatePagination from '../DatePagination';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
@@ -40,7 +41,10 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
     isSealCtd,
     isSealCtdTags,
   } = useProductCheck();
+  const { isArgoValid } = useProductValidQueryParams();
   const productId = useProductStore((state) => state.productParams.productId);
+  const { data: latestArgoData, isLoading: isLatestArgoDataLoading } = useRegionLatestDates(productId, isArgo);
+
   const shouldDisableOption =
     disableVideoCreation() ||
     isArgo ||
@@ -54,7 +58,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
 
   const dateFormat = useProductDateFormat();
 
-  const { isLoading, dateList } = useDateList(productId);
+  const { isLoading: isProductDateListLoading, dateList } = useDateList(productId);
 
   const handleCopyLink = () => {
     const url = location.href;
@@ -82,23 +86,27 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
   const handleReset = () => {
     if (isCurrentMeters) {
       resetCurrentMetersStore();
-      updateQueryParamsAndNavigate(`current-meters/${mooredInstrumentArrayPath}`, initialState);
-    } else {
-      if (isLoading) return;
+      return updateQueryParamsAndNavigate(`current-meters/${mooredInstrumentArrayPath}`, initialState);
+    }
+    if (isProductDateListLoading) return;
 
-      const latestDate = dateList?.[dateList.length - 1]?.date;
+    const latestDate = dateList?.[dateList.length - 1]?.date;
 
-      if (!latestDate) return;
+    if (!latestDate) return;
 
-      if (isArgo) {
+    if (isArgo) {
+      if (isArgoValid) {
         const latestArgoProfileCycle = argoProfileCycles.find((cycle) => cycle.date === latestDate)?.cycle;
 
         if (latestArgoProfileCycle !== undefined)
-          return updateQueryParams({ cycle: latestArgoProfileCycle, date: latestDate });
+          updateQueryParams({ cycle: latestArgoProfileCycle, date: latestDate });
+        return;
       }
-
-      updateQueryParams({ date: latestDate });
+      if (isLatestArgoDataLoading) return;
+      return updateQueryParams({ date: latestArgoData?.regionLatestDates[0].latestDate });
     }
+
+    updateQueryParams({ date: latestDate });
   };
 
   const handleCurrentMetersDateChange = (id: string) => {

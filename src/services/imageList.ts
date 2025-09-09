@@ -22,6 +22,18 @@ const fetchCurrentMetersPlotsList = async (plotName: CurrentMetersDeploymentPlot
 };
 
 const fetchRegionLatestDatesByProductId = async (productId: ProductID) => {
+  if (productId === 'argo') {
+    return {
+      productId: 'argo',
+      regionLatestDates: [
+        {
+          region: '',
+          latestDate: '20250908',
+          path: '',
+        },
+      ],
+    };
+  }
   const response = await apiClient.get<LatestRegionDatesResponse>(`/metadata/latest-dates/${productId}`);
   return response.data;
 };
