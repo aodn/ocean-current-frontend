@@ -1,4 +1,4 @@
-import useProductFromUrl from './useGetProductFromUrl/useGetProductFromUrl';
+import useProductPathFromUrl from './useGetProductFromUrl/useProductPathFromUrl';
 import useProductSearchParam from './useProductSearchParam/useProductSearchParam';
 import useQueryParams from './useQueryParams/useQueryParams';
 import useOutsideClick from './useOutSideClick/useOutsideClick';
@@ -9,9 +9,10 @@ import useDeviceType from './useDeviceType/useDeviceType';
 import useUrlType from './useUrlType/useUrlType';
 import useSetProductId from './useSetProductId/useSetProductId';
 import useDateList from './useDateList/useDateList';
+import { useProductValidQueryParams } from './useProductValidQueryParams/useProductValidQueryParams';
 
 export {
-  useProductFromUrl,
+  useProductPathFromUrl as useProductFromUrl,
   useProductSearchParam,
   useQueryParams,
   useScrollToTop,
@@ -22,4 +23,5 @@ export {
   useUrlType,
   useSetProductId,
   useDateList,
+  useProductValidQueryParams,
 };

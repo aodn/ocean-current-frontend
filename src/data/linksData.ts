@@ -44,7 +44,7 @@ export const linksData: LinkItem[] = [
         blueIcon: SixHourSSTBlueIcon,
         title: 'Daily SST (6-day composite)',
         description: 'Daily sea surface temperature',
-        url: '/map/6-day-sst/sst',
+        url: '/map/six-day-sst/sst',
       },
       {
         id: 'oceanColour',

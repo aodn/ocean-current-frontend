@@ -32,6 +32,6 @@ describe('useProductPath', () => {
 
     const { result } = renderHook(() => useProductPath());
 
-    expect(result.current).toBe('6-day-sst/sst');
+    expect(result.current).toBe('six-day-sst/sst');
   });
 });

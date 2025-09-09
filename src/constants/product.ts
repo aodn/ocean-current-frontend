@@ -56,7 +56,7 @@ export const OC_PRODUCTS: Product[] = [
   {
     title: '6-Day SST & Centiles',
     key: 'sixDaySst',
-    path: '6-day-sst',
+    path: 'six-day-sst',
     latestEntry: 'SST_entry',
     dateFormat: null,
     localSegment: 'DR_SST_daily',

@@ -2,10 +2,10 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { getProductByPath } from '@/utils/product-utils/product';
 import { UrlType } from '@/types/router';
-import useProductFromUrl from '../useGetProductFromUrl/useGetProductFromUrl';
+import useProductPathFromUrl from '../useGetProductFromUrl/useProductPathFromUrl';
 import useSetProductId from './useSetProductId';
 
-vi.mock('../useGetProductFromUrl/useGetProductFromUrl', () => ({
+vi.mock('../useGetProductFromUrl/useProductPathFromUrl', () => ({
   default: vi.fn(),
 }));
 
@@ -21,7 +21,7 @@ describe('useSetProductId', () => {
   });
 
   it('should set product ID from main product when no sub product exists', () => {
-    vi.mocked(useProductFromUrl).mockReturnValue({
+    vi.mocked(useProductPathFromUrl).mockReturnValue({
       mainProduct: 'surfaceWaves',
       subProduct: null as never,
     });
@@ -39,7 +39,7 @@ describe('useSetProductId', () => {
   });
 
   it.skip('should set product ID from sub product when it exists', () => {
-    vi.mocked(useProductFromUrl).mockReturnValue({
+    vi.mocked(useProductPathFromUrl).mockReturnValue({
       mainProduct: 'fourHourSst',
       subProduct: 'fourHourSst-sstFilled',
     });
@@ -64,7 +64,7 @@ describe('useSetProductId', () => {
 
   it('should update product ID when dependencies change', () => {
     // Initial mock setup
-    vi.mocked(useProductFromUrl).mockReturnValue({
+    vi.mocked(useProductPathFromUrl).mockReturnValue({
       mainProduct: 'currentMeters',
       subProduct: null as never,
     });
@@ -79,7 +79,7 @@ describe('useSetProductId', () => {
     });
 
     // Update mocks before rerender
-    vi.mocked(useProductFromUrl).mockReturnValue({
+    vi.mocked(useProductPathFromUrl).mockReturnValue({
       mainProduct: 'surfaceWaves',
       subProduct: null as never,
     });
