@@ -17,12 +17,10 @@ import { useRegionLatestDates } from '@/services/hooks';
 import { useProductValidQueryParams } from '../useProductValidQueryParams/useProductValidQueryParams';
 import { generateDateRange } from './mockData';
 
-type DateRange =
-  | {
-      startDate: Date;
-      endDate: Date;
-    }
-  | undefined;
+type DateRange = {
+  startDate: Date;
+  endDate: Date;
+};
 
 const extractDateFromFilename = (filename: string): string => {
   return filename.split('.')[0];
@@ -141,7 +139,7 @@ const useDateList = (productId: ProductID) => {
   });
 
   let dateList: DateItem[] = [];
-  let dateRange: DateRange = undefined;
+  let dateRange: DateRange | undefined; //only exists when isArgo && !isArgoValid
 
   if (shouldUseApi && data) {
     if (isArgo) {
@@ -165,7 +163,6 @@ const useDateList = (productId: ProductID) => {
     }
     if (dateList.length === 0) {
       if (isArgo && !isArgoValid) {
-        //in argo but not in argo specific point.
         dateRange = {
           startDate: dayjs('20100101', dateFormat).toDate(),
           endDate: dayjs(latestArgoLocationsData?.regionLatestDates[0].latestDate || new Date(), dateFormat).toDate(),
@@ -177,7 +174,7 @@ const useDateList = (productId: ProductID) => {
   }
 
   const combinedLoading = isArgo
-    ? argoQuery.isLoading && isLatestArgoLocationsDataLoading
+    ? argoQuery.isLoading || isLatestArgoLocationsDataLoading
     : shouldUseApi
       ? standardQuery.isLoading
       : monthlyMeansMockQuery.isLoading;

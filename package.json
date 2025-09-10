@@ -78,7 +78,7 @@
       "yarn lint"
     ],
     "**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "yarn prettier"
+      "yarn prettier:fix"
     ]
   },
   "packageManager": "yarn@4.1.0"
