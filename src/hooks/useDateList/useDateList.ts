@@ -13,7 +13,16 @@ import useArgoStore from '@/stores/argo-store/argoStore';
 import { buildProductImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import { RegionScope } from '@/constants/region';
 import { sharedQueryConfig } from '@/configs/query';
+import { useRegionLatestDates } from '@/services/hooks';
+import { useProductValidQueryParams } from '../useProductValidQueryParams/useProductValidQueryParams';
 import { generateDateRange } from './mockData';
+
+type DateRange =
+  | {
+      startDate: Date;
+      endDate: Date;
+    }
+  | undefined;
 
 const extractDateFromFilename = (filename: string): string => {
   return filename.split('.')[0];
@@ -83,6 +92,7 @@ const useDateList = (productId: ProductID) => {
 
   const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
 
+  const { isArgoValid } = useProductValidQueryParams();
   const isArgo = productId === 'argo';
 
   const argoQuery = useQuery({
@@ -98,6 +108,8 @@ const useDateList = (productId: ProductID) => {
     enabled: shouldUseApi && !isArgo && Boolean(region),
     ...sharedQueryConfig,
   });
+
+  const { data: latestArgoData, isLoading: isLatestArgoDataLoading } = useRegionLatestDates(productId, isArgo);
 
   const { data } = isArgo ? argoQuery : standardQuery;
 
@@ -126,6 +138,7 @@ const useDateList = (productId: ProductID) => {
   });
 
   let dateList: DateItem[] = [];
+  let dateRange: DateRange = undefined;
 
   if (shouldUseApi && data) {
     if (isArgo) {
@@ -148,19 +161,26 @@ const useDateList = (productId: ProductID) => {
       }
     }
     if (dateList.length === 0) {
-      dateList = generateDateRange(productId, dateFormat, regionScope);
-      //TODO: currently this is to generate mock date range. 1. for argo, set 20200101 as start date; 2. call api to get latest argo date. 3. set this date range  and apply to date picker.
+      if (isArgo && !isArgoValid) {
+        //in argo but not in argo specific point.
+        dateRange = {
+          startDate: dayjs('20100101', dateFormat).toDate(),
+          endDate: dayjs(latestArgoData?.regionLatestDates[0].latestDate || new Date(), dateFormat).toDate(),
+        };
+      } else {
+        dateList = generateDateRange(productId, dateFormat, regionScope);
+      }
     }
   }
 
   const combinedLoading = isArgo
-    ? argoQuery.isLoading
+    ? argoQuery.isLoading && isLatestArgoDataLoading
     : shouldUseApi
       ? standardQuery.isLoading
       : monthlyMeansMockQuery.isLoading;
   const combinedError = isArgo ? argoQuery.error : shouldUseApi ? standardQuery.error : monthlyMeansMockQuery.error;
 
-  return { isLoading: combinedLoading, dateList, error: combinedError };
+  return { isLoading: combinedLoading, dateList, error: combinedError, dateRange };
 };
 
 export default useDateList;

@@ -92,8 +92,6 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
 
     const latestDate = dateList?.[dateList.length - 1]?.date;
 
-    if (!latestDate) return;
-
     if (isArgo) {
       if (isArgoValid) {
         const latestArgoProfileCycle = argoProfileCycles.find((cycle) => cycle.date === latestDate)?.cycle;
@@ -103,6 +101,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
         return;
       }
       if (isLatestArgoDataLoading) return;
+
       return updateQueryParams({ date: latestArgoData?.regionLatestDates[0].latestDate });
     }
 
@@ -142,6 +141,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
           aria-hidden
           className="flex-center h-11 w-12 rounded-md border-none bg-white p-2"
           aria-label="Reset to latest date"
+          disabled={isLatestArgoDataLoading && isLatestArgoDataLoading}
         >
           <img src={ResetIcon} alt="reset icon" srcSet="" />
         </Button>
