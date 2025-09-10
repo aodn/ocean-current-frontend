@@ -15,7 +15,7 @@ vi.mock('@/constants/product', () => ({
     {
       title: 'Six Day SST & Centiles',
       key: 'sixDaySst',
-      path: '6-day-sst',
+      path: 'six-day-sst',
       children: [
         {
           title: 'SST',
@@ -35,7 +35,7 @@ vi.mock('@/constants/product', () => ({
 
 vi.mock('@/data/productData', () => ({
   flattenedProducts: [
-    { key: 'sixDaySst', path: '6-day-sst', parentId: null },
+    { key: 'sixDaySst', path: 'six-day-sst', parentId: null },
     { key: 'sixDaySst-sst', path: 'sst', parentId: 'sixDaySst', imgPath: 'SST' },
     { key: 'argo', path: 'argo', parentId: null },
   ],
@@ -126,12 +126,12 @@ describe('checkProductHasSubProduct', () => {
 describe('getProductFullPathById', () => {
   it('should return the correct path for a main product', () => {
     const result = getProductFullPathById('sixDaySst');
-    expect(result).toBe('6-day-sst');
+    expect(result).toBe('six-day-sst');
   });
 
   it('should return the correct path for a sub product', () => {
     const result = getProductFullPathById('sixDaySst-sst');
-    expect(result).toBe('6-day-sst/sst');
+    expect(result).toBe('six-day-sst/sst');
   });
 
   it('should return an empty string for a non-existent product', () => {
@@ -143,7 +143,7 @@ describe('getProductFullPathById', () => {
 describe('getProductPathWithSubProduct', () => {
   it('should return the correct path for a main product with sub-products', () => {
     const result = getProductPathWithSubProduct('sixDaySst');
-    expect(result).toBe('6-day-sst/sst');
+    expect(result).toBe('six-day-sst/sst');
   });
 
   it('should return the correct path for a single product without sub-products', () => {
@@ -153,7 +153,7 @@ describe('getProductPathWithSubProduct', () => {
 
   it('should return the correct path for a sub product', () => {
     const result = getProductPathWithSubProduct('sixDaySst-sst');
-    expect(result).toBe('6-day-sst/sst');
+    expect(result).toBe('six-day-sst/sst');
   });
 
   it('should throw an error for a non-existent product', () => {

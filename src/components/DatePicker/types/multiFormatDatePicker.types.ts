@@ -7,4 +7,6 @@ export interface MultiFormatDatePickerProps {
   onChange: (date: Date | null) => void;
   isMobile?: boolean;
   isDisabled?: boolean;
+  startDate?: Date;
+  endDate?: Date;
 }

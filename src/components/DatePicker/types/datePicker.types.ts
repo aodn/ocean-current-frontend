@@ -15,4 +15,6 @@ export interface OceanCurrentDatePickerProps {
   isMobile?: boolean;
   isDatePickerDisabled?: boolean;
   displayText?: ProductMenubarText;
+  startDate?: Date;
+  endDate?: Date;
 }

@@ -13,7 +13,14 @@ import useArgoStore from '@/stores/argo-store/argoStore';
 import { buildProductImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import { RegionScope } from '@/constants/region';
 import { sharedQueryConfig } from '@/configs/query';
+import { useRegionLatestDates } from '@/services/hooks';
+import { useProductValidQueryParams } from '../useProductValidQueryParams/useProductValidQueryParams';
 import { generateDateRange } from './mockData';
+
+type DateRange = {
+  startDate: Date;
+  endDate: Date;
+};
 
 const extractDateFromFilename = (filename: string): string => {
   return filename.split('.')[0];
@@ -83,6 +90,7 @@ const useDateList = (productId: ProductID) => {
 
   const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
 
+  const { isArgoValid } = useProductValidQueryParams();
   const isArgo = productId === 'argo';
 
   const argoQuery = useQuery({
@@ -98,6 +106,11 @@ const useDateList = (productId: ProductID) => {
     enabled: shouldUseApi && !isArgo && Boolean(region),
     ...sharedQueryConfig,
   });
+
+  const { data: latestArgoLocationsData, isLoading: isLatestArgoLocationsDataLoading } = useRegionLatestDates(
+    productId,
+    isArgo && !isArgoValid,
+  );
 
   const { data } = isArgo ? argoQuery : standardQuery;
 
@@ -120,12 +133,16 @@ const useDateList = (productId: ProductID) => {
 
       const endDateOverride = exists ? firstCandidate : firstCandidate.subtract(1, 'month');
       return generateDateRange(productId, dateFormat, regionScope, endDateOverride);
+      //TODO: no need to create DateItem[] using generateDateRange to specify date range for date picker, we can
+      // pass startdate and enddate to datepicker, enddate can be grabbed from new api point(expect to be created)
+      // to get latest date, like what has been done for dateRange when isArgo && !isArgoValid like below.
     },
     enabled: !isArgo && !shouldUseApi && productId === 'monthlyMeans-anomalies' && Boolean(region),
     ...sharedQueryConfig,
   });
 
   let dateList: DateItem[] = [];
+  let dateRange: DateRange | undefined; //only exists when isArgo && !isArgoValid
 
   if (shouldUseApi && data) {
     if (isArgo) {
@@ -148,18 +165,25 @@ const useDateList = (productId: ProductID) => {
       }
     }
     if (dateList.length === 0) {
-      dateList = generateDateRange(productId, dateFormat, regionScope);
+      if (isArgo && !isArgoValid) {
+        dateRange = {
+          startDate: dayjs('20100101', dateFormat).toDate(),
+          endDate: dayjs(latestArgoLocationsData?.regionLatestDates[0].latestDate || '20100101', dateFormat).toDate(),
+        };
+      } else {
+        dateList = generateDateRange(productId, dateFormat, regionScope);
+      }
     }
   }
 
   const combinedLoading = isArgo
-    ? argoQuery.isLoading
+    ? argoQuery.isLoading || isLatestArgoLocationsDataLoading
     : shouldUseApi
       ? standardQuery.isLoading
       : monthlyMeansMockQuery.isLoading;
   const combinedError = isArgo ? argoQuery.error : shouldUseApi ? standardQuery.error : monthlyMeansMockQuery.error;
 
-  return { isLoading: combinedLoading, dateList, error: combinedError };
+  return { isLoading: combinedLoading, dateList, error: combinedError, dateRange };
 };
 
 export default useDateList;

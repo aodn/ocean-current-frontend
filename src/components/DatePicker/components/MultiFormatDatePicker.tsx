@@ -21,6 +21,8 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
   onChange,
   isMobile = false,
   isDisabled = false,
+  startDate, //startDate and endDate have the highest priority; if they exist, they will overwrite dateList.
+  endDate,
 }) => {
   const { isMonthFormat, isMonthOnlyFormat, isYearFormat } = getDateFormatFlags(dateFormat);
   const isHourly = isHourlyFormat(dateFormat);
@@ -74,8 +76,8 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
         customInput={isMobile ? <CustomInputMobile disabled={isDisabled} /> : <CustomInput disabled={isDisabled} />}
         selected={selectedDate}
         onChange={handleDateChange}
-        minDate={firstDate}
-        maxDate={lastDate}
+        minDate={startDate || firstDate}
+        maxDate={endDate || lastDate}
         dateFormat="MM/yyyy"
         showMonthYearPicker
         showTwoColumnMonthYearPicker
@@ -105,8 +107,8 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
         selected={selectedDate}
         onChange={handleDateChange}
         dateFormat="yyyy"
-        minDate={firstDate}
-        maxDate={lastDate}
+        minDate={startDate || firstDate}
+        maxDate={endDate || lastDate}
         showYearPicker
         disabled={isDisabled}
       />
@@ -118,9 +120,9 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
       <ReactDatePicker
         customInput={isMobile ? <CustomInputMobile disabled={isDisabled} /> : <CustomInput disabled={isDisabled} />}
         selected={selectedDate}
-        minDate={firstDate}
-        maxDate={lastDate}
-        includeDates={dateList.map(({ date }) => dayjs(date, dateFormat).toDate())}
+        minDate={startDate || firstDate}
+        maxDate={endDate || lastDate}
+        includeDates={startDate && endDate ? undefined : dateList.map(({ date }) => dayjs(date, dateFormat).toDate())}
         onChange={handleDateChange}
         showYearDropdown
         showMonthDropdown
@@ -134,9 +136,9 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
     <ReactDatePicker
       customInput={isMobile ? <CustomInputMobile disabled={isDisabled} /> : <CustomInput disabled={isDisabled} />}
       selected={selectedDate}
-      minDate={firstDate}
-      maxDate={lastDate}
-      excludeDates={missingDates}
+      minDate={startDate || firstDate}
+      maxDate={endDate || lastDate}
+      excludeDates={startDate && endDate ? undefined : missingDates}
       onChange={handleDateChange}
       showYearDropdown
       showMonthDropdown

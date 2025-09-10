@@ -51,4 +51,15 @@ const scaleImageMapAreas = (
   return convertedCoords;
 };
 
-export { isNotNullOrUndefined, calculateImageScales, scaleImageMapAreas };
+/**
+ * Convert a kebab-case (or mixed) string into camelCase.
+ * Example: "sealCtd-sealTracks" -> "sealCtdSealTracks"
+ */
+function toCamelCase(input: string): string {
+  return input
+    .split(/[-_\s]+/)
+    .map((word, index) => (index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)))
+    .join('');
+}
+
+export { isNotNullOrUndefined, calculateImageScales, scaleImageMapAreas, toCamelCase };

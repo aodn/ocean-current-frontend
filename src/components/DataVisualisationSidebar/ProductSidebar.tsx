@@ -5,7 +5,7 @@ import useProductAvailableInRegion from '@/stores/product-store/hooks/useProduct
 import { ProductSidebarText } from '@/constants/textConstant';
 import useDateStore from '@/stores/date-store/dateStore';
 import { useMultipleRegionLatestDates } from '@/services/hooks';
-import { useQueryParams } from '@/hooks';
+import { useProductValidQueryParams, useQueryParams } from '@/hooks';
 import { setProductId } from '@/stores/product-store/productStore';
 import { setCurrentMetersDate, setDepth, setProperty, setRegion } from '@/stores/current-meters-store/currentMeters';
 import {
@@ -33,8 +33,10 @@ const ProductSideBar: React.FC = () => {
   const { updateQueryParamsAndNavigate, getQueryParamsByKey } = useQueryParams();
   const useDate = useDateStore((state) => state.date);
   const { isArgo, isCurrentMeters, isSealCtdTags, isSealCtd, isSurfaceWaves } = useProductCheck();
+  const { isArgoValid } = useProductValidQueryParams();
+
   const shouldRenderMiniMap =
-    useProductAvailableInRegion() || isArgo || isCurrentMeters || isSealCtdTags || isSurfaceWaves;
+    useProductAvailableInRegion() || (isArgo && isArgoValid) || isCurrentMeters || isSealCtdTags || isSurfaceWaves;
   const shouldShowLegend = !isCurrentMeters;
 
   const latestDatesRegionQueries = useMultipleRegionLatestDates(
