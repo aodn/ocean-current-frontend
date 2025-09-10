@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router';
 import dayjs, { Dayjs } from 'dayjs';
 import { DateFormat, DateItem } from '@/types/date';
 import { useArgoStore } from '@/stores/argo-store/argoStore';
-import { isHourlyFormat, findFirstHourlyDateForDay } from '@/utils/date-utils/hourly';
+import { isHourlyFormat, findFirstDateTimeForSelectedDay } from '@/utils/date-utils/hourly';
 import { findClosestDateIndex } from '@/utils/date-utils/date';
 
 interface UseDateNavigationProps {
@@ -53,9 +53,10 @@ const useDateNavigation = ({ dateFormat, availableDates, initialDate }: UseDateN
       }
 
       const isDateParamHourly = dayjs(dateParam, DateFormat.HOUR, true).isValid();
+
       if (isHourlyFormat(dateFormat) && !isDateParamHourly) {
         const dayStr = date.format(DateFormat.DAY);
-        const firstHourlyDate = findFirstHourlyDateForDay(dates, dayStr, dateFormat);
+        const firstHourlyDate = findFirstDateTimeForSelectedDay(dates, dayStr, dateFormat);
         if (firstHourlyDate) {
           setSearchParams((prev) => {
             prev.set('date', firstHourlyDate);

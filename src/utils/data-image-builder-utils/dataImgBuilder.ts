@@ -233,7 +233,9 @@ const buildTidalCurrentsMapImageUrl = (region: string, subProduct: string, date:
 
   const prodFolder = subProduct === 'tidalCurrents-spd' ? 'spd' : 'hv';
   const formattedDate = date.format(DateFormat.MINUTE);
-  const year = date.format(DateFormat.YEAR_ONLY);
+
+  // TODO: year needed to be determined https://github.com/aodn/backlog/issues/7428
+  const year = 2025;
 
   return `${imageUrlConfig.imageBaseUrl}/tides/${region}_${prodFolder}/${year}/${formattedDate}.gif`;
 };

@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import dayjs from 'dayjs';
 import { DateFormat } from '@/types/date';
 import { getDateFormatFlags } from '@/utils/date-utils/date';
-import { isHourlyFormat, findFirstHourlyDateForDay } from '@/utils/date-utils/hourly';
+import { findFirstDateTimeForSelectedDay } from '@/utils/date-utils/hourly';
 import { findDateRangeInfo } from '../utils';
 import { MultiFormatDatePickerProps } from '../types/multiFormatDatePicker.types';
 import CustomInputMobile from './CustomInputMobile';
@@ -24,8 +24,8 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
   startDate, //startDate and endDate have the highest priority; if they exist, they will overwrite dateList.
   endDate,
 }) => {
-  const { isMonthFormat, isMonthOnlyFormat, isYearFormat } = getDateFormatFlags(dateFormat);
-  const isHourly = isHourlyFormat(dateFormat);
+  const { isMonthFormat, isMonthOnlyFormat, isYearFormat, isHourFormat, isMinuteFormat } =
+    getDateFormatFlags(dateFormat);
 
   const { missingDates, firstDate, lastDate } = useMemo(() => {
     if (dateList.length >= LARGE_DATE_LIST_THRESHOLD) {
@@ -54,16 +54,16 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
   const handleDateChange = (date: Date | null) => {
     if (isDisabled) return;
 
-    if (date && isHourly) {
+    if (date && (isHourFormat || isMinuteFormat)) {
       const selectedDay = dayjs(date).format(DateFormat.DAY);
 
-      const firstHourlyDate = findFirstHourlyDateForDay(
+      const firstDateTime = findFirstDateTimeForSelectedDay(
         dateList.map(({ date }) => date),
         selectedDay,
         dateFormat,
       );
-      if (firstHourlyDate) {
-        onChange(dayjs(firstHourlyDate, dateFormat).toDate());
+      if (firstDateTime) {
+        onChange(dayjs(firstDateTime, dateFormat).toDate());
       }
       return;
     }

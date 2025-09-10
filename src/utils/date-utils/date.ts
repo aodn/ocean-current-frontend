@@ -79,6 +79,7 @@ const getDateFormatFlags = (format: DateFormat) => ({
   isMonthOnlyFormat: format === DateFormat.MONTH_ONLY,
   isYearFormat: format === DateFormat.YEAR_ONLY,
   isHourFormat: format === DateFormat.HOUR,
+  isMinuteFormat: format === DateFormat.MINUTE,
 });
 
 const getDateFormatByProductIdAndRegionScope = (productId: ProductID, regionScope: RegionScope): DateFormat => {
