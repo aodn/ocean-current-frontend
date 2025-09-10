@@ -21,7 +21,7 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
   onChange,
   isMobile = false,
   isDisabled = false,
-  startDate, //startDate and endDate have the highest priority, if existed, they will overwrite dateList.
+  startDate, //startDate and endDate have the highest priority; if they exist, they will overwrite dateList.
   endDate,
 }) => {
   const { isMonthFormat, isMonthOnlyFormat, isYearFormat } = getDateFormatFlags(dateFormat);

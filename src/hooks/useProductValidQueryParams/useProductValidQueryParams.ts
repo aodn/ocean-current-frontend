@@ -7,10 +7,13 @@ export const useProductValidQueryParams = () => {
   const { mainProduct, subProduct } = useProductIdFromUrl('product') || {};
 
   if (
-    (!isProductGroupId(mainProduct as AnyProductID) || !isChildProductId(subProduct as AnyProductID)) &&
-    !isStandaloneProductId(mainProduct as AnyProductID)
-  )
+    !(
+      (isProductGroupId(mainProduct as AnyProductID) && isChildProductId(subProduct as AnyProductID)) ||
+      isStandaloneProductId(mainProduct as AnyProductID)
+    )
+  ) {
     throw new Error(`Invalid productId: ${mainProduct}`);
+  }
 
   if (mainProduct === 'argo') {
     const wmoid = searchParams['wmoid'];
