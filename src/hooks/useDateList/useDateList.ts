@@ -109,7 +109,10 @@ const useDateList = (productId: ProductID) => {
     ...sharedQueryConfig,
   });
 
-  const { data: latestArgoData, isLoading: isLatestArgoDataLoading } = useRegionLatestDates(productId, isArgo);
+  const { data: latestArgoLocationsData, isLoading: isLatestArgoLocationsDataLoading } = useRegionLatestDates(
+    productId,
+    isArgo && !isArgoValid,
+  );
 
   const { data } = isArgo ? argoQuery : standardQuery;
 
@@ -165,7 +168,7 @@ const useDateList = (productId: ProductID) => {
         //in argo but not in argo specific point.
         dateRange = {
           startDate: dayjs('20100101', dateFormat).toDate(),
-          endDate: dayjs(latestArgoData?.regionLatestDates[0].latestDate || new Date(), dateFormat).toDate(),
+          endDate: dayjs(latestArgoLocationsData?.regionLatestDates[0].latestDate || new Date(), dateFormat).toDate(),
         };
       } else {
         dateList = generateDateRange(productId, dateFormat, regionScope);
@@ -174,7 +177,7 @@ const useDateList = (productId: ProductID) => {
   }
 
   const combinedLoading = isArgo
-    ? argoQuery.isLoading && isLatestArgoDataLoading
+    ? argoQuery.isLoading && isLatestArgoLocationsDataLoading
     : shouldUseApi
       ? standardQuery.isLoading
       : monthlyMeansMockQuery.isLoading;

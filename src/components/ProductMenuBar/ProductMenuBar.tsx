@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { useDateList, useDateRange, useQueryParams, useProductValidQueryParams } from '@/hooks';
 import { Dropdown, ToggleButton, Button } from '@/components/Shared';
@@ -43,8 +43,10 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
   } = useProductCheck();
   const { isArgoValid } = useProductValidQueryParams();
   const productId = useProductStore((state) => state.productParams.productId);
-  const { data: latestArgoData, isLoading: isLatestArgoDataLoading } = useRegionLatestDates(productId, isArgo);
-
+  const { data: latestArgoLocationsData, isLoading: isLatestArgoLocationsDataLoading } = useRegionLatestDates(
+    productId,
+    isArgo && !isArgoValid,
+  );
   const shouldDisableOption =
     disableVideoCreation() ||
     isArgo ||
@@ -88,21 +90,18 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
       resetCurrentMetersStore();
       return updateQueryParamsAndNavigate(`current-meters/${mooredInstrumentArrayPath}`, initialState);
     }
-    if (isProductDateListLoading) return;
 
     const latestDate = dateList?.[dateList.length - 1]?.date;
 
     if (isArgo) {
       if (isArgoValid) {
         const latestArgoProfileCycle = argoProfileCycles.find((cycle) => cycle.date === latestDate)?.cycle;
-
         if (latestArgoProfileCycle !== undefined)
           updateQueryParams({ cycle: latestArgoProfileCycle, date: latestDate });
         return;
       }
-      if (isLatestArgoDataLoading) return;
 
-      return updateQueryParams({ date: latestArgoData?.regionLatestDates[0].latestDate });
+      return updateQueryParams({ date: latestArgoLocationsData?.regionLatestDates[0].latestDate });
     }
 
     updateQueryParams({ date: latestDate });
@@ -116,6 +115,21 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
       setSearchParams({ property, depth, region, deploymentPlot, date: id });
     }
   };
+
+  const resetBtnDisabled = useMemo(() => {
+    if (isLatestArgoLocationsDataLoading && isProductDateListLoading) return true;
+    if (isArgo && !isArgoValid) {
+      return !latestArgoLocationsData?.regionLatestDates[0].latestDate;
+    }
+    return dateList.length === 0;
+  }, [
+    dateList.length,
+    isArgo,
+    isArgoValid,
+    isLatestArgoLocationsDataLoading,
+    isProductDateListLoading,
+    latestArgoLocationsData?.regionLatestDates,
+  ]);
 
   return (
     <div className="mb-2 rounded-md">
@@ -141,7 +155,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
           aria-hidden
           className="flex-center h-11 w-12 rounded-md border-none bg-white p-2"
           aria-label="Reset to latest date"
-          disabled={isLatestArgoDataLoading && isLatestArgoDataLoading}
+          disabled={resetBtnDisabled}
         >
           <img src={ResetIcon} alt="reset icon" srcSet="" />
         </Button>
