@@ -165,7 +165,7 @@ const useDateList = (productId: ProductID) => {
       if (isArgo && !isArgoValid) {
         dateRange = {
           startDate: dayjs('20100101', dateFormat).toDate(),
-          endDate: dayjs(latestArgoLocationsData?.regionLatestDates[0].latestDate || new Date(), dateFormat).toDate(),
+          endDate: dayjs(latestArgoLocationsData?.regionLatestDates[0].latestDate || '20100101', dateFormat).toDate(),
         };
       } else {
         dateList = generateDateRange(productId, dateFormat, regionScope);
