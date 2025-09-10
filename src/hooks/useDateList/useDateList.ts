@@ -133,6 +133,9 @@ const useDateList = (productId: ProductID) => {
 
       const endDateOverride = exists ? firstCandidate : firstCandidate.subtract(1, 'month');
       return generateDateRange(productId, dateFormat, regionScope, endDateOverride);
+      //TODO: no need to create DateItem[] using generateDateRange to specify date range for date picker, we can
+      // pass startdate and enddate to datepicker, enddate can be grabbed from new api point(expect to be created)
+      // to get latest date, like what has been done for dateRange when isArgo && !isArgoValid like below.
     },
     enabled: !isArgo && !shouldUseApi && productId === 'monthlyMeans-anomalies' && Boolean(region),
     ...sharedQueryConfig,
