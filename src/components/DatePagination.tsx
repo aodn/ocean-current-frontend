@@ -1,6 +1,6 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import useDateNavigation from '@/hooks/useDateNavigation/useDateNavigation';
+import { useDateNavigation } from '@/hooks/useDateNavigation/useDateNavigation';
 import { useDateList } from '@/hooks';
 import { DateFormat } from '@/types/date';
 import { ProductID } from '@/types/product';
@@ -17,12 +17,14 @@ interface DatePaginationProps {
 
 const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, initialDate, isMobile }) => {
   const { isLoading, dateList, dateRange } = useDateList(productId);
-  const { currentDate, updateDate, goToPrevious, goToNext, canGoPrevious, canGoNext } = useDateNavigation({
+  const { navigationMode, dateListNavigation, dateRangeNavigation } = useDateNavigation({
     availableDates: dateList,
     dateFormat,
     initialDate,
+    dateRange,
   });
-
+  const { currentDate, updateDate, goToPrevious, goToNext, canGoPrevious, canGoNext } =
+    navigationMode === 'dateList' ? dateListNavigation : dateRangeNavigation;
   // For product only with fixed date range (sst timeseries)
   const isSstTimeseries = productId === 'sixDaySst-timeseries';
   const isDatePickerDisabled = isSstTimeseries;
