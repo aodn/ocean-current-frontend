@@ -6,6 +6,8 @@ import { useArgoStore } from '@/stores/argo-store/argoStore';
 import { isHourlyFormat, findFirstDateTimeForSelectedDay } from '@/utils/date-utils/hourly';
 import { findClosestDateIndex } from '@/utils/date-utils/date';
 
+type NavigationMode = 'dateList' | 'dateRange';
+
 interface UseDateListNavigationProps {
   dateFormat: DateFormat;
   availableDates: DateItem[];
@@ -393,7 +395,7 @@ export const useDateNavigation = ({ dateFormat, availableDates = [], initialDate
     dateRange: dateRange || { startDate: new Date(), endDate: new Date() },
   });
 
-  const navigationMode = availableDates.length > 0 && !dateRange ? 'dateList' : 'dateRange';
+  const navigationMode: NavigationMode = availableDates.length > 0 && !dateRange ? 'dateList' : 'dateRange';
 
   return useMemo(() => {
     return {
