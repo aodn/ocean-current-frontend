@@ -185,12 +185,18 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
         mapFitBounds(regionBounds);
       }
 
-      const { code: regionCode } = getPropertyFromMapFeatures<{
+      const { code } = getPropertyFromMapFeatures<{
         name: string;
         code: string;
       }>(map, e, PRODUCT_REGION_BOX_LAYER_ID, ['name', 'code']);
 
-      if (regionCode) {
+      if (code) {
+        let regionCode = code;
+        // EAC Mooring Array has data from only one region - Brisbane
+        if (productId === 'EACMooringArray' && code === 'Brisbane2') {
+          regionCode = 'Brisbane';
+        }
+
         (async () => {
           let targetPath = `/product/${baseProductPath}`;
           let queryObject: Record<string, unknown> = {};

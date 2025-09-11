@@ -167,6 +167,13 @@ const DataVisualisationLayout: React.FC = () => {
   );
 
   useEffect(() => {
+    // EAC Mooring Array has data from only one region - Brisbane
+    if (productId === 'EACMooringArray' && regionCodeFromUrl === 'Brisbane') {
+      setRegionCode('Brisbane');
+      setRegionTitle('Brisbane');
+      setRegionScope(RegionScope.Local);
+      return;
+    }
     const region = getRegionByRegionCode(regionCodeFromUrl as string);
     let regionCode: string = region?.code || 'Au';
     if (isSurfaceWavesBuoyTimeseries && regionCodeFromUrl) {
@@ -177,7 +184,7 @@ const DataVisualisationLayout: React.FC = () => {
     setRegionCode(regionCode);
     setRegionTitle(regionName);
     setRegionScope(regionScope);
-  }, [regionCodeFromUrl, isSurfaceWavesBuoyTimeseries]);
+  }, [regionCodeFromUrl, isSurfaceWavesBuoyTimeseries, productId]);
 
   useEffect(() => {
     if (!date) return;

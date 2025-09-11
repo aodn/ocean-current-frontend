@@ -76,7 +76,7 @@ const shouldUseSealCtdProcessor = (productId: ProductID, files: ImageFile[]): bo
   if (isSealCtdTimeseriesProduct) return true;
 
   // Fallback heuristic by filename pattern (T_YYYY_pN.gif or S_YYYY[_YYYY]_pN.gif)
-  return files.some(({ name }) => SEAL_CTD_FILENAME_REGEX.test(name));
+  return files?.some(({ name }) => SEAL_CTD_FILENAME_REGEX.test(name)) || false;
 };
 
 const useDateList = (productId: ProductID) => {
@@ -149,7 +149,17 @@ const useDateList = (productId: ProductID) => {
       dateList = processArgoDateList(data as ArgoProfileCycle[]);
     } else {
       const files = data as ImageListResponse[];
-      const fileList = (files[0]?.files as ImageFile[]) || [];
+
+      // Special case for tidalCurrents-sl and tidalCurrents-spd in KingSound region
+      // they have two folders on the server
+      const tidalCurrentsSpecialCase =
+        (productId === 'tidalCurrents-sl' || productId === 'tidalCurrents-spd') && region === 'KingSound';
+      let fileList = [];
+      if (tidalCurrentsSpecialCase) {
+        fileList = (files[1]?.files as ImageFile[]) || [];
+      } else {
+        fileList = (files[0]?.files as ImageFile[]) || [];
+      }
 
       dateList = shouldUseSealCtdProcessor(productId, fileList)
         ? processSealCtdDateList(fileList)
