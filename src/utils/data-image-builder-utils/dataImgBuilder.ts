@@ -8,6 +8,10 @@ import { AnyProductID, ProductID, RootProductID } from '@/types/product';
 import { apiConfig } from '@/configs/api';
 import { findLeafFlatProductById } from '../product-utils/product';
 
+type ProductVideoUrlBuilder = Partial<Record<RootProductID, string>> & {
+  default: string;
+};
+
 const getBaseUrlByProductId = (productId: AnyProductID): string =>
   productId === 'surfaceWaves' ? imageUrlConfig.imageS3BaseUrl : imageUrlConfig.imageBaseUrl;
 
@@ -119,6 +123,10 @@ const buildProductImageUrl = (
       const baseUrl = isProxyRequired ? apiConfig.ec2ProxyURL : remoteBaseUrl;
       return `${baseUrl}/${updatedRegionCode}/${formattedDate}.gif`;
     },
+    EACMooringArray: () => {
+      const baseUrl = isProxyRequired ? apiConfig.ec2ProxyURL : remoteBaseUrl;
+      return `${baseUrl}/EAC_array_figures/SST/Brisbane/${formattedDate}.gif`;
+    },
     default: () => {
       const subProductSegment = product.imgPath ? `/${product.imgPath}` : '';
       const baseUrl = isProxyRequired ? apiConfig.ec2ProxyURL : remoteBaseUrl;
@@ -137,6 +145,11 @@ const buildProductImageUrl = (
   if (productId === 'adjustedSeaLevelAnomaly-sst') {
     return productUrl.adjustedSeaLevelAnomaly();
   }
+
+  if (productId === 'EACMooringArray') {
+    return productUrl.EACMooringArray();
+  }
+
   return productUrl.default();
 };
 
@@ -163,7 +176,7 @@ const buildProductVideoUrl = (
 
   const baseUrl = getBaseUrlByProductId(productId);
 
-  const productUrl = {
+  const productUrl: ProductVideoUrlBuilder = {
     surfaceWaves: `${baseUrl}/WAVES/y${year}/m${month}/Au_wave_m${month}.mp4`,
     fourHourSst: `${baseUrl}/${productSegment}/${imgPath}/${regionCode}/${regionCode}_${imgPath}_${year}${month}.mp4`,
     monthlyMeans: `${baseUrl}/${productSegment}/${regionCode}/${regionCode}.mp4`,
@@ -178,6 +191,10 @@ const buildProductVideoUrl = (
 
   if (productId.startsWith('oceanColour-') && regionScope === RegionScope.Local) {
     return `${baseUrl}/${regionCode}_chl/${regionCode}_chl${dayjs(date).format(DateFormat.MONTH)}.mp4`;
+  }
+
+  if (productId === 'EACMooringArray') {
+    return `${baseUrl}/EAC_array_figures/SST/Brisbane/Brisbane_SST_${year}_${quarter}.mp4`;
   }
 
   return productUrl[productData.parentId as keyof typeof productUrl] || productUrl.default;

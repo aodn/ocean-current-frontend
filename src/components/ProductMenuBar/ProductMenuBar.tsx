@@ -24,6 +24,7 @@ import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
 const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView = false }) => {
   const { disableVideoCreation } = useDateRange();
+
   const { updateQueryParamsAndNavigate, updateQueryParams } = useQueryParams();
   const argoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
 
@@ -32,15 +33,8 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
   const [showVideo, setLocalShowVideo] = useState(false);
   const { date: currentMetersDate, property, depth, region, deploymentPlot } = useCurrentMetersStore();
   const [_, setSearchParams] = useSearchParams();
-  const {
-    isArgo,
-    isCurrentMeters,
-    isSurfaceWavesBuoyTimeseries,
-    isEACMooringArray,
-    isTidalCurrents,
-    isSealCtd,
-    isSealCtdTags,
-  } = useProductCheck();
+  const { isArgo, isCurrentMeters, isSurfaceWavesBuoyTimeseries, isTidalCurrents, isSealCtd, isSealCtdTags } =
+    useProductCheck();
   const { isArgoValid } = useProductValidQueryParams();
   const productId = useProductStore((state) => state.productParams.productId);
   const { data: latestArgoLocationsData, isLoading: isLatestArgoLocationsDataLoading } = useRegionLatestDates(
@@ -53,7 +47,6 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
     isMapView ||
     isCurrentMeters ||
     isSurfaceWavesBuoyTimeseries ||
-    isEACMooringArray ||
     isTidalCurrents ||
     (isSealCtd && productId !== 'sealCtd-sealTracks') ||
     isSealCtdTags;
