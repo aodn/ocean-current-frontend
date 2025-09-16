@@ -108,10 +108,10 @@ const Navbar: React.FC = () => {
                 <NavbarMenu items={menuItems[hoverIndex].links || []} />
               </div>
             )}
-            <div className="flex cursor-pointer content-center justify-center">
+            <div className="flex cursor-pointer items-center justify-center">
               <LinkOrAnchor
                 to="https://oceancurrent.aodn.org.au/"
-                className="flex items-center rounded-md bg-[#D7F4F2] px-3"
+                className="flex items-center rounded-md bg-[#D7F4F2] px-3 py-2"
               >
                 <img src={legacyIcon} alt="legacy icon" className="mr-2 w-4" />
                 <span className="font-medium text-imos-nav-text decoration-imos-deep-blue decoration-2 underline-offset-[3px] hover:underline">
