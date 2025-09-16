@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router';
 import logo from '@/assets/images/imos-logo.png';
+import legacyIcon from '@/assets/images/legacy-site.png';
 import { linksData } from '@/data/linksData';
 import { LinkItem, SectionLinks } from '@/types/navbar';
 import { BrandingText } from '@/constants/textConstant';
@@ -66,25 +67,25 @@ const Navbar: React.FC = () => {
         <div className="flex items-center justify-center capitalize text-black max-md:flex-wrap">
           <div
             onMouseLeave={() => closeNavbarMenu()}
-            className="relative flex justify-between gap-20 self-start text-base max-md:max-w-full max-md:flex-wrap"
+            className="relative flex justify-between gap-20 self-start text-base font-semibold leading-[16px] text-imos-nav-text max-md:max-w-full max-md:flex-wrap"
           >
             {menuItems.map((item, index) => (
               <div
                 key={item.title}
                 onMouseEnter={(event) => setPositionNavbar(index, event.currentTarget)}
-                className="flex cursor-pointer content-center justify-center py-4 text-black"
+                className="flex cursor-pointer items-center justify-center py-3"
               >
                 {item.url ? (
                   <LinkOrAnchor
                     to={item.url}
-                    className={`decoration-imos-deep-blue decoration-2 underline-offset-[3px] ${hoverIndex === index ? 'underline' : ''}`}
+                    className={`text-imos-nav-text decoration-imos-deep-blue decoration-2 underline-offset-[3px] ${hoverIndex === index ? 'underline' : ''}`}
                   >
                     {item.title}
                   </LinkOrAnchor>
                 ) : (
                   <span
                     ref={(el) => (menuItemRefs.current[index] = el)}
-                    className={`decoration-imos-deep-blue decoration-2 underline-offset-[3px] ${hoverIndex === index ? 'underline' : ''}`}
+                    className={`text-imos-nav-text decoration-imos-deep-blue decoration-2 underline-offset-[3px] ${hoverIndex === index ? 'underline' : ''}`}
                   >
                     {item.title}
                   </span>
@@ -107,6 +108,17 @@ const Navbar: React.FC = () => {
                 <NavbarMenu items={menuItems[hoverIndex].links || []} />
               </div>
             )}
+            <div className="flex cursor-pointer items-center justify-center">
+              <LinkOrAnchor
+                to="https://oceancurrent.aodn.org.au/"
+                className="flex items-center rounded-md bg-[#D7F4F2] px-3 py-2"
+              >
+                <img src={legacyIcon} alt="legacy icon" className="mr-2 w-4" />
+                <span className="font-medium text-imos-nav-text decoration-imos-deep-blue decoration-2 underline-offset-[3px] hover:underline">
+                  Legacy Site
+                </span>
+              </LinkOrAnchor>
+            </div>
           </div>
         </div>
       </nav>

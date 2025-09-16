@@ -32,6 +32,7 @@ export default {
         'imos-horizon-blue': color.horizonBlue,
         'imos-bright-magenta': color.brightMagenta,
         'imos-dodger-blue': color.dodgerBlue,
+        'imos-nav-text': color.navTextColor,
       },
       backgroundImage: {
         'background-gradient': 'linear-gradient(180deg, #DCDCDC 0%, rgba(217, 217, 217, 0.34) 100%)',
