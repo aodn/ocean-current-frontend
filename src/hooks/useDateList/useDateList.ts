@@ -7,7 +7,7 @@ import { fetchImageListByProductIdAndRegion } from '@/services/imageList';
 import { ImageFile, ImageListResponse } from '@/types/imageList';
 import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
 import { ArgoProfileCycle } from '@/types/argo';
-import { DateItem } from '@/types/date';
+import { DateItem, OceanColourDateItem } from '@/types/date';
 import useProductStore from '@/stores/product-store/productStore';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import { buildProductImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
@@ -67,6 +67,35 @@ const processFilesToDateList = (files: ImageFile[]): DateItem[] => {
       date: extractDateFromFilename(file.name),
     }))
     .filter(({ date }) => /^\d+$/.test(date));
+};
+
+const processOceanColourFilesToDateList = (imageGroups: ImageListResponse[]): OceanColourDateItem[] => {
+  if (!imageGroups || imageGroups.length === 0) {
+    return [];
+  }
+
+  const dateList: OceanColourDateItem[] = [];
+
+  // Process all groups (both with and without year folders)
+  imageGroups.forEach((group) => {
+    if (group.files && group.files.length > 0) {
+      group.files.forEach((file) => {
+        const date = extractDateFromFilename(file.name);
+        if (/^\d+$/.test(date)) {
+          dateList.push({
+            date,
+            path: group.path,
+          });
+        }
+      });
+    }
+  });
+
+  const uniqueDateList = dateList
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .filter((item, index, array) => index === 0 || item.date !== array[index - 1].date);
+
+  return uniqueDateList;
 };
 
 const shouldUseSealCtdProcessor = (productId: ProductID, files: ImageFile[]): boolean => {
@@ -150,20 +179,28 @@ const useDateList = (productId: ProductID) => {
     } else {
       const files = data as ImageListResponse[];
 
-      // Special case for tidalCurrents-sl and tidalCurrents-spd in KingSound region
-      // they have two folders on the server
-      const tidalCurrentsSpecialCase =
-        (productId === 'tidalCurrents-sl' || productId === 'tidalCurrents-spd') && region === 'KingSound';
-      let fileList = [];
-      if (tidalCurrentsSpecialCase) {
-        fileList = (files[1]?.files as ImageFile[]) || [];
-      } else {
-        fileList = (files[0]?.files as ImageFile[]) || [];
-      }
+      // Special case for ocean colour products that may have year folders
+      const isOceanColour = productId === 'oceanColour-chlA';
 
-      dateList = shouldUseSealCtdProcessor(productId, fileList)
-        ? processSealCtdDateList(fileList)
-        : processFilesToDateList(fileList);
+      if (isOceanColour) {
+        // Process all groups to capture both regular and year-based files
+        dateList = processOceanColourFilesToDateList(files);
+      } else {
+        // Special case for tidalCurrents-sl and tidalCurrents-spd in KingSound region
+        // they have two folders on the server
+        const tidalCurrentsSpecialCase =
+          (productId === 'tidalCurrents-sl' || productId === 'tidalCurrents-spd') && region === 'KingSound';
+        let fileList = [];
+        if (tidalCurrentsSpecialCase) {
+          fileList = (files[1]?.files as ImageFile[]) || [];
+        } else {
+          fileList = (files[0]?.files as ImageFile[]) || [];
+        }
+
+        dateList = shouldUseSealCtdProcessor(productId, fileList)
+          ? processSealCtdDateList(fileList)
+          : processFilesToDateList(fileList);
+      }
     }
   }
 

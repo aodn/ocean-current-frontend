@@ -5,14 +5,10 @@ import dayjs from 'dayjs';
 import { DateFormat } from '@/types/date';
 import { getDateFormatFlags } from '@/utils/date-utils/date';
 import { findFirstDateTimeForSelectedDay } from '@/utils/date-utils/hourly';
-import { findDateRangeInfo } from '../utils';
 import { MultiFormatDatePickerProps } from '../types/multiFormatDatePicker.types';
 import CustomInputMobile from './CustomInputMobile';
 import CustomInput from './CustomInput';
 import MonthOnlyHeader from './MonthOnlyHeader';
-
-// Threshold for switching from includeDates to excludeDates strategy for performance
-const LARGE_DATE_LIST_THRESHOLD = 500;
 
 const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
   dateFormat,
@@ -27,29 +23,34 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
   const { isMonthFormat, isMonthOnlyFormat, isYearFormat, isHourFormat, isMinuteFormat } =
     getDateFormatFlags(dateFormat);
 
-  const { missingDates, firstDate, lastDate } = useMemo(() => {
-    if (dateList.length >= LARGE_DATE_LIST_THRESHOLD) {
-      return findDateRangeInfo(
-        dateList.map(({ date }) => date),
-        dateFormat,
-      );
-    }
-
+  const { availableDatesSet, firstDate, lastDate } = useMemo(() => {
     const dates = dateList.map(({ date }) => date);
     if (dates.length === 0) {
-      return { missingDates: [], firstDate: new Date(), lastDate: new Date() };
+      return { availableDatesSet: new Set<string>(), firstDate: new Date(), lastDate: new Date() };
     }
 
     const sortedDates = [...dates].sort();
     const firstDateStr = sortedDates[0];
     const lastDateStr = sortedDates[sortedDates.length - 1];
 
+    const availableDatesSet = new Set<string>();
+    dates.forEach((dateStr) => {
+      const date = dayjs(dateStr, dateFormat);
+      const dayStr = date.format(DateFormat.DAY);
+      availableDatesSet.add(dayStr);
+    });
+
     return {
-      missingDates: [],
+      availableDatesSet,
       firstDate: dayjs(firstDateStr, dateFormat).toDate(),
       lastDate: dayjs(lastDateStr, dateFormat).toDate(),
     };
   }, [dateList, dateFormat]);
+
+  const filterAvailableDate = (date: Date): boolean => {
+    const dayStr = dayjs(date).format(DateFormat.DAY);
+    return availableDatesSet.has(dayStr);
+  };
 
   const handleDateChange = (date: Date | null) => {
     if (isDisabled) return;
@@ -115,30 +116,13 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
     );
   }
 
-  if (dateList.length < LARGE_DATE_LIST_THRESHOLD) {
-    return (
-      <ReactDatePicker
-        customInput={isMobile ? <CustomInputMobile disabled={isDisabled} /> : <CustomInput disabled={isDisabled} />}
-        selected={selectedDate}
-        minDate={startDate || firstDate}
-        maxDate={endDate || lastDate}
-        includeDates={startDate && endDate ? undefined : dateList.map(({ date }) => dayjs(date, dateFormat).toDate())}
-        onChange={handleDateChange}
-        showYearDropdown
-        showMonthDropdown
-        dropdownMode="select"
-        disabled={isDisabled}
-      />
-    );
-  }
-
   return (
     <ReactDatePicker
       customInput={isMobile ? <CustomInputMobile disabled={isDisabled} /> : <CustomInput disabled={isDisabled} />}
       selected={selectedDate}
       minDate={startDate || firstDate}
       maxDate={endDate || lastDate}
-      excludeDates={startDate && endDate ? undefined : missingDates}
+      filterDate={startDate && endDate ? undefined : filterAvailableDate}
       onChange={handleDateChange}
       showYearDropdown
       showMonthDropdown

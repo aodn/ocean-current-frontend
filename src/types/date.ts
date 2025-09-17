@@ -23,3 +23,7 @@ export enum DateUnit {
 export interface DateItem {
   date: string;
 }
+
+export interface OceanColourDateItem extends DateItem {
+  path?: string; // For ocean colour images that may have year folders
+}
