@@ -66,8 +66,6 @@ const ProductContent: React.FC = () => {
   const useArgoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
   const { mainProduct, subProduct } = useProductConvert();
 
-  // const isOceanColourChlA = useProductId === 'oceanColour-chlA';
-
   const { data: oceanColourImageData } = useQuery({
     queryKey: ['dateList', useProductId, useRegionCode],
     queryFn: () => fetchImageListByProductIdAndRegion(useProductId, useRegionCode!),
