@@ -3,7 +3,7 @@ import { RegionScope } from '@/constants/region';
 import { imageUrlConfig } from '@/configs/image';
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
 import { ArgoDepths } from '@/constants/argo';
-import { DateFormat } from '@/types/date';
+import { DateFormat, OceanColourDateItem } from '@/types/date';
 import { AnyProductID, ProductID, RootProductID } from '@/types/product';
 import { apiConfig } from '@/configs/api';
 import { findLeafFlatProductById } from '../product-utils/product';
@@ -319,12 +319,33 @@ const buildSealCtdTagsDataImageUrl = (sealTagId: string, date: Dayjs, productId:
   return `${imageUrlConfig.imageBaseUrl}/AATAMS/SATTAGS/${sealTagId}/${filename()}.gif`;
 };
 
+const buildOceanColourImageUrl = (
+  regionCode: string,
+  date: string,
+  dateFormat: DateFormat,
+  dateList: OceanColourDateItem[],
+  isProxyRequired: boolean = false,
+): string => {
+  const formattedDate = dayjs(date).format(dateFormat);
+  const baseUrl = isProxyRequired ? apiConfig.ec2ProxyURL : imageUrlConfig.imageBaseUrl;
+
+  const dateItem = dateList.find((item) => item.date === formattedDate);
+
+  if (dateItem && dateItem.path) {
+    // Use the path from the API response (e.g., "/TimorP_chl" or "/TimorP_chl/2024")
+    return `${baseUrl}${dateItem.path}/${formattedDate}.gif`;
+  }
+
+  return `${baseUrl}/${regionCode}_chl/${formattedDate}.gif`;
+};
+
 export {
   getTargetRegionScopePath,
   getProductSegmentByProductId,
   formatDateByProductId,
   validateProductAndSubProduct,
   buildProductImageUrl,
+  buildOceanColourImageUrl,
   buildArgoImageUrl,
   buildSurfaceWavesImageUrl,
   buildProductVideoUrl,

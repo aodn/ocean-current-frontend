@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useOutletContext, useSearchParams } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import {
   buildProductImageUrl,
+  buildOceanColourImageUrl,
   buildArgoImageUrl,
   getTargetRegionScopePath,
   buildProductVideoUrl,
@@ -15,6 +17,7 @@ import {
   buildSealCtdTagsDataImageUrl,
   buildSurfaceWavesBuoyTimeseriesImageUrl,
   buildSurfaceWavesImageUrl,
+  formatDateByProductId,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import useProductStore from '@/stores/product-store/productStore';
@@ -27,6 +30,10 @@ import useDateStore from '@/stores/date-store/dateStore';
 import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
 import { VideoPlayerOutletContext } from '@/types/router';
 import { checkProductHasArgoTags } from '@/utils/argo-utils/argoTag';
+import { OceanColourDateItem } from '@/types/date';
+import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
+import { fetchImageListByProductIdAndRegion } from '@/services/imageList';
+import { sharedQueryConfig } from '@/configs/query';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
 import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
@@ -51,12 +58,50 @@ const ProductContent: React.FC = () => {
     isSealCtd,
     isSealCtdTags,
     isSurfaceWavesBuoyTimeseries,
+    isOceanColourChlA,
   } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const useRegionCode = useProductStore((state) => state.productParams.regionCode);
   const useProductId = useProductStore((state) => state.productParams.productId);
   const useArgoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
   const { mainProduct, subProduct } = useProductConvert();
+
+  // const isOceanColourChlA = useProductId === 'oceanColour-chlA';
+
+  const { data: oceanColourImageData } = useQuery({
+    queryKey: ['dateList', useProductId, useRegionCode],
+    queryFn: () => fetchImageListByProductIdAndRegion(useProductId, useRegionCode!),
+    enabled: isOceanColourChlA && Boolean(useRegionCode),
+    ...sharedQueryConfig,
+  });
+
+  const extractDateFromFilename = (filename: string): string => {
+    return filename.split('.')[0];
+  };
+
+  const oceanColourDateList: OceanColourDateItem[] =
+    isOceanColourChlA && oceanColourImageData
+      ? oceanColourImageData
+          .flatMap(
+            (group) =>
+              group.files?.map((file) => {
+                const rawDate = extractDateFromFilename(file.name);
+                try {
+                  const formattedDate = formatDateByProductId('oceanColour-chlA', rawDate, regionScope);
+                  return {
+                    date: formattedDate,
+                    path: group.path,
+                  };
+                } catch {
+                  return {
+                    date: rawDate,
+                    path: group.path,
+                  };
+                }
+              }) || [],
+          )
+          .filter(({ date }) => /^\d+$/.test(date))
+      : [];
 
   const { worldMeteorologicalOrgId, cycle, depth } = useArgoStore((state) => state.selectedArgoParams);
   const { showVideo } = useOutletContext<VideoPlayerOutletContext>();
@@ -159,6 +204,10 @@ const ProductContent: React.FC = () => {
           return buildSurfaceWavesImageUrl(useDate);
         case useProductId === 'surfaceWaves-buoyTimeseries' && hasSelectedBuoyRegionFromUrl:
           return buildSurfaceWavesBuoyTimeseriesImageUrl(buoyRegionUrlParam, useDate);
+        case isOceanColourChlA: {
+          const dateFormat = getDateFormatByProductIdAndRegionScope('oceanColour-chlA', regionScope);
+          return buildOceanColourImageUrl(regionPath ?? 'Au', useDate.toString(), dateFormat, oceanColourDateList);
+        }
         default:
           return buildProductImageUrl(useProductId, regionPath ?? 'Au', targetPathRegion, useDate.toString());
       }
