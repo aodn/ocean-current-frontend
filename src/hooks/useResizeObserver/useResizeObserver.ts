@@ -18,14 +18,12 @@ export function useResizeObserver(
   debounceMs?: number,
 ): void;
 
-// Additional overload for union types (window | element | null)
 export function useResizeObserver<T extends HTMLElement>(
   ref: 'window' | T | null,
   callback: ((entry: { width: number; height: number }) => void) | (() => void),
   debounceMs?: number,
 ): void;
 
-// Implementation
 export function useResizeObserver<T extends HTMLElement>(
   ref: React.RefObject<T | null> | 'window' | T | null,
   callback:
@@ -37,7 +35,7 @@ export function useResizeObserver<T extends HTMLElement>(
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    // Handle window resize
+    // window resize
     if (ref === 'window') {
       const handleResize = () => {
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -50,7 +48,6 @@ export function useResizeObserver<T extends HTMLElement>(
       };
 
       window.addEventListener('resize', handleResize);
-      // Call immediately to get initial dimensions
       handleResize();
 
       return () => {
@@ -59,7 +56,7 @@ export function useResizeObserver<T extends HTMLElement>(
       };
     }
 
-    // Handle RefObject case
+    // RefObject case
     if (ref && typeof ref === 'object' && 'current' in ref) {
       if (!ref.current) return;
       const element = ref.current;
@@ -86,7 +83,7 @@ export function useResizeObserver<T extends HTMLElement>(
       };
     }
 
-    // Handle direct HTMLElement case
+    // direct HTMLElement case
     if (ref instanceof HTMLElement) {
       const element = ref;
 
@@ -111,7 +108,5 @@ export function useResizeObserver<T extends HTMLElement>(
         }
       };
     }
-
-    // ref is null - do nothing
   }, [ref, callback, debounceMs]);
 }
