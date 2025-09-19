@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
-import { findMostRecentDateBefore } from '@/utils/date-utils/date';
+import { findMostRecentDateBefore, getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { calculateImageScales } from '@/utils/general-utils/general';
 import { ArgoTagMapArea } from '@/types/argo';
 import { convertCoordsBasedOnImageScale, getArgoTagFilePathByProductId } from '@/utils/argo-utils/argoTag';
@@ -9,12 +9,13 @@ import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { RegionScope } from '@/constants/region';
 import { useImageArgoTags } from '@/services/hooks';
+import { ProductID } from '@/types/product';
 
 type DataImageWithArgoMapProps = {
   src: string;
-  productId: string;
+  productId: ProductID;
   regionCode: string;
-  regionScope?: RegionScope;
+  regionScope: RegionScope;
   date: Dayjs;
 };
 
@@ -26,18 +27,19 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   date,
 }) => {
   const argoTagFilePathValue = getArgoTagFilePathByProductId(productId);
+  const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
   const argoTagFilePath = regionScope === RegionScope.Local ? argoTagFilePathValue?.local : argoTagFilePathValue?.state;
 
   if (!argoTagFilePathValue || !argoTagFilePath) {
     throw new Error(`Argo tag file path not found for product id: ${productId}`);
   }
 
-  const dateFormatted = dayjs(date).format('YYYYMMDD');
+  const dateFormatted = dayjs(date).format(dateFormat);
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [coords, setCoords] = useState<ArgoTagMapArea[]>([]);
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const { mainProduct } = useProductConvert();
-  const { data } = useImageArgoTags(date, argoTagFilePath, regionCode);
+  const { data } = useImageArgoTags({ date, tagPath: argoTagFilePath, regionCode, dateFormat });
   const alt = `${productId} data in ${regionCode} at ${dateFormatted}`;
 
   useEffect(() => {

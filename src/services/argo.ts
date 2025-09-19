@@ -21,18 +21,16 @@ const fetchArgoProfileCyclesByWmoId = async (wmoId: string): Promise<ArgoProfile
   return res.data.sort((a, b) => a.date.localeCompare(b.date));
 };
 
-const fetchArgoTags = async (date: Dayjs, tagPath: string, region: string) => {
-  const validateDate = dayjs(date);
-
-  if (validateDate.isValid()) {
-    return await ec2ProxyClient.get<string>(`/${tagPath}/TAGS/${region}/${validateDate.format('YYYYMMDD')}.txt`, {
-      headers: {
-        'Content-Type': ContentType.Text,
-      },
-    });
-  } else {
-    throw new Error('Invalid date format for Argo tags. Please use YYYYMMDD.');
+const fetchArgoTags = async (dateString: string, tagPath: string, regionPath: string) => {
+  if (!dateString || !/^\d+$/.test(dateString)) {
+    throw new Error('Invalid date format for Argo tags. Date must be a numeric string.');
   }
+
+  return await ec2ProxyClient.get<string>(`/${tagPath}/TAGS/${regionPath}/${dateString}.txt`, {
+    headers: {
+      'Content-Type': ContentType.Text,
+    },
+  });
 };
 
 export { fetchArgoProfilesByDate, fetchArgoProfileCyclesByWmoId, fetchArgoTags };

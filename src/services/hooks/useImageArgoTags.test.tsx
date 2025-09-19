@@ -1,34 +1,32 @@
-import { renderHook } from '@testing-library/react';
+import { renderHook, waitFor } from '@testing-library/react';
 import { Dayjs } from 'dayjs';
 import { vi } from 'vitest';
+import { AxiosResponse } from 'axios';
 import { fetchArgoTags } from '@/services/argo';
 import { parseArgoTagDataFromText } from '@/utils/argo-utils/argoTag';
-import useDataFetch from './useDataFetch';
+import { DateFormat } from '@/types/date';
+import { createQueryWrapper } from '@/test/queryClientUtils';
 import useImageArgoTags from './useImageArgoTags';
 
-vi.mock('./useDataFetch');
 vi.mock('@/services/argo');
 vi.mock('@/utils/argo-utils/argoTag');
 
 describe('useImageArgoTags', () => {
-  const mockDate = vi.fn() as unknown as Dayjs;
+  const mockDate = {
+    format: vi.fn().mockReturnValue('20231201'),
+  } as unknown as Dayjs;
   const mockTagPath = 'testTagPath';
   const mockRegionCode = 'testRegionCode';
+  const mockDateFormat = DateFormat.DAY;
 
-  const setup = (date = mockDate, tagPath = mockTagPath, regionCode = mockRegionCode) =>
-    renderHook(() => useImageArgoTags(date, tagPath, regionCode));
+  const setup = (date = mockDate, tagPath = mockTagPath, regionCode = mockRegionCode, dateFormat = mockDateFormat) =>
+    renderHook(() => useImageArgoTags({ date, tagPath, regionCode, dateFormat }), { wrapper: createQueryWrapper() });
 
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it('should return loading true initially', () => {
-    vi.mocked(useDataFetch).mockReturnValue({
-      data: null,
-      loading: true,
-      error: null,
-    });
-
     const { result } = setup();
 
     expect(result.current.loading).toBe(true);
@@ -36,7 +34,7 @@ describe('useImageArgoTags', () => {
     expect(result.current.error).toBeNull();
   });
 
-  it('should return parsed data when data is fetched', () => {
+  it('should return parsed data when data is fetched', async () => {
     const mockData = 'mock data';
     const parsedData = [
       {
@@ -58,36 +56,37 @@ describe('useImageArgoTags', () => {
         dataSource: 'source2',
       },
     ];
-    vi.mocked(useDataFetch).mockReturnValue({
+
+    vi.mocked(fetchArgoTags).mockResolvedValue({
       data: mockData,
-      loading: false,
-      error: null,
-    });
+    } as AxiosResponse<string>);
     vi.mocked(parseArgoTagDataFromText).mockReturnValue(parsedData);
 
     const { result } = setup();
 
-    expect(result.current.loading).toBe(false);
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
+
     expect(result.current.data).toEqual(parsedData);
     expect(result.current.error).toBeNull();
   });
 
-  it('should handle error state', () => {
+  it('should handle error state', async () => {
     const error = new Error('Fetch error');
-    vi.mocked(useDataFetch).mockReturnValue({
-      data: null,
-      loading: false,
-      error,
-    });
+    vi.mocked(fetchArgoTags).mockRejectedValue(error);
 
     const { result } = setup();
 
-    expect(result.current.loading).toBe(false);
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
+
     expect(result.current.data).toEqual([]);
     expect(result.current.error).toBe(error);
   });
 
-  it('should use special regionPath for SnapshotCHL', () => {
+  it('should use special regionPath for SnapshotCHL', async () => {
     const mockData = 'mock data';
     const parsedData = [
       {
@@ -109,18 +108,29 @@ describe('useImageArgoTags', () => {
         dataSource: 'source2',
       },
     ];
-    vi.mocked(useDataFetch).mockReturnValue({
+
+    vi.mocked(fetchArgoTags).mockResolvedValue({
       data: mockData,
-      loading: false,
-      error: null,
-    });
+    } as AxiosResponse<string>);
     vi.mocked(parseArgoTagDataFromText).mockReturnValue(parsedData);
 
-    const { result } = renderHook(() => useImageArgoTags(mockDate, 'SnapshotCHL', mockRegionCode));
+    const { result } = renderHook(
+      () =>
+        useImageArgoTags({
+          date: mockDate,
+          tagPath: 'SnapshotCHL',
+          regionCode: mockRegionCode,
+          dateFormat: mockDateFormat,
+        }),
+      { wrapper: createQueryWrapper() },
+    );
 
-    expect(result.current.loading).toBe(false);
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
+
     expect(result.current.data).toEqual(parsedData);
     expect(result.current.error).toBeNull();
-    expect(useDataFetch).toHaveBeenCalledWith(fetchArgoTags, [mockDate, 'SnapshotCHL', `${mockRegionCode}_chl`]);
+    expect(fetchArgoTags).toHaveBeenCalledWith('20231201', 'SnapshotCHL', `${mockRegionCode}_chl`);
   });
 });

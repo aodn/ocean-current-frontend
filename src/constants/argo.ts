@@ -6,23 +6,23 @@ export enum ArgoDepths {
 }
 
 export const argoTagFilePaths: ArgoTagPath = {
-  // TODO: implement after json files are available
-  // 'fourHourSst-sstFilled': {
-  //   state: null,
-  //   local: 'SST_4hr',
-  // },
-  // 'fourHourSst-sst': {
-  //   state: null,
-  //   local: 'SST_4hr',
-  // },
-  // 'fourHourSst-sstAge': {
-  //   state: null,
-  //   local: 'SST_4hr',
-  // },
-  // 'fourHourSst-windSpeed': {
-  //   state: null,
-  //   local: 'SST_4hr',
-  // },
+  // TODO: covert to api endpoint path after backend is updated
+  'fourHourSst-sstFilled': {
+    state: null,
+    local: 'SST_4hr',
+  },
+  'fourHourSst-sst': {
+    state: null,
+    local: 'SST_4hr',
+  },
+  'fourHourSst-sstAge': {
+    state: null,
+    local: 'SST_4hr',
+  },
+  'fourHourSst-windSpeed': {
+    state: null,
+    local: 'SST_4hr',
+  },
   'sixDaySst-sst': {
     state: 'STATE_daily',
     local: 'DR_SST_daily',
