@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { useNavigate } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
@@ -14,6 +14,7 @@ import { DateFormat } from '@/types/date';
 import { ProductPath } from '@/types/router';
 import { fetchImageListByProductIdAndRegion } from '@/services/imageList';
 import { sharedQueryConfig } from '@/configs/query';
+import { useResizeObserver } from '@/hooks';
 
 type DataImageWithSealCtdGraphsProps = {
   mainProduct: Product | null;
@@ -72,6 +73,24 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
     ...sharedQueryConfig,
   });
 
+  const handleImageLoad = useCallback(() => {
+    if (imgRef.current) {
+      const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
+      const tempArr = imgData.map((img) => {
+        const convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, img.areas as []);
+        return {
+          ...img,
+          areas: convertedCoords,
+        };
+      });
+
+      setImgData(tempArr);
+      setHasImgLoaded(true);
+    }
+  }, [imgData]);
+
+  useResizeObserver('window', handleImageLoad);
+
   useEffect(() => {
     if (!imageListQuery.data) {
       setImgUrls([]);
@@ -124,22 +143,6 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
   if (imageListQuery.error) {
     return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
   }
-
-  const handleImageLoad = () => {
-    if (imgRef.current) {
-      const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
-      const tempArr = imgData.map((img) => {
-        const convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, img.areas as []);
-        return {
-          ...img,
-          areas: convertedCoords,
-        };
-      });
-
-      setImgData(tempArr);
-      setHasImgLoaded(true);
-    }
-  };
 
   const handleImageClick = (sealId: string) => {
     const query = new URLSearchParams({

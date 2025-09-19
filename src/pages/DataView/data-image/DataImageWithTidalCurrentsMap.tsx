@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { useSearchParams } from 'react-router';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
@@ -8,6 +8,7 @@ import regionArr from '@/data/tidalCurrents';
 import { MapImageAreas } from '@/types/dataImage';
 import { DateFormat } from '@/types/date';
 import { getTidalCurrentsTagsData } from '@/services/tidalCurrents';
+import { useResizeObserver } from '@/hooks';
 
 type DataImageWithTidalCurrentsMapProps = {
   mainProduct: Product | null;
@@ -37,6 +38,23 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
     }
   }, [src]);
 
+  const handleImageLoad = useCallback(async () => {
+    if (imgRef.current) {
+      const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
+
+      let convertedCoords;
+      if (region === 'Australia') {
+        convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, regionArr as []);
+      } else {
+        const tagData = await getTidalCurrentsTagsData(date, productId, region);
+        convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, tagData as []);
+      }
+      setAreas(convertedCoords);
+    }
+  }, [date, productId, region]);
+
+  useResizeObserver('window', handleImageLoad);
+
   if (imgLoadError) {
     return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
   }
@@ -60,21 +78,6 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
         date: date.format(DateFormat.MONTH),
         point: pointName,
       });
-    }
-  };
-
-  const handleImageLoad = async () => {
-    if (imgRef.current) {
-      const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
-
-      let convertedCoords;
-      if (region === 'Australia') {
-        convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, regionArr as []);
-      } else {
-        const tagData = await getTidalCurrentsTagsData(date, productId, region);
-        convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, tagData as []);
-      }
-      setAreas(convertedCoords);
     }
   };
 
