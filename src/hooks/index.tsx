@@ -10,6 +10,7 @@ import useUrlType from './useUrlType/useUrlType';
 import useSetProductId from './useSetProductId/useSetProductId';
 import useDateList from './useDateList/useDateList';
 import { useProductValidQueryParams } from './useProductValidQueryParams/useProductValidQueryParams';
+import { useResizeObserver } from './useResizeObserver/useResizeObserver';
 
 export {
   useProductPathFromUrl as useProductFromUrl,
@@ -24,4 +25,5 @@ export {
   useSetProductId,
   useDateList,
   useProductValidQueryParams,
+  useResizeObserver,
 };

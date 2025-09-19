@@ -4,7 +4,8 @@ import { fetchArgoTags } from '@/services/argo';
 import { parseArgoTagDataFromText } from '@/utils/argo-utils/argoTag';
 import useDataFetch from './useDataFetch';
 
-const useImageArgoTags = (date: Dayjs, tagPath: string, regionCode: string) => {
+const useImageArgoTags = (date: Dayjs, tagPath: string | null | undefined, regionCode: string) => {
+  if (!tagPath) throw new Error('tag path is null');
   // SnapshotCHL is a special case on the server side (OceanColour)
   // EAC Mooring Array has data from only one region - Brisbane
   const regionPath = (): string => {
