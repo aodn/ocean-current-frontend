@@ -1,17 +1,7 @@
-import { render, screen } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { screen } from '@testing-library/react';
 import { mapConfig } from '@/configs/map';
+import { renderWithQueryClient } from '@/test/queryClientUtils';
 import BasicMap from '../BasicMap';
-
-// Create a new QueryClient for each test
-const createTestQueryClient = () =>
-  new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
-    },
-  });
 
 vi.mock('react-map-gl/mapbox', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="test-map">{children}</div>,
@@ -45,12 +35,6 @@ vi.mock('react-router', async () => {
   };
 });
 
-// Helper function to render with QueryClientProvider
-const renderWithClient = (ui: React.ReactElement) => {
-  const testQueryClient = createTestQueryClient();
-  return render(<QueryClientProvider client={testQueryClient}>{ui}</QueryClientProvider>);
-};
-
 describe('BasicMap Component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -61,7 +45,7 @@ describe('BasicMap Component', () => {
     mapConfig.accessToken = 'test-api-key';
 
     // Act
-    renderWithClient(<BasicMap />);
+    renderWithQueryClient(<BasicMap />);
 
     // Assert
     expect(screen.getByText('NavigationControl')).toBeInTheDocument();
@@ -72,7 +56,7 @@ describe('BasicMap Component', () => {
     mapConfig.accessToken = '';
 
     // Act
-    renderWithClient(<BasicMap />);
+    renderWithQueryClient(<BasicMap />);
 
     // Assert
     expect(screen.getByText('Map cannot be loaded.')).toBeInTheDocument();
@@ -84,14 +68,14 @@ describe('BasicMap Component', () => {
     mapConfig.accessToken = 'test-api-key';
 
     // Act
-    renderWithClient(<BasicMap />);
+    renderWithQueryClient(<BasicMap />);
 
     // Assert
     expect(screen.getByTestId('test-map')).toBeInTheDocument();
   });
 
   it('renders navigation control when enabled', () => {
-    renderWithClient(<BasicMap navigationControl />);
+    renderWithQueryClient(<BasicMap navigationControl />);
     expect(screen.getByText('NavigationControl')).toBeInTheDocument();
   });
 });

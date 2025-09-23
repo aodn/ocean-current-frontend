@@ -1,10 +1,19 @@
 import { Dayjs } from 'dayjs';
 import { useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { fetchArgoTags } from '@/services/argo';
 import { parseArgoTagDataFromText } from '@/utils/argo-utils/argoTag';
-import useDataFetch from './useDataFetch';
+import { sharedQueryConfig } from '@/configs/query';
+import { DateFormat } from '@/types/date';
 
-const useImageArgoTags = (date: Dayjs, tagPath: string, regionCode: string) => {
+interface UseImageArgoTagsOptions {
+  date: Dayjs;
+  tagPath: string;
+  regionCode: string;
+  dateFormat: DateFormat;
+}
+
+const useImageArgoTags = ({ date, tagPath, regionCode, dateFormat }: UseImageArgoTagsOptions) => {
   // SnapshotCHL is a special case on the server side (OceanColour)
   // EAC Mooring Array has data from only one region - Brisbane
   const regionPath = (): string => {
@@ -18,10 +27,16 @@ const useImageArgoTags = (date: Dayjs, tagPath: string, regionCode: string) => {
     }
   };
 
-  const { data, loading, error } = useDataFetch(fetchArgoTags, [date, tagPath, regionPath()]);
-  // to avoid unnecessary state updates
+  const formattedDate = date.format(dateFormat);
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['argoTags', formattedDate, tagPath, regionPath()],
+    queryFn: () => fetchArgoTags(formattedDate, tagPath, regionPath()),
+    ...sharedQueryConfig,
+  });
+
   const parsedData = useMemo(() => (data ? parseArgoTagDataFromText(data) : []), [data]);
-  return { data: parsedData, loading, error };
+  return { data: parsedData, loading: isLoading, error };
 };
 
 export default useImageArgoTags;
