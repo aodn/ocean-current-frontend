@@ -5,15 +5,16 @@ import { ArgoProfileCycle } from '@/types/argo';
 
 const fetchArgoProfilesByDate = async (date: Dayjs) => {
   const validatedDate = dayjs(date);
-  if (validatedDate.isValid()) {
-    return await ec2ProxyClient.get<string>(`/profiles/map/${validatedDate.format('YYYYMMDD')}`, {
-      headers: {
-        'Content-Type': ContentType.Text,
-      },
-    });
-  } else {
+
+  if (!validatedDate.isValid()) {
     throw new Error('Invalid date format for Argo profiles. Please use YYYYMMDD.');
   }
+
+  return await ec2ProxyClient.get<string>(`/profiles/map/${validatedDate.format('YYYYMMDD')}`, {
+    headers: {
+      'Content-Type': ContentType.Text,
+    },
+  });
 };
 
 const fetchArgoProfileCyclesByWmoId = async (wmoId: string): Promise<ArgoProfileCycle[]> => {
@@ -26,11 +27,13 @@ const fetchArgoTags = async (dateString: string, tagPath: string, regionPath: st
     throw new Error('Invalid date format for Argo tags. Date must be a numeric string.');
   }
 
-  return await ec2ProxyClient.get<string>(`/${tagPath}/TAGS/${regionPath}/${dateString}.txt`, {
+  const response = await ec2ProxyClient.get<string>(`/${tagPath}/TAGS/${regionPath}/${dateString}.txt`, {
     headers: {
       'Content-Type': ContentType.Text,
     },
   });
+
+  return response.data;
 };
 
 export { fetchArgoProfilesByDate, fetchArgoProfileCyclesByWmoId, fetchArgoTags };

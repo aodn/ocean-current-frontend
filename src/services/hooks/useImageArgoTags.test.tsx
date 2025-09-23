@@ -1,7 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { Dayjs } from 'dayjs';
 import { vi } from 'vitest';
-import { AxiosResponse } from 'axios';
 import { fetchArgoTags } from '@/services/argo';
 import { parseArgoTagDataFromText } from '@/utils/argo-utils/argoTag';
 import { DateFormat } from '@/types/date';
@@ -57,9 +56,7 @@ describe('useImageArgoTags', () => {
       },
     ];
 
-    vi.mocked(fetchArgoTags).mockResolvedValue({
-      data: mockData,
-    } as AxiosResponse<string>);
+    vi.mocked(fetchArgoTags).mockResolvedValue(mockData);
     vi.mocked(parseArgoTagDataFromText).mockReturnValue(parsedData);
 
     const { result } = setup();
@@ -109,9 +106,7 @@ describe('useImageArgoTags', () => {
       },
     ];
 
-    vi.mocked(fetchArgoTags).mockResolvedValue({
-      data: mockData,
-    } as AxiosResponse<string>);
+    vi.mocked(fetchArgoTags).mockResolvedValue(mockData);
     vi.mocked(parseArgoTagDataFromText).mockReturnValue(parsedData);
 
     const { result } = renderHook(

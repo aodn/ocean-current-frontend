@@ -35,7 +35,7 @@ const useImageArgoTags = ({ date, tagPath, regionCode, dateFormat }: UseImageArg
     ...sharedQueryConfig,
   });
 
-  const parsedData = useMemo(() => (data ? parseArgoTagDataFromText(data.data) : []), [data]);
+  const parsedData = useMemo(() => (data ? parseArgoTagDataFromText(data) : []), [data]);
   return { data: parsedData, loading: isLoading, error };
 };
 
