@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
 import { findMostRecentDateBefore, getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
@@ -10,6 +10,7 @@ import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { RegionScope } from '@/constants/region';
 import { useImageArgoTags } from '@/services/hooks';
 import { ProductID } from '@/types/product';
+import { useResizeObserver } from '@/hooks';
 
 type DataImageWithArgoMapProps = {
   src: string;
@@ -27,13 +28,13 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   date,
 }) => {
   const argoTagFilePathValue = getArgoTagFilePathByProductId(productId);
-  const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
   const argoTagFilePath = regionScope === RegionScope.Local ? argoTagFilePathValue?.local : argoTagFilePathValue?.state;
 
   if (!argoTagFilePathValue || !argoTagFilePath) {
     throw new Error(`Argo tag file path not found for product id: ${productId}`);
   }
 
+  const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
   const dateFormatted = dayjs(date).format(dateFormat);
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [coords, setCoords] = useState<ArgoTagMapArea[]>([]);
@@ -42,27 +43,29 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   const { data } = useImageArgoTags({ date, tagPath: argoTagFilePath, regionCode, dateFormat });
   const alt = `${productId} data in ${regionCode} at ${dateFormatted}`;
 
+  const handleLoad = useCallback(() => {
+    if (imgRef.current) {
+      const { naturalWidth, naturalHeight, width, height } = imgRef.current;
+      const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
+      const originalCoords = data.map((item) => ({
+        shape: 'circle',
+        coords: [item.coordX, item.coordY, 10],
+        href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${dateFormatted}`,
+        wmoId: item.wmoId,
+        cycle: item.cycle,
+      }));
+      const convertedCoords = convertCoordsBasedOnImageScale(originalCoords, scaleX, scaleY, naturalHeight);
+      setCoords(convertedCoords as ArgoTagMapArea[]);
+    }
+  }, [data, dateFormatted]);
+
+  useResizeObserver('window', handleLoad);
+
   useEffect(() => {
     setImgLoadError(null);
   }, [src]);
 
   useEffect(() => {
-    const handleLoad = () => {
-      if (imgRef.current) {
-        const { naturalWidth, naturalHeight, width, height } = imgRef.current;
-        const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
-        const originalCoords = data.map((item) => ({
-          shape: 'circle',
-          coords: [item.coordX, item.coordY, 10],
-          href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${dateFormatted}`,
-          wmoId: item.wmoId,
-          cycle: item.cycle,
-        }));
-        const convertedCoords = convertCoordsBasedOnImageScale(originalCoords, scaleX, scaleY, naturalHeight);
-        setCoords(convertedCoords as ArgoTagMapArea[]);
-      }
-    };
-
     const imageElement = imgRef.current;
     if (imageElement) {
       if (imageElement.complete) {
@@ -77,7 +80,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
         imageElement.removeEventListener('load', handleLoad);
       }
     };
-  }, [data, dateFormatted, src]);
+  }, [data, dateFormatted, handleLoad, src]);
 
   const handleCircleClick = async (area: ArgoTagMapArea) => {
     const data = await fetchArgoProfileCyclesByWmoId(area.wmoId.toString());

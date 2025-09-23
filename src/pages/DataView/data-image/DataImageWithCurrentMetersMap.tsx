@@ -12,6 +12,7 @@ import { currentMetersMapDataPointsFlat } from '@/data/current-meter/mapDataPoin
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { MapImageAreas } from '@/types/dataImage';
 import { getRegionTitleByRegionCode } from '@/utils/region-utils/region';
+import { useResizeObserver } from '@/hooks';
 
 type DataImageWithCurrentMetersMapProps = {
   mainProduct: Product | null;
@@ -35,6 +36,17 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
   useEffect(() => {
     if (!src) setImgLoadError('Missing Image');
   }, [src]);
+
+  const handleImageLoad = () => {
+    if (imgRef.current) {
+      const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
+
+      const convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, regionArr as []);
+      setAreas(convertedCoords);
+    }
+  };
+
+  useResizeObserver('window', handleImageLoad);
 
   if (imgLoadError) {
     return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
@@ -65,15 +77,6 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
         date: yearOptionsData[0].id, // all time
         deploymentPlot: name,
       });
-    }
-  };
-
-  const handleImageLoad = () => {
-    if (imgRef.current) {
-      const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
-
-      const convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, regionArr as []);
-      setAreas(convertedCoords);
     }
   };
 

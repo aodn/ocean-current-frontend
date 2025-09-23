@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { useNavigate } from 'react-router';
 import { calculateImageScales } from '@/utils/general-utils/general';
@@ -6,6 +6,7 @@ import { BuoyTagMapArea } from '@/types/buoy';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import useBuoyTags from '@/services/hooks/useBuoyTags';
+import { useResizeObserver } from '@/hooks';
 
 const buildBuoyTimeseriesImagePath = (buoyLocation: string, date: Dayjs): string => {
   const formattedDate = date.format('YYYYMMDDHH');
@@ -30,38 +31,40 @@ const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, produc
 
   const alt = `${productId} data at ${dateFormatted}`;
 
+  const handleLoad = useCallback(() => {
+    if (imgRef.current && data) {
+      const { naturalWidth, naturalHeight, width, height } = imgRef.current;
+      const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
+
+      const buoyCoords: BuoyTagMapArea[] = data.tags.map((item) => {
+        const scaledX = item.x * scaleX;
+        const scaledY = item.y * scaleY;
+        const scaledSize = item.sz * Math.min(scaleX, scaleY);
+
+        const href = item.url.startsWith('TS ')
+          ? buildBuoyTimeseriesImagePath(item.title, date)
+          : item.url.replace('TS ', '');
+
+        return {
+          shape: 'circle',
+          coords: [scaledX, scaledY, scaledSize],
+          href,
+          title: item.title,
+          alt: `${item.title} buoy`,
+        };
+      });
+
+      setCoords(buoyCoords);
+    }
+  }, [data, date]);
+
+  useResizeObserver('window', handleLoad);
+
   useEffect(() => {
     setImgLoadError(null);
   }, [src]);
 
   useEffect(() => {
-    const handleLoad = () => {
-      if (imgRef.current && data) {
-        const { naturalWidth, naturalHeight, width, height } = imgRef.current;
-        const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
-
-        const buoyCoords: BuoyTagMapArea[] = data.tags.map((item) => {
-          const scaledX = item.x * scaleX;
-          const scaledY = item.y * scaleY;
-          const scaledSize = item.sz * Math.min(scaleX, scaleY);
-
-          const href = item.url.startsWith('TS ')
-            ? buildBuoyTimeseriesImagePath(item.title, date)
-            : item.url.replace('TS ', '');
-
-          return {
-            shape: 'circle',
-            coords: [scaledX, scaledY, scaledSize],
-            href,
-            title: item.title,
-            alt: `${item.title} buoy`,
-          };
-        });
-
-        setCoords(buoyCoords);
-      }
-    };
-
     const imageElement = imgRef.current;
     if (imageElement) {
       if (imageElement.complete) {
@@ -76,7 +79,7 @@ const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, produc
         imageElement.removeEventListener('load', handleLoad);
       }
     };
-  }, [data, dateFormatted, src, date]);
+  }, [data, dateFormatted, src, date, handleLoad]);
 
   const handleCircleClick = (e: React.MouseEvent<HTMLAreaElement>, area: BuoyTagMapArea) => {
     e.preventDefault();
