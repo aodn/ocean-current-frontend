@@ -28,9 +28,13 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   date,
 }) => {
   const argoTagFilePathValue = getArgoTagFilePathByProductId(productId);
-  const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
   const argoTagFilePath = regionScope === RegionScope.Local ? argoTagFilePathValue?.local : argoTagFilePathValue?.state;
 
+  if (!argoTagFilePathValue || !argoTagFilePath) {
+    throw new Error(`Argo tag file path not found for product id: ${productId}`);
+  }
+
+  const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
   const dateFormatted = dayjs(date).format(dateFormat);
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [coords, setCoords] = useState<ArgoTagMapArea[]>([]);
@@ -56,10 +60,6 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   }, [data, dateFormatted]);
 
   useResizeObserver('window', handleLoad);
-
-  if (!argoTagFilePathValue || !argoTagFilePath) {
-    throw new Error(`Argo tag file path not found for product id: ${productId}`);
-  }
 
   useEffect(() => {
     setImgLoadError(null);

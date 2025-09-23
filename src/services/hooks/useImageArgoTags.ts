@@ -14,7 +14,6 @@ interface UseImageArgoTagsOptions {
 }
 
 const useImageArgoTags = ({ date, tagPath, regionCode, dateFormat }: UseImageArgoTagsOptions) => {
-  if (!tagPath) throw new Error('tag path is null');
   // SnapshotCHL is a special case on the server side (OceanColour)
   // EAC Mooring Array has data from only one region - Brisbane
   const regionPath = (): string => {
