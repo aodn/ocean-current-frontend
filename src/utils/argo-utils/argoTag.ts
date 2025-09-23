@@ -1,12 +1,13 @@
 import { argoTagFilePaths } from '@/constants/argo';
 import { ArgoTagMapArea, ArgoTag, StateLocalPathValue } from '@/types/argo';
 import { MapImageAreas } from '@/types/dataImage';
+import { ProductID } from '@/types/product';
 
-const getArgoTagFilePathByProductId = (productId: string): StateLocalPathValue | undefined => {
+const getArgoTagFilePathByProductId = (productId: ProductID): StateLocalPathValue | undefined => {
   return argoTagFilePaths[productId];
 };
 
-const checkProductHasArgoTags = (productId: string): boolean => {
+const checkProductHasArgoTags = (productId: ProductID): boolean => {
   return !!argoTagFilePaths[productId];
 };
 
