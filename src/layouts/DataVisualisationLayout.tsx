@@ -163,7 +163,8 @@ const DataVisualisationLayout: React.FC = () => {
 
       return null;
     },
-    [productId, regionScope, useDate],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [productId, regionScope], // Intentionally excluding useDate to prevent infinite loop
   );
 
   useEffect(() => {
@@ -187,19 +188,21 @@ const DataVisualisationLayout: React.FC = () => {
   }, [regionCodeFromUrl, isSurfaceWavesBuoyTimeseries, productId]);
 
   useEffect(() => {
-    if (!date) return;
+    if (!date || !productId || !regionScope) return;
 
     const currentDate = parseeDateWithFormat(date);
 
-    // If parseeDateWithFormat returns null, don't update the date store
-    // This prevents incorrect parsing on first render with wrong format
+    // If parseeDateWithFormat returns null, use current date as fallback
+    // This prevents incorrect parsing when switching between different date formats
     if (!currentDate) {
+      // Don't update if we can't parse - this could indicate a format mismatch during product switching
+      // Let the product switching logic handle the date conversion instead
+      console.warn('Date parsing failed for:', { date, productId, regionScope });
       return;
     }
 
     const isSameDay = useDate.isSame(currentDate, 'day');
     const isSameTime = useDate.hour() === currentDate.hour() && useDate.minute() === currentDate.minute();
-
     if (isSameDay && isSameTime) return;
     setDate(currentDate);
   }, [date, useDate, productId, regionScope, parseeDateWithFormat]);

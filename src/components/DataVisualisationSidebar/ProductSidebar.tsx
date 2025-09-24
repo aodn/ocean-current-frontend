@@ -99,7 +99,6 @@ const ProductSideBar: React.FC = () => {
           }
         : {};
     }
-
     updateQueryParamsAndNavigate(targetPath, updateParam);
   };
 

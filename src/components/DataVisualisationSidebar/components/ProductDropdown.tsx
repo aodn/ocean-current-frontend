@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 import { useQueryClient } from '@tanstack/react-query';
 import { Dropdown } from '@/components/Shared';
 import { sidebarProductsNav } from '@/data/sidebarProductsNav';
 import { getProductPathWithSubProduct, getTargetProductIdAfterRouting } from '@/utils/product-utils/product';
-import { useDateRange, useQueryParams } from '@/hooks';
+import { useQueryParams } from '@/hooks';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
 import { initialState as currentMetersInitialState } from '@/stores/current-meters-store/currentMeters';
@@ -13,6 +13,10 @@ import { RootProductID } from '@/types/product';
 import useProductStore from '@/stores/product-store/productStore';
 import { regionLatestDatesOptions } from '@/services/hooks/useRegionLatestDates';
 import { LatestRegionDatesResponse, RegionLatestDate } from '@/types/imageList';
+import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
+import { RegionScope } from '@/constants/region';
+import useDateStore from '@/stores/date-store/dateStore';
+import { DateFormat } from '@/types/date';
 import { ProductDropdownProps } from '../types';
 
 const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => {
@@ -21,17 +25,52 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
   const [loadingProductId, setLoadingProductId] = useState<RootProductID | null>(null);
   const queryClient = useQueryClient();
 
-  const { allDates, selectedDateIndex, formatDate } = useDateRange();
-
-  const selectedDate = dayjs(allDates[selectedDateIndex]?.date).format(formatDate);
+  const currentDate = useDateStore((state) => state.date);
   const isProductAvailableInRegion = useProductAvailableInRegion();
   const currentRegionCode = useProductStore((state) => state.productParams.regionCode);
 
-  const dropdownElements = sidebarProductsNav.map((element) => ({
-    ...element,
-    isLoading: loadingProductId === element.id,
-    disabled: isLoading && loadingProductId !== element.id,
-  }));
+  // Convert date to target product format
+  const convertDateToTargetFormat = (targetRootProductId: RootProductID): string => {
+    try {
+      const targetProductId = getTargetProductIdAfterRouting(targetRootProductId);
+      const targetFormat = getDateFormatByProductIdAndRegionScope(targetProductId, RegionScope.Au);
+      return currentDate.format(getFormatString(targetFormat));
+    } catch (error) {
+      // Fallback to a reasonable default if conversion fails
+      console.warn('Date format conversion failed, using fallback:', error);
+      return currentDate.format('YYYYMMDD');
+    }
+  };
+
+  // Helper to get dayjs format string from DateFormat enum
+  const getFormatString = (dateFormat: DateFormat): string => {
+    switch (dateFormat) {
+      case DateFormat.YEAR_ONLY:
+        return 'YYYY';
+      case DateFormat.MONTH:
+        return 'YYYYMM';
+      case DateFormat.MONTH_ONLY:
+        return 'MM';
+      case DateFormat.DAY:
+        return 'YYYYMMDD';
+      case DateFormat.HOUR:
+        return 'YYYYMMDDHH';
+      case DateFormat.MINUTE:
+        return 'YYYYMMDDHHmm';
+      default:
+        return 'YYYYMMDD';
+    }
+  };
+
+  const dropdownElements = useMemo(
+    () =>
+      sidebarProductsNav.map((element) => ({
+        ...element,
+        isLoading: loadingProductId === element.id,
+        disabled: isLoading && loadingProductId !== element.id,
+      })),
+    [isLoading, loadingProductId],
+  );
 
   const handleDropdownChange = async ({ id }: DropdownElement<RootProductID>) => {
     if (mainProductKey.includes(id) || isLoading) {
@@ -41,8 +80,11 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
     setLoadingProductId(id);
 
     try {
+      // Convert current date to target product format
+      const convertedDate = convertDateToTargetFormat(id);
+
       let queryToUpdate: QueryParams = {
-        date: selectedDate,
+        date: convertedDate,
         property: null,
         depth: null,
         deploymentPlot: null,
@@ -52,7 +94,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
       // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
       if (id === 'EACMooringArray') {
         queryToUpdate = {
-          date: selectedDate,
+          date: convertedDate,
           region: 'Brisbane',
           property: null,
           depth: null,
@@ -64,7 +106,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
         queryToUpdate = { date, region, property, depth };
       } else if (!isProductAvailableInRegion) {
         queryToUpdate = {
-          date: selectedDate,
+          date: convertedDate,
           region: null,
           property: null,
           depth: null,
@@ -90,9 +132,9 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
                   ?.latestDate
               : null;
 
-          const isDateInPast = regionLatestDate ? dayjs(regionLatestDate).isBefore(dayjs(selectedDate), 'day') : false;
+          const isDateInPast = regionLatestDate ? dayjs(regionLatestDate).isBefore(currentDate, 'day') : false;
 
-          const dateToUse = isDateInPast ? regionLatestDate : selectedDate;
+          const dateToUse = isDateInPast ? regionLatestDate : convertedDate;
 
           queryToUpdate = {
             date: dateToUse,
@@ -103,9 +145,9 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
           };
         } catch (error) {
           console.error('Failed to fetch latest dates for product:', id, error);
-          // Fallback to using the current selected date if the API fails
+          // Fallback to using the converted date if the API fails
           queryToUpdate = {
-            date: selectedDate,
+            date: convertedDate,
             property: null,
             depth: null,
             deploymentPlot: null,
