@@ -176,14 +176,14 @@ const DataVisualisationLayout: React.FC = () => {
       return;
     }
     const region = getRegionByRegionCode(regionCodeFromUrl as string);
-    let regionCode: string = region?.code || 'Au';
+    let regionCode: string = region?.code || '';
     if (isSurfaceWavesBuoyTimeseries && regionCodeFromUrl) {
       regionCode = regionCodeFromUrl as string;
     }
-    const regionName = region?.title || 'Australia/NZ';
+    const regionName = region?.title;
     const regionScope = region?.scope || RegionScope.Au;
-    setRegionCode(regionCode);
-    setRegionTitle(regionName);
+    if (regionCode) setRegionCode(regionCode);
+    if (regionName) setRegionTitle(regionName);
     setRegionScope(regionScope);
   }, [regionCodeFromUrl, isSurfaceWavesBuoyTimeseries, productId]);
 
@@ -191,15 +191,7 @@ const DataVisualisationLayout: React.FC = () => {
     if (!date || !productId || !regionScope) return;
 
     const currentDate = parseeDateWithFormat(date);
-
-    // If parseeDateWithFormat returns null, use current date as fallback
-    // This prevents incorrect parsing when switching between different date formats
-    if (!currentDate) {
-      // Don't update if we can't parse - this could indicate a format mismatch during product switching
-      // Let the product switching logic handle the date conversion instead
-      console.warn('Date parsing failed for:', { date, productId, regionScope });
-      return;
-    }
+    if (!currentDate) return;
 
     const isSameDay = useDate.isSame(currentDate, 'day');
     const isSameTime = useDate.hour() === currentDate.hour() && useDate.minute() === currentDate.minute();
