@@ -32,35 +32,21 @@ export default ({ mode }) => {
       port: Number(process.env.VITE_PORT),
       open: Boolean(process.env.VITE_OPEN_BROWSER),
       proxy: {
-        '/ec2': {
-          target: 'https://oceancurrent.aodn.org.au',
+        '/api/v1': {
+          target: process.env.VITE_API_BACKEND_URL || 'http://localhost:8080/api/v1',
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/ec2/, ''),
+          rewrite: (path) => path.replace(/^\/api\/v1/, ''),
         },
-        '/s3': {
+        '/resource': {
+          target: process.env.VITE_API_EC2_PROXY_URL || 'https://oceancurrent.edge.aodn.org.au/resource',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/resource/, ''),
+        },
+        '/storage': {
           target: process.env.VITE_API_S3_PROXY_URL || 'https://oceancurrent.edge.aodn.org.au/storage',
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/s3/, ''),
+          rewrite: (path) => path.replace(/^\/storage/, ''),
         },
-      },
-    },
-    test: {
-      globals: true,
-      environment: 'jsdom',
-      setupFiles: './src/test/setup.ts',
-      include: ['src/**/*.test.[jt]s?(x)'],
-      deps: {
-        optimizer: {
-          web: {
-            include: ['vitest-canvas-mock'],
-          },
-        },
-      },
-      coverage: {
-        provider: 'v8',
-        reporter: ['text', 'json', 'html'],
-        include: ['src/**/*.?(c|m)[jt]s?(x)'],
-        exclude: ['src/styles', 'src/types', '**/*.d.ts', '**/*.types.ts'],
       },
     },
   });
