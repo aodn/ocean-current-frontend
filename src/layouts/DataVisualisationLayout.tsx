@@ -163,7 +163,8 @@ const DataVisualisationLayout: React.FC = () => {
 
       return null;
     },
-    [productId, regionScope, useDate],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [productId, regionScope], // Intentionally excluding useDate to prevent infinite loop
   );
 
   useEffect(() => {
@@ -175,31 +176,25 @@ const DataVisualisationLayout: React.FC = () => {
       return;
     }
     const region = getRegionByRegionCode(regionCodeFromUrl as string);
-    let regionCode: string = region?.code || 'Au';
+    let regionCode: string = region?.code || '';
     if (isSurfaceWavesBuoyTimeseries && regionCodeFromUrl) {
       regionCode = regionCodeFromUrl as string;
     }
-    const regionName = region?.title || 'Australia/NZ';
+    const regionName = region?.title;
     const regionScope = region?.scope || RegionScope.Au;
-    setRegionCode(regionCode);
-    setRegionTitle(regionName);
+    if (regionCode) setRegionCode(regionCode);
+    if (regionName) setRegionTitle(regionName);
     setRegionScope(regionScope);
   }, [regionCodeFromUrl, isSurfaceWavesBuoyTimeseries, productId]);
 
   useEffect(() => {
-    if (!date) return;
+    if (!date || !productId || !regionScope) return;
 
     const currentDate = parseeDateWithFormat(date);
-
-    // If parseeDateWithFormat returns null, don't update the date store
-    // This prevents incorrect parsing on first render with wrong format
-    if (!currentDate) {
-      return;
-    }
+    if (!currentDate) return;
 
     const isSameDay = useDate.isSame(currentDate, 'day');
     const isSameTime = useDate.hour() === currentDate.hour() && useDate.minute() === currentDate.minute();
-
     if (isSameDay && isSameTime) return;
     setDate(currentDate);
   }, [date, useDate, productId, regionScope, parseeDateWithFormat]);

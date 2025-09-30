@@ -1,24 +1,10 @@
 import React from 'react';
-import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
-import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
+import { useProductAvailableRegion } from '@/stores/product-store/hooks/useProductAvailableRegion';
 import BasicMap from '@/components/Map/BasicMap';
-import { useProductValidQueryParams } from '@/hooks';
 import ProductContent from './product-content/ProductContent';
 
 const DataView: React.FC = () => {
-  const { isArgo, isCurrentMeters, isEACMooringArray, isSealCtdTags, isSurfaceWaves } = useProductCheck();
-  const isProductAvailableInRegion = useProductAvailableInRegion();
-
-  const { isArgoValid } = useProductValidQueryParams();
-
-  const shouldRenderProductContent =
-    isProductAvailableInRegion ||
-    (isArgo && isArgoValid) ||
-    isCurrentMeters ||
-    isEACMooringArray ||
-    isSealCtdTags ||
-    isSurfaceWaves;
-
+  const shouldRenderProductContent = useProductAvailableRegion();
   const renderView = () => {
     if (shouldRenderProductContent) {
       return <ProductContent />;
