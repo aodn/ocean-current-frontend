@@ -22,6 +22,7 @@ export default ({ mode }) => {
             },
           })
         : undefined,
+      googleAnalyticsPlugin(mode),
     ],
     resolve: {
       alias: {
@@ -50,4 +51,25 @@ export default ({ mode }) => {
       },
     },
   });
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const googleAnalyticsPlugin = (_mode: any) => {
+  return {
+    name: 'vite-plugin-google-analytics',
+    transformIndexHtml(html) {
+      const gaId = process.env.VITE_GA_MEASUREMENT_ID;
+      if (!gaId) return html;
+      const gaScript = `
+          <script async src="https://www.googletagmanager.com/gtag/js?id=${gaId}"></script>
+          <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${gaId}');
+          </script>
+        `;
+      return html.replace('<!-- google-analytics-js -->', gaScript);
+    },
+  };
 };
