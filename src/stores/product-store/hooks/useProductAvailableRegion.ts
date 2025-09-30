@@ -8,16 +8,20 @@ export function useProductAvailableRegion(): boolean {
   const { isArgoValid } = useProductValidQueryParams();
 
   const { getQueryParamsByKey } = useQueryParams();
-  let region = getQueryParamsByKey('region');
+  const region = getQueryParamsByKey('region');
   const useProductId = useProductStore((state) => state.productParams.productId);
-  if (useProductId === 'argo') region = 'AU';
+
+  if (isArgo) {
+    return isArgoValid;
+  }
+
   if (!region || !useProductId) {
     return false;
   }
+
   return (
     isProductAvailableInRegion(region, useProductId) ||
     isEACMooringArray ||
-    (isArgo && isArgoValid) ||
     isCurrentMeters ||
     isSealCtdTags ||
     isSurfaceWaves
