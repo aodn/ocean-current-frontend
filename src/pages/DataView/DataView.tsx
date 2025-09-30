@@ -1,10 +1,10 @@
 import React from 'react';
-import { useProductAvailableRegion } from '@/stores/product-store/hooks/useProductAvailableRegion';
+import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 import BasicMap from '@/components/Map/BasicMap';
 import ProductContent from './product-content/ProductContent';
 
 const DataView: React.FC = () => {
-  const shouldRenderProductContent = useProductAvailableRegion();
+  const shouldRenderProductContent = useShowProductOverMap();
   const renderView = () => {
     if (shouldRenderProductContent) {
       return <ProductContent />;

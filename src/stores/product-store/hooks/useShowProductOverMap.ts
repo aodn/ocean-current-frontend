@@ -3,7 +3,7 @@ import { isProductAvailableInRegion } from '@/utils/region-utils/region';
 import useProductStore from '../productStore';
 import useProductCheck from './useProductCheck';
 
-export function useProductAvailableRegion(): boolean {
+export const useShowProductOverMap = (): boolean => {
   const { isArgo, isCurrentMeters, isEACMooringArray, isSealCtdTags, isSurfaceWaves } = useProductCheck();
   const { isArgoValid } = useProductValidQueryParams();
 
@@ -20,10 +20,10 @@ export function useProductAvailableRegion(): boolean {
   }
 
   return (
-    isProductAvailableInRegion(region, useProductId) ||
+    isProductAvailableInRegion(useProductId, region) ||
     isEACMooringArray ||
     isCurrentMeters ||
     isSealCtdTags ||
     isSurfaceWaves
   );
-}
+};

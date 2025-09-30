@@ -1,4 +1,4 @@
-import { ProductID } from '@/types/product';
+import { ProductID, RootProductID } from '@/types/product';
 
 /**
  * List of product IDs that should fetch from API
@@ -38,3 +38,13 @@ export const API_ENABLED_PRODUCTS: ProductID[] = [
  * These are typically products with simple monthly data or other special cases
  */
 export const FIXED_DATA_PRODUCTS: ProductID[] = ['monthlyMeans-anomalies', 'monthlyMeans-CLIM_OFAM3_SSTAARS'];
+
+export const PRODUCTS_WITH_ARGO_DATA: RootProductID[] = [
+  'fourHourSst',
+  'sixDaySst',
+  'oceanColour',
+  'adjustedSeaLevelAnomaly',
+  'argo',
+  'EACMooringArray',
+  'sealCtd',
+];
