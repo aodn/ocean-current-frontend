@@ -175,7 +175,8 @@ const DataVisualisationLayout: React.FC = () => {
       setRegionScope(RegionScope.Local);
       return;
     }
-    const region = getRegionByRegionCode(regionCodeFromUrl as string);
+
+    const region = getRegionByRegionCode(regionCodeFromUrl as string, productId);
     let regionCode: string = region?.code || '';
     if (isSurfaceWavesBuoyTimeseries && regionCodeFromUrl) {
       regionCode = regionCodeFromUrl as string;
