@@ -48,7 +48,6 @@ export function useResizeObserver<T extends HTMLElement>(
       };
 
       window.addEventListener('resize', handleResize);
-      handleResize();
 
       return () => {
         window.removeEventListener('resize', handleResize);

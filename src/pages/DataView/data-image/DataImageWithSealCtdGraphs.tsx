@@ -14,6 +14,7 @@ import { DateFormat } from '@/types/date';
 import { ProductPath } from '@/types/router';
 import { fetchImageListByProductIdAndRegion } from '@/services/imageList';
 import { sharedQueryConfig } from '@/configs/query';
+import { useResizeObserver } from '@/hooks';
 
 type DataImageWithSealCtdGraphsProps = {
   mainProduct: Product | null;
@@ -87,6 +88,8 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
       setHasImgLoaded(true);
     }
   }, [imgData]);
+
+  useResizeObserver('window', handleImageLoad);
 
   useEffect(() => {
     if (!imageListQuery.data) {
