@@ -34,31 +34,9 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
     try {
       const targetProductId = getTargetProductIdAfterRouting(targetRootProductId);
       const targetFormat = getDateFormatByProductIdAndRegionScope(targetProductId, RegionScope.Au);
-      return currentDate.format(getFormatString(targetFormat));
-    } catch (error) {
-      // Fallback to a reasonable default if conversion fails
-      console.warn('Date format conversion failed, using fallback:', error);
-      return currentDate.format('YYYYMMDD');
-    }
-  };
-
-  // Helper to get dayjs format string from DateFormat enum
-  const getFormatString = (dateFormat: DateFormat): string => {
-    switch (dateFormat) {
-      case DateFormat.YEAR_ONLY:
-        return 'YYYY';
-      case DateFormat.MONTH:
-        return 'YYYYMM';
-      case DateFormat.MONTH_ONLY:
-        return 'MM';
-      case DateFormat.DAY:
-        return 'YYYYMMDD';
-      case DateFormat.HOUR:
-        return 'YYYYMMDDHH';
-      case DateFormat.MINUTE:
-        return 'YYYYMMDDHHmm';
-      default:
-        return 'YYYYMMDD';
+      return currentDate.format(targetFormat);
+    } catch {
+      return currentDate.format(DateFormat.DAY);
     }
   };
 

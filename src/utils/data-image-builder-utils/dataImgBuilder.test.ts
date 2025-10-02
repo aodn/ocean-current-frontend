@@ -24,7 +24,7 @@ vi.mock('@/configs/image', () => ({
   imageBaseUrl: 'https://oceancurrent.test.com',
   imageUrlConfig: {
     imageBaseUrl: 'https://oceancurrent.test.com',
-    imageS3BaseUrl: '/s3',
+    imageS3BaseUrl: '/storage',
   },
 }));
 
@@ -251,7 +251,7 @@ describe('buildProductImageUrlByProductId', () => {
     const imageUrl = buildProductImageUrl(productId, region, regionScope, date, isApi);
 
     // Assert
-    expect(imageUrl).toBe('/ec2/DR_SST_daily/SST/Adelaide/20240519.gif');
+    expect(imageUrl).toBe('/resource/DR_SST_daily/SST/Adelaide/20240519.gif');
   });
 
   it('should throw an error for unsupported product ID', () => {

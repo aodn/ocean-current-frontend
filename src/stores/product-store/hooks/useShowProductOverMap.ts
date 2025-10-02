@@ -3,23 +3,21 @@ import { isProductAvailableInRegion } from '@/utils/region-utils/region';
 import useProductStore from '../productStore';
 import useProductCheck from './useProductCheck';
 
-export function useProductAvailableRegion(): boolean {
-  const { isArgo, isCurrentMeters, isEACMooringArray, isSealCtdTags, isSurfaceWaves } = useProductCheck();
+export const useShowProductOverMap = (): boolean => {
+  const { isArgo } = useProductCheck();
   const { isArgoValid } = useProductValidQueryParams();
 
   const { getQueryParamsByKey } = useQueryParams();
-  let region = getQueryParamsByKey('region');
+  const region = getQueryParamsByKey('region');
   const useProductId = useProductStore((state) => state.productParams.productId);
-  if (useProductId === 'argo') region = 'AU';
+
+  if (isArgo) {
+    return isArgoValid;
+  }
+
   if (!region || !useProductId) {
     return false;
   }
-  return (
-    isProductAvailableInRegion(useProductId, region) ||
-    isEACMooringArray ||
-    (isArgo && isArgoValid) ||
-    isCurrentMeters ||
-    isSealCtdTags ||
-    isSurfaceWaves
-  );
-}
+
+  return isProductAvailableInRegion(useProductId, region);
+};

@@ -35,10 +35,10 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
   const baseProductPath = useProductPath();
   const { searchParams, updateQueryParamsAndNavigate } = useQueryParams();
   const { region: regionCodeFromUrl, date: dateFromUrl } = useProductSearchParam();
-  const selectedRegionTitle = getRegionTitleByRegionCode(regionCodeFromUrl) || 'Au';
+  const productId = useProductStore((state) => state.productParams.productId);
+  const selectedRegionTitle = getRegionTitleByRegionCode(regionCodeFromUrl, productId) || 'Au';
   const regionGeoJsonData = useRegionPolygons();
   const isChla = baseProductPath.includes('ocean-colour');
-  const productId = useProductStore((state) => state.productParams.productId);
   const { data: regionLatestDates, isLoading: isLoadingLatestDates } = useRegionLatestDates(productId);
 
   const {
@@ -89,7 +89,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
   useEffect(() => {
     if (!map) return;
     const regionCode = regionCodeFromUrl || 'Au';
-    const region = getRegionByRegionCode(regionCode);
+    const region = getRegionByRegionCode(regionCode, productId);
 
     const fitToAuRegion = () => {
       const auRegion = getRegionByRegionCode('Au');
@@ -120,7 +120,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
     } else {
       fitToAuRegion();
     }
-  }, [map, regionCodeFromUrl, mapFitBounds, isMiniMap, baseProductPath]);
+  }, [map, regionCodeFromUrl, mapFitBounds, isMiniMap, baseProductPath, productId]);
 
   const handleMouseMove = useCallback(
     (e: MapMouseEvent) => {

@@ -15,7 +15,7 @@ import {
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { ProductID } from '@/types/product';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { useProductAvailableRegion } from '@/stores/product-store/hooks/useProductAvailableRegion';
+import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 import { useQueryParams } from '@/hooks';
 import Legend from './components/Legend';
 import MiniMap from './components/MiniMap';
@@ -33,7 +33,7 @@ const ProductSideBar: React.FC = () => {
   const { updateQueryParamsAndNavigate, getQueryParamsByKey } = useQueryParams();
   const useDate = useDateStore((state) => state.date);
   const { isArgo, isCurrentMeters, isSealCtd } = useProductCheck();
-  const shouldRenderMiniMap = useProductAvailableRegion();
+  const shouldRenderMiniMap = useShowProductOverMap();
 
   const shouldShowLegend = !isCurrentMeters;
 

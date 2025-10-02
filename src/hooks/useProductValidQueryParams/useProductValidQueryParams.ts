@@ -22,5 +22,5 @@ export const useProductValidQueryParams = () => {
     return { isArgoValid: !!wmoid && !!cycle && !!date };
   }
 
-  return {};
+  return { isArgoValid: false };
 };
