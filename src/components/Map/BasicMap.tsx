@@ -7,20 +7,12 @@ import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useDeviceType } from '@/hooks';
 import { resetCurrentMetersStore } from '@/stores/current-meters-store/currentMeters';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
+import { PRODUCTS_WITH_ARGO_DATA } from '@/configs/products/data-source';
 import MAP_STYLE from './data/map-style.basic-v8.json';
 import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer, CurrentMetersDeploymentPlotsLayer } from './layers';
 import { MouseCursorLocationPanel } from './panels';
 import { BasicMapProps } from './types/map.types';
 
-const productsWithArgoData = [
-  'fourHourSst',
-  'sixDaySst',
-  'oceanColour',
-  'adjustedSeaLevelAnomaly',
-  'argo',
-  'EACMooringArray',
-  'sealCtd',
-];
 const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
 const interactiveIds = [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID];
 
@@ -44,7 +36,16 @@ const BasicMap: React.FC<BasicMapProps> = ({
   const { isMobile } = useDeviceType();
   const { mainProduct, subProduct } = useProductConvert();
 
-  const shouldShowArgoLayer = isMiniMap ? isArgo : productsWithArgoData.includes(mainProduct?.key || '');
+  const shouldShowArgoLayer = useMemo(() => {
+    if (!mainProduct?.key) return false;
+
+    if (isMiniMap) {
+      return isArgo;
+    }
+
+    return PRODUCTS_WITH_ARGO_DATA.includes(mainProduct.key);
+  }, [isMiniMap, isArgo, mainProduct?.key]);
+
   const shouldShowCursorLocationPanel = showCursorLocationPanel && !isMobile && cursorLngLat?.lng && cursorLngLat?.lat;
 
   useEffect(() => {

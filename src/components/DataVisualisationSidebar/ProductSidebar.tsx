@@ -1,11 +1,9 @@
 import React, { useMemo } from 'react';
 import { Loading } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
-import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
 import { ProductSidebarText } from '@/constants/textConstant';
 import useDateStore from '@/stores/date-store/dateStore';
 import { useMultipleRegionLatestDates } from '@/services/hooks';
-import { useProductValidQueryParams, useQueryParams } from '@/hooks';
 import { setProductId } from '@/stores/product-store/productStore';
 import { setCurrentMetersDate, setDepth, setProperty, setRegion } from '@/stores/current-meters-store/currentMeters';
 import {
@@ -17,6 +15,8 @@ import {
 import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { ProductID } from '@/types/product';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
+import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
+import { useQueryParams } from '@/hooks';
 import Legend from './components/Legend';
 import MiniMap from './components/MiniMap';
 import ProductDropdown from './components/ProductDropdown';
@@ -32,16 +32,9 @@ const ProductSideBar: React.FC = () => {
   const { mainProduct, subProduct, subProducts } = useProductConvert();
   const { updateQueryParamsAndNavigate, getQueryParamsByKey } = useQueryParams();
   const useDate = useDateStore((state) => state.date);
-  const { isArgo, isCurrentMeters, isSealCtdTags, isSealCtd, isSurfaceWaves, isEACMooringArray } = useProductCheck();
-  const { isArgoValid } = useProductValidQueryParams();
+  const { isArgo, isCurrentMeters, isSealCtd } = useProductCheck();
+  const shouldRenderMiniMap = useShowProductOverMap();
 
-  const shouldRenderMiniMap =
-    useProductAvailableInRegion() ||
-    (isArgo && isArgoValid) ||
-    isCurrentMeters ||
-    isSealCtdTags ||
-    isSurfaceWaves ||
-    isEACMooringArray;
   const shouldShowLegend = !isCurrentMeters;
 
   const latestDatesRegionQueries = useMultipleRegionLatestDates(
@@ -99,7 +92,6 @@ const ProductSideBar: React.FC = () => {
           }
         : {};
     }
-
     updateQueryParamsAndNavigate(targetPath, updateParam);
   };
 

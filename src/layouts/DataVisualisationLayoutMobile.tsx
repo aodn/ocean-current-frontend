@@ -128,14 +128,14 @@ const DataVisualisationLayout: React.FC = () => {
   }, [product]);
 
   useEffect(() => {
-    const region = getRegionByRegionCode(regionCodeFromUrl as string);
+    const region = getRegionByRegionCode(regionCodeFromUrl as string, productId);
     const regionCode = region?.code || 'Au';
     const regionName = region?.title || 'Australia/NZ';
     const regionScope = region?.scope || RegionScope.Au;
     setRegionCode(regionCode);
     setRegionTitle(regionName);
     setRegionScope(regionScope);
-  }, [regionCodeFromUrl]);
+  }, [regionCodeFromUrl, productId]);
 
   useEffect(() => {
     if (!date) return;

@@ -5,7 +5,7 @@ const useProductAvailableInRegion = () => {
   const useProductId = useProductStore((state) => state.productParams.productId);
   const useRegionCode = useProductStore((state) => state.productParams.regionCode);
 
-  return isProductAvailableInRegion(useRegionCode, useProductId);
+  return isProductAvailableInRegion(useProductId, useRegionCode);
 };
 
 export default useProductAvailableInRegion;

@@ -1,27 +1,31 @@
 import { RegionScope } from '@/constants/region';
 import { Region } from '@/types/map';
-import { allRegions } from '@/data/regionData';
+import { allRegions, convertedSealCtdRegions } from '@/data/regionData';
 import { productRegionMap } from '@/data/regionList';
 import { RegionCategories } from '@/types/region';
-import { ProductID } from '@/types/product';
+import { ProductGroupID, ProductID } from '@/types/product';
 
-const getRegionByRegionCode = (regionCode: string | null): Region | undefined => {
+const getRegionByRegionCode = (regionCode: string | null, productId?: ProductID): Region | undefined => {
+  const sealCtd: ProductGroupID = 'sealCtd';
+  if (productId?.includes(sealCtd)) {
+    return convertedSealCtdRegions.find((region) => region.code === regionCode);
+  }
   return allRegions.find((region) => region.code === regionCode);
 };
 
-const getRegionScopeByRegionCode = (regionCode: string): RegionScope | undefined => {
-  return getRegionByRegionCode(regionCode)?.scope;
+const getRegionScopeByRegionCode = (regionCode: string, productId?: ProductID): RegionScope | undefined => {
+  return getRegionByRegionCode(regionCode, productId)?.scope;
 };
 
-const getRegionTitleByRegionCode = (regionCode: string | null): string | undefined => {
-  return getRegionByRegionCode(regionCode)?.title;
+const getRegionTitleByRegionCode = (regionCode: string | null, productId?: ProductID): string | undefined => {
+  return getRegionByRegionCode(regionCode, productId)?.title;
 };
 
 const getRegionListByProductId = (productId: ProductID): RegionCategories | undefined => {
   return productRegionMap[productId];
 };
 
-const isProductAvailableInRegion = (regionCode: string | null, productId: ProductID): boolean => {
+const isProductAvailableInRegion = (productId: ProductID, regionCode: string | null): boolean => {
   if (!regionCode) {
     return false;
   }

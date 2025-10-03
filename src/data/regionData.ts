@@ -188,7 +188,6 @@ const allRegions: Region[] = [
   ...localRegions,
   ...stateMonthlyMeansRegions,
   ...nationBigRegion,
-  ...sealCtdRegions,
 ].map((region) => ({
   ...region,
   coords: convertOldOceanCurrentCoordsToBBox(region.coords),
