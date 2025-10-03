@@ -29,7 +29,7 @@ const getRegionListByProductId = (productId: ProductID): RegionCategories | unde
   return productRegionMap[productId];
 };
 
-const isProductAvailableInRegion = (productId: ProductID, regionCode?: string | null): boolean => {
+const isProductAvailableInRegion = (productId: ProductID, regionCode: string | null): boolean => {
   if (!regionCode) {
     return false;
   }
