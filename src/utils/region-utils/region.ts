@@ -1,12 +1,16 @@
 import { RegionScope } from '@/constants/region';
-import { Region } from '@/types/map';
-import { allRegions, convertedSealCtdRegions } from '@/data/regionData';
+import { LocalRegion, Region } from '@/types/map';
+import { allRegions, convertedEACMooringRegions, convertedSealCtdRegions, eACMooringRegions } from '@/data/regionData';
 import { productRegionMap } from '@/data/regionList';
 import { RegionCategories } from '@/types/region';
 import { ProductGroupID, ProductID } from '@/types/product';
 
 const getRegionByRegionCode = (regionCode: string | null, productId?: ProductID): Region | undefined => {
   const sealCtd: ProductGroupID = 'sealCtd';
+  const eACMooring: ProductID = 'EACMooringArray';
+  if (productId?.includes(eACMooring)) {
+    return convertedEACMooringRegions.find((region) => region.code === regionCode);
+  }
   if (productId?.includes(sealCtd)) {
     return convertedSealCtdRegions.find((region) => region.code === regionCode);
   }
@@ -34,6 +38,10 @@ const isProductAvailableInRegion = (productId: ProductID, regionCode?: string | 
 
   if (!regionList) {
     return false;
+  }
+
+  if (productId === 'EACMooringArray') {
+    return eACMooringRegions.map((r) => r.code).includes(regionCode as LocalRegion['code']);
   }
 
   const allRegions = [...regionList.state, ...regionList.local];

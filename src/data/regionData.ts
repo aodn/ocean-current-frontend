@@ -182,6 +182,15 @@ const sealCtdRegions: (LocalRegion | StateRegion)[] = [
   { code: 'NSW', title: 'NSW', coords: [148.5, 156.5, -38.4, -31.2], scope: RegionScope.Local } as LocalRegion,
 ];
 
+const eACMooringRegions: LocalRegion[] = [
+  {
+    code: 'Brisbane',
+    title: 'Brisbane',
+    coords: [151, 159, -33, -23],
+    scope: RegionScope.Local,
+  },
+];
+
 const allRegions: Region[] = [
   ...nationRegions,
   ...stateRegions,
@@ -198,6 +207,11 @@ const convertedSealCtdRegions: (LocalRegion | StateRegion)[] = sealCtdRegions.ma
   coords: convertOldOceanCurrentCoordsToBBox(region.coords),
 }));
 
+const convertedEACMooringRegions = eACMooringRegions.map((region) => ({
+  ...region,
+  coords: convertOldOceanCurrentCoordsToBBox(region.coords),
+}));
+
 export {
   nationRegions,
   stateRegions,
@@ -206,4 +220,6 @@ export {
   stateMonthlyMeansRegions,
   nationBigRegion,
   convertedSealCtdRegions,
+  eACMooringRegions,
+  convertedEACMooringRegions,
 };
