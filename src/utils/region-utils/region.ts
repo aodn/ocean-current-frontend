@@ -49,20 +49,10 @@ const isProductAvailableInRegion = (productId: ProductID, regionCode?: string | 
   return allRegions.includes(regionCode);
 };
 
-const codeToRegionTitle = (code: string) => {
-  return allRegions.find((region) => region.code === code)?.title;
-};
-
-const titleToRegionCode = (title: string) => {
-  return allRegions.find((region) => region.title === title)?.code;
-};
-
 export {
   getRegionByRegionCode,
   getRegionTitleByRegionCode,
   getRegionScopeByRegionCode,
   getRegionListByProductId,
   isProductAvailableInRegion,
-  codeToRegionTitle,
-  titleToRegionCode,
 };
