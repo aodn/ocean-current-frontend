@@ -20,6 +20,7 @@ import { CurrentMetersSubproductsKey, mooredInstrumentArrayPath } from '@/consta
 import useArgoStore from '@/stores/argo-store/argoStore';
 import { useRegionLatestDates } from '@/services/hooks';
 import DatePagination from '../DatePagination';
+import useArgoAsProductData from '../Map/hooks/useArgoAsProductData';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
 const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView = false }) => {
@@ -27,6 +28,8 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
 
   const { updateQueryParamsAndNavigate, updateQueryParams } = useQueryParams();
   const argoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
+
+  const { refetch: refechArgoData } = useArgoAsProductData();
 
   const [copyButtonText, setCopyButtonText] = useState<string>(ProductMenubarText.SHARE);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -87,6 +90,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
     const latestDate = dateList?.[dateList.length - 1]?.date;
 
     if (isArgo) {
+      refechArgoData();
       if (isArgoValid) {
         const latestArgoProfileCycle = argoProfileCycles.find((cycle) => cycle.date === latestDate)?.cycle;
         if (latestArgoProfileCycle !== undefined)
@@ -144,7 +148,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
         </div>
 
         <Button
-          onClick={() => handleReset()}
+          onClick={handleReset}
           aria-hidden
           className="flex-center h-11 w-12 rounded-md border-none bg-white p-2"
           aria-label="Reset to latest date"

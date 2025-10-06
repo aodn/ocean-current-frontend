@@ -40,13 +40,12 @@ const DataVisualisationLayout: React.FC = () => {
   useSetProductId(urlType, setProductId);
 
   const dateFromUrl = searchParams.get('date') || dayjs().format('YYYYMMDD');
-
   const getArgoData = useCallback(() => {
     const worldMeteorologicalOrgId = searchParams.get('wmoid') || '';
     const cycle = searchParams.get('cycle') || '';
     const depth = (searchParams.get('depth') ?? ArgoDepths['2000M']) as ArgoDepths;
     setSelectedArgoParams({ worldMeteorologicalOrgId, cycle, depth });
-    setDate(dayjs(dateFromUrl));
+    setDate(dayjs(dateFromUrl, DateFormat.DAY));
   }, [searchParams, dateFromUrl]);
 
   const { region: regionCodeFromUrl = 'Au', date } = useProductSearchParam();
@@ -60,9 +59,9 @@ const DataVisualisationLayout: React.FC = () => {
       try {
         const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
 
-        const getFallbackYear = () => (useDate ? useDate.year() : dayjs().year());
-        const getFallbackMonth = () => (useDate ? useDate.month() + 1 : dayjs().month() + 1);
-        const getFallbackDay = () => (useDate ? useDate.date() : dayjs().date());
+        const getFallbackYear = () => dayjs().year();
+        const getFallbackMonth = () => dayjs().month() + 1;
+        const getFallbackDay = () => dayjs().date();
 
         const isFormatCompatible = (format: DateFormat, length: number): boolean => {
           switch (format) {

@@ -38,7 +38,7 @@ const DataVisualisationLayout: React.FC = () => {
     const cycle = searchParams.get('cycle') || '';
     const depth = (searchParams.get('depth') ?? ArgoDepths['2000M']) as ArgoDepths;
     setSelectedArgoParams({ worldMeteorologicalOrgId, cycle, depth });
-    setDate(dayjs(date));
+    setDate(dayjs(date, DateFormat.DAY));
   }, [searchParams]);
 
   const { region: regionCodeFromUrl = 'Au', date } = useProductSearchParam();
@@ -52,7 +52,7 @@ const DataVisualisationLayout: React.FC = () => {
       try {
         const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
 
-        const getFallbackYear = () => (useDate ? useDate.year() : dayjs().year());
+        const getFallbackYear = () => dayjs().year();
 
         const isFormatCompatible = (format: DateFormat, length: number): boolean => {
           switch (format) {
@@ -111,7 +111,7 @@ const DataVisualisationLayout: React.FC = () => {
 
       return null;
     },
-    [productId, regionScope, useDate],
+    [productId, regionScope],
   );
 
   const setProductKey = useCallback(() => {

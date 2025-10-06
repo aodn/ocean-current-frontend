@@ -22,7 +22,7 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
   const { worldMeteorologicalOrgId: selectedWorldMeteorologicalOrgId } = useArgoStore(
     (state) => state.selectedArgoParams,
   );
-  const { argoData } = useArgoAsProductData();
+  const { argoData, isLoading, error } = useArgoAsProductData();
 
   const [hoveredFeatureId, setHoveredFeatureId] = useState<number | string | null>(null);
 
@@ -181,6 +181,18 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
       padding: 30,
     });
   }, [map, argoData, isMiniMap, isArgo]);
+
+  // Log errors for debugging
+  useEffect(() => {
+    if (error) {
+      console.error('Error fetching Argo profiles:', error);
+    }
+  }, [error]);
+
+  // Don't render layers if loading or error (unless we have cached data)
+  if ((isLoading || error) && argoData.features.length === 0) {
+    return null;
+  }
 
   return (
     <Source id={ARGO_AS_PRODUCT_SOURCE_ID} type="geojson" data={argoData}>
