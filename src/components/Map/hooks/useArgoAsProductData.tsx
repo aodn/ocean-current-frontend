@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { useQuery } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
@@ -17,8 +17,8 @@ const MAXIMUM_RETRIES = 5;
 const useArgoAsProductData = () => {
   const useDate = useDateStore((state) => state.date);
   const [retryDate, setRetryDate] = useState<Dayjs>(useDate);
-  const [retryCount, setRetryCount] = useState(0);
-  const [maxRetriesReached, setMaxRetriesReached] = useState(false);
+  const retryCountRef = useRef(0);
+  const maxRetriesReachedRef = useRef(false);
   const { isArgo } = useProductCheck();
 
   const {
@@ -35,33 +35,33 @@ const useArgoAsProductData = () => {
     },
     ...sharedQueryConfig,
     enabled: isArgo,
-    retry: false, // Disable automatic retries to implement custom retry logic
+    retry: false, // disable automatic retries to implement custom retry logic
   });
 
   useEffect(() => {
     if (isSuccess) {
-      setRetryCount(0);
-      setMaxRetriesReached(false);
+      retryCountRef.current = 0;
+      maxRetriesReachedRef.current = false;
     }
   }, [isSuccess]);
 
   useEffect(() => {
-    if (error && isAxiosError(error) && error.response?.status === 404 && !maxRetriesReached) {
-      if (retryCount < MAXIMUM_RETRIES) {
+    if (error && isAxiosError(error) && error.response?.status === 404 && !maxRetriesReachedRef.current) {
+      if (retryCountRef.current < MAXIMUM_RETRIES) {
         const previousDay = dayjs(retryDate).subtract(1, 'day');
         setRetryDate(previousDay);
-        setRetryCount((prev) => prev + 1);
+        retryCountRef.current = retryCountRef.current + 1;
       } else {
         console.error('Failed to fetch argo profiles after maximum retries');
-        setMaxRetriesReached(true);
+        maxRetriesReachedRef.current = true;
       }
     }
-  }, [error, retryCount, retryDate, maxRetriesReached]);
+  }, [error, retryDate]);
 
   useEffect(() => {
     setRetryDate(useDate);
-    setRetryCount(0);
-    setMaxRetriesReached(false);
+    retryCountRef.current = 0;
+    maxRetriesReachedRef.current = false;
   }, [useDate]);
 
   useEffect(() => {
