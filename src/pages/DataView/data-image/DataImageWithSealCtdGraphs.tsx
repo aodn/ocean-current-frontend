@@ -68,18 +68,31 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
 }) => {
   const firstImgRef = useRef<HTMLImageElement | null>(null);
   const navigate = useNavigate();
-  const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const [scaledImageData, setScaledImageData] = useState<SealGraphData[]>([]);
-  const [imgUrls, setImgUrls] = useState<string[]>([]);
   const [hasImagesLoaded, setHasImagesLoaded] = useState<boolean>(false);
+  const [imageRenderError, setImageRenderError] = useState<string | null>(null);
+
+  const currentYear = date.year().toString();
 
   // Fetch image list for the product and region
-  const imageListQuery = useQuery({
-    queryKey: ['dateList', productId, region],
+  const {
+    data: imageListData,
+    error: imageListError,
+    isLoading: imageListLoading,
+  } = useQuery({
+    queryKey: ['dateList', productId, region, currentYear],
     queryFn: () => fetchImageListByProductIdAndRegion(productId, region!),
     enabled: Boolean(region),
+    select: (raw) => {
+      const first = Array.isArray(raw) ? raw[0] : undefined;
+      const files = first && hasFilesWithNames(first) ? first.files : [];
+      return getImageUrlsFromDateList(files, region, productId, currentYear);
+    },
     ...sharedQueryConfig,
   });
+
+  const imgUrls = imageListData ?? [];
+  const imgLoadError = imageRenderError || imageListError || (imgUrls.length === 0 ? 'No image available.' : null);
 
   // Fetch image map areas (clickable regions) for each image
   const imageDataQuery = useQuery({
@@ -110,36 +123,15 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
     setHasImagesLoaded(true);
   }, [imageDataQuery.data]);
 
-  // Reset scaled data when date changes
+  // Reset scaled data and image render error when date changes
   useEffect(() => {
     setScaledImageData([]);
     setHasImagesLoaded(false);
+    setImageRenderError(null);
   }, [date]);
 
   // Recalculate coordinates on window resize
   useResizeObserver('window', scaleImageCoordinates);
-
-  // Process image list data to extract image URLs
-  useEffect(() => {
-    if (!imageListQuery.data) {
-      setImgUrls([]);
-      return;
-    }
-
-    const raw = imageListQuery.data;
-    const first = Array.isArray(raw) ? raw[0] : undefined;
-    const files = first && hasFilesWithNames(first) ? first.files : [];
-    const currentYear = date.format('YYYY');
-    const imageUrls = getImageUrlsFromDateList(files, region, productId, currentYear);
-
-    if (imageUrls.length === 0) {
-      setImgLoadError('No image available.');
-      setImgUrls([]);
-    } else {
-      setImgLoadError(null);
-      setImgUrls(imageUrls);
-    }
-  }, [imageListQuery.data, region, productId, date]);
 
   // Navigate to seal CTD tags page when clicking on a seal region
   const handleImageClick = useCallback(
@@ -165,11 +157,11 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
   const displayData = scaledImageData.length > 0 ? scaledImageData : (imageDataQuery.data ?? []);
 
   // Error and loading states
-  if (imgLoadError || imageListQuery.error) {
+  if (imgLoadError) {
     return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
   }
 
-  if (imageListQuery.isLoading) {
+  if (imageListLoading) {
     return <Loading />;
   }
 
@@ -188,7 +180,7 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
               alt={`${altText} graph ${pageNum}`}
               useMap={`#seal-ctd-graph-${pageNum}`}
               className="max-h-[80vh] select-none object-contain"
-              onError={() => setImgLoadError('Image not available')}
+              onError={() => setImageRenderError('Image not available')}
               onLoad={isFirstImage ? scaleImageCoordinates : undefined}
             />
 
