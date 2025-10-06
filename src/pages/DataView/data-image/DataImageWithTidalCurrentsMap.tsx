@@ -39,18 +39,18 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   }, [src]);
 
   const handleImageLoad = useCallback(async () => {
-    if (imgRef.current) {
-      const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
+    if (!imgRef.current) return;
 
-      let convertedCoords;
-      if (region === 'Australia') {
-        convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, regionArr as []);
-      } else {
-        const tagData = await getTidalCurrentsTagsData(date, productId, region);
-        convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, tagData as []);
-      }
-      setAreas(convertedCoords);
+    const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
+
+    let convertedCoords;
+    if (region === 'Australia') {
+      convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, regionArr as []);
+    } else {
+      const tagData = await getTidalCurrentsTagsData(date, productId, region);
+      convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, tagData as []);
     }
+    setAreas(convertedCoords);
   }, [date, productId, region]);
 
   useResizeObserver('window', handleImageLoad);

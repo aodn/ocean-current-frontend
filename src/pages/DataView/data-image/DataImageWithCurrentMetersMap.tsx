@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import { useSearchParams } from 'react-router';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
@@ -37,14 +37,14 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
     if (!src) setImgLoadError('Missing Image');
   }, [src]);
 
-  const handleImageLoad = () => {
-    if (imgRef.current) {
-      const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
+  const handleImageLoad = useCallback(() => {
+    if (!imgRef.current) return;
 
-      const convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, regionArr as []);
-      setAreas(convertedCoords);
-    }
-  };
+    const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
+
+    const convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, regionArr as []);
+    setAreas(convertedCoords);
+  }, [regionArr]);
 
   useResizeObserver('window', handleImageLoad);
 
