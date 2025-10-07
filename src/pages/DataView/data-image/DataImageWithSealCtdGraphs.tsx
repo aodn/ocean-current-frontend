@@ -144,6 +144,12 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
         firstImageElement.addEventListener('load', handleImageLoad);
       }
     }
+
+    return () => {
+      if (firstImageElement) {
+        firstImageElement.removeEventListener('load', handleImageLoad);
+      }
+    };
   }, [date, handleImageLoad]);
 
   // Recalculate coordinates on window resize

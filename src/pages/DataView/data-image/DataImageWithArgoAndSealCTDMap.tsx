@@ -115,22 +115,20 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
   };
 
   useEffect(() => {
-    const handleImageLoad = () => {
-      handleLoad();
-    };
+    handleLoad();
 
     const imageElement = imgRef.current;
     if (imageElement) {
       if (imageElement.complete) {
-        handleImageLoad();
+        handleLoad();
       } else {
-        imageElement.addEventListener('load', handleImageLoad);
+        imageElement.addEventListener('load', handleLoad);
       }
     }
 
     return () => {
       if (imageElement) {
-        imageElement.removeEventListener('load', handleImageLoad);
+        imageElement.removeEventListener('load', handleLoad);
       }
     };
   }, [argoData, formattedDate, handleLoad, regionCode, sealData]);
