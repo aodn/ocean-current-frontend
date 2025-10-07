@@ -59,9 +59,9 @@ const DataVisualisationLayout: React.FC = () => {
       try {
         const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
 
-        const getFallbackYear = () => dayjs().year();
-        const getFallbackMonth = () => dayjs().month() + 1;
-        const getFallbackDay = () => dayjs().date();
+        const getFallbackYear = () => (useDate ? useDate.year() : dayjs().year());
+        const getFallbackMonth = () => (useDate ? useDate.month() + 1 : dayjs().month() + 1);
+        const getFallbackDay = () => (useDate ? useDate.date() : dayjs().date());
 
         const isFormatCompatible = (format: DateFormat, length: number): boolean => {
           switch (format) {
@@ -162,8 +162,7 @@ const DataVisualisationLayout: React.FC = () => {
 
       return null;
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [productId, regionScope], // Intentionally excluding useDate to prevent infinite loop
+    [productId, regionScope, useDate],
   );
 
   useEffect(() => {
@@ -191,7 +190,7 @@ const DataVisualisationLayout: React.FC = () => {
     if (!date || !productId || !regionScope) return;
 
     const currentDate = parseeDateWithFormat(date);
-    if (!currentDate) return;
+    if (!currentDate || !currentDate.isValid()) return;
 
     const isSameDay = useDate.isSame(currentDate, 'day');
     const isSameTime = useDate.hour() === currentDate.hour() && useDate.minute() === currentDate.minute();

@@ -59,10 +59,11 @@ const useArgoAsProductData = () => {
   }, [error, retryDate]);
 
   useEffect(() => {
+    if (!useDate.isValid() || retryDate.isSame(useDate, 'day')) return;
     setRetryDate(useDate);
     retryCountRef.current = 0;
     maxRetriesReachedRef.current = false;
-  }, [useDate]);
+  }, [retryDate, useDate]);
 
   useEffect(() => {
     if (!argoProfiles.length) return;

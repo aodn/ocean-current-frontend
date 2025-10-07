@@ -52,7 +52,7 @@ const DataVisualisationLayout: React.FC = () => {
       try {
         const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
 
-        const getFallbackYear = () => dayjs().year();
+        const getFallbackYear = () => (useDate ? useDate.year() : dayjs().year());
 
         const isFormatCompatible = (format: DateFormat, length: number): boolean => {
           switch (format) {
@@ -111,6 +111,7 @@ const DataVisualisationLayout: React.FC = () => {
 
       return null;
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [productId, regionScope],
   );
 
