@@ -191,11 +191,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
       }>(map, e, PRODUCT_REGION_BOX_LAYER_ID, ['name', 'code']);
 
       if (code) {
-        let regionCode = code;
-        // EAC Mooring Array has data from only one region - Brisbane
-        if (productId === 'EACMooringArray' && code === 'Brisbane2') {
-          regionCode = 'Brisbane';
-        }
+        const regionCode = code;
 
         (async () => {
           let targetPath = `/product/${baseProductPath}`;
