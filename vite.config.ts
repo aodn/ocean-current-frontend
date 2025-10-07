@@ -10,30 +10,21 @@ export default ({ mode }) => {
     ...process.env,
     ...loadEnv(mode, process.cwd()),
   };
-  const plugins = [
-    react(),
-    !process.env.VITEST
-      ? checker({
-          typescript: true,
-          eslint: {
-            lintCommand: 'eslint --rule "no-console: off" "./src/**/*.{ts,tsx}"',
-          },
-        })
-      : undefined,
-  ];
-
-  if (mode === 'production') {
-    plugins.push({
-      name: 'inject-prod-script',
-      transformIndexHtml(html) {
-        const script = '<script async src="/monitoring.js"></script>';
-        return html.replace('</head>', `${script}</head>`);
-      },
-    });
-  }
 
   return defineConfig({
-    plugins,
+    plugins: [
+      react(),
+      !process.env.VITEST
+        ? checker({
+            typescript: true,
+            eslint: {
+              lintCommand: 'eslint --rule "no-console: off" "./src/**/*.{ts,tsx}"',
+            },
+          })
+        : undefined,
+      googleAnalyticsPlugin(),
+      newRelicPlugin(mode),
+    ],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
@@ -61,4 +52,35 @@ export default ({ mode }) => {
       },
     },
   });
+};
+
+const googleAnalyticsPlugin = () => {
+  return {
+    name: 'vite-plugin-google-analytics',
+    transformIndexHtml(html) {
+      const gaId = process.env.VITE_GA_MEASUREMENT_ID;
+      if (!gaId) return html;
+      const gaScript = `
+          <script async src="https://www.googletagmanager.com/gtag/js?id=${gaId}"></script>
+          <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${gaId}');
+          </script>
+        `;
+      return html.replace('<!-- google-analytics-js -->', gaScript);
+    },
+  };
+};
+
+const newRelicPlugin = (mode: string) => {
+  return {
+    name: 'inject-prod-script',
+    transformIndexHtml(html) {
+      if (mode !== 'production') return html;
+      const script = '<script async src="/monitoring.js"></script>';
+      return html.replace('<!-- new-relic-js -->', `${script}`);
+    },
+  };
 };
