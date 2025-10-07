@@ -23,6 +23,7 @@ export default ({ mode }) => {
           })
         : undefined,
       googleAnalyticsPlugin(mode),
+      newRelicPlugin(mode),
     ],
     resolve: {
       alias: {
@@ -53,8 +54,7 @@ export default ({ mode }) => {
   });
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const googleAnalyticsPlugin = (_mode: any) => {
+const googleAnalyticsPlugin = (_mode: string) => {
   return {
     name: 'vite-plugin-google-analytics',
     transformIndexHtml(html) {
@@ -70,6 +70,17 @@ const googleAnalyticsPlugin = (_mode: any) => {
           </script>
         `;
       return html.replace('<!-- google-analytics-js -->', gaScript);
+    },
+  };
+};
+
+const newRelicPlugin = (mode: string) => {
+  return {
+    name: 'inject-prod-script',
+    transformIndexHtml(html) {
+      if (mode !== 'production') return html;
+      const script = '<script async src="/monitoring.js"></script>';
+      return html.replace('</head>', `${script}</head>`);
     },
   };
 };
