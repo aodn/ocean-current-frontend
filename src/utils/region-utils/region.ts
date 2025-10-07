@@ -1,6 +1,6 @@
 import { RegionScope } from '@/constants/region';
-import { LocalRegion, Region } from '@/types/map';
-import { allRegions, convertedEACMooringRegions, convertedSealCtdRegions, eACMooringRegions } from '@/data/regionData';
+import { Region } from '@/types/map';
+import { allRegions, convertedEACMooringRegions, convertedSealCtdRegions } from '@/data/regionData';
 import { productRegionMap } from '@/data/regionList';
 import { RegionCategories } from '@/types/region';
 import { ProductGroupID, ProductID } from '@/types/product';
@@ -38,10 +38,6 @@ const isProductAvailableInRegion = (productId: ProductID, regionCode: string | n
 
   if (!regionList) {
     return false;
-  }
-
-  if (productId === 'EACMooringArray') {
-    return eACMooringRegions.map((r) => r.code).includes(regionCode as LocalRegion['code']);
   }
 
   const allRegions = [...regionList.state, ...regionList.local];
