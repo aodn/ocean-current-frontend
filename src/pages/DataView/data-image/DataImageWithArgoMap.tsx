@@ -44,19 +44,19 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   const alt = `${productId} data in ${regionCode} at ${dateFormatted}`;
 
   const handleLoad = useCallback(() => {
-    if (imgRef.current) {
-      const { naturalWidth, naturalHeight, width, height } = imgRef.current;
-      const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
-      const originalCoords = data.map((item) => ({
-        shape: 'circle',
-        coords: [item.coordX, item.coordY, 10],
-        href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${dateFormatted}`,
-        wmoId: item.wmoId,
-        cycle: item.cycle,
-      }));
-      const convertedCoords = convertCoordsBasedOnImageScale(originalCoords, scaleX, scaleY, naturalHeight);
-      setCoords(convertedCoords as ArgoTagMapArea[]);
-    }
+    if (!imgRef.current) return;
+
+    const { naturalWidth, naturalHeight, width, height } = imgRef.current;
+    const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
+    const originalCoords = data.map((item) => ({
+      shape: 'circle',
+      coords: [item.coordX, item.coordY, 10],
+      href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${dateFormatted}`,
+      wmoId: item.wmoId,
+      cycle: item.cycle,
+    }));
+    const convertedCoords = convertCoordsBasedOnImageScale(originalCoords, scaleX, scaleY, naturalHeight);
+    setCoords(convertedCoords as ArgoTagMapArea[]);
   }, [data, dateFormatted]);
 
   useResizeObserver('window', handleLoad);
@@ -64,23 +64,6 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   useEffect(() => {
     setImgLoadError(null);
   }, [src]);
-
-  useEffect(() => {
-    const imageElement = imgRef.current;
-    if (imageElement) {
-      if (imageElement.complete) {
-        handleLoad();
-      } else {
-        imageElement.addEventListener('load', handleLoad);
-      }
-    }
-
-    return () => {
-      if (imageElement) {
-        imageElement.removeEventListener('load', handleLoad);
-      }
-    };
-  }, [data, dateFormatted, handleLoad, src]);
 
   const handleCircleClick = async (area: ArgoTagMapArea) => {
     const data = await fetchArgoProfileCyclesByWmoId(area.wmoId.toString());
@@ -112,6 +95,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
         onError={() => {
           setImgLoadError('Image not available');
         }}
+        onLoad={handleLoad}
       />
       <map name="argo-tag-map">
         {coords.map((area, index) => (
