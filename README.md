@@ -6,7 +6,6 @@ Welcome to our project, aimed at redefining the user experience and accessibilit
 
 - **Objective:** To enhance the user experience and accessibility of oceanographic data visualisation, aligning with modern UI/UX standards, and improving the efficiency of data downloads and the quality of visualisation.
 - **Scope:** This includes a UI/UX redesign, transitioning Matlab processing to Python, and upgrading data visualisation and download capabilities.
-  test
 
 ## Getting Started
 
