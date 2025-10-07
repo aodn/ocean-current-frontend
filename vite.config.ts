@@ -10,19 +10,30 @@ export default ({ mode }) => {
     ...process.env,
     ...loadEnv(mode, process.cwd()),
   };
+  const plugins = [
+    react(),
+    !process.env.VITEST
+      ? checker({
+          typescript: true,
+          eslint: {
+            lintCommand: 'eslint --rule "no-console: off" "./src/**/*.{ts,tsx}"',
+          },
+        })
+      : undefined,
+  ];
+
+  if (mode === 'production') {
+    plugins.push({
+      name: 'inject-prod-script',
+      transformIndexHtml(html) {
+        const script = '<script async src="/monitoring.js"></script>';
+        return html.replace('</head>', `${script}</head>`);
+      },
+    });
+  }
 
   return defineConfig({
-    plugins: [
-      react(),
-      !process.env.VITEST
-        ? checker({
-            typescript: true,
-            eslint: {
-              lintCommand: 'eslint --rule "no-console: off" "./src/**/*.{ts,tsx}"',
-            },
-          })
-        : undefined,
-    ],
+    plugins,
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
