@@ -22,7 +22,7 @@ export default ({ mode }) => {
             },
           })
         : undefined,
-      googleAnalyticsPlugin(mode),
+      googleAnalyticsPlugin(),
       newRelicPlugin(mode),
     ],
     resolve: {
@@ -54,7 +54,7 @@ export default ({ mode }) => {
   });
 };
 
-const googleAnalyticsPlugin = (_mode: string) => {
+const googleAnalyticsPlugin = () => {
   return {
     name: 'vite-plugin-google-analytics',
     transformIndexHtml(html) {
@@ -80,7 +80,7 @@ const newRelicPlugin = (mode: string) => {
     transformIndexHtml(html) {
       if (mode !== 'production') return html;
       const script = '<script async src="/monitoring.js"></script>';
-      return html.replace('</head>', `${script}</head>`);
+      return html.replace('<!-- new-relic-js -->', `${script}`);
     },
   };
 };
