@@ -26,7 +26,7 @@ export default ({ mode }) => {
     plugins.push({
       name: 'inject-prod-script',
       transformIndexHtml(html) {
-        const script = `<script async src="/monitoring.js"></script>`;
+        const script = '<script async src="/monitoring.js"></script>';
         return html.replace('</head>', `${script}</head>`);
       },
     });
