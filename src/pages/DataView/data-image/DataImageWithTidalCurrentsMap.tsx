@@ -55,6 +55,23 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
 
   useResizeObserver('window', handleImageLoad);
 
+  useEffect(() => {
+    const imageElement = imgRef.current;
+    if (imageElement) {
+      if (imageElement.complete) {
+        handleImageLoad();
+      } else {
+        imageElement.addEventListener('load', handleImageLoad);
+      }
+    }
+
+    return () => {
+      if (imageElement) {
+        imageElement.removeEventListener('load', handleImageLoad);
+      }
+    };
+  }, [date, handleImageLoad]);
+
   if (imgLoadError) {
     return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
   }
@@ -92,7 +109,6 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
         onError={() => {
           setImgLoadError('Image not available');
         }}
-        onLoad={handleImageLoad}
       />
       <map name="tidal-currents-map">
         {areas.map((area, index) => (

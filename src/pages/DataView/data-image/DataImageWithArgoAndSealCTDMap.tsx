@@ -114,6 +114,27 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
     window.open(area.href, '_blank', 'noopener,noreferrer');
   };
 
+  useEffect(() => {
+    const handleImageLoad = () => {
+      handleLoad();
+    };
+
+    const imageElement = imgRef.current;
+    if (imageElement) {
+      if (imageElement.complete) {
+        handleImageLoad();
+      } else {
+        imageElement.addEventListener('load', handleImageLoad);
+      }
+    }
+
+    return () => {
+      if (imageElement) {
+        imageElement.removeEventListener('load', handleImageLoad);
+      }
+    };
+  }, [argoData, formattedDate, handleLoad, regionCode, sealData]);
+
   const handleKeyDown = (e: React.KeyboardEvent, area: ArgoTagMapArea | MapImageAreas) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -136,7 +157,6 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
         onError={() => {
           setImgLoadError('Image not available');
         }}
-        onLoad={handleLoad}
       />
       <map name="argo-and-seal-tag-map">
         {argoCoords.map((area) => (
