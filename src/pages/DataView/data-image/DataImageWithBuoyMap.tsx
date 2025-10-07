@@ -64,6 +64,23 @@ const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, produc
     setImgLoadError(null);
   }, [src]);
 
+  useEffect(() => {
+    const imageElement = imgRef.current;
+    if (imageElement) {
+      if (imageElement.complete) {
+        handleLoad();
+      } else {
+        imageElement.addEventListener('load', handleLoad);
+      }
+    }
+
+    return () => {
+      if (imageElement) {
+        imageElement.removeEventListener('load', handleLoad);
+      }
+    };
+  }, [data, dateFormatted, src, date, handleLoad]);
+
   const handleCircleClick = (e: React.MouseEvent<HTMLAreaElement>, area: BuoyTagMapArea) => {
     e.preventDefault();
     e.stopPropagation();
@@ -90,7 +107,6 @@ const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, produc
         onError={() => {
           setImgLoadError('Image not available');
         }}
-        onLoad={handleLoad}
       />
       <map name="buoy-tag-map">
         {coords.map((area) => (

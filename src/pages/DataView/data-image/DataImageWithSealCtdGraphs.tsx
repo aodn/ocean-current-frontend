@@ -130,6 +130,28 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
     setImageRenderError(null);
   }, [date]);
 
+  const handleImageLoad = useCallback(() => {
+    if (!firstImgRef.current) return;
+    scaleImageCoordinates();
+  }, [scaleImageCoordinates]);
+
+  useEffect(() => {
+    const firstImageElement = firstImgRef.current;
+    if (firstImageElement) {
+      if (firstImageElement.complete) {
+        handleImageLoad();
+      } else {
+        firstImageElement.addEventListener('load', handleImageLoad);
+      }
+    }
+
+    return () => {
+      if (firstImageElement) {
+        firstImageElement.removeEventListener('load', handleImageLoad);
+      }
+    };
+  }, [date, handleImageLoad]);
+
   // Recalculate coordinates on window resize
   useResizeObserver('window', scaleImageCoordinates);
 

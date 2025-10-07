@@ -48,6 +48,23 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
 
   useResizeObserver('window', handleImageLoad);
 
+  useEffect(() => {
+    const imageElement = imgRef.current;
+    if (imageElement) {
+      if (imageElement.complete) {
+        handleImageLoad();
+      } else {
+        imageElement.addEventListener('load', handleImageLoad);
+      }
+    }
+
+    return () => {
+      if (imageElement) {
+        imageElement.removeEventListener('load', handleImageLoad);
+      }
+    };
+  }, [src, date, handleImageLoad]);
+
   if (imgLoadError) {
     return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
   }
@@ -93,7 +110,6 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
         onError={() => {
           setImgLoadError('Image not available');
         }}
-        onLoad={handleImageLoad}
       />
       <map name="current-meters-map">
         {areas &&

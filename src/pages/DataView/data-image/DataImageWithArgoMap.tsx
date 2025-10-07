@@ -65,6 +65,23 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
     setImgLoadError(null);
   }, [src]);
 
+  useEffect(() => {
+    const imageElement = imgRef.current;
+    if (imageElement) {
+      if (imageElement.complete) {
+        handleLoad();
+      } else {
+        imageElement.addEventListener('load', handleLoad);
+      }
+    }
+
+    return () => {
+      if (imageElement) {
+        imageElement.removeEventListener('load', handleLoad);
+      }
+    };
+  }, [data, dateFormatted, handleLoad, src]);
+
   const handleCircleClick = async (area: ArgoTagMapArea) => {
     const data = await fetchArgoProfileCyclesByWmoId(area.wmoId.toString());
     const dates = data.map((item) => item.date);
@@ -95,7 +112,6 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
         onError={() => {
           setImgLoadError('Image not available');
         }}
-        onLoad={handleLoad}
       />
       <map name="argo-tag-map">
         {coords.map((area, index) => (
