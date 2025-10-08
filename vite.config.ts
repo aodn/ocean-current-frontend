@@ -23,7 +23,7 @@ export default ({ mode }) => {
           })
         : undefined,
       googleAnalyticsPlugin(),
-      newRelicPlugin(mode),
+      newRelicPlugin(),
     ],
     resolve: {
       alias: {
@@ -74,11 +74,12 @@ const googleAnalyticsPlugin = () => {
   };
 };
 
-const newRelicPlugin = (mode: string) => {
+const newRelicPlugin = () => {
+  const isEnabled = Boolean(process.env.NEWRELIC_ENABLED);
   return {
     name: 'inject-prod-script',
     transformIndexHtml(html) {
-      if (mode !== 'production') return html;
+      if (!isEnabled) return html;
       const script = '<script async src="/monitoring.js"></script>';
       return html.replace('<!-- new-relic-js -->', `${script}`);
     },
