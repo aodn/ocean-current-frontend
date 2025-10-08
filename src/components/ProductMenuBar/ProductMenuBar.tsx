@@ -29,7 +29,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
   const { updateQueryParamsAndNavigate, updateQueryParams } = useQueryParams();
   const argoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
 
-  const { refetch: refechArgoData } = useArgoAsProductData();
+  const { refetch: refechArgoData } = useArgoAsProductData({ enabled: false });
 
   const [copyButtonText, setCopyButtonText] = useState<string>(ProductMenubarText.SHARE);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);

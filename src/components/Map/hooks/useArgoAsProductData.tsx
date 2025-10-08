@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { useQuery } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
@@ -9,61 +9,47 @@ import { setArgoMetaData } from '@/stores/argo-store/argoStore';
 import useDateStore from '@/stores/date-store/dateStore';
 import { ArgoProfileFeatureCollection } from '@/types/geo';
 import { calculateCenterByCoords } from '@/utils/geo-utils/geo';
-import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { sharedQueryConfig } from '@/configs/query';
 
 const MAXIMUM_RETRIES = 5;
 
-const useArgoAsProductData = () => {
+type UseArgoAsProductDataProps = { enabled?: boolean };
+
+const useArgoAsProductData = ({ enabled = true }: UseArgoAsProductDataProps) => {
   const useDate = useDateStore((state) => state.date);
-  const [retryDate, setRetryDate] = useState<Dayjs>(useDate);
+  const attemptDateRef = useRef<Dayjs>(useDate);
   const retryCountRef = useRef(0);
-  const maxRetriesReachedRef = useRef(false);
-  const { isArgo } = useProductCheck();
+
+  useEffect(() => {
+    attemptDateRef.current = useDate;
+    retryCountRef.current = 0;
+  }, [useDate]);
 
   const {
     data: argoProfiles = [],
     isLoading,
     error,
     refetch,
-    isSuccess,
   } = useQuery({
-    queryKey: ['argoProfiles', retryDate.format('YYYYMMDD')],
+    queryKey: ['argoProfiles', useDate.format('YYYYMMDD')],
     queryFn: async () => {
-      const response = await fetchArgoProfilesByDate(retryDate);
+      const response = await fetchArgoProfilesByDate(attemptDateRef.current);
       return convertHtmlToArgo(response.data);
     },
     ...sharedQueryConfig,
-    enabled: isArgo,
-    retry: false, // disable automatic retries to implement custom retry logic
+    enabled: enabled && useDate.isValid(),
+    retry: false,
   });
 
   useEffect(() => {
-    if (isSuccess) {
-      retryCountRef.current = 0;
-      maxRetriesReachedRef.current = false;
-    }
-  }, [isSuccess]);
-
-  useEffect(() => {
-    if (error && isAxiosError(error) && error.response?.status === 404 && !maxRetriesReachedRef.current) {
+    if (error && isAxiosError(error) && error.response?.status === 404) {
       if (retryCountRef.current < MAXIMUM_RETRIES) {
-        const previousDay = dayjs(retryDate).subtract(1, 'day');
-        setRetryDate(previousDay);
         retryCountRef.current = retryCountRef.current + 1;
-      } else {
-        console.error('Failed to fetch argo profiles after maximum retries');
-        maxRetriesReachedRef.current = true;
+        attemptDateRef.current = dayjs(attemptDateRef.current).subtract(1, 'day');
+        refetch();
       }
     }
-  }, [error, retryDate]);
-
-  useEffect(() => {
-    if (!useDate.isValid() || retryDate.isSame(useDate, 'day')) return;
-    setRetryDate(useDate);
-    retryCountRef.current = 0;
-    maxRetriesReachedRef.current = false;
-  }, [retryDate, useDate]);
+  }, [error, refetch]);
 
   useEffect(() => {
     if (!argoProfiles.length) return;

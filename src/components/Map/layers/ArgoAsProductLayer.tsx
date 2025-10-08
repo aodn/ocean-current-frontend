@@ -22,7 +22,7 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
   const { worldMeteorologicalOrgId: selectedWorldMeteorologicalOrgId } = useArgoStore(
     (state) => state.selectedArgoParams,
   );
-  const { argoData } = useArgoAsProductData();
+  const { argoData } = useArgoAsProductData({ enabled: isArgo });
 
   const [hoveredFeatureId, setHoveredFeatureId] = useState<number | string | null>(null);
 
