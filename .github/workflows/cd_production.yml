@@ -44,6 +44,7 @@ jobs:
       - name: Build the front end
         env:
           VITE_MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_ACCESS_TOKEN }}
+          VITE_GA_MEASUREMENT_ID: ${{ vars.VITE_GA_MEASUREMENT_ID }}
           NEWRELIC_ENABLED: true
         run: yarn build
 
