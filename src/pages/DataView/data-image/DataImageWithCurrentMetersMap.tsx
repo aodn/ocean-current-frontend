@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import { useSearchParams } from 'react-router';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
@@ -37,16 +37,33 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
     if (!src) setImgLoadError('Missing Image');
   }, [src]);
 
-  const handleImageLoad = () => {
-    if (imgRef.current) {
-      const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
+  const handleImageLoad = useCallback(() => {
+    if (!imgRef.current) return;
 
-      const convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, regionArr as []);
-      setAreas(convertedCoords);
-    }
-  };
+    const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
+
+    const convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, regionArr as []);
+    setAreas(convertedCoords);
+  }, [regionArr]);
 
   useResizeObserver('window', handleImageLoad);
+
+  useEffect(() => {
+    const imageElement = imgRef.current;
+    if (imageElement) {
+      if (imageElement.complete) {
+        handleImageLoad();
+      } else {
+        imageElement.addEventListener('load', handleImageLoad);
+      }
+    }
+
+    return () => {
+      if (imageElement) {
+        imageElement.removeEventListener('load', handleImageLoad);
+      }
+    };
+  }, [src, date, handleImageLoad]);
 
   if (imgLoadError) {
     return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
@@ -93,7 +110,6 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
         onError={() => {
           setImgLoadError('Image not available');
         }}
-        onLoad={handleImageLoad}
       />
       <map name="current-meters-map">
         {areas &&

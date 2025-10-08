@@ -22,6 +22,8 @@ export default ({ mode }) => {
             },
           })
         : undefined,
+      googleAnalyticsPlugin(),
+      newRelicPlugin(),
     ],
     resolve: {
       alias: {
@@ -50,4 +52,36 @@ export default ({ mode }) => {
       },
     },
   });
+};
+
+const googleAnalyticsPlugin = () => {
+  return {
+    name: 'vite-plugin-google-analytics',
+    transformIndexHtml(html) {
+      const gaId = process.env.VITE_GA_MEASUREMENT_ID;
+      if (!gaId) return html;
+      const gaScript = `
+          <script async src="https://www.googletagmanager.com/gtag/js?id=${gaId}"></script>
+          <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${gaId}');
+          </script>
+        `;
+      return html.replace('<!-- google-analytics-js -->', gaScript);
+    },
+  };
+};
+
+const newRelicPlugin = () => {
+  const isEnabled = Boolean(process.env.NEWRELIC_ENABLED);
+  return {
+    name: 'inject-prod-script',
+    transformIndexHtml(html) {
+      if (!isEnabled) return html;
+      const script = '<script async src="/monitoring.js"></script>';
+      return html.replace('<!-- new-relic-js -->', `${script}`);
+    },
+  };
 };

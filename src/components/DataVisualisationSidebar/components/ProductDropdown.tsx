@@ -69,11 +69,9 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
         point: null,
       };
 
-      // EAC Mooring Array has data from only one region, we're setting the region automatically so user shouldn't need to manually select the region
       if (id === 'EACMooringArray') {
         queryToUpdate = {
           date: convertedDate,
-          region: 'Brisbane',
           property: null,
           depth: null,
           point: null,

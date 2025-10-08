@@ -33,62 +33,60 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
 
   const handleLoad = useCallback(() => {
-    setArgoCoords([]);
-    setSealCoords([]);
+    if (!imgRef.current) return;
+    if (argoData.length === 0 && sealData.length === 0) return;
 
-    if (imgRef.current && (argoData.length > 0 || sealData.length > 0)) {
-      const { naturalWidth, naturalHeight, width, height } = imgRef.current;
-      const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
+    const { naturalWidth, naturalHeight, width, height } = imgRef.current;
+    const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
 
-      // numbers/calculations below are based on the original php code in handling edge case - POLAR region
-      const xcentre = width / 2;
-      const ycentre = height / 2 - 17.5;
-      const originalScaleX = 403;
-      const originalScaleY = 411;
+    // numbers/calculations below are based on the original php code in handling edge case - POLAR region
+    const xcentre = width / 2;
+    const ycentre = height / 2 - 17.5;
+    const originalScaleX = 403;
+    const originalScaleY = 411;
 
-      if (argoData.length > 0) {
-        const originalArgoCoords = argoData.map((item) => ({
-          ...item,
-          coords:
-            regionCode === 'POLAR'
-              ? [
-                  Math.floor(item.coords[0] * originalScaleX * scaleX + xcentre),
-                  Math.floor(-item.coords[1] * originalScaleY * scaleY + ycentre),
-                  5,
-                ]
-              : item.coords,
-          href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${formattedDate}`,
-        }));
+    if (argoData.length > 0) {
+      const originalArgoCoords = argoData.map((item) => ({
+        ...item,
+        coords:
+          regionCode === 'POLAR'
+            ? [
+                Math.floor(item.coords[0] * originalScaleX * scaleX + xcentre),
+                Math.floor(-item.coords[1] * originalScaleY * scaleY + ycentre),
+                5,
+              ]
+            : item.coords,
+        href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${formattedDate}`,
+      }));
 
-        if (regionCode === 'POLAR') {
-          setArgoCoords(originalArgoCoords as ArgoTagMapArea[]);
-        } else {
-          const convertedArgoCoords = convertCoordsBasedOnImageScale(originalArgoCoords, scaleX, scaleY, naturalHeight);
-          setArgoCoords(convertedArgoCoords as ArgoTagMapArea[]);
-        }
+      if (regionCode === 'POLAR') {
+        setArgoCoords(originalArgoCoords as ArgoTagMapArea[]);
+      } else {
+        const convertedArgoCoords = convertCoordsBasedOnImageScale(originalArgoCoords, scaleX, scaleY, naturalHeight);
+        setArgoCoords(convertedArgoCoords as ArgoTagMapArea[]);
       }
+    }
 
-      if (sealData.length > 0) {
-        const originalSealCoords = sealData.map((item) => ({
-          ...item,
-          coords:
-            regionCode === 'POLAR'
-              ? [
-                  Math.floor(item.coords[0] * originalScaleX * scaleX + xcentre),
-                  Math.floor(-item.coords[1] * originalScaleY * scaleY + ycentre),
-                  5,
-                ]
-              : item.coords,
-          href: `/product/seal-ctd-tags/10days?sealId=${item.name}&region=${regionCode}&date=${formattedDate}`,
-        }));
+    if (sealData.length > 0) {
+      const originalSealCoords = sealData.map((item) => ({
+        ...item,
+        coords:
+          regionCode === 'POLAR'
+            ? [
+                Math.floor(item.coords[0] * originalScaleX * scaleX + xcentre),
+                Math.floor(-item.coords[1] * originalScaleY * scaleY + ycentre),
+                5,
+              ]
+            : item.coords,
+        href: `/product/seal-ctd-tags/10days?sealId=${item.name}&region=${regionCode}&date=${formattedDate}`,
+      }));
 
-        if (regionCode === 'POLAR') {
-          setSealCoords(originalSealCoords as MapImageAreas[]);
-        } else {
-          const convertedSealCoords = convertCoordsBasedOnImageScale(originalSealCoords, scaleX, scaleY, naturalHeight);
+      if (regionCode === 'POLAR') {
+        setSealCoords(originalSealCoords as MapImageAreas[]);
+      } else {
+        const convertedSealCoords = convertCoordsBasedOnImageScale(originalSealCoords, scaleX, scaleY, naturalHeight);
 
-          setSealCoords(convertedSealCoords as MapImageAreas[]);
-        }
+        setSealCoords(convertedSealCoords as MapImageAreas[]);
       }
     }
   }, [argoData, formattedDate, regionCode, sealData]);
@@ -112,30 +110,28 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
     fetchTagsData();
   }, [formattedDate, regionCode]);
 
+  const handleCircleClick = (area: ArgoTagMapArea | MapImageAreas) => {
+    window.open(area.href, '_blank', 'noopener,noreferrer');
+  };
+
   useEffect(() => {
-    const handleImageLoad = () => {
-      handleLoad();
-    };
+    handleLoad();
 
     const imageElement = imgRef.current;
     if (imageElement) {
       if (imageElement.complete) {
-        handleImageLoad();
+        handleLoad();
       } else {
-        imageElement.addEventListener('load', handleImageLoad);
+        imageElement.addEventListener('load', handleLoad);
       }
     }
 
     return () => {
       if (imageElement) {
-        imageElement.removeEventListener('load', handleImageLoad);
+        imageElement.removeEventListener('load', handleLoad);
       }
     };
   }, [argoData, formattedDate, handleLoad, regionCode, sealData]);
-
-  const handleCircleClick = (area: ArgoTagMapArea | MapImageAreas) => {
-    window.open(area.href, '_blank', 'noopener,noreferrer');
-  };
 
   const handleKeyDown = (e: React.KeyboardEvent, area: ArgoTagMapArea | MapImageAreas) => {
     if (e.key === 'Enter' || e.key === ' ') {

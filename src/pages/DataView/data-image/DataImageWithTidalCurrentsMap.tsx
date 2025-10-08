@@ -39,21 +39,38 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   }, [src]);
 
   const handleImageLoad = useCallback(async () => {
-    if (imgRef.current) {
-      const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
+    if (!imgRef.current) return;
 
-      let convertedCoords;
-      if (region === 'Australia') {
-        convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, regionArr as []);
-      } else {
-        const tagData = await getTidalCurrentsTagsData(date, productId, region);
-        convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, tagData as []);
-      }
-      setAreas(convertedCoords);
+    const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
+
+    let convertedCoords;
+    if (region === 'Australia') {
+      convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, regionArr as []);
+    } else {
+      const tagData = await getTidalCurrentsTagsData(date, productId, region);
+      convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, tagData as []);
     }
+    setAreas(convertedCoords);
   }, [date, productId, region]);
 
   useResizeObserver('window', handleImageLoad);
+
+  useEffect(() => {
+    const imageElement = imgRef.current;
+    if (imageElement) {
+      if (imageElement.complete) {
+        handleImageLoad();
+      } else {
+        imageElement.addEventListener('load', handleImageLoad);
+      }
+    }
+
+    return () => {
+      if (imageElement) {
+        imageElement.removeEventListener('load', handleImageLoad);
+      }
+    };
+  }, [date, handleImageLoad]);
 
   if (imgLoadError) {
     return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
@@ -92,7 +109,6 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
         onError={() => {
           setImgLoadError('Image not available');
         }}
-        onLoad={handleImageLoad}
       />
       <map name="tidal-currents-map">
         {areas.map((area, index) => (

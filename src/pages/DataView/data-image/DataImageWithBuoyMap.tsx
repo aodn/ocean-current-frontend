@@ -32,30 +32,30 @@ const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, produc
   const alt = `${productId} data at ${dateFormatted}`;
 
   const handleLoad = useCallback(() => {
-    if (imgRef.current && data) {
-      const { naturalWidth, naturalHeight, width, height } = imgRef.current;
-      const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
+    if (!imgRef.current || !data) return;
 
-      const buoyCoords: BuoyTagMapArea[] = data.tags.map((item) => {
-        const scaledX = item.x * scaleX;
-        const scaledY = item.y * scaleY;
-        const scaledSize = item.sz * Math.min(scaleX, scaleY);
+    const { naturalWidth, naturalHeight, width, height } = imgRef.current;
+    const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
 
-        const href = item.url.startsWith('TS ')
-          ? buildBuoyTimeseriesImagePath(item.title, date)
-          : item.url.replace('TS ', '');
+    const buoyCoords: BuoyTagMapArea[] = data.tags.map((item) => {
+      const scaledX = item.x * scaleX;
+      const scaledY = item.y * scaleY;
+      const scaledSize = item.sz * Math.min(scaleX, scaleY);
 
-        return {
-          shape: 'circle',
-          coords: [scaledX, scaledY, scaledSize],
-          href,
-          title: item.title,
-          alt: `${item.title} buoy`,
-        };
-      });
+      const href = item.url.startsWith('TS ')
+        ? buildBuoyTimeseriesImagePath(item.title, date)
+        : item.url.replace('TS ', '');
 
-      setCoords(buoyCoords);
-    }
+      return {
+        shape: 'circle',
+        coords: [scaledX, scaledY, scaledSize],
+        href,
+        title: item.title,
+        alt: `${item.title} buoy`,
+      };
+    });
+
+    setCoords(buoyCoords);
   }, [data, date]);
 
   useResizeObserver('window', handleLoad);

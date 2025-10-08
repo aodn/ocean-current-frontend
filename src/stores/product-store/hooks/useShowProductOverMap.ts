@@ -4,7 +4,7 @@ import useProductStore from '../productStore';
 import useProductCheck from './useProductCheck';
 
 export const useShowProductOverMap = (): boolean => {
-  const { isArgo, isCurrentMeters, isEACMooringArray, isSealCtdTags, isSurfaceWaves } = useProductCheck();
+  const { isArgo } = useProductCheck();
   const { isArgoValid } = useProductValidQueryParams();
 
   const { getQueryParamsByKey } = useQueryParams();
@@ -19,11 +19,5 @@ export const useShowProductOverMap = (): boolean => {
     return false;
   }
 
-  return (
-    isProductAvailableInRegion(useProductId, region) ||
-    isEACMooringArray ||
-    isCurrentMeters ||
-    isSealCtdTags ||
-    isSurfaceWaves
-  );
+  return isProductAvailableInRegion(useProductId, region);
 };
