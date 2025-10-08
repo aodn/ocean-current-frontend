@@ -21,6 +21,7 @@ const OceanCurrentDatePicker: React.FC<OceanCurrentDatePickerProps> = ({
   displayText,
   startDate,
   endDate,
+  isFreeMode = false,
 }) => {
   const formattedSelectedDate = displayText || convertDateToDisplayFormattedText(dayjs(selectedDate), dateFormat);
 
@@ -88,6 +89,7 @@ const OceanCurrentDatePicker: React.FC<OceanCurrentDatePickerProps> = ({
               isDisabled={isDatePickerDisabled}
               startDate={startDate}
               endDate={endDate}
+              isFreeMode={isFreeMode}
             />
           </div>
         )}

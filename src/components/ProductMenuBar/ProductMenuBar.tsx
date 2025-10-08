@@ -22,7 +22,7 @@ import { useRegionLatestDates } from '@/services/hooks';
 import DatePagination from '../DatePagination';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
-const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView = false }) => {
+const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView = false, isFreeMode = false }) => {
   const { disableVideoCreation } = useDateRange();
 
   const { updateQueryParamsAndNavigate, updateQueryParams } = useQueryParams();
@@ -53,7 +53,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
 
   const dateFormat = useProductDateFormat();
 
-  const { isLoading: isProductDateListLoading, dateList } = useDateList(productId);
+  const { isLoading: isProductDateListLoading, dateList } = useDateList({ productId, isFreeMode });
 
   const handleCopyLink = () => {
     const url = location.href;
@@ -139,7 +139,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
               onChange={(elem) => handleCurrentMetersDateChange(elem.id)}
             />
           ) : (
-            <DatePagination productId={productId} dateFormat={dateFormat} />
+            <DatePagination productId={productId} dateFormat={dateFormat} isFreeMode={isFreeMode} />
           )}
         </div>
 

@@ -17,4 +17,5 @@ export interface OceanCurrentDatePickerProps {
   displayText?: ProductMenubarText;
   startDate?: Date;
   endDate?: Date;
+  isFreeMode?: boolean;
 }
