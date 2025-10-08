@@ -17,10 +17,12 @@ import { useRegionLatestDates } from '@/services/hooks';
 import { useProductValidQueryParams } from '../useProductValidQueryParams/useProductValidQueryParams';
 import { generateDateRange } from './mockData';
 
-type DateRange = {
-  startDate: Date;
-  endDate: Date;
-};
+type DateRange = { startDate: Date; endDate: Date };
+
+interface UseDateListOptions {
+  productId: ProductID;
+  isFreeMode?: boolean;
+}
 
 const extractDateFromFilename = (filename: string): string => {
   return filename.split('.')[0];
@@ -34,9 +36,7 @@ const processArgoDateList = (data: ArgoProfileCycle[]): DateItem[] => {
     return [];
   }
 
-  return data.map((cycle: ArgoProfileCycle) => ({
-    date: cycle.date,
-  }));
+  return data.map((cycle: ArgoProfileCycle) => ({ date: cycle.date }));
 };
 
 const processSealCtdDateList = (files: ImageFile[]): DateItem[] => {
@@ -62,11 +62,7 @@ const processFilesToDateList = (files: ImageFile[]): DateItem[] => {
     return [];
   }
 
-  return files
-    .map((file) => ({
-      date: extractDateFromFilename(file.name),
-    }))
-    .filter(({ date }) => /^\d+$/.test(date));
+  return files.map((file) => ({ date: extractDateFromFilename(file.name) })).filter(({ date }) => /^\d+$/.test(date));
 };
 
 const processOceanColourFilesToDateList = (imageGroups: ImageListResponse[]): OceanColourDateItem[] => {
@@ -82,10 +78,7 @@ const processOceanColourFilesToDateList = (imageGroups: ImageListResponse[]): Oc
       group.files.forEach((file) => {
         const date = extractDateFromFilename(file.name);
         if (/^\d+$/.test(date)) {
-          dateList.push({
-            date,
-            path: group.path,
-          });
+          dateList.push({ date, path: group.path });
         }
       });
     }
@@ -108,7 +101,7 @@ const shouldUseSealCtdProcessor = (productId: ProductID, files: ImageFile[]): bo
   return files?.some(({ name }) => SEAL_CTD_FILENAME_REGEX.test(name)) || false;
 };
 
-const useDateList = (productId: ProductID) => {
+const useDateList = ({ productId, isFreeMode = false }: UseDateListOptions) => {
   const shouldUseApi = API_ENABLED_PRODUCTS.includes(productId) && !FIXED_DATA_PRODUCTS.includes(productId);
 
   const regionScope = useProductStore((state) => state.productParams.regionScope);
@@ -122,23 +115,24 @@ const useDateList = (productId: ProductID) => {
   const { isArgoValid } = useProductValidQueryParams();
   const isArgo = productId === 'argo';
 
+  // In free mode, disable all queries
   const argoQuery = useQuery({
     queryKey: ['argoDateList', wmoId],
     queryFn: () => fetchArgoProfileCyclesByWmoId(wmoId),
-    enabled: isArgo && !!wmoId,
+    enabled: !isFreeMode && isArgo && !!wmoId,
     ...sharedQueryConfig,
   });
 
   const standardQuery = useQuery({
     queryKey: ['dateList', productId, region],
     queryFn: () => fetchImageListByProductIdAndRegion(productId, region!),
-    enabled: shouldUseApi && !isArgo && Boolean(region),
+    enabled: !isFreeMode && shouldUseApi && !isArgo && Boolean(region),
     ...sharedQueryConfig,
   });
 
   const { data: latestArgoLocationsData, isLoading: isLatestArgoLocationsDataLoading } = useRegionLatestDates(
     productId,
-    isArgo && !isArgoValid,
+    !isFreeMode && isArgo && !isArgoValid,
   );
 
   const { data } = isArgo ? argoQuery : standardQuery;
@@ -166,12 +160,30 @@ const useDateList = (productId: ProductID) => {
       // pass startdate and enddate to datepicker, enddate can be grabbed from new api point(expect to be created)
       // to get latest date, like what has been done for dateRange when isArgo && !isArgoValid like below.
     },
-    enabled: !isArgo && !shouldUseApi && productId === 'monthlyMeans-anomalies' && Boolean(region),
+    enabled: !isFreeMode && !isArgo && !shouldUseApi && productId === 'monthlyMeans-anomalies' && Boolean(region),
     ...sharedQueryConfig,
   });
 
   let dateList: DateItem[] = [];
-  let dateRange: DateRange | undefined; //only exists when isArgo && !isArgoValid
+  let dateRange: DateRange | undefined; //only exists when isArgo && !isArgoValid or isFreeMode
+
+  // Constants for date range
+  const defaultStartDate = dayjs('2010-01-01').toDate();
+
+  // Helper to get Argo end date (Argo always uses DAY format)
+  const getArgoEndDate = () =>
+    dayjs(
+      latestArgoLocationsData?.regionLatestDates[0].latestDate || dayjs().subtract(1, 'day').format('YYYYMMDD'),
+    ).toDate();
+
+  // If in free mode, return early with empty dateList and date range mode
+  if (isFreeMode) {
+    // Special case: For Argo in free mode, use latestArgoLocationsData or fallback to yesterday
+    const endDate = isArgo ? getArgoEndDate() : new Date();
+
+    dateRange = { startDate: defaultStartDate, endDate };
+    return { isLoading: false, dateList: [], error: null, dateRange };
+  }
 
   if (shouldUseApi && data) {
     if (isArgo) {
@@ -211,15 +223,10 @@ const useDateList = (productId: ProductID) => {
         dateList = mockData;
       }
     }
-    if (dateList.length === 0) {
-      if (isArgo && !isArgoValid) {
-        dateRange = {
-          startDate: dayjs('20100101', dateFormat).toDate(),
-          endDate: dayjs(latestArgoLocationsData?.regionLatestDates[0].latestDate || '20100101', dateFormat).toDate(),
-        };
-      } else {
-        dateList = generateDateRange(productId, dateFormat, regionScope);
-      }
+    if (isArgo && !isArgoValid) {
+      dateRange = { startDate: defaultStartDate, endDate: getArgoEndDate() };
+    } else {
+      dateList = generateDateRange(productId, dateFormat, regionScope);
     }
   }
 

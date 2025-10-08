@@ -23,6 +23,7 @@ import ProductSideBar from '@/components/DataVisualisationSidebar/ProductSidebar
 import { ArgoDepths } from '@/constants/argo';
 import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { DateFormat } from '@/types/date';
+import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -34,6 +35,7 @@ const DataVisualisationLayout: React.FC = () => {
   const [isSidebarVisible, setSidebarVisible] = useState(true);
   const productId = useProductStore((state) => state.productParams.productId);
   const regionScope = useProductStore((state) => state.productParams.regionScope);
+  const shouldShowProductOverMap = useShowProductOverMap();
   const toggleSidebar = () => setSidebarVisible((prev) => !prev);
 
   const urlType = useUrlType();
@@ -241,7 +243,7 @@ const DataVisualisationLayout: React.FC = () => {
           <div
             className={`transition-all duration-300 ${isSidebarVisible ? 'ml-4' : 'ml-0'} flex min-h-[800px] w-full min-w-[800px] flex-col`}
           >
-            <ProductMenuBar setShowVideo={setShowVideo} />
+            <ProductMenuBar setShowVideo={setShowVideo} isFreeMode={!shouldShowProductOverMap} />
             <ErrorBoundary key={product?.mainProduct}>
               <Outlet context={{ showVideo, loading: true }} />
             </ErrorBoundary>

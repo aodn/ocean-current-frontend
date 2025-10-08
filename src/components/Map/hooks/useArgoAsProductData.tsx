@@ -60,13 +60,7 @@ const useArgoAsProductData = () => {
     const argoMetaData = [].map((data: ArgoProfile) => {
       const { coords, ...rest } = data;
       const center = calculateCenterByCoords(coords);
-      return {
-        ...rest,
-        position: {
-          latitude: center[1],
-          longitude: center[0],
-        },
-      };
+      return { ...rest, position: { latitude: center[1], longitude: center[0] } };
     });
     setArgoMetaData(argoMetaData);
   }, [argoProfiles]);
@@ -78,25 +72,14 @@ const useArgoAsProductData = () => {
         return {
           type: 'Feature',
           id: worldMeteorologicalOrgId,
-          properties: {
-            worldMeteorologicalOrgId,
-            cycle,
-            depth,
-            date,
-          },
-          geometry: {
-            type: 'Point',
-            coordinates: [center[0], center[1]],
-          },
+          properties: { worldMeteorologicalOrgId, cycle, depth, date },
+          geometry: { type: 'Point', coordinates: [center[0], center[1]] },
         };
       }),
     [argoProfiles],
   );
 
-  const argoGeoCollection = {
-    type: 'FeatureCollection',
-    features: features,
-  } as ArgoProfileFeatureCollection;
+  const argoGeoCollection = { type: 'FeatureCollection', features: features } as ArgoProfileFeatureCollection;
 
   return { argoData: argoGeoCollection };
 };
