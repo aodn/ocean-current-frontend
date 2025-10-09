@@ -42,6 +42,7 @@ const DataVisualisationLayout: React.FC = () => {
   useSetProductId(urlType, setProductId);
 
   const dateFromUrl = searchParams.get('date') || dayjs().format('YYYYMMDD');
+
   const getArgoData = useCallback(() => {
     const worldMeteorologicalOrgId = searchParams.get('wmoid') || '';
     const cycle = searchParams.get('cycle') || '';
@@ -192,11 +193,15 @@ const DataVisualisationLayout: React.FC = () => {
     if (!date || !productId || !regionScope) return;
 
     const currentDate = parseeDateWithFormat(date);
+    //TODO: the issue is for four-hour-sst product, the date format is YYYYMMDDHH, if user select a date like 20230915 (without hour info),
+    // it will be treated as invalid date, need to find a better way to handle this
+
     if (!currentDate || !currentDate.isValid()) return;
 
-    const isSameDay = useDate.isSame(currentDate, 'day');
-    const isSameTime = useDate.hour() === currentDate.hour() && useDate.minute() === currentDate.minute();
-    if (isSameDay && isSameTime) return;
+    const prevDateTime = useDate.valueOf();
+    const currentDateTime = currentDate.valueOf();
+
+    if (prevDateTime === currentDateTime) return;
     setDate(currentDate);
   }, [date, useDate, productId, regionScope, parseeDateWithFormat]);
 

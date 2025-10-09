@@ -7,9 +7,9 @@ import { AppRoute, APP_ROUTES } from '@/routers/routes';
 export function useCurrentPage(): AppRoute {
   const location = useLocation();
 
-  if (location.pathname === APP_ROUTES.HOME) return '/';
-  if (location.pathname.startsWith(APP_ROUTES.PRODUCT)) return '/product';
-  if (location.pathname.startsWith(APP_ROUTES.MAP)) return '/map';
+  if (location.pathname === APP_ROUTES.HOME) return APP_ROUTES.HOME;
+  if (location.pathname.startsWith(APP_ROUTES.PRODUCT)) return APP_ROUTES.PRODUCT;
+  if (location.pathname.startsWith(APP_ROUTES.MAP)) return APP_ROUTES.MAP;
 
-  return '/404';
+  return APP_ROUTES.NOT_FOUND;
 }
