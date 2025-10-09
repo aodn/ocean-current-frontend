@@ -13,19 +13,19 @@ const useArgoData = () => {
   const currentPage = useCurrentPage();
   const isProductPage = currentPage === '/product';
 
-  const { argoData: argoDataProductPage } = useArgoDataQuery({
+  const { argoData: argoDataProductPage, error: productPageError } = useArgoDataQuery({
     enabled: isProductPage && useDate.isValid(),
     queryKey: ['argoProfiles', useDate],
   });
 
-  const { argoData: argoDataMapPage } = useArgoDataQuery({
+  const { argoData: argoDataMapPage, error: mapPageError } = useArgoDataQuery({
     enabled: !isProductPage && latestArgoDate.isValid(),
     queryKey: ['latestArgoProfiles', latestArgoDate],
   });
 
   const argoData = isProductPage ? argoDataProductPage : argoDataMapPage;
 
-  return { argoData };
+  return { argoData, error: productPageError || mapPageError };
 };
 
 export default useArgoData;

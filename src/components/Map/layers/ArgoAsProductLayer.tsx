@@ -23,7 +23,11 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
     (state) => state.selectedArgoParams,
   );
 
-  const { argoData } = useArgoData();
+  const { argoData, error } = useArgoData();
+
+  if (error) {
+    console.error('Failed to fetch Argo data:', error);
+  }
 
   const [hoveredFeatureId, setHoveredFeatureId] = useState<number | string | null>(null);
 
@@ -163,7 +167,7 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
       }
     };
 
-    const argoPoint = argoData.features.find(
+    const argoPoint = argoData?.features.find(
       (element) => element.properties.worldMeteorologicalOrgId === selectedWorldMeteorologicalOrgId,
     );
     if (argoPoint?.geometry.coordinates) {
