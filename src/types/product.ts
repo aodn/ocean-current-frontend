@@ -137,6 +137,10 @@ export function isChildProductId(id: AnyProductID): id is ChildProductID {
   return childProductIDs.includes(id as ChildProductID);
 }
 
+export function getRootProductIdFromProductId(id: AnyProductID): RootProductID {
+  return isChildProductId(id) ? (id.split('-')[0] as ProductGroupID) : id;
+}
+
 interface BaseProduct {
   title: string;
   path: string;

@@ -7,7 +7,7 @@ import { ArgoProfile } from '@/types/argo';
 import { useQueryParams, useDeviceType } from '@/hooks';
 import { getBoundsFromCoordsArray } from '@/utils/geo-utils/geo';
 import { getPropertyFromMapFeatures } from '../utils/mapUtils';
-import useArgoAsProductData from '../hooks/useArgoAsProductData';
+import useArgoData from '../hooks/useArgoData';
 
 interface ArgoAsProductLayerProps {
   isMiniMap: boolean;
@@ -22,7 +22,8 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
   const { worldMeteorologicalOrgId: selectedWorldMeteorologicalOrgId } = useArgoStore(
     (state) => state.selectedArgoParams,
   );
-  const { argoData } = useArgoAsProductData({ enabled: isArgo });
+
+  const { argoData } = useArgoData();
 
   const [hoveredFeatureId, setHoveredFeatureId] = useState<number | string | null>(null);
 
