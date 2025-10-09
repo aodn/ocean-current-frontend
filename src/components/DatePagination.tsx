@@ -13,13 +13,24 @@ interface DatePaginationProps {
   dateFormat: DateFormat;
   initialDate?: string;
   isMobile?: boolean;
+  isFreeMode?: boolean;
 }
 
-const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, initialDate, isMobile }) => {
-  const { isLoading, dateList, dateRange } = useDateList(productId);
+const DatePagination: React.FC<DatePaginationProps> = ({
+  productId,
+  dateFormat,
+  initialDate,
+  isMobile,
+  isFreeMode = false,
+}) => {
+  const { isLoading, dateList, dateRange } = useDateList({ productId, isFreeMode });
+
+  // For free mode, use DAY format
+  const effectiveDateFormat = isFreeMode ? DateFormat.DAY : dateFormat;
+
   const { navigationMode, dateListNavigation, dateRangeNavigation } = useDateNavigation({
     availableDates: dateList,
-    dateFormat,
+    dateFormat: effectiveDateFormat,
     initialDate,
     dateRange,
   });
@@ -50,13 +61,14 @@ const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, 
       goToPrevious={goToPrevious}
       canGoNext={adjustedCanGoNext}
       canGoPrevious={adjustedCanGoPrevious}
-      dateFormat={dateFormat}
+      dateFormat={effectiveDateFormat}
       onChange={(date: Date | null) => updateDate(dayjs(date), { reStart: true })}
       isMobile={isMobile}
       isDatePickerDisabled={isDatePickerDisabled}
       displayText={displayText}
       startDate={dateRange?.startDate}
       endDate={dateRange?.endDate}
+      isFreeMode={isFreeMode}
     />
   );
 };
