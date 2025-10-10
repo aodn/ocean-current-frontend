@@ -3,6 +3,7 @@ import { useRegionLatestDates } from '@/services/hooks';
 import useDateStore from '@/stores/date-store/dateStore';
 import { DateFormat } from '@/types/date';
 import { useCurrentPage } from '@/hooks/useCurrentPage/useCurrentPage';
+import { APP_ROUTES } from '@/routers/routes';
 import useArgoDataQuery from './useArgoDataQuery';
 
 /**
@@ -17,7 +18,7 @@ import useArgoDataQuery from './useArgoDataQuery';
  */
 const useArgoData = () => {
   const currentPage = useCurrentPage();
-  const isProductPage = currentPage === '/product';
+  const isProductPage = currentPage === APP_ROUTES.PRODUCT;
 
   const useDate = useDateStore((state) => state.date);
 
