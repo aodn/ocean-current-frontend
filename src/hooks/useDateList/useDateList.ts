@@ -14,7 +14,7 @@ import { buildProductImageUrl } from '@/utils/data-image-builder-utils/dataImgBu
 import { RegionScope } from '@/constants/region';
 import { sharedQueryConfig } from '@/configs/query';
 import { useRegionLatestDates } from '@/services/hooks';
-import { useArgoProductValidQueryParams } from '../useProductValidQueryParams/useArgoProductValidQueryParams';
+import { useArgoProductValidQueryParams } from '../useArgoProductValidQueryParams/useArgoProductValidQueryParams';
 import { generateDateRange } from './mockData';
 
 type DateRange = { startDate: Date; endDate: Date };
