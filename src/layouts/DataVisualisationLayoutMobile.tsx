@@ -22,6 +22,7 @@ import { ArgoDepths } from '@/constants/argo';
 import { ProductID } from '@/types/product';
 import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { DateFormat } from '@/types/date';
+import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -31,6 +32,7 @@ const DataVisualisationLayout: React.FC = () => {
   const [showVideo, setShowVideo] = useState(false);
   const productId = useProductStore((state) => state.productParams.productId);
   const regionScope = useProductStore((state) => state.productParams.regionScope);
+  const shouldShowProductOverMap = useShowProductOverMap();
 
   const getArgoData = useCallback(() => {
     const date = searchParams.get('date') || dayjs().format('YYYYMMDD');
@@ -45,7 +47,7 @@ const DataVisualisationLayout: React.FC = () => {
 
   const parseeDateWithFormat = useCallback(
     (dateString: string): dayjs.Dayjs | null => {
-      if (!productId || !regionScope) {
+      if (!productId) {
         return null;
       }
 
@@ -53,29 +55,6 @@ const DataVisualisationLayout: React.FC = () => {
         const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
 
         const getFallbackYear = () => (useDate ? useDate.year() : dayjs().year());
-
-        const isFormatCompatible = (format: DateFormat, length: number): boolean => {
-          switch (format) {
-            case DateFormat.MONTH_ONLY:
-              return length === 2;
-            case DateFormat.YEAR_ONLY:
-              return length === 4 || length === 2;
-            case DateFormat.MONTH:
-              return length === 6 || length === 2;
-            case DateFormat.DAY:
-              return length === 8 || length === 4 || length === 6;
-            case DateFormat.HOUR:
-              return length === 10 || length === 2;
-            case DateFormat.MINUTE:
-              return length === 12 || length === 2;
-            default:
-              return false;
-          }
-        };
-
-        if (!isFormatCompatible(dateFormat, dateString.length)) {
-          return null;
-        }
 
         if (dateString.length === 2) {
           if (dateFormat === DateFormat.MONTH_ONLY) {
@@ -108,7 +87,9 @@ const DataVisualisationLayout: React.FC = () => {
       } catch (error) {
         console.warn('Error parsing date with format:', error);
       }
-
+      if (!shouldShowProductOverMap) {
+        return dayjs(dateString, 'YYYYMMDD');
+      }
       return null;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -143,14 +124,12 @@ const DataVisualisationLayout: React.FC = () => {
 
     const currentDate = parseeDateWithFormat(date);
 
-    if (!currentDate) {
-      return;
-    }
+    if (!currentDate || !currentDate.isValid()) return;
 
-    const isSameDay = useDate.isSame(currentDate, 'day');
-    const isSameTime = useDate.hour() === currentDate.hour() && useDate.minute() === currentDate.minute();
+    const prevDateTime = useDate.valueOf();
+    const currentDateTime = currentDate.valueOf();
 
-    if (isSameDay && isSameTime) return;
+    if (prevDateTime === currentDateTime) return;
     setDate(currentDate);
   }, [date, useDate, productId, regionScope, parseeDateWithFormat]);
 
