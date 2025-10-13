@@ -40,7 +40,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   const [coords, setCoords] = useState<ArgoTagMapArea[]>([]);
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const { mainProduct } = useProductConvert();
-  const { data } = useImageArgoTags({ date, tagPath: argoTagFilePath || '', regionCode, dateFormat });
+  const { data } = useImageArgoTags({ date, tagPath: argoTagFilePath, regionCode, dateFormat });
   const alt = `${productId} data in ${regionCode} at ${dateFormatted}`;
 
   const handleLoad = useCallback(() => {
