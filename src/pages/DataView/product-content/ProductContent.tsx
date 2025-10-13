@@ -1,45 +1,14 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useOutletContext, useSearchParams } from 'react-router';
-import { useQuery } from '@tanstack/react-query';
-import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import {
-  buildProductImageUrl,
-  buildOceanColourImageUrl,
-  buildArgoImageUrl,
-  getTargetRegionScopePath,
-  buildProductVideoUrl,
-  buildCurrentMetersMapImageUrl,
-  buildSSTTimeseriesImageUrl,
-  buildEACMooringArrayImageUrl,
-  buildTidalCurrentsMapImageUrl,
-  buildTidalCurrentsDataImageUrl,
-  buildSealCtdMapImageUrl,
-  buildSealCtdTagsDataImageUrl,
-  buildSurfaceWavesBuoyTimeseriesImageUrl,
-  buildSurfaceWavesImageUrl,
-  formatDateByProductId,
-} from '@/utils/data-image-builder-utils/dataImgBuilder';
-import useArgoStore, { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
-import useProductStore from '@/stores/product-store/productStore';
-import { getRegionByRegionCode } from '@/utils/region-utils/region';
-import { RegionScope } from '@/constants/region';
+import { useOutletContext } from 'react-router';
+import { buildProductVideoUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
+import { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import { Loading } from '@/components/Shared';
-import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { checkProductHasSubProduct } from '@/utils/product-utils/product';
-import useDateStore from '@/stores/date-store/dateStore';
 import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
 import { VideoPlayerOutletContext } from '@/types/router';
-import { checkProductHasArgoTags, getArgoTagFilePathByProductId } from '@/utils/argo-utils/argoTag';
-import { OceanColourDateItem } from '@/types/date';
-import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
-import { fetchImageListByProductIdAndRegion } from '@/services/imageList';
-import { sharedQueryConfig } from '@/configs/query';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
-import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
 import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
-import { ProductID } from '@/types/product';
-import { ImageFile, ImageListResponse } from '@/types/imageList';
 import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
 import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
 import DataImageWithCurrentMetersPlots from '../data-image/DataImageWithCurrentMetersPlots';
@@ -48,160 +17,73 @@ import DataImageWithSealCtdGraphs from '../data-image/DataImageWithSealCtdGraphs
 import DataImageWithArgoAndSealCTDMap from '../data-image/DataImageWithArgoAndSealCTDMap';
 import DataImageWithBuoyMap from '../data-image/DataImageWithBuoyMap';
 import DataImage from '../data-image/DataImage';
-
-/**
- * Checks if argo tags are available for the current product and region scope
- */
-const checkArgoTagsAvailability = (productId: string | undefined, regionScope: RegionScope): boolean => {
-  if (!productId || !checkProductHasArgoTags(productId as ProductID)) {
-    return false;
-  }
-
-  const argoTagFilePathValue = getArgoTagFilePathByProductId(productId as ProductID);
-  if (!argoTagFilePathValue) {
-    return false;
-  }
-
-  const argoTagFilePath = regionScope === RegionScope.Local ? argoTagFilePathValue?.local : argoTagFilePathValue?.state;
-
-  return !!argoTagFilePath;
-};
-
-/**
- * Processes ocean colour image data to extract dates
- */
-const processOceanColourDateList = (
-  oceanColourImageData: ImageListResponse[] | undefined,
-  regionScope: RegionScope,
-): OceanColourDateItem[] => {
-  if (!oceanColourImageData) {
-    return [];
-  }
-
-  const extractDateFromFilename = (filename: string): string => {
-    return filename.split('.')[0];
-  };
-
-  return oceanColourImageData
-    .flatMap(
-      (group) =>
-        group.files?.map((file: ImageFile) => {
-          const rawDate = extractDateFromFilename(file.name);
-          try {
-            const formattedDate = formatDateByProductId('oceanColour-chlA', rawDate, regionScope);
-            return {
-              date: formattedDate,
-              path: group.path,
-            };
-          } catch {
-            return {
-              date: rawDate,
-              path: group.path,
-            };
-          }
-        }) || [],
-    )
-    .filter(({ date }) => /^\d+$/.test(date));
-};
+import { useProductContentData } from './hooks/useProductContentData';
+import { buildImageUrl } from './utils/imageUrlBuilder';
+import { checkArgoTagsAvailability } from './utils/argoTagsUtils';
+import { processOceanColourDateList } from './utils/oceanColourUtils';
 
 const ProductContent: React.FC = () => {
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
-  const [searchParams] = useSearchParams();
-
-  // Store hooks
-  const {
-    isArgo,
-    isCurrentMeters,
-    isEACMooringArray,
-    isTidalCurrents,
-    isSealCtd,
-    isSealCtdTags,
-    isSurfaceWavesBuoyTimeseries,
-    isOceanColourChlA,
-  } = useProductCheck();
-  const useDate = useDateStore((state) => state.date);
-  const useRegionCode = useProductStore((state) => state.productParams.regionCode);
-  const useProductId = useProductStore((state) => state.productParams.productId);
-  const useArgoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
-  const { mainProduct, subProduct } = useProductConvert();
-  const { worldMeteorologicalOrgId, cycle, depth } = useArgoStore((state) => state.selectedArgoParams);
   const { showVideo } = useOutletContext<VideoPlayerOutletContext>();
+
+  // Get all product data using custom hook
   const {
-    property,
-    depth: currentMetersDepth,
-    region: currentMetersRegion,
-    date: currentMetersDate,
-    deploymentPlot,
-  } = useCurrentMetersStore();
+    productChecks,
+    useDate,
+    useRegionCode,
+    useProductId,
+    useArgoProfileCycles,
+    mainProduct,
+    subProduct,
+    argoParams,
+    currentMetersParams,
+    urlParams,
+    hasSelectedParams,
+    regionData,
+    argoTagFilePath,
+    oceanColourImageData,
+    dateString,
+  } = useProductContentData();
 
-  // URL parameters
-  const buoyRegionUrlParam = searchParams.get('region');
-  const pointUrlParam = searchParams.get('point');
-  const selectedSealCtdTag = searchParams.get('sealId');
-  const hasSelectedBuoyRegionFromUrl = !!buoyRegionUrlParam;
-  const hasSelectedPointFromUrl = !!pointUrlParam;
-  const hasSelectedSealCtdTagFromUrl = !!selectedSealCtdTag;
-
-  // Region calculations
-  const region = useMemo(
-    () => getRegionByRegionCode(isEACMooringArray ? 'Brisbane' : useRegionCode),
-    [isEACMooringArray, useRegionCode],
-  );
-  const regionScope = region?.scope || RegionScope.Au;
-  const targetPathRegion = getTargetRegionScopePath(regionScope);
-  const regionPath = region?.code;
-  const dateString = useDate.format('YYYYMMDDHH');
-
-  // Argo tags availability check
+  // Determine if we should render with argo tags
   const shouldRenderDataImageWithArgoTags = useMemo(
-    () => !isArgo && checkArgoTagsAvailability(useProductId, regionScope),
-    [isArgo, useProductId, regionScope],
+    () => !productChecks.isArgo && checkArgoTagsAvailability(useProductId, regionData.scope),
+    [productChecks.isArgo, useProductId, regionData.scope],
   );
 
-  // Ocean colour data query
-  const { data: oceanColourImageData } = useQuery({
-    queryKey: ['dateList', useProductId, useRegionCode],
-    queryFn: () => fetchImageListByProductIdAndRegion(useProductId, useRegionCode!),
-    enabled: isOceanColourChlA && Boolean(useRegionCode),
-    ...sharedQueryConfig,
-  });
-
+  // Process ocean colour date list
   const oceanColourDateList = useMemo(
-    () => (isOceanColourChlA ? processOceanColourDateList(oceanColourImageData, regionScope) : []),
-    [isOceanColourChlA, oceanColourImageData, regionScope],
+    () => (productChecks.isOceanColourChlA ? processOceanColourDateList(oceanColourImageData, regionData.scope) : []),
+    [productChecks.isOceanColourChlA, oceanColourImageData, regionData.scope],
   );
 
-  // Build image URL based on product type
+  // Build image URL
   const chooseImg = useCallback((): string | undefined => {
     try {
-      switch (true) {
-        case isArgo:
-          return buildArgoImageUrl(worldMeteorologicalOrgId, useDate, cycle, depth);
-        case isCurrentMeters:
-          return buildCurrentMetersMapImageUrl(currentMetersRegion, currentMetersDate, property, currentMetersDepth);
-        case useProductId === 'sixDaySst-timeseries':
-          return buildSSTTimeseriesImageUrl(regionPath ?? '');
-        case isEACMooringArray:
-          return buildEACMooringArrayImageUrl(useDate);
-        case isTidalCurrents && !hasSelectedPointFromUrl:
-          return buildTidalCurrentsMapImageUrl(useRegionCode ?? 'Au', subProduct?.key ?? 'tidalCurrents-spd', useDate);
-        case isTidalCurrents && hasSelectedPointFromUrl:
-          return buildTidalCurrentsDataImageUrl(pointUrlParam!, useDate);
-        case isSealCtd:
-          return buildSealCtdMapImageUrl(useRegionCode ?? 'POLAR', useDate);
-        case isSealCtdTags && hasSelectedSealCtdTagFromUrl:
-          return buildSealCtdTagsDataImageUrl(selectedSealCtdTag!, useDate, useProductId);
-        case useProductId === 'surfaceWaves-wave':
-          return buildSurfaceWavesImageUrl(useDate);
-        case useProductId === 'surfaceWaves-buoyTimeseries' && hasSelectedBuoyRegionFromUrl:
-          return buildSurfaceWavesBuoyTimeseriesImageUrl(buoyRegionUrlParam!, useDate);
-        case isOceanColourChlA: {
-          const dateFormat = getDateFormatByProductIdAndRegionScope('oceanColour-chlA', regionScope);
-          return buildOceanColourImageUrl(regionPath ?? 'Au', useDate.toString(), dateFormat, oceanColourDateList);
-        }
-        default:
-          return buildProductImageUrl(useProductId, regionPath ?? 'Au', targetPathRegion, useDate.toString());
-      }
+      return buildImageUrl({
+        ...productChecks,
+        useProductId,
+        useDate,
+        regionPath: regionData.path,
+        regionScope: regionData.scope,
+        targetPathRegion: regionData.targetPath,
+        useRegionCode,
+        worldMeteorologicalOrgId: argoParams.worldMeteorologicalOrgId,
+        cycle: argoParams.cycle,
+        depth: argoParams.depth,
+        currentMetersRegion: currentMetersParams.region,
+        currentMetersDate: currentMetersParams.date,
+        property: currentMetersParams.property,
+        currentMetersDepth: currentMetersParams.depth,
+        hasSelectedPointFromUrl: hasSelectedParams.point,
+        pointUrlParam: urlParams.point || undefined,
+        hasSelectedSealCtdTagFromUrl: hasSelectedParams.sealCtdTag,
+        selectedSealCtdTag: urlParams.sealCtdTag || undefined,
+        hasSelectedBuoyRegionFromUrl: hasSelectedParams.buoyRegion,
+        buoyRegionUrlParam: urlParams.buoyRegion || undefined,
+        subProductKey: subProduct?.key,
+        oceanColourDateList,
+      });
     } catch (e) {
       if (e instanceof Error) {
         console.error(e);
@@ -209,42 +91,32 @@ const ProductContent: React.FC = () => {
       }
     }
   }, [
-    isArgo,
-    isCurrentMeters,
-    isEACMooringArray,
-    isTidalCurrents,
-    isSealCtd,
-    isSealCtdTags,
-    isOceanColourChlA,
+    productChecks,
     useProductId,
-    worldMeteorologicalOrgId,
     useDate,
-    cycle,
-    depth,
-    currentMetersRegion,
-    currentMetersDate,
-    property,
-    currentMetersDepth,
-    regionPath,
+    regionData,
     useRegionCode,
+    argoParams,
+    currentMetersParams,
+    hasSelectedParams,
+    urlParams,
     subProduct?.key,
-    hasSelectedPointFromUrl,
-    pointUrlParam,
-    hasSelectedSealCtdTagFromUrl,
-    selectedSealCtdTag,
-    hasSelectedBuoyRegionFromUrl,
-    buoyRegionUrlParam,
-    regionScope,
-    targetPathRegion,
     oceanColourDateList,
   ]);
 
+  // Build media URL (video or image)
   const buildMediaUrl = useCallback((): string => {
     const imgUrl = chooseImg();
-    const videoUrl = buildProductVideoUrl(useProductId, regionPath ?? 'Au', targetPathRegion, useDate.toString());
+    const videoUrl = buildProductVideoUrl(
+      useProductId,
+      regionData.path ?? 'Au',
+      regionData.targetPath,
+      useDate.toString(),
+    );
     return showVideo ? videoUrl : imgUrl!;
-  }, [chooseImg, showVideo, useProductId, regionPath, targetPathRegion, useDate]);
+  }, [chooseImg, showVideo, useProductId, regionData, useDate]);
 
+  // Error handler
   const handleError = useCallback(() => {
     setImgLoadError('Media not available');
   }, []);
@@ -255,12 +127,12 @@ const ProductContent: React.FC = () => {
   }, [
     mainProduct,
     subProduct,
-    cycle,
-    depth,
-    regionPath,
-    targetPathRegion,
+    argoParams.cycle,
+    argoParams.depth,
+    regionData.path,
+    regionData.targetPath,
     dateString,
-    worldMeteorologicalOrgId,
+    argoParams.worldMeteorologicalOrgId,
     useArgoProfileCycles,
   ]);
 
@@ -270,17 +142,17 @@ const ProductContent: React.FC = () => {
       const data = await fetchArgoProfileCyclesByWmoId(wmoId);
       setArgoProfileCycles(data);
     };
-    if (isArgo && worldMeteorologicalOrgId) {
-      getArgoProfileCycles(worldMeteorologicalOrgId);
+    if (productChecks.isArgo && argoParams.worldMeteorologicalOrgId) {
+      getArgoProfileCycles(argoParams.worldMeteorologicalOrgId);
     }
-  }, [isArgo, worldMeteorologicalOrgId]);
+  }, [productChecks.isArgo, argoParams.worldMeteorologicalOrgId]);
 
   // Early returns for error/loading states
-  if (isArgo && !worldMeteorologicalOrgId) {
+  if (productChecks.isArgo && !argoParams.worldMeteorologicalOrgId) {
     return <ErrorImage date={useDate} productId="argo" />;
   }
 
-  if (isSurfaceWavesBuoyTimeseries && !hasSelectedBuoyRegionFromUrl) {
+  if (productChecks.isSurfaceWavesBuoyTimeseries && !hasSelectedParams.buoyRegion) {
     return <ErrorImage date={useDate} productId="surfaceWaves-buoyTimeseries" />;
   }
 
@@ -321,14 +193,15 @@ const ProductContent: React.FC = () => {
         src={chooseImg()!}
         date={useDate}
         productId={useProductId}
-        regionCode={regionPath ?? 'Au'}
-        regionScope={regionScope}
+        regionCode={regionData.path ?? 'Au'}
+        regionScope={regionData.scope}
+        argoTagFilePath={argoTagFilePath!}
       />
     );
   }
 
   // Tidal currents
-  if (isTidalCurrents) {
+  if (productChecks.isTidalCurrents) {
     return (
       <DataImageWithTidalCurrentsMap
         mainProduct={mainProduct}
@@ -373,24 +246,26 @@ const ProductContent: React.FC = () => {
   }
 
   // Current meters
-  if (isCurrentMeters) {
-    const hasSelectedPlotFromUrl = !!searchParams.get('deploymentPlot');
-
+  if (productChecks.isCurrentMeters) {
     if (
       subProduct?.key === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY &&
-      deploymentPlot === '' &&
-      !hasSelectedPlotFromUrl
+      currentMetersParams.deploymentPlot === '' &&
+      !hasSelectedParams.deploymentPlot
     ) {
       return (
         <DataImageWithCurrentMetersMap
           mainProduct={mainProduct}
           src={chooseImg()!}
-          date={currentMetersDate}
-          regionCode={currentMetersRegion}
+          date={currentMetersParams.date}
+          regionCode={currentMetersParams.region}
         />
       );
     }
-    return <DataImageWithCurrentMetersPlots deploymentPlot={deploymentPlot as CurrentMetersDeploymentPlotNames} />;
+    return (
+      <DataImageWithCurrentMetersPlots
+        deploymentPlot={currentMetersParams.deploymentPlot as CurrentMetersDeploymentPlotNames}
+      />
+    );
   }
 
   // Default data image
