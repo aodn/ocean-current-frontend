@@ -167,7 +167,7 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
       }
     };
 
-    const argoPoint = argoData?.features.find(
+    const argoPoint = argoData.features.find(
       (element) => element.properties.worldMeteorologicalOrgId === selectedWorldMeteorologicalOrgId,
     );
     if (argoPoint?.geometry.coordinates) {

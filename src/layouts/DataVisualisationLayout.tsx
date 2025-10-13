@@ -175,10 +175,9 @@ const DataVisualisationLayout: React.FC = () => {
 
     if (!currentDate || !currentDate.isValid()) return;
 
-    const prevDateTime = useDate.valueOf();
-    const currentDateTime = currentDate.valueOf();
-
-    if (prevDateTime === currentDateTime) return;
+    const isSameDay = useDate.isSame(currentDate, 'day');
+    const isSameTime = useDate.hour() === currentDate.hour() && useDate.minute() === currentDate.minute();
+    if (isSameDay && isSameTime) return;
     setDate(currentDate);
   }, [date, useDate, productId, regionScope, parseeDateWithFormat]);
 

@@ -92,8 +92,7 @@ const DataVisualisationLayout: React.FC = () => {
       }
       return null;
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [productId, regionScope],
+    [productId, regionScope, shouldShowProductOverMap, useDate],
   );
 
   const setProductKey = useCallback(() => {
