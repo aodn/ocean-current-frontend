@@ -5,9 +5,18 @@ import MapLayout from '@/layouts/MapLayout';
 import DataVisualisationLayout from '@/layouts/DataVisualisationLayout';
 import { createProductRedirects } from './utils';
 
+export const APP_ROUTES = {
+  HOME: '/',
+  PRODUCT: '/product',
+  MAP: '/map',
+  NOT_FOUND: '/404',
+} as const;
+
+export type AppRoute = (typeof APP_ROUTES)[keyof typeof APP_ROUTES];
+
 const routes: RouteObject[] = [
   {
-    path: '/',
+    path: APP_ROUTES.HOME,
     element: <MainLayout />,
     children: [
       {
@@ -15,7 +24,7 @@ const routes: RouteObject[] = [
         element: <Home />,
       },
       {
-        path: '/product',
+        path: APP_ROUTES.PRODUCT,
         element: <DataVisualisationLayout />,
         children: [
           {
@@ -34,7 +43,7 @@ const routes: RouteObject[] = [
         ],
       },
       {
-        path: '/map',
+        path: APP_ROUTES.MAP,
         element: <MapLayout />,
         children: [
           {
@@ -56,7 +65,7 @@ const routes: RouteObject[] = [
   },
 
   {
-    path: '/404',
+    path: APP_ROUTES.NOT_FOUND,
     element: <NotFound />,
   },
   {
