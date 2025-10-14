@@ -14,7 +14,7 @@ import { buildProductImageUrl } from '@/utils/data-image-builder-utils/dataImgBu
 import { RegionScope } from '@/constants/region';
 import { sharedQueryConfig } from '@/configs/query';
 import { useRegionLatestDates } from '@/services/hooks';
-import { useProductValidQueryParams } from '../useProductValidQueryParams/useProductValidQueryParams';
+import { useArgoProductValidQueryParams } from '../useArgoProductValidQueryParams/useArgoProductValidQueryParams';
 import { generateDateRange } from './mockData';
 
 type DateRange = { startDate: Date; endDate: Date };
@@ -112,7 +112,7 @@ const useDateList = ({ productId, isFreeMode = false }: UseDateListOptions) => {
 
   const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
 
-  const { isArgoValid } = useProductValidQueryParams();
+  const { isArgoValid } = useArgoProductValidQueryParams();
   const isArgo = productId === 'argo';
 
   // In free mode, disable all queries

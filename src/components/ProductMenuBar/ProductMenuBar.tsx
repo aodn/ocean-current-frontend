@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
-import { useDateList, useDateRange, useQueryParams, useProductValidQueryParams } from '@/hooks';
+import { useDateList, useDateRange, useQueryParams, useArgoProductValidQueryParams } from '@/hooks';
 import { Dropdown, ToggleButton, Button } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
 import { ProductMenubarText } from '@/constants/textConstant';
@@ -35,7 +35,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
   const [_, setSearchParams] = useSearchParams();
   const { isArgo, isCurrentMeters, isSurfaceWavesBuoyTimeseries, isTidalCurrents, isSealCtd, isSealCtdTags } =
     useProductCheck();
-  const { isArgoValid } = useProductValidQueryParams();
+  const { isArgoValid } = useArgoProductValidQueryParams();
   const productId = useProductStore((state) => state.productParams.productId);
   const { data: latestArgoLocationsData, isLoading: isLatestArgoLocationsDataLoading } = useRegionLatestDates(
     productId,
@@ -144,7 +144,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
         </div>
 
         <Button
-          onClick={() => handleReset()}
+          onClick={handleReset}
           aria-hidden
           className="flex-center h-11 w-12 rounded-md border-none bg-white p-2"
           aria-label="Reset to latest date"

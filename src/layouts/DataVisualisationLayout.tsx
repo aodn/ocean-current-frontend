@@ -48,14 +48,14 @@ const DataVisualisationLayout: React.FC = () => {
     const cycle = searchParams.get('cycle') || '';
     const depth = (searchParams.get('depth') ?? ArgoDepths['2000M']) as ArgoDepths;
     setSelectedArgoParams({ worldMeteorologicalOrgId, cycle, depth });
-    setDate(dayjs(dateFromUrl));
+    setDate(dayjs(dateFromUrl, DateFormat.DAY));
   }, [searchParams, dateFromUrl]);
 
   const { region: regionCodeFromUrl = 'Au', date } = useProductSearchParam();
 
   const parseeDateWithFormat = useCallback(
     (dateString: string): dayjs.Dayjs | null => {
-      if (!productId || !regionScope) {
+      if (!productId) {
         return null;
       }
 
@@ -65,29 +65,6 @@ const DataVisualisationLayout: React.FC = () => {
         const getFallbackYear = () => (useDate ? useDate.year() : dayjs().year());
         const getFallbackMonth = () => (useDate ? useDate.month() + 1 : dayjs().month() + 1);
         const getFallbackDay = () => (useDate ? useDate.date() : dayjs().date());
-
-        const isFormatCompatible = (format: DateFormat, length: number): boolean => {
-          switch (format) {
-            case DateFormat.MONTH_ONLY:
-              return length === 2;
-            case DateFormat.YEAR_ONLY:
-              return length === 4 || length === 2;
-            case DateFormat.MONTH:
-              return length === 6 || length === 2;
-            case DateFormat.DAY:
-              return length === 8 || length === 4 || length === 6;
-            case DateFormat.HOUR:
-              return length === 10 || length === 2;
-            case DateFormat.MINUTE:
-              return length === 12 || length === 2;
-            default:
-              return false;
-          }
-        };
-
-        if (!isFormatCompatible(dateFormat, dateString.length)) {
-          return null;
-        }
 
         if (dateString.length === 2) {
           if (dateFormat === DateFormat.MONTH_ONLY) {
@@ -162,11 +139,12 @@ const DataVisualisationLayout: React.FC = () => {
       } catch (error) {
         console.warn('Error parsing date with format:', error);
       }
-
+      if (!shouldShowProductOverMap) {
+        return dayjs(dateString, 'YYYYMMDD');
+      }
       return null;
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [productId, regionScope], // Intentionally excluding useDate to prevent infinite loop
+    [productId, regionScope, shouldShowProductOverMap, useDate],
   );
 
   useEffect(() => {
@@ -194,7 +172,8 @@ const DataVisualisationLayout: React.FC = () => {
     if (!date || !productId || !regionScope) return;
 
     const currentDate = parseeDateWithFormat(date);
-    if (!currentDate) return;
+
+    if (!currentDate || !currentDate.isValid()) return;
 
     const isSameDay = useDate.isSame(currentDate, 'day');
     const isSameTime = useDate.hour() === currentDate.hour() && useDate.minute() === currentDate.minute();

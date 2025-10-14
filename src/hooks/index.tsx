@@ -9,8 +9,9 @@ import useDeviceType from './useDeviceType/useDeviceType';
 import useUrlType from './useUrlType/useUrlType';
 import useSetProductId from './useSetProductId/useSetProductId';
 import useDateList from './useDateList/useDateList';
-import { useProductValidQueryParams } from './useProductValidQueryParams/useProductValidQueryParams';
 import { useResizeObserver } from './useResizeObserver/useResizeObserver';
+import { useCurrentPage } from './useCurrentPage/useCurrentPage';
+import { useArgoProductValidQueryParams } from './useArgoProductValidQueryParams/useArgoProductValidQueryParams';
 
 export {
   useProductPathFromUrl as useProductFromUrl,
@@ -24,6 +25,7 @@ export {
   useUrlType,
   useSetProductId,
   useDateList,
-  useProductValidQueryParams,
+  useArgoProductValidQueryParams,
   useResizeObserver,
+  useCurrentPage,
 };

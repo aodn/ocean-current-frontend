@@ -32,6 +32,7 @@ vi.mock('react-router', async () => {
     ...originalModule,
     useSearchParams: vi.fn(() => [new URLSearchParams(), vi.fn()]),
     useNavigate: vi.fn(),
+    useLocation: vi.fn(() => ({ pathname: '/map' })),
   };
 });
 

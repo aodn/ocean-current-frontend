@@ -2,7 +2,7 @@ import { AnyProductID, isChildProductId, isProductGroupId, isStandaloneProductId
 import { useProductIdFromUrl } from '../useGetProductFromUrl/useProductIdFromUrl';
 import useQueryParams from '../useQueryParams/useQueryParams';
 
-export const useProductValidQueryParams = () => {
+export const useArgoProductValidQueryParams = () => {
   const { searchParams } = useQueryParams();
   const { mainProduct, subProduct } = useProductIdFromUrl('product') || {};
 

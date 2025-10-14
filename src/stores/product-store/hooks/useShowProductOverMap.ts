@@ -1,11 +1,11 @@
-import { useProductValidQueryParams, useQueryParams } from '@/hooks';
+import { useArgoProductValidQueryParams, useQueryParams } from '@/hooks';
 import { isProductAvailableInRegion } from '@/utils/region-utils/region';
 import useProductStore from '../productStore';
 import useProductCheck from './useProductCheck';
 
 export const useShowProductOverMap = (): boolean => {
   const { isArgo } = useProductCheck();
-  const { isArgoValid } = useProductValidQueryParams();
+  const { isArgoValid } = useArgoProductValidQueryParams();
 
   const { getQueryParamsByKey } = useQueryParams();
   const region = getQueryParamsByKey('region');
