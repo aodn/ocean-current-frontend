@@ -110,19 +110,19 @@ export const buildImageUrl = (params: BuildImageUrlParams): string | undefined =
     case isTidalCurrents && !hasSelectedPointFromUrl:
       return buildTidalCurrentsMapImageUrl(useRegionCode ?? 'Au', subProductKey ?? 'tidalCurrents-spd', useDate);
 
-    case isTidalCurrents && hasSelectedPointFromUrl:
-      return buildTidalCurrentsDataImageUrl(pointUrlParam!, useDate);
+    case isTidalCurrents && hasSelectedPointFromUrl && !!pointUrlParam:
+      return buildTidalCurrentsDataImageUrl(pointUrlParam, useDate);
 
     case isSealCtd:
       return buildSealCtdMapImageUrl(useRegionCode ?? 'POLAR', useDate);
 
-    case isSealCtdTags && hasSelectedSealCtdTagFromUrl:
-      return buildSealCtdTagsDataImageUrl(selectedSealCtdTag!, useDate, useProductId);
+    case isSealCtdTags && hasSelectedSealCtdTagFromUrl && !!selectedSealCtdTag:
+      return buildSealCtdTagsDataImageUrl(selectedSealCtdTag, useDate, useProductId);
 
     case useProductId === 'surfaceWaves-wave':
       return buildSurfaceWavesImageUrl(useDate);
 
-    case useProductId === 'surfaceWaves-buoyTimeseries' && hasSelectedBuoyRegionFromUrl:
+    case useProductId === 'surfaceWaves-buoyTimeseries' && hasSelectedBuoyRegionFromUrl && !!buoyRegionUrlParam:
       return buildSurfaceWavesBuoyTimeseriesImageUrl(buoyRegionUrlParam!, useDate);
 
     case isOceanColourChlA: {
