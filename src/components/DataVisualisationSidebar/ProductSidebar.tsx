@@ -12,7 +12,7 @@ import {
   CurrentMetersRegion,
   mooredInstrumentArrayPath,
 } from '@/constants/currentMeters';
-import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
+import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { ProductID } from '@/types/product';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
@@ -68,7 +68,7 @@ const ProductSideBar: React.FC = () => {
     let updateParam = {};
 
     if (isCurrentMeters && subProductPath !== mooredInstrumentArrayPath) {
-      const allTime = yearOptionsData[0].id;
+      const allTime = currentMeterSYearOptionsData[0].id;
       setRegion(CurrentMetersRegion.Aust);
       setDepth(CurrentMetersDepth.ONE);
       setProperty(CurrentMetersProperty.vrms);

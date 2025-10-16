@@ -9,7 +9,7 @@ import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 import { Product } from '@/types/product';
 import { currentMetersMapDataPointsFlat } from '@/data/current-meter/mapDataPoints';
-import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
+import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { MapImageAreas } from '@/types/dataImage';
 import { getRegionTitleByRegionCode } from '@/utils/region-utils/region';
 import { useResizeObserver } from '@/hooks';
@@ -91,7 +91,7 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
         property: CurrentMetersProperty.vrms,
         depth: CurrentMetersDepth.ONE,
         region: getRegion,
-        date: yearOptionsData[0].id, // all time
+        date: currentMeterSYearOptionsData[0].id, // all time
         deploymentPlot: name,
       });
     }

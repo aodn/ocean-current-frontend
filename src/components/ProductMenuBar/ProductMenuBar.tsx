@@ -15,7 +15,7 @@ import useCurrentMetersStore, {
 } from '@/stores/current-meters-store/currentMeters';
 import useProductStore from '@/stores/product-store/productStore';
 import useProductDateFormat from '@/stores/product-store/hooks/useProductDateFormat';
-import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
+import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { CurrentMetersSubproductsKey, mooredInstrumentArrayPath } from '@/constants/currentMeters';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import { useRegionLatestDates } from '@/services/hooks';
@@ -132,8 +132,8 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
             <Dropdown
               elements={
                 productId === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY && !deploymentPlot
-                  ? yearOptionsData
-                  : [yearOptionsData[0]]
+                  ? currentMeterSYearOptionsData
+                  : [currentMeterSYearOptionsData[0]]
               }
               selectedId={currentMetersDate as string}
               onChange={(elem) => handleCurrentMetersDateChange(elem.id)}
@@ -162,7 +162,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
 
         <div className="w-1/6">
           <Button
-            onClick={() => handleCopyLink()}
+            onClick={handleCopyLink}
             aria-hidden
             className="flex h-11 w-full flex-row items-center justify-between rounded-md border-none bg-white p-3"
           >

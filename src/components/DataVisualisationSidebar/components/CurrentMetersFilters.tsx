@@ -15,7 +15,7 @@ import {
   mooredInstrumentArrayDeploymentPlotsData,
   propertyOptionsData,
   regionsOptionsData,
-  yearOptionsData,
+  currentMeterSYearOptionsData,
 } from '@/data/current-meter/sidebarOptions';
 import {
   CurrentMetersDepth,
@@ -39,7 +39,7 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
   );
   const subProductKey = subProduct?.key;
   const isMooredInstrumentArraySubProduct = subProductKey === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY;
-  const allTimeOption = yearOptionsData[0].id;
+  const allTimeOption = currentMeterSYearOptionsData[0].id;
 
   const stdParams = useMemo(() => {
     return {

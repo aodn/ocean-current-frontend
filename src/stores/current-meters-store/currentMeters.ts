@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
+import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
 import { CurrentMetersStoreState, CurrentMetersStoreActions } from './currentMeters.types';
 
@@ -8,7 +8,7 @@ const initialState: CurrentMetersStoreState = {
   region: CurrentMetersRegion.Aust,
   property: CurrentMetersProperty.vrms,
   depth: CurrentMetersDepth.ONE,
-  date: yearOptionsData[0].id, // allTime
+  date: currentMeterSYearOptionsData[0].id, // allTime
   deploymentPlot: '',
 };
 
