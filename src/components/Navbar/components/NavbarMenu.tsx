@@ -8,7 +8,7 @@ const NavbarMenu = forwardRef(({ items }: { items: DetailedLink[] }, ref: Forwar
       <LinkOrAnchor
         key={id}
         to={url}
-        className={'flex justify-between gap-4 p-4 hover:bg-imos-light-blue hover:opacity-65'}
+        className={'flex justify-between gap-4 p-4 hover:bg-imos-hover-blue hover:bg-opacity-20'}
       >
         <img alt={title} loading="lazy" src={greyIcon} className="my-auto aspect-square w-7" />
         <div className="flex flex-1 flex-col whitespace-nowrap pr-1.5">

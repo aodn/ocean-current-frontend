@@ -5,7 +5,7 @@ const TruncateText: React.FC<TruncateTextProps> = ({ text, lines = 2 }) => {
   return (
     <div
       data-testid="truncate-text"
-      className="overflow-hidden text-ellipsis text-imos-grey"
+      className="overflow-hidden text-ellipsis"
       style={{
         display: '-webkit-box',
         WebkitLineClamp: lines,
