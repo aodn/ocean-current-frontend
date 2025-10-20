@@ -4,7 +4,7 @@ import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
 import { findMostRecentDateBefore, getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { calculateImageScales } from '@/utils/general-utils/general';
 import { ArgoTagMapArea } from '@/types/argo';
-import { convertCoordsBasedOnImageScale, getArgoTagFilePathByProductId } from '@/utils/argo-utils/argoTag';
+import { convertCoordsBasedOnImageScale } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { RegionScope } from '@/constants/region';
@@ -18,6 +18,7 @@ type DataImageWithArgoMapProps = {
   regionCode: string;
   regionScope: RegionScope;
   date: Dayjs;
+  argoTagFilePath: string;
 };
 
 const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
@@ -26,14 +27,8 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   regionCode,
   regionScope,
   date,
+  argoTagFilePath,
 }) => {
-  const argoTagFilePathValue = getArgoTagFilePathByProductId(productId);
-  const argoTagFilePath = regionScope === RegionScope.Local ? argoTagFilePathValue?.local : argoTagFilePathValue?.state;
-
-  if (!argoTagFilePathValue || !argoTagFilePath) {
-    throw new Error(`Argo tag file path not found for product id: ${productId}`);
-  }
-
   const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
   const dateFormatted = dayjs(date).format(dateFormat);
   const imgRef = useRef<HTMLImageElement | null>(null);
