@@ -29,9 +29,9 @@ interface BuildImageUrlParams {
   isSealCtdTags: boolean;
   isOceanColourChlA: boolean;
   // Product info
-  useProductId: ProductID;
+  productId: ProductID;
   // Date
-  useDate: Dayjs;
+  date: Dayjs;
   // Region
   regionPath?: string;
   regionScope: RegionScope;
@@ -71,8 +71,8 @@ export const buildImageUrl = (params: BuildImageUrlParams): string | undefined =
     isSealCtd,
     isSealCtdTags,
     isOceanColourChlA,
-    useProductId,
-    useDate,
+    productId,
+    date,
     regionPath,
     regionScope,
     targetPathRegion,
@@ -96,41 +96,41 @@ export const buildImageUrl = (params: BuildImageUrlParams): string | undefined =
 
   switch (true) {
     case isArgo:
-      return buildArgoImageUrl(worldMeteorologicalOrgId, useDate, cycle, depth);
+      return buildArgoImageUrl(worldMeteorologicalOrgId, date, cycle, depth);
 
     case isCurrentMeters:
       return buildCurrentMetersMapImageUrl(currentMetersRegion, currentMetersDate, property, currentMetersDepth);
 
-    case useProductId === 'sixDaySst-timeseries':
+    case productId === 'sixDaySst-timeseries':
       return buildSSTTimeseriesImageUrl(regionPath ?? '');
 
     case isEACMooringArray:
-      return buildEACMooringArrayImageUrl(useDate);
+      return buildEACMooringArrayImageUrl(date);
 
     case isTidalCurrents && !hasSelectedPointFromUrl:
-      return buildTidalCurrentsMapImageUrl(useRegionCode ?? 'Au', subProductKey ?? 'tidalCurrents-spd', useDate);
+      return buildTidalCurrentsMapImageUrl(useRegionCode ?? 'Au', subProductKey ?? 'tidalCurrents-spd', date);
 
     case isTidalCurrents && hasSelectedPointFromUrl && !!pointUrlParam:
-      return buildTidalCurrentsDataImageUrl(pointUrlParam, useDate);
+      return buildTidalCurrentsDataImageUrl(pointUrlParam, date);
 
     case isSealCtd:
-      return buildSealCtdMapImageUrl(useRegionCode ?? 'POLAR', useDate);
+      return buildSealCtdMapImageUrl(useRegionCode ?? 'POLAR', date);
 
     case isSealCtdTags && hasSelectedSealCtdTagFromUrl && !!selectedSealCtdTag:
-      return buildSealCtdTagsDataImageUrl(selectedSealCtdTag, useDate, useProductId);
+      return buildSealCtdTagsDataImageUrl(selectedSealCtdTag, date, productId);
 
-    case useProductId === 'surfaceWaves-wave':
-      return buildSurfaceWavesImageUrl(useDate);
+    case productId === 'surfaceWaves-wave':
+      return buildSurfaceWavesImageUrl(date);
 
-    case useProductId === 'surfaceWaves-buoyTimeseries' && hasSelectedBuoyRegionFromUrl && !!buoyRegionUrlParam:
-      return buildSurfaceWavesBuoyTimeseriesImageUrl(buoyRegionUrlParam!, useDate);
+    case productId === 'surfaceWaves-buoyTimeseries' && hasSelectedBuoyRegionFromUrl && !!buoyRegionUrlParam:
+      return buildSurfaceWavesBuoyTimeseriesImageUrl(buoyRegionUrlParam!, date);
 
     case isOceanColourChlA: {
       const dateFormat = getDateFormatByProductIdAndRegionScope('oceanColour-chlA', regionScope);
-      return buildOceanColourImageUrl(regionPath ?? 'Au', useDate.toString(), dateFormat, oceanColourDateList);
+      return buildOceanColourImageUrl(regionPath ?? 'Au', date.toString(), dateFormat, oceanColourDateList);
     }
 
     default:
-      return buildProductImageUrl(useProductId, regionPath ?? 'Au', targetPathRegion, useDate.toString());
+      return buildProductImageUrl(productId, regionPath ?? 'Au', targetPathRegion, date.toString());
   }
 };

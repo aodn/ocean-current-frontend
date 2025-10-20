@@ -62,8 +62,8 @@ const ProductContent: React.FC = () => {
     try {
       return buildImageUrl({
         ...productChecks,
-        useProductId,
-        useDate,
+        productId: useProductId,
+        date: useDate,
         regionPath: regionData.path,
         regionScope: regionData.scope,
         targetPathRegion: regionData.targetPath,
