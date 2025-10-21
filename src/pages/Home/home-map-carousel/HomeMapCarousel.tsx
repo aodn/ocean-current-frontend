@@ -62,11 +62,7 @@ const HomeMapCarousel: React.FC = () => {
   return (
     <>
       <ErrorBoundary>
-        <BasicMap
-          minZoom={initialMapViewState.mapViewState.zoom}
-          showCursorLocationPanel={false}
-          style={{ borderRadius: '0.75rem 0.75rem 0 0', height: '100%' }}
-        />
+        <BasicMap showCursorLocationPanel={false} style={{ borderRadius: '0.75rem 0.75rem 0 0', height: '100%' }} />
       </ErrorBoundary>
 
       <div className="flex flex-col rounded-b-xl border border-solid border-imos-calypso-blue border-opacity-60">

@@ -7,6 +7,7 @@ export type State = {
 export type Actions = {
   actions: {
     setMapViewState: (mapViewState: State['mapViewState']) => void;
+    patchMapViewState: (partialViewState: Partial<State['mapViewState']>) => void;
     updateZoom: (zoom: number) => void;
     updateLatitude: (latitude: number) => void;
     updateLongitude: (longitude: number) => void;
