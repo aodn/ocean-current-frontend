@@ -50,7 +50,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
 
   useEffect(() => {
     if (isMobile) {
-      patchMapViewState({ ...initialMobileMapViewState.mapViewState });
+      patchMapViewState(initialMobileMapViewState.mapViewState);
     }
   }, [isMobile]);
 
