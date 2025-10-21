@@ -76,7 +76,7 @@ const Dropdown = <T,>({
       <div
         onClick={toggleDropdown}
         aria-hidden="true"
-        className={`${header ? 'rounded bg-[#182C3A] p-3' : 'rounded-md border-2 border-[#3a6f8f80] bg-white p-2'} ${
+        className={`${header ? 'rounded-t-lg bg-imos-deeper-blue p-3' : 'rounded-md border-2 border-[#3a6f8f80] bg-white p-2'} ${
           smallDropdown ? 'min-w-28' : 'min-w-56'
         } flex items-center justify-between px-4 text-lg text-imos-title-blue shadow ${
           processingItemId ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'
@@ -95,17 +95,17 @@ const Dropdown = <T,>({
       </div>
       {isDropdownOpen && elementsWithLoading.length > 0 && (
         <div
-          className={`absolute z-40 mt-2 w-full rounded-md border-2 border-[#737373] bg-white ${!header ? 'max-h-60 overflow-y-auto' : ''}`}
+          className={`absolute z-40 w-full rounded-b-lg bg-white ${!header ? 'max-h-60 overflow-y-auto' : ''}`}
           data-testid="drop-down-menu"
         >
           {elementsWithLoading.map((element) => (
             <div
               key={String(element.id)}
               aria-hidden="true"
-              className={`${
-                !showIcons ? 'justify-center' : ''
-              } flex cursor-pointer items-center p-3 duration-300 hover:bg-imos-light-blue hover:opacity-65 ${
-                element.id === selectedElement?.id ? 'm-1 rounded border-2 border-[#52BDEC] bg-[#52BDEC80]' : ''
+              className={`${!showIcons ? 'justify-center' : ''} m-1 flex cursor-pointer items-center rounded p-3 duration-300 ${
+                element.id === selectedElement?.id
+                  ? 'bg-imos-deep-blue'
+                  : 'hover:bg-imos-hover-blue hover:bg-opacity-20'
               } ${element.disabled || element.isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
               onClick={(e) => {
                 if (element.disabled || element.isLoading) {
@@ -116,8 +116,16 @@ const Dropdown = <T,>({
                 handleOnClick(element);
               }}
             >
-              {showIcons && <img className="mr-4 h-9 w-9" src={element.icon} alt={`${element.label} icon`} />}
-              <span className="flex items-center text-left text-base text-imos-grey">
+              {showIcons && (
+                <img
+                  className={`mr-4 h-9 w-9 ${element.id === selectedElement?.id ? 'brightness-0 invert' : ''}`}
+                  src={element.icon}
+                  alt={`${element.label} icon`}
+                />
+              )}
+              <span
+                className={`flex items-center text-left text-base ${element.id === selectedElement?.id ? 'text-white' : 'text-imos-dark-grey'}`}
+              >
                 {element.label}
                 {element.isLoading && (
                   <svg

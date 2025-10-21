@@ -10,6 +10,14 @@ const useMapStore = create<State & Actions>()(
       setMapViewState: (mapViewState) => {
         set({ mapViewState }, true, 'setMapViewState');
       },
+      patchMapViewState: (partialViewState) =>
+        set(
+          (state) => ({
+            mapViewState: { ...state.mapViewState, ...partialViewState },
+          }),
+          false,
+          'patchMapViewState',
+        ),
       updateZoom: (zoom) => set((state) => ({ mapViewState: { ...state.mapViewState, zoom } }), false, 'updateZoom'),
       updateLatitude: (latitude) =>
         set((state) => ({ mapViewState: { ...state.mapViewState, latitude } }), false, 'updateLatitude'),
@@ -44,6 +52,7 @@ const useMapStore = create<State & Actions>()(
 
 export const {
   setMapViewState,
+  patchMapViewState,
   updatePositionAndZoom,
   updateZoom,
   updateLatitude,

@@ -12,7 +12,7 @@ export const initialMapViewState = {
     longitude: 140,
     bearing: 0,
     pitch: 0,
-    zoom: 3.055,
+    zoom: 2.92,
     padding: {
       top: 0,
       bottom: 0,
@@ -26,5 +26,13 @@ export const initialMiniMapViewState = {
   mapViewState: {
     ...initialMapViewState.mapViewState,
     zoom: 1.3,
+  },
+};
+
+export const initialMobileMapViewState = {
+  mapViewState: {
+    latitude: -27.5,
+    longitude: 133,
+    zoom: 2.3,
   },
 };

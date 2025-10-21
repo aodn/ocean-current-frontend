@@ -1,11 +1,11 @@
 import React from 'react';
 import { TruncateTextProps } from './types/truncateText.types';
 
-const TruncateText: React.FC<TruncateTextProps> = ({ text, lines = 2 }) => {
+const TruncateText: React.FC<TruncateTextProps> = ({ text, lines = 2, className = '' }) => {
   return (
-    <div
+    <p
       data-testid="truncate-text"
-      className="overflow-hidden text-ellipsis text-imos-grey"
+      className={`overflow-hidden text-ellipsis ${className}`}
       style={{
         display: '-webkit-box',
         WebkitLineClamp: lines,
@@ -14,7 +14,7 @@ const TruncateText: React.FC<TruncateTextProps> = ({ text, lines = 2 }) => {
       }}
     >
       {text}
-    </div>
+    </p>
   );
 };
 

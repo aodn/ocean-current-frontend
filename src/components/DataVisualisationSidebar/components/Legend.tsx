@@ -80,22 +80,22 @@ const Legend: React.FC = () => {
         <div className="flex flex-col space-y-2">
           <div className="flex items-center">
             <div className="mr-3 h-3 w-3 rounded-full border border-imos-bright-magenta bg-white"></div>
-            <span className="text-imos-grey">Argo</span>
+            <span className="text-imos-dark-grey">Argo</span>
           </div>
           <div className="flex items-center">
             <div className="mr-3 h-3 w-3 rounded-full bg-imos-subheading-grey"></div>
-            <span className="text-imos-grey">Mooring</span>
+            <span className="text-imos-dark-grey">Mooring</span>
           </div>
           <div className="flex items-center">
             <div className="mr-3 h-3 w-3 rounded-full border-2 border-imos-subheading-grey"></div>
-            <span className="text-imos-grey">Ship</span>
+            <span className="text-imos-dark-grey">Ship</span>
           </div>
         </div>
 
         <div className="flex flex-col space-y-2">
           <div className="flex items-center">
             <div className="mr-3 h-3 w-3 rotate-45 bg-imos-bright-magenta"></div>
-            <span className="text-imos-grey">Glider</span>
+            <span className="text-imos-dark-grey">Glider</span>
           </div>
           <div className="flex items-center">
             <div className="mr-3 flex flex-col">
@@ -106,17 +106,17 @@ const Legend: React.FC = () => {
                 <div className="absolute -top-[2px] right-0 h-2 w-2 rotate-45 border-r-2 border-imos-dodger-blue"></div>
               </div>
             </div>
-            <span className="text-imos-grey">Radar</span>
+            <span className="text-imos-dark-grey">Radar</span>
           </div>
 
           <div className="flex items-center">
             <div className="mr-3 h-3 w-3 rotate-45 -skew-x-12 -skew-y-12 border-r-2 border-t-2 border-imos-bright-magenta"></div>
-            <span className="text-imos-grey">Drifter</span>
+            <span className="text-imos-dark-grey">Drifter</span>
           </div>
         </div>
       </div>
       <Button onClick={handlePopup} size="full" borderRadius="small" type="secondary" className="!border">
-        <span className="text-imos-grey">Click for more information</span>
+        <span className="text-imos-dark-grey">Click for more information</span>
       </Button>
 
       <Popup title="Legend" body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />

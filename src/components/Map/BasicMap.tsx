@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Map, { MapMouseEvent, NavigationControl, ViewStateChangeEvent, StyleSpecification } from 'react-map-gl/mapbox';
-import { mapConfig } from '@/configs/map';
-import useMapStore, { setMapViewState, updateZoom } from '@/stores/map-store/mapStore';
+import { initialMobileMapViewState, mapConfig } from '@/configs/map';
+import useMapStore, { setMapViewState, patchMapViewState, updateZoom } from '@/stores/map-store/mapStore';
 import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useDeviceType } from '@/hooks';
@@ -24,7 +24,6 @@ const BasicMap: React.FC<BasicMapProps> = ({
   isMiniMap = false,
   navigationControl = true,
   showCursorLocationPanel = true,
-  minZoom,
 }) => {
   const [cursor, setCursor] = useState<string>('grab');
   const [cursorLngLat, setCursorLngLat] = useState<{
@@ -34,6 +33,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
   const useMapViewState = useMapStore((state) => state.mapViewState);
   const { isArgo, isCurrentMeters } = useProductCheck();
   const { isMobile } = useDeviceType();
+
   const { mainProduct, subProduct } = useProductConvert();
 
   const shouldShowArgoLayer = useMemo(() => {
@@ -47,6 +47,12 @@ const BasicMap: React.FC<BasicMapProps> = ({
   }, [isMiniMap, isArgo, mainProduct?.key]);
 
   const shouldShowCursorLocationPanel = showCursorLocationPanel && !isMobile && cursorLngLat?.lng && cursorLngLat?.lat;
+
+  useEffect(() => {
+    if (isMobile) {
+      patchMapViewState(initialMobileMapViewState.mapViewState);
+    }
+  }, [isMobile]);
 
   useEffect(() => {
     resetCurrentMetersStore();
@@ -106,7 +112,10 @@ const BasicMap: React.FC<BasicMapProps> = ({
       projection={{ name: 'mercator' }}
       attributionControl={false}
       interactiveLayerIds={interactiveIds}
-      minZoom={minZoom}
+      dragRotate={false}
+      touchZoomRotate={false}
+      touchPitch={false}
+      pitchWithRotate={false}
     >
       {children}
       {navigationControl && <NavigationControl position="top-right" />}

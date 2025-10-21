@@ -14,6 +14,7 @@ import useArgoStore, { setArgoDepth } from '@/stores/argo-store/argoStore';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { ArgoDepths } from '@/constants/argo';
 import { ProductID } from '@/types/product';
+import { GeneralText } from '@/constants/textConstant';
 import { getProductInfoByKey } from '../DataVisualisationSidebar/utils';
 
 const ProductFooterMobile: React.FC = () => {
@@ -125,7 +126,7 @@ const ProductFooterMobile: React.FC = () => {
             <img className="mx-6 h-16 w-14 object-cover" src={ArgoIcon} alt="argo-icon" />
             <div>
               <h2 className="mb-2 text-lg font-semibold text-imos-dark-grey">Argo profiles</h2>
-              <p className="text-imos-grey">Temperature and salinity down to 2000m in the Australian region</p>
+              <p className="text-imos-dark-grey">Temperature and salinity down to 2000m in the Australian region</p>
             </div>
           </div>
           <div className="relative mb-10 h-2 w-full bg-background-argo-gradient">
@@ -135,8 +136,8 @@ const ProductFooterMobile: React.FC = () => {
                 key={index}
                 className="absolute top-2 flex flex-col items-center justify-center"
               >
-                <div className="h-1 w-0.5 bg-imos-grey"></div>
-                <div className="text-imos-grey">{text}</div>
+                <div className="h-1 w-0.5 bg-imos-dark-grey"></div>
+                <div className="text-imos-dark-grey">{text}</div>
                 <div style={{ backgroundColor: color }} className="h-3 w-3 rounded-full"></div>
               </div>
             ))}
@@ -178,10 +179,10 @@ const ProductFooterMobile: React.FC = () => {
       <div className="p-2">
         <div className="flex justify-between">
           <img src={InfoIcon} alt="info icon" className="mr-6 mt-1 h-6 w-6 cursor-pointer object-contain" />
-          <TruncateText lines={4} text={productInfo?.summary} />
+          <TruncateText className="text-imos-nav-text" lines={4} text={productInfo?.summary} />
         </div>
         <div aria-hidden onClick={handlePopup} className="mt-3 flex justify-end">
-          <p className="mr-2 cursor-pointer font-semibold text-imos-grey">Read More</p>
+          <p className="mr-2 cursor-pointer font-semibold text-imos-dark-grey">{GeneralText.READ_MORE}</p>
           <ArrowWithTail stroke="#787878" className="mt-2 cursor-pointer" />
         </div>
       </div>
@@ -191,7 +192,7 @@ const ProductFooterMobile: React.FC = () => {
       {shouldRenderSubProducts() && (
         <div className="px-2">
           <div className="flex cursor-pointer items-center justify-between px-4 py-2" aria-hidden>
-            <h3 className="text-lg font-medium text-imos-grey">Options</h3>
+            <h3 className="text-lg font-medium text-imos-dark-grey">Options</h3>
           </div>
           <div>
             <div className="mb-6 mt-2 grid grid-cols-2 gap-2">
@@ -214,7 +215,7 @@ const ProductFooterMobile: React.FC = () => {
 
       <div className="mt-2">
         <div className="flex cursor-pointer items-center justify-between p-2">
-          <h3 className="text-lg font-medium text-imos-grey">Legend</h3>
+          <h3 className="text-lg font-medium text-imos-dark-grey">Legend</h3>
         </div>
         <Legend />
       </div>
@@ -222,7 +223,7 @@ const ProductFooterMobile: React.FC = () => {
       {filteredDataSources.length > 0 && (
         <div className="mt-2">
           <div className="flex cursor-pointer items-center justify-between p-2">
-            <h3 className="text-lg font-medium text-imos-grey">Data sources</h3>
+            <h3 className="text-lg font-medium text-imos-dark-grey">Data sources</h3>
           </div>
           <div>
             <div className="mb-6 mt-2 flex flex-wrap justify-between gap-2">

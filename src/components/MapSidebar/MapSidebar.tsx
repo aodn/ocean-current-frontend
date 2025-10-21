@@ -36,11 +36,11 @@ const MapSidebar: React.FC = () => {
         <div
           key={element.id}
           aria-hidden="true"
-          className={`mb-4 flex cursor-pointer items-center rounded-md border border-[#3A6F8F] p-3 duration-300 hover:border-[#52BDEC] ${element.id === productIdWithoutSubProduct ? 'border-[#52BDEC] bg-[#52BDEC80]' : 'bg-white'}`}
+          className={`mb-4 flex cursor-pointer items-center rounded-md border border-[#3A6F8F] p-3 duration-300 hover:border-[#52BDEC] hover:bg-imos-hover-blue hover:bg-opacity-20 ${element.id === productIdWithoutSubProduct ? 'border-[#52BDEC] bg-[#52BDEC80]' : 'bg-white'}`}
           onClick={() => handleProductChange(element.id)}
         >
           <img className="mr-4 h-9 w-9" src={element.icon} alt={`${element.label} icon`} />
-          <span className="text-left text-base text-[#787878]">{element.label}</span>
+          <span className="text-left text-base text-imos-dark-grey">{element.label}</span>
         </div>
       ))}
     </div>

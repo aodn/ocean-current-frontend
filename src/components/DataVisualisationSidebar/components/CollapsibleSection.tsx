@@ -12,7 +12,7 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({ title, children
         onClick={() => setIsSectionCollapsed(!isSectionCollapsed)}
         aria-hidden
       >
-        <h3 className="text-lg font-medium text-imos-grey">{title}</h3>
+        <h3 className="text-lg font-medium text-imos-dark-grey">{title}</h3>
         <img
           src={ArrowIcon}
           alt="arrow icon"
