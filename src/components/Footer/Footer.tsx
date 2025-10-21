@@ -26,22 +26,22 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-white">
       <div className="mx-auto max-w-7xl px-4 py-8">
-        <div className="flex flex-col gap-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 sm:gap-8">
+          <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between">
             <div className="flex items-center">
-              <div className="flex items-center">
-                <img src={logo} alt="IMOS Logo" className="h-18" />
+              <div className="flex flex-shrink-0 items-center">
+                <img src={logo} alt="IMOS Logo" className="h-16 w-auto md:h-18" />
               </div>
-              <div className="mx-5 h-16 w-px bg-imos-title-blue opacity-50"></div>
+              <div className="mx-5 h-16 w-px flex-shrink-0 bg-imos-title-blue opacity-50"></div>
               <div className="flex flex-wrap items-center">
-                <p className="text-xl text-imos-deep-blue">{BrandingText.OC_PASCAL_CASE}</p>
-                <p className="basis-full text-sm text-gray-900">{BrandingText.OC_SUBHEADING}</p>
+                <p className="text-lg font-light text-imos-deep-blue sm:text-xl">{BrandingText.OC_PASCAL_CASE}</p>
+                <p className="basis-full text-sm text-imos-dark-grey">{BrandingText.OC_SUBHEADING}</p>
               </div>
             </div>
             <button
               type="button"
               onClick={scrollToTop}
-              className="mt-4 flex items-center gap-2 border-none bg-transparent text-black transition-colors hover:text-gray-600 sm:mt-0"
+              className="mb-4 ml-auto flex items-center gap-2 border-none bg-transparent text-imos-nav-text transition-colors hover:opacity-80 md:mb-0 md:ml-0"
             >
               <svg width="26" height="24" viewBox="0 0 25 24" fill="none" className="h-6 w-6">
                 <path
@@ -56,16 +56,16 @@ const Footer: React.FC = () => {
             </button>
           </div>
 
-          <p className="text-base leading-relaxed text-gray-900">{footerAcknowledgeText}</p>
+          <p className="text-base leading-7 text-imos-nav-text sm:leading-8">{footerAcknowledgeText}</p>
 
-          <div className="flex h-20 flex-col gap-4 border-y border-imos-deeper-blue py-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex h-12 w-[200px] items-center">
+          <div className="grid grid-cols-2 gap-4 border-y border-imos-deeper-blue py-4 md:flex md:h-20 md:flex-row md:items-center md:justify-between">
+            <div className="flex w-full justify-center md:h-12 md:w-[200px] md:justify-start">
               <Button
                 type="primary"
                 size="full"
                 borderRadius="small"
                 onClick={handleContactUs}
-                className="border-none bg-imos-deeper-blue px-4 py-2"
+                className="w-fit border-none bg-imos-deeper-blue px-4 py-2 md:w-full"
               >
                 <div className="flex items-center justify-center gap-2 leading-8">
                   <EmailIcon className="h-6 w-6" />
@@ -73,33 +73,31 @@ const Footer: React.FC = () => {
                 </div>
               </Button>
             </div>
-            <div className="flex flex-wrap gap-4">
-              {footerLinks.map(({ text, url }) => (
-                <a
-                  key={text}
-                  href={url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-base text-black transition-colors hover:text-gray-600"
-                >
-                  {text}
-                </a>
-              ))}
-            </div>
+            {footerLinks.map(({ text, url }) => (
+              <a
+                key={text}
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-center text-base text-black transition-colors hover:text-gray-600"
+              >
+                {text}
+              </a>
+            ))}
           </div>
 
-          <div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2">
+          <div className="flex items-center justify-between gap-1 sm:gap-4">
             <div className="flex items-center">
               <p className="text-base text-gray-900">{copyrightText}</p>
             </div>
-            <div className="flex justify-start gap-3 sm:justify-end">
+            <div className="flex flex-nowrap gap-1 sm:gap-3">
               {footerSocials.map(({ alt, src, url }: FooterIcon, index: number) => (
                 <a
                   key={index}
                   href={url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-gray-100"
+                  className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full transition-colors hover:bg-gray-100"
                 >
                   <img loading="lazy" alt={alt} src={src} className="h-6 w-6" />
                 </a>
