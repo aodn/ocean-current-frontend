@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { Outlet, useSearchParams } from 'react-router';
 import dayjs from 'dayjs';
 import { setSelectedArgoParams } from '@/stores/argo-store/argoStore';
@@ -24,6 +24,15 @@ import { ArgoDepths } from '@/constants/argo';
 import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { DateFormat } from '@/types/date';
 import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
+import { ProductID } from '@/types/product';
+
+type ParseeDateWithFormat = {
+  dateString: string;
+  date: dayjs.Dayjs;
+  shouldShowProductOverMap: boolean;
+  productId: ProductID;
+  regionScope: RegionScope;
+};
 
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -52,9 +61,16 @@ const DataVisualisationLayout: React.FC = () => {
   }, [searchParams, dateFromUrl]);
 
   const { region: regionCodeFromUrl = 'Au', date } = useProductSearchParam();
+  const previousDateRef = useRef<string | null>(null);
 
   const parseeDateWithFormat = useCallback(
-    (dateString: string): dayjs.Dayjs | null => {
+    ({
+      dateString,
+      date,
+      shouldShowProductOverMap,
+      productId,
+      regionScope,
+    }: ParseeDateWithFormat): dayjs.Dayjs | null => {
       if (!productId) {
         return null;
       }
@@ -62,9 +78,9 @@ const DataVisualisationLayout: React.FC = () => {
       try {
         const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
 
-        const getFallbackYear = () => (useDate ? useDate.year() : dayjs().year());
-        const getFallbackMonth = () => (useDate ? useDate.month() + 1 : dayjs().month() + 1);
-        const getFallbackDay = () => (useDate ? useDate.date() : dayjs().date());
+        const getFallbackYear = () => (date ? date.year() : dayjs().year());
+        const getFallbackMonth = () => (date ? date.month() + 1 : dayjs().month() + 1);
+        const getFallbackDay = () => (date ? date.date() : dayjs().date());
 
         if (dateString.length === 2) {
           if (dateFormat === DateFormat.MONTH_ONLY) {
@@ -130,7 +146,7 @@ const DataVisualisationLayout: React.FC = () => {
               const year = getFallbackYear();
               const month = getFallbackMonth().toString().padStart(2, '0');
               const day = getFallbackDay().toString().padStart(2, '0');
-              const hour = useDate ? useDate.hour().toString().padStart(2, '0') : '00';
+              const hour = date ? date.hour().toString().padStart(2, '0') : '00';
               const minute = dateString.padStart(2, '0');
               return dayjs(`${year}${month}${day}${hour}${minute}`, 'YYYYMMDDHHmm');
             }
@@ -144,7 +160,7 @@ const DataVisualisationLayout: React.FC = () => {
       }
       return null;
     },
-    [productId, regionScope, shouldShowProductOverMap, useDate],
+    [],
   );
 
   useEffect(() => {
@@ -171,15 +187,21 @@ const DataVisualisationLayout: React.FC = () => {
   useEffect(() => {
     if (!date || !productId || !regionScope) return;
 
-    const currentDate = parseeDateWithFormat(date);
+    if (previousDateRef.current === date) return;
+
+    const currentDate = parseeDateWithFormat({
+      dateString: date,
+      date: useDate,
+      shouldShowProductOverMap,
+      productId,
+      regionScope,
+    });
 
     if (!currentDate || !currentDate.isValid()) return;
 
-    const isSameDay = useDate.isSame(currentDate, 'day');
-    const isSameTime = useDate.hour() === currentDate.hour() && useDate.minute() === currentDate.minute();
-    if (isSameDay && isSameTime) return;
+    previousDateRef.current = date;
     setDate(currentDate);
-  }, [date, useDate, productId, regionScope, parseeDateWithFormat]);
+  }, [date, productId, regionScope, shouldShowProductOverMap, parseeDateWithFormat, useDate]);
 
   useEffect(() => {
     if (isArgo) getArgoData();

@@ -5,7 +5,7 @@ import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { useQueryParams } from '@/hooks';
 import { CurrentMetersProfileProperties } from '@/types/geo';
 import useCurrentMetersStore, { setDeploymentPlot } from '@/stores/current-meters-store/currentMeters';
-import { yearOptionsData } from '@/data/current-meter/sidebarOptions';
+import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
 import { SubProduct } from '@/types/product';
 import { getPropertyFromMapFeatures } from '../utils/mapUtils';
@@ -66,7 +66,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLa
           updateQueryParams({
             deploymentPlot: title,
             region,
-            date: yearOptionsData[0].id, // all time
+            date: currentMeterSYearOptionsData[0].id, // all time
           });
         }
       } catch (error) {

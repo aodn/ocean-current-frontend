@@ -53,7 +53,7 @@ export const propertyOptionsData: CurrentMetersPropertyOptions[] = [
 ];
 
 // placeholder until a design is available
-export const yearOptionsData = [
+export const currentMeterSYearOptionsData = [
   { label: 'All time', id: '0000' },
   { label: '2007', id: '2007' },
   { label: '2008', id: '2008' },
@@ -75,6 +75,11 @@ export const yearOptionsData = [
   { label: '2024', id: '2024' },
   { label: '2025', id: '2025' },
 ];
+
+export const isCurrentYearOptionId = (id?: string | null) => {
+  if (!id) return false;
+  return !!currentMeterSYearOptionsData.find((option) => option.id === id);
+};
 
 export const shelfDeploymentPlotsData: CurrentMetersDeploymentPlotsOptions[] = [
   { label: 'GBRLSL', id: 'GBRLSL' },

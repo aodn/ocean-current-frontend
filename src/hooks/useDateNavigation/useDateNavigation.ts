@@ -5,6 +5,7 @@ import { DateFormat, DateItem } from '@/types/date';
 import { useArgoStore } from '@/stores/argo-store/argoStore';
 import { isHourlyFormat, findFirstDateTimeForSelectedDay } from '@/utils/date-utils/hourly';
 import { findClosestDateIndex } from '@/utils/date-utils/date';
+import { isCurrentYearOptionId } from '@/data/current-meter/sidebarOptions';
 
 type NavigationMode = 'dateList' | 'dateRange';
 
@@ -14,6 +15,151 @@ interface UseDateListNavigationProps {
   initialDate?: string;
 }
 
+type NavigateDate = {
+  direction: 'next' | 'previous';
+  currentDate: Dayjs;
+  currentIndex: number;
+  dates: string[];
+  dateFormat: DateFormat;
+  updateDate: (date: Dayjs, options?: { reStart?: boolean; replace?: boolean }) => void;
+  formatDate: (date: Dayjs) => string;
+};
+
+/**
+ * Core date parsing logic shared between list and range navigation
+ * Handles current year option IDs and various date format edge cases
+ */
+const parseBasicDate = (dateParam: string, dateFormat: DateFormat): Dayjs | null => {
+  // Handle current year option IDs
+  if (isCurrentYearOptionId(dateParam)) {
+    let date = dayjs(`${dateParam}0101`, dateFormat);
+
+    if (!date.isValid()) {
+      if (dateFormat === DateFormat.MONTH_ONLY && dateParam.length === 2) {
+        const year = dayjs().year();
+        date = dayjs(`${year}${dateParam.padStart(2, '0')}01`, DateFormat.DAY);
+      } else if (dateFormat === DateFormat.MONTH && dateParam.length === 2) {
+        const year = dayjs().year();
+        date = dayjs(`${year}${dateParam.padStart(2, '0')}`, DateFormat.MONTH);
+      } else {
+        date = dayjs(dateParam);
+      }
+    }
+
+    return date.isValid() ? date : null;
+  }
+
+  // Regular date parsing
+  let date = dayjs(dateParam, dateFormat, true);
+
+  if (!date.isValid()) {
+    if (dateFormat === DateFormat.MONTH_ONLY && dateParam.length === 2) {
+      const year = dayjs().year();
+      date = dayjs(`${year}${dateParam.padStart(2, '0')}01`, DateFormat.DAY);
+    } else if (dateFormat === DateFormat.MONTH && dateParam.length === 2) {
+      const year = dayjs().year();
+      date = dayjs(`${year}${dateParam.padStart(2, '0')}`, DateFormat.MONTH);
+    } else {
+      date = dayjs(dateParam);
+    }
+  }
+
+  return date.isValid() ? date : null;
+};
+
+/**
+ * Parses a date parameter from URL into a dayjs object for list-based navigation
+ * Handles hourly format conversion and updates search params when needed
+ */
+const parseDateParamForList = (
+  dateParam: string,
+  dateFormat: DateFormat,
+  dates: string[],
+  setSearchParams: (update: (prev: URLSearchParams) => URLSearchParams) => void,
+): Dayjs | null => {
+  const date = parseBasicDate(dateParam, dateFormat);
+
+  if (!date) {
+    return null;
+  }
+
+  // Handle hourly format conversion - only needed for list navigation
+  const isDateParamHourly = dayjs(dateParam, DateFormat.HOUR, true).isValid();
+  if (isHourlyFormat(dateFormat) && !isDateParamHourly) {
+    const dayStr = date.format(DateFormat.DAY);
+    const firstHourlyDate = findFirstDateTimeForSelectedDay(dates, dayStr, dateFormat);
+    if (firstHourlyDate) {
+      setSearchParams((prev) => {
+        prev.set('date', firstHourlyDate);
+        return prev;
+      });
+      return dayjs(firstHourlyDate, dateFormat);
+    }
+  }
+
+  return date;
+};
+
+/**
+ * Navigate to the next or previous date in the list
+ * Handles circular navigation for month-only format and out-of-range dates
+ */
+const navigateDate = ({
+  direction,
+  currentDate,
+  currentIndex,
+  dateFormat,
+  dates,
+  updateDate,
+  formatDate,
+}: NavigateDate) => {
+  const isNext = direction === 'next';
+
+  // Handle case when currentDate is not in the dates list
+  if (currentIndex === -1) {
+    const currentDateStr = formatDate(currentDate);
+    const targetIndex = findClosestDateIndex(dates, currentDateStr, isNext ? 'next' : 'previous');
+
+    if (targetIndex !== -1) {
+      updateDate(dayjs(dates[targetIndex], dateFormat), { replace: true });
+    }
+    return;
+  }
+
+  // Handle circular navigation for month-only format
+  if (dateFormat === DateFormat.MONTH_ONLY && dates.length > 0) {
+    const isAtEdge = isNext ? currentIndex === dates.length - 1 : currentIndex === 0;
+    if (isAtEdge) {
+      const nextDate = dayjs(currentDate).add(isNext ? 1 : -1, 'month');
+      updateDate(nextDate);
+      return;
+    }
+  }
+
+  // Regular navigation within the dates list
+  const canNavigate = isNext ? currentIndex < dates.length - 1 : currentIndex > 0;
+  if (canNavigate) {
+    const newIndex = isNext ? currentIndex + 1 : currentIndex - 1;
+    const newDate = dayjs(dates[newIndex], dateFormat);
+    updateDate(newDate);
+  }
+};
+
+/**
+ * Custom hook for date list-based navigation
+ *
+ * Provides navigation through a predefined list of available dates with support for:
+ * - URL parameter synchronization
+ * - Multiple date formats (hourly, daily, monthly, etc.)
+ * - Circular navigation for month-only format
+ * - Handling dates outside the available list
+ *
+ * @param dateFormat - The format to use for date parsing and formatting
+ * @param availableDates - Array of available dates to navigate through (must be sorted)
+ * @param initialDate - Optional initial date to use instead of URL params
+ *
+ * @returns Object containing current date, navigation functions, and state flags
+ */
 export const useDateListNavigation = ({ dateFormat, availableDates, initialDate }: UseDateListNavigationProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   // The `availableDates` array must be sorted by the backend API to ensure correct functionality.
@@ -29,53 +175,29 @@ export const useDateListNavigation = ({ dateFormat, availableDates, initialDate 
   const formatDate = useCallback((date: dayjs.Dayjs) => date.format(dateFormat), [dateFormat]);
 
   const argoProfiles = useArgoStore((state) => state.argoProfileCycles);
+
   const currentDate = useMemo(() => {
+    // Use initialDate if provided
     if (initialDate) {
       return dayjs(initialDate, dateFormat);
     }
 
     const dateParam = searchParams.get('date');
-    if (dateParam) {
-      let date = dayjs(dateParam, dateFormat, true);
 
-      if (!date.isValid()) {
-        if (dateFormat === DateFormat.MONTH_ONLY && dateParam.length === 2) {
-          const year = dayjs().year();
-          date = dayjs(`${year}${dateParam.padStart(2, '0')}01`, DateFormat.DAY);
-        } else if (dateFormat === DateFormat.MONTH && dateParam.length === 2) {
-          const year = dayjs().year();
-          date = dayjs(`${year}${dateParam.padStart(2, '0')}`, DateFormat.MONTH);
-        } else {
-          date = dayjs(dateParam);
-        }
-      }
-
-      if (!date.isValid()) {
-        return dayjs();
-      }
-
-      const isDateParamHourly = dayjs(dateParam, DateFormat.HOUR, true).isValid();
-
-      if (isHourlyFormat(dateFormat) && !isDateParamHourly) {
-        const dayStr = date.format(DateFormat.DAY);
-        const firstHourlyDate = findFirstDateTimeForSelectedDay(dates, dayStr, dateFormat);
-        if (firstHourlyDate) {
-          setSearchParams((prev) => {
-            prev.set('date', firstHourlyDate);
-            return prev;
-          });
-          return dayjs(firstHourlyDate, dateFormat);
-        }
-      }
-
-      return date;
+    // No date parameter, use first available date or today
+    if (!dateParam) {
+      return dates.length > 0 ? dayjs(dates[0], dateFormat) : dayjs();
     }
 
-    if (dates.length > 0) {
-      return dayjs(dates[0], dateFormat);
+    // Parse date parameter
+    const parsedDate = parseDateParamForList(dateParam, dateFormat, dates, setSearchParams);
+
+    // Return parsed date or fallback to first available date or today
+    if (parsedDate && parsedDate.isValid()) {
+      return parsedDate;
     }
 
-    return dayjs();
+    return dates.length > 0 ? dayjs(dates[0], dateFormat) : dayjs();
   }, [initialDate, searchParams, dates, dateFormat, setSearchParams]);
 
   const updateDate = useCallback(
@@ -107,56 +229,12 @@ export const useDateListNavigation = ({ dateFormat, availableDates, initialDate 
   );
 
   const goToPrevious = useCallback(() => {
-    if (currentIndex === -1) {
-      // Handle case when currentDate is not in the dates list
-      const currentDateStr = formatDate(currentDate);
-      const prevIndex = findClosestDateIndex(dates, currentDateStr, 'previous');
-
-      if (prevIndex !== -1) {
-        updateDate(dayjs(dates[prevIndex], dateFormat), { replace: true });
-      }
-      return;
-    }
-
-    // Handle circular navigation for month-only format
-    if (dateFormat === DateFormat.MONTH_ONLY && currentIndex === 0 && dates.length > 0) {
-      // If we're at January, go to December
-      const prevDate = dayjs(currentDate).subtract(1, 'month');
-      updateDate(prevDate);
-      return;
-    }
-
-    if (currentIndex > 0) {
-      const prevDate = dayjs(dates[currentIndex - 1], dateFormat);
-      updateDate(prevDate);
-    }
-  }, [currentIndex, dateFormat, dates, updateDate, currentDate, formatDate]);
+    navigateDate({ direction: 'previous', currentDate, currentIndex, dates, dateFormat, updateDate, formatDate });
+  }, [currentDate, currentIndex, dates, dateFormat, updateDate, formatDate]);
 
   const goToNext = useCallback(() => {
-    if (currentIndex === -1) {
-      // Handle case when currentDate is not in the dates list
-      const currentDateStr = formatDate(currentDate);
-      const nextIndex = findClosestDateIndex(dates, currentDateStr, 'next');
-
-      if (nextIndex !== -1) {
-        updateDate(dayjs(dates[nextIndex], dateFormat), { replace: true });
-      }
-      return;
-    }
-
-    // Handle circular navigation for month-only format
-    if (dateFormat === DateFormat.MONTH_ONLY && currentIndex === dates.length - 1 && dates.length > 0) {
-      // If we're at December, go to January
-      const nextDate = dayjs(currentDate).add(1, 'month');
-      updateDate(nextDate);
-      return;
-    }
-
-    if (currentIndex < dates.length - 1) {
-      const nextDate = dayjs(dates[currentIndex + 1], dateFormat);
-      updateDate(nextDate);
-    }
-  }, [currentIndex, dateFormat, dates, updateDate, currentDate, formatDate]);
+    navigateDate({ direction: 'next', currentDate, currentIndex, dates, dateFormat, updateDate, formatDate });
+  }, [currentDate, currentIndex, dates, dateFormat, updateDate, formatDate]);
 
   const canGoPrevious = useMemo(() => {
     if (dateFormat === DateFormat.MONTH_ONLY) {
@@ -199,42 +277,32 @@ export const useDateRangeNavigation = ({ dateFormat, dateRange }: UseDateRangeNa
 
   const currentDate = useMemo(() => {
     const dateParam = searchParams.get('date');
-    if (dateParam) {
-      let date = dayjs(dateParam, dateFormat, true);
 
-      if (!date.isValid()) {
-        if (dateFormat === DateFormat.MONTH_ONLY && dateParam.length === 2) {
-          const year = dayjs().year();
-          date = dayjs(`${year}${dateParam.padStart(2, '0')}01`, DateFormat.DAY);
-        } else if (dateFormat === DateFormat.MONTH && dateParam.length === 2) {
-          const year = dayjs().year();
-          date = dayjs(`${year}${dateParam.padStart(2, '0')}`, DateFormat.MONTH);
-        } else {
-          date = dayjs(dateParam);
-        }
-      }
-
-      if (!date.isValid()) {
-        return dayjs(dateRange.startDate);
-      }
-
-      // Ensure the date is within the valid range
-      const parsedDate = dayjs(date);
-      const startDate = dayjs(dateRange.startDate);
-      const endDate = dayjs(dateRange.endDate);
-
-      if (parsedDate.isBefore(startDate)) {
-        return startDate;
-      }
-      if (parsedDate.isAfter(endDate)) {
-        return endDate;
-      }
-
-      return parsedDate;
+    // No date parameter, return today
+    if (!dateParam) {
+      return dayjs();
     }
 
-    // Default to start date if no date param
-    return dayjs(dateRange.startDate);
+    // Parse the date using shared logic
+    const parsedDate = parseBasicDate(dateParam, dateFormat);
+
+    // If parsing failed, return start date
+    if (!parsedDate) {
+      return dayjs(dateRange.startDate);
+    }
+
+    // Ensure the date is within the valid range
+    const startDate = dayjs(dateRange.startDate);
+    const endDate = dayjs(dateRange.endDate);
+
+    if (parsedDate.isBefore(startDate)) {
+      return startDate;
+    }
+    if (parsedDate.isAfter(endDate)) {
+      return endDate;
+    }
+
+    return parsedDate;
   }, [searchParams, dateFormat, dateRange]);
 
   const updateDate = useCallback(
