@@ -15,6 +15,16 @@ interface UseDateListNavigationProps {
   initialDate?: string;
 }
 
+type NavigateDate = {
+  direction: 'next' | 'previous';
+  currentDate: Dayjs;
+  currentIndex: number;
+  dates: string[];
+  dateFormat: DateFormat;
+  updateDate: (date: Dayjs, options?: { reStart?: boolean; replace?: boolean }) => void;
+  formatDate: (date: Dayjs) => string;
+};
+
 /**
  * Core date parsing logic shared between list and range navigation
  * Handles current year option IDs and various date format edge cases
@@ -94,15 +104,15 @@ const parseDateParamForList = (
  * Navigate to the next or previous date in the list
  * Handles circular navigation for month-only format and out-of-range dates
  */
-const navigateDate = (
-  direction: 'next' | 'previous',
-  currentDate: Dayjs,
-  currentIndex: number,
-  dates: string[],
-  dateFormat: DateFormat,
-  updateDate: (date: Dayjs, options?: { reStart?: boolean; replace?: boolean }) => void,
-  formatDate: (date: Dayjs) => string,
-) => {
+const navigateDate = ({
+  direction,
+  currentDate,
+  currentIndex,
+  dateFormat,
+  dates,
+  updateDate,
+  formatDate,
+}: NavigateDate) => {
   const isNext = direction === 'next';
 
   // Handle case when currentDate is not in the dates list
@@ -219,11 +229,11 @@ export const useDateListNavigation = ({ dateFormat, availableDates, initialDate 
   );
 
   const goToPrevious = useCallback(() => {
-    navigateDate('previous', currentDate, currentIndex, dates, dateFormat, updateDate, formatDate);
+    navigateDate({ direction: 'previous', currentDate, currentIndex, dates, dateFormat, updateDate, formatDate });
   }, [currentDate, currentIndex, dates, dateFormat, updateDate, formatDate]);
 
   const goToNext = useCallback(() => {
-    navigateDate('next', currentDate, currentIndex, dates, dateFormat, updateDate, formatDate);
+    navigateDate({ direction: 'next', currentDate, currentIndex, dates, dateFormat, updateDate, formatDate });
   }, [currentDate, currentIndex, dates, dateFormat, updateDate, formatDate]);
 
   const canGoPrevious = useMemo(() => {

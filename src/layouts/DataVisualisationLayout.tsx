@@ -26,6 +26,14 @@ import { DateFormat } from '@/types/date';
 import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 import { ProductID } from '@/types/product';
 
+type ParseeDateWithFormat = {
+  dateString: string;
+  date: dayjs.Dayjs;
+  shouldShowProductOverMap: boolean;
+  productId: ProductID;
+  regionScope: RegionScope;
+};
+
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
   const { isMobile } = useDeviceType();
@@ -56,13 +64,13 @@ const DataVisualisationLayout: React.FC = () => {
   const previousDateRef = useRef<string | null>(null);
 
   const parseeDateWithFormat = useCallback(
-    (
-      dateString: string,
-      date: dayjs.Dayjs,
-      shouldShowProductOverMap: boolean,
-      productId: ProductID,
-      regionScope: RegionScope,
-    ): dayjs.Dayjs | null => {
+    ({
+      dateString,
+      date,
+      shouldShowProductOverMap,
+      productId,
+      regionScope,
+    }: ParseeDateWithFormat): dayjs.Dayjs | null => {
       if (!productId) {
         return null;
       }
@@ -181,7 +189,13 @@ const DataVisualisationLayout: React.FC = () => {
 
     if (previousDateRef.current === date) return;
 
-    const currentDate = parseeDateWithFormat(date, useDate, shouldShowProductOverMap, productId, regionScope);
+    const currentDate = parseeDateWithFormat({
+      dateString: date,
+      date: useDate,
+      shouldShowProductOverMap,
+      productId,
+      regionScope,
+    });
 
     if (!currentDate || !currentDate.isValid()) return;
 
