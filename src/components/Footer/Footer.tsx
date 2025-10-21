@@ -79,7 +79,7 @@ const Footer: React.FC = () => {
                 href={url}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-center text-base text-black transition-colors hover:text-gray-600"
+                className="flex items-center justify-center text-base text-imos-nav-text transition-colors hover:opacity-80"
               >
                 {text}
               </a>
@@ -88,7 +88,7 @@ const Footer: React.FC = () => {
 
           <div className="flex items-center justify-between gap-1 sm:gap-4">
             <div className="flex items-center">
-              <p className="text-base text-gray-900">{copyrightText}</p>
+              <p className="text-base text-imos-nav-text">{copyrightText}</p>
             </div>
             <div className="flex flex-nowrap gap-1 sm:gap-3">
               {footerSocials.map(({ alt, src, url }: FooterIcon, index: number) => (
