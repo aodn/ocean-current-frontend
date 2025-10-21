@@ -24,9 +24,7 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
       <div className="p-4">
         <div className="flex justify-between">
           <img src={InfoIcon} alt="info icon" className="mr-6 mt-1 h-6 w-6 object-contain" />
-          <div className="text-imos-nav-text">
-            <TruncateText lines={4} text={summary} />
-          </div>
+          <TruncateText className="text-imos-nav-text" lines={4} text={summary} />
         </div>
 
         <div aria-hidden onClick={handlePopup} className="mt-3 flex justify-end">
