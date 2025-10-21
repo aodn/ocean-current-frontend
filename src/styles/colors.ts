@@ -19,6 +19,7 @@ interface OCColor {
   brightMagenta: string;
   dodgerBlue: string;
   navTextColor: string;
+  hoverBlue: string;
 }
 /*
  We can use this tool to find a more meaningful name for all the colours
@@ -45,6 +46,7 @@ const color: OCColor = {
   brightMagenta: '#FA10E2',
   dodgerBlue: '#2972FF',
   navTextColor: '#090C02',
+  hoverBlue: '#54BCEB',
 };
 
 export { color };
