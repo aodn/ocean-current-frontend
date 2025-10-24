@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import logo from '@/assets/images/imos-logo.png';
 import burgerMenu from '@/assets/icons/burger-menu-icon.svg';
 import cross from '@/assets/icons/cross-icon.svg';
@@ -8,9 +8,21 @@ import { LinkOrAnchor } from '@/components/Shared';
 
 const NavbarBurgerMenu: React.FC = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
 
   const toggleMenu = (): void => {
     setMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = (): void => {
+    setMenuOpen(false);
+  };
+
+  const isLinkActive = (url: string): boolean => {
+    const currentPath = location.pathname;
+    const linkPath = url.split('?')[0];
+
+    return currentPath.startsWith(linkPath);
   };
 
   return (
@@ -39,7 +51,13 @@ const NavbarBurgerMenu: React.FC = () => {
           {linksData.map((item) => (
             <div key={item.title}>
               {item.url ? (
-                <LinkOrAnchor className="mb-4 text-base text-gray-400" to={item.url}>
+                <LinkOrAnchor
+                  className={`mb-4 text-base ${
+                    isLinkActive(item.url) ? 'font-semibold text-blue-600' : 'text-gray-400'
+                  }`}
+                  to={item.url}
+                  onClick={closeMenu}
+                >
                   {item.title}
                 </LinkOrAnchor>
               ) : (
@@ -49,7 +67,14 @@ const NavbarBurgerMenu: React.FC = () => {
                 <div className="ml-4">
                   {item.links?.length > 0 &&
                     item.links.map((subLink) => (
-                      <LinkOrAnchor key={subLink.id} className="mr-auto block text-gray-400" to={subLink.url}>
+                      <LinkOrAnchor
+                        key={subLink.id}
+                        className={`mr-auto block ${
+                          isLinkActive(subLink.url) ? 'font-semibold text-blue-600' : 'text-gray-400'
+                        }`}
+                        to={subLink.url}
+                        onClick={closeMenu}
+                      >
                         {subLink.title}
                       </LinkOrAnchor>
                     ))}
