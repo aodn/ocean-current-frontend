@@ -33,8 +33,15 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
   const [showVideo, setLocalShowVideo] = useState(false);
   const { date: currentMetersDate, property, depth, region, deploymentPlot } = useCurrentMetersStore();
   const [_, setSearchParams] = useSearchParams();
-  const { isArgo, isCurrentMeters, isSurfaceWavesBuoyTimeseries, isTidalCurrents, isSealCtd, isSealCtdTags } =
-    useProductCheck();
+  const {
+    isArgo,
+    isCurrentMeters,
+    isSurfaceWavesBuoyTimeseries,
+    isTidalCurrents,
+    isSealCtd,
+    isSealCtdTags,
+    isClimatology,
+  } = useProductCheck();
   const { isArgoValid } = useArgoProductValidQueryParams();
   const productId = useProductStore((state) => state.productParams.productId);
   const { data: latestArgoLocationsData, isLoading: isLatestArgoLocationsDataLoading } = useRegionLatestDates(
@@ -85,6 +92,17 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
     }
 
     const latestDate = dateList?.[dateList.length - 1]?.date;
+
+    if (isClimatology) {
+      const currentMonth = new Date().getMonth() + 1;
+      const climatologyDate =
+        dateList.find((dateItem) => {
+          const dateMonth = new Date(dateItem.date).getMonth() + 1;
+          return dateMonth === currentMonth;
+        })?.date || latestDate;
+
+      return updateQueryParams({ date: climatologyDate });
+    }
 
     if (isArgo) {
       if (isArgoValid) {
