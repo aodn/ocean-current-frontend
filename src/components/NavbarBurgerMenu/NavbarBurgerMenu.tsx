@@ -19,10 +19,11 @@ const NavbarBurgerMenu: React.FC = () => {
   };
 
   const isLinkActive = (url: string): boolean => {
-    const currentPath = location.pathname;
-    const linkPath = url.split('?')[0];
+    const processedCurrentPath =
+      location.pathname.split('/product')[1] || location.pathname.split('/map')[1] || location.pathname;
+    const linkPathProduct = url.split('?')[0].split('/map')[1];
 
-    return currentPath.startsWith(linkPath);
+    return processedCurrentPath.startsWith(linkPathProduct);
   };
 
   return (
