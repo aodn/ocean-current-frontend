@@ -172,7 +172,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
           <img src={ResetIcon} alt="reset icon" srcSet="" />
         </Button>
         <Button
-          onClick={() => !shouldDisableOption && handleToggle(!showVideo)}
+          onClick={() => handleToggle(!showVideo)}
           disabled={shouldDisableOption}
           borderRadius="extraSmall"
           className={`flex-center h-11 w-1/5 border-none p-3 md:px-5 ${showVideo ? '' : 'bg-white'}`}
