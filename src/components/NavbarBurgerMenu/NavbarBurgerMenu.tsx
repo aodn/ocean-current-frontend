@@ -43,7 +43,7 @@ const NavbarBurgerMenu: React.FC = () => {
       </nav>
       <div data-testid="burger-menu" className={`z-50 ${isMenuOpen ? 'visible' : 'hidden'}`}>
         <nav className="fixed bottom-0 left-0 top-0 flex w-full flex-col overflow-y-auto border-r bg-white px-12 py-6">
-          <div className="mb-8 flex items-center">
+          <div className="mb-8 flex items-center justify-between">
             <Link className="mr-auto" to={'/'}>
               <img className="h-8" src={logo} alt="IMOS logo" />
             </Link>
