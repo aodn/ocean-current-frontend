@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { useDateList, useDateRange, useQueryParams, useArgoProductValidQueryParams } from '@/hooks';
-import { Dropdown, ToggleButton, Button } from '@/components/Shared';
+import { Dropdown, Button } from '@/components/Shared';
 import VideoIcon from '@/assets/icons/video-icon.svg';
 import { ProductMenubarText } from '@/constants/textConstant';
 import ShareIcon from '@/assets/icons/share-icon.svg';
@@ -167,22 +167,29 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
           className="flex-center h-11 w-12 rounded-md border-none bg-white p-2"
           aria-label="Reset to latest date"
           disabled={resetBtnDisabled}
+          borderRadius="extraSmall"
         >
           <img src={ResetIcon} alt="reset icon" srcSet="" />
         </Button>
-        <div
-          className={`flex-center h-11 w-1/5 rounded-md bg-white p-3 ${shouldDisableOption && 'cursor-not-allowed opacity-50'}`}
+        <Button
+          onClick={() => !shouldDisableOption && handleToggle(!showVideo)}
+          disabled={shouldDisableOption}
+          borderRadius="extraSmall"
+          className={`flex-center h-11 w-1/5 border-none p-3 md:px-5 ${showVideo ? '' : 'bg-white'}`}
+          aria-label="Toggle video"
         >
           <img src={VideoIcon} alt="video icon" />
-          <p className="mx-3">{ProductMenubarText.VIDEO}</p>
-          <ToggleButton disabled={shouldDisableOption} isOn={showVideo} onToggle={handleToggle} />
-        </div>
+          <p className={`ml-3 w-20 ${showVideo ? 'text-imos-blue' : 'text-imos-dark-grey'}`}>
+            {showVideo ? ProductMenubarText.EXIT_VIDEO : ProductMenubarText.VIDEO}
+          </p>
+        </Button>
 
         <div className="w-1/6">
           <Button
             onClick={handleCopyLink}
             aria-hidden
-            className="flex h-11 w-full flex-row items-center justify-between rounded-md border-none bg-white p-3"
+            borderRadius="extraSmall"
+            className="flex h-11 w-full flex-row items-center justify-between border-none bg-white p-3"
           >
             <img className="mr-6 h-6 w-6" src={ShareIcon} alt="share icon" />
             <p className="flex-grow text-center text-imos-dark-grey">{copyButtonText}</p>
