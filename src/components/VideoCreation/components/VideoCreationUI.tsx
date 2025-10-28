@@ -76,15 +76,17 @@ const VideoCreation: React.FC<VideoCreationUIProps> = ({
   };
 
   return (
-    <div ref={gifOptionsRef}>
+    <div ref={gifOptionsRef} className="h-full w-full">
       <div
         aria-hidden
         onClick={toggleGifOptions}
         data-testid="product-menu-bar-download-option"
-        className={`flex h-11 items-center justify-between rounded-md bg-white p-3 ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
+        className={`flex h-full items-center justify-between rounded-md bg-white md:p-3 ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
       >
         <img className="h-6 w-6" src={DownloadIcon} alt="share icon" />
-        <p className="hidden font-medium md:inline-block">{ProductMenubarText.DOWNLOAD}</p>
+        <p className="ml-1 text-sm font-medium text-imos-deep-blue md:ml-2 md:text-base md:text-imos-dark-grey">
+          {ProductMenubarText.DOWNLOAD}
+        </p>
         <ArrowIcon
           className={`hidden h-3 w-3 transform transition-transform duration-300 md:inline-block ${showGifOptions ? 'rotate-180' : ''}`}
           stroke={color.primary1}

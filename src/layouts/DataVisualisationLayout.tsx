@@ -10,16 +10,16 @@ import useProductStore, {
   setRegionCode,
 } from '@/stores/product-store/productStore';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { useDeviceType, useProductFromUrl, useProductSearchParam, useSetProductId, useUrlType } from '@/hooks';
+import { useProductFromUrl, useProductSearchParam, useSetProductId, useUrlType } from '@/hooks';
 import { getRegionByRegionCode } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
-import ProductFooterMobile from '@/components/ProductFooterMobile/ProductFooterMobile';
 import ArrowIcon from '@/assets/icons/Arrow';
 import { RegionScope } from '@/constants/region';
 import { Loading } from '@/components/Shared';
 import ProductMenuBar from '@/components/ProductMenuBar/ProductMenuBar';
-import ProductMenuBarMobile from '@/components/ProductMenuBar/ProductNavbarMobile';
 import ProductSideBar from '@/components/DataVisualisationSidebar/ProductSidebar';
+import ProductDropdown from '@/components/DataVisualisationSidebar/components/ProductDropdown';
+import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { ArgoDepths } from '@/constants/argo';
 import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { DateFormat } from '@/types/date';
@@ -36,10 +36,10 @@ type ParseeDateWithFormat = {
 
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const { isMobile } = useDeviceType();
   const { isArgo, isSurfaceWavesBuoyTimeseries } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const product = useProductFromUrl('product');
+  const { mainProduct } = useProductConvert();
   const [showVideo, setShowVideo] = useState(false);
   const [isSidebarVisible, setSidebarVisible] = useState(true);
   const productId = useProductStore((state) => state.productParams.productId);
@@ -212,45 +212,31 @@ const DataVisualisationLayout: React.FC = () => {
   }
 
   return (
-    <div className="relative mx-auto mb-9 w-full max-w-8xl">
-      {isMobile ? (
-        <div className="p-4">
-          <div className="text-imos-text-grey">
-            <ProductSideBar />
-          </div>
-          <div>
-            <ProductMenuBarMobile setShowVideo={setShowVideo} />
-            <ErrorBoundary key={product?.mainProduct}>
-              <Outlet context={{ showVideo, loading: true }} />
-            </ErrorBoundary>
-            <ProductFooterMobile />
-          </div>
+    <div className="relative mx-auto mb-2 w-full max-w-8xl md:mb-9">
+      <div className="flex flex-col-reverse p-4 md:flex-row">
+        <button
+          onClick={toggleSidebar}
+          className="-left-6 mr-1 hidden h-24 items-center justify-center rounded bg-imos-sea-blue p-2 text-white md:flex"
+          aria-label="Toggle sidebar"
+        >
+          <ArrowIcon
+            className={`h-5 w-5 transition-transform duration-300 ${isSidebarVisible ? 'rotate-90' : 'h-28 rotate-[270deg]'}`}
+            stroke={'white'}
+          />
+        </button>
+        <div className={`transition-all duration-300 ${isSidebarVisible ? 'md:w-1/3' : 'w-0 overflow-hidden'}`}>
+          <ProductSideBar />
         </div>
-      ) : (
-        <div className="flex p-4">
-          <button
-            onClick={toggleSidebar}
-            className="-left-6 mr-1 flex h-24 items-center justify-center rounded bg-imos-sea-blue p-2 text-white"
-            aria-label="Toggle sidebar"
-          >
-            <ArrowIcon
-              className={`h-5 w-5 transition-transform duration-300 ${isSidebarVisible ? 'rotate-90' : 'h-28 rotate-[270deg]'}`}
-              stroke={'white'}
-            />
-          </button>
-          <div className={`transition-all duration-300 ${isSidebarVisible ? 'w-1/3' : 'w-0 overflow-hidden'}`}>
-            <ProductSideBar />
-          </div>
-          <div
-            className={`transition-all duration-300 ${isSidebarVisible ? 'ml-4' : 'ml-0'} flex min-h-[800px] w-full min-w-[800px] flex-col`}
-          >
-            <ProductMenuBar setShowVideo={setShowVideo} isFreeMode={!shouldShowProductOverMap} />
-            <ErrorBoundary key={product?.mainProduct}>
-              <Outlet context={{ showVideo, loading: true }} />
-            </ErrorBoundary>
-          </div>
+        <div
+          className={`transition-all duration-300 ${isSidebarVisible ? 'md:ml-4' : 'ml-0'} flex w-full flex-col md:min-h-[800px]`}
+        >
+          <div className="md:hidden">{mainProduct && <ProductDropdown mainProductKey={mainProduct.key} />}</div>
+          <ProductMenuBar setShowVideo={setShowVideo} isFreeMode={!shouldShowProductOverMap} />
+          <ErrorBoundary key={product?.mainProduct}>
+            <Outlet context={{ showVideo, loading: true }} />
+          </ErrorBoundary>
         </div>
-      )}
+      </div>
     </div>
   );
 };

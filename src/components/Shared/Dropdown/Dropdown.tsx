@@ -76,9 +76,9 @@ const Dropdown = <T,>({
       <div
         onClick={toggleDropdown}
         aria-hidden="true"
-        className={`${header ? 'rounded-t-lg bg-imos-deeper-blue p-3' : 'rounded-md border-2 border-[#3a6f8f80] bg-white p-2'} ${
+        className={`${header ? 'rounded-t-lg bg-imos-deeper-blue p-2 md:p-3' : 'rounded-md border-2 border-[#3a6f8f80] bg-white p-2 md:p-3'} ${
           smallDropdown ? 'min-w-28' : 'min-w-56'
-        } flex items-center justify-between px-4 text-lg text-imos-title-blue shadow ${
+        } flex items-center justify-between px-3 text-lg text-imos-title-blue shadow md:px-4 ${
           processingItemId ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'
         }`}
       >
@@ -95,7 +95,7 @@ const Dropdown = <T,>({
       </div>
       {isDropdownOpen && elementsWithLoading.length > 0 && (
         <div
-          className={`absolute z-40 w-full rounded-b-lg bg-white ${!header ? 'max-h-60 overflow-y-auto' : ''}`}
+          className={`absolute z-40 w-full rounded-b-lg border border-gray-600 bg-white shadow-[0_2px_4px_0_rgba(97,97,97,0.25)] md:border-none md:shadow-none ${!header ? 'max-h-60 overflow-y-auto' : ''}`}
           data-testid="drop-down-menu"
         >
           {elementsWithLoading.map((element) => (
