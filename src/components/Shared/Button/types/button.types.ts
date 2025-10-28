@@ -5,6 +5,7 @@ export enum ButtonType {
 }
 
 export enum BorderRadius {
+  extraSmall = 'rounded-md',
   small = 'rounded-lg',
   medium = 'rounded-xl',
   large = 'rounded-2xl',
