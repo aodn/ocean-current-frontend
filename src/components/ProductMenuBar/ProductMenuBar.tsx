@@ -173,7 +173,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
         </Button>
         <div className="order-1 box-border h-11 flex-1 rounded-md border-none md:order-none md:flex-initial md:grow">
           <Button
-            onClick={() => !shouldDisableOption && handleToggle(!showVideo)}
+            onClick={() => handleToggle(!showVideo)}
             disabled={shouldDisableOption}
             borderRadius="extraSmall"
             className={`flex-center h-full w-full border-none !px-2 md:p-3 md:px-5 ${showVideo ? '' : 'bg-white'}`}
@@ -206,7 +206,6 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
             <p className="ml-2 text-center text-sm text-imos-deep-blue md:ml-3 md:w-20 md:text-base md:text-imos-dark-grey">
               {copyButtonText}
             </p>
-            {/* <div className="w-6 flex-shrink-0" /> */}
           </Button>
         </div>
       </div>
