@@ -120,7 +120,7 @@ const NavbarBurgerMenu: React.FC = () => {
                             <p
                               className={`flex w-full items-center gap-x-4 p-3 ${isLinkActive(url) ? 'bg-imos-light-blue' : ''}`}
                             >
-                              <Icon size="xxl" />
+                              <Icon size="xxl" color="imos-grey" />
                               {title}
                             </p>
                           </LinkOrAnchor>

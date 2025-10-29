@@ -64,7 +64,7 @@ const HomeProductCarousel: React.FC = () => {
                 to={url}
                 className="flex h-24 flex-col items-center justify-center rounded-xl bg-imos-light-blue p-4 transition duration-300 ease-in-out hover:border-[3px] hover:border-imos-deep-blue hover:bg-white md:h-32"
               >
-                <Icon className="h-full w-full" />
+                <Icon className="h-full w-full" color="imos-deep-blue" />
               </Link>
               <div className="p-2 text-center font-poppins text-sm font-medium text-imos-text-grey md:text-base">
                 {title}

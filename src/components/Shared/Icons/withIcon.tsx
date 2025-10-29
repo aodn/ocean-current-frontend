@@ -1,7 +1,7 @@
 import React, { forwardRef, useId, useRef, useEffect } from 'react';
 
 type IconSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | 'xxl';
-type Color = 'imos-white' | 'imos-black' | 'imos-red' | 'imos-grey';
+type Color = 'imos-white' | 'imos-black' | 'imos-sea-blue' | 'imos-grey' | 'imos-deep-blue';
 
 export interface IconProps extends React.SVGProps<SVGSVGElement> {
   size?: IconSize;
@@ -23,8 +23,9 @@ const SIZE_MAP: Record<IconSize, string> = {
 const COLOR_MAP: Record<Color, string> = {
   'imos-white': 'text-white',
   'imos-black': 'text-black',
-  'imos-red': 'text-imos-red',
+  'imos-sea-blue': 'text-imos-sea-blue',
   'imos-grey': 'text-imos-grey',
+  'imos-deep-blue': 'text-imos-deep-blue',
 };
 
 export function withIcon(IconComponent: React.ComponentType<React.SVGProps<SVGSVGElement>>): React.FC<IconProps> {
