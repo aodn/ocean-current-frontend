@@ -12,7 +12,6 @@ export interface OceanCurrentDatePickerProps {
   canGoPrevious?: boolean;
   dateFormat: DateFormat;
   onChange: (date: Date) => void;
-  isMobile?: boolean;
   isDatePickerDisabled?: boolean;
   displayText?: ProductMenubarText;
   startDate?: Date;

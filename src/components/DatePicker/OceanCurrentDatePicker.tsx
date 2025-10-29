@@ -15,7 +15,6 @@ const OceanCurrentDatePicker: React.FC<OceanCurrentDatePickerProps> = ({
   selectedDate,
   dateFormat,
   onChange,
-  isMobile,
   dateList,
   isDatePickerDisabled = false,
   displayText,
@@ -85,7 +84,6 @@ const OceanCurrentDatePicker: React.FC<OceanCurrentDatePickerProps> = ({
               selectedDate={selectedDate}
               onChange={handleDateChange}
               dateFormat={dateFormat}
-              isMobile={isMobile}
               isDisabled={isDatePickerDisabled}
               startDate={startDate}
               endDate={endDate}

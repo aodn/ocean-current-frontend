@@ -30,6 +30,7 @@ export enum ProductMenubarText {
   DOWNLOAD = 'Download',
   ANIMATION_SPEED = 'Animation Speed',
   SIX_DAY_SST_TIMESERIES_DATE = '1993 - latest',
+  SELECT_REGION = 'Select Region',
 }
 
 export enum News {
