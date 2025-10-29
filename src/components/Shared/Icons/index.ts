@@ -12,6 +12,8 @@ import Climatology from '@/assets/icons/products/grey-icons/climatology-icon-gre
 import EACMooringArray from '@/assets/icons/products/grey-icons/eac-mooring-array-icon-grey.svg?react';
 import Arrow from '@/assets/icons/arrow.svg?react';
 import Glider from '@/assets/icons/products/grey-icons/glider-icon-grey.svg?react';
+import SelectedFourHourSST from '@/assets/icons/products/white-icons/4-hour-sst-icon-white.svg?react';
+import SelectedSixHourSST from '@/assets/icons/products/white-icons/6-day-sst-icon-white.svg?react';
 import { withIcon } from './withIcon';
 
 export const OceanColourIcon = withIcon(OceanColour);
@@ -28,6 +30,8 @@ export const ClimatologyIcon = withIcon(Climatology);
 export const EACMooringArrayIcon = withIcon(EACMooringArray);
 export const GliderIcon = withIcon(Glider);
 export const ArrowIcon = withIcon(Arrow);
+export const SelectedFourHourSSTIcon = withIcon(SelectedFourHourSST);
+export const SelectedSixHourSSTIcon = withIcon(SelectedSixHourSST);
 
 export * from './withIcon';
 

@@ -86,12 +86,11 @@ const Dropdown = <T,>({
           {showIcons &&
             selectedElement &&
             (() => {
-              const { icon, Icon, label } = selectedElement;
-              return icon ? (
-                <img className="mr-4 h-9 w-9" src={icon} alt={`${label} icon`} />
-              ) : Icon ? (
-                <Icon className="mr-4" size="xl" color={header ? 'imos-white' : 'imos-grey'} />
-              ) : null;
+              const { Icon, SelectedIcon } = selectedElement;
+              const RenderedIcon = SelectedIcon || Icon;
+              return (
+                RenderedIcon && <RenderedIcon className="mr-4" size="xl" color={header ? 'imos-white' : 'imos-grey'} />
+              );
             })()}
           <span className={header ? 'text-white' : ''}>{selectedElement ? selectedElement.label : 'Select Item'}</span>
         </div>
@@ -106,7 +105,7 @@ const Dropdown = <T,>({
           data-testid="drop-down-menu"
         >
           {elementsWithLoading.map((element) => {
-            const { id, isLoading, icon, Icon, disabled, label } = element;
+            const { id, isLoading, Icon, disabled, label } = element;
             return (
               <div
                 key={String(id)}
@@ -123,16 +122,9 @@ const Dropdown = <T,>({
                   handleOnClick(element);
                 }}
               >
-                {showIcons &&
-                  (icon ? (
-                    <img
-                      className={`mr-4 h-9 w-9 ${id === selectedElement?.id ? 'brightness-0 invert' : ''}`}
-                      src={icon}
-                      alt={`${label} icon`}
-                    />
-                  ) : Icon ? (
-                    <Icon className="mr-4" size="xl" color={id === selectedElement?.id ? 'imos-white' : 'imos-grey'} />
-                  ) : null)}
+                {showIcons && Icon && (
+                  <Icon className="mr-4" size="xl" color={id === selectedElement?.id ? 'imos-white' : 'imos-grey'} />
+                )}
                 <span
                   className={`flex items-center text-left text-base ${id === selectedElement?.id ? 'text-white' : 'text-imos-dark-grey'}`}
                 >
