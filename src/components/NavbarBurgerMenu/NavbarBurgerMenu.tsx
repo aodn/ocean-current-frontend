@@ -84,6 +84,9 @@ const NavbarBurgerMenu: React.FC = () => {
             {linksData.map((item, index) => (
               <div key={item.title}>
                 <CollapsibleComponent
+                  defaultOpen={index === 0}
+                  disable={!item.links || item.links.length === 0}
+                  toggleIconHidden={!item.links || item.links.length === 0}
                   wrapperClassName={`w-full border-imos-light-grey ${index === linksData.length - 1 ? '' : 'border-b-2'}`}
                   trigger={({ toggle, open, direction, toggleIconHidden }: TriggerArgs) => (
                     <CollapsibleTrigger
