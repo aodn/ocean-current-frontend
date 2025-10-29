@@ -4,13 +4,13 @@ import { LinkOrAnchor } from '@/components/Shared';
 
 const NavbarMenu = forwardRef(({ items }: { items: DetailedLink[] }, ref: ForwardedRef<HTMLDivElement>) => {
   const renderMenuItems = (items: DetailedLink[]) =>
-    items.map(({ id, greyIcon, title, description, url }) => (
+    items.map(({ id, Icon, title, description, url }) => (
       <LinkOrAnchor
         key={id}
         to={url}
         className={'flex justify-between gap-4 p-4 hover:bg-imos-hover-blue hover:bg-opacity-20'}
       >
-        <img alt={title} loading="lazy" src={greyIcon} className="my-auto aspect-square w-7" />
+        <Icon className="my-auto" size="lg" />
         <div className="flex flex-1 flex-col whitespace-nowrap pr-1.5">
           <div className="text-base font-bold leading-5">{title}</div>
           <div className="text-sm font-light leading-5 text-gray-500">{description}</div>

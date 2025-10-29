@@ -12,6 +12,7 @@ import useDateList from './useDateList/useDateList';
 import { useResizeObserver } from './useResizeObserver/useResizeObserver';
 import { useCurrentPage } from './useCurrentPage/useCurrentPage';
 import { useArgoProductValidQueryParams } from './useArgoProductValidQueryParams/useArgoProductValidQueryParams';
+import { useToggle } from './useToggle/useToggle';
 
 export {
   useProductPathFromUrl as useProductFromUrl,
@@ -28,4 +29,5 @@ export {
   useArgoProductValidQueryParams,
   useResizeObserver,
   useCurrentPage,
+  useToggle,
 };

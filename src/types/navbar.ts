@@ -1,3 +1,6 @@
+import { FC } from 'react';
+import { IconProps } from '@/components/Shared/Icons';
+
 export interface BasicLink {
   title: string;
   url: string;
@@ -8,8 +11,7 @@ export interface BasicLink {
 export interface DetailedLink {
   id: string;
   title: string;
-  greyIcon: string;
-  blueIcon: string;
+  Icon: FC<IconProps>;
   description: string;
   url: string;
 }

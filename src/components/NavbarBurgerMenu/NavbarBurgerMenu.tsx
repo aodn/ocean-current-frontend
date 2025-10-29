@@ -4,7 +4,33 @@ import logo from '@/assets/images/imos-logo.png';
 import burgerMenu from '@/assets/icons/burger-menu-icon.svg';
 import cross from '@/assets/icons/cross-icon.svg';
 import { linksData } from '@/data/linksData';
-import { LinkOrAnchor } from '@/components/Shared';
+import { LinkOrAnchor, CollapsibleComponent, TriggerArgs } from '@/components/Shared';
+import { ArrowIcon } from '../Shared/Icons';
+
+const CollapsibleTrigger = ({ open, toggle, direction = 'down', toggleIconHidden = false, label }: TriggerArgs) => {
+  const shouldRotate = direction === 'down' ? open : !open;
+  return (
+    <div className="border-b bg-imos-pale-blue px-6 py-3">
+      <div className="flex items-center justify-between">
+        <div>{label}</div>
+        {!toggleIconHidden && (
+          <button
+            className="bg-transparent"
+            onClick={toggle}
+            aria-expanded={open}
+            aria-label={`${open ? 'Collapse' : 'Expand'} content`}
+          >
+            <ArrowIcon
+              color="imos-black"
+              size="sm"
+              className={`transition-transform duration-300 ease-in-out ${shouldRotate ? 'rotate-180' : ''}`}
+            />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
 
 const NavbarBurgerMenu: React.FC = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -41,48 +67,70 @@ const NavbarBurgerMenu: React.FC = () => {
           aria-hidden="true"
         />
       </nav>
-      <div data-testid="burger-menu" className={`z-50 ${isMenuOpen ? 'visible' : 'hidden'}`}>
-        <nav className="fixed bottom-0 left-0 top-0 flex w-full flex-col overflow-y-auto border-r bg-white px-12 py-6">
+
+      <div
+        data-testid="burger-menu"
+        className={`fixed bottom-0 left-0 right-0 top-0 z-50 overflow-y-auto ${isMenuOpen ? 'block' : 'hidden'}`}
+      >
+        <nav className="min-h-screen w-full bg-white p-6">
           <div className="mb-8 flex items-center justify-between">
             <Link className="mr-auto" to={'/'}>
               <img className="h-8" src={logo} alt="IMOS logo" />
             </Link>
             <img onClick={toggleMenu} className="h-8" alt="cross" src={cross} aria-hidden="true" />
           </div>
-          {linksData.map((item) => (
-            <div key={item.title}>
-              {item.url ? (
-                <LinkOrAnchor
-                  className={`mb-4 text-base ${
-                    isLinkActive(item.url) ? 'font-semibold text-blue-600' : 'text-gray-400'
-                  }`}
-                  to={item.url}
-                  onClick={closeMenu}
+
+          <div className="overflow-hidden rounded bg-imos-cloud-tint">
+            {linksData.map((item, index) => (
+              <div key={item.title}>
+                <CollapsibleComponent
+                  wrapperClassName={`w-full border-imos-light-grey ${index === linksData.length - 1 ? '' : 'border-b-2'}`}
+                  trigger={({ toggle, open, direction, toggleIconHidden }: TriggerArgs) => (
+                    <CollapsibleTrigger
+                      open={open}
+                      toggle={toggle}
+                      direction={direction}
+                      toggleIconHidden={toggleIconHidden}
+                      label={
+                        item.url ? (
+                          <LinkOrAnchor
+                            className="mb-4 text-base font-medium text-gray-900"
+                            to={item.url}
+                            onClick={closeMenu}
+                          >
+                            {item.title}
+                          </LinkOrAnchor>
+                        ) : (
+                          <span className="mb-4 text-base font-medium text-gray-900">{item.title}</span>
+                        )
+                      }
+                    />
+                  )}
                 >
-                  {item.title}
-                </LinkOrAnchor>
-              ) : (
-                <span className="mb-4 text-base text-gray-400">{item.title}</span>
-              )}
-              {item.links && (
-                <div className="ml-4">
-                  {item.links?.length > 0 &&
-                    item.links.map((subLink) => (
-                      <LinkOrAnchor
-                        key={subLink.id}
-                        className={`mr-auto block ${
-                          isLinkActive(subLink.url) ? 'font-semibold text-blue-600' : 'text-gray-400'
-                        }`}
-                        to={subLink.url}
-                        onClick={closeMenu}
-                      >
-                        {subLink.title}
-                      </LinkOrAnchor>
-                    ))}
-                </div>
-              )}
-            </div>
-          ))}
+                  {item.links && (
+                    <div className="my-[1px]">
+                      {item.links?.length > 0 &&
+                        item.links.map(({ id, url, Icon, title }) => (
+                          <LinkOrAnchor
+                            key={id}
+                            className="mr-auto block w-full font-semibold text-gray-700"
+                            to={url}
+                            onClick={closeMenu}
+                          >
+                            <p
+                              className={`flex w-full items-center gap-x-4 p-3 ${isLinkActive(url) ? 'bg-imos-light-blue' : ''}`}
+                            >
+                              <Icon size="xxl" />
+                              {title}
+                            </p>
+                          </LinkOrAnchor>
+                        ))}
+                    </div>
+                  )}
+                </CollapsibleComponent>
+              </div>
+            ))}
+          </div>
         </nav>
       </div>
     </div>

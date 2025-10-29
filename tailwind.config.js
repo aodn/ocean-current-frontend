@@ -3,21 +3,17 @@ import { color } from './src/styles/colors';
 
 export default {
   important: '#root',
-  corePlugins: {
-    preflight: false,
-  },
+  corePlugins: { preflight: false },
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    screens: {
-      sm: '450px',
-      md: '768px',
-      xl: '1280px',
-    },
+    screens: { sm: '450px', md: '768px', xl: '1280px' },
     extend: {
       colors: {
+        'imos-black': color.black,
         'imos-deep-blue': color.primary1,
         'imos-deeper-blue': color.primary2,
         'imos-sea-blue': color.seaBlue,
+        'imos-pale-blue': color.primary4,
         'imos-light-blue': color.primary5,
         'imos-accent-orange': color.accentOrange,
         'imos-sand': color.sand,
@@ -34,6 +30,7 @@ export default {
         'imos-dodger-blue': color.dodgerBlue,
         'imos-nav-text': color.navTextColor,
         'imos-hover-blue': color.hoverBlue,
+        'imos-cloud-tint': color.primary6,
       },
       backgroundImage: {
         'background-gradient': 'linear-gradient(180deg, #DCDCDC 0%, rgba(217, 217, 217, 0.34) 100%)',
@@ -47,27 +44,15 @@ export default {
         h1: ['24pt', { lineHeight: '28.8pt' }],
         h0: ['8rem', { lineHeight: '1.75rem' }],
       },
-      fontFamily: {
-        poppins: ['Poppins', 'sans-serif'],
-        'open-sans': ['"Open Sans"', 'sans-serif'],
-      },
-      maxWidth: {
-        '8xl': '90rem',
-      },
-      dropShadow: {
-        xy4: '4px 4px 10px rgba(0, 0, 0, 0.25)',
-        x0y4: '0px 4px 6px rgba(0, 0, 0, 0.25)',
-      },
+      fontFamily: { poppins: ['Poppins', 'sans-serif'], 'open-sans': ['"Open Sans"', 'sans-serif'] },
+      maxWidth: { '8xl': '90rem' },
+      dropShadow: { xy4: '4px 4px 10px rgba(0, 0, 0, 0.25)', x0y4: '0px 4px 6px rgba(0, 0, 0, 0.25)' },
       boxShadow: {
         'layout-shadow': '4px 4px 10px 0 rgba(0,0,0,0.20)',
         'inset-custom': 'inset 0 0 10px rgba(0, 0, 0, 0.3)',
       },
-      height: {
-        18: '4.5rem',
-      },
-      borderWidth: {
-        1: '1px',
-      },
+      height: { 18: '4.5rem' },
+      borderWidth: { 1: '1px' },
     },
   },
   plugins: [],
