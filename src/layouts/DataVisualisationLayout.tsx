@@ -40,7 +40,7 @@ const DataVisualisationLayout: React.FC = () => {
   const useDate = useDateStore((state) => state.date);
   const product = useProductFromUrl('product');
   const { mainProduct } = useProductConvert();
-  const [showVideo, setShowVideo] = useState<boolean>(false);
+  const [showVideo, setShowVideo] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const [isSidebarVisible, setSidebarVisible] = useState(true);
   const productId = useProductStore((state) => state.productParams.productId);
