@@ -167,7 +167,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
         >
           <img src={MapIcon} alt="map icon" className="h-6 w-6 flex-shrink-0" />
           <p className={`ml-2 text-base font-medium ${showMap ? 'text-imos-blue' : 'text-imos-dark-grey'}`}>
-            Select Region
+            {ProductMenubarText.SELECT_REGION}
           </p>
         </Button>
       </div>
