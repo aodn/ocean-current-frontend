@@ -38,7 +38,6 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
 
   const [copyButtonText, setCopyButtonText] = useState<string>(ProductMenubarText.SHARE);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  // const [showVideo, setLocalShowVideo] = useState(false);
   const { date: currentMetersDate, property, depth, region, deploymentPlot } = useCurrentMetersStore();
   const [_, setSearchParams] = useSearchParams();
   const {
@@ -90,7 +89,6 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
   }, []);
 
   const handleToggleVideo = () => {
-    // setLocalShowVideo(state);
     setShowVideo(!showVideo);
   };
 

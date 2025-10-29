@@ -12,7 +12,6 @@ import { breakpoints } from '@/styles/screens';
  */
 const useMediaQuery = (query: string): boolean => {
   const [matches, setMatches] = useState<boolean>(() => {
-    // Initialize with current match state
     if (typeof window === 'undefined') {
       return false;
     }
@@ -26,10 +25,8 @@ const useMediaQuery = (query: string): boolean => {
       setMatches(event.matches);
     };
 
-    // Set initial value
     setMatches(mediaQuery.matches);
 
-    // Listen for changes
     mediaQuery.addEventListener('change', handleChange);
 
     return () => {
