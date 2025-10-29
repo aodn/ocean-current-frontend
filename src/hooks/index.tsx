@@ -13,6 +13,9 @@ import { useResizeObserver } from './useResizeObserver/useResizeObserver';
 import { useCurrentPage } from './useCurrentPage/useCurrentPage';
 import { useArgoProductValidQueryParams } from './useArgoProductValidQueryParams/useArgoProductValidQueryParams';
 import { useToggle } from './useToggle/useToggle';
+import useMediaQuery from './useMediaQuery/useMediaQuery';
+
+export * from './useMediaQuery/useMediaQuery';
 
 export {
   useProductPathFromUrl as useProductFromUrl,
@@ -30,4 +33,5 @@ export {
   useResizeObserver,
   useCurrentPage,
   useToggle,
+  useMediaQuery,
 };

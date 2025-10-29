@@ -1,12 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 import { color } from './src/styles/colors';
+import { breakpoints } from './src/styles/screens';
 
 export default {
   important: '#root',
   corePlugins: { preflight: false },
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    screens: { sm: '450px', md: '768px', xl: '1280px' },
+    screens: { sm: `${breakpoints.sm}px`, md: `${breakpoints.md}px`, xl: `${breakpoints.xl}px` },
     extend: {
       colors: {
         'imos-black': color.black,
