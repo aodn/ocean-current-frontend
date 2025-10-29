@@ -83,9 +83,16 @@ const Dropdown = <T,>({
         }`}
       >
         <div className="flex items-center">
-          {showIcons && selectedElement && (
-            <img className="mr-4 h-9 w-9" src={selectedElement.selectedIcon} alt={`${selectedElement.label} icon`} />
-          )}
+          {showIcons &&
+            selectedElement &&
+            (() => {
+              const { icon, Icon, label } = selectedElement;
+              return icon ? (
+                <img className="mr-4 h-9 w-9" src={icon} alt={`${label} icon`} />
+              ) : Icon ? (
+                <Icon className="mr-4" size="xl" color={header ? 'imos-white' : 'imos-grey'} />
+              ) : null;
+            })()}
           <span className={header ? 'text-white' : ''}>{selectedElement ? selectedElement.label : 'Select Item'}</span>
         </div>
         <ArrowIcon
@@ -98,60 +105,64 @@ const Dropdown = <T,>({
           className={`absolute z-40 w-full rounded-b-lg border border-gray-600 bg-white shadow-[0_2px_4px_0_rgba(97,97,97,0.25)] md:border-none md:shadow-none ${!header ? 'max-h-60 overflow-y-auto' : ''}`}
           data-testid="drop-down-menu"
         >
-          {elementsWithLoading.map((element) => (
-            <div
-              key={String(element.id)}
-              aria-hidden="true"
-              className={`${!showIcons ? 'justify-center' : ''} m-1 flex cursor-pointer items-center rounded p-3 duration-300 ${
-                element.id === selectedElement?.id
-                  ? 'bg-imos-deep-blue'
-                  : 'hover:bg-imos-hover-blue hover:bg-opacity-20'
-              } ${element.disabled || element.isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
-              onClick={(e) => {
-                if (element.disabled || element.isLoading) {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  return;
-                }
-                handleOnClick(element);
-              }}
-            >
-              {showIcons && (
-                <img
-                  className={`mr-4 h-9 w-9 ${element.id === selectedElement?.id ? 'brightness-0 invert' : ''}`}
-                  src={element.icon}
-                  alt={`${element.label} icon`}
-                />
-              )}
-              <span
-                className={`flex items-center text-left text-base ${element.id === selectedElement?.id ? 'text-white' : 'text-imos-dark-grey'}`}
+          {elementsWithLoading.map((element) => {
+            const { id, isLoading, icon, Icon, disabled, label } = element;
+            return (
+              <div
+                key={String(id)}
+                aria-hidden="true"
+                className={`${!showIcons ? 'justify-center' : ''} m-1 flex cursor-pointer items-center rounded p-3 duration-300 ${
+                  id === selectedElement?.id ? 'bg-imos-deep-blue' : 'hover:bg-imos-hover-blue hover:bg-opacity-20'
+                } ${disabled || isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
+                onClick={(e) => {
+                  if (disabled || isLoading) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return;
+                  }
+                  handleOnClick(element);
+                }}
               >
-                {element.label}
-                {element.isLoading && (
-                  <svg
-                    className="ml-2 h-4 w-4 animate-spin text-blue-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                )}
-              </span>
-            </div>
-          ))}
+                {showIcons &&
+                  (icon ? (
+                    <img
+                      className={`mr-4 h-9 w-9 ${id === selectedElement?.id ? 'brightness-0 invert' : ''}`}
+                      src={icon}
+                      alt={`${label} icon`}
+                    />
+                  ) : Icon ? (
+                    <Icon className="mr-4" size="xl" color={id === selectedElement?.id ? 'imos-white' : 'imos-grey'} />
+                  ) : null)}
+                <span
+                  className={`flex items-center text-left text-base ${id === selectedElement?.id ? 'text-white' : 'text-imos-dark-grey'}`}
+                >
+                  {label}
+                  {isLoading && (
+                    <svg
+                      className="ml-2 h-4 w-4 animate-spin text-blue-500"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                  )}
+                </span>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
