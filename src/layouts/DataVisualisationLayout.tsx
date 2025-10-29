@@ -10,7 +10,7 @@ import useProductStore, {
   setRegionCode,
 } from '@/stores/product-store/productStore';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { useProductFromUrl, useProductSearchParam, useSetProductId, useUrlType } from '@/hooks';
+import { useProductFromUrl, useProductSearchParam, useSetProductId, useUrlType, useIsTabletOrDesktop } from '@/hooks';
 import { getRegionByRegionCode } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 import ArrowIcon from '@/assets/icons/Arrow';
@@ -40,7 +40,8 @@ const DataVisualisationLayout: React.FC = () => {
   const useDate = useDateStore((state) => state.date);
   const product = useProductFromUrl('product');
   const { mainProduct } = useProductConvert();
-  const [showVideo, setShowVideo] = useState(false);
+  const [showVideo, setShowVideo] = useState<boolean>(false);
+  const [showMap, setShowMap] = useState(false);
   const [isSidebarVisible, setSidebarVisible] = useState(true);
   const productId = useProductStore((state) => state.productParams.productId);
   const regionScope = useProductStore((state) => state.productParams.regionScope);
@@ -51,6 +52,7 @@ const DataVisualisationLayout: React.FC = () => {
   useSetProductId(urlType, setProductId);
 
   const dateFromUrl = searchParams.get('date') || dayjs().format('YYYYMMDD');
+  const isDesktopOrTablet = useIsTabletOrDesktop();
 
   const getArgoData = useCallback(() => {
     const worldMeteorologicalOrgId = searchParams.get('wmoid') || '';
@@ -62,6 +64,7 @@ const DataVisualisationLayout: React.FC = () => {
 
   const { region: regionCodeFromUrl = 'Au', date } = useProductSearchParam();
   const previousDateRef = useRef<string | null>(null);
+  const previousRegionRef = useRef<string | null>(null);
 
   const parseeDateWithFormat = useCallback(
     ({
@@ -207,13 +210,31 @@ const DataVisualisationLayout: React.FC = () => {
     if (isArgo) getArgoData();
   }, [getArgoData, isArgo, dateFromUrl]);
 
+  // Reset showMap when switching from mobile to desktop
+  useEffect(() => {
+    if (isDesktopOrTablet && showMap) {
+      setShowMap(false);
+    }
+  }, [isDesktopOrTablet, showMap]);
+
+  // Close map on mobile when region changes (after region selection)
+  useEffect(() => {
+    if (!isDesktopOrTablet && showMap && regionCodeFromUrl) {
+      // Only close map if region actually changed (not on initial mount)
+      if (previousRegionRef.current !== null && previousRegionRef.current !== regionCodeFromUrl) {
+        setShowMap(false);
+      }
+      previousRegionRef.current = regionCodeFromUrl;
+    }
+  }, [regionCodeFromUrl, isDesktopOrTablet, showMap]);
+
   if (!productId) {
     return <Loading />;
   }
 
   return (
-    <div className="relative mx-auto mb-2 w-full max-w-8xl md:mb-9">
-      <div className="flex flex-col-reverse p-4 md:flex-row">
+    <div className="relative w-full">
+      <div className="flex flex-col-reverse md:flex-row">
         <button
           onClick={toggleSidebar}
           className="-left-6 mr-1 hidden h-24 items-center justify-center rounded bg-imos-sea-blue p-2 text-white md:flex"
@@ -231,9 +252,15 @@ const DataVisualisationLayout: React.FC = () => {
           className={`transition-all duration-300 ${isSidebarVisible ? 'md:ml-4' : 'ml-0'} flex w-full flex-col md:min-h-[800px]`}
         >
           <div className="md:hidden">{mainProduct && <ProductDropdown mainProductKey={mainProduct.key} />}</div>
-          <ProductMenuBar setShowVideo={setShowVideo} isFreeMode={!shouldShowProductOverMap} />
+          <ProductMenuBar
+            showVideo={showVideo}
+            setShowVideo={setShowVideo}
+            showMap={showMap}
+            setShowMap={setShowMap}
+            isFreeMode={!shouldShowProductOverMap}
+          />
           <ErrorBoundary key={product?.mainProduct}>
-            <Outlet context={{ showVideo, loading: true }} />
+            <Outlet context={{ showVideo, showMap, loading: true }} />
           </ErrorBoundary>
         </div>
       </div>

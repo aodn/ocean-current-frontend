@@ -2,10 +2,11 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { useDateList, useDateRange, useQueryParams, useArgoProductValidQueryParams } from '@/hooks';
 import { Dropdown, Button } from '@/components/Shared';
-import VideoIcon from '@/assets/icons/video-icon.svg';
 import { ProductMenubarText } from '@/constants/textConstant';
+import VideoIcon from '@/assets/icons/video-icon.svg';
 import ShareIcon from '@/assets/icons/share-icon.svg';
 import ResetIcon from '@/assets/icons/reset-icon.svg';
+import MapIcon from '@/assets/icons/map-icon.svg';
 import VideoCreation from '@/components/VideoCreation';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import useCurrentMetersStore, {
@@ -22,7 +23,14 @@ import { useRegionLatestDates } from '@/services/hooks';
 import DatePagination from '../DatePagination';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
-const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView = false, isFreeMode = false }) => {
+const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
+  showVideo,
+  setShowVideo,
+  setShowMap,
+  showMap = false,
+  isMapView = false,
+  isFreeMode = false,
+}) => {
   const { disableVideoCreation } = useDateRange();
 
   const { updateQueryParamsAndNavigate, updateQueryParams } = useQueryParams();
@@ -30,7 +38,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
 
   const [copyButtonText, setCopyButtonText] = useState<string>(ProductMenubarText.SHARE);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [showVideo, setLocalShowVideo] = useState(false);
+  // const [showVideo, setLocalShowVideo] = useState(false);
   const { date: currentMetersDate, property, depth, region, deploymentPlot } = useCurrentMetersStore();
   const [_, setSearchParams] = useSearchParams();
   const {
@@ -50,6 +58,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
   );
   const shouldDisableOption =
     disableVideoCreation() ||
+    showMap ||
     isArgo ||
     isMapView ||
     isCurrentMeters ||
@@ -80,9 +89,16 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
     };
   }, []);
 
-  const handleToggle = (state: boolean) => {
-    setLocalShowVideo(state);
-    setShowVideo(state);
+  const handleToggleVideo = () => {
+    // setLocalShowVideo(state);
+    setShowVideo(!showVideo);
+  };
+
+  const handleToggleMap = () => {
+    setShowMap(!showMap);
+    if (showVideo) {
+      setShowVideo(!showVideo);
+    }
   };
 
   const handleReset = () => {
@@ -144,6 +160,19 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
 
   return (
     <div className="mb-2 w-full bg-white p-2 md:rounded-md md:bg-transparent md:p-0">
+      <div className="my-2 flex h-11 items-center justify-center md:hidden">
+        <Button
+          onClick={handleToggleMap}
+          borderRadius="extraSmall"
+          className={`flex-center h-full w-full !border-1 border-imos-calypso-blue/50 !px-2 ${showMap ? '' : 'bg-white'}`}
+          aria-label="Toggle region selection"
+        >
+          <img src={MapIcon} alt="map icon" className="h-6 w-6 flex-shrink-0" />
+          <p className={`ml-2 text-base font-medium ${showMap ? 'text-imos-blue' : 'text-imos-dark-grey'}`}>
+            Select Region
+          </p>
+        </Button>
+      </div>
       <div className="flex w-full flex-wrap items-center gap-2 font-sans font-medium text-imos-dark-grey md:mb-2 md:gap-3">
         <div className="flex h-11 grow basis-[calc(100%-4rem)] items-center justify-between rounded-md border border-imos-calypso-blue/50 bg-white md:grow md:basis-auto md:border-none">
           {isCurrentMeters ? (
@@ -173,7 +202,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
         </Button>
         <div className="order-1 box-border h-11 flex-1 rounded-md border-none md:order-none md:flex-initial md:grow">
           <Button
-            onClick={() => handleToggle(!showVideo)}
+            onClick={handleToggleVideo}
             disabled={shouldDisableOption}
             borderRadius="extraSmall"
             className={`flex-center h-full w-full border-none !px-2 md:p-3 md:px-5 ${showVideo ? '' : 'bg-white'}`}
