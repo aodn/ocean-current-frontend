@@ -3,6 +3,7 @@ import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import checker from 'vite-plugin-checker';
+import svgr from 'vite-plugin-svgr';
 
 // https://vitejs.dev/config/
 export default ({ mode }) => {
@@ -14,6 +15,23 @@ export default ({ mode }) => {
   return defineConfig({
     plugins: [
       react(),
+      svgr({
+        svgrOptions: {
+          ref: true,
+          svgo: true,
+          svgoConfig: {
+            plugins: [
+              {
+                name: 'prefixIds',
+                params: {
+                  prefixIds: true,
+                  prefixClassNames: false,
+                },
+              },
+            ],
+          },
+        },
+      }),
       !process.env.VITEST
         ? checker({
             typescript: true,

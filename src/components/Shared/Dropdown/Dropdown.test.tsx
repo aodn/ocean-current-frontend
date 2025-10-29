@@ -5,8 +5,8 @@ import Dropdown from './Dropdown';
 import { DropdownElement } from './types/dropdown.types';
 
 const elements: DropdownElement<string>[] = [
-  { id: '1', label: 'Option 1', icon: 'icon-url-1' },
-  { id: '2', label: 'Option 2', icon: 'icon-url-2' },
+  { id: '1', label: 'Option 1' },
+  { id: '2', label: 'Option 2' },
 ];
 
 describe('Dropdown Component', () => {
