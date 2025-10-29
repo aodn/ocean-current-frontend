@@ -32,14 +32,13 @@ const MapSidebar: React.FC = () => {
 
   return (
     <div className="w-full overflow-hidden rounded bg-[#fff] p-4 shadow" data-testid="drop-down-menu">
-      {sidebarProductsNav.map(({ id, icon, label, Icon }) => (
+      {sidebarProductsNav.map(({ id, label, Icon }) => (
         <div
           key={id}
           aria-hidden="true"
           className={`mb-4 flex cursor-pointer items-center rounded-md border border-[#3A6F8F] p-3 duration-300 hover:border-[#52BDEC] hover:bg-imos-hover-blue hover:bg-opacity-20 ${id === productIdWithoutSubProduct ? 'border-[#52BDEC] bg-[#52BDEC80]' : 'bg-white'}`}
           onClick={() => handleProductChange(id)}
         >
-          {icon && <img className="mr-4 h-9 w-9" src={icon} alt={`${label} icon`} />}
           {Icon && <Icon className="mr-4 h-9 w-9" color="imos-grey" />}
           <span className="text-left text-base text-imos-dark-grey">{label}</span>
         </div>
