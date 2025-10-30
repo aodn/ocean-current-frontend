@@ -95,7 +95,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
   const handleToggleMap = () => {
     setShowMap(!showMap);
     if (showVideo) {
-      setShowVideo(!showVideo);
+      setShowVideo(false);
     }
   };
 
