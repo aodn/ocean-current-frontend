@@ -65,8 +65,8 @@ const NavbarBurgerMenu: React.FC = () => {
   };
 
   return (
-    <div>
-      <nav className="flex items-center justify-between px-6 py-6">
+    <div className="shadow-md">
+      <nav className="flex items-center justify-between px-4 py-2">
         <Link className="mr-auto" to={'/'}>
           <img className="h-12" src={logo} alt="IMOS logo navbar" />
         </Link>

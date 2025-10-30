@@ -233,7 +233,7 @@ const DataVisualisationLayout: React.FC = () => {
   }
 
   return (
-    <div className="relative w-full">
+    <div className="relative mx-auto mb-4 mt-4 w-full max-w-8xl px-4 md:mb-9">
       <div className="flex flex-col-reverse md:flex-row">
         <button
           onClick={toggleSidebar}
