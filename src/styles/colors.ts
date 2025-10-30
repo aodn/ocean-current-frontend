@@ -4,6 +4,7 @@ interface OCColor {
   primary3: string;
   primary4: string;
   primary5: string;
+  primary6: string;
   seaBlue: string;
   accentOrange: string;
   sand: string;
@@ -31,6 +32,7 @@ const color: OCColor = {
   primary3: '#0C161D',
   primary4: '#C5D8E7',
   primary5: '#E2ECF3',
+  primary6: '#F1F6F9',
   seaBlue: '#52BDEC',
   accentOrange: '#E36F1E',
   sand: '#D9D7BD',

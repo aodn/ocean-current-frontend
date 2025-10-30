@@ -1,27 +1,19 @@
-import OceanColourIcon from '@/assets/icons/products/grey-icons/ocean-colour-icon-grey.svg';
-import OceanColourWhiteIcon from '@/assets/icons/products/white-icons/ocean-colour-icon-white.svg';
-import AdjustedSeaLevelAnomalyIcon from '@/assets/icons/products/grey-icons/adjusted-sea-level-anomaly-icon-grey.svg';
-import AdjustedSeaLevelAnomalyWhiteIcon from '@/assets/icons/products/white-icons/adjusted-sea-level-anomaly-icon-white.svg';
-import MonthlyMeansIcon from '@/assets/icons/products/grey-icons/monthly-means-icon-grey.svg';
-import MonthlyMeansWhiteIcon from '@/assets/icons/products/white-icons/monthly-means-icon-white.svg';
-import SurfaceWavesIcon from '@/assets/icons/products/grey-icons/surface-waves-icon-grey.svg';
-import SurfaceWavesWhiteIcon from '@/assets/icons/products/white-icons/surface-waves-icon-white.svg';
-import FourHourSSTIcon from '@/assets/icons/products/grey-icons/4-hour-sst-icon-grey.svg';
-import FourHourSSTWhiteIcon from '@/assets/icons/products/white-icons/4-hour-sst-icon-white.svg';
-import SixHourSSTIcon from '@/assets/icons/products/grey-icons/6-day-sst-icon-grey.svg';
-import SixHourSSTWhiteIcon from '@/assets/icons/products/white-icons/6-day-sst-icon-white.svg';
-import ArgoIcon from '@/assets/icons/products/grey-icons/argo-icon-grey.svg';
-import ArgoWhiteIcon from '@/assets/icons/products/white-icons/argo-icon-white.svg';
-import TidalCurrentsIcon from '@/assets/icons/products/grey-icons/tidal-currents-icon-grey.svg';
-import TidalCurrentsWhiteIcon from '@/assets/icons/products/white-icons/tidal-currents-icon-white.svg';
-import CurrentMetersIcon from '@/assets/icons/products/grey-icons/current-meters-icon-grey.svg';
-import CurrentMetersWhiteIcon from '@/assets/icons/products/white-icons/current-meters-icon-white.svg';
-import SealCTDIcon from '@/assets/icons/products/grey-icons/seal-ctd-icon-grey.svg';
-import SealCTDWhiteIcon from '@/assets/icons/products/white-icons/seal-ctd-icon-white.svg';
-import ClimatologyIcon from '@/assets/icons/products/grey-icons/climatology-icon-grey.svg';
-import ClimatologyWhiteIcon from '@/assets/icons/products/white-icons/climatology-icon-white.svg';
-import EACMooringArrayIcon from '@/assets/icons/products/grey-icons/eac-mooring-array-icon-grey.svg';
-import EACMooringArrayWhiteIcon from '@/assets/icons/products/white-icons/eac-mooring-array-icon-white.svg';
+import {
+  OceanColourIcon,
+  AdjustedSeaLevelAnomalyIcon,
+  MonthlyMeansIcon,
+  SurfaceWavesIcon,
+  FourHourSSTIcon,
+  SixHourSSTIcon,
+  ArgoIcon,
+  TidalCurrentsIcon,
+  CurrentMetersIcon,
+  SealCTDIcon,
+  ClimatologyIcon,
+  EACMooringArrayIcon,
+  SelectedFourHourSSTIcon,
+  SelectedSixHourSSTIcon,
+} from '@/components/Shared/Icons';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import { RootProductID } from '@/types/product';
 
@@ -29,73 +21,64 @@ export const sidebarProductsNav: DropdownElement<RootProductID>[] = [
   {
     id: 'fourHourSst',
     label: 'Four-hour SST',
-    icon: FourHourSSTIcon,
-    selectedIcon: FourHourSSTWhiteIcon,
+    Icon: FourHourSSTIcon,
+    SelectedIcon: SelectedFourHourSSTIcon,
   },
   {
     id: 'sixDaySst',
     label: 'Daily SST (6-day composite)',
-    icon: SixHourSSTIcon,
-    selectedIcon: SixHourSSTWhiteIcon,
+    Icon: SixHourSSTIcon,
+    SelectedIcon: SelectedSixHourSSTIcon,
   },
   {
     id: 'oceanColour',
     label: 'Chlorophyll-a Concentration',
-    icon: OceanColourIcon,
-    selectedIcon: OceanColourWhiteIcon,
+    Icon: OceanColourIcon,
   },
   {
     id: 'adjustedSeaLevelAnomaly',
     label: 'Adjusted Sea Level Anomaly',
-    icon: AdjustedSeaLevelAnomalyIcon,
-    selectedIcon: AdjustedSeaLevelAnomalyWhiteIcon,
+    Icon: AdjustedSeaLevelAnomalyIcon,
   },
   {
     id: 'surfaceWaves',
     label: 'Surface Waves',
-    icon: SurfaceWavesIcon,
-    selectedIcon: SurfaceWavesWhiteIcon,
+    Icon: SurfaceWavesIcon,
   },
   {
     id: 'monthlyMeans',
     label: 'Monthly Means',
-    icon: MonthlyMeansIcon,
-    selectedIcon: MonthlyMeansWhiteIcon,
+    Icon: MonthlyMeansIcon,
   },
   {
     id: 'climatology',
     label: 'Climatology SST',
-    icon: ClimatologyIcon,
-    selectedIcon: ClimatologyWhiteIcon,
+    Icon: ClimatologyIcon,
   },
   {
     id: 'argo',
     label: 'Argo',
-    icon: ArgoIcon,
-    selectedIcon: ArgoWhiteIcon,
+    Icon: ArgoIcon,
   },
   {
     id: 'tidalCurrents',
     label: 'Tidal Currents',
-    icon: TidalCurrentsIcon,
-    selectedIcon: TidalCurrentsWhiteIcon,
+    Icon: TidalCurrentsIcon,
   },
   {
     id: 'currentMeters',
     label: 'Current Meters',
-    icon: CurrentMetersIcon,
-    selectedIcon: CurrentMetersWhiteIcon,
+    Icon: CurrentMetersIcon,
   },
   {
     id: 'sealCtd',
     label: 'SealCTD',
-    icon: SealCTDIcon,
-    selectedIcon: SealCTDWhiteIcon,
+    Icon: SealCTDIcon,
   },
+
   {
     id: 'EACMooringArray',
     label: 'EAC Mooring Array',
-    icon: EACMooringArrayIcon,
-    selectedIcon: EACMooringArrayWhiteIcon,
+    Icon: EACMooringArrayIcon,
   },
 ];

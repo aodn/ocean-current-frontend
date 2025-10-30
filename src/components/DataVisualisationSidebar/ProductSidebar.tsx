@@ -96,12 +96,13 @@ const ProductSideBar: React.FC = () => {
   };
 
   return (
-    <div className="rounded-md bg-white">
-      <ProductDropdown mainProductKey={mainProduct.key} />
+    <div className="mt-2 rounded-none bg-white md:mt-0 md:rounded-md">
+      <div className="hidden md:block">
+        <ProductDropdown mainProductKey={mainProduct.key} />
+      </div>
+      <div className="hidden md:block">{shouldRenderMiniMap && <MiniMap />}</div>
 
-      {shouldRenderMiniMap && <MiniMap />}
-
-      <div className="hidden md:block [&>*:last-child]:border-b-0 [&>*]:border-b-2 [&>*]:border-imos-light-grey">
+      <div className="[&>*:last-child]:border-b-0 [&>*]:border-b-2 [&>*]:border-imos-light-grey">
         <ProductSummary productInfo={productInfo} />
 
         {subProduct && subProducts.length > 0 && (

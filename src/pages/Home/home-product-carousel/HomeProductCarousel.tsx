@@ -56,18 +56,15 @@ const HomeProductCarousel: React.FC = () => {
         <div
           data-testid="carousel-container"
           className="flex gap-2 transition-transform duration-300 ease-in-out md:gap-4"
-          style={{
-            transform: `translateX(${translateX}px)`,
-            width: `${totalWidth}px`,
-          }}
+          style={{ transform: `translateX(${translateX}px)`, width: `${totalWidth}px` }}
         >
-          {productCarouselData.map(({ id, url, blueIcon, description, title }) => (
+          {productCarouselData.map(({ id, url, Icon, title }) => (
             <div key={id} className="mt-2 w-24 flex-shrink-0 md:w-32">
               <Link
                 to={url}
                 className="flex h-24 flex-col items-center justify-center rounded-xl bg-imos-light-blue p-4 transition duration-300 ease-in-out hover:border-[3px] hover:border-imos-deep-blue hover:bg-white md:h-32"
               >
-                <img src={blueIcon} alt={description} className="h-full w-full" />
+                <Icon className="h-full w-full" color="imos-deep-blue" />
               </Link>
               <div className="p-2 text-center font-poppins text-sm font-medium text-imos-text-grey md:text-base">
                 {title}

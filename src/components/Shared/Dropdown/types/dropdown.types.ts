@@ -1,8 +1,10 @@
+import { IconProps } from '../../Icons';
+
 export interface DropdownElement<T> {
   label: string;
   id: T;
-  icon?: string;
-  selectedIcon?: string;
+  Icon?: React.FC<IconProps>;
+  SelectedIcon?: React.FC<IconProps>;
   isLoading?: boolean;
   disabled?: boolean;
 }

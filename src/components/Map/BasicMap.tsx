@@ -49,14 +49,11 @@ const BasicMap: React.FC<BasicMapProps> = ({
   const shouldShowCursorLocationPanel = showCursorLocationPanel && !isMobile && cursorLngLat?.lng && cursorLngLat?.lat;
 
   useEffect(() => {
+    resetCurrentMetersStore();
     if (isMobile) {
       patchMapViewState(initialMobileMapViewState.mapViewState);
     }
   }, [isMobile]);
-
-  useEffect(() => {
-    resetCurrentMetersStore();
-  }, []);
 
   const handleMove = useCallback(({ viewState }: ViewStateChangeEvent) => {
     setMapViewState(viewState);
@@ -101,6 +98,8 @@ const BasicMap: React.FC<BasicMapProps> = ({
       data-testid={id}
       mapboxAccessToken={mapConfig.accessToken}
       {...useMapViewState}
+      bearing={0}
+      pitch={0}
       cursor={cursor}
       onMove={handleMove}
       onZoom={handleZoom}
@@ -113,7 +112,6 @@ const BasicMap: React.FC<BasicMapProps> = ({
       attributionControl={false}
       interactiveLayerIds={interactiveIds}
       dragRotate={false}
-      touchZoomRotate={false}
       touchPitch={false}
       pitchWithRotate={false}
     >

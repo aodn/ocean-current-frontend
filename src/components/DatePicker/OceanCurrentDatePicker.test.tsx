@@ -14,7 +14,6 @@ const mockProps: OceanCurrentDatePickerProps = {
   goToPrevious: vi.fn(),
   goToNext: vi.fn(),
   onChange: vi.fn(),
-  isMobile: false,
   canGoPrevious: true,
   canGoNext: true,
   isDatePickerDisabled: false,

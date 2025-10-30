@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { useDateList, useDateRange, useQueryParams, useArgoProductValidQueryParams } from '@/hooks';
-import { Dropdown, ToggleButton, Button } from '@/components/Shared';
-import VideoIcon from '@/assets/icons/video-icon.svg';
+import { Dropdown, Button } from '@/components/Shared';
 import { ProductMenubarText } from '@/constants/textConstant';
+import VideoIcon from '@/assets/icons/video-icon.svg';
 import ShareIcon from '@/assets/icons/share-icon.svg';
 import ResetIcon from '@/assets/icons/reset-icon.svg';
+import MapIcon from '@/assets/icons/map-icon.svg';
 import VideoCreation from '@/components/VideoCreation';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import useCurrentMetersStore, {
@@ -22,7 +23,14 @@ import { useRegionLatestDates } from '@/services/hooks';
 import DatePagination from '../DatePagination';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
-const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView = false, isFreeMode = false }) => {
+const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
+  showVideo,
+  setShowVideo,
+  setShowMap,
+  showMap = false,
+  isMapView = false,
+  isFreeMode = false,
+}) => {
   const { disableVideoCreation } = useDateRange();
 
   const { updateQueryParamsAndNavigate, updateQueryParams } = useQueryParams();
@@ -30,11 +38,17 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
 
   const [copyButtonText, setCopyButtonText] = useState<string>(ProductMenubarText.SHARE);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [showVideo, setLocalShowVideo] = useState(false);
   const { date: currentMetersDate, property, depth, region, deploymentPlot } = useCurrentMetersStore();
   const [_, setSearchParams] = useSearchParams();
-  const { isArgo, isCurrentMeters, isSurfaceWavesBuoyTimeseries, isTidalCurrents, isSealCtd, isSealCtdTags } =
-    useProductCheck();
+  const {
+    isArgo,
+    isCurrentMeters,
+    isSurfaceWavesBuoyTimeseries,
+    isTidalCurrents,
+    isSealCtd,
+    isSealCtdTags,
+    isClimatology,
+  } = useProductCheck();
   const { isArgoValid } = useArgoProductValidQueryParams();
   const productId = useProductStore((state) => state.productParams.productId);
   const { data: latestArgoLocationsData, isLoading: isLatestArgoLocationsDataLoading } = useRegionLatestDates(
@@ -43,6 +57,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
   );
   const shouldDisableOption =
     disableVideoCreation() ||
+    showMap ||
     isArgo ||
     isMapView ||
     isCurrentMeters ||
@@ -73,9 +88,15 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
     };
   }, []);
 
-  const handleToggle = (state: boolean) => {
-    setLocalShowVideo(state);
-    setShowVideo(state);
+  const handleToggleVideo = () => {
+    setShowVideo(!showVideo);
+  };
+
+  const handleToggleMap = () => {
+    setShowMap(!showMap);
+    if (showVideo) {
+      setShowVideo(false);
+    }
   };
 
   const handleReset = () => {
@@ -85,6 +106,17 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
     }
 
     const latestDate = dateList?.[dateList.length - 1]?.date;
+
+    if (isClimatology) {
+      const currentMonth = new Date().getMonth() + 1;
+      const climatologyDate =
+        dateList.find((dateItem) => {
+          const dateMonth = new Date(dateItem.date).getMonth() + 1;
+          return dateMonth === currentMonth;
+        })?.date || latestDate;
+
+      return updateQueryParams({ date: climatologyDate });
+    }
 
     if (isArgo) {
       if (isArgoValid) {
@@ -125,9 +157,22 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
   ]);
 
   return (
-    <div className="mb-2 rounded-md">
-      <div className="mb-2 flex items-center justify-between gap-3 font-sans font-medium text-imos-dark-grey">
-        <div className="flex h-11 grow items-center justify-between rounded-md bg-white">
+    <div className="mb-2 w-full bg-white p-2 md:rounded-md md:bg-transparent md:p-0">
+      <div className="my-2 flex h-11 items-center justify-center md:hidden">
+        <Button
+          onClick={handleToggleMap}
+          borderRadius="extraSmall"
+          className={`flex-center h-full w-full !border-1 border-imos-calypso-blue/50 !px-2 ${showMap ? '' : 'bg-white'}`}
+          aria-label="Toggle region selection"
+        >
+          <img src={MapIcon} alt="map icon" className="h-6 w-6 flex-shrink-0" />
+          <p className={`ml-2 text-base font-medium ${showMap ? 'text-imos-blue' : 'text-imos-dark-grey'}`}>
+            {ProductMenubarText.SELECT_REGION}
+          </p>
+        </Button>
+      </div>
+      <div className="flex w-full flex-wrap items-center gap-2 font-sans font-medium text-imos-dark-grey md:mb-2 md:gap-3">
+        <div className="flex h-11 grow basis-[calc(100%-4rem)] items-center justify-between rounded-md border border-imos-calypso-blue/50 bg-white md:grow md:basis-auto md:border-none">
           {isCurrentMeters ? (
             <Dropdown
               elements={
@@ -146,33 +191,49 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({ setShowVideo, isMapView
         <Button
           onClick={handleReset}
           aria-hidden
-          className="flex-center h-11 w-12 rounded-md border-none bg-white p-2"
+          className="flex-center h-11 w-12 shrink-0 rounded-md !border-1 border-imos-calypso-blue/50 bg-white !p-3 md:border-none md:!p-4"
           aria-label="Reset to latest date"
           disabled={resetBtnDisabled}
+          borderRadius="extraSmall"
         >
           <img src={ResetIcon} alt="reset icon" srcSet="" />
         </Button>
-        <div
-          className={`flex-center h-11 w-1/5 rounded-md bg-white p-3 ${shouldDisableOption && 'cursor-not-allowed opacity-50'}`}
-        >
-          <img src={VideoIcon} alt="video icon" />
-          <p className="mx-3">{ProductMenubarText.VIDEO}</p>
-          <ToggleButton disabled={shouldDisableOption} isOn={showVideo} onToggle={handleToggle} />
+        <div className="order-1 box-border h-11 flex-1 rounded-md border-none md:order-none md:flex-initial md:grow">
+          <Button
+            onClick={handleToggleVideo}
+            disabled={shouldDisableOption}
+            borderRadius="extraSmall"
+            className={`flex-center h-full w-full border-none !px-2 md:p-3 md:px-5 ${showVideo ? '' : 'bg-white'}`}
+            aria-label="Toggle video"
+          >
+            <img src={VideoIcon} alt="video icon" className="flex-shrink-0" />
+            <p
+              className={`ml-2 text-sm md:ml-3 md:w-20 md:text-base ${showVideo ? 'text-imos-blue' : 'text-imos-deep-blue md:text-imos-dark-grey'}`}
+            >
+              <span className="md:hidden">{ProductMenubarText.VIDEO}</span>
+              <span className="hidden md:inline">
+                {showVideo ? ProductMenubarText.EXIT_VIDEO : ProductMenubarText.VIDEO}
+              </span>
+            </p>
+          </Button>
         </div>
 
-        <div className="w-1/6">
+        <div className="order-2 box-border h-11 flex-1 rounded-md border-none px-1 md:order-none md:flex-initial md:grow">
+          <VideoCreation disabled={shouldDisableOption} />
+        </div>
+
+        <div className="order-3 box-border h-11 flex-1 rounded-md border-none md:order-none md:flex-initial md:grow">
           <Button
             onClick={handleCopyLink}
             aria-hidden
-            className="flex h-11 w-full flex-row items-center justify-between rounded-md border-none bg-white p-3"
+            borderRadius="extraSmall"
+            className="flex-center h-full w-full border-none bg-white !px-2 md:p-3 md:px-5"
           >
-            <img className="mr-6 h-6 w-6" src={ShareIcon} alt="share icon" />
-            <p className="flex-grow text-center text-imos-dark-grey">{copyButtonText}</p>
-            <div className="w-6" />
+            <img className="h-6 w-6 flex-shrink-0" src={ShareIcon} alt="share icon" />
+            <p className="ml-2 text-center text-sm text-imos-deep-blue md:ml-3 md:w-20 md:text-base md:text-imos-dark-grey">
+              {copyButtonText}
+            </p>
           </Button>
-        </div>
-        <div className="w-1/6">
-          <VideoCreation disabled={shouldDisableOption} />
         </div>
       </div>
     </div>
