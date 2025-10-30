@@ -16,6 +16,7 @@ import SelectedFourHourSST from '@/assets/icons/products/4-hour-sst-icon-selecte
 import SelectedSixHourSST from '@/assets/icons/products/6-day-sst-icon-selected.svg?react';
 import InfoSvg from '@/assets/icons/info-icon.svg?react';
 import ArrowWithTail from '@/assets/icons/arrow-with-tail.svg?react';
+import EmaiSvg from '@/assets/icons/email-icon.svg?react';
 import { withIcon } from './withIcon';
 
 export const OceanColourIcon = withIcon(OceanColour);
@@ -36,6 +37,7 @@ export const SelectedFourHourSSTIcon = withIcon(SelectedFourHourSST);
 export const SelectedSixHourSSTIcon = withIcon(SelectedSixHourSST);
 export const InfoIcon = withIcon(InfoSvg);
 export const ArrowWithTailIcon = withIcon(ArrowWithTail);
+export const EmailIcon = withIcon(EmaiSvg);
 
 export * from './withIcon';
 
