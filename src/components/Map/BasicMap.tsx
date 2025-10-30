@@ -49,14 +49,11 @@ const BasicMap: React.FC<BasicMapProps> = ({
   const shouldShowCursorLocationPanel = showCursorLocationPanel && !isMobile && cursorLngLat?.lng && cursorLngLat?.lat;
 
   useEffect(() => {
+    resetCurrentMetersStore();
     if (isMobile) {
       patchMapViewState(initialMobileMapViewState.mapViewState);
     }
   }, [isMobile]);
-
-  useEffect(() => {
-    resetCurrentMetersStore();
-  }, []);
 
   const handleMove = useCallback(({ viewState }: ViewStateChangeEvent) => {
     setMapViewState(viewState);

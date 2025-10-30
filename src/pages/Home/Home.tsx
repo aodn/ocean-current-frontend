@@ -14,9 +14,9 @@ const Home: React.FC = () => {
 
   return (
     <section className="flex w-full flex-col bg-white">
-      <section className="flex w-full max-w-8xl flex-col justify-center self-center sm:px-2 md:px-4 xl:mt-10 xl:flex-row xl:pr-8">
-        <section className="my-8 flex flex-col items-center justify-center xl:my-0 xl:p-12">
-          <h1 className="lg:text-7xl font-poppins text-[42px] font-medium text-imos-dark-grey md:text-6xl">
+      <section className="flex w-full max-w-8xl flex-col justify-center self-center px-4 md:px-4 xl:mt-10 xl:flex-row xl:pr-8">
+        <section className="my-4 flex flex-col items-center justify-center md:my-8 xl:my-0 xl:p-12">
+          <h1 className="lg:text-7xl font-poppins text-[42px] font-medium leading-none text-imos-dark-grey md:text-6xl md:leading-tight">
             {BrandingText.OC_PASCAL_CASE}
           </h1>
           <h2 className="lg:text-xl mt-2 px-4 text-center font-open-sans text-xs font-normal text-imos-text-grey sm:text-sm md:mt-4 md:text-lg xl:px-0">
@@ -29,13 +29,13 @@ const Home: React.FC = () => {
         </section>
       </section>
 
-      <section className="relative flex w-full max-w-8xl flex-row self-center overflow-hidden py-10">
+      <section className="relative flex w-full max-w-8xl flex-row self-center overflow-hidden py-4 md:py-10">
         <HomeProductCarousel />
       </section>
 
       <section className="w-full bg-imos-light-blue">
-        <div className="flex flex-col items-center justify-between py-14">
-          <h1 className="px-2 pb-8 text-center font-open-sans text-3xl font-medium text-imos-dark-grey md:text-4xl">
+        <div className="flex flex-col items-center justify-between py-4 md:py-10">
+          <h1 className="px-2 pb-4 text-center font-open-sans text-3xl font-medium text-imos-dark-grey md:mb-8 md:text-4xl">
             {`${BrandingText.OC_PASCAL_CASE} ${News.NEWS}`}
           </h1>
           <Button

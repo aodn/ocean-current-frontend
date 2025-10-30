@@ -65,13 +65,13 @@ const HomeMapCarousel: React.FC = () => {
         <BasicMap showCursorLocationPanel={false} style={{ borderRadius: '0.75rem 0.75rem 0 0', height: '100%' }} />
       </ErrorBoundary>
 
-      <div className="flex flex-col rounded-b-xl border border-solid border-imos-calypso-blue border-opacity-60">
-        <div className="flex min-h-36 flex-col px-10 py-10 md:py-6">
+      <div className="flex flex-col rounded-b-xl border border-solid border-imos-calypso-blue border-opacity-60 p-4 md:p-10">
+        <div className="mb-2 flex flex-col md:min-h-36 md:py-6">
           <h2 className="pb-2 font-poppins text-lg font-semibold text-imos-nav-text">{selectedProduct.title}</h2>
           <p className="font-open-sans text-base text-imos-dark-grey">{selectedProduct.description}</p>
         </div>
 
-        <div className="mb-10 flex justify-center gap-2">
+        <div className="flex justify-center gap-2">
           {productsData.map((_, index) => (
             <button
               key={index}

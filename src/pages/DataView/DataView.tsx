@@ -18,10 +18,12 @@ const DataView: React.FC = () => {
 
   return (
     <div className="relative h-full w-full">
-      <div className={`h-[500px] w-full md:hidden ${showMap ? 'block' : 'absolute -z-10 opacity-0'}`}>
-        <BasicMap />
-      </div>
-      <div className={`h-full w-full md:block ${showMap ? 'hidden' : 'block'}`}>
+      {showMap && (
+        <div className="h-[500px] w-full md:hidden">
+          <BasicMap />
+        </div>
+      )}
+      <div className={`h-full w-full ${showMap ? 'hidden md:block' : 'block'}`}>
         <ProductContent />
       </div>
     </div>
