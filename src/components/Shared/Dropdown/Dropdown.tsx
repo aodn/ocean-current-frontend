@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useOutsideClick } from '@/hooks';
-import ArrowIcon from '@/assets/icons/Arrow';
+import { ArrowIcon } from '@/components/Shared/Icons';
 import { DropdownElement, DropdownProps } from './types/dropdown.types';
 
 const Dropdown = <T,>({
@@ -95,8 +95,8 @@ const Dropdown = <T,>({
           <span className={header ? 'text-white' : ''}>{selectedElement ? selectedElement.label : 'Select Item'}</span>
         </div>
         <ArrowIcon
-          className={`transform transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''} ${header ? 'h-4 w-4' : 'h-3 w-3'} ms-3 text-white`}
-          stroke={`${header ? '#fff' : '#182C3A'}`}
+          className={`transform transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''} ${header ? 'h-4 w-4' : 'h-3 w-3'} ms-3`}
+          color={header ? 'imos-white' : 'imos-grey'}
         />
       </div>
       {isDropdownOpen && elementsWithLoading.length > 0 && (

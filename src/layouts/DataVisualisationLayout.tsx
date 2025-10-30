@@ -13,7 +13,7 @@ import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useProductFromUrl, useProductSearchParam, useSetProductId, useUrlType, useIsTabletOrDesktop } from '@/hooks';
 import { getRegionByRegionCode } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
-import ArrowIcon from '@/assets/icons/Arrow';
+import { ArrowIcon } from '@/components/Shared/Icons';
 import { RegionScope } from '@/constants/region';
 import { Loading } from '@/components/Shared';
 import ProductMenuBar from '@/components/ProductMenuBar/ProductMenuBar';
@@ -242,7 +242,7 @@ const DataVisualisationLayout: React.FC = () => {
         >
           <ArrowIcon
             className={`h-5 w-5 transition-transform duration-300 ${isSidebarVisible ? 'rotate-90' : 'h-28 rotate-[270deg]'}`}
-            stroke={'white'}
+            color="imos-white"
           />
         </button>
         <div className={`transition-all duration-300 ${isSidebarVisible ? 'md:w-1/3' : 'w-0 overflow-hidden'}`}>

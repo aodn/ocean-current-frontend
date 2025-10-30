@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router';
 import logo from '@/assets/images/imos-logo.png';
 import burgerMenu from '@/assets/icons/burger-menu-icon.svg';
@@ -35,6 +35,18 @@ const CollapsibleTrigger = ({ open, toggle, direction = 'down', toggleIconHidden
 const NavbarBurgerMenu: React.FC = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isMenuOpen]);
 
   const toggleMenu = (): void => {
     setMenuOpen(!isMenuOpen);

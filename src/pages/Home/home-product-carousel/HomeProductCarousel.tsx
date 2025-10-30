@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
-import ArrowIcon from '@/assets/icons/Arrow';
-import { color } from '@/styles/colors';
+import { ArrowIcon } from '@/components/Shared/Icons';
 import { useDeviceType } from '@/hooks';
 import { linksData } from '@/data/linksData';
 
@@ -49,7 +48,7 @@ const HomeProductCarousel: React.FC = () => {
         onClick={handlePrev}
         className={`${arrowStyle} rotate-90 ${currentIndex === 0 ? arrowDisabledStyle : ''}`}
       >
-        <ArrowIcon stroke={color.horizonBlue} strokeWidth={1} />
+        <ArrowIcon color="imos-sea-blue" />
       </button>
 
       <div className="relative w-full overflow-hidden">
@@ -78,7 +77,7 @@ const HomeProductCarousel: React.FC = () => {
         onClick={handleNext}
         className={`${arrowStyle} -rotate-90 ${currentIndex === productCarouselData.length - itemsPerRow ? arrowDisabledStyle : ''}`}
       >
-        <ArrowIcon stroke={color.horizonBlue} strokeWidth={1} />
+        <ArrowIcon color="imos-sea-blue" />
       </button>
     </>
   );
