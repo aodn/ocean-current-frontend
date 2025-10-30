@@ -10,25 +10,23 @@ import { ArrowIcon } from '../Shared/Icons';
 const CollapsibleTrigger = ({ open, toggle, direction = 'down', toggleIconHidden = false, label }: TriggerArgs) => {
   const shouldRotate = direction === 'down' ? open : !open;
   return (
-    <div className="border-b bg-imos-pale-blue px-6 py-3">
+    <button
+      className="w-full border-b bg-imos-pale-blue px-6 py-3"
+      onClick={toggle}
+      aria-expanded={open}
+      aria-label={`${open ? 'Collapse' : 'Expand'} content`}
+    >
       <div className="flex items-center justify-between">
         <div>{label}</div>
         {!toggleIconHidden && (
-          <button
-            className="bg-transparent"
-            onClick={toggle}
-            aria-expanded={open}
-            aria-label={`${open ? 'Collapse' : 'Expand'} content`}
-          >
-            <ArrowIcon
-              color="imos-black"
-              size="sm"
-              className={`transition-transform duration-300 ease-in-out ${shouldRotate ? 'rotate-180' : ''}`}
-            />
-          </button>
+          <ArrowIcon
+            color="imos-black"
+            size="sm"
+            className={`transition-transform duration-300 ease-in-out ${shouldRotate ? 'rotate-180' : ''}`}
+          />
         )}
       </div>
-    </div>
+    </button>
   );
 };
 
