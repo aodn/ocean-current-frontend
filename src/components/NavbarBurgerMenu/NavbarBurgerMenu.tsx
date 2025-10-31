@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router';
 import logo from '@/assets/images/imos-logo.png';
 import burgerMenu from '@/assets/icons/burger-menu-icon.svg';
 import cross from '@/assets/icons/cross-icon.svg';
 import { linksData } from '@/data/linksData';
 import { LinkOrAnchor, CollapsibleComponent, TriggerArgs } from '@/components/Shared';
+import { useBodyScrollLock } from '@/hooks';
 import { ArrowIcon } from '../Shared/Icons';
 
 const CollapsibleTrigger = ({ open, toggle, direction = 'down', toggleIconHidden = false, label }: TriggerArgs) => {
@@ -33,18 +34,7 @@ const CollapsibleTrigger = ({ open, toggle, direction = 'down', toggleIconHidden
 const NavbarBurgerMenu: React.FC = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
-
-  useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [isMenuOpen]);
+  useBodyScrollLock(isMenuOpen);
 
   const toggleMenu = (): void => {
     setMenuOpen(!isMenuOpen);

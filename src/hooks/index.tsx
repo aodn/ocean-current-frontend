@@ -16,6 +16,7 @@ import { useToggle } from './useToggle/useToggle';
 import useMediaQuery from './useMediaQuery/useMediaQuery';
 
 export * from './useMediaQuery/useMediaQuery';
+export * from './useBodyScrollLock/useBodyScrollLock';
 
 export {
   useProductPathFromUrl as useProductFromUrl,
