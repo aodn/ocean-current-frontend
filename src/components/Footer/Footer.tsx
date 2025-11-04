@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from '@/assets/images/imos-logo.png';
-import EmailIcon from '@/assets/icons/EmailIcon.tsx';
 import { BrandingText, FooterText } from '@/constants/textConstant.ts';
+import { EmailIcon } from '../Shared/Icons';
 import { Button } from '../Shared/index.tsx';
 import {
   contactEmail,
@@ -68,7 +68,7 @@ const Footer: React.FC = () => {
                 className="w-fit border-none bg-imos-deeper-blue px-4 py-2 md:w-full"
               >
                 <div className="flex items-center justify-center gap-2 leading-8">
-                  <EmailIcon className="h-6 w-6" />
+                  <EmailIcon className="h-6 w-6" color="imos-white" />
                   <p className="text-base">{FooterText.CONTACT_US}</p>
                 </div>
               </Button>

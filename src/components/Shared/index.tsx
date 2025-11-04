@@ -10,3 +10,4 @@ import LinkOrAnchor from './LinkOrAnchor/LinkOrAnchor';
 export * from './Collapsible';
 
 export { Button, Dropdown, Slider, Loading, Popup, ToggleButton, TruncateText, LinkOrAnchor };
+export * from './Overlay/Overlay';

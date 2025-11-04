@@ -7,13 +7,12 @@ import { LinkItem, SectionLinks } from '@/types/navbar';
 import { BrandingText } from '@/constants/textConstant';
 import ArrowIcon from '@/assets/icons/arrow.svg';
 import { LinkOrAnchor } from '@/components/Shared';
+import { cn } from '@/utils/classname-util/cn';
 import NavbarMenu from './components/NavbarMenu';
 
-const Navbar: React.FC = () => {
+const Navbar = ({ className }: { className?: string }) => {
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
-  const [popoverPosition, setPopoverPosition] = useState<{
-    left: number;
-  } | null>(null);
+  const [popoverPosition, setPopoverPosition] = useState<{ left: number } | null>(null);
   const [menuItems] = useState<LinkItem[]>(linksData);
   const menuItemRefs = useRef<(HTMLElement | null)[]>([]);
 
@@ -50,7 +49,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div className="sticky top-0 z-50 w-full bg-white shadow-md transition-all duration-300">
+    <div className={cn('sticky top-0 z-50 w-full bg-white shadow-md transition-all duration-300', className)}>
       <nav className="mx-auto flex w-full max-w-8xl items-center justify-between p-3 px-10">
         <div className="flex h-14 items-center">
           <LinkOrAnchor className="mr-auto" to="https://imos.org.au/">

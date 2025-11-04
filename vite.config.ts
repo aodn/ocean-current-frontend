@@ -48,6 +48,11 @@ export default ({ mode }) => {
         '@': path.resolve(__dirname, './src'),
       },
     },
+    test: {
+      globals: true,
+      environment: 'jsdom',
+      setupFiles: './src/test/setup.ts',
+    },
     server: {
       port: Number(process.env.VITE_PORT),
       open: Boolean(process.env.VITE_OPEN_BROWSER),

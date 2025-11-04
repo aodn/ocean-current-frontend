@@ -8778,6 +8778,7 @@ __metadata:
     "@vitest/coverage-v8": "npm:^2.1.5"
     autoprefixer: "npm:^10.4.20"
     axios: "npm:^1.9.0"
+    clsx: "npm:^2.1.1"
     commitlint-config-gitmoji: "npm:^2.3.1"
     dayjs: "npm:^1.11.13"
     eslint: "npm:^8.57.1"

@@ -2,13 +2,12 @@ import React from 'react';
 import dayjs from 'dayjs';
 import ReactDatePicker from 'react-datepicker';
 import DownloadIcon from '@/assets/icons/download-icon.svg';
-import ArrowIcon from '@/assets/icons/Arrow';
+import { ArrowIcon } from '@/components/Shared/Icons';
 import cross from '@/assets/icons/cross-icon.svg';
 import calendarIcon from '@/assets/icons/calendar-icon.svg';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button, Dropdown } from '@/components/Shared';
 import { GeneralText, ProductMenubarText } from '@/constants/textConstant';
-import { color } from '@/styles/colors';
 import { UseVideoCreationReturn } from '@/hooks/useVideoCreation/types/useVideoCreation.types';
 import { VideoCreationUIProps } from '../types/videoCreationUI.types';
 
@@ -89,7 +88,6 @@ const VideoCreation: React.FC<VideoCreationUIProps> = ({
         </p>
         <ArrowIcon
           className={`hidden h-3 w-3 transform transition-transform duration-300 md:inline-block ${showGifOptions ? 'rotate-180' : ''}`}
-          stroke={color.primary1}
         />
       </div>
       {showGifOptions && (

@@ -1,25 +1,17 @@
 import React from 'react';
 import { Outlet } from 'react-router';
-import { Footer, Navbar, BurgerMenu } from '@/components';
+import { Footer, Navbar, NavbarMobile } from '@/components';
 
 const MainLayout: React.FC = () => {
   return (
     <div className="flex w-full flex-col bg-imos-light-blue font-open-sans md:px-0">
-      <div className="sticky top-0 z-50 w-full bg-white">
-        <div className="mx-auto w-full">
-          <div className="md:hidden">
-            <BurgerMenu />
-          </div>
-          <div className="hidden md:block">
-            <Navbar />
-          </div>
-        </div>
+      <NavbarMobile className="md:hidden" />
+      <Navbar className="mx-auto hidden w-full md:block" />
+
+      <div className="flex w-full grow justify-center md:px-0">
+        <Outlet />
       </div>
-      <div className="flex grow justify-center md:px-0">
-        <div className="w-full">
-          <Outlet />
-        </div>
-      </div>
+
       <Footer />
     </div>
   );
