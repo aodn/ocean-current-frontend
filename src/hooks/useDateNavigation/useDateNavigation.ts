@@ -185,8 +185,8 @@ export const useDateListNavigation = ({ dateFormat, availableDates, initialDate 
     const dateParam = searchParams.get('date');
 
     // No date parameter, use first available date or today
-    if (!dateParam) {
-      return dates.length > 0 ? dayjs(dates[0], dateFormat) : dayjs();
+    if (!dateParam || dateParam === '0000') {
+      return dates.length > 0 ? dayjs(dates.at(-1), dateFormat) : dayjs();
     }
 
     // Parse date parameter
@@ -279,7 +279,7 @@ export const useDateRangeNavigation = ({ dateFormat, dateRange }: UseDateRangeNa
     const dateParam = searchParams.get('date');
 
     // No date parameter, return today
-    if (!dateParam) {
+    if (!dateParam || dateParam === '0000') {
       return dayjs();
     }
 
