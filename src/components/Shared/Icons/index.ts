@@ -17,6 +17,8 @@ import SelectedSixHourSST from '@/assets/icons/products/6-day-sst-icon-selected.
 import InfoSvg from '@/assets/icons/info-icon.svg?react';
 import ArrowWithTail from '@/assets/icons/arrow-with-tail.svg?react';
 import EmaiSvg from '@/assets/icons/email-icon.svg?react';
+import burgerMenu from '@/assets/icons/burger-menu-icon.svg?react';
+import Cross from '@/assets/icons/cross-icon.svg?react';
 import { withIcon } from './withIcon';
 
 export const OceanColourIcon = withIcon(OceanColour);
@@ -38,6 +40,8 @@ export const SelectedSixHourSSTIcon = withIcon(SelectedSixHourSST);
 export const InfoIcon = withIcon(InfoSvg);
 export const ArrowWithTailIcon = withIcon(ArrowWithTail);
 export const EmailIcon = withIcon(EmaiSvg);
+export const BurgerMenuIcon = withIcon(burgerMenu);
+export const CrossIcon = withIcon(Cross);
 
 export * from './withIcon';
 

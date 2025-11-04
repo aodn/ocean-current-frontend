@@ -1,5 +1,6 @@
 import Footer from './Footer/Footer';
 import Navbar from './Navbar/Navbar';
-import BurgerMenu from './NavbarBurgerMenu/NavbarBurgerMenu';
+import NavbarBurgerMenu from './NavbarBurgerMenu/NavbarBurgerMenu';
 
-export { Footer, Navbar, BurgerMenu };
+export { Footer, Navbar, NavbarBurgerMenu };
+export * from './Navbar/NavbarMobile';
