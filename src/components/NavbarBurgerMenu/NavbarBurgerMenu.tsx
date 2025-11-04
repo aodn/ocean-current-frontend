@@ -39,7 +39,7 @@ const NavbarBurgerMenu = ({ closeMobileMenu }: { closeMobileMenu: () => void }) 
 
   return (
     <div>
-      <nav className="mt-20 w-full bg-transparent p-4">
+      <nav className="mt-20 w-full bg-transparent px-4">
         <div className="overflow-hidden rounded-lg bg-imos-cloud-tint shadow-sm">
           {linksData.map((item, index) => (
             <div key={item.title}>
