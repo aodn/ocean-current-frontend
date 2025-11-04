@@ -1,19 +1,22 @@
 import { Link } from 'react-router';
+import { useState, useCallback } from 'react';
 import logo from '@/assets/images/imos-logo.png';
 import { cn } from '@/utils/classname-util/cn';
 import { BrandingText } from '@/constants/textConstant';
 import { BurgerMenuIcon, CrossIcon } from '../Shared/Icons';
-import { LinkOrAnchor } from '../Shared';
+import { LinkOrAnchor, Overlay } from '../Shared';
+import NavbarBurgerMenu from '../NavbarBurgerMenu/NavbarBurgerMenu';
 
-export const NavbarMobile = ({
-  isMobileMenuOpen,
-  toggleMobileMenu,
-  className,
-}: {
-  isMobileMenuOpen: boolean;
-  toggleMobileMenu: () => void;
-  className?: string;
-}) => {
+export const NavbarMobile = ({ className }: { className?: string }) => {
+  const [isMobileMenuOpen, setMobieMenuOpen] = useState(false);
+
+  const toggleMobileMenu = (): void => {
+    setMobieMenuOpen((prev) => !prev);
+  };
+  const closeMobileMenu = useCallback((): void => {
+    setMobieMenuOpen(false);
+  }, []);
+
   return (
     <div className={cn('sticky top-0 z-50 w-full bg-white shadow-md', className)}>
       <nav className="flex items-center justify-between px-4 py-2">
@@ -37,6 +40,10 @@ export const NavbarMobile = ({
           {isMobileMenuOpen ? <CrossIcon size="xl" /> : <BurgerMenuIcon size="lg" />}
         </button>
       </nav>
+
+      <Overlay isOpen={isMobileMenuOpen}>
+        <NavbarBurgerMenu closeMobileMenu={closeMobileMenu} />
+      </Overlay>
     </div>
   );
 };
