@@ -15,7 +15,12 @@ export type CollapsibleComponentProps = {
   children: ReactNode;
   wrapperClassName?: string;
   direction?: 'down' | 'up';
+  /** Uncontrolled mode: initial open state (default: false) */
   defaultOpen?: boolean;
+  /** Controlled mode: current open state. When provided, component is controlled */
+  open?: boolean;
+  /** Controlled mode: callback when open state should change */
+  onOpenChange?: (open: boolean) => void;
   disable?: boolean;
   toggleIconHidden?: boolean;
   isWidthFiexed?: boolean;
@@ -28,12 +33,28 @@ export const CollapsibleComponent = ({
   wrapperClassName = '',
   direction = 'down',
   defaultOpen = false,
+  open: controlledOpen,
+  onOpenChange,
   disable = false,
   toggleIconHidden = false,
   isWidthFiexed = false,
 }: CollapsibleComponentProps) => {
   const isUpward = direction === 'up';
-  const { open, toggle } = useToggle(defaultOpen);
+  const { open: internalOpen, toggle: internalToggle } = useToggle(defaultOpen);
+
+  // Use controlled state if provided, otherwise use internal state
+  const isControlled = controlledOpen !== undefined;
+  const open = isControlled ? controlledOpen : internalOpen;
+
+  const toggle = () => {
+    if (isControlled) {
+      // In controlled mode, call the callback
+      onOpenChange?.(!open);
+    } else {
+      // In uncontrolled mode, use internal toggle
+      internalToggle();
+    }
+  };
 
   return (
     <div
