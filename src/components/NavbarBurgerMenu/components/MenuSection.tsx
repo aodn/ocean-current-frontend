@@ -18,20 +18,15 @@ export const MenuSection = ({ item, isLastItem, isOpen, onToggle, onLinkClick, i
   return (
     <div>
       <CollapsibleComponent
-        defaultOpen={isOpen}
-        key={`${item.title}-${isOpen}`}
+        open={isOpen}
+        onOpenChange={onToggle}
         disable={!hasLinks}
         toggleIconHidden={!hasLinks}
         wrapperClassName={`w-full border-imos-light-grey ${isLastItem ? '' : 'border-b-2'}`}
         trigger={({ toggle, open, direction, toggleIconHidden }: TriggerArgs) => (
           <CollapsibleTrigger
             open={open}
-            toggle={() => {
-              if (hasLinks) {
-                onToggle();
-                toggle();
-              }
-            }}
+            toggle={toggle}
             direction={direction}
             toggleIconHidden={toggleIconHidden}
             label={

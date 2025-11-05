@@ -18,7 +18,7 @@ export const useMenuAccordion = () => {
       location.pathname.split('/product')[1] || location.pathname.split('/map')[1] || location.pathname;
     const linkPathProduct = url.split('?')[0].split('/map')[1];
 
-    return processedCurrentPath.startsWith(linkPathProduct);
+    return !!linkPathProduct && processedCurrentPath.startsWith(linkPathProduct);
   };
 
   /**
@@ -42,7 +42,9 @@ export const useMenuAccordion = () => {
   /**
    * Check if a section is currently open
    */
-  const isSectionOpen = (title: string) => openSection === title;
+  const isSectionOpen = (title: string) => {
+    return openSection === title;
+  };
 
   return {
     isSectionOpen,
