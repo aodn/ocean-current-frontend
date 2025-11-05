@@ -28,10 +28,14 @@ const COLOR_MAP: Record<Color, string> = {
   'imos-deep-blue': 'text-imos-deep-blue',
 };
 
+/**
+ * NOTICE!!!!
+ * to make custom style works for svg, fill must be set to 'currentColor' in the svg file and strokeWidth must be removed in the svg file.
+ */
 export function withIcon(IconComponent: React.ComponentType<React.SVGProps<SVGSVGElement>>): React.FC<IconProps> {
   // eslint-disable-next-line react/display-name
   const WrappedIcon = forwardRef<SVGSVGElement, IconProps>(
-    ({ size = 'base', color = 'imos-grey', className, ...rest }, ref) => {
+    ({ size = 'base', color = 'imos-grey', className, strokeWidth = 2, ...rest }, ref) => {
       const uniqueId = useId().replace(/:/g, '_');
       const svgRef = useRef<SVGSVGElement>(null);
       const sizeClass = `${SIZE_MAP[size as IconSize]}`;
@@ -90,6 +94,7 @@ export function withIcon(IconComponent: React.ComponentType<React.SVGProps<SVGSV
             (svgRef as React.MutableRefObject<SVGSVGElement | null>).current = node;
           }}
           className={`${sizeClass} ${colorClass} ${className || ''}`}
+          strokeWidth={strokeWidth}
           {...rest}
         />
       );

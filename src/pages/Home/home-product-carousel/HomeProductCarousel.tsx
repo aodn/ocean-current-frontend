@@ -39,16 +39,15 @@ const HomeProductCarousel: React.FC = () => {
 
   const translateX = -(currentIndex * (itemWidth + gapWidth));
 
-  const arrowStyle = 'm-3 md:m-5 w-8 h-full mt-10 md:mt-14 bg-white';
   const arrowDisabledStyle = 'cursor-not-allowed opacity-20';
 
   return (
-    <>
+    <div className="flex w-full items-center gap-x-4">
       <button
         onClick={handlePrev}
-        className={`${arrowStyle} rotate-90 ${currentIndex === 0 ? arrowDisabledStyle : ''}`}
+        className={`-mt-16 rotate-90 bg-transparent ${currentIndex === 0 ? arrowDisabledStyle : ''}`}
       >
-        <ArrowIcon color="imos-sea-blue" />
+        <ArrowIcon color="imos-sea-blue" size="xl" strokeWidth={1.2} />
       </button>
 
       <div className="relative w-full overflow-hidden">
@@ -75,11 +74,11 @@ const HomeProductCarousel: React.FC = () => {
 
       <button
         onClick={handleNext}
-        className={`${arrowStyle} -rotate-90 ${currentIndex === productCarouselData.length - itemsPerRow ? arrowDisabledStyle : ''}`}
+        className={`-mt-16 -rotate-90 bg-transparent ${currentIndex === productCarouselData.length - itemsPerRow ? arrowDisabledStyle : ''}`}
       >
-        <ArrowIcon color="imos-sea-blue" />
+        <ArrowIcon color="imos-sea-blue" size="xl" strokeWidth={1.2} />
       </button>
-    </>
+    </div>
   );
 };
 
