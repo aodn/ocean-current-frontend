@@ -8,7 +8,6 @@ viewBox="0 0 10 6"
     stroke="currentColor"
     strokeLinecap="round"
     strokeLinejoin="round"
-    strokeWidth="2"
     d="m1 1 4 4 4-4"
 />
 </svg>
