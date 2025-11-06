@@ -253,7 +253,7 @@ const buildTidalCurrentsMapImageUrl = (
   if (region === 'Aust') return `${imageUrlConfig.imageBaseUrl}/tides/tidemapindex.gif`;
   const formattedDate = date.format(DateFormat.MINUTE);
   const path =
-    tidalCurrentsImageData?.find((item) => !!item.files.find((e) => e.name === `${formattedDate}.gif`))?.path || '';
+    tidalCurrentsImageData?.find((item) => item.files.some((e) => e.name === `${formattedDate}.gif`))?.path ?? '';
   // TODO: year needed to be determined https://github.com/aodn/backlog/issues/7428
   return `${imageUrlConfig.imageBaseUrl}/${path}/${formattedDate}.gif`;
 };
