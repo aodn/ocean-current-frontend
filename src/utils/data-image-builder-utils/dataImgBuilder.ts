@@ -6,6 +6,7 @@ import { ArgoDepths } from '@/constants/argo';
 import { DateFormat, OceanColourDateItem } from '@/types/date';
 import { AnyProductID, ProductID, RootProductID } from '@/types/product';
 import { apiConfig } from '@/configs/api';
+import { ImageListResponse } from '@/types/imageList';
 import { findLeafFlatProductById } from '../product-utils/product';
 
 type ProductVideoUrlBuilder = Partial<Record<RootProductID, string>> & {
@@ -102,7 +103,6 @@ const buildProductImageUrl = (
   // Determine the root product ID for base URL selection
   const rootProductId = product.parentId || productId;
   const remoteBaseUrl = getBaseUrlByProductId(rootProductId as RootProductID);
-
   const productUrl = {
     surfaceWaves: () => {
       const dayjsDate = dayjs(date);
@@ -245,16 +245,17 @@ const buildSurfaceWavesBuoyTimeseriesImageUrl = (buoyRegion: string, date: Dayjs
   return `${imageUrlConfig.imageS3BaseUrl}/WAVES_TS/${formattedBuoyLocation}/y${year}/m${month}/${formattedDate}_BuoyTS.png`;
 };
 
-const buildTidalCurrentsMapImageUrl = (region: string, subProduct: string, date: Dayjs): string => {
+const buildTidalCurrentsMapImageUrl = (
+  region: string,
+  date: Dayjs,
+  tidalCurrentsImageData?: ImageListResponse[],
+): string => {
   if (region === 'Aust') return `${imageUrlConfig.imageBaseUrl}/tides/tidemapindex.gif`;
-
-  const prodFolder = subProduct === 'tidalCurrents-spd' ? 'spd' : 'hv';
   const formattedDate = date.format(DateFormat.MINUTE);
-
+  const path =
+    tidalCurrentsImageData?.find((item) => !!item.files.find((e) => e.name === `${formattedDate}.gif`))?.path || '';
   // TODO: year needed to be determined https://github.com/aodn/backlog/issues/7428
-  const year = 2025;
-
-  return `${imageUrlConfig.imageBaseUrl}/tides/${region}_${prodFolder}/${year}/${formattedDate}.gif`;
+  return `${imageUrlConfig.imageBaseUrl}/${path}/${formattedDate}.gif`;
 };
 
 const buildTidalCurrentsTagFileUrl = (region: string, subProduct: string, date: Dayjs): string => {

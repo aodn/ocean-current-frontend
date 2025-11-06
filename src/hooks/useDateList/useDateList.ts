@@ -14,6 +14,7 @@ import { buildProductImageUrl } from '@/utils/data-image-builder-utils/dataImgBu
 import { RegionScope } from '@/constants/region';
 import { sharedQueryConfig } from '@/configs/query';
 import { useRegionLatestDates } from '@/services/hooks';
+import { removeDuplicatesByKey } from '@/utils/array-utils';
 import { useArgoProductValidQueryParams } from '../useArgoProductValidQueryParams/useArgoProductValidQueryParams';
 import { generateDateRange } from './mockData';
 
@@ -38,6 +39,11 @@ const processArgoDateList = (data: ArgoProfileCycle[]): DateItem[] => {
 
   return data.map((cycle: ArgoProfileCycle) => ({ date: cycle.date }));
 };
+
+const mergeFiles = (files: ImageListResponse[]) =>
+  files.reduce((p, c) => {
+    return [...p, ...c['files']];
+  }, [] as ImageFile[]);
 
 const processSealCtdDateList = (files: ImageFile[]): DateItem[] => {
   if (!files || files.length === 0) {
@@ -189,29 +195,27 @@ const useDateList = ({ productId, isFreeMode = false }: UseDateListOptions) => {
     if (isArgo) {
       dateList = processArgoDateList(data as ArgoProfileCycle[]);
     } else {
-      const files = data as ImageListResponse[];
-
       // Special case for ocean colour products that may have year folders
-      const isOceanColour = productId === 'oceanColour-chlA';
-
-      if (isOceanColour) {
+      if (productId === 'oceanColour-chlA') {
         // Process all groups to capture both regular and year-based files
-        dateList = processOceanColourFilesToDateList(files);
+        dateList = processOceanColourFilesToDateList(data as ImageListResponse[]);
       } else {
-        // Special case for tidalCurrents-sl and tidalCurrents-spd in KingSound region
-        // they have two folders on the server
-        const tidalCurrentsSpecialCase =
-          (productId === 'tidalCurrents-sl' || productId === 'tidalCurrents-spd') && region === 'KingSound';
-        let fileList = [];
-        if (tidalCurrentsSpecialCase) {
-          fileList = (files[1]?.files as ImageFile[]) || [];
-        } else {
-          fileList = (files[0]?.files as ImageFile[]) || [];
-        }
+        /**
+         * products comes here:
+         * 1. 4-hour-sst 2.daily-sst 3.adjusted-sea-level 4.surface-wave 5. tidal-currents 6. sealCtd 7. eac-mooring
+         *
+         * NOTICE!!!!!!!
+         * For tidal current with region = kingsound, it has data of 2011 which exists in data source. we can remove it
+         * if necessary in the future by filter it out from the fileList.
+         */
+        const allFiles = mergeFiles(data as ImageListResponse[]);
+        const fileList = removeDuplicatesByKey(allFiles, (file) => file.name);
 
-        dateList = shouldUseSealCtdProcessor(productId, fileList)
-          ? processSealCtdDateList(fileList)
-          : processFilesToDateList(fileList);
+        if (shouldUseSealCtdProcessor(productId, fileList)) {
+          dateList = processSealCtdDateList(fileList);
+        } else {
+          dateList = processFilesToDateList(fileList);
+        }
       }
     }
   }

@@ -77,11 +77,18 @@ export const useProductContentData = () => {
     return regionData.scope === RegionScope.Local ? pathValue?.local : pathValue?.state;
   }, [useProductId, regionData.scope]);
 
-  // Ocean colour data query
+  // Ocean colour and tidal currents data query
   const { data: oceanColourImageData } = useQuery({
     queryKey: ['dateList', useProductId, useRegionCode],
     queryFn: () => fetchImageListByProductIdAndRegion(useProductId, useRegionCode!),
     enabled: productChecks.isOceanColourChlA && Boolean(useRegionCode),
+    ...sharedQueryConfig,
+  });
+
+  const { data: tidalCurrentsImageData } = useQuery({
+    queryKey: ['dateList', useProductId, useRegionCode],
+    queryFn: () => fetchImageListByProductIdAndRegion(useProductId, useRegionCode!),
+    enabled: productChecks.isTidalCurrents && Boolean(useRegionCode),
     ...sharedQueryConfig,
   });
 
@@ -107,6 +114,7 @@ export const useProductContentData = () => {
     argoTagFilePath,
     // Ocean colour data
     oceanColourImageData,
+    tidalCurrentsImageData,
     // Other
     dateString,
   };

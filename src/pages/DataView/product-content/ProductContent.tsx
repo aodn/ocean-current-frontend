@@ -42,6 +42,7 @@ const ProductContent: React.FC = () => {
     regionData,
     argoTagFilePath,
     oceanColourImageData,
+    tidalCurrentsImageData,
     dateString,
   } = useProductContentData();
 
@@ -83,6 +84,7 @@ const ProductContent: React.FC = () => {
         buoyRegionUrlParam: urlParams.buoyRegion || undefined,
         subProductKey: subProduct?.key,
         oceanColourDateList,
+        tidalCurrentsImageData,
       });
     } catch (e) {
       if (e instanceof Error) {
@@ -94,14 +96,26 @@ const ProductContent: React.FC = () => {
     productChecks,
     useProductId,
     useDate,
-    regionData,
+    regionData.path,
+    regionData.scope,
+    regionData.targetPath,
     useRegionCode,
-    argoParams,
-    currentMetersParams,
-    hasSelectedParams,
-    urlParams,
+    argoParams.worldMeteorologicalOrgId,
+    argoParams.cycle,
+    argoParams.depth,
+    currentMetersParams.region,
+    currentMetersParams.date,
+    currentMetersParams.property,
+    currentMetersParams.depth,
+    hasSelectedParams.point,
+    hasSelectedParams.sealCtdTag,
+    hasSelectedParams.buoyRegion,
+    urlParams.point,
+    urlParams.sealCtdTag,
+    urlParams.buoyRegion,
     subProduct?.key,
     oceanColourDateList,
+    tidalCurrentsImageData,
   ]);
 
   // Build media URL (video or image)
