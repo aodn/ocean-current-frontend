@@ -20,6 +20,7 @@ import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOption
 import { CurrentMetersSubproductsKey, mooredInstrumentArrayPath } from '@/constants/currentMeters';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import { useRegionLatestDates } from '@/services/hooks';
+import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 import DatePagination from '../DatePagination';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
@@ -55,6 +56,8 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     productId,
     isArgo && !isArgoValid,
   );
+  const shouldRenderProductContent = useShowProductOverMap();
+
   const shouldDisableOption =
     disableVideoCreation() ||
     showMap ||
@@ -64,7 +67,8 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     isSurfaceWavesBuoyTimeseries ||
     isTidalCurrents ||
     (isSealCtd && productId !== 'sealCtd-sealTracks') ||
-    isSealCtdTags;
+    isSealCtdTags ||
+    !shouldRenderProductContent;
 
   const dateFormat = useProductDateFormat();
 
