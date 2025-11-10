@@ -180,14 +180,12 @@ const buildProductVideoUrl = (
   const remoteBaseUrl = getBaseUrlByProductId(rootProductId as RootProductID);
 
   // Use proxy URLs for development/cross-origin requests
-  const baseUrl =
-    productId === 'surfaceWaves-wave'
-      ? isProxyRequired
-        ? apiConfig.s3ProxyURL
-        : remoteBaseUrl
-      : isProxyRequired
-        ? apiConfig.ec2ProxyURL
-        : remoteBaseUrl;
+  const baseUrl = (() => {
+    if (!isProxyRequired) {
+      return remoteBaseUrl;
+    }
+    return productId === 'surfaceWaves-wave' ? apiConfig.s3ProxyURL : apiConfig.ec2ProxyURL;
+  })();
 
   const productUrl: ProductVideoUrlBuilder = {
     surfaceWaves: `${baseUrl}/WAVES/y${year}/m${month}/Au_wave_m${month}.mp4`,
