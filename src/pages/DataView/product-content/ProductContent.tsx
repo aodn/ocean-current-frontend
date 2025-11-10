@@ -126,6 +126,7 @@ const ProductContent: React.FC = () => {
       regionData.path ?? 'Au',
       regionData.targetPath,
       useDate.toString(),
+      true, // Use proxy for videos to avoid CORS issues on mobile/Safari
     );
     return showVideo ? videoUrl : imgUrl!;
   }, [chooseImg, showVideo, useProductId, regionData, useDate]);
@@ -189,10 +190,12 @@ const ProductContent: React.FC = () => {
       <div className="h-full bg-white">
         <video
           className="max-h-[80vh] w-full select-none object-contain"
-          src={buildMediaUrl()}
           controls
+          playsInline
+          preload="auto"
           onError={handleError}
         >
+          <source src={buildMediaUrl()} type="video/mp4" />
           <track default kind="captions" srcLang="en" />
           Your browser does not support the video tag.
         </video>
