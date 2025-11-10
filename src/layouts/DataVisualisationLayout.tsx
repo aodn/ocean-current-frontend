@@ -66,7 +66,6 @@ const DataVisualisationLayout: React.FC = () => {
 
   const { region: regionCodeFromUrl = 'Au', date } = useProductSearchParam();
   const previousDateRef = useRef<string | null>(null);
-  const previousRegionRef = useRef<string | null>(null);
   const previousClickCountRef = useRef<number>(0);
   const previousProductIdRef = useRef<string | null>(null);
 
@@ -222,17 +221,6 @@ const DataVisualisationLayout: React.FC = () => {
       setShowMap(false);
     }
   }, [isDesktopOrTablet, showMap]);
-
-  // Close map on mobile when region changes (after region selection and map animations complete)
-  useEffect(() => {
-    if (!isDesktopOrTablet && showMap && regionCodeFromUrl) {
-      // Only close map if region actually changed (not on initial mount)
-      if (previousRegionRef.current !== null && previousRegionRef.current !== regionCodeFromUrl) {
-        setShowMap(false);
-      }
-      previousRegionRef.current = regionCodeFromUrl;
-    }
-  }, [regionCodeFromUrl, isDesktopOrTablet, showMap]);
 
   // Close map on mobile when interactive layer is clicked (after animations complete)
   useEffect(() => {
