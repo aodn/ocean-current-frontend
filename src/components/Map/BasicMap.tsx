@@ -11,6 +11,7 @@ import { PRODUCTS_WITH_ARGO_DATA } from '@/configs/products/data-source';
 import MAP_STYLE from './data/map-style.basic-v8.json';
 import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer, CurrentMetersDeploymentPlotsLayer } from './layers';
 import { MouseCursorLocationPanel } from './panels';
+import MapAnimationCompleteHandler from './controls/MapAnimationCompleteHandler';
 import { BasicMapProps } from './types/map.types';
 
 const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
@@ -119,6 +120,9 @@ const BasicMap: React.FC<BasicMapProps> = ({
       {navigationControl && <NavigationControl position="top-right" />}
 
       {shouldShowCursorLocationPanel && <MouseCursorLocationPanel lat={cursorLngLat?.lat} lng={cursorLngLat?.lng} />}
+
+      {/* Control to handle actions after map animations complete */}
+      <MapAnimationCompleteHandler />
 
       {memoizedLayers.dataImageLayer}
       {!isArgo && memoizedLayers.regionPolygonLayer}

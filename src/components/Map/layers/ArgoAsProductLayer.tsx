@@ -6,7 +6,7 @@ import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { ArgoProfile } from '@/types/argo';
 import { useQueryParams, useDeviceType } from '@/hooks';
 import { getBoundsFromCoordsArray } from '@/utils/geo-utils/geo';
-import { getPropertyFromMapFeatures } from '../utils/mapUtils';
+import { getPropertyFromMapFeatures, waitForMapAnimationAsync } from '../utils';
 import useArgoData from '../hooks/useArgoData';
 
 interface ArgoAsProductLayerProps {
@@ -43,7 +43,7 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
   const selectedCircleRadius = isMobile ? 14 : 12;
 
   const handleMouseClick = useCallback(
-    (e: MapMouseEvent) => {
+    async (e: MapMouseEvent) => {
       if (!map) return;
 
       try {
@@ -57,6 +57,20 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
         if (selectedWorldMeteorologicalOrgId === clickedWorldMeteorologicalOrgId) {
           return;
         }
+
+        const clickedFeature = map
+          .queryRenderedFeatures(e.point, { layers: [ARGO_AS_PRODUCT_POINT_LAYER_ID] })
+          .find((f) => f.properties?.worldMeteorologicalOrgId === clickedWorldMeteorologicalOrgId);
+
+        if (clickedFeature && clickedFeature.geometry.type === 'Point') {
+          const coordinates = clickedFeature.geometry.coordinates as [number, number];
+          if (!isMiniMap) {
+            map.flyTo({ center: coordinates, duration: 800 });
+          }
+        }
+
+        await waitForMapAnimationAsync(map);
+
         const query = new URLSearchParams({
           wmoid: clickedWorldMeteorologicalOrgId,
           cycle,
