@@ -158,6 +158,7 @@ const buildProductVideoUrl = (
   regionCode: string,
   regionScope: RegionScope,
   date: string,
+  isProxyRequired: boolean = false,
 ): string => {
   const productData = findLeafFlatProductById(productId);
 
@@ -174,7 +175,19 @@ const buildProductVideoUrl = (
   const month = dayjs(date).format(DateFormat.MONTH_ONLY);
   const quarter = `Q${Math.ceil((dayjs(date).month() + 1) / 3)}`;
 
-  const baseUrl = getBaseUrlByProductId(productId);
+  // Determine the root product ID for base URL selection
+  const rootProductId = productData.parentId || productId;
+  const remoteBaseUrl = getBaseUrlByProductId(rootProductId as RootProductID);
+
+  // Use proxy URLs for development/cross-origin requests
+  const baseUrl =
+    productId === 'surfaceWaves-wave'
+      ? isProxyRequired
+        ? apiConfig.s3ProxyURL
+        : remoteBaseUrl
+      : isProxyRequired
+        ? apiConfig.ec2ProxyURL
+        : remoteBaseUrl;
 
   const productUrl: ProductVideoUrlBuilder = {
     surfaceWaves: `${baseUrl}/WAVES/y${year}/m${month}/Au_wave_m${month}.mp4`,
