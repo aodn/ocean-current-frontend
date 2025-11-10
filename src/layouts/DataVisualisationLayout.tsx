@@ -47,7 +47,7 @@ const DataVisualisationLayout: React.FC = () => {
   const productId = useProductStore((state) => state.productParams.productId);
   const regionScope = useProductStore((state) => state.productParams.regionScope);
   const shouldShowProductOverMap = useShowProductOverMap();
-  const interactiveLayerClickCount = useMapStore((state) => state.interactiveLayerClickCount);
+  const interactiveLayerClickTimestamp = useMapStore((state) => state.interactiveLayerClickTimestamp);
   const toggleSidebar = () => setSidebarVisible((prev) => !prev);
 
   const urlType = useUrlType();
@@ -66,7 +66,7 @@ const DataVisualisationLayout: React.FC = () => {
 
   const { region: regionCodeFromUrl = 'Au', date } = useProductSearchParam();
   const previousDateRef = useRef<string | null>(null);
-  const previousClickCountRef = useRef<number>(0);
+  const previousClickTimestampRef = useRef<number>(0);
   const previousProductIdRef = useRef<string | null>(null);
 
   const parseeDateWithFormat = useCallback(
@@ -224,11 +224,11 @@ const DataVisualisationLayout: React.FC = () => {
 
   // Close map on mobile when interactive layer is clicked (after animations complete)
   useEffect(() => {
-    if (!isDesktopOrTablet && showMap && interactiveLayerClickCount !== previousClickCountRef.current) {
-      previousClickCountRef.current = interactiveLayerClickCount;
+    if (!isDesktopOrTablet && showMap && interactiveLayerClickTimestamp !== previousClickTimestampRef.current) {
+      previousClickTimestampRef.current = interactiveLayerClickTimestamp;
       setShowMap(false);
     }
-  }, [interactiveLayerClickCount, isDesktopOrTablet, showMap]);
+  }, [interactiveLayerClickTimestamp, isDesktopOrTablet, showMap]);
 
   if (!productId) {
     return <Loading />;

@@ -6,7 +6,7 @@ import { State, Actions } from './map.types';
 const useMapStore = create<State & Actions>()(
   devtools((set) => ({
     ...initialMapViewState,
-    interactiveLayerClickCount: 0,
+    interactiveLayerClickTimestamp: 0,
     actions: {
       setMapViewState: (mapViewState) => {
         set((state) => ({ mapViewState: { ...state.mapViewState, ...mapViewState } }), false, 'setMapViewState');
@@ -40,12 +40,8 @@ const useMapStore = create<State & Actions>()(
           false,
           'updatePositionAndZoom',
         ),
-      notifyInteractiveLayerClick: () =>
-        set(
-          (state) => ({ interactiveLayerClickCount: state.interactiveLayerClickCount + 1 }),
-          false,
-          'notifyInteractiveLayerClick',
-        ),
+      updateInteractiveLayerClickTimestamp: () =>
+        set(() => ({ interactiveLayerClickTimestamp: Date.now() }), false, 'updateInteractiveLayerClickTimestamp'),
       reset: (isMiniMap = false) => {
         if (isMiniMap) {
           set((state) => ({ ...state, ...initialMiniMapViewState }), false, 'resetMapStore (mini map)');
@@ -65,7 +61,7 @@ export const {
   updateLatitude,
   updateLongitude,
   updatePosition,
-  notifyInteractiveLayerClick,
+  updateInteractiveLayerClickTimestamp,
   reset: resetMapStore,
 } = useMapStore.getState().actions;
 

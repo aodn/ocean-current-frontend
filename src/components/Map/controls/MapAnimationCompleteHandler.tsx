@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { MapMouseEvent, useMap } from 'react-map-gl/mapbox';
-import { notifyInteractiveLayerClick } from '@/stores/map-store/mapStore';
+import { updateInteractiveLayerClickTimestamp } from '@/stores/map-store/mapStore';
 import { mapboxLayerIds } from '@/constants/mapboxId';
 
 const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID, CURRENT_METERS_BOX_LAYER_ID } = mapboxLayerIds;
@@ -52,7 +52,7 @@ const MapAnimationCompleteHandler: React.FC<MapAnimationCompleteHandlerProps> = 
     const handleMoveEnd = () => {
       if (hasPendingAction.current) {
         hasPendingAction.current = false;
-        notifyInteractiveLayerClick();
+        updateInteractiveLayerClickTimestamp();
         if (onAnimationComplete) {
           onAnimationComplete();
         }
