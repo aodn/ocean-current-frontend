@@ -65,6 +65,7 @@ const DataVisualisationLayout: React.FC = () => {
   const { region: regionCodeFromUrl = 'Au', date } = useProductSearchParam();
   const previousDateRef = useRef<string | null>(null);
   const previousRegionRef = useRef<string | null>(null);
+  const previousProductIdRef = useRef<string | null>(null);
 
   const parseeDateWithFormat = useCallback(
     ({
@@ -190,7 +191,8 @@ const DataVisualisationLayout: React.FC = () => {
   useEffect(() => {
     if (!date || !productId || !regionScope) return;
 
-    if (previousDateRef.current === date) return;
+    //when date change or product id change, reset date, as date format is based on product.
+    if (previousDateRef.current === date && previousProductIdRef.current === productId) return;
 
     const currentDate = parseeDateWithFormat({
       dateString: date,
@@ -203,6 +205,7 @@ const DataVisualisationLayout: React.FC = () => {
     if (!currentDate || !currentDate.isValid()) return;
 
     previousDateRef.current = date;
+    previousProductIdRef.current = productId;
     setDate(currentDate);
   }, [date, productId, regionScope, shouldShowProductOverMap, parseeDateWithFormat, useDate]);
 

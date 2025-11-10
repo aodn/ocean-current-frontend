@@ -388,12 +388,19 @@ describe('buildCurrentMetersDataImageUrl', () => {
 describe('buildTidalCurrentsMapImageUrl', () => {
   it('should return the correct map image url for Tidal Currents', () => {
     // Arrange
-    const subProduct = 'tidalCurrents-sl';
     const date = dayjs('202502280000');
     const region = 'GOC';
+    const tidalCurrentsImageData = [
+      {
+        path: 'tides/GOC_hv/2025',
+        region: 'GOC',
+        productId: 'tides',
+        files: [{ name: '202502280000.gif' }],
+      },
+    ];
 
     // Act
-    const imageUrl = buildTidalCurrentsMapImageUrl(region, subProduct, date);
+    const imageUrl = buildTidalCurrentsMapImageUrl(region, date, tidalCurrentsImageData);
 
     // Assert
     expect(imageUrl).toBe(`${imageBaseUrl}/tides/GOC_hv/2025/202502280000.gif`);

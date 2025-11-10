@@ -18,6 +18,7 @@ import { OceanColourDateItem } from '@/types/date';
 import { RegionScope } from '@/constants/region';
 import { CurrentMetersDepth, CurrentMetersProperty, CurrentMetersRegion } from '@/constants/currentMeters';
 import { ProductID } from '@/types/product';
+import { ImageListResponse } from '@/types/imageList';
 
 interface BuildImageUrlParams {
   // Product checks
@@ -57,6 +58,7 @@ interface BuildImageUrlParams {
   subProductKey?: string;
   // Ocean colour data
   oceanColourDateList: OceanColourDateItem[];
+  tidalCurrentsImageData?: ImageListResponse[];
 }
 
 /**
@@ -90,8 +92,8 @@ export const buildImageUrl = (params: BuildImageUrlParams): string | undefined =
     selectedSealCtdTag,
     hasSelectedBuoyRegionFromUrl,
     buoyRegionUrlParam,
-    subProductKey,
     oceanColourDateList,
+    tidalCurrentsImageData,
   } = params;
 
   switch (true) {
@@ -108,7 +110,7 @@ export const buildImageUrl = (params: BuildImageUrlParams): string | undefined =
       return buildEACMooringArrayImageUrl(date);
 
     case isTidalCurrents && !hasSelectedPointFromUrl:
-      return buildTidalCurrentsMapImageUrl(useRegionCode ?? 'Au', subProductKey ?? 'tidalCurrents-spd', date);
+      return buildTidalCurrentsMapImageUrl(useRegionCode ?? 'Au', date, tidalCurrentsImageData);
 
     case isTidalCurrents && hasSelectedPointFromUrl && !!pointUrlParam:
       return buildTidalCurrentsDataImageUrl(pointUrlParam, date);
