@@ -25,6 +25,7 @@ import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date'
 import { DateFormat } from '@/types/date';
 import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 import { ProductID } from '@/types/product';
+import useMapStore from '@/stores/map-store/mapStore';
 
 type ParseeDateWithFormat = {
   dateString: string;
@@ -46,6 +47,7 @@ const DataVisualisationLayout: React.FC = () => {
   const productId = useProductStore((state) => state.productParams.productId);
   const regionScope = useProductStore((state) => state.productParams.regionScope);
   const shouldShowProductOverMap = useShowProductOverMap();
+  const interactiveLayerClickCount = useMapStore((state) => state.interactiveLayerClickCount);
   const toggleSidebar = () => setSidebarVisible((prev) => !prev);
 
   const urlType = useUrlType();
@@ -64,7 +66,7 @@ const DataVisualisationLayout: React.FC = () => {
 
   const { region: regionCodeFromUrl = 'Au', date } = useProductSearchParam();
   const previousDateRef = useRef<string | null>(null);
-  const previousRegionRef = useRef<string | null>(null);
+  const previousClickCountRef = useRef<number>(0);
   const previousProductIdRef = useRef<string | null>(null);
 
   const parseeDateWithFormat = useCallback(
@@ -220,16 +222,13 @@ const DataVisualisationLayout: React.FC = () => {
     }
   }, [isDesktopOrTablet, showMap]);
 
-  // Close map on mobile when region changes (after region selection)
+  // Close map on mobile when interactive layer is clicked (after animations complete)
   useEffect(() => {
-    if (!isDesktopOrTablet && showMap && regionCodeFromUrl) {
-      // Only close map if region actually changed (not on initial mount)
-      if (previousRegionRef.current !== null && previousRegionRef.current !== regionCodeFromUrl) {
-        setShowMap(false);
-      }
-      previousRegionRef.current = regionCodeFromUrl;
+    if (!isDesktopOrTablet && showMap && interactiveLayerClickCount !== previousClickCountRef.current) {
+      previousClickCountRef.current = interactiveLayerClickCount;
+      setShowMap(false);
     }
-  }, [regionCodeFromUrl, isDesktopOrTablet, showMap]);
+  }, [interactiveLayerClickCount, isDesktopOrTablet, showMap]);
 
   if (!productId) {
     return <Loading />;

@@ -17,7 +17,7 @@ import { useRegionLatestDates } from '@/services/hooks';
 import { RegionLatestDate } from '@/types/imageList';
 import { RegionScope } from '@/constants/region';
 import useRegionPolygons from '../hooks/useRegionPolygons';
-import { getPropertyFromMapFeatures } from '../utils/mapUtils';
+import { getPropertyFromMapFeatures, waitForMapAnimationAsync } from '../utils';
 
 interface RegionPolygonLayerProps {
   isMiniMap: boolean;
@@ -180,11 +180,6 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
         return;
       }
 
-      if (features.length > 0 && features[0]?.geometry?.type === 'Polygon') {
-        const regionBounds = convertGeoJsonCoordinatesToBBox(features[0].geometry.coordinates as GeoJsonPolygon);
-        mapFitBounds(regionBounds);
-      }
-
       const { code } = getPropertyFromMapFeatures<{
         name: string;
         code: string;
@@ -193,7 +188,14 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
       if (code) {
         const regionCode = code;
 
-        (async () => {
+        if (features.length > 0 && features[0]?.geometry?.type === 'Polygon') {
+          const regionBounds = convertGeoJsonCoordinatesToBBox(features[0].geometry.coordinates as GeoJsonPolygon);
+          mapFitBounds(regionBounds);
+        }
+
+        const navigateAfterAnimation = async () => {
+          await waitForMapAnimationAsync(map);
+
           let targetPath = `/product/${baseProductPath}`;
           let queryObject: Record<string, unknown> = {};
           let replace = false;
@@ -258,7 +260,9 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
           }
 
           updateQueryParamsAndNavigate(targetPath, queryObject, replace);
-        })();
+        };
+
+        navigateAfterAnimation();
       }
     },
     [

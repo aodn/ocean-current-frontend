@@ -8,7 +8,7 @@ import useCurrentMetersStore, { setDeploymentPlot } from '@/stores/current-meter
 import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
 import { SubProduct } from '@/types/product';
-import { getPropertyFromMapFeatures } from '../utils/mapUtils';
+import { getPropertyFromMapFeatures, waitForMapAnimationAsync } from '../utils';
 import getCurrentMetersDeploymentPlotsGeoJson from '../utils/getCurrentMetersDeploymentPlotsGeoJson';
 
 interface CurrentMetersDeploymentPlotsLayerProps {
@@ -37,7 +37,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLa
   const currentMetersMapPointsGeoJson = useMemo(() => getCurrentMetersDeploymentPlotsGeoJson(subProduct), [subProduct]);
 
   const handleMouseClick = useCallback(
-    (e: MapMouseEvent) => {
+    async (e: MapMouseEvent) => {
       if (!map) return;
 
       try {
@@ -53,6 +53,19 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLa
         if (selectedDeploymentPlot === title) {
           return;
         }
+
+        const clickedFeature = map
+          .queryRenderedFeatures(e.point, { layers: [CURRENT_METERS_BOX_LAYER_ID] })
+          .find((f) => f.properties?.title === title);
+
+        if (clickedFeature && clickedFeature.geometry.type === 'Point') {
+          const coordinates = clickedFeature.geometry.coordinates as [number, number];
+          if (!isMiniMap) {
+            map.flyTo({ center: coordinates, duration: 800 });
+          }
+        }
+
+        await waitForMapAnimationAsync(map);
 
         const query = new URLSearchParams({
           deploymentPlot: title,
