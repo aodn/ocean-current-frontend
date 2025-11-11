@@ -9,6 +9,7 @@ import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOption
 import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
 import { SubProduct } from '@/types/product';
 import { getPropertyFromMapFeatures, waitForMapAnimationAsync } from '../utils';
+import { shouldDeferToHigherPriorityLayer, hasFeatureAtPoint } from '../utils/layerPriority';
 import getCurrentMetersDeploymentPlotsGeoJson from '../utils/getCurrentMetersDeploymentPlotsGeoJson';
 
 interface CurrentMetersDeploymentPlotsLayerProps {
@@ -20,7 +21,7 @@ const circleRadius = 6;
 const hoverCircleRadius = 8;
 const selectedCircleRadius = 12;
 const { CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID } = mapboxSourceIds;
-const { CURRENT_METERS_BOX_LAYER_ID, CURRENT_METERS_SELECTED_BOX_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =
+const { CURRENT_METERS_PLOT_LAYER_ID, CURRENT_METERS_SELECTED_PLOT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID } =
   mapboxLayerIds;
 
 const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLayerProps> = ({
@@ -40,11 +41,21 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLa
     async (e: MapMouseEvent) => {
       if (!map) return;
 
+      // Check if a higher-priority layer should handle this click
+      if (shouldDeferToHigherPriorityLayer(map, e, CURRENT_METERS_PLOT_LAYER_ID)) {
+        return;
+      }
+
+      // Check if this layer has a feature at the click point
+      if (!hasFeatureAtPoint(map, e, CURRENT_METERS_PLOT_LAYER_ID)) {
+        return;
+      }
+
       try {
         const clickedPlot = getPropertyFromMapFeatures<CurrentMetersProfileProperties>(
           map,
           e,
-          CURRENT_METERS_BOX_LAYER_ID,
+          CURRENT_METERS_PLOT_LAYER_ID,
           ['title', 'region'],
         );
         const { title, region } = clickedPlot;
@@ -55,7 +66,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLa
         }
 
         const clickedFeature = map
-          .queryRenderedFeatures(e.point, { layers: [CURRENT_METERS_BOX_LAYER_ID] })
+          .queryRenderedFeatures(e.point, { layers: [CURRENT_METERS_PLOT_LAYER_ID] })
           .find((f) => f.properties?.title === title);
 
         if (clickedFeature && clickedFeature.geometry.type === 'Point') {
@@ -93,8 +104,13 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLa
     (e: MapMouseEvent) => {
       if (!map) return;
 
+      // Check if a higher-priority layer should handle this hover
+      if (shouldDeferToHigherPriorityLayer(map, e, CURRENT_METERS_PLOT_LAYER_ID)) {
+        return;
+      }
+
       const features = map.queryRenderedFeatures(e.point, {
-        layers: [CURRENT_METERS_BOX_LAYER_ID],
+        layers: [CURRENT_METERS_PLOT_LAYER_ID],
       });
 
       const isHoveredPlotFeature = features.length > 0 && features[0]?.id != null;
@@ -154,16 +170,16 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLa
 
     if (!eventAdded.current) {
       eventAdded.current = true;
-      map.on('click', [CURRENT_METERS_BOX_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID], handleMouseClick);
-      map.on('mousemove', CURRENT_METERS_BOX_LAYER_ID, handleMouseMove);
-      map.on('mouseleave', CURRENT_METERS_BOX_LAYER_ID, handleMouseLeave);
+      map.on('click', [CURRENT_METERS_PLOT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID], handleMouseClick);
+      map.on('mousemove', CURRENT_METERS_PLOT_LAYER_ID, handleMouseMove);
+      map.on('mouseleave', CURRENT_METERS_PLOT_LAYER_ID, handleMouseLeave);
     }
 
     return () => {
       if (map && eventAdded.current) {
-        map.off('click', [CURRENT_METERS_BOX_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID], handleMouseClick);
-        map.off('mousemove', CURRENT_METERS_BOX_LAYER_ID, handleMouseMove);
-        map.off('mouseleave', CURRENT_METERS_BOX_LAYER_ID, handleMouseLeave);
+        map.off('click', [CURRENT_METERS_PLOT_LAYER_ID, PRODUCT_REGION_BOX_LAYER_ID], handleMouseClick);
+        map.off('mousemove', CURRENT_METERS_PLOT_LAYER_ID, handleMouseMove);
+        map.off('mouseleave', CURRENT_METERS_PLOT_LAYER_ID, handleMouseLeave);
         eventAdded.current = false;
       }
     };
@@ -190,7 +206,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLa
   return (
     <Source type="geojson" data={currentMetersMapPointsGeoJson} id={CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID}>
       <Layer
-        id={CURRENT_METERS_SELECTED_BOX_LAYER_ID}
+        id={CURRENT_METERS_SELECTED_PLOT_LAYER_ID}
         type="circle"
         source={CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID}
         paint={{
@@ -203,7 +219,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLa
         filter={['==', 'title', selectedDeploymentPlot]}
       />
       <Layer
-        id={CURRENT_METERS_BOX_LAYER_ID}
+        id={CURRENT_METERS_PLOT_LAYER_ID}
         type="circle"
         source={CURRENT_METERS_DEPLOYMENT_PLOTS_SOURCE_ID}
         paint={{
