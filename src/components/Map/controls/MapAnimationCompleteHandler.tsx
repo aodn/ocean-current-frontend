@@ -3,7 +3,7 @@ import { MapMouseEvent, useMap } from 'react-map-gl/mapbox';
 import { updateInteractiveLayerClickTimestamp } from '@/stores/map-store/mapStore';
 import { mapboxLayerIds } from '@/constants/mapboxId';
 
-const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID, CURRENT_METERS_BOX_LAYER_ID } = mapboxLayerIds;
+const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID, CURRENT_METERS_PLOT_LAYER_ID } = mapboxLayerIds;
 
 interface MapAnimationCompleteHandlerProps {
   /**
@@ -35,7 +35,7 @@ const MapAnimationCompleteHandler: React.FC<MapAnimationCompleteHandlerProps> = 
       const existingLayers = [
         PRODUCT_REGION_BOX_LAYER_ID,
         ARGO_AS_PRODUCT_POINT_LAYER_ID,
-        CURRENT_METERS_BOX_LAYER_ID,
+        CURRENT_METERS_PLOT_LAYER_ID,
       ].filter((layerId) => map.getLayer(layerId));
 
       if (existingLayers.length === 0) return;
