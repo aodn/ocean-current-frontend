@@ -7,6 +7,7 @@ import { ArgoProfile } from '@/types/argo';
 import { useQueryParams, useDeviceType } from '@/hooks';
 import { getBoundsFromCoordsArray } from '@/utils/geo-utils/geo';
 import { getPropertyFromMapFeatures, waitForMapAnimationAsync } from '../utils';
+import { shouldDeferToHigherPriorityLayer, hasFeatureAtPoint } from '../utils/layerPriority';
 import useArgoData from '../hooks/useArgoData';
 
 interface ArgoAsProductLayerProps {
@@ -45,6 +46,15 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
   const handleMouseClick = useCallback(
     async (e: MapMouseEvent) => {
       if (!map) return;
+
+      // Check if a higher-priority layer should handle this click
+      if (shouldDeferToHigherPriorityLayer(map, e, ARGO_AS_PRODUCT_POINT_LAYER_ID)) {
+        return;
+      }
+
+      if (!hasFeatureAtPoint(map, e, ARGO_AS_PRODUCT_POINT_LAYER_ID)) {
+        return;
+      }
 
       try {
         const clickedArgoParam = getPropertyFromMapFeatures<ArgoProfile>(map, e, ARGO_AS_PRODUCT_POINT_LAYER_ID, [
@@ -98,6 +108,11 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
   const handleMouseMove = useCallback(
     (e: MapMouseEvent) => {
       if (!map) return;
+
+      // Check if a higher-priority layer should handle this hover
+      if (shouldDeferToHigherPriorityLayer(map, e, ARGO_AS_PRODUCT_POINT_LAYER_ID)) {
+        return;
+      }
 
       const features = map.queryRenderedFeatures(e.point, {
         layers: [ARGO_AS_PRODUCT_POINT_LAYER_ID],

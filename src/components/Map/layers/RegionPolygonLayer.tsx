@@ -18,18 +18,15 @@ import { RegionLatestDate } from '@/types/imageList';
 import { RegionScope } from '@/constants/region';
 import useRegionPolygons from '../hooks/useRegionPolygons';
 import { getPropertyFromMapFeatures, waitForMapAnimationAsync } from '../utils';
+import { shouldDeferToHigherPriorityLayer, hasFeatureAtPoint, shouldBlockRegionHover } from '../utils/layerPriority';
 
 interface RegionPolygonLayerProps {
   isMiniMap: boolean;
 }
 
 const { PRODUCT_REGION_BOX_SOURCE_ID } = mapboxSourceIds;
-const {
-  PRODUCT_REGION_BOX_LAYER_ID,
-  PRODUCT_REGION_NAME_LABEL_LAYER_ID,
-  PRODUCT_REGION_SELECTED_BOX_LAYER_ID,
-  ARGO_AS_PRODUCT_POINT_LAYER_ID,
-} = mapboxLayerIds;
+const { PRODUCT_REGION_BOX_LAYER_ID, PRODUCT_REGION_NAME_LABEL_LAYER_ID, PRODUCT_REGION_SELECTED_BOX_LAYER_ID } =
+  mapboxLayerIds;
 
 const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) => {
   const baseProductPath = useProductPath();
@@ -126,12 +123,18 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
     (e: MapMouseEvent) => {
       if (!map) return;
 
-      const containsArgoLayer = map.getStyle()?.layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
-      const layersToCheck = containsArgoLayer
-        ? [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID]
-        : [PRODUCT_REGION_BOX_LAYER_ID];
+      // Check if region hover should be blocked (e.g., by Argo points)
+      // Some layers like Argo points should block region highlighting,
+      // while others like CurrentMeter plots allow dual hover effect.
+      if (shouldBlockRegionHover(map, e)) {
+        setHoveredRegion('');
+        setHoveredId(null);
+        return;
+      }
+
+      // Check and highlight the region underneath
       const features = map.queryRenderedFeatures(e.point, {
-        layers: layersToCheck,
+        layers: [PRODUCT_REGION_BOX_LAYER_ID],
       });
 
       const isRegionHovered =
@@ -140,16 +143,10 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
         features[0]?.geometry?.type === 'Polygon' &&
         features[0].id != null &&
         features[0].id != undefined;
+
       if (isRegionHovered) {
         setHoveredId(features[0].id!);
-      }
 
-      const checkIfArgoPoint = features.find((feature) => feature?.layer?.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
-
-      if (checkIfArgoPoint) {
-        setHoveredRegion('');
-        setHoveredId(null);
-      } else {
         const { name: regionName } = getPropertyFromMapFeatures<{
           name: string;
         }>(map, e, PRODUCT_REGION_BOX_LAYER_ID, ['name']);
@@ -157,6 +154,9 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
         if (regionName) {
           setHoveredRegion(regionName);
         }
+      } else {
+        setHoveredRegion('');
+        setHoveredId(null);
       }
     },
     [map],
@@ -167,18 +167,19 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
       if (!hoveredRegion || !map || isLoadingLatestDates) {
         return;
       }
-      const containsArgoLayer = map.getStyle()?.layers?.find((layer) => layer.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
-      const layersToCheck = containsArgoLayer
-        ? [PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID]
-        : [PRODUCT_REGION_BOX_LAYER_ID];
-      const features = map.queryRenderedFeatures(e.point, {
-        layers: layersToCheck,
-      });
 
-      const hasArgoPoint = features.find((feature) => feature?.layer?.id === ARGO_AS_PRODUCT_POINT_LAYER_ID);
-      if (hasArgoPoint) {
+      // Check if a higher-priority layer should handle this click
+      if (shouldDeferToHigherPriorityLayer(map, e, PRODUCT_REGION_BOX_LAYER_ID)) {
         return;
       }
+
+      if (!hasFeatureAtPoint(map, e, PRODUCT_REGION_BOX_LAYER_ID)) {
+        return;
+      }
+
+      const features = map.queryRenderedFeatures(e.point, {
+        layers: [PRODUCT_REGION_BOX_LAYER_ID],
+      });
 
       const { code } = getPropertyFromMapFeatures<{
         name: string;
