@@ -288,17 +288,14 @@ export const useDateRangeNavigation = ({ dateFormat, dateRange }: UseDateRangeNa
 
     // If parsing failed, return start date
     if (!parsedDate) {
-      return dayjs(dateRange.startDate);
+      return dayjs(dateRange.endDate);
     }
 
     // Ensure the date is within the valid range
     const startDate = dayjs(dateRange.startDate);
     const endDate = dayjs(dateRange.endDate);
 
-    if (parsedDate.isBefore(startDate)) {
-      return startDate;
-    }
-    if (parsedDate.isAfter(endDate)) {
+    if (parsedDate.isAfter(endDate) || parsedDate.isBefore(startDate)) {
       return endDate;
     }
 
