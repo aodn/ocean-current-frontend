@@ -10,13 +10,14 @@ import {
   CurrentMetersDepth,
   CurrentMetersProperty,
   CurrentMetersRegion,
-  mooredInstrumentArrayPath,
+  CurrentMetersSubproductsKey,
 } from '@/constants/currentMeters';
 import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { ProductID } from '@/types/product';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 import { useQueryParams } from '@/hooks';
+import { findLeafFlatProductById } from '@/utils/product-utils/product';
 import Legend from './components/Legend';
 import MiniMap from './components/MiniMap';
 import ProductDropdown from './components/ProductDropdown';
@@ -36,6 +37,9 @@ const ProductSideBar: React.FC = () => {
   const shouldRenderMiniMap = useShowProductOverMap();
 
   const shouldShowLegend = !isCurrentMeters;
+
+  const mooredInstrumentArrayPath =
+    findLeafFlatProductById(CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY)?.path || '';
 
   const latestDatesRegionQueries = useMultipleRegionLatestDates(
     subProducts.map((s) => s.key),

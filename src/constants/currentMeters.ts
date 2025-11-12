@@ -1,6 +1,6 @@
 import { ProductID } from '@/types/product';
 
-export const mooredInstrumentArrayPath = 'moored-instrument-array';
+// export const mooredInstrumentArrayPath = 'moored-instrument-array';
 
 const createCurrentMetersSubproductsKey = <T extends Record<string, ProductID>>(obj: T) => obj;
 

@@ -9,13 +9,15 @@ import { BoundingBox, GeoJsonPolygon } from '@/types/map';
 import { getRegionByRegionCode, getRegionTitleByRegionCode } from '@/utils/region-utils/region';
 import { convertGeoJsonCoordinatesToBBox } from '@/utils/geo-utils/geo';
 import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
-import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
 import { color } from '@/styles/colors';
 import { ProductPath } from '@/types/router';
 import useProductStore from '@/stores/product-store/productStore';
 import { useRegionLatestDates } from '@/services/hooks';
 import { RegionLatestDate } from '@/types/imageList';
 import { RegionScope } from '@/constants/region';
+import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
+import { API_LATEST_DATES_DISABLED_PRODUCTS } from '@/configs/products/data-source';
+import { mapAnimation } from '@/configs/map';
 import useRegionPolygons from '../hooks/useRegionPolygons';
 import { getPropertyFromMapFeatures, waitForMapAnimationAsync } from '../utils';
 import { shouldDeferToHigherPriorityLayer, hasFeatureAtPoint, shouldBlockRegionHover } from '../utils/layerPriority';
@@ -35,8 +37,14 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
   const productId = useProductStore((state) => state.productParams.productId);
   const selectedRegionTitle = getRegionTitleByRegionCode(regionCodeFromUrl, productId) || 'Au';
   const regionGeoJsonData = useRegionPolygons();
-  const isChla = baseProductPath.includes('ocean-colour');
-  const { data: regionLatestDates, isLoading: isLoadingLatestDates } = useRegionLatestDates(productId);
+  const { isOceanColour, isCurrentMetersMooredInstrumentArray } = useProductCheck();
+
+  const isApiLatestDatesDisabled = API_LATEST_DATES_DISABLED_PRODUCTS.includes(productId);
+
+  const { data: regionLatestDates, isLoading: isLoadingLatestDates } = useRegionLatestDates(
+    productId,
+    !isApiLatestDatesDisabled,
+  );
 
   const {
     property: currentMetersProperty,
@@ -77,7 +85,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
   const mapFitBounds = useCallback(
     (bounds: BoundingBox, padding: number = 50) => {
       if (map) {
-        map.fitBounds(bounds, { padding });
+        map.fitBounds(bounds, { padding, duration: mapAnimation.duration });
       }
     },
     [map],
@@ -201,7 +209,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
           let queryObject: Record<string, unknown> = {};
           let replace = false;
 
-          if (baseProductPath.includes(mooredInstrumentArrayPath)) {
+          if (isCurrentMetersMooredInstrumentArray) {
             queryObject = {
               date: currentMetersDate,
               region: regionCode,
@@ -283,6 +291,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
       dateFromUrl,
       getMonthlyMeansDate,
       validateImageExists,
+      isCurrentMetersMooredInstrumentArray,
     ],
   );
 
@@ -316,7 +325,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
           'fill-color': [
             'case',
             ['==', ['id'], hoveredId],
-            isChla ? 'rgba(58, 77, 143, 0.8)' : 'rgba(255,255,255,0.75)',
+            isOceanColour ? 'rgba(58, 77, 143, 0.8)' : 'rgba(255,255,255,0.75)',
             'rgba(19, 40, 113, 0)',
           ],
           'fill-outline-color': ['case', ['==', ['id'], hoveredId], 'rgba(58, 92, 143, 0.8)', 'rgba(47, 0, 179, 0.3)'],
@@ -342,7 +351,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
           'text-font': ['Open Sans Bold'],
         }}
         paint={{
-          'text-color': isChla ? '#fff' : '#000000',
+          'text-color': isOceanColour ? '#fff' : '#000000',
         }}
         filter={['==', 'name', hoveredRegion]}
       />
@@ -368,7 +377,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
           'text-font': ['Open Sans Bold'],
         }}
         paint={{
-          'text-color': isChla ? '#fff' : '#000000',
+          'text-color': isOceanColour ? '#fff' : '#000000',
         }}
         filter={['==', 'name', selectedRegionTitle]}
       />

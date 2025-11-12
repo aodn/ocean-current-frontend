@@ -6,8 +6,9 @@ import { useQueryParams } from '@/hooks';
 import { CurrentMetersProfileProperties } from '@/types/geo';
 import useCurrentMetersStore, { setDeploymentPlot } from '@/stores/current-meters-store/currentMeters';
 import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
-import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
+// import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
 import { SubProduct } from '@/types/product';
+import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
 import { getPropertyFromMapFeatures, waitForMapAnimationAsync } from '../utils';
 import { shouldDeferToHigherPriorityLayer, hasFeatureAtPoint } from '../utils/layerPriority';
 import getCurrentMetersDeploymentPlotsGeoJson from '../utils/getCurrentMetersDeploymentPlotsGeoJson';
@@ -34,7 +35,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLa
   const navigate = useNavigate();
   const eventAdded = useRef(false);
   const { updateQueryParams } = useQueryParams();
-
+  const defaultCurrentMetersSubproduct = DEFAULT_SUB_PRODUCT_ROUTES['currentMeters'];
   const currentMetersMapPointsGeoJson = useMemo(() => getCurrentMetersDeploymentPlotsGeoJson(subProduct), [subProduct]);
 
   const handleMouseClick = useCallback(
@@ -82,7 +83,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLa
           deploymentPlot: title,
           region,
         }).toString();
-        const clickedPlotPath = `/product/current-meters/${mooredInstrumentArrayPath}?${query}`;
+        const clickedPlotPath = `/product/current-meters/${defaultCurrentMetersSubproduct}?${query}`;
 
         if (!isMiniMap) {
           navigate(clickedPlotPath);
@@ -97,7 +98,7 @@ const CurrentMetersDeploymentPlotsLayer: React.FC<CurrentMetersDeploymentPlotsLa
         console.error(error);
       }
     },
-    [map, selectedDeploymentPlot, isMiniMap, navigate, updateQueryParams],
+    [map, selectedDeploymentPlot, isMiniMap, navigate, updateQueryParams, defaultCurrentMetersSubproduct],
   );
 
   const handleMouseMove = useCallback(
