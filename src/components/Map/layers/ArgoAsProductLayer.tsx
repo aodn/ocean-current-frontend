@@ -6,6 +6,7 @@ import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { ArgoProfile } from '@/types/argo';
 import { useQueryParams, useDeviceType } from '@/hooks';
 import { getBoundsFromCoordsArray } from '@/utils/geo-utils/geo';
+import { mapAnimation } from '@/configs/map';
 import { getPropertyFromMapFeatures, waitForMapAnimationAsync } from '../utils';
 import { shouldDeferToHigherPriorityLayer, hasFeatureAtPoint } from '../utils/layerPriority';
 import useArgoData from '../hooks/useArgoData';
@@ -75,7 +76,7 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
         if (clickedFeature && clickedFeature.geometry.type === 'Point') {
           const coordinates = clickedFeature.geometry.coordinates as [number, number];
           if (!isMiniMap) {
-            map.flyTo({ center: coordinates, duration: 800 });
+            map.flyTo({ center: coordinates, duration: mapAnimation.duration });
           }
         }
 
@@ -192,7 +193,7 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
 
     const mapFlyToPoint = (coordinates: [number, number]) => {
       if (map) {
-        map.flyTo({ center: coordinates, duration: 800 });
+        map.flyTo({ center: coordinates, duration: mapAnimation.duration });
       }
     };
 
@@ -213,6 +214,7 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
     const bounds = getBoundsFromCoordsArray(allCoordinates);
     map.fitBounds(bounds, {
       padding: 30,
+      duration: mapAnimation.duration,
     });
   }, [map, argoData, isMiniMap, isArgo]);
 
