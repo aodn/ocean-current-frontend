@@ -1,7 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Map, { MapMouseEvent, NavigationControl, ViewStateChangeEvent, StyleSpecification } from 'react-map-gl/mapbox';
 import { initialMobileMapViewState, mapConfig } from '@/configs/map';
-import useMapStore, { setMapViewState, patchMapViewState, updateZoom } from '@/stores/map-store/mapStore';
+import useMapStore, {
+  setMapViewState,
+  patchMapViewState,
+  updateZoom,
+  updateUserInteractionTimestamp,
+} from '@/stores/map-store/mapStore';
 import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useDeviceType } from '@/hooks';
@@ -56,6 +61,10 @@ const BasicMap: React.FC<BasicMapProps> = ({
     }
   }, [isMobile]);
 
+  const handleMoveStart = useCallback(() => {
+    updateUserInteractionTimestamp();
+  }, []);
+
   const handleMove = useCallback(({ viewState }: ViewStateChangeEvent) => {
     setMapViewState(viewState);
   }, []);
@@ -102,6 +111,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
       bearing={0}
       pitch={0}
       cursor={cursor}
+      onMoveStart={handleMoveStart}
       onMove={handleMove}
       onZoom={handleZoom}
       onMouseMove={handleMouseMove}
