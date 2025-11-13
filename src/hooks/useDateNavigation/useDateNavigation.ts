@@ -286,7 +286,7 @@ export const useDateRangeNavigation = ({ dateFormat, dateRange }: UseDateRangeNa
     // Parse the date using shared logic
     const parsedDate = parseBasicDate(dateParam, dateFormat);
 
-    // If parsing failed, return start date
+    // If parsing failed, return end date
     if (!parsedDate) {
       return dayjs(dateRange.endDate);
     }
