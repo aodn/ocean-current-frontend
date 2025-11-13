@@ -1,59 +1,54 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import useMapStore from '@/stores/map-store/mapStore';
 import { setProductId } from '@/stores/product-store/productStore';
 import BasicMap from '@/components/Map/BasicMap';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
-import { initialMapViewState } from '@/configs/map';
+import { cn } from '@/utils/classname-util/cn';
 import { ProductID } from '@/types/product';
 import { productsData } from './data';
 
+const CAROUSEL_INTERVAL_MS = 2500;
+
 const HomeMapCarousel: React.FC = () => {
   const [selectedProductIndex, setSelectedProductIndex] = useState<number>(0);
-  const selectedProduct = productsData[selectedProductIndex];
-
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const isMounted = useRef<boolean>(false);
 
-  const useMapZoom = useMapStore((state) => state.mapViewState.zoom);
-  const useMapLatitude = useMapStore((state) => state.mapViewState.latitude);
-  const useMapLongitude = useMapStore((state) => state.mapViewState.longitude);
+  const selectedProduct = productsData[selectedProductIndex];
+  const userInteractionTimestamp = useMapStore((state) => state.userInteractionTimestamp);
 
-  const stopInterval = () => {
+  const stopCarousel = useCallback(() => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
+      intervalRef.current = null;
     }
-  };
+  }, []);
 
-  const handleClick = (id: ProductID) => {
-    stopInterval();
-    const foundIndexById = productsData.findIndex((product) => product.id === id);
-    setSelectedProductIndex(foundIndexById);
-  };
+  const handleProductSelect = useCallback(
+    (id: ProductID) => {
+      stopCarousel();
+      const selectedIndex = productsData.findIndex((product) => product.id === id);
+      setSelectedProductIndex(selectedIndex);
+    },
+    [stopCarousel],
+  );
 
-  // stops the cycling if the map detects panning or zooming
-  useEffect(() => {
-    const { zoom, latitude, longitude } = initialMapViewState.mapViewState;
-    const hasChangedZoom = useMapZoom !== zoom;
-    const hasChangedLat = useMapLatitude !== latitude;
-    const hasChangedLong = useMapLongitude !== longitude;
-
-    if (isMounted.current || hasChangedZoom || hasChangedLat || hasChangedLong) {
-      stopInterval();
-    } else {
-      isMounted.current = true;
-    }
-  }, [useMapZoom, useMapLatitude, useMapLongitude]);
-
-  // cycle through list of products
   useEffect(() => {
     intervalRef.current = setInterval(() => {
       setSelectedProductIndex((prevIndex) => (prevIndex + 1) % productsData.length);
-    }, 2500);
+    }, CAROUSEL_INTERVAL_MS);
 
     return () => {
-      clearInterval(intervalRef.current!);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
     };
   }, []);
+
+  useEffect(() => {
+    if (userInteractionTimestamp > 0) {
+      stopCarousel();
+    }
+  }, [userInteractionTimestamp, stopCarousel]);
 
   useEffect(() => {
     setProductId(selectedProduct.id);
@@ -72,11 +67,15 @@ const HomeMapCarousel: React.FC = () => {
         </div>
 
         <div className="flex justify-center gap-2">
-          {productsData.map((_, index) => (
+          {productsData.map((product, index) => (
             <button
-              key={index}
-              className={`transition:background-color z-20 h-2.5 w-2.5 cursor-pointer rounded-full ${selectedProductIndex === index ? 'bg-imos-sea-blue' : 'bg-imos-light-grey'}`}
-              onClick={() => handleClick(productsData[index].id)}
+              key={product.id}
+              aria-label={`View ${product.title}`}
+              className={cn('z-20 h-2.5 w-2.5 cursor-pointer rounded-full transition-colors', {
+                'bg-imos-sea-blue': selectedProductIndex === index,
+                'bg-imos-light-grey': selectedProductIndex !== index,
+              })}
+              onClick={() => handleProductSelect(product.id)}
             />
           ))}
         </div>

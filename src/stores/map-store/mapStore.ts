@@ -7,6 +7,7 @@ const useMapStore = create<State & Actions>()(
   devtools((set) => ({
     ...initialMapViewState,
     interactiveLayerClickTimestamp: 0,
+    userInteractionTimestamp: 0,
     actions: {
       setMapViewState: (mapViewState) => {
         set((state) => ({ mapViewState: { ...state.mapViewState, ...mapViewState } }), false, 'setMapViewState');
@@ -42,6 +43,8 @@ const useMapStore = create<State & Actions>()(
         ),
       updateInteractiveLayerClickTimestamp: () =>
         set(() => ({ interactiveLayerClickTimestamp: Date.now() }), false, 'updateInteractiveLayerClickTimestamp'),
+      updateUserInteractionTimestamp: () =>
+        set(() => ({ userInteractionTimestamp: Date.now() }), false, 'updateUserInteractionTimestamp'),
       reset: (isMiniMap = false) => {
         if (isMiniMap) {
           set((state) => ({ ...state, ...initialMiniMapViewState }), false, 'resetMapStore (mini map)');
@@ -62,6 +65,7 @@ export const {
   updateLongitude,
   updatePosition,
   updateInteractiveLayerClickTimestamp,
+  updateUserInteractionTimestamp,
   reset: resetMapStore,
 } = useMapStore.getState().actions;
 
