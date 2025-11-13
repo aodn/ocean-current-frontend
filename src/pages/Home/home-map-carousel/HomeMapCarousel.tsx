@@ -3,6 +3,7 @@ import useMapStore from '@/stores/map-store/mapStore';
 import { setProductId } from '@/stores/product-store/productStore';
 import BasicMap from '@/components/Map/BasicMap';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
+import { cn } from '@/utils/classname-util/cn';
 import { ProductID } from '@/types/product';
 import { productsData } from './data';
 
@@ -70,9 +71,10 @@ const HomeMapCarousel: React.FC = () => {
             <button
               key={product.id}
               aria-label={`View ${product.title}`}
-              className={`z-20 h-2.5 w-2.5 cursor-pointer rounded-full transition-colors ${
-                selectedProductIndex === index ? 'bg-imos-sea-blue' : 'bg-imos-light-grey'
-              }`}
+              className={cn('z-20 h-2.5 w-2.5 cursor-pointer rounded-full transition-colors', {
+                'bg-imos-sea-blue': selectedProductIndex === index,
+                'bg-imos-light-grey': selectedProductIndex !== index,
+              })}
               onClick={() => handleProductSelect(product.id)}
             />
           ))}
