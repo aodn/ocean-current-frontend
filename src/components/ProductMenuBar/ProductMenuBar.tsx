@@ -17,10 +17,11 @@ import useCurrentMetersStore, {
 import useProductStore from '@/stores/product-store/productStore';
 import useProductDateFormat from '@/stores/product-store/hooks/useProductDateFormat';
 import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
-import { CurrentMetersSubproductsKey, mooredInstrumentArrayPath } from '@/constants/currentMeters';
+import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import { useRegionLatestDates } from '@/services/hooks';
 import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
+import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
 import DatePagination from '../DatePagination';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
@@ -57,6 +58,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     isArgo && !isArgoValid,
   );
   const shouldRenderProductContent = useShowProductOverMap();
+  const defaultCurrentMetersSubproduct = DEFAULT_SUB_PRODUCT_ROUTES['currentMeters'];
 
   const shouldDisableOption =
     disableVideoCreation() ||
@@ -106,7 +108,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
   const handleReset = () => {
     if (isCurrentMeters) {
       resetCurrentMetersStore();
-      return updateQueryParamsAndNavigate(`current-meters/${mooredInstrumentArrayPath}`, initialState);
+      return updateQueryParamsAndNavigate(`current-meters/${defaultCurrentMetersSubproduct}`, initialState);
     }
 
     const latestDate = dateList?.[dateList.length - 1]?.date;

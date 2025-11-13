@@ -33,6 +33,14 @@ export const API_ENABLED_PRODUCTS: ProductID[] = [
   'argo',
 ];
 
+export const API_LATEST_DATES_DISABLED_PRODUCTS: ProductID[] = [
+  'currentMeters-mooredInstrumentArray',
+  'currentMeters-shelf',
+  'currentMeters-deepADCP',
+  'currentMeters-deepADV',
+  'currentMeters-southernOcean',
+];
+
 /**
  * List of product IDs that will always use fixed data regardless of API implementation
  * These are typically products with simple monthly data or other special cases

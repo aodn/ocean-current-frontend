@@ -6,6 +6,10 @@ export const mapConfig = {
   style: MAPBOX_MAP_STYLE,
 };
 
+export const mapAnimation = {
+  duration: 600,
+};
+
 export const initialMapViewState = {
   mapViewState: {
     latitude: -28.5,

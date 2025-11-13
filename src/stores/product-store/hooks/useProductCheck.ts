@@ -10,6 +10,8 @@ const useProductCheck = () => {
   const isRegionRequired = !productsWithoutRegion.includes(mainProductId);
   const isArgo = mainProductId === 'argo';
   const isCurrentMeters = mainProductId === 'currentMeters';
+  const isCurrentMetersMooredInstrumentArray =
+    mainProductId === 'currentMeters' && subProduct?.key === 'currentMeters-mooredInstrumentArray';
   const isClimatology = mainProductId === 'climatology';
   const isEACMooringArray = mainProductId === 'EACMooringArray';
   const isTidalCurrents = mainProductId === 'tidalCurrents';
@@ -18,12 +20,14 @@ const useProductCheck = () => {
   const isSurfaceWaves = mainProductId === 'surfaceWaves';
   const isSurfaceWavesBuoyTimeseries =
     mainProductId === 'surfaceWaves' && subProduct?.key === 'surfaceWaves-buoyTimeseries';
-  const isOceanColourChlA = mainProductId === 'oceanColour' && subProduct?.key === 'oceanColour-chlA';
+  const isOceanColour = mainProductId === 'oceanColour';
+  const isOceanColourChlA = isOceanColour && subProduct?.key === 'oceanColour-chlA';
 
   return {
     isRegionRequired,
     isArgo,
     isCurrentMeters,
+    isCurrentMetersMooredInstrumentArray,
     isClimatology,
     isEACMooringArray,
     isTidalCurrents,
@@ -31,6 +35,7 @@ const useProductCheck = () => {
     isSealCtdTags,
     isSurfaceWaves,
     isSurfaceWavesBuoyTimeseries,
+    isOceanColour,
     isOceanColourChlA,
   };
 };

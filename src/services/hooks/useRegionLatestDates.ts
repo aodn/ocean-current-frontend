@@ -8,16 +8,18 @@ export const regionLatestDatesKeys = {
   byProductId: (productId: ProductID) => [...regionLatestDatesKeys.all, productId] as const,
 };
 
-export const regionLatestDatesOptions = (productId: ProductID, enabled: boolean = true) => ({
-  queryKey: regionLatestDatesKeys.byProductId(productId),
-  queryFn: () => fetchRegionLatestDatesByProductId(productId),
-  staleTime: 2 * 60 * 60 * 1000,
-  gcTime: 6 * 60 * 60 * 1000,
-  refetchOnWindowFocus: false,
-  refetchOnReconnect: false,
-  refetchOnMount: false,
-  enabled,
-});
+export const regionLatestDatesOptions = (productId: ProductID, enabled: boolean = true) => {
+  return {
+    queryKey: regionLatestDatesKeys.byProductId(productId),
+    queryFn: () => fetchRegionLatestDatesByProductId(productId),
+    staleTime: 2 * 60 * 60 * 1000,
+    gcTime: 6 * 60 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+    enabled,
+  };
+};
 
 export const useRegionLatestDates = (productId: ProductID, enabled?: boolean) => {
   return useQuery<LatestRegionDatesResponse>(regionLatestDatesOptions(productId, enabled));
