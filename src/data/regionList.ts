@@ -106,10 +106,13 @@ export const productRegionMap: ProductRegionMap = {
     state: ['NW_mm', 'NE_mm', 'SE_mm', 'SO_mm', 'GAB_mm', 'SW_mm', 'SLA30d', 'SST30d'],
     local: [],
   },
+  /*
+  This product was removed from the original site.
   'monthlyMeans-CLIM_CNESCARS': {
     state: ['NW_mm', 'NE_mm', 'SE_mm', 'SO_mm', 'GAB_mm', 'SW_mm', 'SLA30d', 'SST30d'],
     local: [],
   },
+  */
   'fourHourSst-sst': {
     state: [],
     local: [

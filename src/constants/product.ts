@@ -243,7 +243,7 @@ export const OC_PRODUCTS: Product[] = [
         },
       },
       {
-        title: 'OFAM3/SSTARS',
+        title: 'OFAM3/SSTAARS',
         key: 'monthlyMeans-CLIM_OFAM3_SSTAARS',
         path: 'CLIM_OFAM3_SSTAARS',
         imgPath: 'CLIM_OFAM3_SSTAARS',
@@ -252,6 +252,8 @@ export const OC_PRODUCTS: Product[] = [
           stateFormat: DateFormat.MONTH_ONLY,
         },
       },
+      /*
+      This product was removed from the original site.
       {
         title: 'CNES MDT/CARS SST',
         key: 'monthlyMeans-CLIM_CNESCARS',
@@ -262,6 +264,7 @@ export const OC_PRODUCTS: Product[] = [
           stateFormat: DateFormat.MONTH_ONLY,
         },
       },
+      */
     ],
   },
   {

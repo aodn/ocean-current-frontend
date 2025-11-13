@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { ProductID } from '@/types/product';
-import { API_ENABLED_PRODUCTS, FIXED_DATA_PRODUCTS } from '@/configs/products';
+import { API_IMAGE_LIST_ENABLED_PRODUCTS, FIXED_IMAGE_LIST_PRODUCTS } from '@/configs/products';
 import { fetchImageListByProductIdAndRegion } from '@/services/imageList';
 import { ImageFile, ImageListResponse } from '@/types/imageList';
 import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
@@ -108,7 +108,8 @@ const shouldUseSealCtdProcessor = (productId: ProductID, files: ImageFile[]): bo
 };
 
 const useDateList = ({ productId, isFreeMode = false }: UseDateListOptions) => {
-  const shouldUseApi = API_ENABLED_PRODUCTS.includes(productId) && !FIXED_DATA_PRODUCTS.includes(productId);
+  const shouldUseApi =
+    API_IMAGE_LIST_ENABLED_PRODUCTS.includes(productId) && !FIXED_IMAGE_LIST_PRODUCTS.includes(productId);
 
   const regionScope = useProductStore((state) => state.productParams.regionScope);
   const regionCodeFromStore = useProductStore((state) => state.productParams.regionCode);

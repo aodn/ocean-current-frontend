@@ -70,8 +70,7 @@ const useDateRange = (): UseDateRangeReturn => {
 
   const disableVideoCreation = (): boolean => {
     const isFourHourSst = mainProduct?.key === 'fourHourSst' && subProduct?.key === 'fourHourSst-sstAge';
-    const isMonthlyMeansClimatology =
-      subProduct?.key === 'monthlyMeans-CLIM_OFAM3_SSTAARS' || subProduct?.key === 'monthlyMeans-CLIM_CNESCARS';
+    const isMonthlyMeansClimatology = subProduct?.key === 'monthlyMeans-CLIM_OFAM3_SSTAARS';
     const isClimatology = mainProduct?.key === 'climatology';
     const isAdjustedSeaLevelAnomalyWithSST = mainProduct?.key === 'adjustedSeaLevelAnomaly' && !subProduct?.key;
     const isSSTTimeseries = subProduct?.key === 'sixDaySst-timeseries';

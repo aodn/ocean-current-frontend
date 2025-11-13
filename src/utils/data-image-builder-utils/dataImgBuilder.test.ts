@@ -194,18 +194,18 @@ describe('buildProductImageUrlByProductId', () => {
   });
 
   describe('monthlyMeans', () => {
-    it('should return the correct image url for CLIM_CNESCARS', () => {
+    it('should return the correct image url for CLIM_OFAM3_SSTAARS', () => {
       // Arrange
-      const productId = 'monthlyMeans-CLIM_CNESCARS';
-      const region = 'Au';
+      const productId = 'monthlyMeans-CLIM_OFAM3_SSTAARS';
+      const region = 'SW_mm';
       const regionScope = RegionScope.State;
-      const date = '202405';
+      const date = '202402';
 
       // Act
       const imageUrl = buildProductImageUrl(productId, region, regionScope, date);
 
       // Assert
-      expect(imageUrl).toBe(`${imageBaseUrl}/30d_MEAN_v1/CLIM_CNESCARS/Au/05.gif`);
+      expect(imageUrl).toBe(`${imageBaseUrl}/30d_MEAN/CLIM_OFAM3_SSTAARS/SW_mm/02.gif`);
     });
 
     it('should return the correct image URL for anomalies', () => {
