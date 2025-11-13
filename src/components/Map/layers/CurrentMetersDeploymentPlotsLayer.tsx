@@ -6,7 +6,6 @@ import { useQueryParams } from '@/hooks';
 import { CurrentMetersProfileProperties } from '@/types/geo';
 import useCurrentMetersStore, { setDeploymentPlot } from '@/stores/current-meters-store/currentMeters';
 import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
-// import { mooredInstrumentArrayPath } from '@/constants/currentMeters';
 import { SubProduct } from '@/types/product';
 import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
 import { getPropertyFromMapFeatures, waitForMapAnimationAsync } from '../utils';
