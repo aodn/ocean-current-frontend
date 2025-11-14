@@ -37,9 +37,12 @@ const getProductSegmentByProductId = (productId: ProductID, regionScope: RegionS
     throw new Error(`Product with id ${productId} not found`);
   }
 
+  /*
+  This product was removed from the original site.
   if (productId === 'monthlyMeans-CLIM_CNESCARS') {
     return '30d_MEAN_v1';
   }
+  */
 
   const segment = regionScope === RegionScope.State ? product.stateSegment : product.localSegment;
   return segment ? `${segment}` : '';
