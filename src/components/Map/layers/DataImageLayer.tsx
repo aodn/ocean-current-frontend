@@ -2,8 +2,7 @@ import { useEffect } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
 import { mapboxLayerIds } from '@/constants/mapboxId';
 import useProductStore from '@/stores/product-store/productStore';
-import { getEntryImagePathByProductId } from '@/utils/data-image-builder-utils/latestEntryImage';
-import { apiConfig } from '@/configs/api';
+import { buildLatestEntryImageUrl } from '@/utils/data-image-builder-utils/latestEntryImage';
 import { ProductID } from '@/types/product';
 
 const productsWithNoImage: ProductID[] = [
@@ -29,15 +28,13 @@ const productsWithImage: ProductID[] = [
   'adjustedSeaLevelAnomaly-sst',
   'adjustedSeaLevelAnomaly-nonTidalSla',
 ];
-const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
 
 const DataImageLayer: React.FC = () => {
   const useProductId = useProductStore((state) => state.productParams.productId);
   // client requested to use adjusted SLA map for argo product, see https://github.com/aodn/backlog/issues/5575
   const productId = useProductId === 'argo' ? 'adjustedSeaLevelAnomaly-sla' : useProductId;
-  const urlPath = getEntryImagePathByProductId(productId);
 
-  const imageUrl = `${apiConfig.ec2ProxyURL}/${urlPath}/latest.gif`;
+  const imageUrl = buildLatestEntryImageUrl(productId);
 
   const { current: map } = useMap();
   const shouldHideLayer = productsWithNoImage.includes(useProductId);
@@ -108,28 +105,35 @@ const DataImageLayer: React.FC = () => {
     };
   }, [map, useProductId, shouldHideLayer]);
 
-  // Moving Layers
+  // Move image layer to bottom
   useEffect(() => {
     const mapLayer = map?.getMap();
 
     if (!map || !mapLayer || !useProductId) return;
 
     const moveImageLayer = () => {
-      const layers = mapLayer.getStyle()?.layers.map((layer) => layer.id);
-      const polygonLayers = layers?.filter(
-        (layer) => layer.includes(PRODUCT_REGION_BOX_LAYER_ID) || layer.includes(ARGO_AS_PRODUCT_POINT_LAYER_ID),
-      );
+      const style = mapLayer.getStyle();
+      if (!style?.layers || !style.layers.some((layer) => layer.id === useProductId)) return;
 
-      if (polygonLayers && polygonLayers?.length > 0 && layers?.includes(useProductId)) {
-        map.moveLayer(useProductId, polygonLayers[0]);
+      // Get all custom layer IDs
+      const customLayerIds = Object.values(mapboxLayerIds) as string[];
+
+      // Find the first custom layer we added
+      const firstCustomLayer = style.layers.find((layer) => customLayerIds.includes(layer.id));
+
+      // Move image layer below the first custom layer (making it bottom-most among our custom layers)
+      if (firstCustomLayer) {
+        map.moveLayer(useProductId, firstCustomLayer.id);
       }
     };
 
     map.on('sourcedataloading', moveImageLayer);
+    map.on('sourcedata', moveImageLayer);
     map.on('styledata', moveImageLayer);
 
     return () => {
       map.off('sourcedataloading', moveImageLayer);
+      map.off('sourcedata', moveImageLayer);
       map.off('styledata', moveImageLayer);
     };
   }, [map, useProductId]);
