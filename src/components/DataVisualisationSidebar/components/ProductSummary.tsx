@@ -20,8 +20,8 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
   return (
     <>
       <div className="p-4">
-        <div className="flex justify-between">
-          <InfoIcon className="mr-6 mt-1" size="xl" color="imos-sea-blue" />
+        <div className="flex items-start justify-between">
+          <InfoIcon className="mr-6 mt-1 flex-shrink-0" color="imos-sea-blue" />
           <TruncateText className="text-imos-nav-text" lines={4} text={summary} />
         </div>
 

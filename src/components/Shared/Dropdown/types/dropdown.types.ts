@@ -17,4 +17,7 @@ export interface DropdownProps<T> {
   showIcons?: boolean;
   isOpen?: boolean;
   smallDropdown?: boolean;
+  toggleBorder?: boolean;
+  menuBorder?: boolean;
+  menuShadow?: boolean;
 }

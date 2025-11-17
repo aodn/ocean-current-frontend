@@ -168,7 +168,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
         <Button
           onClick={handleToggleMap}
           borderRadius="extraSmall"
-          className={`flex-center h-full w-full !border-1 border-imos-calypso-blue/50 !px-2 ${showMap ? '' : 'bg-white'}`}
+          className={`flex-center h-full w-full border-imos-calypso-blue/50 !px-2 ${showMap ? '' : 'bg-white'}`}
           aria-label="Toggle region selection"
         >
           <img src={MapIcon} alt="map icon" className="h-6 w-6 flex-shrink-0" />
@@ -181,6 +181,8 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
         <div className="flex h-11 grow basis-[calc(100%-4rem)] items-center justify-between rounded-md border border-imos-calypso-blue/50 bg-white md:grow md:basis-auto md:border-none">
           {isCurrentMeters ? (
             <Dropdown
+              toggleBorder={false}
+              menuShadow
               elements={
                 productId === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY && !deploymentPlot
                   ? currentMeterSYearOptionsData
@@ -197,7 +199,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
         <Button
           onClick={handleReset}
           aria-hidden
-          className="flex-center h-11 w-12 shrink-0 rounded-md !border-1 border-imos-calypso-blue/50 bg-white !p-3 md:border-none md:!p-4"
+          className="flex-center h-11 w-12 shrink-0 rounded-md border-imos-calypso-blue/50 bg-white !p-3 md:border-none md:!p-4"
           aria-label="Reset to latest date"
           disabled={resetBtnDisabled}
           borderRadius="extraSmall"
