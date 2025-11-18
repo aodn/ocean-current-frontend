@@ -31,6 +31,18 @@ interface CurrentMetersFiltersProp {
   subProduct: SubProduct | null;
 }
 
+interface FilterSectionProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+const FilterSection: React.FC<FilterSectionProps> = ({ title, children }) => (
+  <div>
+    <h3 className="ml-3 py-2">{title}</h3>
+    <div className="h-10">{children}</div>
+  </div>
+);
+
 const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }) => {
   const { property, depth, region, date, deploymentPlot } = useCurrentMetersStore();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -151,40 +163,37 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
   };
 
   return (
-    <>
-      <div className="px-4 pb-4">
-        <h3 className="py-2 text-lg font-medium text-imos-grey">{ProductSidebarText.REGION}</h3>
+    <div className="text-base text-imos-dark-grey [&>*:last-child]:border-b-0 [&>*]:border-b-1 [&>*]:border-imos-light-blue [&>*]:px-4 [&>*]:pb-4">
+      <FilterSection title={ProductSidebarText.REGION}>
         <Dropdown
           elements={regionsOptions}
           selectedId={region}
           onChange={(elem) => handleRegionChange(elem.id)}
           smallDropdown
         />
-      </div>
+      </FilterSection>
 
-      <div className="px-4 pb-4">
-        <h3 className="py-2 text-lg font-medium text-imos-grey">{ProductSidebarText.DEPLOYMENT_PLOT}</h3>
+      <FilterSection title={ProductSidebarText.DEPLOYMENT_PLOT}>
         <Dropdown
           elements={deploymentPlotOptions}
           selectedId={deploymentPlot}
           onChange={(elem) => handleDeploymentPlotChange(elem.id)}
           smallDropdown
         />
-      </div>
+      </FilterSection>
 
-      <div className="px-4 pb-4">
-        <h3 className="py-2 text-lg font-medium text-imos-grey">{ProductSidebarText.DEPTH_LAYER}</h3>
+      <FilterSection title={ProductSidebarText.DEPTH_LAYER}>
         <Dropdown
           elements={depthOptions}
           selectedId={depth}
           onChange={(elem) => handleDepthChange(elem.id)}
           smallDropdown
         />
-      </div>
+      </FilterSection>
 
       {!deploymentPlot && (
-        <div className="px-4 pb-4">
-          <h3 className="py-2 text-lg font-medium text-imos-grey">{ProductSidebarText.PROPERTY}</h3>
+        <div>
+          <h3 className="ml-3 py-2">{ProductSidebarText.PROPERTY}</h3>
           <div className="mb-6 mt-2 flex flex-wrap justify-between gap-2">
             {propertyOptions.map(({ title, id }, index) => (
               <div key={id} className={index === propertyOptions.length - 1 ? 'w-auto' : 'flex-1'}>
@@ -201,7 +210,7 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

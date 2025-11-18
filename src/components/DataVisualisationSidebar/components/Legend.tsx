@@ -115,7 +115,7 @@ const Legend: React.FC = () => {
           </div>
         </div>
       </div>
-      <Button onClick={handlePopup} size="full" borderRadius="small" type="secondary" className="!border">
+      <Button onClick={handlePopup} size="full" borderRadius="small" type="secondary">
         <span className="text-imos-dark-grey">Click for more information</span>
       </Button>
 
