@@ -8,7 +8,7 @@ const convertHtmlToArgo = (html: string): ArgoProfile[] => {
   const rootElement = parse(html.replace(/(\r\n|\n|\r)/gm, ''));
   const areaElements = rootElement!.querySelectorAll('area');
 
-  // Check if any area element has data-maptype attribute, it added by external server
+  // Check if any area element has data-maptype attribute, it was added by external server
   const hasMapTypeAttribute = areaElements.some((area) => area.hasAttribute('data-maptype'));
 
   const filteredAreaElements = hasMapTypeAttribute
@@ -20,8 +20,8 @@ const convertHtmlToArgo = (html: string): ArgoProfile[] => {
       const coordsAttr = area.getAttribute('coords');
       const hrefAttr = area.getAttribute('href');
 
-      if (!coordsAttr || !hrefAttr) {
-        console.warn('Missing required attributes (coords or href) for area element', area);
+      if (!coordsAttr || typeof coordsAttr !== 'string' || !hrefAttr || typeof hrefAttr !== 'string') {
+        console.warn('Missing or invalid required attributes (coords or href) for area element', area);
         return null;
       }
 
@@ -40,7 +40,7 @@ const convertHtmlToArgo = (html: string): ArgoProfile[] => {
       }
 
       const cycleParts = hrefAttrAry[2].split('.');
-      if (cycleParts.length === 0) {
+      if (!cycleParts[0] || cycleParts[0].trim() === '') {
         console.warn('Invalid cycle format in href', hrefAttrAry[2]);
         return null;
       }
