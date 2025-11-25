@@ -75,3 +75,18 @@ export const useIsSmallMobile = () => useMediaQuery(`(max-width: ${breakpoints.s
  * Matches Tailwind's sm breakpoint and above
  */
 export const useIsSmallAndAbove = () => useMediaQuery(`(min-width: ${breakpoints.sm}px)`);
+
+/**
+ * Hook to get all device type states at once
+ * @returns Object with isMobile, isTablet, and isDesktop boolean flags
+ *
+ * @example
+ * const { isMobile, isTablet, isDesktop } = useDeviceTypes();
+ */
+export const useDeviceTypes = () => {
+  const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
+  const isDesktop = useIsDesktop();
+
+  return { isMobile, isTablet, isDesktop };
+};
