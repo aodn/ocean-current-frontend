@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
 import { ArrowIcon } from '@/components/Shared/Icons';
 import { useDeviceTypes } from '@/hooks/useMediaQuery';
@@ -25,19 +25,24 @@ const HomeProductCarousel: React.FC = () => {
     setScrollPosition(0);
   }, [isMobile, isTablet, isDesktop]);
 
-  const { itemWidth, gapWidth } = metrics;
-  const scrollStep = itemWidth + gapWidth;
+  const { itemWidth, gapWidth, containerWidth } = metrics;
+
+  // Memoize calculated values to avoid redundant calculations
+  const carouselMetrics = useMemo(() => {
+    const scrollStep = itemWidth + gapWidth;
+    const totalWidth =
+      itemWidth > 0 ? productCarouselData.length * itemWidth + (productCarouselData.length - 1) * gapWidth : 0;
+    const maxScroll = Math.max(0, totalWidth - containerWidth);
+
+    return { scrollStep, totalWidth, maxScroll };
+  }, [itemWidth, gapWidth, containerWidth]);
 
   const handleNext = () => {
-    if (!containerRef.current || itemWidth === 0) return;
-
-    const containerWidth = containerRef.current.offsetWidth;
-    const totalWidth = productCarouselData.length * itemWidth + (productCarouselData.length - 1) * gapWidth;
-    const maxScroll = totalWidth - containerWidth;
+    if (itemWidth === 0) return;
 
     setScrollPosition((prev) => {
-      const newPosition = prev + scrollStep;
-      return Math.min(newPosition, maxScroll);
+      const newPosition = prev + carouselMetrics.scrollStep;
+      return Math.min(newPosition, carouselMetrics.maxScroll);
     });
   };
 
@@ -45,18 +50,13 @@ const HomeProductCarousel: React.FC = () => {
     if (itemWidth === 0) return;
 
     setScrollPosition((prev) => {
-      const newPosition = prev - scrollStep;
+      const newPosition = prev - carouselMetrics.scrollStep;
       return Math.max(newPosition, 0);
     });
   };
 
-  const totalWidth =
-    itemWidth > 0 ? productCarouselData.length * itemWidth + (productCarouselData.length - 1) * gapWidth : 0;
-  const containerWidth = containerRef.current?.offsetWidth || 0;
-  const maxScroll = Math.max(0, totalWidth - containerWidth);
-
   const isAtStart = scrollPosition <= 0;
-  const isAtEnd = scrollPosition >= maxScroll;
+  const isAtEnd = scrollPosition >= carouselMetrics.maxScroll;
 
   return (
     <div className="flex w-full items-center gap-x-4">
@@ -72,7 +72,7 @@ const HomeProductCarousel: React.FC = () => {
         <div
           data-testid="carousel-container"
           className="flex gap-2 transition-transform duration-300 ease-in-out md:gap-4"
-          style={{ transform: `translateX(-${scrollPosition}px)`, width: `${totalWidth}px` }}
+          style={{ transform: `translateX(-${scrollPosition}px)`, width: `${carouselMetrics.totalWidth}px` }}
         >
           {productCarouselData.map(({ id, url, Icon, title }, index) => (
             <div key={id} ref={index === 0 ? itemRef : null} className="mt-2 w-24 flex-shrink-0 md:w-32">

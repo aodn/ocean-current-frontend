@@ -4,6 +4,7 @@ import { useThrottle } from '../useThrottle';
 export interface ElementMetrics {
   itemWidth: number;
   gapWidth: number;
+  containerWidth: number;
 }
 
 export interface UseElementMetricsOptions {
@@ -64,7 +65,7 @@ export interface UseElementMetricsReturn {
  */
 export function useElementMetrics(options: UseElementMetricsOptions = {}): UseElementMetricsReturn {
   const { containerTestId, dependencies = [], throttleMs = 200 } = options;
-  const [metrics, setMetrics] = useState<ElementMetrics>({ itemWidth: 0, gapWidth: 0 });
+  const [metrics, setMetrics] = useState<ElementMetrics>({ itemWidth: 0, gapWidth: 0, containerWidth: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const itemRef = useRef<HTMLDivElement>(null);
 
@@ -72,19 +73,21 @@ export function useElementMetrics(options: UseElementMetricsOptions = {}): UseEl
     if (!itemRef.current || !containerRef.current) return;
 
     const itemElement = itemRef.current;
-    let targetContainer: Element | null = containerRef.current;
+    const containerElement = containerRef.current;
+    let targetContainer: Element | null = containerElement;
 
     if (containerTestId) {
-      targetContainer = containerRef.current.querySelector(`[data-testid="${containerTestId}"]`);
+      targetContainer = containerElement.querySelector(`[data-testid="${containerTestId}"]`);
     }
 
     if (!targetContainer) return;
 
     const itemWidth = itemElement.offsetWidth;
+    const containerWidth = containerElement.offsetWidth;
     const computedStyle = window.getComputedStyle(targetContainer);
-    const gapWidth = parseFloat(computedStyle.gap) || 0;
+    const gapWidth = parseFloat(computedStyle.columnGap) || 0;
 
-    setMetrics({ itemWidth, gapWidth });
+    setMetrics({ itemWidth, gapWidth, containerWidth });
   }, [containerTestId]);
 
   const throttledMeasure = useThrottle(measureDimensions, throttleMs);

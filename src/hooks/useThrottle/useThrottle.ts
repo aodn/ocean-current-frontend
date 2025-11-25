@@ -37,7 +37,7 @@ export function useThrottle<T extends (...args: any[]) => any>(
     callbackRef.current = callback;
   }, [callback]);
 
-  // Cleanup timeout on unmount or when delay changes
+  // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
       if (timeoutRef.current) {
@@ -45,7 +45,7 @@ export function useThrottle<T extends (...args: any[]) => any>(
         timeoutRef.current = null;
       }
     };
-  }, [delay]);
+  }, []);
 
   return useCallback(
     (...args: Parameters<T>) => {
