@@ -58,7 +58,7 @@ export default ({ mode }) => {
       open: Boolean(process.env.VITE_OPEN_BROWSER),
       proxy: {
         '/api/v1': {
-          target: process.env.VITE_API_BACKEND_URL || 'http://localhost:8080/api/v1',
+          target: process.env.VITE_API_BACKEND_URL || 'https://oceancurrent.edge.aodn.org.au/api/v1',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api\/v1/, ''),
         },

@@ -142,8 +142,9 @@ test.describe('Home Page Tests', () => {
 
     // Get initial map state (we'll use the mapboxgl map instance)
     const initialZoom = await page.evaluate(() => {
-      const canvas = document.querySelector('.mapboxgl-canvas') as any;
-      return canvas?.parentElement?.parentElement?._mapInstance?.getZoom?.() || null;
+      const canvas = document.querySelector('.mapboxgl-canvas');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return (canvas?.parentElement?.parentElement as any)?._mapInstance?.getZoom?.() || null;
     });
 
     // Click the Zoom In button
@@ -152,13 +153,19 @@ test.describe('Home Page Tests', () => {
 
     // Get updated zoom level
     const updatedZoom = await page.evaluate(() => {
-      const canvas = document.querySelector('.mapboxgl-canvas') as any;
-      return canvas?.parentElement?.parentElement?._mapInstance?.getZoom?.() || null;
+      const canvas = document.querySelector('.mapboxgl-canvas');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return (canvas?.parentElement?.parentElement as any)?._mapInstance?.getZoom?.() || null;
     });
 
-    // Verify the zoom changed (or button interaction occurred)
-    // Since we can't always access the map instance, just verify button is clickable
-    await expect(zoomInButton).toBeEnabled();
+    // Verify the zoom changed
+    if (initialZoom !== null && updatedZoom !== null) {
+      // If we can access the map instance, verify zoom increased
+      expect(updatedZoom).toBeGreaterThan(initialZoom);
+    } else {
+      // Fallback: just verify button is enabled if we can't access map instance
+      await expect(zoomInButton).toBeEnabled();
+    }
   });
 
   test('TC008: Zoom Out Button Works for Mapbox Map', async ({ page }) => {
@@ -176,12 +183,32 @@ test.describe('Home Page Tests', () => {
     await expect(zoomOutButton).toBeVisible();
     await expect(zoomOutButton).toBeEnabled();
 
+    // Get zoom level before zooming out
+    const initialZoom = await page.evaluate(() => {
+      const canvas = document.querySelector('.mapboxgl-canvas');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return (canvas?.parentElement?.parentElement as any)?._mapInstance?.getZoom?.() || null;
+    });
+
     // Click the Zoom Out button
     await zoomOutButton.click();
     await page.waitForTimeout(500);
 
-    // Verify button is still enabled (can zoom out)
-    await expect(zoomOutButton).toBeEnabled();
+    // Get zoom level after zooming out
+    const updatedZoom = await page.evaluate(() => {
+      const canvas = document.querySelector('.mapboxgl-canvas');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return (canvas?.parentElement?.parentElement as any)?._mapInstance?.getZoom?.() || null;
+    });
+
+    // Verify the zoom changed
+    if (initialZoom !== null && updatedZoom !== null) {
+      // If we can access the map instance, verify zoom decreased
+      expect(updatedZoom).toBeLessThan(initialZoom);
+    } else {
+      // Fallback: verify button is still enabled
+      await expect(zoomOutButton).toBeEnabled();
+    }
   });
 
   test('TC009: Clicking on Region Box Opens Related Category Detail', async ({ page }) => {
