@@ -55,7 +55,7 @@ describe('ErrorImage Component', () => {
     );
 
     const link = screen.getByRole('link', { name: 'Back to map' });
-    expect(link).toHaveAttribute('href', '/map//mocked-path');
+    expect(link).toHaveAttribute('href', '/map/mocked-path');
   });
 
   it('calls getProductPathWithSubProduct with correct argument', () => {
