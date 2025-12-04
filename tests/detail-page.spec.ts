@@ -71,46 +71,51 @@ test.describe('Detail Page Tests', () => {
 
     // Click on the map canvas to select a region
     // Region boxes are rendered as mapbox layers, clicking anywhere should trigger region selection
+    // Since we can't easily target specific regions in the canvas without access to the map instance or data-attributes,
+    // we use a retry mechanism to click different parts of the map.
     const mapCanvas = page.locator('.mapboxgl-canvas').first();
     await expect(mapCanvas).toBeVisible();
 
     const box = await mapCanvas.boundingBox();
     if (box) {
-      // Click on the map (regions are clickable on the map)
-      // Try multiple positions to find a region
-      await page.mouse.click(box.x + box.width * 0.5, box.y + box.height * 0.5);
+      // Define a few points to try clicking (center, slightly off-center)
+      // These are relative coordinates (0.0 to 1.0)
+      const clickPoints = [
+        { x: 0.5, y: 0.5 },
+        { x: 0.4, y: 0.4 },
+        { x: 0.6, y: 0.6 },
+        { x: 0.3, y: 0.5 },
+        { x: 0.7, y: 0.5 }
+      ];
 
-      // Wait for potential URL change (region selection) with a reasonable timeout
-      await page.waitForFunction(
-        (url) => window.location.href !== url || window.location.href.includes('region='),
-        urlBeforeClick,
-        { timeout: 3000 }
-      ).catch(() => {
-        // If URL didn't change, it's okay - might not have clicked on a region
-      });
+      for (const point of clickPoints) {
+        // Click on the map
+        await page.mouse.click(box.x + box.width * point.x, box.y + box.height * point.y);
 
-      // Check if URL changed (region was selected)
-      let urlAfterClick = page.url();
-
-      // If first click didn't work, try another position
-      if (urlAfterClick === urlBeforeClick) {
-        await page.mouse.click(box.x + box.width * 0.3, box.y + box.height * 0.4);
-
-        await page.waitForFunction(
-          (url) => window.location.href !== url || window.location.href.includes('region='),
-          urlBeforeClick,
-          { timeout: 3000 }
-        ).catch(() => {});
-
-        urlAfterClick = page.url();
+        // Wait for potential URL change (region selection)
+        try {
+          await page.waitForFunction(
+            (url) => window.location.href !== url || window.location.href.includes('region='),
+            urlBeforeClick,
+            { timeout: 1500 } // Short timeout for retry
+          );
+          
+          // If we get here, the URL changed!
+          break;
+        } catch {
+          // Continue to next point
+        }
       }
 
-      // Verify URL changed with region parameter OR ProductContent is visible
-      const urlHasRegion = urlAfterClick.includes('region=');
-      const hasCanvas = await page.locator('canvas').count();
+      // Check if URL changed (region was selected)
+      const urlAfterClick = page.url();
 
-      // Either URL changed with region or map canvas is visible (showing data)
-      expect(urlHasRegion || hasCanvas > 0).toBeTruthy();
+      // Verify URL changed with region parameter
+      const urlHasRegion = urlAfterClick.includes('region=');
+
+      // We strictly expect the URL to change to include the region parameter.
+      // The previous check for 'canvas' count was too loose as the map itself is a canvas.
+      expect(urlHasRegion).toBeTruthy();
     }
   });
 
@@ -153,6 +158,8 @@ test.describe('Detail Page Tests', () => {
           const dateValue = await dateSelector.inputValue();
 
           // Verify the date is recent (within last 30 days as a reasonable check for "latest")
+          // Note: This is a heuristic. Ideally, we should fetch the expected latest date from an API
+          // or have a deterministic mock state. For now, we assume data is relatively fresh.
           const selectedDate = new Date(dateValue);
           const today = new Date();
           const daysDifference = Math.floor((today.getTime() - selectedDate.getTime()) / (1000 * 60 * 60 * 24));
