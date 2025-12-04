@@ -40,7 +40,7 @@ export default defineConfig({
     reuseExistingServer: !!process.env.PLAYWRIGHT_TEST_BASE_URL,
     timeout: 120 * 1000,
     env:{
-      VITE_MAPBOX_ACCESS_TOKEN: "pk.eyJ1IjoiaW1vcy1hb2RuIiwiYSI6ImNtNHMyM242cDBjMHIyaW9xOG5zMDlyMTcifQ.soa7d2IiIwPAotSeoW0eUg"
+      VITE_MAPBOX_ACCESS_TOKEN: 'pk.eyJ1IjoiaW1vcy1hb2RuIiwiYSI6ImNtNHMyM242cDBjMHIyaW9xOG5zMDlyMTcifQ.soa7d2IiIwPAotSeoW0eUg'
     }
   },
 });
