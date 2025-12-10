@@ -10,7 +10,7 @@ const NavbarMenu = forwardRef(({ items }: { items: DetailedLink[] }, ref: Forwar
         to={url}
         className={'flex justify-between gap-4 p-4 hover:bg-imos-hover-blue hover:bg-opacity-20'}
       >
-        <Icon className="my-auto" size="lg" color="imos-grey" />
+        <Icon className="my-auto" size="xl" color="imos-grey" />
         <div className="flex flex-1 flex-col whitespace-nowrap pr-1.5">
           <div className="text-base font-bold leading-5">{title}</div>
           <div className="text-sm font-light leading-5 text-gray-500">{description}</div>

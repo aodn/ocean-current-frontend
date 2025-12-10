@@ -4,7 +4,6 @@ export interface DropdownElement<T> {
   label: string;
   id: T;
   Icon?: React.FC<IconProps>;
-  SelectedIcon?: React.FC<IconProps>;
   isLoading?: boolean;
   disabled?: boolean;
 }

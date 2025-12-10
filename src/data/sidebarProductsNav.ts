@@ -11,8 +11,6 @@ import {
   SealCTDIcon,
   ClimatologyIcon,
   EACMooringArrayIcon,
-  SelectedFourHourSSTIcon,
-  SelectedSixHourSSTIcon,
 } from '@/components/Shared/Icons';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import { RootProductID } from '@/types/product';
@@ -22,13 +20,11 @@ export const sidebarProductsNav: DropdownElement<RootProductID>[] = [
     id: 'fourHourSst',
     label: 'Four-hour SST',
     Icon: FourHourSSTIcon,
-    SelectedIcon: SelectedFourHourSSTIcon,
   },
   {
     id: 'sixDaySst',
     label: 'Daily SST (6-day composite)',
     Icon: SixHourSSTIcon,
-    SelectedIcon: SelectedSixHourSSTIcon,
   },
   {
     id: 'oceanColour',
