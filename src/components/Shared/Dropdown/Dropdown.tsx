@@ -94,8 +94,7 @@ const Dropdown = <T,>({
           {showIcons &&
             selectedElement &&
             (() => {
-              const { Icon, SelectedIcon } = selectedElement;
-              const RenderedIcon = SelectedIcon || Icon;
+              const { Icon: RenderedIcon } = selectedElement;
               return (
                 RenderedIcon && <RenderedIcon className="mr-4" size="xl" color={header ? 'imos-white' : 'imos-grey'} />
               );

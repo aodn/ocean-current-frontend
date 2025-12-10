@@ -12,7 +12,7 @@ import {
   SealCTDIcon,
   ClimatologyIcon,
   EACMooringArrayIcon,
-  GliderIcon,
+  GlidersIcon,
 } from '@/components/Shared/Icons';
 
 export const linksData: LinkItem[] = [
@@ -83,7 +83,7 @@ export const linksData: LinkItem[] = [
       },
       {
         id: 'gliders',
-        Icon: GliderIcon,
+        Icon: GlidersIcon,
         title: 'Gliders',
         description: 'Autonomous underwater vehicles',
         url: 'https://oceancurrent.aodn.org.au/gliders',
