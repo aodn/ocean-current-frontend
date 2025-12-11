@@ -1,16 +1,8 @@
 import React from 'react';
 import logo from '@/assets/images/imos-logo.png';
 import { BrandingText, FooterText } from '@/constants/textConstant.ts';
-import { EmailIcon } from '../Shared/Icons';
 import { Button } from '../Shared/index.tsx';
-import {
-  contactEmail,
-  contactSubject,
-  copyrightText,
-  footerAcknowledgeText,
-  footerLinks,
-  footerSocials,
-} from './consts.ts';
+import { COPYRIGHT_TEXT, FEEDBACK_LINK, FOOTER_ACKNOWLEDGE_TEXT, FOOTER_LINKS, FOOTER_SOCIALS } from './consts.ts';
 import { FooterIcon } from './footer.types';
 
 const Footer: React.FC = () => {
@@ -18,9 +10,9 @@ const Footer: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleContactUs = () => {
-    const mailtoUrl = `mailto:${contactEmail}?subject=${encodeURIComponent(contactSubject)}`;
-    window.open(mailtoUrl, '_self');
+  /* temporary replace contact us with feedback form on github issues */
+  const handleClickFeedback = () => {
+    window.open(FEEDBACK_LINK, '_blank');
   };
 
   return (
@@ -56,7 +48,7 @@ const Footer: React.FC = () => {
             </button>
           </div>
 
-          <p className="text-base leading-7 text-imos-nav-text sm:leading-8">{footerAcknowledgeText}</p>
+          <p className="text-base leading-7 text-imos-nav-text sm:leading-8">{FOOTER_ACKNOWLEDGE_TEXT}</p>
 
           <div className="grid grid-cols-2 gap-4 border-y border-imos-deeper-blue py-4 md:flex md:h-20 md:flex-row md:items-center md:justify-between">
             <div className="flex w-full justify-center md:h-12 md:w-[200px] md:justify-start">
@@ -64,16 +56,15 @@ const Footer: React.FC = () => {
                 type="primary"
                 size="full"
                 borderRadius="small"
-                onClick={handleContactUs}
+                onClick={handleClickFeedback}
                 className="w-fit border-none bg-imos-deeper-blue px-4 py-2 md:w-full"
               >
                 <div className="flex items-center justify-center gap-2 leading-8">
-                  <EmailIcon className="h-6 w-6" color="imos-white" />
-                  <p className="text-base">{FooterText.CONTACT_US}</p>
+                  <p className="text-base">{FooterText.FEEDBACK}</p>
                 </div>
               </Button>
             </div>
-            {footerLinks.map(({ text, url }) => (
+            {FOOTER_LINKS.map(({ text, url }) => (
               <a
                 key={text}
                 href={url}
@@ -88,10 +79,10 @@ const Footer: React.FC = () => {
 
           <div className="flex items-center justify-between gap-1 sm:gap-4">
             <div className="flex items-center">
-              <p className="text-base text-imos-nav-text">{copyrightText}</p>
+              <p className="text-base text-imos-nav-text">{COPYRIGHT_TEXT}</p>
             </div>
             <div className="flex flex-nowrap gap-1 sm:gap-3">
-              {footerSocials.map(({ alt, src, url }: FooterIcon, index: number) => (
+              {FOOTER_SOCIALS.map(({ alt, src, url }: FooterIcon, index: number) => (
                 <a
                   key={index}
                   href={url}
