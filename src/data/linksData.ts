@@ -13,6 +13,8 @@ import {
   ClimatologyIcon,
   EACMooringArrayIcon,
   GlidersIcon,
+  MyOceanCurrentIcon,
+  SwotIcon,
 } from '@/components/Shared/Icons';
 
 export const linksData: LinkItem[] = [
@@ -68,6 +70,20 @@ export const linksData: LinkItem[] = [
         title: 'Climatology SST',
         description: 'SSTAARS Climatology',
         url: '/map/climatology/sst',
+      },
+      {
+        id: 'my-ocean-current',
+        Icon: MyOceanCurrentIcon,
+        title: 'My Ocean Current',
+        description: 'My Ocean Current',
+        url: 'https://mrs-data.csiro.au/myoceancurrent/sst/',
+      },
+      {
+        id: 'swot-gsla',
+        Icon: SwotIcon,
+        title: 'SWOT and GSLA',
+        description: 'SWOT and GSLA',
+        url: 'https://oceancurrent.aodn.org.au/product.php?product=swot&region=Au',
       },
     ],
   },
