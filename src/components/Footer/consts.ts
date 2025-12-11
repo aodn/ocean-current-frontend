@@ -5,7 +5,7 @@ import linkedinIcon from '@/assets/icons/linkedin-icon.svg';
 import blueskyIcon from '@/assets/icons/bluesky-icon.svg';
 import { FooterIcon, FooterLink } from './footer.types';
 
-export const footerLinks: FooterLink[] = [
+export const FOOTER_LINKS: FooterLink[] = [
   {
     text: 'Terms of Use',
     url: 'https://imos.org.au/terms-of-use',
@@ -20,12 +20,7 @@ export const footerLinks: FooterLink[] = [
   },
 ];
 
-export const footerAcknowledgeText: string =
-  'IMOS acknowledges the Traditional Custodians and Elders of the land and sea on which we work and observe and ' +
-  'recognise their unique connection to land and sea. We pay our respects to Aboriginal and Torres Strait Islander ' +
-  'peoples past and present.';
-
-export const footerSocials: FooterIcon[] = [
+export const FOOTER_SOCIALS: FooterIcon[] = [
   {
     alt: 'IMOS Facebook',
     src: facebookIcon,
@@ -48,7 +43,13 @@ export const footerSocials: FooterIcon[] = [
   },
 ];
 
-export const copyrightText: string = `© IMOS ${dayjs().year()}`;
+export const FOOTER_ACKNOWLEDGE_TEXT: string =
+  'IMOS acknowledges the Traditional Custodians and Elders of the land and sea on which we work and observe and ' +
+  'recognise their unique connection to land and sea. We pay our respects to Aboriginal and Torres Strait Islander ' +
+  'peoples past and present.';
 
-export const contactEmail: string = 'info@aodn.org.au';
-export const contactSubject: string = 'Ocean Current Enquiry';
+export const FEEDBACK_LINK: string = 'https://github.com/aodn/ocean-current-frontend/issues/new/choose';
+export const COPYRIGHT_TEXT: string = `© IMOS ${dayjs().year()}`;
+
+export const CONTACT_EMAIL: string = 'info@aodn.org.au';
+export const CONTACT_SUBJECT: string = 'Ocean Current Enquiry';

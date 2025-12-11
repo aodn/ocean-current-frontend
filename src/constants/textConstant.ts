@@ -41,4 +41,5 @@ export enum News {
 export enum FooterText {
   BACK_TO_TOP = 'Back to Top',
   CONTACT_US = 'Contact Us',
+  FEEDBACK = 'Feedback',
 }
