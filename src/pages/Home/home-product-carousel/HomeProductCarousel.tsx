@@ -75,14 +75,14 @@ const HomeProductCarousel: React.FC = () => {
           style={{ transform: `translateX(-${scrollPosition}px)`, width: `${carouselMetrics.totalWidth}px` }}
         >
           {productCarouselData.map(({ id, url, Icon, title }, index) => (
-            <div key={id} ref={index === 0 ? itemRef : null} className="mt-2 w-24 flex-shrink-0 md:w-32">
+            <div key={id} ref={index === 0 ? itemRef : null} className="mt-2 w-24 flex-shrink-0 md:w-[120px]">
               <Link
                 to={url}
                 className={cn(
                   'flex h-24 flex-col items-center justify-center rounded-xl bg-imos-light-blue p-4',
                   'transition duration-300 ease-in-out',
                   'hover:border-[3px] hover:border-imos-deep-blue hover:bg-white',
-                  'md:h-32',
+                  'md:h-[120px]',
                 )}
               >
                 <Icon className="h-full w-full" color="imos-deep-blue" />
