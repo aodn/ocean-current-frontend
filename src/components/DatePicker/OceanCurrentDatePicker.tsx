@@ -63,10 +63,11 @@ const OceanCurrentDatePicker: React.FC<OceanCurrentDatePickerProps> = ({
   const isSealCtdTagsAndYearFormat = productId?.includes('sealCtdTags') && dateFormat === DateFormat.YEAR_ONLY;
 
   return (
-    <div className="flex h-full w-full items-center justify-between">
+    <div className="flex h-full w-full items-center justify-between" data-testid="date-pagination">
       {!isSealCtdTagsAndYearFormat && (
         <div className="flex-center h-full w-12 border-r-2 text-lg text-imos-title-blue">
           <button
+            data-testid="date-previous-button"
             onClick={goToPrevious}
             disabled={!canGoPrevious}
             className="cursor-pointer rounded bg-transparent p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
@@ -98,6 +99,7 @@ const OceanCurrentDatePicker: React.FC<OceanCurrentDatePickerProps> = ({
       {!isSealCtdTagsAndYearFormat && (
         <div className="flex-center h-full w-12 border-l-2 text-lg text-imos-title-blue">
           <button
+            data-testid="date-next-button"
             onClick={goToNext}
             disabled={!canGoNext}
             className="cursor-pointer rounded bg-transparent p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50"

@@ -50,7 +50,7 @@ const Navbar = ({ className }: { className?: string }) => {
 
   return (
     <div className={cn('sticky top-0 z-50 w-full bg-white shadow-md transition-all duration-300', className)}>
-      <nav className="mx-auto flex w-full max-w-8xl items-center justify-between p-3 px-10">
+      <nav data-testid="main-navbar" className="mx-auto flex w-full max-w-8xl items-center justify-between p-3 px-10">
         <div className="flex h-14 items-center">
           <LinkOrAnchor className="mr-auto" to="https://imos.org.au/">
             <img className={`transition-all duration-300 ${isScrolled ? 'h-10' : 'h-14'}`} src={logo} alt="IMOS logo" />
