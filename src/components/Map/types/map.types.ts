@@ -15,4 +15,7 @@ export interface BasicMapProps {
   navigationControl?: boolean;
   showCursorLocationPanel?: boolean;
   minZoom?: number;
+  mapWrapperRef?: React.RefObject<HTMLDivElement | null>;
+  stopCarousel?: () => void;
+  startCarousel?: () => void;
 }

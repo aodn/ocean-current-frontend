@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import useMapStore from '@/stores/map-store/mapStore';
 import { setProductId } from '@/stores/product-store/productStore';
 import BasicMap from '@/components/Map/BasicMap';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
@@ -12,9 +11,9 @@ const CAROUSEL_INTERVAL_MS = 2500;
 const HomeMapCarousel: React.FC = () => {
   const [selectedProductIndex, setSelectedProductIndex] = useState<number>(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const mapWrapperRef = useRef<HTMLDivElement | null>(null);
 
   const selectedProduct = productsData[selectedProductIndex];
-  const userInteractionTimestamp = useMapStore((state) => state.userInteractionTimestamp);
 
   const stopCarousel = useCallback(() => {
     if (intervalRef.current) {
@@ -22,6 +21,14 @@ const HomeMapCarousel: React.FC = () => {
       intervalRef.current = null;
     }
   }, []);
+
+  const startCarousel = useCallback(() => {
+    stopCarousel();
+
+    intervalRef.current = setInterval(() => {
+      setSelectedProductIndex((prevIndex) => (prevIndex + 1) % productsData.length);
+    }, CAROUSEL_INTERVAL_MS);
+  }, [stopCarousel]);
 
   const handleProductSelect = useCallback(
     (id: ProductID) => {
@@ -33,32 +40,29 @@ const HomeMapCarousel: React.FC = () => {
   );
 
   useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      setSelectedProductIndex((prevIndex) => (prevIndex + 1) % productsData.length);
-    }, CAROUSEL_INTERVAL_MS);
-
+    startCarousel();
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    if (userInteractionTimestamp > 0) {
       stopCarousel();
-    }
-  }, [userInteractionTimestamp, stopCarousel]);
+    };
+  }, [startCarousel, stopCarousel]);
 
   useEffect(() => {
     setProductId(selectedProduct.id);
   }, [selectedProduct.id]);
 
   return (
-    <>
-      <ErrorBoundary>
-        <BasicMap showCursorLocationPanel={false} style={{ borderRadius: '0.75rem 0.75rem 0 0', height: '100%' }} />
-      </ErrorBoundary>
+    <div className="flex h-full flex-col">
+      <div className="flex-1 border-2 border-red-600" ref={mapWrapperRef}>
+        <ErrorBoundary>
+          <BasicMap
+            showCursorLocationPanel={false}
+            style={{ borderRadius: '0.75rem 0.75rem 0 0' }}
+            mapWrapperRef={mapWrapperRef}
+            stopCarousel={stopCarousel}
+            startCarousel={startCarousel}
+          />
+        </ErrorBoundary>
+      </div>
 
       <div className="flex flex-col rounded-b-xl border border-solid border-imos-calypso-blue border-opacity-60 p-4 md:p-10">
         <div className="mb-2 flex flex-col md:min-h-36 md:py-6">
@@ -80,7 +84,7 @@ const HomeMapCarousel: React.FC = () => {
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

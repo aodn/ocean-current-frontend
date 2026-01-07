@@ -1,15 +1,16 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import Map, { MapMouseEvent, NavigationControl, ViewStateChangeEvent, StyleSpecification } from 'react-map-gl/mapbox';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import Map, {
+  MapMouseEvent,
+  NavigationControl,
+  ViewStateChangeEvent,
+  StyleSpecification,
+  MapRef,
+} from 'react-map-gl/mapbox';
 import { initialMobileMapViewState, mapConfig } from '@/configs/map';
-import useMapStore, {
-  setMapViewState,
-  patchMapViewState,
-  updateZoom,
-  updateUserInteractionTimestamp,
-} from '@/stores/map-store/mapStore';
+import useMapStore, { setMapViewState, patchMapViewState, updateZoom } from '@/stores/map-store/mapStore';
 import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { useDeviceType } from '@/hooks';
+import { useDeviceType, useResizeObserver } from '@/hooks';
 import { resetCurrentMetersStore } from '@/stores/current-meters-store/currentMeters';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { PRODUCTS_WITH_ARGO_DATA } from '@/configs/products/data-source';
@@ -30,6 +31,9 @@ const BasicMap: React.FC<BasicMapProps> = ({
   isMiniMap = false,
   navigationControl = true,
   showCursorLocationPanel = true,
+  mapWrapperRef,
+  stopCarousel,
+  startCarousel,
 }) => {
   const [cursor, setCursor] = useState<string>('grab');
   const [cursorLngLat, setCursorLngLat] = useState<{
@@ -39,7 +43,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
   const useMapViewState = useMapStore((state) => state.mapViewState);
   const { isArgo, isCurrentMeters } = useProductCheck();
   const { isMobile } = useDeviceType();
-
+  const mapRef = useRef<MapRef>(null);
   const { mainProduct, subProduct } = useProductConvert();
 
   const shouldShowArgoLayer = useMemo(() => {
@@ -54,6 +58,15 @@ const BasicMap: React.FC<BasicMapProps> = ({
 
   const shouldShowCursorLocationPanel = showCursorLocationPanel && !isMobile && cursorLngLat?.lng && cursorLngLat?.lat;
 
+  const handleMapResize = useCallback(() => {
+    if (mapRef.current) {
+      mapRef.current.resize();
+      startCarousel?.();
+    }
+  }, [startCarousel]);
+
+  useResizeObserver((mapWrapperRef as React.RefObject<HTMLDivElement>) || null, handleMapResize);
+
   useEffect(() => {
     resetCurrentMetersStore();
     if (isMobile) {
@@ -62,8 +75,8 @@ const BasicMap: React.FC<BasicMapProps> = ({
   }, [isMobile]);
 
   const handleMoveStart = useCallback(() => {
-    updateUserInteractionTimestamp();
-  }, []);
+    stopCarousel?.();
+  }, [stopCarousel]);
 
   const handleMove = useCallback(({ viewState }: ViewStateChangeEvent) => {
     setMapViewState(viewState);
@@ -104,6 +117,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
 
   return (
     <Map
+      ref={mapRef}
       id={id}
       data-testid={id}
       mapboxAccessToken={mapConfig.accessToken}
