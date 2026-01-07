@@ -52,7 +52,7 @@ const HomeMapCarousel: React.FC = () => {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex-1 border-2 border-red-600" ref={mapWrapperRef}>
+      <div className="flex-1" ref={mapWrapperRef}>
         <ErrorBoundary>
           <BasicMap
             showCursorLocationPanel={false}
