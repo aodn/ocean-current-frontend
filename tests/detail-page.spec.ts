@@ -66,6 +66,13 @@ test.describe('Detail Page Tests', () => {
     await categoryLink.click();
     await page.waitForLoadState('networkidle');
 
+    // Wait for the map to be fully loaded and interactive
+    const mapCanvas = page.locator('.mapboxgl-canvas').first();
+    await expect(mapCanvas).toBeVisible();
+
+    // Wait for map layers to render (region boxes take time to load)
+    await page.waitForTimeout(3000);
+
     // Get current URL before clicking region
     const urlBeforeClick = page.url();
 
@@ -73,9 +80,6 @@ test.describe('Detail Page Tests', () => {
     // Region boxes are rendered as mapbox layers, clicking anywhere should trigger region selection
     // Since we can't easily target specific regions in the canvas without access to the map instance or data-attributes,
     // we use a retry mechanism to click different parts of the map.
-    const mapCanvas = page.locator('.mapboxgl-canvas').first();
-    await expect(mapCanvas).toBeVisible();
-
     const box = await mapCanvas.boundingBox();
     if (box) {
       // Define a few points to try clicking (center, slightly off-center)
@@ -85,7 +89,9 @@ test.describe('Detail Page Tests', () => {
         { x: 0.4, y: 0.4 },
         { x: 0.6, y: 0.6 },
         { x: 0.3, y: 0.5 },
-        { x: 0.7, y: 0.5 }
+        { x: 0.7, y: 0.5 },
+        { x: 0.35, y: 0.35 },
+        { x: 0.65, y: 0.65 },
       ];
 
       for (const point of clickPoints) {
@@ -97,13 +103,14 @@ test.describe('Detail Page Tests', () => {
           await page.waitForFunction(
             (url) => window.location.href !== url || window.location.href.includes('region='),
             urlBeforeClick,
-            { timeout: 1500 } // Short timeout for retry
+            { timeout: 2000 }, // Increased timeout for retry
           );
-          
+
           // If we get here, the URL changed!
           break;
         } catch {
           // Continue to next point
+          await page.waitForTimeout(200);
         }
       }
 
