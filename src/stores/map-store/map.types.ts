@@ -3,7 +3,6 @@ import { ViewState } from 'react-map-gl/mapbox';
 export type State = {
   mapViewState: ViewState;
   interactiveLayerClickTimestamp: number;
-  userInteractionTimestamp: number;
 };
 
 export type Actions = {
@@ -16,7 +15,6 @@ export type Actions = {
     updatePosition: (latitude: number, longitude: number) => void;
     updatePositionAndZoom: (latitude: number, longitude: number, zoom: number) => void;
     updateInteractiveLayerClickTimestamp: () => void;
-    updateUserInteractionTimestamp: () => void;
     reset: (isMiniMap?: boolean) => void;
   };
 };

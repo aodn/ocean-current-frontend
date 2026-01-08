@@ -9,9 +9,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     this.state = { hasError: false, errorType: '', errorMessage: '' };
   }
 
-  componentDidCatch(error: Error, info: React.ErrorInfo) {
-    console.error(error, info.componentStack);
-
+  static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
     let errorType = '';
     if (error.message.includes('Product type')) {
       errorType = 'UnsupportedProduct';
@@ -19,7 +17,16 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
       errorType = 'UnsupportedSubProduct';
     }
 
-    this.setState({ hasError: true, errorType, errorMessage: error.message });
+    return {
+      hasError: true,
+      errorType,
+      errorMessage: error.message,
+    };
+  }
+
+  componentDidCatch(error: Error, info: React.ErrorInfo) {
+    // Only side effects here (logging, reporting, etc.)
+    console.error('Caught error:', error, info.componentStack);
   }
 
   render() {

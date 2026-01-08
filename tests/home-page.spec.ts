@@ -126,20 +126,19 @@ test.describe('Home Page Tests', () => {
 
     // Verify animated/transition elements exist on the map carousel
     // The map has a description card below it that cycles through products (e.g., "Chlorophyll-a Concentration", "SST")
-    // We target the h2 element in the card below the map.
-    // The map container has id "oc-basic-map" or class "mapboxgl-map". The description is in the sibling div.
-    
-    // We can look for the h2 with specific classes or context
-    const mapDescription = page.locator('.mapboxgl-map + div h2');
+    // We target the h2 element in the card below the map using unique class combination
+
+    // Find the h2 with font-poppins and font-semibold classes (product title in carousel)
+    const mapDescription = page.locator('h2.font-poppins.font-semibold').first();
     await expect(mapDescription).toBeVisible();
 
     const initialText = await mapDescription.textContent();
-    
-    // Increase wait time to ensure we catch the 3s animation cycle
-    await page.waitForTimeout(6000);
-    
+
+    // Increase wait time to ensure we catch the carousel animation cycle (CAROUSEL_INTERVAL_MS = 2500)
+    await page.waitForTimeout(3000);
+
     const newText = await mapDescription.textContent();
-    
+
     // The text should update if it's animating
     expect(initialText).not.toBe(newText);
   });
@@ -156,14 +155,14 @@ test.describe('Home Page Tests', () => {
 
     // Click the Zoom In button
     await zoomInButton.click();
-    
+
     // Wait a bit to ensure no errors occur during click
     await page.waitForTimeout(500);
 
     // Verify button is still visible and enabled (unless max zoom reached, which is unlikely on load)
     await expect(zoomInButton).toBeVisible();
     await expect(zoomInButton).toBeEnabled();
-    
+
     // Verify map canvas is still visible
     const mapContainer = page.locator('.mapboxgl-canvas').first();
     await expect(mapContainer).toBeVisible();
@@ -186,7 +185,7 @@ test.describe('Home Page Tests', () => {
 
     // Click the Zoom Out button
     await zoomOutButton.click();
-    
+
     // Wait a bit to ensure no errors occur during click
     await page.waitForTimeout(500);
 
