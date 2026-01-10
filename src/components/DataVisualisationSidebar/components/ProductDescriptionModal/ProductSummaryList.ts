@@ -73,7 +73,8 @@ export const productInfoList: ProductInfo[] = [
   {
     id: 'tidalCurrents',
     title: 'Tidal current and sea level predictions',
-    summary: 'Oceanic flow patterns.',
+    summary:
+      'Predictions of tidal sea level and depth-average tidal current from tide gauge and current meter observations as well as from the CSIRO tidal model.',
     description: TidalCurrentsModalData,
   },
   {
