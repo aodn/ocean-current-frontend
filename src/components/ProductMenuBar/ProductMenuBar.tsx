@@ -98,6 +98,10 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     setShowVideo(!showVideo);
   };
 
+  const exitVideo = () => {
+    setShowVideo(false);
+  };
+
   const handleToggleMap = () => {
     setShowMap(!showMap);
     if (showVideo) {
@@ -106,6 +110,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
   };
 
   const handleReset = () => {
+    exitVideo();
     if (isCurrentMeters) {
       resetCurrentMetersStore();
       return updateQueryParamsAndNavigate(`current-meters/${defaultCurrentMetersSubproduct}`, initialState);
