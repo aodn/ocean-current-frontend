@@ -5,7 +5,13 @@ import useArgoStore from '@/stores/argo-store/argoStore';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { ArgoProfile } from '@/types/argo';
 import { useQueryParams, useDeviceType } from '@/hooks';
-import { getBoundsFromCoordsArray } from '@/utils/geo-utils/geo';
+import {
+  getBoundsFromCoordsArray,
+  expandBoundsWithMercatorMargin,
+  DEFAULT_EXPANSION_FACTOR,
+  DEFAULT_LNG_EXPANSION_MULTIPLIER,
+  DEFAULT_MIN_LNG_MARGIN,
+} from '@/utils/geo-utils/geo';
 import { mapAnimation } from '@/configs/map';
 import { getPropertyFromMapFeatures, waitForMapAnimationAsync } from '../utils';
 import { shouldDeferToHigherPriorityLayer, hasFeatureAtPoint } from '../utils/layerPriority';
@@ -216,6 +222,17 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
       padding: 30,
       duration: mapAnimation.duration,
     });
+
+    // Expand the Argo bounds slightly in Mercator space and use that as dynamic maxBounds,
+    // so the user can pan a bit around the fitted view but not infinitely far.
+    const expandedBounds = expandBoundsWithMercatorMargin(bounds, {
+      expansionFactor: DEFAULT_EXPANSION_FACTOR,
+      lngExpansionMultiplier: DEFAULT_LNG_EXPANSION_MULTIPLIER,
+      minLngMargin: DEFAULT_MIN_LNG_MARGIN,
+    });
+
+    const mapbox = map.getMap();
+    mapbox.setMaxBounds(expandedBounds);
   }, [map, argoData, isMiniMap, isArgo]);
 
   return (

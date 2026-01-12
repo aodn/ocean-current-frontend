@@ -1,3 +1,5 @@
+import type { LngLatBoundsLike } from 'mapbox-gl';
+
 const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN as string;
 const MAPBOX_MAP_STYLE = import.meta.env.VITE_MAPBOX_MAP_STYLE as string;
 
@@ -9,6 +11,16 @@ export const mapConfig = {
 export const mapAnimation = {
   duration: 600,
 };
+
+/**
+ * Bounds used to limit how far the user can zoom out / pan on the main map.
+ * This does NOT control the initial view.
+ * Format: [[west, south], [east, north]]
+ */
+export const MAP_LIMIT_BOUNDS: LngLatBoundsLike = [
+  [60, -65], // west, south
+  [-140, 20], // east, north
+];
 
 export const initialMapViewState = {
   mapViewState: {
