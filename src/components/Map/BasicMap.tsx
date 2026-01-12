@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Map, {
   MapMouseEvent,
+  MapRef,
   NavigationControl,
   ViewStateChangeEvent,
   StyleSpecification,
-  MapRef,
 } from 'react-map-gl/mapbox';
-import { initialMobileMapViewState, mapConfig } from '@/configs/map';
+import type { Map as MapboxMap } from 'mapbox-gl';
+import { initialMobileMapViewState, mapConfig, MAP_LIMIT_BOUNDS } from '@/configs/map';
 import useMapStore, { setMapViewState, patchMapViewState, updateZoom } from '@/stores/map-store/mapStore';
 import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
@@ -40,10 +41,11 @@ const BasicMap: React.FC<BasicMapProps> = ({
     lng: number;
     lat: number;
   } | null>(null);
+  const mapRef = useRef<MapRef | null>(null);
+  const hasAppliedViewLimitsRef = useRef<boolean>(false);
   const useMapViewState = useMapStore((state) => state.mapViewState);
   const { isArgo, isCurrentMeters } = useProductCheck();
   const { isMobile } = useDeviceType();
-  const mapRef = useRef<MapRef>(null);
   const { mainProduct, subProduct } = useProductConvert();
 
   const shouldShowArgoLayer = useMemo(() => {
@@ -106,6 +108,36 @@ const BasicMap: React.FC<BasicMapProps> = ({
     [isMiniMap, isArgo, subProduct],
   );
 
+  const applyViewLimits = useCallback(
+    (map: MapboxMap) => {
+      if (isMiniMap) {
+        return;
+      }
+
+      const camera = map.cameraForBounds(MAP_LIMIT_BOUNDS, { padding: 40 });
+
+      if (camera?.zoom != null) {
+        map.setMinZoom(camera.zoom);
+      }
+
+      // For the main Argo map, maxBounds is managed dynamically in ArgoAsProductLayer.
+      if (!isArgo) {
+        map.setMaxBounds(MAP_LIMIT_BOUNDS);
+      }
+    },
+    [isArgo, isMiniMap],
+  );
+
+  const handleRender = useCallback(() => {
+    if (hasAppliedViewLimitsRef.current) return;
+
+    const mapbox = mapRef.current?.getMap();
+    if (!mapbox || !mapbox.isStyleLoaded()) return;
+
+    applyViewLimits(mapbox);
+    hasAppliedViewLimitsRef.current = true;
+  }, [applyViewLimits]);
+
   if (!mapConfig.accessToken) {
     return (
       <div className="flex h-full flex-col items-center justify-center">
@@ -125,6 +157,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
       bearing={0}
       pitch={0}
       cursor={cursor}
+      onRender={handleRender}
       onMoveStart={handleMoveStart}
       onMove={handleMove}
       onZoom={handleZoom}

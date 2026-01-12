@@ -101,6 +101,97 @@ const getBoundsFromCoordsArray = (coordinates: [number, number][]): LngLatBounds
   ];
 };
 
+// ============================================================================
+// Mercator projection utilities
+// ============================================================================
+
+/**
+ * Converts degrees to radians.
+ */
+const toRadians = (deg: number): number => (deg * Math.PI) / 180;
+
+/**
+ * Converts radians to degrees.
+ */
+const toDegrees = (rad: number): number => (rad * 180) / Math.PI;
+
+/**
+ * Converts a latitude (in degrees) to Web Mercator Y coordinate.
+ * This is useful for calculating visually balanced margins on a Mercator map.
+ */
+const latitudeToMercatorY = (lat: number): number => {
+  return Math.log(Math.tan(Math.PI / 4 + toRadians(lat) / 2));
+};
+
+/**
+ * Converts a Web Mercator Y coordinate back to latitude (in degrees).
+ */
+const mercatorYToLatitude = (y: number): number => {
+  return toDegrees(2 * Math.atan(Math.exp(y)) - Math.PI / 2);
+};
+
+// ============================================================================
+// Bounds expansion utilities
+// ============================================================================
+
+/** Default base expansion factor (20% of the span) */
+const DEFAULT_EXPANSION_FACTOR = 0.2;
+
+/** Default multiplier for longitude expansion relative to base factor */
+const DEFAULT_LNG_EXPANSION_MULTIPLIER = 1.2;
+
+/** Default minimum longitude margin in degrees */
+const DEFAULT_MIN_LNG_MARGIN = 5;
+
+interface ExpandBoundsOptions {
+  /** Base expansion factor (default: DEFAULT_EXPANSION_FACTOR = 0.2 = 20%) */
+  expansionFactor?: number;
+  /** Multiplier for longitude expansion relative to base factor (default: DEFAULT_LNG_EXPANSION_MULTIPLIER = 1.2) */
+  lngExpansionMultiplier?: number;
+  /** Minimum longitude margin in degrees (default: DEFAULT_MIN_LNG_MARGIN = 5) */
+  minLngMargin?: number;
+}
+
+/**
+ * Expands bounds by a percentage, using Mercator-aware latitude expansion
+ * for visually balanced margins on a Web Mercator map.
+ *
+ * @param bounds - The original bounds as [[minLng, minLat], [maxLng, maxLat]]
+ * @param options - Expansion options
+ * @returns Expanded bounds
+ */
+const expandBoundsWithMercatorMargin = (
+  bounds: LngLatBoundsLike,
+  options: ExpandBoundsOptions = {},
+): LngLatBoundsLike => {
+  const {
+    expansionFactor = DEFAULT_EXPANSION_FACTOR,
+    lngExpansionMultiplier = DEFAULT_LNG_EXPANSION_MULTIPLIER,
+    minLngMargin = DEFAULT_MIN_LNG_MARGIN,
+  } = options;
+
+  const [[minLng, minLat], [maxLng, maxLat]] = bounds as [[number, number], [number, number]];
+
+  // Calculate longitude margin with minimum threshold
+  const lngSpan = maxLng - minLng || 1;
+  const lngExpansionFactor = expansionFactor * lngExpansionMultiplier;
+  const lngMargin = Math.max(lngSpan * lngExpansionFactor, minLngMargin);
+
+  // Calculate latitude margin in Mercator space for visual balance
+  const yMin = latitudeToMercatorY(minLat);
+  const yMax = latitudeToMercatorY(maxLat);
+  const ySpan = yMax - yMin || 1;
+  const yMargin = ySpan * expansionFactor;
+
+  const expandedMinLat = mercatorYToLatitude(yMin - yMargin);
+  const expandedMaxLat = mercatorYToLatitude(yMax + yMargin);
+
+  return [
+    [minLng - lngMargin, expandedMinLat],
+    [maxLng + lngMargin, expandedMaxLat],
+  ];
+};
+
 export {
   calculateAreaFromCoords,
   convertAreaCoordsToGeoJsonCoordinates,
@@ -109,4 +200,14 @@ export {
   calculateOffsetByCoords,
   calculateCenterByCoords,
   getBoundsFromCoordsArray,
+  toRadians,
+  toDegrees,
+  latitudeToMercatorY,
+  mercatorYToLatitude,
+  expandBoundsWithMercatorMargin,
+  DEFAULT_EXPANSION_FACTOR,
+  DEFAULT_LNG_EXPANSION_MULTIPLIER,
+  DEFAULT_MIN_LNG_MARGIN,
 };
+
+export type { ExpandBoundsOptions };
