@@ -22,7 +22,7 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
       <div className="p-4">
         <div className="flex items-start justify-between">
           <InfoIcon className="mr-6 mt-1 flex-shrink-0" color="imos-sea-blue" />
-          <TruncateText className="text-imos-nav-text" lines={4} text={summary} />
+          <TruncateText className="text-imos-nav-text" lines={5} text={summary} />
         </div>
 
         <div aria-hidden onClick={handlePopup} className="mt-3 flex items-center justify-end">
