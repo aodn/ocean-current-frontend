@@ -1,11 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import Map, {
-  MapMouseEvent,
-  MapRef,
-  NavigationControl,
-  ViewStateChangeEvent,
-  StyleSpecification,
-} from 'react-map-gl/mapbox';
+import Map, { MapMouseEvent, MapRef, ViewStateChangeEvent, StyleSpecification } from 'react-map-gl/mapbox';
 import type { Map as MapboxMap } from 'mapbox-gl';
 import { initialMobileMapViewState, mapConfig, MAP_LIMIT_BOUNDS } from '@/configs/map';
 import useMapStore, { setMapViewState, patchMapViewState, updateZoom } from '@/stores/map-store/mapStore';
@@ -18,7 +12,7 @@ import { PRODUCTS_WITH_ARGO_DATA } from '@/configs/products/data-source';
 import MAP_STYLE from './data/map-style.basic-v8.json';
 import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer, CurrentMetersDeploymentPlotsLayer } from './layers';
 import { MouseCursorLocationPanel } from './panels';
-import MapAnimationCompleteHandler from './controls/MapAnimationCompleteHandler';
+import { MapAnimationCompleteHandler, CustomNavigationControl } from './controls';
 import { BasicMapProps } from './types/map.types';
 
 const { PRODUCT_REGION_BOX_LAYER_ID, ARGO_AS_PRODUCT_POINT_LAYER_ID } = mapboxLayerIds;
@@ -174,7 +168,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
       pitchWithRotate={false}
     >
       {children}
-      {navigationControl && <NavigationControl position="top-right" />}
+      {navigationControl && <CustomNavigationControl position="top-right" />}
 
       {shouldShowCursorLocationPanel && <MouseCursorLocationPanel lat={cursorLngLat?.lat} lng={cursorLngLat?.lng} />}
 
