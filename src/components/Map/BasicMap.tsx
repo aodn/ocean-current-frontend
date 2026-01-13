@@ -15,7 +15,7 @@ import { useDeviceType, useResizeObserver } from '@/hooks';
 import { resetCurrentMetersStore } from '@/stores/current-meters-store/currentMeters';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { PRODUCTS_WITH_ARGO_DATA } from '@/configs/products/data-source';
-import MAP_STYLE from './data/map-style.basic-v8.json';
+import MAP_STYLE from './data/map-style.bathymetry.json';
 import { RegionPolygonLayer, ArgoAsProductLayer, DataImageLayer, CurrentMetersDeploymentPlotsLayer } from './layers';
 import { MouseCursorLocationPanel } from './panels';
 import MapAnimationCompleteHandler from './controls/MapAnimationCompleteHandler';
