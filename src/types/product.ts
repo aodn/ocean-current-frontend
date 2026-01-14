@@ -1,6 +1,6 @@
 import { DateConfig } from './date';
 
-export type StandaloneProductID = 'argo' | 'EACMooringArray';
+export type StandaloneProductID = 'argo' | 'EACMooringArray' | 'gliders' | 'myOceanCurrent';
 
 export type ProductGroupID =
   | 'fourHourSst'
@@ -13,7 +13,8 @@ export type ProductGroupID =
   | 'currentMeters'
   | 'sealCtd'
   | 'sealCtdTags'
-  | 'surfaceWaves'; // Add surfaceWaves as a ProductGroupID
+  | 'surfaceWaves'
+  | 'swotGsla';
 
 // Child products (not at root level)
 export type ChildProductID =
@@ -82,6 +83,7 @@ export const productGroupIDs: ProductGroupID[] = [
   'sealCtd',
   'sealCtdTags',
   'surfaceWaves',
+  'swotGsla',
 ];
 
 export const childProductIDs: ChildProductID[] = [
@@ -123,7 +125,7 @@ export const childProductIDs: ChildProductID[] = [
   'surfaceWaves-buoyTimeseries',
 ];
 
-export const standaloneProductIDs: StandaloneProductID[] = ['argo', 'EACMooringArray'];
+export const standaloneProductIDs: StandaloneProductID[] = ['argo', 'EACMooringArray', 'gliders', 'myOceanCurrent'];
 
 export function isProductGroupId(id: AnyProductID): id is ProductGroupID {
   return productGroupIDs.includes(id as ProductGroupID);
