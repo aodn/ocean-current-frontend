@@ -45,7 +45,6 @@ const ProductContent: React.FC = () => {
     tidalCurrentsImageData,
     dateString,
   } = useProductContentData();
-
   // Determine if we should render with argo tags
   const shouldRenderDataImageWithArgoTags = useMemo(
     () => !productChecks.isArgo && checkArgoTagsAvailability(useProductId, regionData.scope),

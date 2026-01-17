@@ -124,6 +124,11 @@ export const childProductIDs: ChildProductID[] = [
 ];
 
 export const standaloneProductIDs: StandaloneProductID[] = ['argo', 'EACMooringArray'];
+export const tidalCurrentsProductIDs = ['tidalCurrents-spd', 'tidalCurrents-sl'] as const;
+
+export function isTidalCurrents(id: AnyProductID): id is (typeof tidalCurrentsProductIDs)[number] {
+  return tidalCurrentsProductIDs.includes(id as (typeof tidalCurrentsProductIDs)[number]);
+}
 
 export function isProductGroupId(id: AnyProductID): id is ProductGroupID {
   return productGroupIDs.includes(id as ProductGroupID);

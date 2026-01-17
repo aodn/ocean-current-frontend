@@ -282,7 +282,6 @@ const buildTidalCurrentsTagFileUrl = (region: string, subProduct: string, date: 
 
 const buildTidalCurrentsDataImageUrl = (point: string, date: Dayjs): string => {
   const formattedDate = date.format(DateFormat.MONTH);
-
   return `${imageUrlConfig.imageBaseUrl}/tides/monthplots/${point}_${formattedDate}.gif`;
 };
 

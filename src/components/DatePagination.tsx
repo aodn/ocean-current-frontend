@@ -5,6 +5,7 @@ import { useDateList } from '@/hooks';
 import { DateFormat } from '@/types/date';
 import { ProductID } from '@/types/product';
 import { ProductMenubarText } from '@/constants/textConstant';
+import { useTidalCurrentPoint } from '@/pages/DataView/product-content/hooks/useTidalCurrentPoint';
 import OceanCurrentDatePicker from './DatePicker/OceanCurrentDatePicker';
 import { Loading } from './Shared';
 
@@ -17,10 +18,10 @@ interface DatePaginationProps {
 
 const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, initialDate, isFreeMode = false }) => {
   const { isLoading, dateList, dateRange } = useDateList({ productId, isFreeMode });
+  const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId);
 
   // For free mode, use DAY format
-  const effectiveDateFormat = isFreeMode ? DateFormat.DAY : dateFormat;
-
+  const effectiveDateFormat = isFreeMode && !isTidalCurrentsPointSelected ? DateFormat.DAY : dateFormat;
   const { navigationMode, dateListNavigation, dateRangeNavigation } = useDateNavigation({
     availableDates: dateList,
     dateFormat: effectiveDateFormat,
@@ -29,7 +30,6 @@ const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, 
   });
   const { currentDate, updateDate, goToPrevious, goToNext, canGoPrevious, canGoNext } =
     navigationMode === 'dateList' ? dateListNavigation : dateRangeNavigation;
-
   // For product only with fixed date range (sst timeseries)
   const isSstTimeseries = productId === 'sixDaySst-timeseries';
   const isDatePickerDisabled = isSstTimeseries;

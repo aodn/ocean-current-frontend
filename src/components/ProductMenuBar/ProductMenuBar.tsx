@@ -22,6 +22,7 @@ import useArgoStore from '@/stores/argo-store/argoStore';
 import { useRegionLatestDates } from '@/services/hooks';
 import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
+import { useTidalCurrentPoint } from '@/pages/DataView/product-content/hooks/useTidalCurrentPoint';
 import DatePagination from '../DatePagination';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
@@ -167,6 +168,8 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     latestArgoLocationsData?.regionLatestDates,
   ]);
 
+  const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId);
+
   return (
     <div className="mb-2 w-full bg-white p-2 md:rounded-md md:bg-transparent md:p-0">
       <div className="my-2 flex h-11 items-center justify-center md:hidden">
@@ -197,7 +200,11 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
               onChange={(elem) => handleCurrentMetersDateChange(elem.id)}
             />
           ) : (
-            <DatePagination productId={productId} dateFormat={dateFormat} isFreeMode={isFreeMode} />
+            <DatePagination
+              productId={productId}
+              dateFormat={dateFormat}
+              isFreeMode={isTidalCurrentsPointSelected || isFreeMode}
+            />
           )}
         </div>
 

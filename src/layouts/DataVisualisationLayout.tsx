@@ -26,6 +26,7 @@ import { DateFormat } from '@/types/date';
 import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 import { ProductID } from '@/types/product';
 import useMapStore from '@/stores/map-store/mapStore';
+import { useUrlParams } from '@/pages/DataView/product-content/hooks/useUrlParams';
 
 type ParseeDateWithFormat = {
   dateString: string;
@@ -49,7 +50,7 @@ const DataVisualisationLayout: React.FC = () => {
   const shouldShowProductOverMap = useShowProductOverMap();
   const interactiveLayerClickTimestamp = useMapStore((state) => state.interactiveLayerClickTimestamp);
   const toggleSidebar = () => setSidebarVisible((prev) => !prev);
-
+  const { hasSelectedParams } = useUrlParams();
   const urlType = useUrlType();
   useSetProductId(urlType, setProductId);
 
@@ -82,7 +83,7 @@ const DataVisualisationLayout: React.FC = () => {
       }
 
       try {
-        const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
+        const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope, hasSelectedParams.point);
 
         const getFallbackYear = () => (date ? date.year() : dayjs().year());
         const getFallbackMonth = () => (date ? date.month() + 1 : dayjs().month() + 1);
@@ -166,7 +167,7 @@ const DataVisualisationLayout: React.FC = () => {
       }
       return null;
     },
-    [],
+    [hasSelectedParams.point],
   );
 
   useEffect(() => {
@@ -192,7 +193,6 @@ const DataVisualisationLayout: React.FC = () => {
 
   useEffect(() => {
     if (!date || !productId || !regionScope) return;
-
     //when date change or product id change, reset date, as date format is based on product.
     if (previousDateRef.current === date && previousProductIdRef.current === productId) return;
 
@@ -203,7 +203,6 @@ const DataVisualisationLayout: React.FC = () => {
       productId,
       regionScope,
     });
-
     if (!currentDate || !currentDate.isValid()) return;
 
     previousDateRef.current = date;
