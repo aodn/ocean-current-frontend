@@ -258,7 +258,7 @@ const DataVisualisationLayout: React.FC = () => {
             setShowVideo={setShowVideo}
             showMap={showMap}
             setShowMap={setShowMap}
-            isFreeMode={!shouldShowProductOverMap}
+            mode={shouldShowProductOverMap ? 'list' : 'range'}
           />
           <ErrorBoundary key={product?.mainProduct}>
             <Outlet context={{ showVideo, showMap, loading: true }} />

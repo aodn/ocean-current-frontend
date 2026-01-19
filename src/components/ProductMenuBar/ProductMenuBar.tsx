@@ -33,7 +33,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
   setShowMap,
   showMap = false,
   isMapView = false,
-  isFreeMode = false,
+  mode,
 }) => {
   const { disableVideoCreation } = useDateRange();
 
@@ -76,7 +76,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
 
   const dateFormat = useProductDateFormat();
 
-  const { isLoading: isProductDateListLoading, dateList } = useDateList({ productId, isFreeMode });
+  const { isLoading: isProductDateListLoading, dateList } = useDateList({ productId, mode });
   const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId);
 
   const handleCopyLink = () => {
@@ -207,7 +207,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
             <DatePagination
               productId={productId}
               dateFormat={dateFormat}
-              isFreeMode={isTidalCurrentsPointSelected || isFreeMode}
+              mode={isTidalCurrentsPointSelected ? 'range' : mode}
             />
           )}
         </div>

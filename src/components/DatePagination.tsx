@@ -13,15 +13,15 @@ interface DatePaginationProps {
   productId: ProductID;
   dateFormat: DateFormat;
   initialDate?: string;
-  isFreeMode?: boolean;
+  mode?: 'range' | 'list';
 }
 
-const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, initialDate, isFreeMode = false }) => {
-  const { isLoading, dateList, dateRange } = useDateList({ productId, isFreeMode });
+const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, initialDate, mode = 'range' }) => {
+  const { isLoading, dateList, dateRange } = useDateList({ productId, mode });
   const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId);
 
   // For free mode, use DAY format
-  const effectiveDateFormat = isFreeMode && !isTidalCurrentsPointSelected ? DateFormat.DAY : dateFormat;
+  const effectiveDateFormat = mode === 'range' && !isTidalCurrentsPointSelected ? DateFormat.DAY : dateFormat;
   const { navigationMode, dateListNavigation, dateRangeNavigation } = useDateNavigation({
     availableDates: dateList,
     dateFormat: effectiveDateFormat,
@@ -45,7 +45,6 @@ const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, 
       </div>
     );
   }
-
   return (
     <OceanCurrentDatePicker
       productId={productId}
@@ -61,7 +60,6 @@ const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, 
       displayText={displayText}
       startDate={dateRange?.startDate}
       endDate={dateRange?.endDate}
-      isFreeMode={isFreeMode}
     />
   );
 };
