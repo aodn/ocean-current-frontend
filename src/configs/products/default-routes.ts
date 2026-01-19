@@ -18,4 +18,5 @@ export const DEFAULT_SUB_PRODUCT_ROUTES: Record<ProductGroupID, string> = {
   sealCtd: 'tracks',
   sealCtdTags: 'timeseries',
   surfaceWaves: 'wave',
+  swotGsla: 'ssh',
 };
