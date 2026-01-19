@@ -45,3 +45,5 @@ tests/screenshots/
 # AI
 .claude
 CLAUDE.md
+.specstory
+.cursorindexingignore

@@ -545,4 +545,33 @@ export const OC_PRODUCTS: Product[] = [
     localSegment: '',
     stateSegment: 'EAC_array_figures/SST/Brisbane',
   },
+  /*
+    These products are not yet implemented, just for Navigation purposes
+  */
+  {
+    title: 'Gliders',
+    key: 'gliders',
+    path: 'gliders',
+    latestEntry: null,
+    dateFormat: null,
+    localSegment: null,
+    stateSegment: 'GLIDERS',
+  },
+  {
+    title: 'SWOT and GSLA',
+    key: 'swotGsla',
+    path: 'swot-gsla',
+    latestEntry: null,
+    dateFormat: null,
+    localSegment: null,
+    stateSegment: 'SWOT_GSLA',
+    children: [],
+  },
+  {
+    title: 'My Ocean Current',
+    key: 'myOceanCurrent',
+    path: 'my-ocean-current',
+    latestEntry: null,
+    dateFormat: null,
+  },
 ] as const;

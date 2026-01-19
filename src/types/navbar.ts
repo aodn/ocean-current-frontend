@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { IconProps } from '@/components/Shared/Icons';
+import { AnyProductID } from './product';
 
 export interface BasicLink {
   title: string;
@@ -9,7 +10,7 @@ export interface BasicLink {
 }
 
 export interface DetailedLink {
-  id: string;
+  id: AnyProductID;
   title: string;
   Icon: FC<IconProps>;
   description: string;
