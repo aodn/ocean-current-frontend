@@ -233,9 +233,9 @@ export const OC_PRODUCTS: Product[] = [
     stateSegment: '30d_MEAN',
     children: [
       {
-        title: 'Anomalies',
-        key: 'monthlyMeans-anomalies',
-        path: 'anomalies',
+        title: '30-day mean',
+        key: 'monthlyMeans-30day',
+        path: '30-day',
         imgPath: null,
         dateFormat: {
           localFormat: DateFormat.MONTH,
@@ -243,9 +243,9 @@ export const OC_PRODUCTS: Product[] = [
         },
       },
       {
-        title: 'OFAM3/SSTAARS',
-        key: 'monthlyMeans-CLIM_OFAM3_SSTAARS',
-        path: 'CLIM_OFAM3_SSTAARS',
+        title: 'Climatology mean',
+        key: 'monthlyMeans-climatology',
+        path: 'climatology',
         imgPath: 'CLIM_OFAM3_SSTAARS',
         dateFormat: {
           localFormat: DateFormat.MONTH_ONLY,

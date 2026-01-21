@@ -98,11 +98,11 @@ export const fullLocalList = [
 ] as const;
 
 export const productRegionMap: ProductRegionMap = {
-  'monthlyMeans-anomalies': {
+  'monthlyMeans-30day': {
     state: ['NW_mm', 'NE_mm', 'SE_mm', 'SO_mm', 'GAB_mm', 'SW_mm', 'SLA30d', 'SST30d'],
     local: [],
   },
-  'monthlyMeans-CLIM_OFAM3_SSTAARS': {
+  'monthlyMeans-climatology': {
     state: ['NW_mm', 'NE_mm', 'SE_mm', 'SO_mm', 'GAB_mm', 'SW_mm', 'SLA30d', 'SST30d'],
     local: [],
   },

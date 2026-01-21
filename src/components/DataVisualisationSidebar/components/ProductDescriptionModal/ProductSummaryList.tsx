@@ -2,7 +2,6 @@ import {
   AdjustedSeaLevelAnomalyModalData,
   ClimatologyModalData,
   FourHourSstModalData,
-  MonthlyMeansModalData,
   OceanColourModalData,
   SixDaySstModalData,
   SurfaceWaveModalData,
@@ -25,7 +24,7 @@ export const productInfoList: ProductInfo[] = [
   {
     id: 'sixDaySst',
     title: 'Six Day Sst',
-    summary: 'Sea Surface Temperature (°C) 6-day ngt-only comp QL3',
+    summary: 'Sea Surface Temperature (°C) 6-day composite of night-only SST',
     description: SixDaySstModalData,
   },
   {
@@ -52,9 +51,8 @@ export const productInfoList: ProductInfo[] = [
   {
     id: 'monthlyMeans',
     title: 'Monthly Means',
-    summary:
-      'Monthly means are time-averaged values of sea surface temperature (SST) and Adjusted Sea Level Anomalies (Adj. SLA) over a month. They provide a stable representation of ocean conditions by averaging short-term variations, useful for identifying long-term trends and patterns.',
-    description: MonthlyMeansModalData,
+    summary: null,
+    description: () => null,
   },
   {
     id: 'climatology',

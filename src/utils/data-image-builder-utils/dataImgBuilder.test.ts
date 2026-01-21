@@ -194,9 +194,9 @@ describe('buildProductImageUrlByProductId', () => {
   });
 
   describe('monthlyMeans', () => {
-    it('should return the correct image url for CLIM_OFAM3_SSTAARS', () => {
+    it('should return the correct image url for monthlyMeans-climatology', () => {
       // Arrange
-      const productId = 'monthlyMeans-CLIM_OFAM3_SSTAARS';
+      const productId = 'monthlyMeans-climatology';
       const region = 'SW_mm';
       const regionScope = RegionScope.State;
       const date = '202402';
@@ -208,9 +208,9 @@ describe('buildProductImageUrlByProductId', () => {
       expect(imageUrl).toBe(`${imageBaseUrl}/30d_MEAN/CLIM_OFAM3_SSTAARS/SW_mm/02.gif`);
     });
 
-    it('should return the correct image URL for anomalies', () => {
+    it('should return the correct image URL for monthlyMeans-30day', () => {
       // Arrange
-      const productId = 'monthlyMeans-anomalies';
+      const productId = 'monthlyMeans-30day';
       const region = 'NW_mm';
       const regionScope = RegionScope.State;
       const date = '20240615';
@@ -329,7 +329,7 @@ describe('buildProductVideoUrl', () => {
 
   it('should return the correct video url for monthly means', () => {
     // Arrange
-    const productType = 'monthlyMeans-anomalies';
+    const productType = 'monthlyMeans-30day';
     const region = 'Au';
     const regionScope = RegionScope.State;
     const date = '202405';

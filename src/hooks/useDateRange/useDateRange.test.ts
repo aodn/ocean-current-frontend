@@ -216,7 +216,7 @@ describe('useDateRange', () => {
     // expect(result.current.allDates.every((date) => date.date.getHours() % 2 === 0)).toBe(true);
   });
 
-  it('should handle monthly means anomalies correctly', () => {
+  it('should handle monthly means 30 day correctly', () => {
     // Arrange
     vi.mocked(useProductConvert).mockReturnValue({
       mainProduct: {
@@ -225,9 +225,9 @@ describe('useDateRange', () => {
         path: '/monthly-means',
       } as Product,
       subProduct: {
-        key: 'monthlyMeans-anomalies',
-        title: 'Anomalies',
-        path: '/anomalies',
+        key: 'monthlyMeans-30day',
+        title: '30-day mean',
+        path: '/30-day',
       },
       subProducts: [],
     });

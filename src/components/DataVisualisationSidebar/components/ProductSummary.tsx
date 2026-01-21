@@ -18,21 +18,24 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
   };
 
   return (
-    <>
-      <div className="p-4">
-        <div className="flex items-start justify-between">
-          <InfoIcon className="mr-6 mt-1 flex-shrink-0" color="imos-sea-blue" />
-          <TruncateText className="text-imos-nav-text" lines={5} text={summary} />
+    summary &&
+    summary.length > 0 && (
+      <>
+        <div className="p-4">
+          <div className="flex items-start justify-between">
+            <InfoIcon className="mr-6 mt-1 flex-shrink-0" color="imos-sea-blue" />
+            <TruncateText className="text-imos-nav-text" lines={5} text={summary} />
+          </div>
+
+          <div aria-hidden onClick={handlePopup} className="mt-3 flex items-center justify-end">
+            <p className="mr-2 cursor-pointer font-semibold text-imos-dark-grey">{GeneralText.READ_MORE}</p>
+            <ArrowWithTailIcon className="cursor-pointer" />
+          </div>
         </div>
 
-        <div aria-hidden onClick={handlePopup} className="mt-3 flex items-center justify-end">
-          <p className="mr-2 cursor-pointer font-semibold text-imos-dark-grey">{GeneralText.READ_MORE}</p>
-          <ArrowWithTailIcon className="cursor-pointer" />
-        </div>
-      </div>
-
-      <Popup title={title} body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
-    </>
+        <Popup title={title} body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
+      </>
+    )
   );
 };
 
