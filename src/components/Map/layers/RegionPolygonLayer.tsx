@@ -18,6 +18,7 @@ import { RegionScope } from '@/constants/region';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { API_LATEST_DATES_DISABLED_PRODUCTS } from '@/configs/products/data-source';
 import { mapAnimation } from '@/configs/map';
+import { isValidMonthlyMeanDate } from '@/utils/date-utils/date';
 import useRegionPolygons from '../hooks/useRegionPolygons';
 import { getPropertyFromMapFeatures, waitForMapAnimationAsync } from '../utils';
 import { shouldDeferToHigherPriorityLayer, hasFeatureAtPoint, shouldBlockRegionHover } from '../utils/layerPriority';
@@ -59,12 +60,14 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
 
   const fallbackLatestDate = dayjs().subtract(2, 'day').format('YYYYMMDD');
 
+  /**
+   * If today is before the 15th of the month, use the 15th of the previous month,
+   * Otherwise, use the 15th of the current month
+   */
   const getMonthlyMeansDate = useCallback(() => {
     const today = dayjs();
     const currentDay = today.date();
 
-    // If today is before the 15th of the month, use the 15th of the previous month
-    // Otherwise, use the 15th of the current month
     if (currentDay < 15) {
       return today.subtract(1, 'month').date(15).format('YYYYMMDD');
     } else {
@@ -224,19 +227,25 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
             const dateFromQuery = searchParams.date;
 
             if (productId === 'monthlyMeans-anomalies') {
-              const today = dayjs();
               let monthlyMeansDate = getMonthlyMeansDate();
-              if (today.date() >= 15) {
-                const candidateUrl = buildProductImageUrl(
-                  'monthlyMeans-anomalies',
-                  regionCode,
-                  RegionScope.State,
-                  monthlyMeansDate,
-                );
-                const exists = await validateImageExists(candidateUrl);
-                if (!exists) {
-                  monthlyMeansDate = today.subtract(1, 'month').date(15).format('YYYYMMDD');
-                }
+
+              if (
+                dateFromQuery &&
+                isValidMonthlyMeanDate(dateFromQuery) &&
+                dayjs(dateFromQuery).isBefore(dayjs(monthlyMeansDate).add(1, 'day'))
+              ) {
+                monthlyMeansDate = dateFromQuery;
+              }
+
+              const candidateUrl = buildProductImageUrl(
+                'monthlyMeans-anomalies',
+                regionCode,
+                RegionScope.State,
+                monthlyMeansDate,
+              );
+              const exists = await validateImageExists(candidateUrl);
+              if (!exists) {
+                monthlyMeansDate = dayjs(monthlyMeansDate).subtract(1, 'month').date(15).format('YYYYMMDD');
               }
 
               queryObject = { region: regionCode, date: monthlyMeansDate, point: null };
