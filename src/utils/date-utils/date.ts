@@ -122,6 +122,7 @@ function toYYYYMM(date: Date = new Date()): string {
   const month = String(date.getMonth() + 1).padStart(2, '0');
   return `${year}${month}`;
 }
+
 /**
  *
  * @param dateStr expected be following formats: YYYYMMDDHHmm, YYYYMMDDHH, YYYYMMDD, YYYYMM

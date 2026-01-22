@@ -27,4 +27,16 @@ const fetchRegionLatestDatesByProductId = async (productId: ProductID) => {
   return response.data;
 };
 
-export { fetchImageListByProductIdAndRegion, fetchCurrentMetersPlotsList, fetchRegionLatestDatesByProductId };
+const fetchTidalCurrentsMonthPlotsByPoint = async (pointId: string) => {
+  const response = await apiClient.get<ImageListResponse[]>(
+    `/metadata/image-list/tidalCurrents-monthplots?region=${pointId}`,
+  );
+  return response.data;
+};
+
+export {
+  fetchImageListByProductIdAndRegion,
+  fetchCurrentMetersPlotsList,
+  fetchRegionLatestDatesByProductId,
+  fetchTidalCurrentsMonthPlotsByPoint,
+};

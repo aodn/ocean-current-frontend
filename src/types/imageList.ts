@@ -9,6 +9,7 @@ interface ImageListResponse {
   productId: string;
   region: string;
   files: ImageFile[];
+  depth?: string;
 }
 
 interface DepthData {

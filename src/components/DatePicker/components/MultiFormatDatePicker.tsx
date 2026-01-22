@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import dayjs from 'dayjs';
@@ -9,13 +9,17 @@ import { MultiFormatDatePickerProps } from '../types/multiFormatDatePicker.types
 import CustomInput from './CustomInput';
 import MonthOnlyHeader from './MonthOnlyHeader';
 
+/**
+ * startDate and endDate have the highest priority; if they exist, they will ignore dateList and the available dates will be determined by startDate and endDate instead of dateList.
+ * otherwise, dateList will be used to determine available dates.
+ */
 const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
   dateFormat,
   dateList = [],
   selectedDate,
   onChange,
   isDisabled = false,
-  startDate, //startDate and endDate have the highest priority; if they exist, they will overwrite dateList.
+  startDate,
   endDate,
 }) => {
   const { isMonthFormat, isMonthOnlyFormat, isYearFormat, isHourFormat, isMinuteFormat } =
@@ -45,89 +49,100 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
     };
   }, [dateList, dateFormat]);
 
-  const filterAvailableDate = (date: Date): boolean => {
-    const dayStr = dayjs(date).format(DateFormat.DAY);
-    return availableDatesSet.has(dayStr);
-  };
-
-  const handleDateChange = (date: Date | null) => {
-    if (isDisabled) return;
-
-    if (date && (isHourFormat || isMinuteFormat)) {
-      const selectedDay = dayjs(date).format(DateFormat.DAY);
-
-      const firstDateTime = findFirstDateTimeForSelectedDay(
-        dateList.map(({ date }) => date),
-        selectedDay,
-        dateFormat,
-      );
-      if (firstDateTime) {
-        onChange(dayjs(firstDateTime, dateFormat).toDate());
-      }
-      return;
-    }
-    onChange(date);
-  };
-
-  if (isMonthFormat) {
-    return (
-      <ReactDatePicker
-        customInput={<CustomInput disabled={isDisabled} />}
-        selected={selectedDate}
-        onChange={handleDateChange}
-        minDate={startDate || firstDate}
-        maxDate={endDate || lastDate}
-        dateFormat="MM/yyyy"
-        showMonthYearPicker
-        showTwoColumnMonthYearPicker
-        disabled={isDisabled}
-      />
-    );
-  }
-
-  if (isMonthOnlyFormat) {
-    return (
-      <ReactDatePicker
-        customInput={<CustomInput disabled={isDisabled} />}
-        selected={selectedDate}
-        onChange={handleDateChange}
-        dateFormat="MM"
-        showMonthYearPicker
-        renderCustomHeader={({ date }) => <MonthOnlyHeader date={date} />}
-        disabled={isDisabled}
-      />
-    );
-  }
-
-  if (isYearFormat) {
-    return (
-      <ReactDatePicker
-        customInput={<CustomInput disabled={isDisabled} />}
-        selected={selectedDate}
-        onChange={handleDateChange}
-        dateFormat="yyyy"
-        minDate={startDate || firstDate}
-        maxDate={endDate || lastDate}
-        showYearPicker
-        disabled={isDisabled}
-      />
-    );
-  }
-
-  return (
-    <ReactDatePicker
-      customInput={<CustomInput disabled={isDisabled} />}
-      selected={selectedDate}
-      minDate={startDate || firstDate}
-      maxDate={endDate || lastDate}
-      filterDate={startDate && endDate ? undefined : filterAvailableDate}
-      onChange={handleDateChange}
-      showYearDropdown
-      showMonthDropdown
-      dropdownMode="select"
-      disabled={isDisabled}
-    />
+  const filterAvailableDate = useCallback(
+    (date: Date): boolean => {
+      const dayStr = dayjs(date).format(DateFormat.DAY);
+      return availableDatesSet.has(dayStr);
+    },
+    [availableDatesSet],
   );
+
+  const handleDateChange = useCallback(
+    (date: Date | null) => {
+      if (isDisabled) return;
+
+      if (date && (isHourFormat || isMinuteFormat)) {
+        const selectedDay = dayjs(date).format(DateFormat.DAY);
+
+        const firstDateTime = findFirstDateTimeForSelectedDay(
+          dateList.map(({ date }) => date),
+          selectedDay,
+          dateFormat,
+        );
+        if (firstDateTime) {
+          onChange(dayjs(firstDateTime, dateFormat).toDate());
+        }
+        return;
+      }
+      onChange(date);
+    },
+    [isDisabled, isHourFormat, isMinuteFormat, dateList, dateFormat, onChange],
+  );
+
+  const datePickerProps = useMemo(() => {
+    const hasDateRange = startDate && endDate;
+    const baseProps = {
+      customInput: <CustomInput disabled={isDisabled} />,
+      selected: selectedDate,
+      onChange: handleDateChange,
+      disabled: isDisabled,
+      filterDate: hasDateRange ? undefined : filterAvailableDate,
+    };
+
+    if (isMonthFormat) {
+      return {
+        ...baseProps,
+        dateFormat: 'MM/yyyy',
+        minDate: startDate || firstDate,
+        maxDate: endDate || lastDate,
+        showMonthYearPicker: true,
+        showTwoColumnMonthYearPicker: true,
+      };
+    }
+
+    if (isMonthOnlyFormat) {
+      return {
+        ...baseProps,
+        dateFormat: 'MM',
+        showMonthYearPicker: true,
+        renderCustomHeader: ({ date }: { date: Date }) => <MonthOnlyHeader date={date} />,
+      };
+    }
+
+    if (isYearFormat) {
+      return {
+        ...baseProps,
+        dateFormat: 'yyyy',
+        minDate: startDate || firstDate,
+        maxDate: endDate || lastDate,
+        showYearPicker: true,
+      };
+    }
+
+    // Day format
+    return {
+      ...baseProps,
+      minDate: startDate || firstDate,
+      maxDate: endDate || lastDate,
+      showYearDropdown: true,
+      showMonthDropdown: true,
+      dropdownMode: 'select' as const,
+    };
+  }, [
+    isDisabled,
+    selectedDate,
+    handleDateChange,
+    filterAvailableDate,
+    isMonthFormat,
+    isMonthOnlyFormat,
+    isYearFormat,
+    startDate,
+    endDate,
+    firstDate,
+    lastDate,
+  ]);
+
+  return <ReactDatePicker {...datePickerProps} />;
 };
 
 export default MultiFormatDatePicker;

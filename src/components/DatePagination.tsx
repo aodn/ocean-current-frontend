@@ -5,7 +5,6 @@ import { useDateList } from '@/hooks';
 import { DateFormat } from '@/types/date';
 import { ProductID } from '@/types/product';
 import { ProductMenubarText } from '@/constants/textConstant';
-import { useTidalCurrentPoint } from '@/pages/DataView/product-content/hooks/useTidalCurrentPoint';
 import OceanCurrentDatePicker from './DatePicker/OceanCurrentDatePicker';
 import { Loading } from './Shared';
 
@@ -16,12 +15,15 @@ interface DatePaginationProps {
   mode?: 'range' | 'list';
 }
 
+/**
+ * DatePagination have two modes: 'range' and 'list'.
+ * In 'range' mode, it allows users to select a date range (start date and end date).
+ * In 'list' mode, it allows users to select a single date from a list of available dates.
+ */
 const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, initialDate, mode = 'range' }) => {
   const { isLoading, dateList, dateRange } = useDateList({ productId, mode });
-  const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId);
-
-  // For free mode, use DAY format
-  const effectiveDateFormat = mode === 'range' && !isTidalCurrentsPointSelected ? DateFormat.DAY : dateFormat;
+  // For range mode, use DAY format
+  const effectiveDateFormat = mode === 'range' ? DateFormat.DAY : dateFormat;
   const { navigationMode, dateListNavigation, dateRangeNavigation } = useDateNavigation({
     availableDates: dateList,
     dateFormat: effectiveDateFormat,

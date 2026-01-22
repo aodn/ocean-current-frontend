@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { ProductID } from '@/types/product';
 import { API_IMAGE_LIST_ENABLED_PRODUCTS, FIXED_IMAGE_LIST_PRODUCTS } from '@/configs/products';
-import { fetchImageListByProductIdAndRegion } from '@/services/imageList';
+import { fetchImageListByProductIdAndRegion, fetchTidalCurrentsMonthPlotsByPoint } from '@/services/imageList';
 import { ImageFile, ImageListResponse } from '@/types/imageList';
 import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
 import { ArgoProfileCycle } from '@/types/argo';
@@ -15,6 +15,7 @@ import { RegionScope } from '@/constants/region';
 import { sharedQueryConfig } from '@/configs/query';
 import { useRegionLatestDates } from '@/services/hooks';
 import { removeDuplicatesByKey } from '@/utils/array-utils';
+import { useTidalCurrentPoint } from '@/pages/DataView/product-content/hooks/useTidalCurrentPoint';
 import { useArgoProductValidQueryParams } from '../useArgoProductValidQueryParams/useArgoProductValidQueryParams';
 import { generateDateRange } from './mockData';
 
@@ -27,6 +28,12 @@ interface UseDateListOptions {
 
 const extractDateFromFilename = (filename: string): string => {
   return filename.split('.')[0];
+};
+
+const extractDateFromTidalCurrentsPointFilename = (filename: string): string => {
+  const datePart = filename.split('.')[0];
+  const parts = datePart.split('_');
+  return parts.at(-1) || 'invalid date';
 };
 
 // Shared, precompiled regex for SealCTD graph filenames like T_2014_p3.gif or S_2023_2024_p0.gif
@@ -63,12 +70,11 @@ const processSealCtdDateList = (files: ImageFile[]): DateItem[] => {
     .map((year) => ({ date: year }));
 };
 
-const processFilesToDateList = (files: ImageFile[]): DateItem[] => {
+const processFilesToDateList = (files: ImageFile[], cb: (filename: string) => string): DateItem[] => {
   if (!files || files.length === 0) {
     return [];
   }
-
-  return files.map((file) => ({ date: extractDateFromFilename(file.name) })).filter(({ date }) => /^\d+$/.test(date));
+  return files.map((file) => ({ date: cb(file.name) })).filter(({ date }) => /^\d+$/.test(date));
 };
 
 const processOceanColourFilesToDateList = (imageGroups: ImageListResponse[]): OceanColourDateItem[] => {
@@ -117,6 +123,7 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
   const region = regionCodeFromStore;
   const metaData = useArgoStore((state) => state);
   const wmoId = metaData.selectedArgoParams.worldMeteorologicalOrgId;
+  const { isTidalCurrentsPointSelected, selectedPoint } = useTidalCurrentPoint(productId);
 
   const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
 
@@ -134,16 +141,29 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
   const standardQuery = useQuery({
     queryKey: ['dateList', productId, region],
     queryFn: () => fetchImageListByProductIdAndRegion(productId, region!),
-    enabled: !isRangeMode && shouldUseApi && !isArgo && Boolean(region),
+    enabled: !isRangeMode && shouldUseApi && !isArgo && Boolean(region) && !isTidalCurrentsPointSelected,
     ...sharedQueryConfig,
   });
 
+  const tidalCurrentsPointQuery = useQuery({
+    queryKey: ['tidalCurrentsPointDateList', productId, selectedPoint],
+    queryFn: () => fetchTidalCurrentsMonthPlotsByPoint(selectedPoint!),
+    enabled: !isRangeMode && isTidalCurrentsPointSelected,
+    ...sharedQueryConfig,
+  });
   const { data: latestArgoLocationsData, isLoading: isLatestArgoLocationsDataLoading } = useRegionLatestDates(
     productId,
     !isRangeMode && isArgo && !isArgoValid,
   );
 
-  const { data } = isArgo ? argoQuery : standardQuery;
+  let data;
+  if (isArgo) {
+    data = argoQuery.data;
+  } else if (isTidalCurrentsPointSelected) {
+    data = tidalCurrentsPointQuery.data;
+  } else {
+    data = standardQuery.data;
+  }
 
   // Async mock date list for monthlyMeans-anomalies to validate latest available month
   const monthlyMeansMockQuery = useQuery({
@@ -215,8 +235,10 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
 
         if (shouldUseSealCtdProcessor(productId, fileList)) {
           dateList = processSealCtdDateList(fileList);
+        } else if (isTidalCurrentsPointSelected) {
+          dateList = processFilesToDateList(fileList, extractDateFromTidalCurrentsPointFilename);
         } else {
-          dateList = processFilesToDateList(fileList);
+          dateList = processFilesToDateList(fileList, extractDateFromFilename);
         }
       }
     }
@@ -236,12 +258,22 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
     }
   }
 
-  const combinedLoading = isArgo
-    ? argoQuery.isLoading || isLatestArgoLocationsDataLoading
-    : shouldUseApi
-      ? standardQuery.isLoading
-      : monthlyMeansMockQuery.isLoading;
-  const combinedError = isArgo ? argoQuery.error : shouldUseApi ? standardQuery.error : monthlyMeansMockQuery.error;
+  const getLoadingState = () => {
+    if (isArgo) return argoQuery.isLoading || isLatestArgoLocationsDataLoading;
+    if (isTidalCurrentsPointSelected) return tidalCurrentsPointQuery.isLoading;
+    if (shouldUseApi) return standardQuery.isLoading;
+    return monthlyMeansMockQuery.isLoading;
+  };
+
+  const getError = () => {
+    if (isArgo) return argoQuery.error;
+    if (isTidalCurrentsPointSelected) return tidalCurrentsPointQuery.error;
+    if (shouldUseApi) return standardQuery.error;
+    return monthlyMeansMockQuery.error;
+  };
+
+  const combinedLoading = getLoadingState();
+  const combinedError = getError();
 
   return { isLoading: combinedLoading, dateList, error: combinedError, dateRange };
 };

@@ -36,7 +36,6 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
   mode,
 }) => {
   const { disableVideoCreation } = useDateRange();
-
   const { updateQueryParamsAndNavigate, updateQueryParams } = useQueryParams();
   const argoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
 
@@ -204,11 +203,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
               onChange={(elem) => handleCurrentMetersDateChange(elem.id)}
             />
           ) : (
-            <DatePagination
-              productId={productId}
-              dateFormat={dateFormat}
-              mode={isTidalCurrentsPointSelected ? 'range' : mode}
-            />
+            <DatePagination productId={productId} dateFormat={dateFormat} mode={mode} />
           )}
         </div>
 
