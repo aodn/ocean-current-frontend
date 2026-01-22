@@ -41,7 +41,7 @@ const useDateRange = (): UseDateRangeReturn => {
 
   const isMonthRange = mainProduct?.key === 'climatology' || mainProduct?.key === 'monthlyMeans';
   const isYearRange = isCurrentMeters;
-  const isMonthlyMeansAnomalies = mainProduct?.key === 'monthlyMeans' && subProduct?.key === 'monthlyMeans-anomalies';
+  const isMonthlyMeans30Day = mainProduct?.key === 'monthlyMeans' && subProduct?.key === 'monthlyMeans-30day';
   const isFourHourSst = mainProduct?.key === 'fourHourSst';
   const isSurfaceWaves = mainProduct?.key === 'surfaceWaves';
   const isOceanColourLocal = mainProduct?.key === 'oceanColour' && region?.scope === 'local';
@@ -70,7 +70,7 @@ const useDateRange = (): UseDateRangeReturn => {
 
   const disableVideoCreation = (): boolean => {
     const isFourHourSst = mainProduct?.key === 'fourHourSst' && subProduct?.key === 'fourHourSst-sstAge';
-    const isMonthlyMeansClimatology = subProduct?.key === 'monthlyMeans-CLIM_OFAM3_SSTAARS';
+    const isMonthlyMeansClimatology = subProduct?.key === 'monthlyMeans-climatology';
     const isClimatology = mainProduct?.key === 'climatology';
     const isAdjustedSeaLevelAnomalyWithSST = mainProduct?.key === 'adjustedSeaLevelAnomaly' && !subProduct?.key;
     const isSSTTimeseries = subProduct?.key === 'sixDaySst-timeseries';
@@ -151,7 +151,7 @@ const useDateRange = (): UseDateRangeReturn => {
 
     return Array.from({ length: 12 }, (_, index) => ({
       date: dayjs(new Date(year, index, 15)).toDate(),
-      active: !(isMonthlyMeansAnomalies && year === currentYear && index >= currentMonth),
+      active: !(isMonthlyMeans30Day && year === currentYear && index >= currentMonth),
       showLabel: true,
     }));
   };

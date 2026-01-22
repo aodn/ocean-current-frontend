@@ -37,8 +37,8 @@ export type ChildProductID =
   | 'adjustedSeaLevelAnomaly-sst'
   | 'adjustedSeaLevelAnomaly-nonTidalSla'
   // Monthly Means children
-  | 'monthlyMeans-anomalies'
-  | 'monthlyMeans-CLIM_OFAM3_SSTAARS'
+  | 'monthlyMeans-30day'
+  | 'monthlyMeans-climatology'
   // | 'monthlyMeans-CLIM_CNESCARS' // This product was removed from the original site
   // Climatology children
   | 'climatology-sst'
@@ -101,8 +101,8 @@ export const childProductIDs: ChildProductID[] = [
   'adjustedSeaLevelAnomaly-centiles',
   'adjustedSeaLevelAnomaly-sst',
   'adjustedSeaLevelAnomaly-nonTidalSla',
-  'monthlyMeans-anomalies',
-  'monthlyMeans-CLIM_OFAM3_SSTAARS',
+  'monthlyMeans-30day',
+  'monthlyMeans-climatology',
   // 'monthlyMeans-CLIM_CNESCARS', // This product was removed from the original site
   'climatology-sst',
   'climatology-dataCount',

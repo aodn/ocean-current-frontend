@@ -165,14 +165,14 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
     data = standardQuery.data;
   }
 
-  // Async mock date list for monthlyMeans-anomalies to validate latest available month
+  // Async mock date list for monthlyMeans-30day to validate latest available month
   const monthlyMeansMockQuery = useQuery({
     queryKey: ['mockDateList', productId, region, dateFormat, regionScope],
     queryFn: async () => {
       const today = dayjs();
       const firstCandidate = today.date() >= 15 ? today : today.subtract(1, 'month');
       const candidateDateStr = firstCandidate.date(15).format('YYYYMMDD');
-      const candidateUrl = buildProductImageUrl('monthlyMeans-anomalies', region!, RegionScope.State, candidateDateStr);
+      const candidateUrl = buildProductImageUrl('monthlyMeans-30day', region!, RegionScope.State, candidateDateStr);
 
       const exists = await new Promise<boolean>((resolve) => {
         const img = new Image();
@@ -188,7 +188,7 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
       // pass startdate and enddate to datepicker, enddate can be grabbed from new api point(expect to be created)
       // to get latest date, like what has been done for dateRange when isArgo && !isArgoValid like below.
     },
-    enabled: !isRangeMode && !isArgo && !shouldUseApi && productId === 'monthlyMeans-anomalies' && Boolean(region),
+    enabled: !isRangeMode && !isArgo && !shouldUseApi && productId === 'monthlyMeans-30day' && Boolean(region),
     ...sharedQueryConfig,
   });
 
@@ -245,7 +245,7 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
   }
 
   if (dateList.length === 0) {
-    if (!isArgo && !shouldUseApi && productId === 'monthlyMeans-anomalies') {
+    if (!isArgo && !shouldUseApi && productId === 'monthlyMeans-30day') {
       const mockData = (monthlyMeansMockQuery.data as DateItem[] | undefined) || [];
       if (mockData.length > 0) {
         dateList = mockData;

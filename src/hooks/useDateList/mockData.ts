@@ -43,7 +43,7 @@ const MOCK_CONFIGS: MockConfig[] = [
     },
   },
   {
-    productId: 'monthlyMeans-anomalies',
+    productId: 'monthlyMeans-30day',
     startDate: '199301', // January 1993 hardcoded on the server
     endDateLogic: 'day-15-cutoff',
   },

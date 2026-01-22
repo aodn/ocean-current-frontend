@@ -6,7 +6,7 @@ import { buildLatestEntryImageUrl } from '@/utils/data-image-builder-utils/lates
 import { ProductID } from '@/types/product';
 
 const productsWithNoImage: ProductID[] = [
-  'monthlyMeans-anomalies',
+  'monthlyMeans-30day',
   'climatology-sst',
   'EACMooringArray',
   'currentMeters-mooredInstrumentArray',
