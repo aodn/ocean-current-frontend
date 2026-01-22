@@ -122,6 +122,64 @@ function toYYYYMM(date: Date = new Date()): string {
   const month = String(date.getMonth() + 1).padStart(2, '0');
   return `${year}${month}`;
 }
+/**
+ *
+ * @param dateStr expected be following formats: YYYYMMDDHHmm, YYYYMMDDHH, YYYYMMDD, YYYYMM
+ * @returns boolean
+ */
+function isValidMonthlyMeanDate(dateStr: string): boolean {
+  if (!/^\d+$/.test(dateStr)) return false;
+
+  const len = dateStr.length;
+
+  let year: number,
+    month: number,
+    day = 1,
+    hour = 0,
+    minute = 0;
+
+  try {
+    switch (len) {
+      case 6: // MONTH
+        year = Number(dateStr.slice(0, 4));
+        month = Number(dateStr.slice(4, 6));
+        break;
+
+      case 8: // DAY
+        year = Number(dateStr.slice(0, 4));
+        month = Number(dateStr.slice(4, 6));
+        day = Number(dateStr.slice(6, 8));
+        break;
+
+      case 10: // HOUR
+        year = Number(dateStr.slice(0, 4));
+        month = Number(dateStr.slice(4, 6));
+        day = Number(dateStr.slice(6, 8));
+        hour = Number(dateStr.slice(8, 10));
+        break;
+
+      case 12: // MINUTE
+        year = Number(dateStr.slice(0, 4));
+        month = Number(dateStr.slice(4, 6));
+        day = Number(dateStr.slice(6, 8));
+        hour = Number(dateStr.slice(8, 10));
+        minute = Number(dateStr.slice(10, 12));
+        break;
+
+      default:
+        return false;
+    }
+
+    if (month < 1 || month > 12) return false;
+    if (day < 1 || day > new Date(year, month, 0).getDate()) return false;
+    if (hour < 0 || hour > 23) return false;
+    if (minute < 0 || minute > 59) return false;
+
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 export {
   findClosestDateIndex,
@@ -131,4 +189,5 @@ export {
   getDateFormatByProductIdAndRegionScope,
   convertDateToDisplayFormattedText,
   toYYYYMM,
+  isValidMonthlyMeanDate,
 };

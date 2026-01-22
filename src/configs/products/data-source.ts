@@ -17,6 +17,7 @@ export const API_IMAGE_LIST_ENABLED_PRODUCTS: ProductID[] = [
   'adjustedSeaLevelAnomaly-sla',
   'adjustedSeaLevelAnomaly-centiles',
   'adjustedSeaLevelAnomaly-sst',
+  'adjustedSeaLevelAnomaly-nonTidalSla',
   'surfaceWaves-wave',
   'surfaceWaves-buoyTimeseries',
   'tidalCurrents-sl',

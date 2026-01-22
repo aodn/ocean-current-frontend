@@ -1,16 +1,17 @@
 import { CurrentMetersPlotsResponse, ImageListResponse, LatestRegionDatesResponse } from '@/types/imageList';
 import { ProductID } from '@/types/product';
-import { getApiProductId } from '@/configs/products';
+import { getApiProductId, getApiRegionCode } from '@/configs/products';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 import apiClient from './httpClient';
 
 const fetchImageListByProductIdAndRegion = async (productId: ProductID, region: string) => {
   const apiProductId = getApiProductId(productId);
+  const apiRegion = getApiRegionCode(region, productId);
 
   if (!region) throw new Error('Region is required');
 
   const queryParams = new URLSearchParams();
-  queryParams.set('region', region);
+  queryParams.set('region', apiRegion);
 
   const response = await apiClient.get<ImageListResponse[]>(`/metadata/image-list/${apiProductId}?${queryParams}`);
   return response.data;
