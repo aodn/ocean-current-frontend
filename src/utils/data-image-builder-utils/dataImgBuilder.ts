@@ -55,7 +55,7 @@ const formatDateByProductId = (productId: ProductID, date: string, regionScope: 
     throw new Error(`Product with id ${productId} not found`);
   }
 
-  if (productId === 'monthlyMeans-anomalies') {
+  if (productId === 'monthlyMeans-30day') {
     const inputDate = dayjs(date);
     const currentDate = dayjs();
 

@@ -226,7 +226,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
           } else {
             const dateFromQuery = searchParams.date;
 
-            if (productId === 'monthlyMeans-anomalies') {
+            if (productId === 'monthlyMeans-30day') {
               let monthlyMeansDate = getMonthlyMeansDate();
 
               if (
@@ -238,7 +238,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
               }
 
               const candidateUrl = buildProductImageUrl(
-                'monthlyMeans-anomalies',
+                'monthlyMeans-30day',
                 regionCode,
                 RegionScope.State,
                 monthlyMeansDate,
