@@ -17,7 +17,7 @@ interface DatePaginationProps {
 
 /**
  * DatePagination have two modes: 'range' and 'list'.
- * In 'range' mode, it allows users to select a date range (start date and end date).
+ * In 'range' mode, it allows users to select a single date within the range (start date and end date).
  * In 'list' mode, it allows users to select a single date from a list of available dates.
  */
 const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, initialDate, mode = 'range' }) => {
