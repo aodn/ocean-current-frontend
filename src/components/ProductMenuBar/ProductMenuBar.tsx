@@ -143,9 +143,8 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     }
 
     if (isTidalCurrentsPointSelected) {
-      return updateQueryParams({ date: toYYYYMM(new Date()) });
+      return updateQueryParams({ date: dateList.at(-1)?.date ?? toYYYYMM(new Date()) });
     }
-
     updateQueryParams({ date: latestDate });
   };
 
