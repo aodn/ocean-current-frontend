@@ -4,5 +4,5 @@ export interface ProductMenuBarProps {
   showVideo?: boolean;
   showMap?: boolean;
   isMapView?: boolean;
-  isFreeMode?: boolean;
+  mode?: 'range' | 'list';
 }

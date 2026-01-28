@@ -82,15 +82,19 @@ const getDateFormatFlags = (format: DateFormat) => ({
   isMinuteFormat: format === DateFormat.MINUTE,
 });
 
-const getDateFormatByProductIdAndRegionScope = (productId: ProductID, regionScope: RegionScope): DateFormat => {
+const getDateFormatByProductIdAndRegionScope = (
+  productId: ProductID,
+  regionScope: RegionScope,
+  isPointSelected?: boolean,
+): DateFormat => {
   const product = findLeafFlatProductById(productId);
 
-  if (!product) {
-    throw new Error(`Invalid product id: ${productId}`);
-  }
-
   const dateFormatFromProduct =
-    regionScope === RegionScope.Local ? product.dateFormat?.localFormat : product.dateFormat?.stateFormat;
+    regionScope === RegionScope.Local ? product?.dateFormat?.localFormat : product?.dateFormat?.stateFormat;
+
+  if ((productId === 'tidalCurrents-spd' || productId === 'tidalCurrents-sl') && isPointSelected) {
+    return DateFormat.MONTH;
+  }
 
   const dateFormat = dateFormatFromProduct || DateFormat.DAY;
   return dateFormat;
@@ -112,6 +116,12 @@ const convertDateToDisplayFormattedText = (date: Dayjs, dateFormat: DateFormat) 
       return date.format('DD MMM YY');
   }
 };
+
+function toYYYYMM(date: Date = new Date()): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  return `${year}${month}`;
+}
 
 /**
  *
@@ -179,5 +189,6 @@ export {
   getDateFormatFlags,
   getDateFormatByProductIdAndRegionScope,
   convertDateToDisplayFormattedText,
+  toYYYYMM,
   isValidMonthlyMeanDate,
 };

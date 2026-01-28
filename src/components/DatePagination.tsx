@@ -12,15 +12,18 @@ interface DatePaginationProps {
   productId: ProductID;
   dateFormat: DateFormat;
   initialDate?: string;
-  isFreeMode?: boolean;
+  mode?: 'range' | 'list';
 }
 
-const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, initialDate, isFreeMode = false }) => {
-  const { isLoading, dateList, dateRange } = useDateList({ productId, isFreeMode });
-
-  // For free mode, use DAY format
-  const effectiveDateFormat = isFreeMode ? DateFormat.DAY : dateFormat;
-
+/**
+ * DatePagination have two modes: 'range' and 'list'.
+ * In 'range' mode, it allows users to select a single date within the range (start date and end date).
+ * In 'list' mode, it allows users to select a single date from a list of available dates.
+ */
+const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, initialDate, mode = 'range' }) => {
+  const { isLoading, dateList, dateRange } = useDateList({ productId, mode });
+  // For range mode, use DAY format
+  const effectiveDateFormat = mode === 'range' ? DateFormat.DAY : dateFormat;
   const { navigationMode, dateListNavigation, dateRangeNavigation } = useDateNavigation({
     availableDates: dateList,
     dateFormat: effectiveDateFormat,
@@ -29,7 +32,6 @@ const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, 
   });
   const { currentDate, updateDate, goToPrevious, goToNext, canGoPrevious, canGoNext } =
     navigationMode === 'dateList' ? dateListNavigation : dateRangeNavigation;
-
   // For product only with fixed date range (sst timeseries)
   const isSstTimeseries = productId === 'sixDaySst-timeseries';
   const isDatePickerDisabled = isSstTimeseries;
@@ -45,7 +47,6 @@ const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, 
       </div>
     );
   }
-
   return (
     <OceanCurrentDatePicker
       productId={productId}
@@ -61,7 +62,6 @@ const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, 
       displayText={displayText}
       startDate={dateRange?.startDate}
       endDate={dateRange?.endDate}
-      isFreeMode={isFreeMode}
     />
   );
 };

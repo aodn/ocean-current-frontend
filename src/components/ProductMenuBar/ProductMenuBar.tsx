@@ -22,6 +22,8 @@ import useArgoStore from '@/stores/argo-store/argoStore';
 import { useRegionLatestDates } from '@/services/hooks';
 import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
+import { useTidalCurrentPoint } from '@/pages/DataView/product-content/hooks/useTidalCurrentPoint';
+import { toYYYYMM } from '@/utils/date-utils/date';
 import DatePagination from '../DatePagination';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
@@ -31,10 +33,9 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
   setShowMap,
   showMap = false,
   isMapView = false,
-  isFreeMode = false,
+  mode,
 }) => {
   const { disableVideoCreation } = useDateRange();
-
   const { updateQueryParamsAndNavigate, updateQueryParams } = useQueryParams();
   const argoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
 
@@ -74,7 +75,8 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
 
   const dateFormat = useProductDateFormat();
 
-  const { isLoading: isProductDateListLoading, dateList } = useDateList({ productId, isFreeMode });
+  const { isLoading: isProductDateListLoading, dateList } = useDateList({ productId, mode });
+  const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId);
 
   const handleCopyLink = () => {
     const url = location.href;
@@ -140,6 +142,9 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
       return updateQueryParams({ date: latestArgoLocationsData?.regionLatestDates[0].latestDate });
     }
 
+    if (isTidalCurrentsPointSelected) {
+      return updateQueryParams({ date: dateList.at(-1)?.date ?? toYYYYMM(new Date()) });
+    }
     updateQueryParams({ date: latestDate });
   };
 
@@ -197,7 +202,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
               onChange={(elem) => handleCurrentMetersDateChange(elem.id)}
             />
           ) : (
-            <DatePagination productId={productId} dateFormat={dateFormat} isFreeMode={isFreeMode} />
+            <DatePagination productId={productId} dateFormat={dateFormat} mode={mode} />
           )}
         </div>
 
