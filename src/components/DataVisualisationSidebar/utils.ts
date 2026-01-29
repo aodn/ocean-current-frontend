@@ -32,5 +32,23 @@ export const dataSources: (date: Dayjs) => DataSource[] = (date) => {
   ];
 };
 
-export const getProductInfoByKey = (productKey: string): ProductInfo =>
-  productInfoList.filter((product) => product.id === productKey)[0];
+export const getProductInfoByKey = (productKey: string, childKey?: string): ProductInfo | null => {
+  const parentProduct = productInfoList.find((product) => product.id === productKey);
+
+  if (!parentProduct) {
+    return null;
+  }
+
+  if (childKey && parentProduct.childrenInfo?.[childKey]) {
+    const childInfo = parentProduct.childrenInfo[childKey];
+    return {
+      id: childKey,
+      title: childInfo.title || parentProduct.title,
+      summary: childInfo.summary,
+      description: childInfo.description,
+      childrenInfo: parentProduct.childrenInfo,
+    };
+  }
+
+  return parentProduct;
+};

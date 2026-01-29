@@ -2,12 +2,12 @@ const OceanColourModalData = () => {
   return (
     <div className="p-4 text-gray-800">
       <p className="mb-4">
-        Daily images of chlorophyll-a estimates from the MODIS sensor on NASA’s Aqua satellite indicating the amount of
-        phytoplankton in the water. Chlorophyll-a can be detected by satellite by measuring the relative amounts of
-        light coming from the ocean at different wavelengths. The Ocean Colour model (OC3) that converts the satellite
-        observations to chlorophyll-a concentration assumes that chlorophyll-a is the only thing in the water affecting
-        the measurements. This is largely true in the open ocean but in coastal waters tannin from rivers and suspended
-        sediments can be present and cannot be differentiated from chlorophyll-a.
+        Daily images of chlorophyll-a estimates from the MODIS sensor on NASA&apos;s Aqua satellite indicating the
+        amount of phytoplankton in the water. Chlorophyll-a can be detected by satellite by measuring the relative
+        amounts of light coming from the ocean at different wavelengths. The Ocean Colour model (OC3) that converts the
+        satellite observations to chlorophyll-a concentration assumes that chlorophyll-a is the only thing in the water
+        affecting the measurements. This is largely true in the open ocean but in coastal waters tannin from rivers and
+        suspended sediments can be present and cannot be differentiated from chlorophyll-a.
       </p>
       <p className="mb-4">
         In the open ocean we can be confident the satellite images represent productivity, but in very shallow coastal
@@ -47,6 +47,40 @@ const SixDaySstModalData = () => {
   );
 };
 
+const SixDaySstTimeseriesModalData = () => {
+  return (
+    <div className="p-4 text-gray-800">
+      <p className="mb-4">
+        The Monthly Mean SST Anomalies are created using the daily time series (since 1993- present) of IMOS L3SM-1d
+        night-only SST (QL&gt;=4). The SST observations for each of the smaller map regions are converted to anomalies
+        using the SSTAARS climatology then averaged spatially and over each month.
+      </p>
+      <p className="mb-4">
+        Accessing the full SST dataset of almost 30 years of daily data has been made feasible with the help of Edward
+        King in the IMOS Satellite Remote Sensing sub-facility which has reformatted the data for rapid access as a time
+        series. These time series underpin the SSTAARS climatology and are the pre-cursor to the AODN providing similar
+        access in the near future.
+      </p>
+      <p className="mb-4">
+        Plots are updated daily. The estimate of the monthly average for the latest month is only a draft estimate. It
+        is first included in the plots after the 15th of the month and updated daily as more data becomes available.
+      </p>
+      <p className="mb-4">
+        Click{' '}
+        <a
+          href="https://oceancurrent.aodn.org.au/whatsshown.php"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="text-imos-sea-blue"
+        >
+          here{' '}
+        </a>
+        for an overview of what&apos;s shown in these maps.
+      </p>
+    </div>
+  );
+};
+
 const AdjustedSeaLevelAnomalyModalData = () => {
   return (
     <div className="p-4 text-gray-800">
@@ -69,7 +103,7 @@ const AdjustedSeaLevelAnomalyModalData = () => {
         <a
           href="https://link.springer.com/article/10.1007/s10712-019-09525-z"
           target="_blank"
-          rel="noreferrer"
+          rel="noreferrer noopener"
           className="text-imos-sea-blue"
         >
           ocean dynamic sea level
@@ -102,7 +136,7 @@ const AdjustedSeaLevelAnomalyModalData = () => {
         <a
           href="https://oceancurrent.aodn.org.au/GSLA_stats/DM02/GSLA_Au_h.html"
           target="_blank"
-          rel="noreferrer"
+          rel="noreferrer noopener"
           className="text-imos-sea-blue"
         >
           [see time series plot of the Australasia-region average adjusted sea level anomaly]
@@ -122,7 +156,7 @@ const AdjustedSeaLevelAnomalyModalData = () => {
         <a
           href="https://oceancurrent.aodn.org.au/GSLA_stats/DM02/"
           target="_blank"
-          rel="noreferrer"
+          rel="noreferrer noopener"
           className="text-imos-sea-blue"
         >
           centile levels of the reference data set
@@ -247,14 +281,19 @@ const EACMooringArrayModalData = () => {
         <a
           href="https://oceancurrent.aodn.org.au/eac_about.php"
           target="_blank"
-          rel="noreferrer"
+          rel="noreferrer noopener"
           className="text-imos-sea-blue"
         >
           {' '}
           here
         </a>{' '}
         and{' '}
-        <a href="https://doi.org/10.25919/sfw7-hc46" target="_blank" rel="noreferrer" className="text-imos-sea-blue">
+        <a
+          href="https://doi.org/10.25919/sfw7-hc46"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="text-imos-sea-blue"
+        >
           here
         </a>
         .
@@ -900,7 +939,7 @@ const CurrentMetersModalData = () => {
           href="http://thredds.aodn.org.au/thredds/catalog/IMOS/catalog.html"
           target="_blank"
           className="mx-1 text-[#52BDEC]"
-          rel="noreferrer"
+          rel="noreferrer noopener"
         >
           AODN
         </a>
@@ -930,7 +969,7 @@ const CurrentMetersModalData = () => {
           href="http://thredds.aodn.org.au/thredds/catalog/IMOS/catalog.html"
           target="_blank"
           className="mx-1 text-[#52BDEC]"
-          rel="noreferrer"
+          rel="noreferrer noopener"
         >
           AODN
         </a>
@@ -2013,6 +2052,7 @@ const SurfaceWaveModalData = () => {
 export {
   OceanColourModalData,
   SixDaySstModalData,
+  SixDaySstTimeseriesModalData,
   AdjustedSeaLevelAnomalyModalData,
   FourHourSstModalData,
   ClimatologyModalData,
