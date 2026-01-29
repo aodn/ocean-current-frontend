@@ -39,7 +39,7 @@ export const productInfoList: ProductInfo[] = [
     id: 'oceanColour',
     title: 'Chlorophyll-a Concentration',
     summary:
-      'Daily images of chlorophyll-a estimates from the MODIS sensor on NASA’s Aqua satellite indicating the amount of phytoplankton in the water.',
+      "Daily images of chlorophyll-a estimates from the MODIS sensor on NASA's Aqua satellite indicating the amount of phytoplankton in the water.",
     description: OceanColourModalData,
   },
   {
@@ -74,7 +74,7 @@ export const productInfoList: ProductInfo[] = [
     title: 'Argo Profiles',
     summary:
       'Temperature and salinity data from the selected float compared with satellite-adjusted climatology, down to 2000m in the Australian region.',
-    description: ArgoModalData, // returns Fragments
+    description: ArgoModalData,
   },
   {
     id: 'tidalCurrents',
