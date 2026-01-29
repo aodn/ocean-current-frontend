@@ -6,6 +6,13 @@ export type ProductInfo = {
   summary: string | null;
   description: () => JSX.Element | null;
   title: string;
+  childrenInfo?: {
+    [childId: string]: {
+      summary: string | null;
+      description: () => JSX.Element | null;
+      title?: string;
+    };
+  };
 };
 
 export interface ProductSummaryProp {

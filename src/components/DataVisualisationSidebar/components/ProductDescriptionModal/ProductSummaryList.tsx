@@ -4,6 +4,7 @@ import {
   FourHourSstModalData,
   OceanColourModalData,
   SixDaySstModalData,
+  SixDaySstTimeseriesModalData,
   SurfaceWaveModalData,
   EACMooringArrayModalData,
   CurrentMetersModalData,
@@ -26,6 +27,13 @@ export const productInfoList: ProductInfo[] = [
     title: 'Six Day Sst',
     summary: 'Sea Surface Temperature (°C) 6-day composite of night-only SST',
     description: SixDaySstModalData,
+    childrenInfo: {
+      'sixDaySst-timeseries': {
+        title: 'Monthly Mean SST Anomalies (SST Anom vs Time)',
+        summary: 'Time series analysis of SST anomalies over time, showing trends and patterns.',
+        description: SixDaySstTimeseriesModalData,
+      },
+    },
   },
   {
     id: 'oceanColour',
