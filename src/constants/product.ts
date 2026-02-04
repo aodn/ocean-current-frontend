@@ -202,7 +202,7 @@ export const OC_PRODUCTS: Product[] = [
     stateSegment: 'WAVES',
     children: [
       {
-        title: 'Wave',
+        title: 'Map',
         key: 'surfaceWaves-wave',
         path: 'wave',
         imgPath: 'WAVES',
