@@ -55,6 +55,13 @@ export const productInfoList: ProductInfo[] = [
     summary:
       "The map shows surface wave conditions around Australia from BoM's AUSWAVE-R model and observations. It includes significant wave height and peak wave direction, updated every 2 hours. Data sources are coastal buoys, radar altimeters, and satellite SAR within a 3-hour window.",
     description: SurfaceWaveModalData,
+    childrenInfo: {
+      'surfaceWaves-buoyTimeseries': {
+        title: 'Buoy Timeseries',
+        summary: null,
+        description: () => null,
+      },
+    },
   },
   {
     id: 'monthlyMeans',
