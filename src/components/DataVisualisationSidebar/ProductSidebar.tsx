@@ -34,10 +34,10 @@ const ProductSideBar: React.FC = () => {
   const { mainProduct, subProduct, subProducts } = useProductConvert();
   const { updateQueryParamsAndNavigate, getQueryParamsByKey } = useQueryParams();
   const useDate = useDateStore((state) => state.date);
-  const { isArgo, isCurrentMeters, isSealCtd, isMonthlyMeans } = useProductCheck();
+  const { isArgo, isCurrentMeters, isSealCtd, isMonthlyMeans, isSurfaceWaves } = useProductCheck();
   const shouldRenderMiniMap = useShowProductOverMap();
 
-  const shouldShowLegend = !isCurrentMeters && !isMonthlyMeans;
+  const shouldShowLegend = !isCurrentMeters && !isMonthlyMeans && !isSurfaceWaves;
 
   const mooredInstrumentArrayPath = useMemo(() => {
     return (
