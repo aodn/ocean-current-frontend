@@ -64,7 +64,7 @@ const HomeMapCarousel: React.FC = () => {
         </ErrorBoundary>
       </div>
 
-      <div className="flex flex-col rounded-b-xl border border-solid border-imos-calypso-blue border-opacity-60 pb-3 pt-6 md:px-6">
+      <div className="flex flex-col rounded-b-xl border border-solid border-imos-calypso-blue border-opacity-60 px-4 pb-3 pt-6 md:px-6">
         <div className="flex flex-col md:min-h-32">
           <h2 className="font-poppins text-lg font-semibold text-imos-nav-text">{selectedProduct.title}</h2>
           <p className="mt-2 font-open-sans text-base text-imos-dark-grey">{selectedProduct.description}</p>
