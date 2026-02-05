@@ -19,6 +19,7 @@ import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProdu
 import { useQueryParams } from '@/hooks';
 import { findLeafFlatProductById } from '@/utils/product-utils/product';
 import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
+import { getProductLegend } from '@/constants/productLegends';
 import Legend from './components/Legend';
 import MiniMap from './components/MiniMap';
 import ProductDropdown from './components/ProductDropdown';
@@ -34,10 +35,8 @@ const ProductSideBar: React.FC = () => {
   const { mainProduct, subProduct, subProducts } = useProductConvert();
   const { updateQueryParamsAndNavigate, getQueryParamsByKey } = useQueryParams();
   const useDate = useDateStore((state) => state.date);
-  const { isArgo, isCurrentMeters, isSealCtd, isMonthlyMeans, isSurfaceWaves } = useProductCheck();
+  const { isArgo, isCurrentMeters, isSealCtd } = useProductCheck();
   const shouldRenderMiniMap = useShowProductOverMap();
-
-  const shouldShowLegend = !isCurrentMeters && !isMonthlyMeans && !isSurfaceWaves;
 
   const mooredInstrumentArrayPath = useMemo(() => {
     return (
@@ -65,6 +64,8 @@ const ProductSideBar: React.FC = () => {
   }
 
   const productInfo = getProductInfoByKey(mainProduct.key, subProduct?.key);
+  const productLegendItems = getProductLegend(mainProduct.key, subProduct?.key);
+
   const getDataSources = dataSources(useDate);
   const filteredDataSources = getDataSources.filter((source) => source.product.includes(mainProduct.key));
 
@@ -139,9 +140,9 @@ const ProductSideBar: React.FC = () => {
 
         {isCurrentMeters && <CurrentMetersFilters subProduct={subProduct} />}
 
-        {shouldShowLegend && (
+        {productLegendItems && productLegendItems.length > 0 && (
           <CollapsibleSection title={ProductSidebarText.LEGEND}>
-            <Legend />
+            <Legend legendItems={productLegendItems} />
           </CollapsibleSection>
         )}
       </div>

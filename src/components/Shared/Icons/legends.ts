@@ -1,0 +1,22 @@
+import AltimeterPass from '@/assets/icons/legends/altimeter-pass.svg?react';
+import BuoyWithNoData from '@/assets/icons/legends/buoy-with-no-data.svg?react';
+import PeakWaveDirBom from '@/assets/icons/legends/peak-wave-dir-bom.svg?react';
+import PeakWaveDirSar from '@/assets/icons/legends/peak-wave-dir-sar.svg?react';
+import WaveFromEast from '@/assets/icons/legends/wave-from-east.svg?react';
+import WaveFromEastSar from '@/assets/icons/legends/wave-from-east-sar.svg?react';
+import WaveFromNorth from '@/assets/icons/legends/wave-from-north.svg?react';
+import WaveFromNorthSar from '@/assets/icons/legends/wave-from-north-sar.svg?react';
+import WaveFromSouth from '@/assets/icons/legends/wave-from-south.svg?react';
+import WaveFromWestSar from '@/assets/icons/legends/wave-from-west-sar.svg?react';
+import { withIcon } from './withIcon';
+
+export const AltimeterPassLegendIcon = withIcon(AltimeterPass);
+export const BuoyWithNoDataLegendIcon = withIcon(BuoyWithNoData);
+export const PeakWaveDirBomLegendIcon = withIcon(PeakWaveDirBom);
+export const PeakWaveDirSarLegendIcon = withIcon(PeakWaveDirSar);
+export const WaveFromEastLegendIcon = withIcon(WaveFromEast);
+export const WaveFromEastSarLegendIcon = withIcon(WaveFromEastSar);
+export const WaveFromNorthLegendIcon = withIcon(WaveFromNorth);
+export const WaveFromNorthSarLegendIcon = withIcon(WaveFromNorthSar);
+export const WaveFromSouthLegendIcon = withIcon(WaveFromSouth);
+export const WaveFromWestSarLegendIcon = withIcon(WaveFromWestSar);
