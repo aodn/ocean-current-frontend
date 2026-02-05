@@ -40,6 +40,7 @@ const COMMON_LEGEND_ITEMS = {
     icon: 'square',
     label: 'Fish SOOP',
     shape: <div className="h-3 w-3 border-2 border-imos-bright-magenta bg-white" />,
+    description: 'Fishing Vessel as Ships of Opportunity Program (Fish SOOP).',
   },
   mooring: {
     icon: 'circle',
@@ -225,7 +226,7 @@ export const productLegends: ProductLegend[] = [
   },
   {
     id: 'sealCtd',
-    items: [],
+    items: null,
     childrenLegends: {
       'sealCtd-sealTracks': [COMMON_LEGEND_ITEMS.ctdProfile],
     },
