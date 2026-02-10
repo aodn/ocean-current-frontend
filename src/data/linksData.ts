@@ -62,7 +62,7 @@ export const linksData: LinkItem[] = [
 
         title: 'Monthly Means',
         description: 'Monthly temperature averages',
-        url: '/map/monthly-means/anomalies',
+        url: '/map/monthly-means/30-day',
       },
       {
         id: 'climatology-sst',
