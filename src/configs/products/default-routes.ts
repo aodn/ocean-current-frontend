@@ -11,7 +11,7 @@ export const DEFAULT_SUB_PRODUCT_ROUTES: Record<ProductGroupID, string> = {
   sixDaySst: 'sst',
   oceanColour: 'chl-a',
   adjustedSeaLevelAnomaly: 'sla',
-  monthlyMeans: 'anomalies',
+  monthlyMeans: '30-day',
   climatology: 'sst',
   tidalCurrents: 'speed',
   currentMeters: 'moored-instrument-array',
