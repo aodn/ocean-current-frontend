@@ -81,7 +81,7 @@
       "source": "bathymetry",
       "source-layer": "depth",
       "minzoom": 0,
-      "maxzoom": 7,
+      "maxzoom": 12,
       "paint": {
         "fill-color": [
           "interpolate",
