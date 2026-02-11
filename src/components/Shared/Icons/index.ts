@@ -1,7 +1,6 @@
 export * from './withIcon';
 export * from './products';
 export * from './ui';
-export * from './legends';
 
 /**
  * The PowerShell command to change all svg's fill to 'currentColor'

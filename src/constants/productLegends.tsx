@@ -1,17 +1,5 @@
 import React from 'react';
 import { RootProductID } from '@/types/product';
-import {
-  AltimeterPassLegendIcon,
-  BuoyWithNoDataLegendIcon,
-  PeakWaveDirBomLegendIcon,
-  PeakWaveDirSarLegendIcon,
-  WaveFromEastLegendIcon,
-  WaveFromEastSarLegendIcon,
-  WaveFromNorthLegendIcon,
-  WaveFromNorthSarLegendIcon,
-  WaveFromSouthLegendIcon,
-  WaveFromWestSarLegendIcon,
-} from '@/components/Shared/Icons';
 
 export type LegendItem = {
   icon: string;
@@ -34,7 +22,12 @@ const COMMON_LEGEND_ITEMS = {
     label: 'Argo',
     shape: <div className="h-3 w-3 rounded-full border-2 border-imos-bright-magenta bg-white" />,
     description:
-      'Pink circle at the location of any profile made in the window t0 +/- 12hrs; click on the circle to see the Argo profiles of temperature and salinity.',
+      'pink circle at the location of any profile made in the window t0 +/- 12hrs; click on the circle to see the Argo profiles of temperature and salinity.',
+  },
+  argoSecondary: {
+    icon: 'circle',
+    label: 'Argo',
+    shape: <div className="h-3 w-3 rounded-full border-2 border-[#04FFEA] bg-white" />,
   },
   fishSoop: {
     icon: 'square',
@@ -46,7 +39,8 @@ const COMMON_LEGEND_ITEMS = {
     icon: 'circle',
     label: 'Mooring',
     shape: <div className="h-3 w-3 rounded-full bg-black" />,
-    description: 'Mooring location with current meter data.',
+    description:
+      'location of moorings included in the EAC array, with larger dots indicating the mid-point and end of the array. The cumulative transport values shown on the map (in Sv) are calculated from the westernmost mooring up to these two points. We show both values to show the cumulative transport associated with the core of the EAC (i.e., often located on the western half of the array).',
   },
   ship: {
     icon: 'circle-outline',
@@ -82,70 +76,27 @@ const COMMON_LEGEND_ITEMS = {
     icon: 'drifter',
     label: 'Drifter',
     shape: (
-      <div className="flex h-3 w-3 -scale-x-100 items-center justify-center">
-        <div className="h-2.5 w-2.5 rotate-45 -skew-x-12 -skew-y-12 border-r-2 border-t-2 border-imos-bright-magenta" />
+      <div className="flex h-3 w-3 items-center justify-center">
+        <div className="h-2.5 w-2.5 -translate-x-[2px] rotate-45 -skew-x-12 -skew-y-12 border-r-2 border-t-2 border-imos-bright-magenta" />
       </div>
     ),
     description: 'Drifter buoy locations showing surface current trajectories.',
   },
 
-  // Surface Waves
-  altimeterPass: {
-    icon: 'altimeter-pass',
-    label: 'Altimeter Pass',
-    shape: <AltimeterPassLegendIcon />,
-  },
-  buoyWithNoData: {
-    icon: 'buoy-with-no-data',
-    label: 'Buoy With No Data',
-    shape: <BuoyWithNoDataLegendIcon />,
-  },
-  peakWaveDirBom: {
-    icon: 'peak-wave-dir-bom',
-    label: 'Peak wave dir. (BoM)',
-    shape: <PeakWaveDirBomLegendIcon />,
-  },
-  peakWaveDirSar: {
-    icon: 'peak-wave-dir-sar',
-    label: 'Peak wave dir. (SAR)',
-    shape: <PeakWaveDirSarLegendIcon />,
-  },
-  waveFromEast: {
-    icon: 'wave-from-east',
-    label: 'Wave from East',
-    shape: <WaveFromEastLegendIcon />,
-  },
-  waveFromEastSar: {
-    icon: 'wave-from-east-sar',
-    label: 'Wave from East',
-    shape: <WaveFromEastSarLegendIcon />,
-  },
-  waveFromNorth: {
-    icon: 'wave-from-north',
-    label: 'Wave from North',
-    shape: <WaveFromNorthLegendIcon />,
-  },
-  waveFromNorthSar: {
-    icon: 'wave-from-north-sar',
-    label: 'Wave from North',
-    shape: <WaveFromNorthSarLegendIcon />,
-  },
-  waveFromSouth: {
-    icon: 'wave-from-south',
-    label: 'Wave from South',
-    shape: <WaveFromSouthLegendIcon />,
-  },
-  waveFromWestSar: {
-    icon: 'wave-from-west-sar',
-    label: 'Wave from West',
-    shape: <WaveFromWestSarLegendIcon />,
+  // EAC Mooring Array
+  eacCumulativeTransport: {
+    icon: 'bar',
+    label: 'EAC cumulative transport',
+    shape: <div className="h-2 w-6 bg-black" />,
+    description:
+      'daily cumulative EAC transport from North Stradbroke to the outer EAC mooring, summed from the sea surface to 1500 m depth.',
   },
 
   // Seal CTD
   ctdProfile: {
     icon: 'dive-point',
-    label: 'CTD Profile Location',
-    shape: <div className="h-2 w-2 rounded-full bg-blue-500" />,
+    label: 'Seal CTD',
+    shape: <div className="h-3 w-3 rounded-full border-2 border-imos-bright-magenta bg-white" />,
   },
 } as const;
 
@@ -155,54 +106,37 @@ const SST_MAP_LEGENDS: LegendItem[] = [
   COMMON_LEGEND_ITEMS.radar,
   COMMON_LEGEND_ITEMS.drifter,
   COMMON_LEGEND_ITEMS.ship,
+  COMMON_LEGEND_ITEMS.fishSoop,
+  COMMON_LEGEND_ITEMS.mooring,
 ];
 
 export const productLegends: ProductLegend[] = [
   {
     id: 'fourHourSst',
-    items: [...SST_MAP_LEGENDS, COMMON_LEGEND_ITEMS.mooring, COMMON_LEGEND_ITEMS.fishSoop],
+    items: [...SST_MAP_LEGENDS],
   },
   {
     id: 'sixDaySst',
-    items: [...SST_MAP_LEGENDS, COMMON_LEGEND_ITEMS.mooring, COMMON_LEGEND_ITEMS.fishSoop],
+    items: [...SST_MAP_LEGENDS],
     childrenLegends: {
       'sixDaySst-timeseries': null,
     },
   },
   {
     id: 'oceanColour',
-    items: [...SST_MAP_LEGENDS, COMMON_LEGEND_ITEMS.mooring],
+    items: [...SST_MAP_LEGENDS],
   },
   {
     id: 'adjustedSeaLevelAnomaly',
-    items: [COMMON_LEGEND_ITEMS.argo, COMMON_LEGEND_ITEMS.mooring, COMMON_LEGEND_ITEMS.ship],
+    items: [...SST_MAP_LEGENDS],
     childrenLegends: {
       'adjustedSeaLevelAnomaly-sst': null,
-      'adjustedSeaLevelAnomaly-nonTidalSla': [
-        COMMON_LEGEND_ITEMS.argo,
-        COMMON_LEGEND_ITEMS.mooring,
-        COMMON_LEGEND_ITEMS.ship,
-      ],
+      'adjustedSeaLevelAnomaly-nonTidalSla': [...SST_MAP_LEGENDS],
     },
   },
   {
     id: 'surfaceWaves',
     items: null,
-    childrenLegends: {
-      'surfaceWaves-wave': [
-        COMMON_LEGEND_ITEMS.waveFromEast,
-        COMMON_LEGEND_ITEMS.peakWaveDirSar,
-        COMMON_LEGEND_ITEMS.waveFromNorth,
-        COMMON_LEGEND_ITEMS.waveFromEastSar,
-        COMMON_LEGEND_ITEMS.waveFromSouth,
-        COMMON_LEGEND_ITEMS.waveFromWestSar,
-        COMMON_LEGEND_ITEMS.buoyWithNoData,
-        COMMON_LEGEND_ITEMS.waveFromNorthSar,
-        COMMON_LEGEND_ITEMS.peakWaveDirBom,
-        COMMON_LEGEND_ITEMS.altimeterPass,
-      ],
-      'surfaceWaves-buoyTimeseries': null,
-    },
   },
   {
     id: 'monthlyMeans',
@@ -228,12 +162,20 @@ export const productLegends: ProductLegend[] = [
     id: 'sealCtd',
     items: null,
     childrenLegends: {
-      'sealCtd-sealTracks': [COMMON_LEGEND_ITEMS.ctdProfile],
+      'sealCtd-sealTracks': [COMMON_LEGEND_ITEMS.argoSecondary, COMMON_LEGEND_ITEMS.ctdProfile],
     },
   },
   {
     id: 'EACMooringArray',
-    items: [COMMON_LEGEND_ITEMS.argo, COMMON_LEGEND_ITEMS.mooring, COMMON_LEGEND_ITEMS.drifter],
+    items: [
+      COMMON_LEGEND_ITEMS.argo,
+      COMMON_LEGEND_ITEMS.glider,
+      COMMON_LEGEND_ITEMS.radar,
+      COMMON_LEGEND_ITEMS.drifter,
+      COMMON_LEGEND_ITEMS.ship,
+      COMMON_LEGEND_ITEMS.mooring,
+      COMMON_LEGEND_ITEMS.eacCumulativeTransport,
+    ],
   },
 ];
 
