@@ -1,3 +1,6 @@
+# Lockfiles (using yarn)
+package-lock.json
+
 # Logs
 logs
 *.log
