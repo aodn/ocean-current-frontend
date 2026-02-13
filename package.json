@@ -88,6 +88,9 @@
     "src/**/*.{js,jsx,ts,tsx}": [
       "eslint --report-unused-disable-directives --max-warnings 0"
     ],
+    "tests/**/*.{ts,tsx}": [
+      "eslint --report-unused-disable-directives --max-warnings 0"
+    ],
     "**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
       "prettier --write"
     ]
