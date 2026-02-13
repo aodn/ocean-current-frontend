@@ -210,7 +210,7 @@ test.describe('Detail Page Tests', () => {
           // Select a different date (go back a few days)
           const newDate = new Date();
           newDate.setDate(newDate.getDate() - 3);
-          const newDateString = newDate.toISOString().split('T')[0];
+          const newDateString = `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, '0')}-${String(newDate.getDate()).padStart(2, '0')}`;
 
           await dateSelector.fill(newDateString);
 
@@ -261,7 +261,9 @@ test.describe('Detail Page Tests', () => {
           // Change the date to a past date
           const pastDate = new Date();
           pastDate.setDate(pastDate.getDate() - 5);
-          await dateSelector.fill(pastDate.toISOString().split('T')[0]);
+          await dateSelector.fill(
+            `${pastDate.getFullYear()}-${String(pastDate.getMonth() + 1).padStart(2, '0')}-${String(pastDate.getDate()).padStart(2, '0')}`,
+          );
 
           await page.waitForLoadState('networkidle');
 

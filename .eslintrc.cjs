@@ -61,6 +61,17 @@ module.exports = {
       },
     ],
     'import/newline-after-import': 'error',
+    'no-restricted-syntax': [
+      'error',
+      {
+        selector: 'CallExpression[callee.property.name="toISOString"]',
+        message: 'Avoid .toISOString() on dates — it converts to UTC. Use .format() instead.',
+      },
+      {
+        selector: 'CallExpression[callee.property.name="toLocaleDateString"]',
+        message: 'Avoid .toLocaleDateString() on dates. Use dayjs .format() instead.',
+      },
+    ],
     'no-console': ['warn', { allow: ['error', 'warn'] }],
     'max-len': [
       'warn',
