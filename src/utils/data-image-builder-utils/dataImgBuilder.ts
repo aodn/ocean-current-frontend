@@ -336,12 +336,10 @@ const buildSealCtdTagsDataImageUrl = (sealTagId: string, date: Dayjs, productId:
 
 const buildOceanColourImageUrl = (
   regionCode: string,
-  date: string,
-  dateFormat: DateFormat,
+  formattedDate: string,
   dateList: OceanColourDateItem[],
   isProxyRequired: boolean = false,
 ): string => {
-  const formattedDate = dayjs(date).format(dateFormat);
   const baseUrl = isProxyRequired ? apiConfig.ec2ProxyURL : imageUrlConfig.imageBaseUrl;
 
   const dateItem = dateList.find((item) => item.date === formattedDate);
