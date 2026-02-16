@@ -7,7 +7,7 @@ import { checkProductHasSubProduct } from '@/utils/product-utils/product';
 import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
 import { VideoPlayerOutletContext } from '@/types/router';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
-import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
+import { CurrentMetersSubProductsKey } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
 import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
@@ -53,8 +53,8 @@ const ProductContent: React.FC = () => {
 
   // Process ocean colour date list
   const oceanColourDateList = useMemo(
-    () => (productChecks.isOceanColourChlA ? processOceanColourDateList(oceanColourImageData, regionData.scope) : []),
-    [productChecks.isOceanColourChlA, oceanColourImageData, regionData.scope],
+    () => (productChecks.isOceanColourChlA ? processOceanColourDateList(oceanColourImageData) : []),
+    [productChecks.isOceanColourChlA, oceanColourImageData],
   );
 
   // Build image URL
@@ -264,7 +264,7 @@ const ProductContent: React.FC = () => {
   // Current meters
   if (productChecks.isCurrentMeters) {
     if (
-      subProduct?.key === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY &&
+      subProduct?.key === CurrentMetersSubProductsKey.MOORED_INSTRUMENT_ARRAY &&
       currentMetersParams.deploymentPlot === '' &&
       !hasSelectedParams.deploymentPlot
     ) {

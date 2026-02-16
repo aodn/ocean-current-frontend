@@ -1,6 +1,6 @@
 import { MapGeoJSONFeature, MapMouseEvent, MapRef } from 'react-map-gl/mapbox';
 import { isNotNullOrUndefined } from '@/utils/general-utils/general';
-import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
+import { CurrentMetersSubProductsKey } from '@/constants/currentMeters';
 import {
   deepADCPDeploymentPlotsData,
   deepADVDeploymentPlotsData,
@@ -49,13 +49,13 @@ const getDeploymentPlotsBySubProduct = (subProductKey: string) => {
   if (!subProductKey) return mooredInstrumentArrayDeploymentPlotsData;
 
   switch (subProductKey) {
-    case CurrentMetersSubproductsKey.SHELF:
+    case CurrentMetersSubProductsKey.SHELF:
       return shelfDeploymentPlotsData;
-    case CurrentMetersSubproductsKey.DEEP_ADCP:
+    case CurrentMetersSubProductsKey.DEEP_ADCP:
       return deepADCPDeploymentPlotsData;
-    case CurrentMetersSubproductsKey.DEEP_ADV:
+    case CurrentMetersSubProductsKey.DEEP_ADV:
       return deepADVDeploymentPlotsData;
-    case CurrentMetersSubproductsKey.SOUTHERN_OCEAN:
+    case CurrentMetersSubProductsKey.SOUTHERN_OCEAN:
       return southernOceanDeploymentPlotsData;
     default:
       return mooredInstrumentArrayDeploymentPlotsData;

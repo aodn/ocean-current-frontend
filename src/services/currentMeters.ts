@@ -1,15 +1,15 @@
 import { ec2ProxyClient } from '@/services/httpClient';
 import { ContentType } from '@/constants/request';
-import { CurrentMetersPlotPath, CurrentMetersSubproductsKeyType } from '@/constants/currentMeters';
+import { CurrentMetersPlotPath, CurrentMetersSubProductsKeyType } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 
 const getCurrentMetersPlotsList = async (
-  subProductKey: CurrentMetersSubproductsKeyType,
+  subProductKey: CurrentMetersSubProductsKeyType,
   deploymentPlot: CurrentMetersDeploymentPlotNames,
   type: CurrentMetersPlotPath,
 ) => {
   if (!subProductKey || !deploymentPlot) {
-    console.error('Missing subproduct and/or deployment plot information.');
+    console.error('Missing sub product and/or deployment plot information.');
     return [];
   }
 
