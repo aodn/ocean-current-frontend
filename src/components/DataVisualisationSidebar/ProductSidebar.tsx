@@ -10,7 +10,7 @@ import {
   CurrentMetersDepth,
   CurrentMetersProperty,
   CurrentMetersRegion,
-  CurrentMetersSubproductsKey,
+  CurrentMetersSubProductsKey,
 } from '@/constants/currentMeters';
 import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { ProductID } from '@/types/product';
@@ -40,7 +40,7 @@ const ProductSideBar: React.FC = () => {
 
   const mooredInstrumentArrayPath = useMemo(() => {
     return (
-      findLeafFlatProductById(CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY)?.path ||
+      findLeafFlatProductById(CurrentMetersSubProductsKey.MOORED_INSTRUMENT_ARRAY)?.path ||
       DEFAULT_SUB_PRODUCT_ROUTES['currentMeters']
     );
   }, []);

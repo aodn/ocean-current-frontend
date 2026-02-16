@@ -78,10 +78,11 @@ const formatDateByProductId = (productId: ProductID, date: string, regionScope: 
     return dayjs(date).format(DateFormat.HOUR);
   }
 
+  // There is an edge case when the region scope is RegionScope.Au
   const dateFormat = product.dateFormat
-    ? regionScope === RegionScope.State
-      ? product.dateFormat.stateFormat
-      : product.dateFormat.localFormat
+    ? regionScope === RegionScope.Local
+      ? product.dateFormat.localFormat
+      : product.dateFormat.stateFormat
     : DateFormat.DAY;
 
   return dayjs(date).format(dateFormat || DateFormat.DAY);

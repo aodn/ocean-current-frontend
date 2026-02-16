@@ -129,7 +129,7 @@ export const buildImageUrl = (params: BuildImageUrlParams): string | undefined =
 
     case isOceanColourChlA: {
       const dateFormat = getDateFormatByProductIdAndRegionScope('oceanColour-chlA', regionScope);
-      return buildOceanColourImageUrl(regionPath ?? 'Au', date.toString(), dateFormat, oceanColourDateList);
+      return buildOceanColourImageUrl(regionPath ?? 'Au', date.format(), dateFormat, oceanColourDateList);
     }
 
     default:

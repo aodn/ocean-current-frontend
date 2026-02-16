@@ -21,7 +21,7 @@ import {
   CurrentMetersDepth,
   CurrentMetersProperty,
   CurrentMetersRegion,
-  CurrentMetersSubproductsKey,
+  CurrentMetersSubProductsKey,
 } from '@/constants/currentMeters';
 import { SubProduct } from '@/types/product';
 import { getDeploymentPlotsBySubProduct } from '@/components/Map/utils/mapUtils';
@@ -50,7 +50,7 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
     mooredInstrumentArrayDeploymentPlotsData,
   );
   const subProductKey = subProduct?.key;
-  const isMooredInstrumentArraySubProduct = subProductKey === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY;
+  const isMooredInstrumentArraySubProduct = subProductKey === CurrentMetersSubProductsKey.MOORED_INSTRUMENT_ARRAY;
   const allTimeOption = currentMeterSYearOptionsData[0].id;
 
   const stdParams = useMemo(() => {
@@ -63,7 +63,7 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
     };
   }, [date, deploymentPlot, depth, property, region]);
 
-  // update deployment plots list and default option when switching subproducts
+  // update deployment plots list and default option when switching sub products
   useEffect(() => {
     if (!subProductKey) return;
 

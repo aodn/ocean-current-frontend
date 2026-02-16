@@ -17,7 +17,7 @@ import useCurrentMetersStore, {
 import useProductStore from '@/stores/product-store/productStore';
 import useProductDateFormat from '@/stores/product-store/hooks/useProductDateFormat';
 import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
-import { CurrentMetersSubproductsKey } from '@/constants/currentMeters';
+import { CurrentMetersSubProductsKey } from '@/constants/currentMeters';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import { useRegionLatestDates } from '@/services/hooks';
 import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
@@ -194,7 +194,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
               toggleBorder={false}
               menuShadow
               elements={
-                productId === CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY && !deploymentPlot
+                productId === CurrentMetersSubProductsKey.MOORED_INSTRUMENT_ARRAY && !deploymentPlot
                   ? currentMeterSYearOptionsData
                   : [currentMeterSYearOptionsData[0]]
               }
