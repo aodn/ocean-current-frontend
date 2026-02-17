@@ -85,7 +85,7 @@ const Dropdown = <T,>({
           header
             ? 'rounded-t-lg bg-imos-deeper-blue px-3 py-2 text-lg md:px-4 md:py-3'
             : 'rounded-md bg-white px-3 py-1 text-base md:px-4 md:py-2',
-          toggleBorder && !header && 'border border-[#3a6f8f80]',
+          toggleBorder && !header && 'border border-imos-calypso-blue/50',
           smallDropdown ? 'min-w-28' : 'min-w-56',
           processingItemId ? 'cursor-not-allowed opacity-75' : 'cursor-pointer',
         )}

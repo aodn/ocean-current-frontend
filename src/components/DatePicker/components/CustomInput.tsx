@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import calendarIcon from '@/assets/icons/calendar-icon.svg';
+import { CalendarIcon } from '@/components/Shared/Icons/ui';
 
 interface CustomInputProps {
   onClick?: () => void;
@@ -13,7 +13,7 @@ const CustomInput = forwardRef<HTMLDivElement, CustomInputProps>(({ onClick, dis
     className={`mr-5 mt-1 flex w-full items-center justify-center ${!disabled && 'cursor-pointer'}`}
     aria-hidden="true"
   >
-    <img src={calendarIcon} alt="calendar icon" className="mr-4" />
+    <CalendarIcon color="imos-deep-blue" size="lg" className="mr-4" aria-label="calendar icon" />
   </div>
 ));
 

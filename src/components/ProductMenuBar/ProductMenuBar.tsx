@@ -3,10 +3,6 @@ import { useSearchParams } from 'react-router';
 import { useDateList, useDateRange, useQueryParams, useArgoProductValidQueryParams } from '@/hooks';
 import { Dropdown, Button } from '@/components/Shared';
 import { ProductMenubarText } from '@/constants/textConstant';
-import VideoIcon from '@/assets/icons/video-icon.svg';
-import ShareIcon from '@/assets/icons/share-icon.svg';
-import ResetIcon from '@/assets/icons/reset-icon.svg';
-import MapIcon from '@/assets/icons/map-icon.svg';
 import VideoCreation from '@/components/VideoCreation';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import useCurrentMetersStore, {
@@ -25,6 +21,7 @@ import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
 import { useTidalCurrentPoint } from '@/pages/DataView/product-content/hooks/useTidalCurrentPoint';
 import { toYYYYMM } from '@/utils/date-utils/date';
 import DatePagination from '../DatePagination';
+import { VideoIcon, ShareIcon, ResetIcon, MapIcon } from '../Shared/Icons/ui';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
 const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
@@ -59,7 +56,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     isArgo && !isArgoValid,
   );
   const shouldRenderProductContent = useShowProductOverMap();
-  const defaultCurrentMetersSubproduct = DEFAULT_SUB_PRODUCT_ROUTES['currentMeters'];
+  const defaultCurrentMetersSubProduct = DEFAULT_SUB_PRODUCT_ROUTES['currentMeters'];
 
   const shouldDisableOption =
     disableVideoCreation() ||
@@ -115,7 +112,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     exitVideo();
     if (isCurrentMeters) {
       resetCurrentMetersStore();
-      return updateQueryParamsAndNavigate(`current-meters/${defaultCurrentMetersSubproduct}`, initialState);
+      return updateQueryParamsAndNavigate(`current-meters/${defaultCurrentMetersSubProduct}`, initialState);
     }
 
     const latestDate = dateList?.[dateList.length - 1]?.date;
@@ -181,7 +178,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
           className={`flex-center h-full w-full border-imos-calypso-blue/50 !px-2 ${showMap ? '' : 'bg-white'}`}
           aria-label="Toggle region selection"
         >
-          <img src={MapIcon} alt="map icon" className="h-6 w-6 flex-shrink-0" />
+          <MapIcon color="imos-deep-blue" size="sm" className="flex-shrink-0" />
           <p className={`ml-2 text-base font-medium ${showMap ? 'text-imos-blue' : 'text-imos-dark-grey'}`}>
             {ProductMenubarText.SELECT_REGION}
           </p>
@@ -209,13 +206,12 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
         <Button
           data-testid="date-reset-button"
           onClick={handleReset}
-          aria-hidden
           className="flex-center h-11 w-12 shrink-0 rounded-md border-imos-calypso-blue/50 bg-white !p-3 md:border-none md:!p-4"
           aria-label="Reset to latest date"
           disabled={resetBtnDisabled}
           borderRadius="extraSmall"
         >
-          <img src={ResetIcon} alt="reset icon" srcSet="" />
+          <ResetIcon color="imos-deep-blue" size="lg" />
         </Button>
         <div className="order-1 box-border h-11 flex-1 rounded-md border-none md:order-none md:flex-initial md:grow">
           <Button
@@ -225,7 +221,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
             className={`flex-center h-full w-full border-none !px-2 md:p-3 md:px-5 ${showVideo ? '' : 'bg-white'}`}
             aria-label="Toggle video"
           >
-            <img src={VideoIcon} alt="video icon" className="flex-shrink-0" />
+            <VideoIcon color="imos-deep-blue" size="xl" className="flex-shrink-0" />
             <p
               className={`ml-2 text-sm md:ml-3 md:w-20 md:text-base ${showVideo ? 'text-imos-blue' : 'text-imos-deep-blue md:text-imos-dark-grey'}`}
             >
@@ -248,7 +244,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
             borderRadius="extraSmall"
             className="flex-center h-full w-full border-none bg-white !px-2 md:p-3 md:px-5"
           >
-            <img className="h-6 w-6 flex-shrink-0" src={ShareIcon} alt="share icon" />
+            <ShareIcon color="imos-deep-blue" size="lg" className="flex-shrink-0" />
             <p className="ml-2 text-center text-sm text-imos-deep-blue md:ml-3 md:w-20 md:text-base md:text-imos-dark-grey">
               {copyButtonText}
             </p>
