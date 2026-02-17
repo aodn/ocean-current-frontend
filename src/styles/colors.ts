@@ -43,7 +43,7 @@ const color: OCColor = {
   grey3: '#3C3C3C',
   textGrey: '#646464',
   subheadingGrey: '#7C7C7C',
-  calypsoBlue: '#3a6f8f',
+  calypsoBlue: '#3A6F8F',
   horizonBlue: '#618CA5',
   brightMagenta: '#FA10E2',
   dodgerBlue: '#2972FF',

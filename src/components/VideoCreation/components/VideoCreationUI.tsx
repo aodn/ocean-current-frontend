@@ -1,10 +1,7 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import ReactDatePicker from 'react-datepicker';
-import DownloadIcon from '@/assets/icons/download-icon.svg';
-import { ArrowIcon } from '@/components/Shared/Icons';
-import cross from '@/assets/icons/cross-icon.svg';
-import calendarIcon from '@/assets/icons/calendar-icon.svg';
+import { DownloadIcon, ArrowIcon, CrossIcon, CalendarIcon } from '@/components/Shared/Icons';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button, Dropdown } from '@/components/Shared';
 import { GeneralText, ProductMenubarText } from '@/constants/textConstant';
@@ -57,9 +54,9 @@ const VideoCreation: React.FC<VideoCreationUIProps> = ({
   } = videoCreationProps;
 
   const customInput = (date: Date): JSX.Element => (
-    <div className="flex w-48 cursor-pointer items-center justify-between rounded border-2 border-[#3a6f8f80] bg-white p-2 px-3">
+    <div className="flex w-48 cursor-pointer items-center justify-between rounded border-2 border-imos-calypso-blue/50 bg-white p-2 px-3">
       <p>{dayjs(date).format('MMM DD, YYYY')}</p>
-      <img className="h-6 w-6" src={calendarIcon} alt="calendar icon" />
+      <CalendarIcon color="imos-deep-blue" size="sm" />
     </div>
   );
 
@@ -82,7 +79,7 @@ const VideoCreation: React.FC<VideoCreationUIProps> = ({
         data-testid="product-menu-bar-download-option"
         className={`flex h-full items-center justify-between rounded-md bg-white md:p-3 ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
       >
-        <img className="h-6 w-6" src={DownloadIcon} alt="share icon" />
+        <DownloadIcon color="imos-deep-blue" size="lg" />
         <p className="ml-1 text-sm font-medium text-imos-deep-blue md:ml-2 md:text-base md:text-imos-dark-grey">
           {ProductMenubarText.DOWNLOAD}
         </p>
@@ -95,17 +92,19 @@ const VideoCreation: React.FC<VideoCreationUIProps> = ({
           <div className="mb-4 flex items-center justify-between">
             <div></div>
             <p className="font-semibold">{ProductMenubarText.CUSTOMISE_GIF}</p>
-            <img
+            <CrossIcon
               aria-hidden
               onClick={toggleGifOptions}
               className="h-7 w-7 cursor-pointer"
-              src={cross}
-              alt="cross icon"
+              color="imos-deep-blue"
+              size="base"
+              aria-label="Close"
             />
           </div>
+
           <div className="rounded bg-[#E5EEF5] p-2">
             <div className="mb-2 flex items-center justify-between">
-              <p className="text-[#3A6F8F]">{GeneralText.START_DATE}</p>
+              <p className="text-imos-calypso-blue">{GeneralText.START_DATE}</p>
               <ReactDatePicker
                 selected={startDate}
                 onChange={handleStartDateChange}
@@ -113,11 +112,11 @@ const VideoCreation: React.FC<VideoCreationUIProps> = ({
               />
             </div>
             <div className="mb-2 flex items-center justify-between">
-              <p className="text-[#3A6F8F]">{GeneralText.END_DATE}</p>
+              <p className="text-imos-calypso-blue">{GeneralText.END_DATE}</p>
               <ReactDatePicker selected={endDate} onChange={handleEndDateChange} customInput={customInput(endDate)} />
             </div>
             <div className="mb-2 flex items-center justify-between">
-              <p className="text-[#3A6F8F]">{ProductMenubarText.ANIMATION_SPEED}</p>
+              <p className="text-imos-calypso-blue">{ProductMenubarText.ANIMATION_SPEED}</p>
               <div className="w-48">
                 <Dropdown
                   elements={frameRateOptions}
@@ -129,25 +128,25 @@ const VideoCreation: React.FC<VideoCreationUIProps> = ({
               </div>
             </div>
             <div className="mb-2 flex items-center justify-between">
-              <p className="text-[#3A6F8F]">Width (px)</p>
+              <p className="text-imos-calypso-blue">Width (px)</p>
               <input
                 title="Width"
                 type="number"
                 value={gifWidth}
                 onChange={(e) => handleDimensionChange(e, 'width')}
-                className="w-48 rounded border-2 border-[#3a6f8f80] bg-white p-2 px-3"
+                className="w-48 rounded border-2 border-imos-calypso-blue/50 bg-white p-2 px-3"
                 min="1"
                 max={2000}
               />
             </div>
             <div className="mb-2 flex items-center justify-between">
-              <p className="text-[#3A6F8F]">Height (px)</p>
+              <p className="text-imos-calypso-blue">Height (px)</p>
               <input
                 title="Height"
                 type="number"
                 value={gifHeight}
                 onChange={(e) => handleDimensionChange(e, 'height')}
-                className="w-48 rounded border-2 border-[#3a6f8f80] bg-white p-2 px-3"
+                className="w-48 rounded border-2 border-imos-calypso-blue/50 bg-white p-2 px-3"
                 min="1"
                 max={2000}
               />
@@ -157,7 +156,7 @@ const VideoCreation: React.FC<VideoCreationUIProps> = ({
           {isLoading && (
             <div data-testid="progressbar" className="my-4 h-2 w-full rounded-full bg-gray-200">
               <div
-                className="h-full rounded-full bg-[#52BDEC] transition-all duration-300 ease-in-out"
+                className="h-full rounded-full bg-imos-sea-blue transition-all duration-300 ease-in-out"
                 style={{ width: `${progress}%` }}
               ></div>
             </div>

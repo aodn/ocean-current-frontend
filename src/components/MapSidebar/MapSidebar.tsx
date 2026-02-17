@@ -36,7 +36,7 @@ const MapSidebar: React.FC = () => {
         <div
           key={id}
           aria-hidden="true"
-          className={`mb-4 flex cursor-pointer items-center rounded-md border border-[#3A6F8F] p-3 duration-300 hover:border-[#52BDEC] hover:bg-imos-hover-blue hover:bg-opacity-20 ${id === productIdWithoutSubProduct ? 'border-[#52BDEC] bg-[#52BDEC80]' : 'bg-white'}`}
+          className={`mb-4 flex cursor-pointer items-center rounded-md border border-imos-calypso-blue p-3 duration-300 hover:border-imos-sea-blue hover:bg-imos-hover-blue hover:bg-opacity-20 ${id === productIdWithoutSubProduct ? 'border-imos-sea-blue bg-imos-sea-blue/80' : 'bg-white'}`}
           onClick={() => handleProductChange(id)}
         >
           {Icon && <Icon className="mr-4 h-9 w-9" color="imos-grey" />}
