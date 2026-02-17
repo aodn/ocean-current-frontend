@@ -35,11 +35,17 @@ const MapSidebar: React.FC = () => {
       {sidebarProductsNav.map(({ id, label, Icon }) => (
         <div
           key={id}
-          aria-hidden="true"
-          className={`mb-4 flex cursor-pointer items-center rounded-md border border-imos-calypso-blue p-3 duration-300 hover:border-imos-sea-blue hover:bg-imos-hover-blue hover:bg-opacity-20 ${id === productIdWithoutSubProduct ? 'border-imos-sea-blue bg-imos-sea-blue/80' : 'bg-white'}`}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              handleProductChange(id);
+            }
+          }}
+          className={`mb-4 flex cursor-pointer items-center rounded-md border border-imos-calypso-blue p-3 duration-300 hover:border-imos-sea-blue hover:bg-imos-hover-blue hover:bg-opacity-20 ${id === productIdWithoutSubProduct ? 'border-imos-sea-blue bg-imos-sea-blue/50' : 'bg-white'}`}
           onClick={() => handleProductChange(id)}
         >
-          {Icon && <Icon className="mr-4 h-9 w-9" color="imos-grey" />}
+          {Icon && <Icon className="mr-4 h-9 w-9" color="imos-grey" aria-label={label} />}
           <span className="text-left text-base text-imos-dark-grey">{label}</span>
         </div>
       ))}

@@ -206,7 +206,6 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
         <Button
           data-testid="date-reset-button"
           onClick={handleReset}
-          aria-hidden
           className="flex-center h-11 w-12 shrink-0 rounded-md border-imos-calypso-blue/50 bg-white !p-3 md:border-none md:!p-4"
           aria-label="Reset to latest date"
           disabled={resetBtnDisabled}

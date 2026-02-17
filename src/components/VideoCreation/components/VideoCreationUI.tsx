@@ -93,12 +93,12 @@ const VideoCreation: React.FC<VideoCreationUIProps> = ({
             <div></div>
             <p className="font-semibold">{ProductMenubarText.CUSTOMISE_GIF}</p>
             <CrossIcon
-              aria-hidden
               onClick={toggleGifOptions}
               className="h-7 w-7 cursor-pointer"
               color="imos-deep-blue"
               size="base"
               aria-label="Close"
+              role="button"
             />
           </div>
 
