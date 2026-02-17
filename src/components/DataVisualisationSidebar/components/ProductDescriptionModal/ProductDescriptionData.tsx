@@ -1232,8 +1232,9 @@ const SealCtdModalData = () => {
         .
       </p>
       <p className="mb-4">
-        The SST and sea ice area fraction data are obtained fromREMSS(Remote Sensing Systems). The SST product used here
-        contains data from microwave (MW) and infrared (IR) sensors, optimally interpolated onto a global grid by REMSS.
+        The SST and sea ice area fraction data are obtained from REMSS (Remote Sensing Systems). The SST product used
+        here contains data from microwave (MW) and infrared (IR) sensors, optimally interpolated onto a global grid by
+        REMSS.
       </p>
     </div>
   );
