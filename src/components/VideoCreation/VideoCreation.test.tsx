@@ -75,13 +75,13 @@ describe('VideoCreation Factory Component', () => {
   it('should not open GIF options if download option is disabled', () => {
     render(<VideoCreation disabled={true} />);
     clickDownloadOption();
-    expect(screen.queryByText('Customise Gif')).not.toBeInTheDocument();
+    expect(screen.queryByText('Customise GIF')).not.toBeInTheDocument();
   });
 
   it('opens the GIF options when enabled and clicked', () => {
     render(<VideoCreation />);
     clickDownloadOption();
-    expect(screen.getByText('Customise Gif')).toBeInTheDocument();
+    expect(screen.getByText('Customise GIF')).toBeInTheDocument();
   });
 
   it.skip('updates frame rate when changed', async () => {

@@ -18,7 +18,7 @@ const getCurrentMetersPlotsList = async (
   try {
     const htmlString = await ec2ProxyClient.get<string>(`timeseries/${folder}/${deploymentPlot}/${type}/`, {
       headers: {
-        'Content-Type': ContentType.Text,
+        'Content-Type': ContentType.TEXT,
       },
     });
 

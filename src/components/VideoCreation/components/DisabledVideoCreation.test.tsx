@@ -19,6 +19,6 @@ describe('DisabledVideoCreation Component', () => {
   it('does not open options when clicked', () => {
     render(<DisabledVideoCreation />);
     fireEvent.click(screen.getByTestId('product-menu-bar-download-option'));
-    expect(screen.queryByText('Customise Gif')).not.toBeInTheDocument();
+    expect(screen.queryByText('Customise GIF')).not.toBeInTheDocument();
   });
 });
