@@ -34,7 +34,7 @@ const getTidalCurrentsTagsData = async (date: Dayjs, subProduct: string, region:
   try {
     const htmlString = await ec2ProxyClient.get<string>(url, {
       headers: {
-        'Content-Type': ContentType.Text,
+        'Content-Type': ContentType.TEXT,
       },
     });
 

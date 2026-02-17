@@ -1,5 +1,5 @@
 export enum ContentType {
-  Json = 'application/json',
-  Text = 'text/plain',
-  Gif = 'image/gif',
+  JSON = 'application/json',
+  TEXT = 'text/plain',
+  GIF = 'image/gif',
 }

@@ -40,7 +40,7 @@ describe('ActiveVideoCreation Component', () => {
   it('toggles GIF options when clicked', () => {
     render(<ActiveVideoCreation />);
     fireEvent.click(screen.getByTestId('product-menu-bar-download-option'));
-    expect(screen.getByText('Customise Gif')).toBeInTheDocument();
+    expect(screen.getByText('Customise GIF')).toBeInTheDocument();
   });
 
   it('calls resetState when opening GIF options', () => {
