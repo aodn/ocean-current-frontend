@@ -16,7 +16,6 @@ import { useRegionLatestDates } from '@/services/hooks';
 import { RegionLatestDate } from '@/types/imageList';
 import { RegionScope } from '@/constants/region';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { API_LATEST_DATES_DISABLED_PRODUCTS } from '@/configs/products/data-source';
 import { mapAnimation } from '@/configs/map';
 import { isValidMonthlyMeanDate } from '@/utils/date-utils/date';
 import useRegionPolygons from '../hooks/useRegionPolygons';
@@ -40,12 +39,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
   const regionGeoJsonData = useRegionPolygons();
   const { isOceanColour, isCurrentMetersMooredInstrumentArray } = useProductCheck();
 
-  const isApiLatestDatesDisabled = API_LATEST_DATES_DISABLED_PRODUCTS.includes(productId);
-
-  const { data: regionLatestDates, isLoading: isLoadingLatestDates } = useRegionLatestDates(
-    productId,
-    !isApiLatestDatesDisabled,
-  );
+  const { data: regionLatestDates, isLoading: isLoadingLatestDates } = useRegionLatestDates(productId);
 
   const {
     property: currentMetersProperty,

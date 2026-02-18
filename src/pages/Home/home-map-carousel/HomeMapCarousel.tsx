@@ -5,12 +5,13 @@ import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 import { cn } from '@/utils/classname-util/cn';
 import { ProductID } from '@/types/product';
 import { productsData } from './data';
+import SealTracksCarouselImage from './SealTracksCarouselImage';
 
 const CAROUSEL_INTERVAL_MS = 2500;
-const SEAL_CTD_STATIC_IMAGE_URL = 'https://oceancurrent.aodn.org.au/sealCTD_entry/latest.gif';
 
 const HomeMapCarousel: React.FC = () => {
   const [selectedProductIndex, setSelectedProductIndex] = useState<number>(0);
+
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const mapWrapperRef = useRef<HTMLDivElement | null>(null);
   const mapInnerRef = useRef<HTMLDivElement | null>(null);
@@ -67,13 +68,7 @@ const HomeMapCarousel: React.FC = () => {
             />
           </ErrorBoundary>
         </div>
-        {isStaticImageProduct && (
-          <img
-            src={SEAL_CTD_STATIC_IMAGE_URL}
-            alt={selectedProduct.title}
-            className="absolute inset-0 h-full w-full rounded-t-xl border-x border-t border-solid border-imos-calypso-blue border-opacity-60 object-contain"
-          />
-        )}
+        {isStaticImageProduct && <SealTracksCarouselImage alt={selectedProduct.title} />}
       </div>
 
       <div className="flex flex-col rounded-b-xl border border-solid border-imos-calypso-blue border-opacity-60 px-4 pb-3 pt-6 md:px-6">
