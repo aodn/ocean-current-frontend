@@ -58,8 +58,8 @@ const HomeMapCarousel: React.FC = () => {
             showCursorLocationPanel={false}
             style={{ borderRadius: '0.75rem 0.75rem 0 0' }}
             mapWrapperRef={mapWrapperRef}
-            stopCarousel={stopCarousel}
-            startCarousel={startCarousel}
+            onMoveStart={stopCarousel}
+            onContainerResize={startCarousel}
           />
         </ErrorBoundary>
       </div>
