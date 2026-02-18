@@ -32,4 +32,11 @@ export const productsData: HomeProductData[] = [
     subProduct: 'surfaceWaves-wave',
     description: 'Monitors wave heights and patterns, important for marine navigation and coastal management.',
   },
+  {
+    title: 'SealCTD',
+    id: 'sealCtd-sealTracks',
+    mainProduct: 'sealCtd',
+    subProduct: 'sealCtd-sealTracks',
+    description: 'Temperature and Salinity Profiles from Ocean Mammals',
+  },
 ];

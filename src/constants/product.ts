@@ -420,7 +420,7 @@ export const OC_PRODUCTS: Product[] = [
     title: 'SealCTD',
     key: 'sealCtd',
     path: 'seal-ctd',
-    latestEntry: null,
+    latestEntry: 'sealCTD_entry',
     dateFormat: {
       localFormat: DateFormat.DAY,
       stateFormat: DateFormat.DAY,

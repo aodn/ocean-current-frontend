@@ -2,6 +2,7 @@ import { useQueries, useQuery, UseQueryResult } from '@tanstack/react-query';
 import { ProductID } from '@/types/product';
 import { fetchRegionLatestDatesByProductId } from '@/services/imageList';
 import { LatestRegionDatesResponse } from '@/types/imageList';
+import { API_LATEST_DATES_DISABLED_PRODUCTS } from '@/configs/products/data-source';
 
 export const regionLatestDatesKeys = {
   all: ['regionLatestDates'] as const,
@@ -22,11 +23,15 @@ export const regionLatestDatesOptions = (productId: ProductID, enabled: boolean 
 };
 
 export const useRegionLatestDates = (productId: ProductID, enabled?: boolean) => {
-  return useQuery<LatestRegionDatesResponse>(regionLatestDatesOptions(productId, enabled));
+  const isDisabled = API_LATEST_DATES_DISABLED_PRODUCTS.includes(productId);
+  return useQuery<LatestRegionDatesResponse>(regionLatestDatesOptions(productId, !isDisabled && (enabled ?? true)));
 };
 
 export const useMultipleRegionLatestDates = (productIds: ProductID[], enabled?: boolean) => {
   return useQueries<LatestRegionDatesResponse[]>({
-    queries: productIds.map((id) => regionLatestDatesOptions(id, enabled)),
+    queries: productIds.map((id) => {
+      const isDisabled = API_LATEST_DATES_DISABLED_PRODUCTS.includes(id);
+      return regionLatestDatesOptions(id, !isDisabled && (enabled ?? true));
+    }),
   }) as UseQueryResult<LatestRegionDatesResponse, Error>[];
 };

@@ -33,8 +33,8 @@ const BasicMap: React.FC<BasicMapProps> = ({
   navigationControl = true,
   showCursorLocationPanel = true,
   mapWrapperRef,
-  stopCarousel,
-  startCarousel,
+  onMoveStart,
+  onContainerResize,
 }) => {
   const [cursor, setCursor] = useState<string>('grab');
   const [cursorLngLat, setCursorLngLat] = useState<{
@@ -63,9 +63,9 @@ const BasicMap: React.FC<BasicMapProps> = ({
   const handleMapResize = useCallback(() => {
     if (mapRef.current) {
       mapRef.current.resize();
-      startCarousel?.();
+      onContainerResize?.();
     }
-  }, [startCarousel]);
+  }, [onContainerResize]);
 
   useResizeObserver((mapWrapperRef as React.RefObject<HTMLDivElement>) || null, handleMapResize);
 
@@ -75,10 +75,6 @@ const BasicMap: React.FC<BasicMapProps> = ({
       patchMapViewState(initialMobileMapViewState.mapViewState);
     }
   }, [isMobile]);
-
-  const handleMoveStart = useCallback(() => {
-    stopCarousel?.();
-  }, [stopCarousel]);
 
   const handleMove = useCallback(({ viewState }: ViewStateChangeEvent) => {
     setMapViewState(viewState);
@@ -158,7 +154,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
       pitch={0}
       cursor={cursor}
       onRender={handleRender}
-      onMoveStart={handleMoveStart}
+      onMoveStart={onMoveStart}
       onMove={handleMove}
       onZoom={handleZoom}
       onMouseMove={handleMouseMove}

@@ -5,15 +5,19 @@ import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
 import { cn } from '@/utils/classname-util/cn';
 import { ProductID } from '@/types/product';
 import { productsData } from './data';
+import SealTracksCarouselImage from './SealTracksCarouselImage';
 
 const CAROUSEL_INTERVAL_MS = 2500;
 
 const HomeMapCarousel: React.FC = () => {
   const [selectedProductIndex, setSelectedProductIndex] = useState<number>(0);
+
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const mapWrapperRef = useRef<HTMLDivElement | null>(null);
+  const mapInnerRef = useRef<HTMLDivElement | null>(null);
 
   const selectedProduct = productsData[selectedProductIndex];
+  const isStaticImageProduct = selectedProduct.id === 'sealCtd-sealTracks';
 
   const stopCarousel = useCallback(() => {
     if (intervalRef.current) {
@@ -52,16 +56,19 @@ const HomeMapCarousel: React.FC = () => {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex-1" ref={mapWrapperRef}>
-        <ErrorBoundary>
-          <BasicMap
-            showCursorLocationPanel={false}
-            style={{ borderRadius: '0.75rem 0.75rem 0 0' }}
-            mapWrapperRef={mapWrapperRef}
-            stopCarousel={stopCarousel}
-            startCarousel={startCarousel}
-          />
-        </ErrorBoundary>
+      <div className="relative flex-1" ref={mapWrapperRef}>
+        <div className={cn('h-full', { 'pointer-events-none invisible': isStaticImageProduct })} ref={mapInnerRef}>
+          <ErrorBoundary>
+            <BasicMap
+              showCursorLocationPanel={false}
+              style={{ borderRadius: '0.75rem 0.75rem 0 0' }}
+              mapWrapperRef={mapInnerRef}
+              onMoveStart={isStaticImageProduct ? undefined : stopCarousel}
+              onContainerResize={startCarousel}
+            />
+          </ErrorBoundary>
+        </div>
+        {isStaticImageProduct && <SealTracksCarouselImage alt={selectedProduct.title} />}
       </div>
 
       <div className="flex flex-col rounded-b-xl border border-solid border-imos-calypso-blue border-opacity-60 px-4 pb-3 pt-6 md:px-6">
