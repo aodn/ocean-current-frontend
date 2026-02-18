@@ -10,6 +10,7 @@ import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { RegionScope } from '@/constants/region';
 import { useImageArgoTags } from '@/services/hooks';
 import { ProductID } from '@/types/product';
+import { DateFormat } from '@/types/date';
 import { useResizeObserver } from '@/hooks';
 
 type DataImageWithArgoMapProps = {
@@ -35,7 +36,9 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   const [coords, setCoords] = useState<ArgoTagMapArea[]>([]);
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const { mainProduct } = useProductConvert();
-  const { data } = useImageArgoTags({ date, tagPath: argoTagFilePath, regionCode, dateFormat });
+  // Non-Tidal SLA product images use HOUR format but its tag file uses DAY format
+  const tagDateFormat = productId === 'adjustedSeaLevelAnomaly-nonTidalSla' ? DateFormat.DAY : dateFormat;
+  const { data } = useImageArgoTags({ date, tagPath: argoTagFilePath, regionCode, dateFormat: tagDateFormat });
   const alt = `${productId} data in ${regionCode} at ${dateFormatted}`;
 
   const handleLoad = useCallback(() => {
