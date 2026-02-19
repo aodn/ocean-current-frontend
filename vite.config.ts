@@ -13,8 +13,8 @@ export default ({ mode }) => {
   };
 
   const proxyLog = Boolean(process.env.VITE_PROXY_LOG);
-  // eslint-disable-next-line no-console
   const logProxy = (method: string, url: string, target: string | object) =>
+    // eslint-disable-next-line no-console
     proxyLog && console.log(`[proxy] ${method} ${url} -> ${target}${url}`);
 
   return defineConfig({
