@@ -14,8 +14,8 @@ export default ({ mode }) => {
 
   const proxyLog = Boolean(process.env.VITE_PROXY_LOG);
   const logProxy = (method: string, url: string, target: string | object) =>
-    // eslint-disable-next-line no-console
-    proxyLog && console.log(`[proxy] ${method} ${url} -> ${target}${url}`);
+    proxyLog &&
+    console.log(`[proxy] ${method} ${url} -> ${typeof target === 'string' ? target : JSON.stringify(target)}${url}`); // eslint-disable-line no-console
 
   return defineConfig({
     plugins: [
@@ -67,7 +67,7 @@ export default ({ mode }) => {
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api\/v1/, ''),
           configure: (proxy, options) => {
-            proxy.on('proxyReq', (_, req) => logProxy(req.method!, req.url!, options.target));
+            proxy.on('proxyReq', (_, req) => logProxy(req.method ?? 'UNKNOWN', req.url ?? 'UNKNOWN', options.target));
           },
         },
         '/resource': {
@@ -75,7 +75,7 @@ export default ({ mode }) => {
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/resource/, ''),
           configure: (proxy, options) => {
-            proxy.on('proxyReq', (_, req) => logProxy(req.method!, req.url!, options.target));
+            proxy.on('proxyReq', (_, req) => logProxy(req.method ?? 'UNKNOWN', req.url ?? 'UNKNOWN', options.target));
           },
         },
         '/storage': {
@@ -83,7 +83,7 @@ export default ({ mode }) => {
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/storage/, ''),
           configure: (proxy, options) => {
-            proxy.on('proxyReq', (_, req) => logProxy(req.method!, req.url!, options.target));
+            proxy.on('proxyReq', (_, req) => logProxy(req.method ?? 'UNKNOWN', req.url ?? 'UNKNOWN', options.target));
           },
         },
       },
