@@ -46,8 +46,32 @@ yarn install
 yarn dev
 ```
 
-This will start the project on a local server, which can be accessed via http://localhost:5173/.
+This will start the project on a local server, which can be accessed via <http://localhost:5173/>.
 Note: `5173` is Vite's default local dev server port. If you want to use a different port, you can change it in your `.env.local` file at the `VITE_PORT` variable.
+
+To log proxy requests in the terminal, run:
+
+```bash
+yarn dev:log
+```
+
+Or set `VITE_PROXY_LOG=true` in your `.env.local` to enable it persistently.
+
+### Environment Variables
+
+All environment variables are optional except `VITE_MAPBOX_ACCESS_TOKEN`. See `.env.local.example` for the full list with descriptions.
+
+#### API & Proxy
+
+In development, all API requests go through the Vite dev server proxy:
+
+| Path        | Forwards to                                       |
+| ----------- | ------------------------------------------------- |
+| `/api/v1`   | `VITE_API_BACKEND_URL` (default: edge upstream)   |
+| `/resource` | `VITE_API_EC2_PROXY_URL` (default: edge upstream) |
+| `/storage`  | `VITE_API_S3_PROXY_URL` (default: edge upstream)  |
+
+In production, all paths are resolved relative to the deployment host — no environment variables are needed.
 
 ### Branch naming convention
 

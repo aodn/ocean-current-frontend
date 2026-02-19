@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:log": "VITE_PROXY_LOG=true vite",
     "build": "tsc && vite build",
     "build:edge": "tsc && vite build --mode edge",
     "test": "vitest --watch=false",
