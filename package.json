@@ -16,8 +16,8 @@
     "test:e2e:production": "PLAYWRIGHT_TEST_BASE_URL=https://oceancurrent.production.aodn.org.au playwright test",
     "test:e2e:report": "playwright show-report",
     "coverage": "vitest run --coverage",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --cache",
-    "lint:fix": "eslint . --ext ts,tsx --fix --cache",
+    "lint": "eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0 --cache",
+    "lint:fix": "eslint . --ext js,jsx,ts,tsx --fix --cache",
     "prettier": "prettier . --check ",
     "prettier:fix": "prettier . --write",
     "preview": "vite preview",
@@ -86,10 +86,7 @@
     "vitest": "^2.1.5"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx}": [
-      "eslint --report-unused-disable-directives --max-warnings 0"
-    ],
-    "tests/**/*.{ts,tsx}": [
+    "**/*.{js,jsx,ts,tsx}": [
       "eslint --report-unused-disable-directives --max-warnings 0"
     ],
     "**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
