@@ -1,48 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import '@/configs/dayjs';
-import { useDateRange } from '@/hooks';
 import ProductMenuBar from './ProductMenuBar';
 
-vi.mock('@/hooks/useDateRange/useDateRange');
 vi.mock('@/components/VideoCreation/VideoCreation', () => {
   const MockedVideoCreation = () => <div>Download</div>;
   return { default: MockedVideoCreation };
 });
 
 describe('ProductMenuBar', () => {
-  const mockDates = [
-    { date: new Date('2024-06-13'), active: true, showLabel: true },
-    { date: new Date('2024-06-14'), active: true, showLabel: false },
-    { date: new Date('2024-06-15'), active: false, showLabel: false },
-    { date: new Date('2024-06-16'), active: true, showLabel: false },
-    { date: new Date('2024-06-17'), active: true, showLabel: true },
-  ];
-
-  const mockReturnValue = {
-    startDate: new Date('2024-06-13'),
-    endDate: new Date('2024-06-17'),
-    allDates: mockDates,
-    selectedDateIndex: 0,
-    handleSliderChange: vi.fn(),
-    handleDateChange: vi.fn(),
-    modifyDate: vi.fn(),
-    handleYearDateChange: vi.fn(),
-    isSelectedDayYesterdayOrLater: () => false,
-    isLastMonthOfTheYear: vi.fn(),
-    steps: 1,
-    isWeekRange: false,
-    isMonthRange: false,
-    isYearRange: false,
-    disableVideoCreation: () => false,
-    resetDateRange: vi.fn(),
-    formatDate: 'YYYYMMDD',
-  };
-
-  beforeEach(() => {
-    vi.mocked(useDateRange).mockReturnValue(mockReturnValue);
-  });
-
   afterEach(() => {
     vi.restoreAllMocks();
   });

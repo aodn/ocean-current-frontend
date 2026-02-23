@@ -7,6 +7,7 @@ import { DateFormat, OceanColourDateItem } from '@/types/date';
 import { AnyProductID, ProductID, RootProductID } from '@/types/product';
 import { apiConfig } from '@/configs/api';
 import { ImageListResponse } from '@/types/imageList';
+import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { findLeafFlatProductById } from '../product-utils/product';
 
 type ProductVideoUrlBuilder = Partial<Record<RootProductID, string>> & {
@@ -352,6 +353,43 @@ const buildOceanColourImageUrl = (
   return `${baseUrl}/${regionCode}_chl/${formattedDate}.gif`;
 };
 
+/**
+ * Shared URL builder for video-enabled products.
+ * Used by both chooseImg (static image display) and useVideoCreation (GIF generation).
+ * Products with specialized params (argo, currentMeters, tidalCurrents, sealCtdTags)
+ * are handled separately by their callers before falling through to this function.
+ */
+const buildStaticImageUrl = (
+  productId: ProductID,
+  date: Dayjs,
+  regionPath: string,
+  regionScope: RegionScope,
+  targetPathRegion: RegionScope,
+  regionCode: string | null,
+  options?: {
+    oceanColourDateList?: OceanColourDateItem[];
+    isProxyRequired?: boolean;
+  },
+): string => {
+  switch (true) {
+    case productId === 'sixDaySst-timeseries':
+      return buildSSTTimeseriesImageUrl(regionPath);
+    case productId === 'EACMooringArray':
+      return buildEACMooringArrayImageUrl(date);
+    case productId === 'sealCtd-sealTracks':
+      return buildSealCtdMapImageUrl(regionCode ?? 'POLAR', date);
+    case productId === 'surfaceWaves-wave':
+      return buildSurfaceWavesImageUrl(date);
+    case productId.startsWith('oceanColour-') && !!options?.oceanColourDateList: {
+      const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
+      const formattedDate = date.format(dateFormat);
+      return buildOceanColourImageUrl(regionPath, formattedDate, options.oceanColourDateList, options.isProxyRequired);
+    }
+    default:
+      return buildProductImageUrl(productId, regionPath, targetPathRegion, date.toString(), options?.isProxyRequired);
+  }
+};
+
 export {
   getTargetRegionScopePath,
   getProductSegmentByProductId,
@@ -373,4 +411,5 @@ export {
   buildSealCtdGraphImageUrl,
   buildSealCtdTagsDataImageUrl,
   buildSurfaceWavesBuoyTimeseriesImageUrl,
+  buildStaticImageUrl,
 };

@@ -1,4 +1,8 @@
-import { DateItem } from '@/hooks/useDateRange/types/useDateRange.types';
+type DateItem = {
+  date: Date;
+  active: boolean;
+  showLabel: boolean;
+};
 
 export interface SliderProps {
   min: number;
