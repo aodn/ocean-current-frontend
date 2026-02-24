@@ -220,8 +220,9 @@ const buildSSTTimeseriesImageUrl = (region: string) => {
   return `${imageUrlConfig.imageBaseUrl}/MM_SSTA/MMA/${region}_Anomaly_1993-latest.gif`;
 };
 
-const buildEACMooringArrayImageUrl = (date: Dayjs) => {
-  return `${imageUrlConfig.imageBaseUrl}/EAC_array_figures/SST/Brisbane/${date.format(DateFormat.DAY)}.gif`;
+const buildEACMooringArrayImageUrl = (date: Dayjs, isProxyRequired: boolean = false) => {
+  const baseUrl = isProxyRequired ? apiConfig.ec2ProxyURL : imageUrlConfig.imageBaseUrl;
+  return `${baseUrl}/EAC_array_figures/SST/Brisbane/${date.format(DateFormat.DAY)}.gif`;
 };
 
 const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle: string, depth: string): string => {
@@ -375,7 +376,7 @@ const buildStaticImageUrl = (
     case productId === 'sixDaySst-timeseries':
       return buildSSTTimeseriesImageUrl(regionPath);
     case productId === 'EACMooringArray':
-      return buildEACMooringArrayImageUrl(date);
+      return buildEACMooringArrayImageUrl(date, options?.isProxyRequired);
     case productId === 'sealCtd-sealTracks':
       return buildSealCtdMapImageUrl(regionCode ?? 'POLAR', date);
     case productId === 'surfaceWaves-wave':
