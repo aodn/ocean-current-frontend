@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Layer, MapMouseEvent, Source, useMap } from 'react-map-gl/mapbox';
 import dayjs from 'dayjs';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
-import { buildProductImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
+import { buildStaticImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import { useProductSearchParam, useQueryParams } from '@/hooks';
 import useProductPath from '@/stores/product-store/hooks/useProductPath';
 import { BoundingBox, GeoJsonPolygon } from '@/types/map';
@@ -226,20 +226,22 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
               if (
                 dateFromQuery &&
                 isValidMonthlyMeanDate(dateFromQuery) &&
-                dayjs(dateFromQuery).isBefore(dayjs(monthlyMeansDate).add(1, 'day'))
+                dayjs(dateFromQuery, 'YYYYMMDD').isBefore(dayjs(monthlyMeansDate, 'YYYYMMDD').add(1, 'day'))
               ) {
                 monthlyMeansDate = dateFromQuery;
               }
 
-              const candidateUrl = buildProductImageUrl(
+              const candidateUrl = buildStaticImageUrl(
                 'monthlyMeans-30day',
+                dayjs(monthlyMeansDate, 'YYYYMMDD'),
                 regionCode,
                 RegionScope.State,
-                monthlyMeansDate,
+                RegionScope.State,
+                regionCode,
               );
               const exists = await validateImageExists(candidateUrl);
               if (!exists) {
-                monthlyMeansDate = dayjs(monthlyMeansDate).subtract(1, 'month').date(15).format('YYYYMMDD');
+                monthlyMeansDate = dayjs(monthlyMeansDate, 'YYYYMMDD').subtract(1, 'month').date(15).format('YYYYMMDD');
               }
 
               queryObject = { region: regionCode, date: monthlyMeansDate, point: null };

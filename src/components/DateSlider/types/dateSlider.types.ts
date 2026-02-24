@@ -1,11 +1,7 @@
-type DateItem = {
-  date: Date;
-  active: boolean;
-  showLabel: boolean;
-};
+import { SliderDateItem } from '@/types/date';
 
 export interface DateSliderProps {
-  allDates: DateItem[];
+  allDates: SliderDateItem[];
   selectedDateIndex: number;
   handleSliderChange: (newValue: number) => void;
   steps: number;

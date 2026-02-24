@@ -89,7 +89,7 @@ const formatDateByProductId = (productId: ProductID, date: string, regionScope: 
   return dayjs(date).format(dateFormat || DateFormat.DAY);
 };
 
-const buildProductImageUrl = (
+const buildDefaultFallbackImageUrl = (
   productId: ProductID,
   regionCode: string,
   regionScope: RegionScope,
@@ -386,7 +386,13 @@ const buildStaticImageUrl = (
       return buildOceanColourImageUrl(regionPath, formattedDate, options.oceanColourDateList, options.isProxyRequired);
     }
     default:
-      return buildProductImageUrl(productId, regionPath, targetPathRegion, date.toString(), options?.isProxyRequired);
+      return buildDefaultFallbackImageUrl(
+        productId,
+        regionPath,
+        targetPathRegion,
+        date.toString(),
+        options?.isProxyRequired,
+      );
   }
 };
 
@@ -395,7 +401,6 @@ export {
   getProductSegmentByProductId,
   formatDateByProductId,
   validateProductAndSubProduct,
-  buildProductImageUrl,
   buildOceanColourImageUrl,
   buildArgoImageUrl,
   buildSurfaceWavesImageUrl,

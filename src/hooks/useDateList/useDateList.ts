@@ -10,7 +10,7 @@ import { ArgoProfileCycle } from '@/types/argo';
 import { DateItem, OceanColourDateItem } from '@/types/date';
 import useProductStore from '@/stores/product-store/productStore';
 import useArgoStore from '@/stores/argo-store/argoStore';
-import { buildProductImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
+import { buildStaticImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import { RegionScope } from '@/constants/region';
 import { sharedQueryConfig } from '@/configs/query';
 import { useRegionLatestDates } from '@/services/hooks';
@@ -171,8 +171,15 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
     queryFn: async () => {
       const today = dayjs();
       const firstCandidate = today.date() >= 15 ? today : today.subtract(1, 'month');
-      const candidateDateStr = firstCandidate.date(15).format('YYYYMMDD');
-      const candidateUrl = buildProductImageUrl('monthlyMeans-30day', region!, RegionScope.State, candidateDateStr);
+      const candidateDate = firstCandidate.date(15);
+      const candidateUrl = buildStaticImageUrl(
+        'monthlyMeans-30day',
+        candidateDate,
+        region!,
+        RegionScope.State,
+        RegionScope.State,
+        region!,
+      );
 
       const exists = await new Promise<boolean>((resolve) => {
         const img = new Image();

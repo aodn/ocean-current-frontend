@@ -50,3 +50,6 @@ tests/screenshots/
 CLAUDE.md
 .specstory
 .cursorindexingignore
+
+# Local code reviews
+reviews/
