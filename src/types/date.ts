@@ -27,3 +27,9 @@ export interface DateItem {
 export interface OceanColourDateItem extends DateItem {
   path?: string; // For ocean colour images that may have year folders
 }
+
+export type SliderDateItem = {
+  date: Date;
+  active: boolean;
+  showLabel: boolean;
+};

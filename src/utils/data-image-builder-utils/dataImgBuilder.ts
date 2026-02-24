@@ -7,6 +7,7 @@ import { DateFormat, OceanColourDateItem } from '@/types/date';
 import { AnyProductID, ProductID, RootProductID } from '@/types/product';
 import { apiConfig } from '@/configs/api';
 import { ImageListResponse } from '@/types/imageList';
+import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { findLeafFlatProductById } from '../product-utils/product';
 
 type ProductVideoUrlBuilder = Partial<Record<RootProductID, string>> & {
@@ -88,7 +89,7 @@ const formatDateByProductId = (productId: ProductID, date: string, regionScope: 
   return dayjs(date).format(dateFormat || DateFormat.DAY);
 };
 
-const buildProductImageUrl = (
+const buildDefaultFallbackImageUrl = (
   productId: ProductID,
   regionCode: string,
   regionScope: RegionScope,
@@ -219,8 +220,9 @@ const buildSSTTimeseriesImageUrl = (region: string) => {
   return `${imageUrlConfig.imageBaseUrl}/MM_SSTA/MMA/${region}_Anomaly_1993-latest.gif`;
 };
 
-const buildEACMooringArrayImageUrl = (date: Dayjs) => {
-  return `${imageUrlConfig.imageBaseUrl}/EAC_array_figures/SST/Brisbane/${date.format(DateFormat.DAY)}.gif`;
+const buildEACMooringArrayImageUrl = (date: Dayjs, isProxyRequired: boolean = false) => {
+  const baseUrl = isProxyRequired ? apiConfig.ec2ProxyURL : imageUrlConfig.imageBaseUrl;
+  return `${baseUrl}/EAC_array_figures/SST/Brisbane/${date.format(DateFormat.DAY)}.gif`;
 };
 
 const buildArgoImageUrl = (worldMeteorologicalOrgId: string, date: Dayjs, cycle: string, depth: string): string => {
@@ -352,12 +354,54 @@ const buildOceanColourImageUrl = (
   return `${baseUrl}/${regionCode}_chl/${formattedDate}.gif`;
 };
 
+/**
+ * Shared URL builder for video-enabled products.
+ * Used by both chooseImg (static image display) and useVideoCreation (GIF generation).
+ * Products with specialized params (argo, currentMeters, tidalCurrents, sealCtdTags)
+ * are handled separately by their callers before falling through to this function.
+ */
+const buildStaticImageUrl = (
+  productId: ProductID,
+  date: Dayjs,
+  regionPath: string,
+  regionScope: RegionScope,
+  targetPathRegion: RegionScope,
+  regionCode: string | null,
+  options?: {
+    oceanColourDateList?: OceanColourDateItem[];
+    isProxyRequired?: boolean;
+  },
+): string => {
+  switch (true) {
+    case productId === 'sixDaySst-timeseries':
+      return buildSSTTimeseriesImageUrl(regionPath);
+    case productId === 'EACMooringArray':
+      return buildEACMooringArrayImageUrl(date, options?.isProxyRequired);
+    case productId === 'sealCtd-sealTracks':
+      return buildSealCtdMapImageUrl(regionCode ?? 'POLAR', date);
+    case productId === 'surfaceWaves-wave':
+      return buildSurfaceWavesImageUrl(date);
+    case productId.startsWith('oceanColour-') && !!options?.oceanColourDateList: {
+      const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
+      const formattedDate = date.format(dateFormat);
+      return buildOceanColourImageUrl(regionPath, formattedDate, options.oceanColourDateList, options.isProxyRequired);
+    }
+    default:
+      return buildDefaultFallbackImageUrl(
+        productId,
+        regionPath,
+        targetPathRegion,
+        date.toString(),
+        options?.isProxyRequired,
+      );
+  }
+};
+
 export {
   getTargetRegionScopePath,
   getProductSegmentByProductId,
   formatDateByProductId,
   validateProductAndSubProduct,
-  buildProductImageUrl,
   buildOceanColourImageUrl,
   buildArgoImageUrl,
   buildSurfaceWavesImageUrl,
@@ -373,4 +417,5 @@ export {
   buildSealCtdGraphImageUrl,
   buildSealCtdTagsDataImageUrl,
   buildSurfaceWavesBuoyTimeseriesImageUrl,
+  buildStaticImageUrl,
 };

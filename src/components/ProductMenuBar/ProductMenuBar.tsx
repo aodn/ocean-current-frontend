@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
-import { useDateList, useDateRange, useQueryParams, useArgoProductValidQueryParams } from '@/hooks';
+import { useDateList, useQueryParams, useArgoProductValidQueryParams } from '@/hooks';
 import { Dropdown, Button } from '@/components/Shared';
 import { ProductMenubarText } from '@/constants/textConstant';
 import VideoCreation from '@/components/VideoCreation';
@@ -32,7 +32,6 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
   isMapView = false,
   mode,
 }) => {
-  const { disableVideoCreation } = useDateRange();
   const { updateQueryParamsAndNavigate, updateQueryParams } = useQueryParams();
   const argoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
 
@@ -43,11 +42,11 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
   const {
     isArgo,
     isCurrentMeters,
+    isClimatology,
     isSurfaceWavesBuoyTimeseries,
     isTidalCurrents,
     isSealCtd,
     isSealCtdTags,
-    isClimatology,
   } = useProductCheck();
   const { isArgoValid } = useArgoProductValidQueryParams();
   const productId = useProductStore((state) => state.productParams.productId);
@@ -58,16 +57,20 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
   const shouldRenderProductContent = useShowProductOverMap();
   const defaultCurrentMetersSubProduct = DEFAULT_SUB_PRODUCT_ROUTES['currentMeters'];
 
+  // Products where video/GIF creation is not available
   const shouldDisableOption =
-    disableVideoCreation() ||
-    showMap ||
     isArgo ||
-    isMapView ||
     isCurrentMeters ||
     isSurfaceWavesBuoyTimeseries ||
     isTidalCurrents ||
     (isSealCtd && productId !== 'sealCtd-sealTracks') ||
     isSealCtdTags ||
+    isClimatology ||
+    productId === 'monthlyMeans-climatology' ||
+    productId === 'fourHourSst-sstAge' ||
+    productId === 'sixDaySst-timeseries' ||
+    showMap ||
+    isMapView ||
     !shouldRenderProductContent;
 
   const dateFormat = useProductDateFormat();
