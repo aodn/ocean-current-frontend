@@ -41,13 +41,13 @@ const useVideoCreation = (): UseVideoCreationReturn => {
 
   const { dateList } = useDateList({ productId: useProductId });
 
-  // Convert dateList (string dates) to DateObject[] (Date objects)
-  // useDateList returns a new array reference every render, so stabilize with content-based key
-  const dateListKey = dateList.map((d) => d.date).join(',');
+  // useDateList returns a new array reference every render, so stabilize by keying on
+  // productId (the primary driver of list content) and length (covers the loading→resolved
+  // transition where the list goes from empty to populated for the same productId).
   const allDates: DateObject[] = useMemo(
     () => dateList.map((item) => ({ date: dayjs(item.date).toDate() })),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [dateListKey],
+    [useProductId, dateList.length],
   );
 
   const formatDate = getDateFormatByProductIdAndRegionScope(useProductId, regionScope);
