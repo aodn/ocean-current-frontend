@@ -191,6 +191,23 @@ describe('buildProductImageUrlByProductId', () => {
       // Assert
       expect(imageUrl).toBe(`${imageBaseUrl}/STATE_daily/CHL/SE/20240717.gif`);
     });
+
+    it('should return the correct image URL for chlAAge state region (not routed through buildOceanColourImageUrl)', () => {
+      // Arrange
+      const productId = 'oceanColour-chlAAge';
+      const region = 'SE';
+      const regionScope = RegionScope.State;
+      const date = '20240717';
+      const oceanColourDateList = [{ date: '20240717', path: '/SE_chl/2024' }];
+
+      // Act
+      const imageUrl = buildStaticImageUrl(productId, dayjs(date), region, regionScope, regionScope, region, {
+        oceanColourDateList,
+      });
+
+      // Assert - should use buildDefaultFallbackImageUrl path, not buildOceanColourImageUrl
+      expect(imageUrl).toBe(`${imageBaseUrl}/STATE_daily/CHL_AGE/SE/20240717.gif`);
+    });
   });
 
   describe('monthlyMeans', () => {

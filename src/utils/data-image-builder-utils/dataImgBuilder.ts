@@ -381,7 +381,7 @@ const buildStaticImageUrl = (
       return buildSealCtdMapImageUrl(regionCode ?? 'POLAR', date);
     case productId === 'surfaceWaves-wave':
       return buildSurfaceWavesImageUrl(date);
-    case productId.startsWith('oceanColour-') && !!options?.oceanColourDateList: {
+    case productId === 'oceanColour-chlA' && !!options?.oceanColourDateList: {
       const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
       const formattedDate = date.format(dateFormat);
       return buildOceanColourImageUrl(regionPath, formattedDate, options.oceanColourDateList, options.isProxyRequired);
