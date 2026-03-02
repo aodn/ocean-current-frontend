@@ -29,6 +29,7 @@ const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, 
     dateFormat: effectiveDateFormat,
     initialDate,
     dateRange,
+    productId,
   });
   const { currentDate, updateDate, goToPrevious, goToNext, canGoPrevious, canGoNext } =
     navigationMode === 'dateList' ? dateListNavigation : dateRangeNavigation;

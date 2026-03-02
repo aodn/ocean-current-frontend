@@ -21,6 +21,7 @@
     "prettier": "prettier . --check ",
     "prettier:fix": "prettier . --write",
     "preview": "vite preview",
+    "build:preview": "tsc && vite build && vite preview",
     "postinstall": "husky"
   },
   "dependencies": {

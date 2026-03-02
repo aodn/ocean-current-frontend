@@ -357,7 +357,7 @@ const buildOceanColourImageUrl = (
 /**
  * Shared URL builder for video-enabled products.
  * Used by both chooseImg (static image display) and useVideoCreation (GIF generation).
- * Products with specialized params (argo, currentMeters, tidalCurrents, sealCtdTags)
+ * Products with specialised params (argo, currentMeters, tidalCurrents, sealCtdTags)
  * are handled separately by their callers before falling through to this function.
  */
 const buildStaticImageUrl = (

@@ -1,5 +1,5 @@
 import { DateFormat } from '@/types/date';
-import { Product } from '@/types/product';
+import { Product, ProductID } from '@/types/product';
 
 export const OC_PRODUCTS: Product[] = [
   {
@@ -575,3 +575,33 @@ export const OC_PRODUCTS: Product[] = [
     dateFormat: null,
   },
 ] as const;
+
+export type NearestDateSearchConfig = { windowSize: number };
+
+/**
+ * Products that require nearest-date search when transitioning from another product.
+ * windowSize is in days, except for MONTH-format products where it is in months.
+ * Products not in this map retain the legacy date-handling behaviour.
+ * Ref: https://github.com/aodn/ocean-current-frontend/issues/318#issuecomment-3752849068
+ */
+export const NEAREST_DATE_SEARCH_CONFIG: Partial<Record<ProductID, NearestDateSearchConfig>> = {
+  // 4h SST — ±20 days
+  'fourHourSst-sstFilled': { windowSize: 20 },
+  'fourHourSst-sst': { windowSize: 20 },
+  'fourHourSst-sstAge': { windowSize: 20 },
+  'fourHourSst-windSpeed': { windowSize: 20 },
+  // 6-day composite SST — ±20 days
+  'sixDaySst-sst': { windowSize: 20 },
+  'sixDaySst-sstAnomaly': { windowSize: 20 },
+  'sixDaySst-centiles': { windowSize: 20 },
+  // Chlorophyll-a — ±5 days
+  'oceanColour-chlA': { windowSize: 5 },
+  'oceanColour-chlAAge': { windowSize: 5 },
+  // Adjusted SLA — ±20 days
+  'adjustedSeaLevelAnomaly-sla': { windowSize: 20 },
+  'adjustedSeaLevelAnomaly-centiles': { windowSize: 20 },
+  'adjustedSeaLevelAnomaly-sst': { windowSize: 20 },
+  'adjustedSeaLevelAnomaly-nonTidalSla': { windowSize: 20 },
+  // Monthly means — ±1 month (windowSize interpreted as months for MONTH format)
+  'monthlyMeans-30day': { windowSize: 1 },
+};

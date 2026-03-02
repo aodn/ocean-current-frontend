@@ -1,10 +1,12 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useSearchParams } from 'react-router';
 import dayjs, { Dayjs } from 'dayjs';
 import { DateFormat, DateItem } from '@/types/date';
+import { ProductID } from '@/types/product';
 import { useArgoStore } from '@/stores/argo-store/argoStore';
 import { isHourlyFormat, findFirstDateTimeForSelectedDay } from '@/utils/date-utils/hourly';
-import { findClosestDateIndex } from '@/utils/date-utils/date';
+import { findClosestDateIndex, findNearestDateWithinWindow } from '@/utils/date-utils/date';
+import { NEAREST_DATE_SEARCH_CONFIG } from '@/constants/product';
 import { isCurrentYearOptionId } from '@/data/current-meter/sidebarOptions';
 
 type NavigationMode = 'dateList' | 'dateRange';
@@ -13,6 +15,7 @@ interface UseDateListNavigationProps {
   dateFormat: DateFormat;
   availableDates: DateItem[];
   initialDate?: string;
+  productId?: ProductID;
 }
 
 type NavigateDate = {
@@ -68,36 +71,59 @@ const parseBasicDate = (dateParam: string, dateFormat: DateFormat): Dayjs | null
 };
 
 /**
- * Parses a date parameter from URL into a dayjs object for list-based navigation
- * Handles hourly format conversion and updates search params when needed
+ * Pure function that resolves a date parameter to the best available date for list-based navigation.
+ * Handles format transitions (e.g. DAY → HOUR when switching products) by searching
+ * for the nearest available date within a product-specific window.
+ * Returns the resolved date string (which may differ from dateParam) so the caller
+ * can sync it to the URL in a useEffect.
  */
 const parseDateParamForList = (
   dateParam: string,
   dateFormat: DateFormat,
   dates: string[],
-  setSearchParams: (update: (prev: URLSearchParams) => URLSearchParams) => void,
-): Dayjs | null => {
+  productId?: ProductID,
+): { date: Dayjs | null; resolvedDateParam: string | null } => {
   const date = parseBasicDate(dateParam, dateFormat);
 
   if (!date) {
-    return null;
+    return { date: null, resolvedDateParam: null };
   }
 
-  // Handle hourly format conversion - only needed for list navigation
-  const isDateParamHourly = dayjs(dateParam, DateFormat.HOUR, true).isValid();
-  if (isHourlyFormat(dateFormat) && !isDateParamHourly) {
-    const dayStr = date.format(DateFormat.DAY);
-    const firstHourlyDate = findFirstDateTimeForSelectedDay(dates, dayStr, dateFormat);
-    if (firstHourlyDate) {
-      setSearchParams((prev) => {
-        prev.set('date', firstHourlyDate);
-        return prev;
-      });
-      return dayjs(firstHourlyDate, dateFormat);
+  const isDateParamInTargetFormat = dayjs(dateParam, dateFormat, true).isValid();
+  const formattedDate = date.format(dateFormat);
+  const isDateInList = dates.includes(formattedDate);
+
+  // Nearest-date search is needed when either:
+  // 1. A format transition occurred (e.g. DAY → HOUR switching from 6d SST to 4h SST), OR
+  // 2. The date is in the correct format but doesn't exist in the available dates list
+  //    (e.g. switching between two HOUR-format products where different dates are available)
+  const needsNearestDateSearch = !isDateParamInTargetFormat || (isDateParamInTargetFormat && !isDateInList);
+
+  if (needsNearestDateSearch) {
+    const searchConfig = productId ? NEAREST_DATE_SEARCH_CONFIG[productId] : undefined;
+
+    if (searchConfig && dates.length > 0) {
+      const nearest = findNearestDateWithinWindow(dates, date, searchConfig.windowSize, dateFormat);
+      if (nearest) {
+        return { date: dayjs(nearest, dateFormat), resolvedDateParam: nearest };
+      }
+      // No data within window — return the parsed target date unchanged so that
+      // currentIndex === -1, which causes the image to 404 and shows ErrorImage.
+      return { date, resolvedDateParam: null };
+    }
+
+    // Legacy path: products without a search config.
+    // For hourly target format, try the first entry on the exact target day.
+    if (!isDateParamInTargetFormat && isHourlyFormat(dateFormat)) {
+      const dayStr = date.format(DateFormat.DAY);
+      const firstHourlyDate = findFirstDateTimeForSelectedDay(dates, dayStr, dateFormat);
+      if (firstHourlyDate) {
+        return { date: dayjs(firstHourlyDate, dateFormat), resolvedDateParam: firstHourlyDate };
+      }
     }
   }
 
-  return date;
+  return { date, resolvedDateParam: null };
 };
 
 /**
@@ -160,7 +186,12 @@ const navigateDate = ({
  *
  * @returns Object containing current date, navigation functions, and state flags
  */
-export const useDateListNavigation = ({ dateFormat, availableDates, initialDate }: UseDateListNavigationProps) => {
+export const useDateListNavigation = ({
+  dateFormat,
+  availableDates,
+  initialDate,
+  productId,
+}: UseDateListNavigationProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   // The `availableDates` array must be sorted by the backend API to ensure correct functionality.
   // A runtime assertion is added to verify this requirement during development and testing.
@@ -170,35 +201,62 @@ export const useDateListNavigation = ({ dateFormat, availableDates, initialDate 
       console.error('The `availableDates` array is not sorted. Ensure the backend API returns sorted data.');
     }
   }
-  const dates = useMemo(() => availableDates.map((item) => item.date).sort(), [availableDates]);
+
+  const availableDatesKey = `${availableDates.length}-${availableDates[0]?.date}-${availableDates[availableDates.length - 1]?.date}`;
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const dates = useMemo(() => availableDates.map((item) => item.date).sort(), [availableDatesKey]);
 
   const formatDate = useCallback((date: dayjs.Dayjs) => date.format(dateFormat), [dateFormat]);
 
   const argoProfiles = useArgoStore((state) => state.argoProfileCycles);
 
-  const currentDate = useMemo(() => {
+  // Resolve the current date from URL params, applying nearest-date search when needed.
+  // resolvedDateParam tracks when the URL needs to be updated (deferred to useEffect).
+  const { currentDate, resolvedDateParam } = useMemo(() => {
     // Use initialDate if provided
     if (initialDate) {
-      return dayjs(initialDate, dateFormat);
+      return { currentDate: dayjs(initialDate, dateFormat), resolvedDateParam: null as string | null };
     }
 
     const dateParam = searchParams.get('date');
 
     // No date parameter, use first available date or today
     if (!dateParam || dateParam === '0000') {
-      return dates.length > 0 ? dayjs(dates.at(-1), dateFormat) : dayjs();
+      return {
+        currentDate: dates.length > 0 ? dayjs(dates.at(-1), dateFormat) : dayjs(),
+        resolvedDateParam: null as string | null,
+      };
     }
 
-    // Parse date parameter
-    const parsedDate = parseDateParamForList(dateParam, dateFormat, dates, setSearchParams);
+    // Parse date parameter (pure — no side effects)
+    const result = parseDateParamForList(dateParam, dateFormat, dates, productId);
 
     // Return parsed date or fallback to first available date or today
-    if (parsedDate && parsedDate.isValid()) {
-      return parsedDate;
+    if (result.date && result.date.isValid()) {
+      return { currentDate: result.date, resolvedDateParam: result.resolvedDateParam };
     }
 
-    return dates.length > 0 ? dayjs(dates[0], dateFormat) : dayjs();
-  }, [initialDate, searchParams, dates, dateFormat, setSearchParams]);
+    return {
+      currentDate: dates.length > 0 ? dayjs(dates[0], dateFormat) : dayjs(),
+      resolvedDateParam: null as string | null,
+    };
+  }, [initialDate, searchParams, dates, dateFormat, productId]);
+
+  // Sync the resolved date to the URL after render to avoid setState-during-render warnings
+  const resolvedDateRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (resolvedDateParam && resolvedDateParam !== resolvedDateRef.current) {
+      resolvedDateRef.current = resolvedDateParam;
+      setSearchParams(
+        (prev) => {
+          prev.set('date', resolvedDateParam);
+          return prev;
+        },
+        { replace: true },
+      );
+    }
+  }, [resolvedDateParam, setSearchParams]);
 
   const updateDate = useCallback(
     (newDate: Dayjs, options?: { reStart?: boolean; replace?: boolean }) => {
@@ -448,11 +506,18 @@ type UseNavigationProps = Pick<UseDateListNavigationProps, 'dateFormat'> &
   Partial<Omit<UseDateListNavigationProps, 'dateFormat'>> &
   Partial<UseDateRangeNavigationProps>;
 
-export const useDateNavigation = ({ dateFormat, availableDates = [], initialDate, dateRange }: UseNavigationProps) => {
+export const useDateNavigation = ({
+  dateFormat,
+  availableDates = [],
+  initialDate,
+  dateRange,
+  productId,
+}: UseNavigationProps) => {
   const listNav = useDateListNavigation({
     dateFormat,
     availableDates,
     initialDate,
+    productId,
   });
 
   const rangeNav = useDateRangeNavigation({
