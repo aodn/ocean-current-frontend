@@ -250,8 +250,9 @@ export const useDateListNavigation = ({
       resolvedDateRef.current = resolvedDateParam;
       setSearchParams(
         (prev) => {
-          prev.set('date', resolvedDateParam);
-          return prev;
+          const newParams = new URLSearchParams(prev);
+          newParams.set('date', resolvedDateParam);
+          return newParams;
         },
         { replace: true },
       );

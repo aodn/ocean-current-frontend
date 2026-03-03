@@ -167,6 +167,14 @@ describe('date utils', () => {
         const target = dayjs('202405', DateFormat.MONTH);
         expect(findNearestDateWithinWindow(dates, target, 1, DateFormat.MONTH)).toBe('202406');
       });
+
+      it('handles DAY-format target when selecting MONTH product within window', () => {
+        const dates = ['202404', '202405', '202406'];
+        // Simulate DAY-format URL param (e.g. "20240519") transitioning into a MONTH product
+        const target = dayjs('20240519', DateFormat.DAY);
+        // Target is in May 2024; expect the May 2024 monthly product within a ±1 month window
+        expect(findNearestDateWithinWindow(dates, target, 1, DateFormat.MONTH)).toBe('202405');
+      });
     });
 
     describe('HOUR format — wall-clock-hour preference', () => {
