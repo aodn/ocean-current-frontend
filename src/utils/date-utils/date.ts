@@ -42,6 +42,92 @@ const findClosestDateIndex = (dates: string[], targetDateStr: string, searchDire
   return insertionPoint;
 };
 
+/**
+ * Find the nearest available date to a target within a search window.
+ * Prefers dates at or before the target over future dates.
+ * For hourly products, among candidates on the same calendar day as the target,
+ * prefers the entry whose hour-of-day is closest to nowHour (prefer earlier time on tie).
+ *
+ * @param dates      Sorted array of date strings in the given dateFormat
+ * @param targetDate The desired date to land on
+ * @param windowSize Number of days to search either side (interpreted as months for MONTH format)
+ * @param dateFormat The format used for parsing dates in the array
+ * @param nowHour    Current wall-clock hour (0-23); injectable for testing (default: dayjs().hour())
+ * @returns          The best matching date string, or null if nothing found in window
+ */
+const findNearestDateWithinWindow = (
+  dates: string[],
+  targetDate: Dayjs,
+  windowSize: number,
+  dateFormat: DateFormat,
+  nowHour: number = dayjs().hour(),
+): string | null => {
+  if (dates.length === 0) return null;
+
+  const isMonthFormat = dateFormat === DateFormat.MONTH;
+  const unit = isMonthFormat ? 'month' : 'day';
+
+  const windowStart = targetDate.subtract(windowSize, unit);
+  const windowEnd = targetDate.add(windowSize, unit);
+
+  const candidates = dates.filter((str) => {
+    const d = dayjs(str, dateFormat, true);
+    if (!d.isValid()) return false;
+    return !d.isBefore(windowStart) && !d.isAfter(windowEnd);
+  });
+
+  if (candidates.length === 0) return null;
+
+  const pastOrEqual: string[] = [];
+  const future: string[] = [];
+
+  candidates.forEach((str) => {
+    const d = dayjs(str, dateFormat, true);
+    if (d.isAfter(targetDate)) {
+      future.push(str);
+    } else {
+      pastOrEqual.push(str);
+    }
+  });
+
+  // Sort pastOrEqual descending (most recent first), future ascending (nearest first)
+  pastOrEqual.sort((a, b) => (a > b ? -1 : a < b ? 1 : 0));
+  future.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+
+  // Wall-clock-hour preference for hourly products: among all same-day candidates,
+  // pick the one whose hour is closest to nowHour (prefer earlier on tie).
+  // This runs before the past/future split because when transitioning from a DAY-format
+  // product, the target is midnight (00:00) so later hours on the same day are "future".
+  if (dateFormat === DateFormat.HOUR) {
+    const targetDayStr = targetDate.format(DateFormat.DAY);
+    const sameDayCandidates = candidates.filter(
+      (str) => dayjs(str, dateFormat, true).format(DateFormat.DAY) === targetDayStr,
+    );
+
+    if (sameDayCandidates.length > 0) {
+      return sameDayCandidates.reduce((bestStr, str) => {
+        const bestHour = dayjs(bestStr, dateFormat, true).hour();
+        const candidateHour = dayjs(str, dateFormat, true).hour();
+        const bestDiff = Math.abs(nowHour - bestHour);
+        const candidateDiff = Math.abs(nowHour - candidateHour);
+        if (candidateDiff < bestDiff) return str;
+        if (candidateDiff === bestDiff && candidateHour < bestHour) return str;
+        return bestStr;
+      });
+    }
+  }
+
+  if (pastOrEqual.length > 0) {
+    return pastOrEqual[0];
+  }
+
+  if (future.length > 0) {
+    return future[0];
+  }
+
+  return null;
+};
+
 const findMostRecentDateBefore = (dateArray: string[], targetDate: string): string | null => {
   const targetDayjs: Dayjs = dayjs(targetDate);
 
@@ -184,6 +270,7 @@ function isValidMonthlyMeanDate(dateStr: string): boolean {
 
 export {
   findClosestDateIndex,
+  findNearestDateWithinWindow,
   findMostRecentDateBefore,
   getUnitByFormat,
   getDateFormatFlags,

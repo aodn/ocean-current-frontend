@@ -210,6 +210,79 @@ describe('buildProductImageUrlByProductId', () => {
     });
   });
 
+  describe('buildStaticImageUrl with oceanColourDateList', () => {
+    // oceanColour-chlA local uses HOUR format (YYYYMMDDHH)
+    it('should use path from dateList for oceanColour-chlA local when date matches', () => {
+      const productId = 'oceanColour-chlA';
+      const region = 'TimorP';
+      const regionScope = RegionScope.Local;
+      const date = '2024071706';
+      const oceanColourDateList = [{ date: '2024071706', path: '/TimorP_chl/2024' }];
+
+      const imageUrl = buildStaticImageUrl(productId, dayjs(date), region, regionScope, regionScope, region, {
+        oceanColourDateList,
+      });
+
+      expect(imageUrl).toBe(`${imageBaseUrl}/TimorP_chl/2024/2024071706.gif`);
+    });
+
+    it('should fall back to regionCode path for oceanColour-chlA local when date not in dateList', () => {
+      const productId = 'oceanColour-chlA';
+      const region = 'TimorP';
+      const regionScope = RegionScope.Local;
+      const date = '2024071706';
+      const oceanColourDateList = [{ date: '2024071800' }]; // different date, no match
+
+      const imageUrl = buildStaticImageUrl(productId, dayjs(date), region, regionScope, regionScope, region, {
+        oceanColourDateList,
+      });
+
+      expect(imageUrl).toBe(`${imageBaseUrl}/TimorP_chl/2024071706.gif`);
+    });
+
+    // oceanColour-chlAAge state uses DAY format (YYYYMMDD) — distinct from chlA
+    it('should use DAY format for oceanColour-chlAAge state with dateList', () => {
+      const productId = 'oceanColour-chlAAge';
+      const region = 'SE';
+      const regionScope = RegionScope.State;
+      const date = '20240717';
+      const oceanColourDateList = [{ date: '20240717', path: '/STATE_daily/CHL_AGE/SE' }];
+
+      const imageUrl = buildStaticImageUrl(productId, dayjs(date), region, regionScope, regionScope, region, {
+        oceanColourDateList,
+      });
+
+      expect(imageUrl).toBe(`${imageBaseUrl}/STATE_daily/CHL_AGE/SE/20240717.gif`);
+    });
+
+    it('should route via proxy for oceanColour-chlA local when isProxyRequired is true', () => {
+      const productId = 'oceanColour-chlA';
+      const region = 'SE';
+      const regionScope = RegionScope.Local;
+      const date = '2024071706';
+      const oceanColourDateList = [{ date: '2024071706' }];
+
+      const imageUrl = buildStaticImageUrl(productId, dayjs(date), region, regionScope, regionScope, region, {
+        oceanColourDateList,
+        isProxyRequired: true,
+      });
+
+      expect(imageUrl).toBe('/resource/SE_chl/2024071706.gif');
+    });
+
+    // Without dateList, oceanColour falls through to the default branch
+    it('should fall through to default branch for oceanColour-chlA when no dateList provided', () => {
+      const productId = 'oceanColour-chlA';
+      const region = 'SE';
+      const regionScope = RegionScope.State;
+      const date = '20240717';
+
+      const imageUrl = buildStaticImageUrl(productId, dayjs(date), region, regionScope, regionScope, region);
+
+      expect(imageUrl).toBe(`${imageBaseUrl}/STATE_daily/CHL/SE/20240717.gif`);
+    });
+  });
+
   describe('monthlyMeans', () => {
     it('should return the correct image url for monthlyMeans-climatology', () => {
       // Arrange
