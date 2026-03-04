@@ -63,6 +63,7 @@
     "autoprefixer": "^10.4.20",
     "baseline-browser-mapping": "^2.9.0",
     "commitlint-config-gitmoji": "^2.3.1",
+    "dotenv": "^17.3.1",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.3",
