@@ -2,7 +2,12 @@ import React from 'react';
 import logo from '@/assets/images/imos-logo.png';
 import { BrandingText, FooterText } from '@/constants/textConstant.ts';
 import { Button } from '../Shared/index.tsx';
-import { COPYRIGHT_TEXT, FEEDBACK_LINK, FOOTER_ACKNOWLEDGE_TEXT, FOOTER_LINKS, FOOTER_SOCIALS } from './consts.ts';
+import {
+  COPYRIGHT_TEXT,
+  /* FEEDBACK_LINK, */ FOOTER_ACKNOWLEDGE_TEXT,
+  FOOTER_LINKS,
+  FOOTER_SOCIALS,
+} from './consts.ts';
 import { FooterIcon } from './footer.types';
 
 const Footer: React.FC = () => {
@@ -10,9 +15,9 @@ const Footer: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  /* temporary replace contact us with feedback form on github issues */
+  // TODO: Re-enable feedback link when the next review round starts
   const handleClickFeedback = () => {
-    window.open(FEEDBACK_LINK, '_blank');
+    // window.open(FEEDBACK_LINK, '_blank');
   };
 
   return (
