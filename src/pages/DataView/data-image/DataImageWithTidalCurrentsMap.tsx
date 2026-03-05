@@ -43,11 +43,7 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   });
 
   useEffect(() => {
-    if (!src) {
-      setImgLoadError('Missing Image');
-    } else {
-      setImgLoadError(null);
-    }
+    setImgLoadError(null);
   }, [src]);
 
   const handleImageLoad = async (tagData: MapImageAreas[] | Record<string, string | number[]>[]) => {
@@ -95,9 +91,10 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
     }
   };
 
-  if (imgLoadError) {
+  if (!src || imgLoadError) {
     return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
   }
+
   return (
     <div className="relative inline-block h-full w-full bg-white">
       <img
