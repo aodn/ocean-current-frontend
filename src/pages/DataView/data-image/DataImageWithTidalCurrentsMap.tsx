@@ -10,6 +10,7 @@ import { MapImageAreas } from '@/types/dataImage';
 import { DateFormat } from '@/types/date';
 import { getTidalCurrentsTagsData } from '@/services/tidalCurrents';
 import { useResizeObserver } from '@/hooks';
+import { sharedQueryConfig } from '@/configs/query';
 import { useTidalCurrentPoint } from '../product-content/hooks/useTidalCurrentPoint';
 
 type DataImageWithTidalCurrentsMapProps = {
@@ -34,12 +35,13 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId as AnyProductID);
 
   const { data: tagData = [] } = useQuery({
-    queryKey: [date, productId, region],
+    queryKey: [date.format(DateFormat.MINUTE), productId, region],
     queryFn: async () => {
       if (region === 'Aust') return regionArr;
       return await getTidalCurrentsTagsData(date, productId, region);
     },
     enabled: !!date && !!productId && !!region && !isTidalCurrentsPointSelected,
+    ...sharedQueryConfig,
   });
 
   useEffect(() => {
