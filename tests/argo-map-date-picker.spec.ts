@@ -4,8 +4,8 @@ test.describe('Argo Map View — Date Picker', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/map/argo');
     await page.waitForLoadState('networkidle');
-    // Allow time for the latest-date API response to arrive and the picker to mount
-    await page.waitForTimeout(2000);
+    // Wait for the date picker to mount after the latest-date API response arrives
+    await expect(page.getByTestId('date-pagination')).toBeVisible();
   });
 
   test('date picker is visible on the Argo map view', async ({ page }) => {
@@ -19,9 +19,8 @@ test.describe('Argo Map View — Date Picker', () => {
   });
 
   test('clicking previous sets ?date in the URL to the day before', async ({ page }) => {
-    // Click prev to move off the default date and produce a URL param
     await page.getByTestId('date-previous-button').click();
-    await page.waitForTimeout(500);
+    await page.waitForURL(/[?&]date=\d{8}/);
 
     const url = new URL(page.url());
     const date = url.searchParams.get('date');
@@ -33,9 +32,11 @@ test.describe('Argo Map View — Date Picker', () => {
     const initialText = await page.getByTestId('date-pagination').innerText();
 
     await page.getByTestId('date-previous-button').click();
-    await page.waitForTimeout(300);
+    await page.waitForURL(/[?&]date=\d{8}/);
+
     await page.getByTestId('date-next-button').click();
-    await page.waitForTimeout(300);
+    // Wait until the displayed text returns to the initial value
+    await expect(page.getByTestId('date-pagination')).toHaveText(initialText);
 
     const finalText = await page.getByTestId('date-pagination').innerText();
     expect(finalText).toBe(initialText);
@@ -44,14 +45,18 @@ test.describe('Argo Map View — Date Picker', () => {
   test('reset button sets ?date back to the latest available date', async ({ page }) => {
     // Move one day back so a ?date param exists
     await page.getByTestId('date-previous-button').click();
-    await page.waitForTimeout(300);
+    await page.waitForURL(/[?&]date=\d{8}/);
 
     const urlAfterPrev = new URL(page.url());
     const prevDate = urlAfterPrev.searchParams.get('date');
 
     // Reset
     await page.getByRole('button', { name: 'Reset to latest date' }).click();
-    await page.waitForTimeout(500);
+    // Wait for the URL to change to a different date
+    await page.waitForURL((url) => {
+      const d = new URL(url).searchParams.get('date');
+      return d !== null && d !== prevDate;
+    });
 
     const urlAfterReset = new URL(page.url());
     const resetDate = urlAfterReset.searchParams.get('date');
@@ -76,7 +81,7 @@ test.describe('Argo Map View — Date Picker', () => {
   test('navigating directly to /map/argo with a ?date param shows that date in the picker', async ({ page }) => {
     await page.goto('/map/argo?date=20250601');
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(1000);
+    await expect(page.getByTestId('date-pagination')).toBeVisible();
 
     const pickerText = await page.getByTestId('date-pagination').innerText();
     expect(pickerText).toContain('Jun');
