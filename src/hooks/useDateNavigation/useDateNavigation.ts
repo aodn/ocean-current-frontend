@@ -337,9 +337,9 @@ export const useDateRangeNavigation = ({ dateFormat, dateRange }: UseDateRangeNa
   const currentDate = useMemo(() => {
     const dateParam = searchParams.get('date');
 
-    // No date parameter, return today
+    // No date parameter, return end date
     if (!dateParam || dateParam === '0000') {
-      return dayjs();
+      return dayjs(dateRange.endDate);
     }
 
     // Parse the date using shared logic

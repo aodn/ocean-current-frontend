@@ -199,7 +199,7 @@ const convertDateToDisplayFormattedText = (date: Dayjs, dateFormat: DateFormat) 
     case DateFormat.YEAR_ONLY:
       return date.format('YYYY');
     default:
-      return date.format('DD MMM YY');
+      return date.format('DD MMM YYYY');
   }
 };
 

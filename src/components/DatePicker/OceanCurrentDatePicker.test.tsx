@@ -40,7 +40,7 @@ describe('OceanCurrentDatePicker', () => {
     render(<OceanCurrentDatePicker {...mockProps} />);
 
     // Act
-    const selectedDate = '05 Jun 24';
+    const selectedDate = '05 Jun 2024';
 
     // Assert
     expect(screen.getByText(selectedDate)).toBeInTheDocument();

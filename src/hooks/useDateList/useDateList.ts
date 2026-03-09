@@ -153,7 +153,7 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
   });
   const { data: latestArgoLocationsData, isLoading: isLatestArgoLocationsDataLoading } = useRegionLatestDates(
     productId,
-    !isRangeMode && isArgo && !isArgoValid,
+    isArgo && (!isArgoValid || isRangeMode),
   );
 
   let data;
@@ -213,6 +213,11 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
 
   // If in range mode, return early with empty dateList and date range mode
   if (isRangeMode) {
+    // Wait for the latest Argo date before rendering so the picker initialises to the correct end date
+    if (isArgo && isLatestArgoLocationsDataLoading) {
+      return { isLoading: true, dateList: [], error: null };
+    }
+
     // Special case: For Argo in range mode, use latestArgoLocationsData or fallback to yesterday
     const endDate = isArgo ? getArgoEndDate() : new Date();
 
