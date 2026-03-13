@@ -6,8 +6,9 @@ import Popup from './Popup/Popup';
 import ToggleButton from './ToggleButton/ToggleButton';
 import TruncateText from './TruncateText/TruncateText';
 import LinkOrAnchor from './LinkOrAnchor/LinkOrAnchor';
+import ShareButton from './ShareButton/ShareButton';
 
 export * from './Collapsible';
 
-export { Button, Dropdown, Slider, Loading, Popup, ToggleButton, TruncateText, LinkOrAnchor };
+export { Button, Dropdown, Slider, Loading, Popup, ToggleButton, TruncateText, LinkOrAnchor, ShareButton };
 export * from './Overlay/Overlay';
