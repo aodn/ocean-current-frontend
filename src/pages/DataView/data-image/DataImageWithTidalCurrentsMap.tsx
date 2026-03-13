@@ -1,19 +1,22 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { useSearchParams } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import { scaleImageMapAreas } from '@/utils/general-utils/general';
-import { Product } from '@/types/product';
+import { Product, ProductID } from '@/types/product';
 import regionArr from '@/data/tidalCurrents';
 import { MapImageAreas } from '@/types/dataImage';
 import { DateFormat } from '@/types/date';
 import { getTidalCurrentsTagsData } from '@/services/tidalCurrents';
 import { useResizeObserver } from '@/hooks';
+import { sharedQueryConfig } from '@/configs/query';
+import { useTidalCurrentPoint } from '../product-content/hooks/useTidalCurrentPoint';
 
 type DataImageWithTidalCurrentsMapProps = {
   mainProduct: Product | null;
   src: string;
-  productId: string;
+  productId: ProductID;
   date: Dayjs;
   region: string;
 };
@@ -28,53 +31,46 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   const [_, setSearchParams] = useSearchParams();
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
-  const [areas, setAreas] = useState<MapImageAreas[]>(regionArr);
+  const [areas, setAreas] = useState<MapImageAreas[]>();
+  const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId);
+
+  const { data: apiTagData = [] } = useQuery({
+    queryKey: ['tidalCurrentsTags', date.format(DateFormat.MINUTE), productId, region],
+    queryFn: async () => {
+      return await getTidalCurrentsTagsData(date, productId, region);
+    },
+    enabled: !!date && !!productId && !!region && !isTidalCurrentsPointSelected,
+    ...sharedQueryConfig,
+  });
+
+  const tagData = region === 'Aust' ? regionArr : apiTagData;
 
   useEffect(() => {
-    if (!src) {
-      setImgLoadError('Missing Image');
-    } else {
-      setImgLoadError(null);
-    }
+    setImgLoadError(null);
   }, [src]);
 
-  const handleImageLoad = useCallback(async () => {
+  const handleImageLoad = useCallback(async (tagData: MapImageAreas[] | Record<string, string | number[]>[]) => {
     if (!imgRef.current) return;
-
     const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
-
-    let convertedCoords;
-    if (region === 'Australia') {
-      convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, regionArr as []);
-    } else {
-      const tagData = await getTidalCurrentsTagsData(date, productId, region);
-      convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, tagData as []);
-    }
+    if (!originalWidth || !originalHeight || !width || !height) return;
+    const convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, tagData as []);
     setAreas(convertedCoords);
-  }, [date, productId, region]);
+  }, []);
 
-  useResizeObserver('window', handleImageLoad);
+  useResizeObserver(
+    'window',
+    useCallback(() => {
+      if (isTidalCurrentsPointSelected) return;
+      handleImageLoad(tagData);
+    }, [isTidalCurrentsPointSelected, tagData, handleImageLoad]),
+  );
 
   useEffect(() => {
-    const imageElement = imgRef.current;
-    if (imageElement) {
-      if (imageElement.complete) {
-        handleImageLoad();
-      } else {
-        imageElement.addEventListener('load', handleImageLoad);
-      }
+    const imgElement = imgRef.current;
+    if (imgElement?.complete && imgElement.naturalWidth > 0 && !isTidalCurrentsPointSelected) {
+      handleImageLoad(tagData);
     }
-
-    return () => {
-      if (imageElement) {
-        imageElement.removeEventListener('load', handleImageLoad);
-      }
-    };
-  }, [date, handleImageLoad]);
-
-  if (imgLoadError) {
-    return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
-  }
+  }, [isTidalCurrentsPointSelected, tagData, handleImageLoad]);
 
   const handleAreaClick = (area: MapImageAreas) => {
     const { type, href } = area;
@@ -98,6 +94,10 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
     }
   };
 
+  if (!src || imgLoadError) {
+    return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
+  }
+
   return (
     <div className="relative inline-block h-full w-full bg-white">
       <img
@@ -106,30 +106,32 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
         alt={`${productId} data`}
         useMap="#tidal-currents-map"
         className="max-h-[80vh] select-none object-contain"
+        onLoad={() => !isTidalCurrentsPointSelected && handleImageLoad(tagData)}
         onError={() => {
           setImgLoadError('Image not available');
         }}
       />
       <map name="tidal-currents-map">
-        {areas.map((area, index) => (
-          <area
-            key={index}
-            className="cursor-pointer"
-            shape={area.shape}
-            coords={area.coords.join(',')}
-            alt={area.alt}
-            onClick={() => handleAreaClick(area)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleAreaClick(area);
-              }
-            }}
-            tabIndex={0}
-            title={area.name}
-            role="link"
-          />
-        ))}
+        {!isTidalCurrentsPointSelected &&
+          areas?.map((area, index) => (
+            <area
+              key={index}
+              className="cursor-pointer"
+              shape={area.shape}
+              coords={area.coords.join(',')}
+              alt={area.alt}
+              onClick={() => handleAreaClick(area)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleAreaClick(area);
+                }
+              }}
+              tabIndex={0}
+              title={area.name}
+              role="link"
+            />
+          ))}
       </map>
     </div>
   );

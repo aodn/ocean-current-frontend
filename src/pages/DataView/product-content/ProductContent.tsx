@@ -59,7 +59,6 @@ const ProductContent: React.FC = () => {
     () => !productChecks.isArgo && checkArgoTagsAvailability(useProductId, regionData.scope),
     [productChecks.isArgo, useProductId, regionData.scope],
   );
-
   // Process ocean colour date list
   const oceanColourDateList = useMemo(
     () => (productChecks.isOceanColourChlA ? processOceanColourDateList(oceanColourImageData) : []),
