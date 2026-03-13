@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useSearchParams } from 'react-router';
 import { useDateList, useQueryParams, useArgoProductValidQueryParams } from '@/hooks';
-import { Dropdown, Button } from '@/components/Shared';
+import { Dropdown, Button, ShareButton } from '@/components/Shared';
 import { ProductMenubarText } from '@/constants/textConstant';
 import VideoCreation from '@/components/VideoCreation';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
@@ -21,7 +21,7 @@ import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
 import { useTidalCurrentPoint } from '@/pages/DataView/product-content/hooks/useTidalCurrentPoint';
 import { toYYYYMM } from '@/utils/date-utils/date';
 import DatePagination from '../DatePagination';
-import { VideoIcon, ShareIcon, ResetIcon, MapIcon } from '../Shared/Icons/ui';
+import { VideoIcon, ResetIcon, MapIcon } from '../Shared/Icons/ui';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
 const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
@@ -29,14 +29,11 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
   setShowVideo,
   setShowMap,
   showMap = false,
-  isMapView = false,
   mode,
 }) => {
   const { updateQueryParamsAndNavigate, updateQueryParams } = useQueryParams();
   const argoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
 
-  const [copyButtonText, setCopyButtonText] = useState<string>(ProductMenubarText.SHARE);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { date: currentMetersDate, property, depth, region, deploymentPlot } = useCurrentMetersStore();
   const [_, setSearchParams] = useSearchParams();
   const {
@@ -70,31 +67,12 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     productId === 'fourHourSst-sstAge' ||
     productId === 'sixDaySst-timeseries' ||
     showMap ||
-    isMapView ||
     !shouldRenderProductContent;
 
   const dateFormat = useProductDateFormat();
 
   const { isLoading: isProductDateListLoading, dateList } = useDateList({ productId, mode });
   const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId);
-
-  const handleCopyLink = () => {
-    const url = location.href;
-    navigator.clipboard.writeText(url);
-    setCopyButtonText(`${ProductMenubarText.COPIED}!`);
-
-    timeoutRef.current = setTimeout(() => {
-      setCopyButtonText(ProductMenubarText.SHARE);
-    }, 2000);
-  };
-
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
 
   const handleToggleVideo = () => {
     setShowVideo(!showVideo);
@@ -150,11 +128,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
 
   const handleCurrentMetersDateChange = (id: string) => {
     setCurrentMetersDate(id as string);
-    if (isMapView) {
-      setSearchParams({ date: id });
-    } else {
-      setSearchParams({ property, depth, region, deploymentPlot, date: id });
-    }
+    setSearchParams({ property, depth, region, deploymentPlot, date: id });
   };
 
   const resetBtnDisabled = useMemo(() => {
@@ -241,17 +215,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
         </div>
 
         <div className="order-3 box-border h-11 flex-1 rounded-md border-none md:order-none md:flex-initial md:grow">
-          <Button
-            onClick={handleCopyLink}
-            aria-hidden
-            borderRadius="extraSmall"
-            className="flex-center h-full w-full border-none bg-white !px-2 md:p-3 md:px-5"
-          >
-            <ShareIcon color="imos-deep-blue" size="lg" className="flex-shrink-0" />
-            <p className="ml-2 text-center text-sm text-imos-deep-blue md:ml-3 md:w-20 md:text-base md:text-imos-dark-grey">
-              {copyButtonText}
-            </p>
-          </Button>
+          <ShareButton />
         </div>
       </div>
     </div>
