@@ -34,34 +34,35 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   const [areas, setAreas] = useState<MapImageAreas[]>();
   const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId as AnyProductID);
 
-  const { data: tagData = [] } = useQuery({
-    queryKey: [date.format(DateFormat.MINUTE), productId, region],
+  const { data: apiTagData = [] } = useQuery({
+    queryKey: ['tidalCurrentsTags', date.format(DateFormat.MINUTE), productId, region],
     queryFn: async () => {
-      if (region === 'Aust') return regionArr;
       return await getTidalCurrentsTagsData(date, productId, region);
     },
     enabled: !!date && !!productId && !!region && !isTidalCurrentsPointSelected,
     ...sharedQueryConfig,
   });
 
+  const tagData = region === 'Aust' ? regionArr : apiTagData;
+
   useEffect(() => {
     setImgLoadError(null);
   }, [src]);
 
-  const handleImageLoad = async (tagData: MapImageAreas[] | Record<string, string | number[]>[]) => {
+  const handleImageLoad = useCallback(async (tagData: MapImageAreas[] | Record<string, string | number[]>[]) => {
     if (!imgRef.current) return;
     const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
     if (!originalWidth || !originalHeight || !width || !height) return;
     const convertedCoords = scaleImageMapAreas(originalWidth, originalHeight, width, height, tagData as []);
     setAreas(convertedCoords);
-  };
+  }, []);
 
   useResizeObserver(
     'window',
     useCallback(() => {
       if (isTidalCurrentsPointSelected) return;
       handleImageLoad(tagData);
-    }, [isTidalCurrentsPointSelected, tagData]),
+    }, [isTidalCurrentsPointSelected, tagData, handleImageLoad]),
   );
 
   useEffect(() => {
@@ -69,7 +70,7 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
     if (imgElement?.complete && imgElement.naturalWidth > 0 && !isTidalCurrentsPointSelected) {
       handleImageLoad(tagData);
     }
-  }, [isTidalCurrentsPointSelected, tagData]);
+  }, [isTidalCurrentsPointSelected, tagData, handleImageLoad]);
 
   const handleAreaClick = (area: MapImageAreas) => {
     const { type, href } = area;
@@ -111,25 +112,26 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
         }}
       />
       <map name="tidal-currents-map">
-        {areas?.map((area, index) => (
-          <area
-            key={index}
-            className="cursor-pointer"
-            shape={area.shape}
-            coords={area.coords.join(',')}
-            alt={area.alt}
-            onClick={() => handleAreaClick(area)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleAreaClick(area);
-              }
-            }}
-            tabIndex={0}
-            title={area.name}
-            role="link"
-          />
-        ))}
+        {!isTidalCurrentsPointSelected &&
+          areas?.map((area, index) => (
+            <area
+              key={index}
+              className="cursor-pointer"
+              shape={area.shape}
+              coords={area.coords.join(',')}
+              alt={area.alt}
+              onClick={() => handleAreaClick(area)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleAreaClick(area);
+                }
+              }}
+              tabIndex={0}
+              title={area.name}
+              role="link"
+            />
+          ))}
       </map>
     </div>
   );
