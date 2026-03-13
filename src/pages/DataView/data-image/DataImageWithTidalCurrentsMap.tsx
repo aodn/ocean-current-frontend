@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import { scaleImageMapAreas } from '@/utils/general-utils/general';
-import { AnyProductID, Product } from '@/types/product';
+import { Product, ProductID } from '@/types/product';
 import regionArr from '@/data/tidalCurrents';
 import { MapImageAreas } from '@/types/dataImage';
 import { DateFormat } from '@/types/date';
@@ -16,7 +16,7 @@ import { useTidalCurrentPoint } from '../product-content/hooks/useTidalCurrentPo
 type DataImageWithTidalCurrentsMapProps = {
   mainProduct: Product | null;
   src: string;
-  productId: string;
+  productId: ProductID;
   date: Dayjs;
   region: string;
 };
@@ -32,7 +32,7 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const [areas, setAreas] = useState<MapImageAreas[]>();
-  const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId as AnyProductID);
+  const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId);
 
   const { data: apiTagData = [] } = useQuery({
     queryKey: ['tidalCurrentsTags', date.format(DateFormat.MINUTE), productId, region],
