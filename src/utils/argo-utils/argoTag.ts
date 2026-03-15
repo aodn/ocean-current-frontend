@@ -1,5 +1,5 @@
 import { argoTagFilePaths } from '@/constants/argo';
-import { ArgoTagMapArea, ArgoTag, StateLocalPathValue } from '@/types/argo';
+import { ArgoTagMapArea, ArgoTag, SoopTag, SoopTagMapArea, StateLocalPathValue } from '@/types/argo';
 import { MapImageAreas } from '@/types/dataImage';
 import { ProductID } from '@/types/product';
 
@@ -35,8 +35,33 @@ const parseArgoTagDataFromText = (input: string): ArgoTag[] => {
   return result;
 };
 
+const parseSoopTagDataFromText = (input: string): SoopTag[] => {
+  const lines = input.trim().split('\n');
+  const result: SoopTag[] = [];
+
+  for (const line of lines) {
+    const parts = line.trim().split(/\s+/);
+    const type = parts[0];
+
+    // A valid SOOP line requires type + coordX + coordY + name (4 parts).
+    // The callsign (parts[4]) is optional; when absent, parts[4] is undefined
+    // and the || '' fallback produces an empty string.
+    if (type === 'SOOP' && parts.length >= 4) {
+      result.push({
+        type: 'SOOP',
+        coordX: parseFloat(parts[1]),
+        coordY: parseFloat(parts[2]),
+        name: parts[3],
+        callsign: parts[4] || '',
+      });
+    }
+  }
+
+  return result;
+};
+
 const convertCoordsBasedOnImageScale = (
-  originalCoords: MapImageAreas[] | ArgoTagMapArea[],
+  originalCoords: MapImageAreas[] | ArgoTagMapArea[] | SoopTagMapArea[],
   scaleX: number,
   scaleY: number,
   originalHeight: number,
@@ -51,5 +76,6 @@ export {
   getArgoTagFilePathByProductId,
   checkProductHasArgoTags,
   parseArgoTagDataFromText,
+  parseSoopTagDataFromText,
   convertCoordsBasedOnImageScale,
 };

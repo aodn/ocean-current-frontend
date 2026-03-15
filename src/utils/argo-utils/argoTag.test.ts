@@ -1,5 +1,5 @@
-import { ArgoTag } from '@/types/argo';
-import { parseArgoTagDataFromText } from './argoTag';
+import { ArgoTag, SoopTag } from '@/types/argo';
+import { parseArgoTagDataFromText, parseSoopTagDataFromText } from './argoTag';
 
 describe('parseArgoTagDataFromText', () => {
   it('should parse valid Argo tag data correctly', () => {
@@ -97,6 +97,106 @@ describe('parseArgoTagDataFromText', () => {
     ];
 
     const result = parseArgoTagDataFromText(input);
+    expect(result).toEqual(expected);
+  });
+});
+
+describe('parseSoopTagDataFromText', () => {
+  it('should parse valid SOOP tag data correctly', () => {
+    const input = `
+      SOOP    459.80500    306.88858 M/VHarbourMaster          XPJ6VHP
+
+      SOOP    200.50000    150.00000 RVInvestigator             VLMV
+
+      Argo    10.5          20.3     1234567 100    Germán R1234567_100.nc
+    `;
+
+    const expected: SoopTag[] = [
+      {
+        type: 'SOOP',
+        coordX: 459.805,
+        coordY: 306.88858,
+        name: 'M/VHarbourMaster',
+        callsign: 'XPJ6VHP',
+      },
+      {
+        type: 'SOOP',
+        coordX: 200.5,
+        coordY: 150.0,
+        name: 'RVInvestigator',
+        callsign: 'VLMV',
+      },
+    ];
+
+    const result = parseSoopTagDataFromText(input);
+    expect(result).toEqual(expected);
+  });
+
+  it('should ignore non-SOOP lines', () => {
+    const input = `
+      Argo    384.59935    537.99536 5905642 214     aoml  R5905642_214.nc
+
+      Invalid line
+      SOOP    459.80500    306.88858 M/VHarbourMaster          XPJ6VHP
+      Another invalid line
+    `;
+
+    const expected: SoopTag[] = [
+      {
+        type: 'SOOP',
+        coordX: 459.805,
+        coordY: 306.88858,
+        name: 'M/VHarbourMaster',
+        callsign: 'XPJ6VHP',
+      },
+    ];
+
+    const result = parseSoopTagDataFromText(input);
+    expect(result).toEqual(expected);
+  });
+
+  it('should return an empty array for empty input', () => {
+    const input = '';
+    const result = parseSoopTagDataFromText(input);
+    expect(result).toEqual([]);
+  });
+
+  it('should handle SOOP entries without a callsign', () => {
+    const input = `
+      SOOP    459.80500    306.88858 M/VHarbourMaster
+    `;
+
+    const expected: SoopTag[] = [
+      {
+        type: 'SOOP',
+        coordX: 459.805,
+        coordY: 306.88858,
+        name: 'M/VHarbourMaster',
+        callsign: '',
+      },
+    ];
+
+    const result = parseSoopTagDataFromText(input);
+    expect(result).toEqual(expected);
+  });
+
+  it('should ignore SOOP lines with insufficient data', () => {
+    const input = `
+      SOOP    459.80500
+      SOOP    459.80500    306.88858 M/VHarbourMaster          XPJ6VHP
+    `;
+
+    const expected: SoopTag[] = [
+      {
+        type: 'SOOP',
+        coordX: 459.805,
+        coordY: 306.88858,
+        name: 'M/VHarbourMaster',
+        callsign: 'XPJ6VHP',
+      },
+    ];
+
+    const result = parseSoopTagDataFromText(input);
     expect(result).toEqual(expected);
   });
 });

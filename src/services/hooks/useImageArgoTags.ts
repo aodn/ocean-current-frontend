@@ -2,7 +2,7 @@ import { Dayjs } from 'dayjs';
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchArgoTags } from '@/services/argo';
-import { parseArgoTagDataFromText } from '@/utils/argo-utils/argoTag';
+import { parseArgoTagDataFromText, parseSoopTagDataFromText } from '@/utils/argo-utils/argoTag';
 import { sharedQueryConfig } from '@/configs/query';
 import { DateFormat } from '@/types/date';
 
@@ -36,7 +36,8 @@ const useImageArgoTags = ({ date, tagPath, regionCode, dateFormat }: UseImageArg
   });
 
   const parsedData = useMemo(() => (data ? parseArgoTagDataFromText(data) : []), [data]);
-  return { data: parsedData, loading: isLoading, error };
+  const parsedSoopData = useMemo(() => (data ? parseSoopTagDataFromText(data) : []), [data]);
+  return { data: parsedData, soopData: parsedSoopData, loading: isLoading, error };
 };
 
 export default useImageArgoTags;

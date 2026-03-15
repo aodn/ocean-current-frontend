@@ -41,3 +41,17 @@ export interface ArgoTagMapArea {
   cycle: number;
   alt?: string;
 }
+
+export interface SoopTag {
+  type: 'SOOP';
+  coordX: number;
+  coordY: number;
+  name: string;
+  callsign: string;
+}
+
+export interface SoopTagMapArea {
+  shape: string;
+  coords: number[];
+  name: string;
+}
