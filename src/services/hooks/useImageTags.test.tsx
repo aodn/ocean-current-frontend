@@ -2,15 +2,15 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { Dayjs } from 'dayjs';
 import { vi } from 'vitest';
 import { fetchArgoTags } from '@/services/argo';
-import { parseArgoTagDataFromText } from '@/utils/argo-utils/argoTag';
+import { parseImageTagsFromText } from '@/utils/argo-utils/argoTag';
 import { DateFormat } from '@/types/date';
 import { createQueryWrapper } from '@/test/queryClientUtils';
-import useImageArgoTags from './useImageArgoTags';
+import useImageTags from './useImageTags';
 
 vi.mock('@/services/argo');
 vi.mock('@/utils/argo-utils/argoTag');
 
-describe('useImageArgoTags', () => {
+describe('useImageTags', () => {
   const mockDate = {
     format: vi.fn().mockReturnValue('20231201'),
   } as unknown as Dayjs;
@@ -19,7 +19,7 @@ describe('useImageArgoTags', () => {
   const mockDateFormat = DateFormat.DAY;
 
   const setup = (date = mockDate, tagPath = mockTagPath, regionCode = mockRegionCode, dateFormat = mockDateFormat) =>
-    renderHook(() => useImageArgoTags({ date, tagPath, regionCode, dateFormat }), { wrapper: createQueryWrapper() });
+    renderHook(() => useImageTags({ date, tagPath, regionCode, dateFormat }), { wrapper: createQueryWrapper() });
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -57,7 +57,7 @@ describe('useImageArgoTags', () => {
     ];
 
     vi.mocked(fetchArgoTags).mockResolvedValue(mockData);
-    vi.mocked(parseArgoTagDataFromText).mockReturnValue(parsedData);
+    vi.mocked(parseImageTagsFromText).mockReturnValue(parsedData);
 
     const { result } = setup();
 
@@ -107,11 +107,11 @@ describe('useImageArgoTags', () => {
     ];
 
     vi.mocked(fetchArgoTags).mockResolvedValue(mockData);
-    vi.mocked(parseArgoTagDataFromText).mockReturnValue(parsedData);
+    vi.mocked(parseImageTagsFromText).mockReturnValue(parsedData);
 
     const { result } = renderHook(
       () =>
-        useImageArgoTags({
+        useImageTags({
           date: mockDate,
           tagPath: 'SnapshotCHL',
           regionCode: mockRegionCode,

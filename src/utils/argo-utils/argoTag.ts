@@ -1,5 +1,5 @@
 import { argoTagFilePaths } from '@/constants/argo';
-import { ArgoTagMapArea, ArgoTag, StateLocalPathValue } from '@/types/argo';
+import { ImageTagMapArea, ImageTag, StateLocalPathValue } from '@/types/argo';
 import { MapImageAreas } from '@/types/dataImage';
 import { ProductID } from '@/types/product';
 
@@ -11,9 +11,9 @@ const checkProductHasArgoTags = (productId: ProductID): boolean => {
   return !!argoTagFilePaths[productId];
 };
 
-const parseArgoTagDataFromText = (input: string): ArgoTag[] => {
+const parseImageTagsFromText = (input: string): ImageTag[] => {
   const lines = input.trim().split('\n');
-  const result: ArgoTag[] = [];
+  const result: ImageTag[] = [];
 
   for (const line of lines) {
     const parts = line.trim().split(/\s+/);
@@ -29,6 +29,13 @@ const parseArgoTagDataFromText = (input: string): ArgoTag[] => {
         institution: parts[5],
         dataSource: parts[6],
       });
+    } else if (type === 'SOOP' && parts.length >= 4) {
+      result.push({
+        type,
+        coordX: parseFloat(parts[1]),
+        coordY: parseFloat(parts[2]),
+        shipName: parts[3],
+      });
     }
   }
 
@@ -36,7 +43,7 @@ const parseArgoTagDataFromText = (input: string): ArgoTag[] => {
 };
 
 const convertCoordsBasedOnImageScale = (
-  originalCoords: MapImageAreas[] | ArgoTagMapArea[],
+  originalCoords: MapImageAreas[] | ImageTagMapArea[],
   scaleX: number,
   scaleY: number,
   originalHeight: number,
@@ -50,6 +57,6 @@ const convertCoordsBasedOnImageScale = (
 export {
   getArgoTagFilePathByProductId,
   checkProductHasArgoTags,
-  parseArgoTagDataFromText,
+  parseImageTagsFromText,
   convertCoordsBasedOnImageScale,
 };
