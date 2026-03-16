@@ -130,7 +130,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
       <map name="argo-tag-map">
         {coords.map((area, index) => (
           <area
-            key={index}
+            key={area.tooltip ? `${area.tooltip}-${area.coords[0]}-${area.coords[1]}` : index}
             shape={area.shape}
             coords={area.coords.join(',')}
             alt={area.tooltip || `Area ${index + 1}`}

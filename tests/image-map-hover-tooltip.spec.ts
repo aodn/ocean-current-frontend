@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 
+// Set E2E_SMOKE=true (via test:e2e:production script) to run against real upstream APIs instead of mocks.
 const USE_REAL_API = process.env.E2E_SMOKE === 'true';
 
 const MOCK_TAG_BODY = [
@@ -23,7 +24,7 @@ test.describe('Data Image Map — Hover Tooltip (Issue #317)', () => {
     if (!USE_REAL_API) {
       // Must come before page.goto()
       await page.route('**/TAGS/**/*.txt', (route) => {
-        route.fulfill({
+        return route.fulfill({
           status: 200,
           contentType: 'text/plain',
           body: MOCK_TAG_BODY,
@@ -31,7 +32,7 @@ test.describe('Data Image Map — Hover Tooltip (Issue #317)', () => {
       });
 
       await page.route('**/*.gif', (route) => {
-        route.fulfill({
+        return route.fulfill({
           status: 200,
           contentType: 'image/svg+xml',
           body: MOCK_IMAGE_SVG,
