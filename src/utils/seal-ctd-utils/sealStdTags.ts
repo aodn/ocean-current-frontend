@@ -1,4 +1,4 @@
-import { ArgoTagMapArea } from '@/types/argo';
+import { ImageTagMapArea } from '@/types/argo';
 import { MapImageAreas } from '@/types/dataImage';
 
 // these don't change and are the same for every graph image
@@ -32,7 +32,7 @@ const parseSealCtdGraphTagData = (input: string) => {
 
 const parseArgoAndSealLocationsTagData = (input: string) => {
   const lines = input.trim().split('\n');
-  const argoTags: ArgoTagMapArea[] = [];
+  const argoTags: ImageTagMapArea[] = [];
   const sealTags: MapImageAreas[] = [];
 
   for (let i = 0; i < lines.length; i++) {

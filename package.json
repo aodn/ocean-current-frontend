@@ -13,7 +13,7 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
-    "test:e2e:production": "PLAYWRIGHT_TEST_BASE_URL=https://oceancurrent.production.aodn.org.au playwright test",
+    "test:e2e:production": "PLAYWRIGHT_TEST_BASE_URL=https://oceancurrent.production.aodn.org.au E2E_SMOKE=true playwright test",
     "test:e2e:report": "playwright show-report",
     "coverage": "vitest run --coverage",
     "lint": "eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0 --cache",

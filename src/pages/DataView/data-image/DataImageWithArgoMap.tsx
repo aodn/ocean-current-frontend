@@ -3,12 +3,12 @@ import dayjs, { Dayjs } from 'dayjs';
 import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
 import { findMostRecentDateBefore, getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { calculateImageScales } from '@/utils/general-utils/general';
-import { ArgoTagMapArea } from '@/types/argo';
+import { ImageTagMapArea } from '@/types/argo';
 import { convertCoordsBasedOnImageScale } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { RegionScope } from '@/constants/region';
-import { useImageArgoTags } from '@/services/hooks';
+import { useImageTags } from '@/services/hooks';
 import { ProductID } from '@/types/product';
 import { DateFormat } from '@/types/date';
 import { useResizeObserver } from '@/hooks';
@@ -22,6 +22,8 @@ type DataImageWithArgoMapProps = {
   argoTagFilePath: string;
 };
 
+type TooltipState = { text: string; x: number; y: number } | null;
+
 const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   src,
   productId,
@@ -33,12 +35,13 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
   const dateFormatted = dayjs(date).format(dateFormat);
   const imgRef = useRef<HTMLImageElement | null>(null);
-  const [coords, setCoords] = useState<ArgoTagMapArea[]>([]);
+  const [coords, setCoords] = useState<ImageTagMapArea[]>([]);
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
+  const [tooltip, setTooltip] = useState<TooltipState>(null);
   const { mainProduct } = useProductConvert();
   // Non-Tidal SLA product images use HOUR format but its tag file uses DAY format
   const tagDateFormat = productId === 'adjustedSeaLevelAnomaly-nonTidalSla' ? DateFormat.DAY : dateFormat;
-  const { data } = useImageArgoTags({ date, tagPath: argoTagFilePath, regionCode, dateFormat: tagDateFormat });
+  const { data } = useImageTags({ date, tagPath: argoTagFilePath, regionCode, dateFormat: tagDateFormat });
   const alt = `${productId} data in ${regionCode} at ${dateFormatted}`;
 
   const handleLoad = useCallback(() => {
@@ -46,15 +49,26 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
 
     const { naturalWidth, naturalHeight, width, height } = imgRef.current;
     const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
-    const originalCoords = data.map((item) => ({
-      shape: 'circle',
-      coords: [item.coordX, item.coordY, 10],
-      href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${dateFormatted}`,
-      wmoId: item.wmoId,
-      cycle: item.cycle,
-    }));
+    const originalCoords = data.map((item) => {
+      if (item.type === 'SOOP') {
+        return {
+          shape: 'circle',
+          coords: [item.coordX, item.coordY, 10],
+          href: '',
+          tooltip: item.shipName,
+        };
+      }
+      return {
+        shape: 'circle',
+        coords: [item.coordX, item.coordY, 10],
+        href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${dateFormatted}`,
+        wmoId: item.wmoId,
+        cycle: item.cycle,
+        tooltip: item.dataSource,
+      };
+    });
     const convertedCoords = convertCoordsBasedOnImageScale(originalCoords, scaleX, scaleY, naturalHeight);
-    setCoords(convertedCoords as ArgoTagMapArea[]);
+    setCoords(convertedCoords as ImageTagMapArea[]);
   }, [data, dateFormatted]);
 
   useResizeObserver('window', handleLoad);
@@ -80,7 +94,9 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
     };
   }, [data, dateFormatted, handleLoad, src]);
 
-  const handleCircleClick = async (area: ArgoTagMapArea) => {
+  const handleCircleClick = async (area: ImageTagMapArea) => {
+    if (!area.wmoId) return;
+
     const data = await fetchArgoProfileCyclesByWmoId(area.wmoId.toString());
     const dates = data.map((item) => item.date);
     const mostRecentDate = findMostRecentDateBefore(dates, dateFormatted);
@@ -114,16 +130,29 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
       <map name="argo-tag-map">
         {coords.map((area, index) => (
           <area
-            key={index}
+            key={area.tooltip ? `${area.tooltip}-${area.coords[0]}-${area.coords[1]}` : index}
             shape={area.shape}
             coords={area.coords.join(',')}
-            alt={area.alt || `Area ${index + 1}`}
+            alt={area.tooltip || `Area ${index + 1}`}
+            data-tooltip={area.tooltip}
+            onMouseEnter={(e) => area.tooltip && setTooltip({ text: area.tooltip, x: e.clientX, y: e.clientY })}
+            onMouseMove={(e) => setTooltip((prev) => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null))}
+            onMouseLeave={() => setTooltip(null)}
             onClick={() => handleCircleClick(area)}
             aria-hidden="true"
             className="cursor-pointer"
           />
         ))}
       </map>
+      {tooltip && (
+        <div
+          data-testid="image-map-tooltip"
+          className="pointer-events-none fixed z-50 inline-flex min-h-6 flex-col items-center justify-center gap-2 rounded bg-zinc-50 px-2.5 py-1 text-sm font-normal leading-5 shadow-[0_0_4px_0_rgba(0,0,0,0.25)]"
+          style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
+        >
+          {tooltip.text}
+        </div>
+      )}
     </div>
   );
 };
