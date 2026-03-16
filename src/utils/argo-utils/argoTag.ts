@@ -1,5 +1,5 @@
 import { argoTagFilePaths } from '@/constants/argo';
-import { ImageTagMapArea, ImageTag, StateLocalPathValue } from '@/types/argo';
+import { ImageTagMapArea, ImageTag, ArgoImageTag, SoopImageTag, StateLocalPathValue } from '@/types/argo';
 import { MapImageAreas } from '@/types/dataImage';
 import { ProductID } from '@/types/product';
 
@@ -20,22 +20,24 @@ const parseImageTagsFromText = (input: string): ImageTag[] => {
     const type = parts[0];
 
     if (type === 'Argo' && parts.length >= 7) {
-      result.push({
-        type,
+      const tag: ArgoImageTag = {
+        type: 'Argo',
         coordX: parseFloat(parts[1]),
         coordY: parseFloat(parts[2]),
         wmoId: parseInt(parts[3]),
         cycle: parseInt(parts[4]),
         institution: parts[5],
         dataSource: parts[6],
-      });
+      };
+      result.push(tag);
     } else if (type === 'SOOP' && parts.length >= 4) {
-      result.push({
-        type,
+      const tag: SoopImageTag = {
+        type: 'SOOP',
         coordX: parseFloat(parts[1]),
         coordY: parseFloat(parts[2]),
         shipName: parts[3],
-      });
+      };
+      result.push(tag);
     }
   }
 

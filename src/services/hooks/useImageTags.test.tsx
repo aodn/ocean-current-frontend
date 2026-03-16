@@ -37,7 +37,7 @@ describe('useImageTags', () => {
     const mockData = 'mock data';
     const parsedData = [
       {
-        type: 'type1',
+        type: 'Argo' as const,
         coordX: 1,
         coordY: 2,
         wmoId: 123,
@@ -46,7 +46,7 @@ describe('useImageTags', () => {
         dataSource: 'source1',
       },
       {
-        type: 'type2',
+        type: 'Argo' as const,
         coordX: 3,
         coordY: 4,
         wmoId: 456,
@@ -87,7 +87,7 @@ describe('useImageTags', () => {
     const mockData = 'mock data';
     const parsedData = [
       {
-        type: 'type1',
+        type: 'Argo' as const,
         coordX: 1,
         coordY: 2,
         wmoId: 123,
@@ -96,7 +96,7 @@ describe('useImageTags', () => {
         dataSource: 'source1',
       },
       {
-        type: 'type2',
+        type: 'Argo' as const,
         coordX: 3,
         coordY: 4,
         wmoId: 456,
