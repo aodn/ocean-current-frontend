@@ -4,7 +4,6 @@ import useQueryParams from './useQueryParams/useQueryParams';
 import useOutsideClick from './useOutSideClick/useOutsideClick';
 import useScrollToTop from './useScrollToTop/useScrollToTop';
 import useVideoCreation from './useVideoCreation/useVideoCreation';
-import useDeviceType from './useDeviceType/useDeviceType';
 import useUrlType from './useUrlType/useUrlType';
 import useSetProductId from './useSetProductId/useSetProductId';
 import useDateList from './useDateList/useDateList';
@@ -24,7 +23,6 @@ export {
   useScrollToTop,
   useOutsideClick,
   useVideoCreation,
-  useDeviceType,
   useUrlType,
   useSetProductId,
   useDateList,
