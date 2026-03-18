@@ -73,21 +73,6 @@ const CustomNavigationControl: React.FC<CustomNavigationControlProps> = ({ posit
         });
         container.appendChild(zoomOutButton);
 
-        // Add compass/reset bearing button
-        const compassButton = document.createElement('button');
-        compassButton.className = 'mapboxgl-ctrl-icon mapboxgl-ctrl-compass';
-        compassButton.type = 'button';
-        compassButton.title = 'Reset bearing to north';
-        compassButton.setAttribute('aria-label', 'Reset bearing to north');
-        const compassArrow = document.createElement('span');
-        compassArrow.className = 'mapboxgl-ctrl-icon';
-        compassArrow.setAttribute('aria-hidden', 'true');
-        compassButton.appendChild(compassArrow);
-        compassButton.addEventListener('click', () => {
-          mapInstance.resetNorth();
-        });
-        container.appendChild(compassButton);
-
         // Add reset view button (custom)
         const resetButton = document.createElement('button');
         resetButton.className = 'mapboxgl-ctrl-icon';
