@@ -17,6 +17,7 @@ export const API_IMAGE_LIST_ENABLED_PRODUCTS: ProductID[] = [
   'adjustedSeaLevelAnomaly-sla',
   'adjustedSeaLevelAnomaly-centiles',
   'adjustedSeaLevelAnomaly-sst',
+  'adjustedSeaLevelAnomaly-nonTidalSla',
   'surfaceWaves-wave',
   'surfaceWaves-buoyTimeseries',
   'tidalCurrents-sl',
@@ -39,15 +40,15 @@ export const API_LATEST_DATES_DISABLED_PRODUCTS: ProductID[] = [
   'currentMeters-deepADCP',
   'currentMeters-deepADV',
   'currentMeters-southernOcean',
-  'monthlyMeans-anomalies',
-  'monthlyMeans-CLIM_OFAM3_SSTAARS',
+  'monthlyMeans-30day',
+  'monthlyMeans-climatology',
 ];
 
 /**
  * List of product IDs that will always use fixed data regardless of API implementation
  * These are typically products with simple monthly data or other special cases
  */
-export const FIXED_IMAGE_LIST_PRODUCTS: ProductID[] = ['monthlyMeans-anomalies', 'monthlyMeans-CLIM_OFAM3_SSTAARS'];
+export const FIXED_IMAGE_LIST_PRODUCTS: ProductID[] = ['monthlyMeans-30day', 'monthlyMeans-climatology'];
 
 export const PRODUCTS_WITH_ARGO_DATA: RootProductID[] = [
   'fourHourSst',

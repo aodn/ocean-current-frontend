@@ -10,7 +10,7 @@ import {
   CurrentMetersDepth,
   CurrentMetersProperty,
   CurrentMetersRegion,
-  CurrentMetersSubproductsKey,
+  CurrentMetersSubProductsKey,
 } from '@/constants/currentMeters';
 import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { ProductID } from '@/types/product';
@@ -19,6 +19,7 @@ import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProdu
 import { useQueryParams } from '@/hooks';
 import { findLeafFlatProductById } from '@/utils/product-utils/product';
 import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
+import { getProductLegend } from '@/constants/productLegends';
 import Legend from './components/Legend';
 import MiniMap from './components/MiniMap';
 import ProductDropdown from './components/ProductDropdown';
@@ -37,11 +38,9 @@ const ProductSideBar: React.FC = () => {
   const { isArgo, isCurrentMeters, isSealCtd } = useProductCheck();
   const shouldRenderMiniMap = useShowProductOverMap();
 
-  const shouldShowLegend = !isCurrentMeters;
-
   const mooredInstrumentArrayPath = useMemo(() => {
     return (
-      findLeafFlatProductById(CurrentMetersSubproductsKey.MOORED_INSTRUMENT_ARRAY)?.path ||
+      findLeafFlatProductById(CurrentMetersSubProductsKey.MOORED_INSTRUMENT_ARRAY)?.path ||
       DEFAULT_SUB_PRODUCT_ROUTES['currentMeters']
     );
   }, []);
@@ -64,7 +63,9 @@ const ProductSideBar: React.FC = () => {
     return <Loading />;
   }
 
-  const productInfo = getProductInfoByKey(mainProduct.key);
+  const productInfo = getProductInfoByKey(mainProduct.key, subProduct?.key);
+  const productLegendItems = getProductLegend(mainProduct.key, subProduct?.key);
+
   const getDataSources = dataSources(useDate);
   const filteredDataSources = getDataSources.filter((source) => source.product.includes(mainProduct.key));
 
@@ -112,7 +113,7 @@ const ProductSideBar: React.FC = () => {
       <div className="hidden md:block">{shouldRenderMiniMap && <MiniMap />}</div>
 
       <div className="[&>*:last-child]:border-b-0 [&>*]:border-b-1 [&>*]:border-imos-light-blue">
-        <ProductSummary productInfo={productInfo} />
+        {productInfo && <ProductSummary productInfo={productInfo} />}
 
         {subProduct && subProducts.length > 0 && (
           <CollapsibleSection title={ProductSidebarText.OPTIONS}>
@@ -139,9 +140,9 @@ const ProductSideBar: React.FC = () => {
 
         {isCurrentMeters && <CurrentMetersFilters subProduct={subProduct} />}
 
-        {shouldShowLegend && (
+        {productLegendItems && productLegendItems.length > 0 && (
           <CollapsibleSection title={ProductSidebarText.LEGEND}>
-            <Legend />
+            <Legend legendItems={productLegendItems} />
           </CollapsibleSection>
         )}
       </div>

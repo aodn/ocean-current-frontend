@@ -8,5 +8,4 @@ export interface MultiFormatDatePickerProps {
   isDisabled?: boolean;
   startDate?: Date;
   endDate?: Date;
-  isFreeMode?: boolean;
 }

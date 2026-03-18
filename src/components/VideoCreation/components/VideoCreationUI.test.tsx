@@ -15,6 +15,6 @@ describe('VideoCreationUI Component', () => {
 
   it('renders GIF options when showGifOptions is true', () => {
     render(<VideoCreationUI showGifOptions={true} />);
-    expect(screen.getByText('Customise Gif')).toBeInTheDocument();
+    expect(screen.getByText('Customise GIF')).toBeInTheDocument();
   });
 });

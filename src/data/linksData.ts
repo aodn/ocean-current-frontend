@@ -22,7 +22,7 @@ export const linksData: LinkItem[] = [
     title: 'Maps',
     links: [
       {
-        id: 'four-hour-sst',
+        id: 'fourHourSst-sst',
         Icon: FourHourSSTIcon,
         title: 'Four-hour SST',
         description: 'Ocean current observations',
@@ -62,7 +62,7 @@ export const linksData: LinkItem[] = [
 
         title: 'Monthly Means',
         description: 'Monthly temperature averages',
-        url: '/map/monthly-means/anomalies',
+        url: '/map/monthly-means/30-day',
       },
       {
         id: 'climatology-sst',
@@ -72,14 +72,14 @@ export const linksData: LinkItem[] = [
         url: '/map/climatology/sst',
       },
       {
-        id: 'my-ocean-current',
+        id: 'myOceanCurrent',
         Icon: MyOceanCurrentIcon,
         title: 'My Ocean Current',
         description: 'My Ocean Current',
         url: 'https://mrs-data.csiro.au/myoceancurrent/sst/',
       },
       {
-        id: 'swot-gsla',
+        id: 'swotGsla',
         Icon: SwotIcon,
         title: 'SWOT and GSLA',
         description: 'SWOT and GSLA',
@@ -105,32 +105,32 @@ export const linksData: LinkItem[] = [
         url: 'https://oceancurrent.aodn.org.au/gliders',
       },
       {
-        id: 'tidal-currents',
+        id: 'tidalCurrents',
         Icon: TidalCurrentsIcon,
         title: 'Tidal Currents',
         description: 'Oceanic flow patterns',
         url: '/map/tidal-currents/speed',
       },
       {
-        id: 'current-meters',
+        id: 'currentMeters',
         Icon: CurrentMetersIcon,
         title: 'Current Meters',
         description: 'Flow measurement devices',
         url: '/map/current-meters/moored-instrument-array',
       },
       {
-        id: 'seal-ctd',
+        id: 'sealCtd',
         Icon: SealCTDIcon,
         title: 'SealCTD',
         description: 'Animal-mounted sensors',
-        url: '/map/seal-ctd/tracks',
+        url: '/product/seal-ctd/tracks?region=POLAR&date=20240522', // falls back to this date if API call fails
       },
       /*
         EAC Mooring Array has data from only one region
         We're setting the region automatically so user shouldn't need to manually select the region
       */
       {
-        id: 'eac-mooring-array',
+        id: 'EACMooringArray',
         Icon: EACMooringArrayIcon,
         title: 'EAC Mooring Array',
         description: 'Monitoring station network',

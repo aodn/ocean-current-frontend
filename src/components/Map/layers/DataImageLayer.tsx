@@ -6,14 +6,14 @@ import { buildLatestEntryImageUrl } from '@/utils/data-image-builder-utils/lates
 import { ProductID } from '@/types/product';
 
 const productsWithNoImage: ProductID[] = [
-  'monthlyMeans-anomalies',
+  'argo',
+  'monthlyMeans-30day',
   'climatology-sst',
   'EACMooringArray',
   'currentMeters-mooredInstrumentArray',
   'tidalCurrents-spd',
 ];
 const productsWithImage: ProductID[] = [
-  'argo',
   'fourHourSst-sst',
   'fourHourSst-sstFilled',
   'surfaceWaves-wave',
@@ -31,10 +31,8 @@ const productsWithImage: ProductID[] = [
 
 const DataImageLayer: React.FC = () => {
   const useProductId = useProductStore((state) => state.productParams.productId);
-  // client requested to use adjusted SLA map for argo product, see https://github.com/aodn/backlog/issues/5575
-  const productId = useProductId === 'argo' ? 'adjustedSeaLevelAnomaly-sla' : useProductId;
 
-  const imageUrl = buildLatestEntryImageUrl(productId);
+  const imageUrl = buildLatestEntryImageUrl(useProductId);
 
   const { current: map } = useMap();
   const shouldHideLayer = productsWithNoImage.includes(useProductId);

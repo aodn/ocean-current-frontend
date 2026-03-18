@@ -22,8 +22,8 @@ export enum ProductSidebarText {
 
 export enum ProductMenubarText {
   SHARE = 'Share',
-  CUSTOMISE_GIF = 'Customise Gif',
-  DOWNLOAD_GIF = 'Download Gif',
+  CUSTOMISE_GIF = 'Customise GIF',
+  DOWNLOAD_GIF = 'Download GIF',
   COPIED = 'Copied',
   VIDEO = 'Video',
   EXIT_VIDEO = 'Exit Video',

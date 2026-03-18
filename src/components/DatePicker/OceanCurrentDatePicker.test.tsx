@@ -29,7 +29,7 @@ describe('OceanCurrentDatePicker', () => {
     render(<OceanCurrentDatePicker {...mockProps} />);
 
     // Act
-    const calendarIconImg = screen.getByAltText('calendar icon');
+    const calendarIconImg = screen.getByLabelText('calendar icon');
 
     // Assert
     expect(calendarIconImg).toBeInTheDocument();
@@ -40,7 +40,7 @@ describe('OceanCurrentDatePicker', () => {
     render(<OceanCurrentDatePicker {...mockProps} />);
 
     // Act
-    const selectedDate = '05 Jun 24';
+    const selectedDate = '05 Jun 2024';
 
     // Assert
     expect(screen.getByText(selectedDate)).toBeInTheDocument();
@@ -105,7 +105,7 @@ describe('OceanCurrentDatePicker', () => {
     // Assert
     // The date picker is disabled but there's no visual change to test
     // This test ensures the component renders without errors when disabled
-    expect(screen.getByAltText('calendar icon')).toBeInTheDocument();
+    expect(screen.getByLabelText('calendar icon')).toBeInTheDocument();
   });
 
   it('uses custom display text when provided', () => {
@@ -208,7 +208,7 @@ describe('OceanCurrentDatePicker', () => {
     // Assert
     expect(screen.getByText('1993 - latest')).toBeInTheDocument();
     // Calendar icon should be present but not clickable
-    expect(screen.getByAltText('calendar icon')).toBeInTheDocument();
+    expect(screen.getByLabelText('calendar icon')).toBeInTheDocument();
   });
 
   it('handles sixDaySst-timeseries product scenario correctly', () => {

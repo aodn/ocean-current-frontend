@@ -12,7 +12,7 @@ export const useArgoProductValidQueryParams = () => {
       isStandaloneProductId(mainProduct as AnyProductID)
     )
   ) {
-    throw new Error(`Invalid productId: ${mainProduct}`);
+    return { isArgoValid: false };
   }
 
   if (mainProduct === 'argo') {

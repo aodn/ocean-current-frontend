@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { calculateImageScales } from '@/utils/general-utils/general';
-import { ArgoTagMapArea } from '@/types/argo';
+import { ImageTagMapArea } from '@/types/argo';
 import { convertCoordsBasedOnImageScale } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import { MapImageAreas } from '@/types/dataImage';
@@ -26,9 +26,9 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
 }) => {
   const formattedDate = dayjs(date).format(DateFormat.DAY);
   const imgRef = useRef<HTMLImageElement | null>(null);
-  const [argoData, setArgoData] = useState<ArgoTagMapArea[]>([]);
+  const [argoData, setArgoData] = useState<ImageTagMapArea[]>([]);
   const [sealData, setSealData] = useState<MapImageAreas[]>([]);
-  const [argoCoords, setArgoCoords] = useState<ArgoTagMapArea[]>([]);
+  const [argoCoords, setArgoCoords] = useState<ImageTagMapArea[]>([]);
   const [sealCoords, setSealCoords] = useState<MapImageAreas[]>([]);
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
 
@@ -60,10 +60,10 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
       }));
 
       if (regionCode === 'POLAR') {
-        setArgoCoords(originalArgoCoords as ArgoTagMapArea[]);
+        setArgoCoords(originalArgoCoords as ImageTagMapArea[]);
       } else {
         const convertedArgoCoords = convertCoordsBasedOnImageScale(originalArgoCoords, scaleX, scaleY, naturalHeight);
-        setArgoCoords(convertedArgoCoords as ArgoTagMapArea[]);
+        setArgoCoords(convertedArgoCoords as ImageTagMapArea[]);
       }
     }
 
@@ -110,7 +110,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
     fetchTagsData();
   }, [formattedDate, regionCode]);
 
-  const handleCircleClick = (area: ArgoTagMapArea | MapImageAreas) => {
+  const handleCircleClick = (area: ImageTagMapArea | MapImageAreas) => {
     window.open(area.href, '_blank', 'noopener,noreferrer');
   };
 
@@ -133,7 +133,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
     };
   }, [argoData, formattedDate, handleLoad, regionCode, sealData]);
 
-  const handleKeyDown = (e: React.KeyboardEvent, area: ArgoTagMapArea | MapImageAreas) => {
+  const handleKeyDown = (e: React.KeyboardEvent, area: ImageTagMapArea | MapImageAreas) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       handleCircleClick(area);
@@ -157,9 +157,9 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
         }}
       />
       <map name="argo-and-seal-tag-map">
-        {argoCoords.map((area) => (
+        {argoCoords.map((area, index) => (
           <area
-            key={area.wmoId}
+            key={area.wmoId ?? index}
             shape={area.shape}
             coords={area.coords.join(',')}
             alt={`Argo wmoId ${area.wmoId}`}

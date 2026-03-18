@@ -125,9 +125,9 @@ jobs:
       - name: Run E2E tests
         run: yarn test:e2e
 
-      - name: Upload Playwright Report
+      - name: Upload E2E Test Results
         uses: actions/upload-artifact@v4
-        if: always()
+        if: failure()
         with:
           name: test-results
           path: test-results/

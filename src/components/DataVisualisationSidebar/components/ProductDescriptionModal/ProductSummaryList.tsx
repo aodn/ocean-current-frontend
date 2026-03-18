@@ -2,9 +2,9 @@ import {
   AdjustedSeaLevelAnomalyModalData,
   ClimatologyModalData,
   FourHourSstModalData,
-  MonthlyMeansModalData,
   OceanColourModalData,
   SixDaySstModalData,
+  SixDaySstTimeseriesModalData,
   SurfaceWaveModalData,
   EACMooringArrayModalData,
   CurrentMetersModalData,
@@ -25,14 +25,21 @@ export const productInfoList: ProductInfo[] = [
   {
     id: 'sixDaySst',
     title: 'Six Day Sst',
-    summary: 'Sea Surface Temperature (°C) 6-day ngt-only comp QL3',
+    summary: 'Sea Surface Temperature (°C) 6-day composite of night-only SST',
     description: SixDaySstModalData,
+    childrenInfo: {
+      'sixDaySst-timeseries': {
+        title: 'Monthly Mean SST Anomalies (SST Anom vs Time)',
+        summary: 'Time series analysis of SST anomalies over time, showing trends and patterns.',
+        description: SixDaySstTimeseriesModalData,
+      },
+    },
   },
   {
     id: 'oceanColour',
     title: 'Chlorophyll-a Concentration',
     summary:
-      'Daily images of chlorophyll-a estimates from the MODIS sensor on NASA’s Aqua satellite indicating the amount of phytoplankton in the water.',
+      "Daily images of chlorophyll-a estimates from the MODIS sensor on NASA's Aqua satellite indicating the amount of phytoplankton in the water.",
     description: OceanColourModalData,
   },
   {
@@ -48,13 +55,19 @@ export const productInfoList: ProductInfo[] = [
     summary:
       "The map shows surface wave conditions around Australia from BoM's AUSWAVE-R model and observations. It includes significant wave height and peak wave direction, updated every 2 hours. Data sources are coastal buoys, radar altimeters, and satellite SAR within a 3-hour window.",
     description: SurfaceWaveModalData,
+    childrenInfo: {
+      'surfaceWaves-buoyTimeseries': {
+        title: 'Buoy Timeseries',
+        summary: null,
+        description: () => null,
+      },
+    },
   },
   {
     id: 'monthlyMeans',
     title: 'Monthly Means',
-    summary:
-      'Monthly means are time-averaged values of sea surface temperature (SST) and Adjusted Sea Level Anomalies (Adj. SLA) over a month. They provide a stable representation of ocean conditions by averaging short-term variations, useful for identifying long-term trends and patterns.',
-    description: MonthlyMeansModalData,
+    summary: null,
+    description: () => null,
   },
   {
     id: 'climatology',
@@ -68,7 +81,7 @@ export const productInfoList: ProductInfo[] = [
     title: 'Argo Profiles',
     summary:
       'Temperature and salinity data from the selected float compared with satellite-adjusted climatology, down to 2000m in the Australian region.',
-    description: ArgoModalData, // returns Fragments
+    description: ArgoModalData,
   },
   {
     id: 'tidalCurrents',

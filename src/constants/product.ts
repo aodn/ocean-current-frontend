@@ -1,5 +1,5 @@
 import { DateFormat } from '@/types/date';
-import { Product } from '@/types/product';
+import { Product, ProductID } from '@/types/product';
 
 export const OC_PRODUCTS: Product[] = [
   {
@@ -202,7 +202,7 @@ export const OC_PRODUCTS: Product[] = [
     stateSegment: 'WAVES',
     children: [
       {
-        title: 'Wave',
+        title: 'Map',
         key: 'surfaceWaves-wave',
         path: 'wave',
         imgPath: 'WAVES',
@@ -233,9 +233,9 @@ export const OC_PRODUCTS: Product[] = [
     stateSegment: '30d_MEAN',
     children: [
       {
-        title: 'Anomalies',
-        key: 'monthlyMeans-anomalies',
-        path: 'anomalies',
+        title: '30-day mean',
+        key: 'monthlyMeans-30day',
+        path: '30-day',
         imgPath: null,
         dateFormat: {
           localFormat: DateFormat.MONTH,
@@ -243,9 +243,9 @@ export const OC_PRODUCTS: Product[] = [
         },
       },
       {
-        title: 'OFAM3/SSTAARS',
-        key: 'monthlyMeans-CLIM_OFAM3_SSTAARS',
-        path: 'CLIM_OFAM3_SSTAARS',
+        title: 'Climatology mean',
+        key: 'monthlyMeans-climatology',
+        path: 'climatology',
         imgPath: 'CLIM_OFAM3_SSTAARS',
         dateFormat: {
           localFormat: DateFormat.MONTH_ONLY,
@@ -420,7 +420,7 @@ export const OC_PRODUCTS: Product[] = [
     title: 'SealCTD',
     key: 'sealCtd',
     path: 'seal-ctd',
-    latestEntry: null,
+    latestEntry: 'sealCTD_entry',
     dateFormat: {
       localFormat: DateFormat.DAY,
       stateFormat: DateFormat.DAY,
@@ -545,4 +545,63 @@ export const OC_PRODUCTS: Product[] = [
     localSegment: '',
     stateSegment: 'EAC_array_figures/SST/Brisbane',
   },
+  /*
+    These products are not yet implemented, just for Navigation purposes
+  */
+  {
+    title: 'Gliders',
+    key: 'gliders',
+    path: 'gliders',
+    latestEntry: null,
+    dateFormat: null,
+    localSegment: null,
+    stateSegment: 'GLIDERS',
+  },
+  {
+    title: 'SWOT and GSLA',
+    key: 'swotGsla',
+    path: 'swot-gsla',
+    latestEntry: null,
+    dateFormat: null,
+    localSegment: null,
+    stateSegment: 'SWOT_GSLA',
+    children: [],
+  },
+  {
+    title: 'My Ocean Current',
+    key: 'myOceanCurrent',
+    path: 'my-ocean-current',
+    latestEntry: null,
+    dateFormat: null,
+  },
 ] as const;
+
+export type NearestDateSearchConfig = { windowSize: number };
+
+/**
+ * Products that require nearest-date search when transitioning from another product.
+ * windowSize is in days, except for MONTH-format products where it is in months.
+ * Products not in this map retain the legacy date-handling behaviour.
+ * Ref: https://github.com/aodn/ocean-current-frontend/issues/318#issuecomment-3752849068
+ */
+export const NEAREST_DATE_SEARCH_CONFIG: Partial<Record<ProductID, NearestDateSearchConfig>> = {
+  // 4h SST — ±20 days
+  'fourHourSst-sstFilled': { windowSize: 20 },
+  'fourHourSst-sst': { windowSize: 20 },
+  'fourHourSst-sstAge': { windowSize: 20 },
+  'fourHourSst-windSpeed': { windowSize: 20 },
+  // 6-day composite SST — ±20 days
+  'sixDaySst-sst': { windowSize: 20 },
+  'sixDaySst-sstAnomaly': { windowSize: 20 },
+  'sixDaySst-centiles': { windowSize: 20 },
+  // Chlorophyll-a — ±5 days
+  'oceanColour-chlA': { windowSize: 5 },
+  'oceanColour-chlAAge': { windowSize: 5 },
+  // Adjusted SLA — ±20 days
+  'adjustedSeaLevelAnomaly-sla': { windowSize: 20 },
+  'adjustedSeaLevelAnomaly-centiles': { windowSize: 20 },
+  'adjustedSeaLevelAnomaly-sst': { windowSize: 20 },
+  'adjustedSeaLevelAnomaly-nonTidalSla': { windowSize: 20 },
+  // Monthly means — ±1 month (windowSize interpreted as months for MONTH format)
+  'monthlyMeans-30day': { windowSize: 1 },
+};

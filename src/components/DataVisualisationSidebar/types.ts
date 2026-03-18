@@ -3,9 +3,16 @@ import { ProductID, RootProductID, SubProduct } from '@/types/product';
 
 export type ProductInfo = {
   id: string;
-  summary: string;
-  description: () => JSX.Element;
+  summary: string | null;
+  description: () => JSX.Element | null;
   title: string;
+  childrenInfo?: {
+    [childId: string]: {
+      summary: string | null;
+      description: () => JSX.Element | null;
+      title?: string;
+    };
+  };
 };
 
 export interface ProductSummaryProp {

@@ -1,19 +1,36 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router';
 import { ArrowIcon } from '@/components/Shared/Icons';
+import { LinkOrAnchor } from '@/components/Shared';
 import { useDeviceTypes } from '@/hooks/useMediaQuery';
 import { useElementMetrics } from '@/hooks/useElementMetrics';
 import { linksData } from '@/data/linksData';
 import { cn } from '@/utils/classname-util/cn';
-
-const productCarouselData = linksData.flatMap((category) => {
-  if (category.links && category.links.length > 0) return category.links;
-  return [];
-});
+import { useRegionLatestDates } from '@/services/hooks/useRegionLatestDates';
 
 const HomeProductCarousel: React.FC = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const { isMobile, isTablet, isDesktop } = useDeviceTypes();
+  const { data: latestDates } = useRegionLatestDates('sealCtd-sealTracks');
+
+  const productCarouselData = useMemo(() => {
+    return linksData.flatMap((category) => {
+      if (category.links && category.links.length > 0) {
+        return category.links.map((link) => {
+          if (link.id === 'sealCtd') {
+            const polarDate = latestDates?.regionLatestDates.find((r) => r.region === 'POLAR')?.latestDate;
+            if (polarDate) {
+              return {
+                ...link,
+                url: `/product/seal-ctd/tracks?region=POLAR&date=${polarDate}`,
+              };
+            }
+          }
+          return link;
+        });
+      }
+      return [];
+    });
+  }, [latestDates]);
 
   const { itemRef, containerRef, metrics } = useElementMetrics({
     containerTestId: 'carousel-container',
@@ -35,7 +52,7 @@ const HomeProductCarousel: React.FC = () => {
     const maxScroll = Math.max(0, totalWidth - containerWidth);
 
     return { scrollStep, totalWidth, maxScroll };
-  }, [itemWidth, gapWidth, containerWidth]);
+  }, [itemWidth, gapWidth, containerWidth, productCarouselData.length]);
 
   const handleNext = () => {
     if (itemWidth === 0) return;
@@ -61,6 +78,7 @@ const HomeProductCarousel: React.FC = () => {
   return (
     <div className="flex w-full items-center gap-x-4">
       <button
+        title="Previous"
         onClick={handlePrev}
         disabled={isAtStart}
         className={cn('-mt-16 rotate-90 bg-transparent', isAtStart && 'cursor-not-allowed opacity-20')}
@@ -76,7 +94,7 @@ const HomeProductCarousel: React.FC = () => {
         >
           {productCarouselData.map(({ id, url, Icon, title }, index) => (
             <div key={id} ref={index === 0 ? itemRef : null} className="mt-2 w-24 flex-shrink-0 md:w-[120px]">
-              <Link
+              <LinkOrAnchor
                 to={url}
                 className={cn(
                   'flex h-24 flex-col items-center justify-center rounded-xl bg-imos-light-blue p-4',
@@ -86,7 +104,7 @@ const HomeProductCarousel: React.FC = () => {
                 )}
               >
                 <Icon className="h-full w-full" color="imos-deep-blue" />
-              </Link>
+              </LinkOrAnchor>
               <div className="p-2 text-center font-poppins text-sm font-medium text-imos-text-grey md:text-base">
                 {title}
               </div>
@@ -96,6 +114,7 @@ const HomeProductCarousel: React.FC = () => {
       </div>
 
       <button
+        title="Next"
         onClick={handleNext}
         disabled={isAtEnd}
         className={cn('-mt-16 -rotate-90 bg-transparent', isAtEnd && 'cursor-not-allowed opacity-20')}

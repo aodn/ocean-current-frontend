@@ -1,6 +1,6 @@
 import { DateConfig } from './date';
 
-export type StandaloneProductID = 'argo' | 'EACMooringArray';
+export type StandaloneProductID = 'argo' | 'EACMooringArray' | 'gliders' | 'myOceanCurrent';
 
 export type ProductGroupID =
   | 'fourHourSst'
@@ -13,7 +13,8 @@ export type ProductGroupID =
   | 'currentMeters'
   | 'sealCtd'
   | 'sealCtdTags'
-  | 'surfaceWaves'; // Add surfaceWaves as a ProductGroupID
+  | 'surfaceWaves'
+  | 'swotGsla';
 
 // Child products (not at root level)
 export type ChildProductID =
@@ -36,8 +37,8 @@ export type ChildProductID =
   | 'adjustedSeaLevelAnomaly-sst'
   | 'adjustedSeaLevelAnomaly-nonTidalSla'
   // Monthly Means children
-  | 'monthlyMeans-anomalies'
-  | 'monthlyMeans-CLIM_OFAM3_SSTAARS'
+  | 'monthlyMeans-30day'
+  | 'monthlyMeans-climatology'
   // | 'monthlyMeans-CLIM_CNESCARS' // This product was removed from the original site
   // Climatology children
   | 'climatology-sst'
@@ -82,6 +83,7 @@ export const productGroupIDs: ProductGroupID[] = [
   'sealCtd',
   'sealCtdTags',
   'surfaceWaves',
+  'swotGsla',
 ];
 
 export const childProductIDs: ChildProductID[] = [
@@ -99,8 +101,8 @@ export const childProductIDs: ChildProductID[] = [
   'adjustedSeaLevelAnomaly-centiles',
   'adjustedSeaLevelAnomaly-sst',
   'adjustedSeaLevelAnomaly-nonTidalSla',
-  'monthlyMeans-anomalies',
-  'monthlyMeans-CLIM_OFAM3_SSTAARS',
+  'monthlyMeans-30day',
+  'monthlyMeans-climatology',
   // 'monthlyMeans-CLIM_CNESCARS', // This product was removed from the original site
   'climatology-sst',
   'climatology-dataCount',
@@ -123,7 +125,12 @@ export const childProductIDs: ChildProductID[] = [
   'surfaceWaves-buoyTimeseries',
 ];
 
-export const standaloneProductIDs: StandaloneProductID[] = ['argo', 'EACMooringArray'];
+export const tidalCurrentsProductIDs = ['tidalCurrents-spd', 'tidalCurrents-sl'] as const;
+
+export function isTidalCurrents(id: AnyProductID): id is (typeof tidalCurrentsProductIDs)[number] {
+  return tidalCurrentsProductIDs.includes(id as (typeof tidalCurrentsProductIDs)[number]);
+}
+export const standaloneProductIDs: StandaloneProductID[] = ['argo', 'EACMooringArray', 'gliders', 'myOceanCurrent'];
 
 export function isProductGroupId(id: AnyProductID): id is ProductGroupID {
   return productGroupIDs.includes(id as ProductGroupID);

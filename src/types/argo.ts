@@ -23,8 +23,8 @@ export interface ArgoTagPath {
   [key: string]: StateLocalPathValue;
 }
 
-export interface ArgoTag {
-  type: string;
+export interface ArgoImageTag {
+  type: 'Argo';
   coordX: number;
   coordY: number;
   wmoId: number;
@@ -33,11 +33,21 @@ export interface ArgoTag {
   dataSource: string;
 }
 
-export interface ArgoTagMapArea {
+export interface SoopImageTag {
+  type: 'SOOP';
+  coordX: number;
+  coordY: number;
+  shipName: string;
+}
+
+export type ImageTag = ArgoImageTag | SoopImageTag;
+
+export interface ImageTagMapArea {
   shape: string;
   coords: number[];
   href: string;
-  wmoId: number;
-  cycle: number;
+  wmoId?: number;
+  cycle?: number;
   alt?: string;
+  tooltip?: string;
 }

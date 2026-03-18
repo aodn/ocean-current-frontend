@@ -1,37 +1,86 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { createGIF, CreateGIFOptions, CreateGIFObject } from 'gifshot';
+import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
-import { buildProductImageUrl, getTargetRegionScopePath } from '@/utils/data-image-builder-utils/dataImgBuilder';
+import { buildStaticImageUrl, getTargetRegionScopePath } from '@/utils/data-image-builder-utils/dataImgBuilder';
+import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import useProductStore from '@/stores/product-store/productStore';
 import { getRegionByRegionCode } from '@/utils/region-utils/region';
 import { RegionScope } from '@/constants/region';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
-import { useDateRange } from '@/hooks';
+import { useDateList } from '@/hooks';
 import useDateStore from '@/stores/date-store/dateStore';
+import { fetchImageListByProductIdAndRegion } from '@/services/imageList';
+import { sharedQueryConfig } from '@/configs/query';
+import { processOceanColourDateList } from '@/pages/DataView/product-content/utils/oceanColourUtils';
 import { ImageDimensions, DateObject, UseVideoCreationReturn } from './types/useVideoCreation.types';
 
+const DEFAULT_VIDEO_RANGE_DAYS = 30;
+
+/** Get the default start date: ~30 days before the last available date */
+const getDefaultStartDate = (dates: DateObject[]): Date => {
+  if (dates.length === 0) return dayjs().toDate();
+  const lastDate = dates[dates.length - 1].date;
+  const cutoff = dayjs(lastDate).subtract(DEFAULT_VIDEO_RANGE_DAYS, 'day').toDate();
+  return dates.find((d) => d.date >= cutoff)?.date ?? dates[0].date;
+};
+
+/** Filter dates to only those within the default range (last 30 days) */
+const getDefaultDatesInRange = (dates: DateObject[]): DateObject[] => {
+  if (dates.length === 0) return [];
+  const start = getDefaultStartDate(dates);
+  return dates.filter((d) => d.date >= start);
+};
+
 const useVideoCreation = (): UseVideoCreationReturn => {
-  const { allDates, formatDate } = useDateRange();
+  const useRegionCode = useProductStore((state) => state.productParams.regionCode);
+  const useProductId = useProductStore((state) => state.productParams.productId);
+  const regionScope = useProductStore((state) => state.productParams.regionScope);
+  const { mainProduct, subProduct } = useProductConvert();
+  const useDate = useDateStore((state) => state.date);
+
+  const { dateList } = useDateList({ productId: useProductId });
+
+  // useDateList returns a new array reference every render, so stabilize by keying on
+  // productId (the primary driver of list content) and length (covers the loading→resolved
+  // transition where the list goes from empty to populated for the same productId).
+  const allDates: DateObject[] = useMemo(
+    () => dateList.map((item) => ({ date: dayjs(item.date).toDate() })),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [useProductId, dateList.length],
+  );
+
+  const formatDate = getDateFormatByProductIdAndRegionScope(useProductId, regionScope);
+
+  const region = getRegionByRegionCode(useRegionCode);
+  const regionPath = region?.code;
+  const targetPathRegion = getTargetRegionScopePath(region?.scope || RegionScope.Au);
+  const subProductImgPath = subProduct?.imgPath;
+
+  // Ocean colour date list for URL building (cached by TanStack Query)
+  const isOceanColourChlA = useProductId === 'oceanColour-chlA';
+  const { data: oceanColourImageData } = useQuery({
+    queryKey: ['dateList', useProductId, useRegionCode],
+    queryFn: () => fetchImageListByProductIdAndRegion(useProductId, useRegionCode!),
+    enabled: isOceanColourChlA && Boolean(useRegionCode),
+    ...sharedQueryConfig,
+  });
+  const oceanColourDateList = useMemo(
+    () => (isOceanColourChlA ? processOceanColourDateList(oceanColourImageData) : []),
+    [isOceanColourChlA, oceanColourImageData],
+  );
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [selectedFrameRate, setSelectedFrameRate] = useState<number>(3);
   const [gifWidth, setGifWidth] = useState<number>(500);
   const [gifHeight, setGifHeight] = useState<number>(500);
-  const [allDatesVideoGeneration, setAllDatesVideoGeneration] = useState<DateObject[]>(allDates);
-  const [startDate, setStartDate] = useState<Date>(allDates[0]?.date || dayjs().toDate());
-  const [endDate, setEndDate] = useState<Date>(
-    allDates[allDates.length - 1]?.date || dayjs().subtract(1, 'month').toDate(),
+  const [allDatesVideoGeneration, setAllDatesVideoGeneration] = useState<DateObject[]>(
+    getDefaultDatesInRange(allDates),
   );
-
-  const useRegionCode = useProductStore((state) => state.productParams.regionCode);
-  const useProductId = useProductStore((state) => state.productParams.productId);
-  const { mainProduct, subProduct } = useProductConvert();
-  const useDate = useDateStore((state) => state.date);
-
-  const region = getRegionByRegionCode(useRegionCode);
-  const targetPathRegion = getTargetRegionScopePath(region?.scope || RegionScope.Au);
-  const subProductImgPath = subProduct?.imgPath;
+  const [startDate, setStartDate] = useState<Date>(getDefaultStartDate(allDates));
+  const [endDate, setEndDate] = useState<Date>(allDates[allDates.length - 1]?.date || dayjs().toDate());
   const aspectRatioRef = useRef<number>(1);
 
   const resetState = useCallback(() => {
@@ -39,9 +88,9 @@ const useVideoCreation = (): UseVideoCreationReturn => {
     setProgress(0);
     setErrorMessage('');
     setSelectedFrameRate(3);
-    setAllDatesVideoGeneration(allDates);
-    setStartDate(allDates[0]?.date || dayjs().toDate());
-    setEndDate(allDates[allDates.length - 1]?.date || dayjs().subtract(1, 'month').toDate());
+    setAllDatesVideoGeneration(getDefaultDatesInRange(allDates));
+    setStartDate(getDefaultStartDate(allDates));
+    setEndDate(allDates[allDates.length - 1]?.date || dayjs().toDate());
   }, [allDates]);
 
   useEffect(() => {
@@ -50,8 +99,8 @@ const useVideoCreation = (): UseVideoCreationReturn => {
 
   useEffect(() => {
     if (allDates && allDates.length > 0) {
-      setAllDatesVideoGeneration(allDates);
-      setStartDate(new Date(allDates[0].date));
+      setAllDatesVideoGeneration(getDefaultDatesInRange(allDates));
+      setStartDate(getDefaultStartDate(allDates));
       setEndDate(new Date(allDates[allDates.length - 1].date));
     }
   }, [allDates]);
@@ -70,7 +119,15 @@ const useVideoCreation = (): UseVideoCreationReturn => {
       return;
     }
 
-    const imageUrl = buildProductImageUrl(useProductId, useRegionCode, targetPathRegion, useDate.toString());
+    const imageUrl = buildStaticImageUrl(
+      useProductId,
+      useDate,
+      regionPath ?? 'Au',
+      regionScope,
+      targetPathRegion,
+      useRegionCode,
+      { oceanColourDateList },
+    );
 
     try {
       const { width, height } = await getImageDimensions(imageUrl);
@@ -80,7 +137,17 @@ const useVideoCreation = (): UseVideoCreationReturn => {
     } catch (error) {
       console.error('Error loading image:', error);
     }
-  }, [useProductId, useRegionCode, targetPathRegion, useDate, getImageDimensions, mainProduct]);
+  }, [
+    useProductId,
+    useRegionCode,
+    regionPath,
+    regionScope,
+    targetPathRegion,
+    useDate,
+    getImageDimensions,
+    mainProduct,
+    oceanColourDateList,
+  ]);
 
   useEffect(() => {
     getProductImageSize();
@@ -97,8 +164,15 @@ const useVideoCreation = (): UseVideoCreationReturn => {
 
   const generateImageArray = useCallback(async (): Promise<string[]> => {
     const imagePromises = allDatesVideoGeneration.map(({ date }, index) => {
-      const formattedDate = dayjs(date).format(formatDate);
-      const imageUrl = buildProductImageUrl(useProductId, useRegionCode!, targetPathRegion, formattedDate, true);
+      const imageUrl = buildStaticImageUrl(
+        useProductId,
+        dayjs(date),
+        regionPath ?? 'Au',
+        regionScope,
+        targetPathRegion,
+        useRegionCode,
+        { oceanColourDateList, isProxyRequired: true },
+      );
       return loadImage(imageUrl)
         .then((url) => {
           setProgress(Math.round(((index + 1) / allDatesVideoGeneration.length) * 90));
@@ -109,7 +183,16 @@ const useVideoCreation = (): UseVideoCreationReturn => {
 
     const results = await Promise.all(imagePromises);
     return results.filter((url): url is string => url !== null);
-  }, [allDatesVideoGeneration, formatDate, useProductId, useRegionCode, targetPathRegion, loadImage]);
+  }, [
+    allDatesVideoGeneration,
+    useProductId,
+    useRegionCode,
+    regionPath,
+    regionScope,
+    targetPathRegion,
+    oceanColourDateList,
+    loadImage,
+  ]);
 
   const fileName = useCallback((): string => {
     const formattedDateStart = dayjs(allDatesVideoGeneration[0].date).format(formatDate);

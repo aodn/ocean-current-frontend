@@ -1,0 +1,17 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CarouselStaticImage > matches snapshot 1`] = `
+<div>
+  <a
+    class="absolute inset-0"
+    data-discover="true"
+    href="/product/seal-ctd/tracks?region=POLAR&date=20250101"
+  >
+    <img
+      alt="SealCTD"
+      class="h-full w-full rounded-t-xl border-x border-t border-solid border-imos-calypso-blue border-opacity-60 object-contain"
+      src="https://example.com/image.gif"
+    />
+  </a>
+</div>
+`;

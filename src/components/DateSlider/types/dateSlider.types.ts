@@ -1,7 +1,7 @@
-import { DateItem } from '@/hooks/useDateRange/types/useDateRange.types';
+import { SliderDateItem } from '@/types/date';
 
 export interface DateSliderProps {
-  allDates: DateItem[];
+  allDates: SliderDateItem[];
   selectedDateIndex: number;
   handleSliderChange: (newValue: number) => void;
   steps: number;

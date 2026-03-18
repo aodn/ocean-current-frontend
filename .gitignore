@@ -1,3 +1,6 @@
+# Lockfiles (using yarn)
+package-lock.json
+
 # Logs
 logs
 *.log
@@ -38,6 +41,7 @@ coverage
 test-results/
 playwright-report/
 playwright/.cache/
+playwright.local.config.ts
 tests/screenshots/
 
 .eslintcache
@@ -45,3 +49,8 @@ tests/screenshots/
 # AI
 .claude
 CLAUDE.md
+.specstory
+.cursorindexingignore
+
+# Local code reviews
+reviews/

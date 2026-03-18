@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:log": "VITE_PROXY_LOG=true vite",
     "build": "tsc && vite build",
     "build:edge": "tsc && vite build --mode edge",
     "test": "vitest --watch=false",
@@ -12,21 +13,22 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
-    "test:e2e:production": "PLAYWRIGHT_TEST_BASE_URL=https://oceancurrent.production.aodn.org.au playwright test",
+    "test:e2e:production": "PLAYWRIGHT_TEST_BASE_URL=https://oceancurrent.production.aodn.org.au E2E_SMOKE=true playwright test",
     "test:e2e:report": "playwright show-report",
     "coverage": "vitest run --coverage",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --cache",
-    "lint:fix": "eslint . --ext ts,tsx --fix --cache",
+    "lint": "eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0 --cache",
+    "lint:fix": "eslint . --ext js,jsx,ts,tsx --fix --cache",
     "prettier": "prettier . --check ",
     "prettier:fix": "prettier . --write",
     "preview": "vite preview",
+    "build:preview": "tsc && vite build && vite preview",
     "postinstall": "husky"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.79.0",
     "@tanstack/react-query-devtools": "^5.79.0",
     "@types/gtag.js": "^0.0.20",
-    "axios": "^1.9.0",
+    "axios": "^1.13.5",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "gifshot": "^0.4.5",
@@ -61,6 +63,7 @@
     "autoprefixer": "^10.4.20",
     "baseline-browser-mapping": "^2.9.0",
     "commitlint-config-gitmoji": "^2.3.1",
+    "dotenv": "^17.3.1",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.3",
@@ -85,8 +88,8 @@
     "vitest": "^2.1.5"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx}": [
-      "yarn lint"
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint --report-unused-disable-directives --max-warnings 0"
     ],
     "**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
       "prettier --write"

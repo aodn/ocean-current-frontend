@@ -1,4 +1,4 @@
-import { DateItem } from '@/hooks/useDateRange/types/useDateRange.types';
+import { SliderDateItem } from '@/types/date';
 
 export interface SliderProps {
   min: number;
@@ -7,7 +7,7 @@ export interface SliderProps {
   value: number;
   onChange: (newValue: number) => void;
   labelFormatter?: (value: number) => string;
-  allDates: DateItem[];
+  allDates: SliderDateItem[];
 }
 
 export interface MarkersProps {
@@ -15,5 +15,5 @@ export interface MarkersProps {
   max: number;
   step: number;
   labelFormatter?: (value: number) => string;
-  allDates: DateItem[];
+  allDates: SliderDateItem[];
 }

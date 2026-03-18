@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Layer, MapMouseEvent, Source, useMap } from 'react-map-gl/mapbox';
 import dayjs from 'dayjs';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
-import { buildProductImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
+import { buildStaticImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import { useProductSearchParam, useQueryParams } from '@/hooks';
 import useProductPath from '@/stores/product-store/hooks/useProductPath';
 import { BoundingBox, GeoJsonPolygon } from '@/types/map';
@@ -16,8 +16,8 @@ import { useRegionLatestDates } from '@/services/hooks';
 import { RegionLatestDate } from '@/types/imageList';
 import { RegionScope } from '@/constants/region';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { API_LATEST_DATES_DISABLED_PRODUCTS } from '@/configs/products/data-source';
 import { mapAnimation } from '@/configs/map';
+import { isValidMonthlyMeanDate } from '@/utils/date-utils/date';
 import useRegionPolygons from '../hooks/useRegionPolygons';
 import { getPropertyFromMapFeatures, waitForMapAnimationAsync } from '../utils';
 import { shouldDeferToHigherPriorityLayer, hasFeatureAtPoint, shouldBlockRegionHover } from '../utils/layerPriority';
@@ -39,12 +39,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
   const regionGeoJsonData = useRegionPolygons();
   const { isOceanColour, isCurrentMetersMooredInstrumentArray } = useProductCheck();
 
-  const isApiLatestDatesDisabled = API_LATEST_DATES_DISABLED_PRODUCTS.includes(productId);
-
-  const { data: regionLatestDates, isLoading: isLoadingLatestDates } = useRegionLatestDates(
-    productId,
-    !isApiLatestDatesDisabled,
-  );
+  const { data: regionLatestDates, isLoading: isLoadingLatestDates } = useRegionLatestDates(productId);
 
   const {
     property: currentMetersProperty,
@@ -59,12 +54,14 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
 
   const fallbackLatestDate = dayjs().subtract(2, 'day').format('YYYYMMDD');
 
+  /**
+   * If today is before the 15th of the month, use the 15th of the previous month,
+   * Otherwise, use the 15th of the current month
+   */
   const getMonthlyMeansDate = useCallback(() => {
     const today = dayjs();
     const currentDay = today.date();
 
-    // If today is before the 15th of the month, use the 15th of the previous month
-    // Otherwise, use the 15th of the current month
     if (currentDay < 15) {
       return today.subtract(1, 'month').date(15).format('YYYYMMDD');
     } else {
@@ -223,20 +220,28 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
           } else {
             const dateFromQuery = searchParams.date;
 
-            if (productId === 'monthlyMeans-anomalies') {
-              const today = dayjs();
+            if (productId === 'monthlyMeans-30day') {
               let monthlyMeansDate = getMonthlyMeansDate();
-              if (today.date() >= 15) {
-                const candidateUrl = buildProductImageUrl(
-                  'monthlyMeans-anomalies',
-                  regionCode,
-                  RegionScope.State,
-                  monthlyMeansDate,
-                );
-                const exists = await validateImageExists(candidateUrl);
-                if (!exists) {
-                  monthlyMeansDate = today.subtract(1, 'month').date(15).format('YYYYMMDD');
-                }
+
+              if (
+                dateFromQuery &&
+                isValidMonthlyMeanDate(dateFromQuery) &&
+                dayjs(dateFromQuery, 'YYYYMMDD').isBefore(dayjs(monthlyMeansDate, 'YYYYMMDD').add(1, 'day'))
+              ) {
+                monthlyMeansDate = dateFromQuery;
+              }
+
+              const candidateUrl = buildStaticImageUrl(
+                'monthlyMeans-30day',
+                dayjs(monthlyMeansDate, 'YYYYMMDD'),
+                regionCode,
+                RegionScope.State,
+                RegionScope.State,
+                regionCode,
+              );
+              const exists = await validateImageExists(candidateUrl);
+              if (!exists) {
+                monthlyMeansDate = dayjs(monthlyMeansDate, 'YYYYMMDD').subtract(1, 'month').date(15).format('YYYYMMDD');
               }
 
               queryObject = { region: regionCode, date: monthlyMeansDate, point: null };

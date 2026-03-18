@@ -1,7 +1,5 @@
 export type DateObject = {
   date: Date;
-  active: boolean;
-  showLabel: boolean;
 };
 
 export type ImageDimensions = {

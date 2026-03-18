@@ -1,4 +1,5 @@
 module.exports = {
+  ignorePatterns: ['dist/', 'node_modules/', 'public/'],
   env: {
     browser: true,
     es2021: true,
@@ -36,6 +37,7 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 'off',
     'no-unused-vars': 'off',
+    'react/prop-types': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
@@ -60,6 +62,17 @@ module.exports = {
       },
     ],
     'import/newline-after-import': 'error',
+    'no-restricted-syntax': [
+      'error',
+      {
+        selector: 'CallExpression[callee.property.name="toISOString"]',
+        message: 'Avoid .toISOString() on dates — it converts to UTC. Use .format() instead.',
+      },
+      {
+        selector: 'CallExpression[callee.property.name="toLocaleDateString"]',
+        message: 'Avoid .toLocaleDateString() on dates. Use dayjs .format() instead.',
+      },
+    ],
     'no-console': ['warn', { allow: ['error', 'warn'] }],
     'max-len': [
       'warn',

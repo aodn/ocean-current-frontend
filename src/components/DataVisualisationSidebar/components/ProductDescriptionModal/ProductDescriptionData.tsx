@@ -2,12 +2,12 @@ const OceanColourModalData = () => {
   return (
     <div className="p-4 text-gray-800">
       <p className="mb-4">
-        Daily images of chlorophyll-a estimates from the MODIS sensor on NASA’s Aqua satellite indicating the amount of
-        phytoplankton in the water. Chlorophyll-a can be detected by satellite by measuring the relative amounts of
-        light coming from the ocean at different wavelengths. The Ocean Colour model (OC3) that converts the satellite
-        observations to chlorophyll-a concentration assumes that chlorophyll-a is the only thing in the water affecting
-        the measurements. This is largely true in the open ocean but in coastal waters tannin from rivers and suspended
-        sediments can be present and cannot be differentiated from chlorophyll-a.
+        Daily images of chlorophyll-a estimates from the MODIS sensor on NASA&apos;s Aqua satellite indicating the
+        amount of phytoplankton in the water. Chlorophyll-a can be detected by satellite by measuring the relative
+        amounts of light coming from the ocean at different wavelengths. The Ocean Colour model (OC3) that converts the
+        satellite observations to chlorophyll-a concentration assumes that chlorophyll-a is the only thing in the water
+        affecting the measurements. This is largely true in the open ocean but in coastal waters tannin from rivers and
+        suspended sediments can be present and cannot be differentiated from chlorophyll-a.
       </p>
       <p className="mb-4">
         In the open ocean we can be confident the satellite images represent productivity, but in very shallow coastal
@@ -47,6 +47,40 @@ const SixDaySstModalData = () => {
   );
 };
 
+const SixDaySstTimeseriesModalData = () => {
+  return (
+    <div className="p-4 text-gray-800">
+      <p className="mb-4">
+        The Monthly Mean SST Anomalies are created using the daily time series (since 1993- present) of IMOS L3SM-1d
+        night-only SST (QL&gt;=4). The SST observations for each of the smaller map regions are converted to anomalies
+        using the SSTAARS climatology then averaged spatially and over each month.
+      </p>
+      <p className="mb-4">
+        Accessing the full SST dataset of almost 30 years of daily data has been made feasible with the help of Edward
+        King in the IMOS Satellite Remote Sensing sub-facility which has reformatted the data for rapid access as a time
+        series. These time series underpin the SSTAARS climatology and are the pre-cursor to the AODN providing similar
+        access in the near future.
+      </p>
+      <p className="mb-4">
+        Plots are updated daily. The estimate of the monthly average for the latest month is only a draft estimate. It
+        is first included in the plots after the 15th of the month and updated daily as more data becomes available.
+      </p>
+      <p className="mb-4">
+        Click{' '}
+        <a
+          href="https://oceancurrent.aodn.org.au/whatsshown.php"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="text-imos-sea-blue"
+        >
+          here{' '}
+        </a>
+        for an overview of what&apos;s shown in these maps.
+      </p>
+    </div>
+  );
+};
+
 const AdjustedSeaLevelAnomalyModalData = () => {
   return (
     <div className="p-4 text-gray-800">
@@ -69,7 +103,7 @@ const AdjustedSeaLevelAnomalyModalData = () => {
         <a
           href="https://link.springer.com/article/10.1007/s10712-019-09525-z"
           target="_blank"
-          rel="noreferrer"
+          rel="noreferrer noopener"
           className="text-imos-sea-blue"
         >
           ocean dynamic sea level
@@ -102,7 +136,7 @@ const AdjustedSeaLevelAnomalyModalData = () => {
         <a
           href="https://oceancurrent.aodn.org.au/GSLA_stats/DM02/GSLA_Au_h.html"
           target="_blank"
-          rel="noreferrer"
+          rel="noreferrer noopener"
           className="text-imos-sea-blue"
         >
           [see time series plot of the Australasia-region average adjusted sea level anomaly]
@@ -122,7 +156,7 @@ const AdjustedSeaLevelAnomalyModalData = () => {
         <a
           href="https://oceancurrent.aodn.org.au/GSLA_stats/DM02/"
           target="_blank"
-          rel="noreferrer"
+          rel="noreferrer noopener"
           className="text-imos-sea-blue"
         >
           centile levels of the reference data set
@@ -247,14 +281,19 @@ const EACMooringArrayModalData = () => {
         <a
           href="https://oceancurrent.aodn.org.au/eac_about.php"
           target="_blank"
-          rel="noreferrer"
+          rel="noreferrer noopener"
           className="text-imos-sea-blue"
         >
           {' '}
           here
         </a>{' '}
         and{' '}
-        <a href="https://doi.org/10.25919/sfw7-hc46" target="_blank" rel="noreferrer" className="text-imos-sea-blue">
+        <a
+          href="https://doi.org/10.25919/sfw7-hc46"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="text-imos-sea-blue"
+        >
           here
         </a>
         .
@@ -323,17 +362,11 @@ const TidalCurrentsModalData = () => {
         yet), or back to when actual observations can be included on the graph (1983 in some cases). Browsing the graphs
         with actual observations reveals how Australia&apos;s ocean currents range from tidally-dominated (e.g. in Bass
         Strait as shown at right), to mixed (e.g.
-        <a
-          href="https://oceancurrent.aodn.org.au/tides/monthplots/IMOS_GBRPPS_201207.html"
-          className="mx-1 text-[#52BDEC]"
-        >
+        <a href="https://oceancurrent.aodn.org.au/tides/monthplots/IMOS_GBRPPS_201207.html" className="oc-link">
           Palm Passage
         </a>
         ) to non-tidal, such as off
-        <a
-          href="https://oceancurrent.aodn.org.au/tides/monthplots/IMOS_BMP070_201704.html"
-          className="mx-1 text-[#52BDEC]"
-        >
+        <a href="https://oceancurrent.aodn.org.au/tides/monthplots/IMOS_BMP070_201704.html" className="oc-link">
           Bateman&apos;s Bay
         </a>
         .
@@ -346,35 +379,35 @@ const TidalCurrentsModalData = () => {
         A novel aspect of the work presented here is the presentation and assessment of predictions of depth-averaged
         tidal currents (sea level information is included for completeness rather than novelty, and does not replace the
         predictions published by the
-        <a href="http://www.bom.gov.au/oceanography/projects/ntc/ntc.shtml" className="mx-1 text-[#52BDEC]">
+        <a href="http://www.bom.gov.au/oceanography/projects/ntc/ntc.shtml" className="oc-link">
           National Operations Centre (NOC) Tidal Unit of the Bureau of Meteorology
         </a>
         ). The observation-based predictions of tidal current are made at 100 locations around Australia, using
       </p>
       <ul className="mb-4 list-inside list-disc">
         <li className="mb-2">
-          <strong className="text-[#52BDEC]">60 IMOS ADCPs;</strong> these Acoustic Doppler Current Profilers were
+          <strong className="text-imos-sea-blue">60 IMOS ADCPs;</strong> these Acoustic Doppler Current Profilers were
           deployed by or have been contributed to
-          <a href="https://oceancurrent.aodn.org.au/timeseries" className="mx-1 text-[#52BDEC]">
+          <a href="https://oceancurrent.aodn.org.au/timeseries" className="oc-link">
             IMOS
           </a>
           . These observations can be assumed to be quite accurate. Here, we use the depth-average of the observations,
           which span the whole water column except for a few m at the bottom, and the surface-most 15%
         </li>
         <li className="mb-2">
-          <strong className="text-[#52BDEC]">13 CSIRO current meters;</strong> selected from the
-          <a href="https://www.cmar.csiro.au/data/trawler/" className="mx-1 text-[#52BDEC]">
+          <strong className="text-imos-sea-blue">13 CSIRO current meters;</strong> selected from the
+          <a href="https://www.cmar.csiro.au/data/trawler/" className="oc-link">
             CSIRO collection
           </a>
           for being in locations (Bass Strait, NW shelf and Gulf of Carpentaria) where tidal currents are significant.
           These non-ADCP moorings included either one or two current meters. In the case of two, we have simply averaged
           the observations for the record segments when both were operating.
-          <a href="https://oceancurrent.aodn.org.au/tides/CSIROmeters/" className="mx-1 text-[#52BDEC]">
+          <a href="https://oceancurrent.aodn.org.au/tides/CSIROmeters/" className="oc-link">
             [plots of the individual instrument records, their average and the tidal fit]
           </a>
         </li>
         <li className="mb-2">
-          <strong className="text-[#52BDEC]">10 UNSW Aanderaas:</strong> Middleton et al. (1984) and Griffin et al.
+          <strong className="text-imos-sea-blue">10 UNSW Aanderaas:</strong> Middleton et al. (1984) and Griffin et al.
           (1987) studied the anomalous tides of the Southern Great Barrier Reef using these observations made by single,
           mechanical RCM4 Aanderaa current meters. By modern standards, these instruments are not very accurate.
           Firstly, the flow direction is only sampled once an hour, so short-period changes of direction are not
@@ -384,10 +417,7 @@ const TidalCurrentsModalData = () => {
           to reproduce due to its imperfect representation of topography. Flood-ebb asymmetries may not be well
           represented by a sum of harmonic tidal constituents, either. The instrument deployed west of Bugatti Reef, for
           example, has one of the highest rms vector differences from the model. This can be
-          <a
-            href="https://oceancurrent.aodn.org.au/tides/monthplots/UNSW_W_Bugatti_Rf_198411.html"
-            className="mx-1 text-[#52BDEC]"
-          >
+          <a href="https://oceancurrent.aodn.org.au/tides/monthplots/UNSW_W_Bugatti_Rf_198411.html" className="oc-link">
             seen
           </a>
           to be mostly due to persistent offsets between the observed flow direction and both the modelled and tidal-fit
@@ -395,19 +425,16 @@ const TidalCurrentsModalData = () => {
           is to the SSW, but the ebb was more likely to be either to the ENE or NW instead of NNE, as shown in the
           hodograph at right (click to enlarge). Neither the tidal self-prediction nor the model represent this. The
           impeller of the
-          <a
-            href="https://oceancurrent.aodn.org.au/tides/monthplots/UNSW_Creal_Rf_198412.html"
-            className="mx-1 text-[#52BDEC]"
-          >
+          <a href="https://oceancurrent.aodn.org.au/tides/monthplots/UNSW_Creal_Rf_198412.html" className="oc-link">
             Creal Reef
           </a>
           meter appears to be intermittently obstructed, so the tidal prediction there is probably not accurate,
           explaining the large discrepancy from the model
         </li>
         <li className="mb-2">
-          <strong className="text-[#52BDEC]">14 ARENA ADCPs:</strong> These were deployed in Banks Strait (NE Tas) and
-          Clarence Strait (near Darwin) by Penesis et al. (2020) as part of
-          <a href="http://austen.org.au/" className="mx-1 text-[#52BDEC]">
+          <strong className="text-imos-sea-blue">14 ARENA ADCPs:</strong> These were deployed in Banks Strait (NE Tas)
+          and Clarence Strait (near Darwin) by Penesis et al. (2020) as part of
+          <a href="http://austen.org.au/" className="oc-link">
             AUSTEn
           </a>
           , to assess the renewable energy potential of the strong currents there.
@@ -417,7 +444,7 @@ const TidalCurrentsModalData = () => {
         We have used the UTide tidal analysis software of Codiga (2011) to compute amplitudes and phases for up to 8
         (depending on the record length) semi-diurnal and diurnal (M2 S2 N2 K2 O1 K1 P1 and Q1) tidal velocity
         constituents
-        <a href="http://oceancurrent.aodn.org.au/timeseries/ANMN_P34/ANMNtable.html" className="mx-1 text-[#52BDEC]">
+        <a href="http://oceancurrent.aodn.org.au/timeseries/ANMN_P34/ANMNtable.html" className="oc-link">
           (details for IMOS sites)
         </a>
         , allowing predictions to then be made for any chosen period.
@@ -431,7 +458,7 @@ const TidalCurrentsModalData = () => {
       <ul className="mb-4 list-inside list-disc">
         <li className="mb-2">
           more than 700 locations from the
-          <a href="http://www.bom.gov.au/oceanography/projects/ntc/ntc.shtml" className="mx-1 text-[#52BDEC]">
+          <a href="http://www.bom.gov.au/oceanography/projects/ntc/ntc.shtml" className="oc-link">
             National Operations Centre (NOC) Tidal Unit of the Bureau of Meteorology
           </a>
           . Some of these data are less accurate than others so please see the BoM for the official predictions and
@@ -446,7 +473,7 @@ const TidalCurrentsModalData = () => {
         COMPAS, a so-called unstructured-mesh model because the grid resolution varies from 400m in places to 6km
         offshore. This allows better representation of the sea floor than is possible with a global model, from which
         the properties of the deep-ocean tide are obtained. The
-        <a href="http://www.tpxo.net/" className="mx-1 text-[#52BDEC]">
+        <a href="http://www.tpxo.net/" className="oc-link">
           Oregon State University TPXO tidal model
         </a>
         (Egbert and Erofeeva, 2002) provides estimates of the 8 tidal constituents listed above on a 1/6° (latitude and
@@ -457,23 +484,23 @@ const TidalCurrentsModalData = () => {
       <ul className="mb-4 list-inside list-disc">
         <li className="mb-2">
           our 2021 assessment of the model:
-          <a href="https://doi.org/10.5194/gmd-14-5561-2021" className="mx-1 text-[#52BDEC]">
+          <a href="https://doi.org/10.5194/gmd-14-5561-2021" className="oc-link">
             Griffin, Herzfeld, Hemer and Engwirda (2021)
           </a>
         </li>
         <li className="mb-2">
-          <a href="http://www.marine.csiro.au/~griffin/ARENA_tides/tides/" className="mx-1 text-[#52BDEC]">
+          <a href="http://www.marine.csiro.au/~griffin/ARENA_tides/tides/" className="oc-link">
             further details of model performance
           </a>
         </li>
         <li className="mb-2">
-          <a href="http://www.marine.csiro.au/~griffin/ARENA_tides/tides/energystats/" className="mx-1 text-[#52BDEC]">
+          <a href="http://www.marine.csiro.au/~griffin/ARENA_tides/tides/energystats/" className="oc-link">
             statistics of the tides relevant to renewable energy
           </a>
         </li>
         <li className="mb-2">
           tidal constituents from both the model, and the validation data set we used.
-          <a href="https://doi.org/10.25919/q8dw-c732" className="mx-1 text-[#52BDEC]">
+          <a href="https://doi.org/10.25919/q8dw-c732" className="oc-link">
             CSIRO data portal digital archive
           </a>
         </li>
@@ -483,7 +510,7 @@ const TidalCurrentsModalData = () => {
       <p className="mb-4">
         There are 3 main reasons why there are not presently many &apos;official predictions&apos; of tidal currents to
         accompany the predictions of tidal height published, for example, by the
-        <a href="http://www.bom.gov.au/australia/tides/" className="mx-1 text-[#52BDEC]">
+        <a href="http://www.bom.gov.au/australia/tides/" className="oc-link">
           BoM
         </a>
         (see the &apos;Tidal streams&apos; button):
@@ -491,17 +518,11 @@ const TidalCurrentsModalData = () => {
       <ol className="list-decimal pl-5 font-sans leading-relaxed text-gray-800">
         <li>
           the
-          <a
-            href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P34/mapst/01_Aust_M2_1.html"
-            className="mx-1 text-[#52BDEC]"
-          >
+          <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P34/mapst/01_Aust_M2_1.html" className="oc-link">
             tidal component
           </a>
           of the current is weaker than (or comparable to) the
-          <a
-            href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P34/mapst/01_Aust_vrms_1.html"
-            className="mx-1 text-[#52BDEC]"
-          >
+          <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P34/mapst/01_Aust_vrms_1.html" className="oc-link">
             non-tidal components
           </a>
           of the current for much of Australia&apos;s marine estate (i.e. nearly everywhere south of 25°S). Our index
@@ -522,14 +543,14 @@ const TidalCurrentsModalData = () => {
       </ol>
       <p className="mb-4">
         For these 3 reasons, we only publish tidal current predictions for selected regions, as discussed by
-        <a href="https://doi.org/10.5194/gmd-14-5561-2021" className="mx-1 text-[#52BDEC]">
+        <a href="https://doi.org/10.5194/gmd-14-5561-2021" className="oc-link">
           Griffin, Herzfeld, Hemer and Engwirda (2021)
         </a>
         , and our predictions are not officially certified for navigation.
       </p>
       <p className="mb-4">
         Models like
-        <a href="https://ereefs.org.au/ereefs" className="mx-1 text-[#52BDEC]">
+        <a href="https://ereefs.org.au/ereefs" className="oc-link">
           eReefs
         </a>
         simulate both tidal and non-tidal currents, and similar models are also being constructed for other regions
@@ -539,14 +560,14 @@ const TidalCurrentsModalData = () => {
 
       <h3 className="mb-4 text-lg font-semibold">Definitions</h3>
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">tide</strong> The term &apos;tide&apos; is sometimes used to describe any
+        <strong className="text-imos-sea-blue">tide</strong> The term &apos;tide&apos; is sometimes used to describe any
         variation of the sea level or the current. Here, we use the oceanographer&apos;s definition, which is that the
         tide is the astronomically forced variation of sea level and current. Hence, and in contrast to the non-tidal
         variability in the ocean, the tides are equally predictable for any period in the future (or the past), because
         the tidal forcing is precisely linked to the orbit and rotation of the Earth and the orbit of the moon.
       </p>
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">tidal prediction</strong> The most accurate way to predict the tides
+        <strong className="text-imos-sea-blue">tidal prediction</strong> The most accurate way to predict the tides
         (currents or sea level) at a certain location is to obtain a record of the tides for a period then do what is
         known as a tidal analysis to determine the amplitudes and phases of all the tidal constituents, then a
         prediction, which is the reverse operation. We have used the TTide and UTide matlab software for this. To make a
@@ -560,16 +581,16 @@ const TidalCurrentsModalData = () => {
         is greatest, and not always at the time you might expect.
       </p>
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">tidal constituent</strong> For most locations, the dominant tidal constituent
-        is M2. This measures the amplitude of the sea level perturbations towards the moon on one side of the earth, and
-        away from it on the other. Taking the rotation of the earth and the orbit of the moon into account, this
-        constituent has a period of 12h 25min 14.4s. The dominant constituent associated with the sun is called S2, and
-        has a period of exactly 12h. The 50.5 minutes-per-day difference of these two periodic signals is what gives us
-        the 28.5d spring-neap cycle of the daily tidal range (and the waxing and waning of the moon). There are 145
-        named tidal constituents, together accounting for the complex but periodic cycle of the tides.
+        <strong className="text-imos-sea-blue">tidal constituent</strong> For most locations, the dominant tidal
+        constituent is M2. This measures the amplitude of the sea level perturbations towards the moon on one side of
+        the earth, and away from it on the other. Taking the rotation of the earth and the orbit of the moon into
+        account, this constituent has a period of 12h 25min 14.4s. The dominant constituent associated with the sun is
+        called S2, and has a period of exactly 12h. The 50.5 minutes-per-day difference of these two periodic signals is
+        what gives us the 28.5d spring-neap cycle of the daily tidal range (and the waxing and waning of the moon).
+        There are 145 named tidal constituents, together accounting for the complex but periodic cycle of the tides.
       </p>
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">tidal ellipse</strong> Being a vector (two dimensional) quantity, tidal
+        <strong className="text-imos-sea-blue">tidal ellipse</strong> Being a vector (two dimensional) quantity, tidal
         currents are more difficult to describe than tidal sea level. For each tidal constituent, the tidal current
         velocity vector traces out an ellipse. It is only in narrow channels that the current goes simply back and
         forth. In some places, the ellipse is close to a circle, with the speed of the current remaining constant, and
@@ -578,33 +599,27 @@ const TidalCurrentsModalData = () => {
         flooding tide.
       </p>
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">diurnal and semi-diurnal</strong> Diurnal tidal constituents (e.g. O1, K1)
-        have periods near 24-25h. They are smaller than the semi-diurnal (near 12h) constituents in most places, the SA
-        Gulfs being a notable exception, where the
-        <a
-          href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P34/mapst/08_SA_K1_1.html"
-          className="mx-1 text-[#52BDEC]"
-        >
+        <strong className="text-imos-sea-blue">diurnal and semi-diurnal</strong> Diurnal tidal constituents (e.g. O1,
+        K1) have periods near 24-25h. They are smaller than the semi-diurnal (near 12h) constituents in most places, the
+        SA Gulfs being a notable exception, where the
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P34/mapst/08_SA_K1_1.html" className="oc-link">
           K1 currents
         </a>
         are stronger than the
-        <a
-          href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P34/mapst/08_SA_M2_1.html"
-          className="mx-1 text-[#52BDEC]"
-        >
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P34/mapst/08_SA_M2_1.html" className="oc-link">
           M2 currents
         </a>
         . They are caused by the asymmetry of the sea level perturbations on the near and far sides of the Earth.
       </p>
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">long-period tides</strong> These are constituents with periods near 15d, 30d,
-        6 months and 12 months. Some are due to direct astronomical forcing (i.e. non-colinearity of orbital axes,
+        <strong className="text-imos-sea-blue">long-period tides</strong> These are constituents with periods near 15d,
+        30d, 6 months and 12 months. Some are due to direct astronomical forcing (i.e. non-colinearity of orbital axes,
         eccentric orbits, etc) while others are due to the non-linearity of the ocean response to the astronomical
         forcing. Neither sort of long-period tide are included in the predictions shown here. They are small compared to
         the errors of the short-period tides.
       </p>
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">non-tidal variability</strong> Broadly speaking, this refers to the many
+        <strong className="text-imos-sea-blue">non-tidal variability</strong> Broadly speaking, this refers to the many
         other causes of ocean currents and sea level changes, such as wind, atmospheric pressure, heat gain or loss,
         freshwater gain or loss and eddies at a wide range of sizes. There are, however, a few grey areas. Tidal
         currents rushing past a headland may spin up an eddy, depending on the state of the spring neap cycle or the
@@ -614,36 +629,36 @@ const TidalCurrentsModalData = () => {
         estimation of some of the diurnal and annual tidal constituents.
       </p>
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">slack tide</strong> (a.k.a. &ldquo;slack water&ldquo;) is the time when the
-        tidal current turns from ebbing to flooding, or vice versa, i.e., it is the time when the speed of the tidal
+        <strong className="text-imos-sea-blue">slack tide</strong> (a.k.a. &ldquo;slack water&ldquo;) is the time when
+        the tidal current turns from ebbing to flooding, or vice versa, i.e., it is the time when the speed of the tidal
         current is at a local minimum. The timing of slack tide relative to high and low water depends on location, as
         mentioned in our
-        <a href="https://oceancurrent.aodn.org.au/news.php#20230902" className="mx-1 text-[#52BDEC]">
+        <a href="https://oceancurrent.aodn.org.au/news.php#20230902" className="oc-link">
           September 2023 news item
         </a>
         .
       </p>
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">sub-tidal variability</strong> is due solely to physical processes operating
-        at time scales longer than a day or so (i.e. excluding semi-diurnal and diurnal tides). We estimate the rms
-        amplitude of these by applying a Hanning filter to the observations with a half-amplitude width of 20h. This
-        filtering removes all semi-diurnal variability, not just the phase-locked components at resolvable frequencies.
-        From the prediction point of view, the historical amplitude of sub-tidal variability is an estimate of
-        prediction error, since the actual sub-tidal variability can only be predicted close to real time using weather
-        and other data.
+        <strong className="text-imos-sea-blue">sub-tidal variability</strong> is due solely to physical processes
+        operating at time scales longer than a day or so (i.e. excluding semi-diurnal and diurnal tides). We estimate
+        the rms amplitude of these by applying a Hanning filter to the observations with a half-amplitude width of 20h.
+        This filtering removes all semi-diurnal variability, not just the phase-locked components at resolvable
+        frequencies. From the prediction point of view, the historical amplitude of sub-tidal variability is an estimate
+        of prediction error, since the actual sub-tidal variability can only be predicted close to real time using
+        weather and other data.
       </p>
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">internal tides</strong> In some places, currents associated with the internal
-        tide rival or exceed those due to the barotropic (&apos;normal&apos;) tide. These are presently out-of-scope for
-        this website but remain an active area of research because of their importance to everything from climate
-        modelling (because they do vertical mixing and dissipate energy) to offshore engineering (e.g. on the NW shelf).
-        Internal tides occur when the barotropic tide excites wavelike motions of the layers of the ocean with different
-        density. If the amplitude of these waves is large, tidal-period velocities in the upper and lower layers can be
-        in the opposite direction. Internal tides come and go depending on the stratification of the ocean, so they are
-        harder to predict than the barotropic tide.
+        <strong className="text-imos-sea-blue">internal tides</strong> In some places, currents associated with the
+        internal tide rival or exceed those due to the barotropic (&apos;normal&apos;) tide. These are presently
+        out-of-scope for this website but remain an active area of research because of their importance to everything
+        from climate modelling (because they do vertical mixing and dissipate energy) to offshore engineering (e.g. on
+        the NW shelf). Internal tides occur when the barotropic tide excites wavelike motions of the layers of the ocean
+        with different density. If the amplitude of these waves is large, tidal-period velocities in the upper and lower
+        layers can be in the opposite direction. Internal tides come and go depending on the stratification of the
+        ocean, so they are harder to predict than the barotropic tide.
       </p>
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">rms</strong> Root mean square, i.e. sqrt(mean(x^2)) where x comprises N
+        <strong className="text-imos-sea-blue">rms</strong> Root mean square, i.e. sqrt(mean(x^2)) where x comprises N
         estimates of some quantity (or a difference of two comparable quantities), either scalar (e.g. sea level) or
         vector (velocity, as u + iv). Here, all quantities considered are tidal predictions, which have zero mean over
         the time intervals considered. In the case of velocities, the rms values are vectors, only the magnitudes of
@@ -660,7 +675,7 @@ const TidalCurrentsModalData = () => {
         <li className="mb-2">
           Egbert, G.D. and S.Y. Erofeeva, 2002: Efficient Inverse Modeling of Barotropic Ocean Tides. J. Atmos. Oceanic
           Technol., 19, 183\96204,
-          <a href="https://doi.org/10.1175/1520-0426(2002)019%3C0183:EIMOBO%3E2.0.CO;2" className="mx-1 text-[#52BDEC]">
+          <a href="https://doi.org/10.1175/1520-0426(2002)019%3C0183:EIMOBO%3E2.0.CO;2" className="oc-link">
             DOI
           </a>
         </li>
@@ -668,7 +683,7 @@ const TidalCurrentsModalData = () => {
           Haigh, I.D., Wijeratne, E.M.S., MacPherson, L.R., Pattiaratchi, C.B., Mason, M.S., Crompton, R.P., George, S.,
           2014. Estimating present day extreme total water level exceedance probabilities around the coastline of
           Australia: tides, extra-tropical storm surges and mean sea level. Climate Dynamics, 42, 121-138.
-          <a href="https://doi.org/10.1007/s00382-012-1652-1" className="mx-1 text-[#52BDEC]">
+          <a href="https://doi.org/10.1007/s00382-012-1652-1" className="oc-link">
             DOI
           </a>
         </li>
@@ -679,7 +694,7 @@ const TidalCurrentsModalData = () => {
         <li className="mb-2">
           Griffin, D.A., Herzfeld, M., Hemer, M. and Engwirda, D: Australian tidal currents - assessment of a barotropic
           model (COMPAS v1.3.0 rev6631) with an unstructured grid, Geosci. Model Dev., 14,5561-5582,
-          <a href="https://doi.org/10.5194/gmd-14-5561-2021" className="mx-1 text-[#52BDEC]">
+          <a href="https://doi.org/10.5194/gmd-14-5561-2021" className="oc-link">
             https://doi.org/10.5194/gmd-14-5561-2021
           </a>
           , 2021
@@ -696,17 +711,14 @@ const TidalCurrentsModalData = () => {
         <li className="mb-2">
           Pringle, William (2017),Major tidal constituents for the Indian Ocean and Western Pacific Basin, Mendeley
           Data, v1
-          <a href="http://dx.doi.org/10.17632/tjyjn56jbf.1" className="mx-1 text-[#52BDEC]">
+          <a href="http://dx.doi.org/10.17632/tjyjn56jbf.1" className="oc-link">
             http://dx.doi.org/10.17632/tjyjn56jbf.1
           </a>
         </li>
         <li className="mb-2">
           Wijeratne, E. M. S.; Pattiaratchi, C. B.; Eliot, Matt; Haigh, Ivan D. (2012). Tidal characteristics in Bass
           Strait, south-east Australia. Estuarine, Coastal and Shelf Science, Volume 114, p. 156-165.
-          <a
-            href="https://www.sciencedirect.com/science/article/pii/S0272771412003472?via%3Dihub"
-            className="mx-1 text-[#52BDEC]"
-          >
+          <a href="https://www.sciencedirect.com/science/article/pii/S0272771412003472?via%3Dihub" className="oc-link">
             DOI
           </a>
         </li>
@@ -715,25 +727,25 @@ const TidalCurrentsModalData = () => {
       <h3 className="mb-4 text-lg font-semibold">For further information</h3>
       <ul className="mb-4 list-inside list-disc">
         <li className="mb-2">
-          <a href="http://austen.org.au/" className="mx-1 text-[#52BDEC]">
+          <a href="http://austen.org.au/" className="oc-link">
             Australian Tidal Energy - AUSTEn
           </a>
         </li>
         <li className="mb-2">
-          <a href="http://www.marine.csiro.au/~griffin/ARENA_tides/tides" className="mx-1 text-[#52BDEC]">
+          <a href="http://www.marine.csiro.au/~griffin/ARENA_tides/tides" className="oc-link">
             ARENA Tidal currents and sea level
           </a>
           (a comprehensive archive of the CSIRO tidal model validation results, tidal energy statistics and more)
         </li>
         <li className="mb-2">
-          <a href="http://www.tpxo.net/" className="mx-1 text-[#52BDEC]">
+          <a href="http://www.tpxo.net/" className="oc-link">
             Oregon State University TPXO tidal models
           </a>
         </li>
         <li className="mb-2">
           <a
             href="https://www.aviso.altimetry.fr/en/data/products/auxiliary-products/global-tide-fes/description-fes2014.html"
-            className="mx-1 text-[#52BDEC]"
+            className="oc-link"
           >
             FES2014
           </a>
@@ -741,23 +753,23 @@ const TidalCurrentsModalData = () => {
         <li className="mb-2">
           <a
             href="https://www.researchgate.net/publication/322331188_Assessment_of_the_FES2014_Tidal_Currents_on_the_shelves_around_Australia"
-            className="mx-1 text-[#52BDEC]"
+            className="oc-link"
           >
             Assessment_of_the_FES2014_Tidal_Currents_on_the_shelves_around_Australia
           </a>
         </li>
         <li className="mb-2">
-          <a href="https://www.eoas.ubc.ca/~rich/#T_Tide" className="mx-1 text-[#52BDEC]">
+          <a href="https://www.eoas.ubc.ca/~rich/#T_Tide" className="oc-link">
             T-Tide
           </a>
         </li>
         <li className="mb-2">
-          <a href="http://www.po.gso.uri.edu/~codiga/utide/utide.htm" className="mx-1 text-[#52BDEC]">
+          <a href="http://www.po.gso.uri.edu/~codiga/utide/utide.htm" className="oc-link">
             UTide
           </a>
         </li>
         <li className="mb-2">
-          <a href="https://noc.ac.uk/business/marine-data-products/anytide" className="mx-1 text-[#52BDEC]">
+          <a href="https://noc.ac.uk/business/marine-data-products/anytide" className="oc-link">
             anyTide
           </a>
         </li>
@@ -780,7 +792,7 @@ const CurrentMetersModalData = () => {
       <h3 className="mb-4 text-lg font-semibold">Revisions</h3>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">19 August 2024</strong> A refresh with just a few updates since July, the
+        <strong className="text-imos-sea-blue">19 August 2024</strong> A refresh with just a few updates since July, the
         motivating one being that AODN had accidentally placed an NRSMAI dataset in the NRSNSI folder, something we
         should have flagged as a fatal error but only flagged it as an issue. With a few other issues (including removal
         of some duplicates) fixed as well, the tally for the shelf array is now 1250 (with only 4 assessed as having
@@ -788,7 +800,7 @@ const CurrentMetersModalData = () => {
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">22 July 2024</strong> An update of the Shelf Array, taking the tally of
+        <strong className="text-imos-sea-blue">22 July 2024</strong> An update of the Shelf Array, taking the tally of
         individual current meter deployments for that array from 1198 to 1249. This revision includes a correction to
         the way we decide if &lsquo;northward&rsquo; means true north (what we want it to be) or magnetic north (as it
         is in the original data from the instrument). There are three types of files in the archive: 1) old ones which
@@ -797,17 +809,11 @@ const CurrentMetersModalData = () => {
         magnetic_declination, which we take to mean the correction has been applied. We had been treating type 3 files
         as type 1 (so the rotation is applied twice) because they lacked the compass_correction_applied attribute. The
         number of files affected by this error was only about 24, as can be seen by comparing the
-        <a
-          href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P47/ANMNtable.html#issues"
-          className="mx-1 text-[#52BDEC]"
-        >
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P47/ANMNtable.html#issues" className="oc-link">
           current
         </a>
         and
-        <a
-          href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P46/ANMNtable.html#issues"
-          className="mx-1 text-[#52BDEC]"
-        >
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P46/ANMNtable.html#issues" className="oc-link">
           previous
         </a>
         lists of file-reading issues. So, users be warned: you should check all 3 possibilities to avoid making the same
@@ -816,91 +822,91 @@ const CurrentMetersModalData = () => {
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">29 February 2024</strong> An update of the Shelf Array, taking the tally of
-        individual current meter deployments for that array from 1142 to 1198. Many of the new files are for the Sydney
-        &lsquo;Ocean Reference Station&rsquo; ORS065 just off Bondi. (our ref: P46)
+        <strong className="text-imos-sea-blue">29 February 2024</strong> An update of the Shelf Array, taking the tally
+        of individual current meter deployments for that array from 1142 to 1198. Many of the new files are for the
+        Sydney &lsquo;Ocean Reference Station&rsquo; ORS065 just off Bondi. (our ref: P46)
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">14 September 2023</strong> An update of the Shelf Array. The tally of
+        <strong className="text-imos-sea-blue">14 September 2023</strong> An update of the Shelf Array. The tally of
         individual current meter deployments is now 1142+96+186+21 = 1445 for Shelf, Deep(ADCP), Deep(ADV) and Southern
         Ocean arrays, respectively. A minor bug was fixed. Images with hotspots are now more precisely located (so what
         you click is what you get). (our ref: P44)
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">9 June 2023</strong> An update of the Shelf Array. The tally of individual
-        current meter deployments is now 1111+96+186+21 = 1414 for Shelf, Deep(ADCP), Deep(ADV) and Southern Ocean
-        arrays, respectively. Also, seasonal (e.g., multi-summer) means were added to the maps of all-time and
+        <strong className="text-imos-sea-blue">9 June 2023</strong> An update of the Shelf Array. The tally of
+        individual current meter deployments is now 1111+96+186+21 = 1414 for Shelf, Deep(ADCP), Deep(ADV) and Southern
+        Ocean arrays, respectively. Also, seasonal (e.g., multi-summer) means were added to the maps of all-time and
         annual-mean currents. NB: in the course of this upgrade a bug was fixed - the numbers of device-days listed on
         those plots are now correct. (our ref: P43)
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">15 Feb 2023</strong> An update of the Shelf Array, now with the Signature
+        <strong className="text-imos-sea-blue">15 Feb 2023</strong> An update of the Shelf Array, now with the Signature
         ADCPs reprocessed to include Height_Above_Sensor (see previous lists of Data File Issues). The tally of
         individual current meter deployments is now 1087+96+186+21 = 1390 for Shelf, Deep(ADCP), Deep(ADV) and Southern
         Ocean arrays, respectively. (our ref: P42)
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">24 Nov 2022</strong> A major update of the{' '}
-        <strong className="text-[#52BDEC]">deep water</strong> array, adding both the 2019-21 and 2021-22 deployments.
-        The tally of individual current meter deployments is now 1039+96+186+21 = 1342 for Shelf, Deep(ADCP), Deep(ADV)
-        and Southern Ocean arrays, respectively. (our ref: P40)
+        <strong className="text-imos-sea-blue">24 Nov 2022</strong> A major update of the{' '}
+        <strong className="text-imos-sea-blue">deep water</strong> array, adding both the 2019-21 and 2021-22
+        deployments. The tally of individual current meter deployments is now 1039+96+186+21 = 1342 for Shelf,
+        Deep(ADCP), Deep(ADV) and Southern Ocean arrays, respectively. (our ref: P40)
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">28 Sept 2022</strong> A routine update of the shelf array. The tally of
+        <strong className="text-imos-sea-blue">28 Sept 2022</strong> A routine update of the shelf array. The tally of
         deployments is now 1039+67+134+21 = 1257 for Shelf, Deep(ADCP), Deep(ADV) and Southern Ocean arrays,
         respectively. (for ref: P37)
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">31 March 2022</strong> A routine update of the shelf array. The tally of
+        <strong className="text-imos-sea-blue">31 March 2022</strong> A routine update of the shelf array. The tally of
         deployments is now 999+67+134+21 = 1217 for Shelf, Deep(ADCP), Deep(ADV) and Southern Ocean arrays,
         respectively. (for ref: P35)
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">21 August 2021</strong> A mostly-routine update focusing on the shelf array.
-        The tally of deployments is now 963+67+134+21 = 1181 for Shelf, Deep(ADCP), Deep(ADV) and Southern Ocean arrays,
-        respectively. This update includes data from 5 new sites in the NW in addition to recently-uploaded data
+        <strong className="text-imos-sea-blue">21 August 2021</strong> A mostly-routine update focusing on the shelf
+        array. The tally of deployments is now 963+67+134+21 = 1181 for Shelf, Deep(ADCP), Deep(ADV) and Southern Ocean
+        arrays, respectively. This update includes data from 5 new sites in the NW in addition to recently-uploaded data
         elsewhere.
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">11 March 2021</strong> A mostly-routine update focusing on the shelf array.
-        The tally of deployments is now 898+67+134+21 = 1120 for Shelf, Deep(ADCP), Deep(ADV) and Southern Ocean arrays,
-        respectively. This update corrects a minor error (introduced at the previous update) with some of the tabulated
-        tidal constituents.
+        <strong className="text-imos-sea-blue">11 March 2021</strong> A mostly-routine update focusing on the shelf
+        array. The tally of deployments is now 898+67+134+21 = 1120 for Shelf, Deep(ADCP), Deep(ADV) and Southern Ocean
+        arrays, respectively. This update corrects a minor error (introduced at the previous update) with some of the
+        tabulated tidal constituents.
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">16 Nov 2020</strong> As well as now including the 4th deployment of the EAC
-        array, the Deep Water Moorings data set has a new address at the AODN. The tally of deployments is now
+        <strong className="text-imos-sea-blue">16 Nov 2020</strong> As well as now including the 4th deployment of the
+        EAC array, the Deep Water Moorings data set has a new address at the AODN. The tally of deployments is now
         875+67+134+21 = 1097 for Shelf, Deep(ADCP), Deep(ADV) and Southern Ocean arrays, respectively.
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">11 Feb 2020</strong> This week&apos;s update and re-read extended the data
-        base further into 2019. The tally of deployments is now 841+53+110+19 = 1023 for Shelf, Deep(ADCP), Deep(ADV)
-        and Southern Ocean arrays, respectively.
+        <strong className="text-imos-sea-blue">11 Feb 2020</strong> This week&apos;s update and re-read extended the
+        data base further into 2019. The tally of deployments is now 841+53+110+19 = 1023 for Shelf, Deep(ADCP),
+        Deep(ADV) and Southern Ocean arrays, respectively.
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">27 Sep 2019</strong> This week&apos;s update and re-read extended the data
-        base into 2019, while netting several reprocessed files for PPS and HIS. The tally of deployments is now
+        <strong className="text-imos-sea-blue">27 Sep 2019</strong> This week&apos;s update and re-read extended the
+        data base into 2019, while netting several reprocessed files for PPS and HIS. The tally of deployments is now
         815+53+110+19 = 997 for Shelf, Deep(ADCP), Deep(ADV) and Southern Ocean arrays, respectively.
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">26 Apr 2019</strong> This week we performed a re-read of the
+        <strong className="text-imos-sea-blue">26 Apr 2019</strong> This week we performed a re-read of the
         <a
           href="http://thredds.aodn.org.au/thredds/catalog/IMOS/catalog.html"
           target="_blank"
-          className="mx-1 text-[#52BDEC]"
-          rel="noreferrer"
+          className="oc-link"
+          rel="noreferrer noopener"
         >
           AODN
         </a>
@@ -910,7 +916,7 @@ const CurrentMetersModalData = () => {
         seconds_to_middle_of_measurement (abbreviated here to &lsquo;shift&rsquo;) so you can do this. For other files,
         however, this information is missing (see the new columns headed &lsquo;dt av shift&rsquo; in the tabulations
         linked above, e.g. for the
-        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P28/ANMNtable.html" className="mx-1 text-[#52BDEC]">
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P28/ANMNtable.html" className="oc-link">
           shelf array
         </a>
         ). For short averaging intervals (av=1 or 2 minutes) this is not a big problem, but for instruments that were
@@ -925,12 +931,12 @@ const CurrentMetersModalData = () => {
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">21 Jan 2019</strong> Our latest regular re-read of the data archive at
+        <strong className="text-imos-sea-blue">21 Jan 2019</strong> Our latest regular re-read of the data archive at
         <a
           href="http://thredds.aodn.org.au/thredds/catalog/IMOS/catalog.html"
           target="_blank"
-          className="mx-1 text-[#52BDEC]"
-          rel="noreferrer"
+          className="oc-link"
+          rel="noreferrer noopener"
         >
           AODN
         </a>
@@ -941,24 +947,24 @@ const CurrentMetersModalData = () => {
       <h3 className="mb-4 text-lg font-semibold">Definitions</h3>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">ADCP</strong> - Acoustic Doppler Current Profiler. This measures the velocity
-        of the water at a range of distances (10s to 100s of meters) from the device. The ANMN and DWM facilities have
-        used several types: the RDI Workhorse, RDI Continental and Nortek AWAC units, all deployed as upward- or
-        downward-looking units, either rigidly on the bottom, or in taut moorings.
+        <strong className="text-imos-sea-blue">ADCP</strong> - Acoustic Doppler Current Profiler. This measures the
+        velocity of the water at a range of distances (10s to 100s of meters) from the device. The ANMN and DWM
+        facilities have used several types: the RDI Workhorse, RDI Continental and Nortek AWAC units, all deployed as
+        upward- or downward-looking units, either rigidly on the bottom, or in taut moorings.
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">ADV</strong> - Acoustic Doppler Velocimeter. This measures the velocity of
-        the water just at one point very close to the device.
+        <strong className="text-imos-sea-blue">ADV</strong> - Acoustic Doppler Velocimeter. This measures the velocity
+        of the water just at one point very close to the device.
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">U, V</strong> - Current velocity components along orthogonal axes. These
+        <strong className="text-imos-sea-blue">U, V</strong> - Current velocity components along orthogonal axes. These
         estimates are at a number of equi-spaced vertical distances from the ADCP, i.e., the manufacturer&apos;s
         software has taken the tilt of the unit into account. For ADCPs on short mooring lines (e.g., those of the Shelf
         Array) that do not undergo large vertical displacement, these data can be used directly to estimate velocity at
         a range of depth levels. This is what we
-        <a href="https://oceancurrent.aodn.org.au/timeseries/index_201406.htm" className="mx-1 text-[#52BDEC]">
+        <a href="https://oceancurrent.aodn.org.au/timeseries/index_201406.htm" className="oc-link">
           used to do
         </a>
         here but now we take the vertical motion of the ADCP into account in order to show velocity in depth
@@ -966,123 +972,123 @@ const CurrentMetersModalData = () => {
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">ABSI</strong> - Acoustic Back-Scatter Intensity, without correction for the
-        average range-dependent attenuation.
+        <strong className="text-imos-sea-blue">ABSI</strong> - Acoustic Back-Scatter Intensity, without correction for
+        the average range-dependent attenuation.
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">ADCP-T</strong> - Temperature at the depth of the ADCP.
+        <strong className="text-imos-sea-blue">ADCP-T</strong> - Temperature at the depth of the ADCP.
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">ADCP-P</strong> - Pressure at the depth of the ADCP. This is a measure of
+        <strong className="text-imos-sea-blue">ADCP-P</strong> - Pressure at the depth of the ADCP. This is a measure of
         both the mooring motion and the tidal elevation and is shown to help troubleshoot apparently spurious estimates
         of U and V. In some files, this is a constant. Note that some instruments may suffer drift of the pressure data.
         Note also that mooring lines do stretch with time, so decreasing instrument depth is perfectly plausible.
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">ADCP-D</strong> - Depth of the ADCP. For some files, this is missing, so we
-        use ADCP-P, or the &lsquo;nominal depth&rsquo; in the global attributes.
+        <strong className="text-imos-sea-blue">ADCP-D</strong> - Depth of the ADCP. For some files, this is missing, so
+        we use ADCP-P, or the &lsquo;nominal depth&rsquo; in the global attributes.
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">ADCP-tilt</strong> - A combination of the ADCP Pitch and Roll data, which are
-        in the ADCP instrumental coordinate system.
+        <strong className="text-imos-sea-blue">ADCP-tilt</strong> - A combination of the ADCP Pitch and Roll data, which
+        are in the ADCP instrumental coordinate system.
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">SurfaceBinKnockdown</strong> - This is a diagnostic calculation of the
+        <strong className="text-imos-sea-blue">SurfaceBinKnockdown</strong> - This is a diagnostic calculation of the
         approximate depth anomaly of the nominal surface bin resulting from the instrument tilt, also shown just for
         troubleshooting purposes.
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">Surface blanking interval</strong> - ADCP velocity estimates are contaminated
-        by side-lobe interference with the surface for a significant distance beneath the surface. The thickness of this
-        affected layer is about 12% of the nominal instrument depth but also depends on the instrument&apos;s acoustic
-        characteristics (frequency, beam width, etc.), the tilt, and the sea state.
+        <strong className="text-imos-sea-blue">Surface blanking interval</strong> - ADCP velocity estimates are
+        contaminated by side-lobe interference with the surface for a significant distance beneath the surface. The
+        thickness of this affected layer is about 12% of the nominal instrument depth but also depends on the
+        instrument&apos;s acoustic characteristics (frequency, beam width, etc.), the tilt, and the sea state.
       </p>
 
       <h3 className="mb-4 text-lg font-semibold">Earlier revisions</h3>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">24 May 2018</strong> Another re-read of the thredds server (including the
+        <strong className="text-imos-sea-blue">24 May 2018</strong> Another re-read of the thredds server (including the
         Southern Ocean array for the first time) has netted 20 additional Shelf Array deployments and 15 Southern Ocean
         deployments. We have also implemented a new map-based way of navigating around the available data that also
         shows some basic statistics of the velocity data (such as mean, variance, tides, device-days).
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">15 Nov 2017</strong> Another 8 months of new and/or re-processed Shelf Array
-        and Deep Array data (including the 2nd EAC deployment) have now been added to our suite of plots. All 648 Shelf
-        Array ADCP/ADV deployments, 39 Deep Array ADCP and 82 Deep Array ADV deployments have been reloaded from the
-        THREDDS server to ensure that they are current. Users should note that some data files in the archive still have
+        <strong className="text-imos-sea-blue">15 Nov 2017</strong> Another 8 months of new and/or re-processed Shelf
+        Array and Deep Array data (including the 2nd EAC deployment) have now been added to our suite of plots. All 648
+        Shelf Array ADCP/ADV deployments, 39 Deep Array ADCP and 82 Deep Array ADV deployments have been reloaded from
+        the THREDDS server to ensure that they are current. Users should note that some data files in the archive still
+        have erroneous or missing location, timezone (AEST when metadata says UTC) or magnetic declination information.
+        These files, and the identified issues are listed in the
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P22/indexlist.html" className="oc-link">
+          text index
+        </a>
+        . The time corrections and magnetic declinations we have used are all listed in the updated
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P21/datatable.html" className="oc-link">
+          [details table]
+        </a>
+        .
+      </p>
+
+      <p className="mb-4">
+        <strong className="text-imos-sea-blue">14 Mar 2017</strong> Another year of new and/or re-processed ANMN data
+        have now been added to our suite of plots. All 594 instrument deployments have been reloaded from the THREDDS
+        server to ensure that they are current. Users should note that some data files in the archive still have
         erroneous or missing location, timezone (AEST when metadata says UTC) or magnetic declination information. These
-        files, and the identified issues are listed in the
-        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P22/indexlist.html" className="mx-1 text-[#52BDEC]">
+        files, and the identified issues are listed in the{' '}
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P21/indexlist.html" className="oc-link">
           text index
         </a>
         . The time corrections and magnetic declinations we have used are all listed in the updated
-        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P21/datatable.html" className="mx-1 text-[#52BDEC]">
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P21/datatable.html" className="oc-link">
           [details table]
         </a>
         .
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">14 Mar 2017</strong> Another year of new and/or re-processed ANMN data have
-        now been added to our suite of plots. All 594 instrument deployments have been reloaded from the THREDDS server
-        to ensure that they are current. Users should note that some data files in the archive still have erroneous or
-        missing location, timezone (AEST when metadata says UTC) or magnetic declination information. These files, and
-        the identified issues are listed in the{' '}
-        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P21/indexlist.html" className="mx-1 text-[#52BDEC]">
-          text index
-        </a>
-        . The time corrections and magnetic declinations we have used are all listed in the updated
-        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P21/datatable.html" className="mx-1 text-[#52BDEC]">
-          [details table]
-        </a>
-        .
-      </p>
-
-      <p className="mb-4">
-        <strong className="text-[#52BDEC]">19 Jan 2016</strong> Another year of new and/or re-processed ANMN data (55
-        instrument deployments) have now been added to our suite of plots. All 494 instrument deployments have been
+        <strong className="text-imos-sea-blue">19 Jan 2016</strong> Another year of new and/or re-processed ANMN data
+        (55 instrument deployments) have now been added to our suite of plots. All 494 instrument deployments have been
         reloaded from the THREDDS server to ensure that they are current. Some data files with erroneous or missing
         location, timezone or magnetic declination information have been corrected prior to calculation of tidal
         constituents. The applied time correction and magnetic declinations used are all listed in the updated
-        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P20/datatable.html" className="mx-1 text-[#52BDEC]">
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P20/datatable.html" className="oc-link">
           [details table]
         </a>
         .
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">2 Feb 2015</strong> Many new (especially ITF, KIM and PIL arrays) and/or
+        <strong className="text-imos-sea-blue">2 Feb 2015</strong> Many new (especially ITF, KIM and PIL arrays) and/or
         re-processed (especially NRSKAI) ANMN data added. The updated
-        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P17/" className="mx-1 text-[#52BDEC]">
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P17/" className="oc-link">
           [time index]
         </a>
         page shows the magnitude of tidal residual currents after timing errors in a few data sets have been corrected.
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">29 Jan 2015</strong> Tidal analysis has now been performed on all the ANMN
-        velocity data (using the excellent
-        <a href="http://www.po.gso.uri.edu/~codiga/utide/utide.htm" className="mx-1 text-[#52BDEC]">
+        <strong className="text-imos-sea-blue">29 Jan 2015</strong> Tidal analysis has now been performed on all the
+        ANMN velocity data (using the excellent
+        <a href="http://www.po.gso.uri.edu/~codiga/utide/utide.htm" className="oc-link">
           uTide
         </a>
         package). Summaries of the analyses have been added to the{' '}
-        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P15/datatable.html" className="mx-1 text-[#52BDEC]">
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P15/datatable.html" className="oc-link">
           details table
         </a>
         . See also the
-        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P15/tide/" className="mx-1 text-[#52BDEC]">
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P15/tide/" className="oc-link">
           [tidal ellipse maps]
         </a>
         . The
-        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P15/" className="mx-1 text-[#52BDEC]">
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P15/" className="oc-link">
           [time index]
         </a>
         pages now show the magnitude of the tidal-residual velocity as well as the total speed, graphicly demonstrating
@@ -1091,13 +1097,13 @@ const CurrentMetersModalData = () => {
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">21 Jan 2015</strong> Non-ADCP current meter (Acoustic Doppler Velocimeter, or
-        ADV) data are now shown in addition to
-        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P15/" className="mx-1 text-[#52BDEC]">
+        <strong className="text-imos-sea-blue">21 Jan 2015</strong> Non-ADCP current meter (Acoustic Doppler
+        Velocimeter, or ADV) data are now shown in addition to
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P15/" className="oc-link">
           ANMN
         </a>
         and DWM ADCP data. We now also show the Satellite Remote Sensing Altimeter Calibration sub-facility
-        <a href="https://oceancurrent.aodn.org.au/timeseries/SRS_P1/" className="mx-1 text-[#52BDEC]">
+        <a href="https://oceancurrent.aodn.org.au/timeseries/SRS_P1/" className="oc-link">
           SRS-ALT
         </a>
         ADV data. The DWM ADV data are very numerous so they are plotted separately. Some are much deeper than the ADCPs
@@ -1105,12 +1111,12 @@ const CurrentMetersModalData = () => {
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">15 Jan 2015</strong> We have just re-plotted all the
-        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P15/" className="mx-1 text-[#52BDEC]">
+        <strong className="text-imos-sea-blue">15 Jan 2015</strong> We have just re-plotted all the
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P15/" className="oc-link">
           ANMN
         </a>
         ADCP data. 33{' '}
-        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P14/" className="mx-1 text-[#52BDEC]">
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P14/" className="oc-link">
           new or re-processed
         </a>
         (using toolbox 2.3b) ANMN/NRS deployments have become available since 20 Sep 2014. The DWM deployments have all
@@ -1118,26 +1124,27 @@ const CurrentMetersModalData = () => {
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">25 Sep 2014</strong> Reprocessed SAIMOS data files (with corrected coordinate
-        orientation information), and SA data for 2013 are now available from the IMOS portal. We have refreshed all our
-        plots, which now show better alignment of the flow with bathymetry. We also looked a bit more closely at the
-        consistency of the metadata and tabulated some diagnostics. See the new [details] link at the top of the
-        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P12/indexlist.html" className="mx-1 text-[#52BDEC]">
+        <strong className="text-imos-sea-blue">25 Sep 2014</strong> Reprocessed SAIMOS data files (with corrected
+        coordinate orientation information), and SA data for 2013 are now available from the IMOS portal. We have
+        refreshed all our plots, which now show better alignment of the flow with bathymetry. We also looked a bit more
+        closely at the consistency of the metadata and tabulated some diagnostics. See the new [details] link at the top
+        of the
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P12/indexlist.html" className="oc-link">
           text index
         </a>
         page.
       </p>
 
       <p className="mb-4">
-        <strong className="text-[#52BDEC]">29 Aug 2014</strong> Re-plotted all the
-        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P15/" className="mx-1 text-[#52BDEC]">
+        <strong className="text-imos-sea-blue">29 Aug 2014</strong> Re-plotted all the
+        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P15/" className="oc-link">
           ANMN
         </a>
         velocity data. What&apos;s new:
         <ul className="mb-4 list-inside list-disc">
           <li className="mb-2">
             data from the IMOS DWM
-            <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P10/" className="mx-1 text-[#52BDEC]">
+            <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P10/" className="oc-link">
               Deep Array
             </a>
             are added,
@@ -1157,14 +1164,14 @@ const CurrentMetersModalData = () => {
             using the
             <a
               href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P10/ITFTIN-2012-WORKHORSE-ADCP-124_xyz.html"
-              className="mx-1 text-[#52BDEC]"
+              className="oc-link"
             >
               ITFTIN-124
             </a>
             and
             <a
               href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P10/ITFTIN-2012-WORKHORSE-ADCP-142_xyz.html"
-              className="mx-1 text-[#52BDEC]"
+              className="oc-link"
             >
               ITFTN-142
             </a>
@@ -1180,25 +1187,25 @@ const CurrentMetersModalData = () => {
 
       <ul className="mb-4 list-inside list-disc">
         <li className="mb-2">
-          <a href="https://oceancurrent.aodn.org.au/news.htm#20130417" className="mx-1 text-[#52BDEC]">
+          <a href="https://oceancurrent.aodn.org.au/news.htm#20130417" className="oc-link">
             OceanCurrent news item
           </a>
           launching this section (April 2013), with discussion of some early highlights.
         </li>
         <li className="mb-2">
-          <a href="http://imos.org.au/facilities/nationalmooringnetwork" className="mx-1 text-[#52BDEC]">
+          <a href="http://imos.org.au/facilities/nationalmooringnetwork" className="oc-link">
             National Mooring Network
           </a>
           (a.k.a. &lsquo;shelf array&rsquo;)
         </li>
         <li className="mb-2">
-          <a href="http://imos.org.au/facilities/deepwatermoorings" className="mx-1 text-[#52BDEC]">
+          <a href="http://imos.org.au/facilities/deepwatermoorings" className="oc-link">
             Deep Water Moorings
           </a>
           (a.k.a. &lsquo;deep array&rsquo;){' '}
         </li>
         <li className="mb-2">
-          <a href="https://www.aims.gov.au/imosmoorings/" className="mx-1 text-[#52BDEC]">
+          <a href="https://www.aims.gov.au/imosmoorings/" className="oc-link">
             AIMS moorings website
           </a>
         </li>
@@ -1207,89 +1214,27 @@ const CurrentMetersModalData = () => {
   );
 };
 
-const MonthlyMeansModalData = () => {
-  return (
-    <div className="p-4 text-gray-800">
-      <p className="mb-4">
-        Monthly means are time-averaged values of sea surface temperature (SST) and Adjusted Sea Level Anomalies (Adj.
-        SLA) over a month. They provide a stable representation of ocean conditions by averaging short-term variations,
-        useful for identifying long-term trends and patterns.
-      </p>
-      <div className="mb-4">
-        <strong className="text-imos-sea-blue">SST:</strong> Monthly averaged sea surface temperature, providing a
-        clearer view of long-term temperature trends.
-      </div>
-      <div className="mb-4">
-        <strong className="text-imos-sea-blue">Adjusted Sea Level Anomalies (Adj. SLA):</strong> Monthly means of sea
-        level anomalies adjusted for atmospheric pressure, showing long-term sea level trends.
-      </div>
-      <div className="mb-4">
-        <strong className="text-imos-sea-blue">Data Integration:</strong> The data combines satellite observations and
-        in-situ measurements for comprehensive coverage.
-      </div>
-      <p className="mb-4">
-        Monthly means are crucial for understanding seasonal variations and long-term changes in oceanographic
-        conditions. They help in tracking climate change and its impact on marine environments.
-      </p>
-    </div>
-  );
-};
-
 const SealCtdModalData = () => {
   return (
     <div className="p-4 text-gray-800">
-      <p className="mb-4">
-        The IMOS Animal Tracking Facility has deployed over 250 SealCTDs (miniaturized CTD sensors with an ARGOS
-        antenna) on Elephant Seals, Sea Lions, Fur Seals and Weddell Seals since 2009. The data can now be viewed on
-        OceanCurrent. The original motive for the sensors was to provide information about animal behaviour but the
-        physical data they have collected has already been valuable in studies of Antarctic bottom water formation, the
-        global heat budget, Southern Ocean frontal structure and sea ice formation.{' '}
-      </p>
-
-      <p className="mb-4">
-        Argo float and seals provide different styles of profiling. Argo floats (in standard configuration) transmit a
-        2000m deep profile, with high vertical resolution, every 10 days whereas the SealCTDs transmit a profile every 6
-        hours. Each CTD sensor records data from every dive but selects the ascent profile from the deepest dive over
-        the last 6 hours. In order to prolong battery life and to ensure the whole profile is transmitted before the
-        seal dives again, the profile is also compressed (by calculating break-points) before transmission. The SealCTD
-        (or tag) is glued onto the animal&apos;s head and drops off during their moult.{' '}
-      </p>
-
       <p className="mb-4">
         The SealCTD product shows near real time location of seals equipped with CTD instruments, overlaid on SST maps
         and ice coverage. The dots in the maps represent the locations of seals (magenta) and Argo floats (cyan) that
         reached the surface at the date of plotting. Data access
         <a
           href="https://catalogue-imos.aodn.org.au/geonetwork/srv/eng/catalog.search#/metadata/b2548767-514f-4a31-b65e-36bb894382d5"
-          className="mx-1 text-[#52BDEC]"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="oc-link"
         >
           here
         </a>
-        .{' '}
+        .
       </p>
-
       <p className="mb-4">
-        The SST and sea ice area fraction data are obtained from
-        <a href="https://www.remss.com/" className="mx-1 text-[#52BDEC]">
-          REMSS
-        </a>
-        (Remote Sensing Systems). The SST product used here contains data from microwave (MW) and infrared (IR) sensors,
-        optimally interpolated onto a global grid by REMSS.
-      </p>
-
-      <p className="mb-4">
-        The temperature and salinity profiles (right) during a female Elephant Seal&apos;s journey from Kerguelen Island
-        demonstrate the high temporal and spatial resolution possible of the upper 500m of the ocean. During her
-        two-month journey this seal travelled through at least four distinct regions before losing her tag in the
-        melting ice. The time series are also plotted in 10 day sections with the seal&apos;s location indicated.
-      </p>
-
-      <p className="mb-4">
-        Some SealCTDs have been deployed in the Great Australian Bight (GAB) and southern New South Wales. The Sea Lions
-        in the GAB appear to have a different profiling strategy compared to their cousins in Antarctica. One GAB Sea
-        Lion spent 5 months of the 2015/2016 summer repeating a transect across the shelf from the head of the Bight.
-        His travels document the degree of uplifted water coming onto the shelf along the bottom and also the
-        development of a deep water salinity maximum (right).{' '}
+        The SST and sea ice area fraction data are obtained from REMSS (Remote Sensing Systems). The SST product used
+        here contains data from microwave (MW) and infrared (IR) sensors, optimally interpolated onto a global grid by
+        REMSS.
       </p>
     </div>
   );
@@ -1318,8 +1263,13 @@ const SurfaceWaveModalData = () => {
         <li>
           Significant wave height measurements from available radar Altimeters (Jason-3, SARAL, Sentinel-3a, and
           Sentinel-3b), displayed along satellite nadir tracks at t0 +/- 3 hr. Applied corrections for j3, sa, 3a, and
-          3b are described
-          <a href="https://doi.org/10.1038/s41597-019-0083-9" className="text-blue-500">
+          3b are described{' '}
+          <a
+            href="https://doi.org/10.1038/s41597-019-0083-9"
+            className="text-blue-500"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             here
           </a>
           .
@@ -2071,11 +2021,11 @@ const SurfaceWaveModalData = () => {
 export {
   OceanColourModalData,
   SixDaySstModalData,
+  SixDaySstTimeseriesModalData,
   AdjustedSeaLevelAnomalyModalData,
   FourHourSstModalData,
   ClimatologyModalData,
   SurfaceWaveModalData,
-  MonthlyMeansModalData,
   EACMooringArrayModalData,
   CurrentMetersModalData,
   ArgoModalData,

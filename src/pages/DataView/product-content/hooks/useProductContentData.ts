@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useSearchParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import useArgoStore from '@/stores/argo-store/argoStore';
@@ -14,13 +13,12 @@ import { fetchImageListByProductIdAndRegion } from '@/services/imageList';
 import { sharedQueryConfig } from '@/configs/query';
 import { getArgoTagFilePathByProductId } from '@/utils/argo-utils/argoTag';
 import { ProductID } from '@/types/product';
+import { useUrlParams } from './useUrlParams';
 
 /**
  * Custom hook to manage and organize all product content data and state
  */
 export const useProductContentData = () => {
-  const [searchParams] = useSearchParams();
-
   // Product checks
   const productChecks = useProductCheck();
 
@@ -33,26 +31,7 @@ export const useProductContentData = () => {
   const argoParams = useArgoStore((state) => state.selectedArgoParams);
   const currentMetersParams = useCurrentMetersStore();
 
-  // URL parameters
-  const urlParams = useMemo(
-    () => ({
-      buoyRegion: searchParams.get('region'),
-      point: searchParams.get('point'),
-      sealCtdTag: searchParams.get('sealId'),
-      deploymentPlot: searchParams.get('deploymentPlot'),
-    }),
-    [searchParams],
-  );
-
-  const hasSelectedParams = useMemo(
-    () => ({
-      buoyRegion: !!urlParams.buoyRegion,
-      point: !!urlParams.point,
-      sealCtdTag: !!urlParams.sealCtdTag,
-      deploymentPlot: !!urlParams.deploymentPlot,
-    }),
-    [urlParams],
-  );
+  const { urlParams, hasSelectedParams } = useUrlParams();
 
   // Region calculations
   const region = useMemo(

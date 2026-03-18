@@ -12,7 +12,7 @@ const fetchArgoProfilesByDate = async (date: Dayjs) => {
 
   return await ec2ProxyClient.get<string>(`/profiles/map/${validatedDate.format('YYYYMMDD')}`, {
     headers: {
-      'Content-Type': ContentType.Text,
+      'Content-Type': ContentType.TEXT,
     },
   });
 };
@@ -29,7 +29,7 @@ const fetchArgoTags = async (dateString: string, tagPath: string, regionPath: st
 
   const response = await ec2ProxyClient.get<string>(`/${tagPath}/TAGS/${regionPath}/${dateString}.txt`, {
     headers: {
-      'Content-Type': ContentType.Text,
+      'Content-Type': ContentType.TEXT,
     },
   });
 

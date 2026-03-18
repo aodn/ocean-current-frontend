@@ -32,7 +32,7 @@ const getSealCtdGraphTags = async (imageUrl: string) => {
   try {
     const response = await ec2ProxyClient.get<string>(tagUrl, {
       headers: {
-        'Content-Type': ContentType.Text,
+        'Content-Type': ContentType.TEXT,
       },
     });
 
@@ -52,7 +52,7 @@ const getSealCtdMapTags = async (regionCode: string, date: string) => {
   try {
     const response = await ec2ProxyClient.get<string>(tagUrl, {
       headers: {
-        'Content-Type': ContentType.Text,
+        'Content-Type': ContentType.TEXT,
       },
     });
 
