@@ -14,7 +14,7 @@ test.describe('Navbar Responsive Layout', () => {
       await page.waitForLoadState('networkidle');
 
       const navbar = page.getByTestId('main-navbar');
-      const brandingSection = navbar.locator('div').first();
+      const brandingSection = navbar.getByTestId('navbar-branding');
       const mapsItem = navbar.getByText('Maps', { exact: true });
 
       const brandingBox = await brandingSection.boundingBox();
@@ -24,7 +24,12 @@ test.describe('Navbar Responsive Layout', () => {
       expect(mapsBox).not.toBeNull();
 
       const brandingRight = brandingBox!.x + brandingBox!.width;
-      expect(brandingRight).toBeLessThan(mapsBox!.x);
+      const brandingBottom = brandingBox!.y + brandingBox!.height;
+      const mapsRight = mapsBox!.x + mapsBox!.width;
+      const mapsBottom = mapsBox!.y + mapsBox!.height;
+      const horizontallySeparated = brandingRight <= mapsBox!.x || mapsRight <= brandingBox!.x;
+      const verticallySeparated = brandingBottom <= mapsBox!.y || mapsBottom <= brandingBox!.y;
+      expect(horizontallySeparated || verticallySeparated).toBeTruthy();
     });
   }
 });

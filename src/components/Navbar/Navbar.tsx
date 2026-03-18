@@ -54,7 +54,7 @@ const Navbar = ({ className }: { className?: string }) => {
         data-testid="main-navbar"
         className="mx-auto flex w-full max-w-8xl items-center justify-between gap-4 p-3 px-4 md:px-6 lg:px-10"
       >
-        <div className="flex h-10 shrink-0 items-center lg:h-14">
+        <div data-testid="navbar-branding" className="flex h-10 shrink-0 items-center lg:h-14">
           <LinkOrAnchor className="mr-auto" to={ExternalUrls.IMOS}>
             <img
               className={cn('h-10 transition-all duration-300', isScrolled ? 'lg:h-10' : 'lg:h-14')}
