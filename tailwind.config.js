@@ -7,7 +7,12 @@ export default {
   corePlugins: { preflight: false },
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    screens: { sm: `${breakpoints.sm}px`, md: `${breakpoints.md}px`, xl: `${breakpoints.xl}px` },
+    screens: {
+      sm: `${breakpoints.sm}px`,
+      md: `${breakpoints.md}px`,
+      lg: `${breakpoints.lg}px`,
+      xl: `${breakpoints.xl}px`,
+    },
     extend: {
       colors: {
         'imos-black': color.black,

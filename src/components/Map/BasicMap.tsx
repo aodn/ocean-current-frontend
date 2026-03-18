@@ -5,7 +5,7 @@ import { initialMobileMapViewState, mapConfig, MAP_LIMIT_BOUNDS } from '@/config
 import useMapStore, { setMapViewState, patchMapViewState, updateZoom } from '@/stores/map-store/mapStore';
 import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { useDeviceType, useResizeObserver } from '@/hooks';
+import { useDeviceTypes, useResizeObserver } from '@/hooks';
 import { resetCurrentMetersStore } from '@/stores/current-meters-store/currentMeters';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { PRODUCTS_WITH_ARGO_DATA } from '@/configs/products/data-source';
@@ -39,7 +39,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
   const hasAppliedViewLimitsRef = useRef<boolean>(false);
   const useMapViewState = useMapStore((state) => state.mapViewState);
   const { isArgo, isCurrentMeters } = useProductCheck();
-  const { isMobile } = useDeviceType();
+  const { isMobile } = useDeviceTypes();
   const { mainProduct, subProduct } = useProductConvert();
 
   const shouldShowArgoLayer = useMemo(() => {
