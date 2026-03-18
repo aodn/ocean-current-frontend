@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useCallback } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
 import type { IControl } from 'mapbox-gl';
 import { initialMapViewState, initialMobileMapViewState, mapAnimation } from '@/configs/map';
-import { patchMapViewState } from '@/stores/map-store/mapStore';
 import { useDeviceType } from '@/hooks';
 
 interface CustomNavigationControlProps {
@@ -10,7 +9,8 @@ interface CustomNavigationControlProps {
 }
 
 /**
- * Custom navigation control that includes zoom in/out, compass, and a reset button
+ * Custom map control with zoom in/out, compass, and a reset-to-initial-view button.
+ * Implements the Mapbox IControl interface directly rather than wrapping NavigationControl.
  */
 const CustomNavigationControl: React.FC<CustomNavigationControlProps> = ({ position = 'top-right' }) => {
   const { current: map } = useMap();
@@ -24,23 +24,24 @@ const CustomNavigationControl: React.FC<CustomNavigationControlProps> = ({ posit
     // Determine which initial state to use
     const targetViewState = isMobile ? initialMobileMapViewState.mapViewState : initialMapViewState.mapViewState;
 
-    // Animate to the initial view state
+    // Animate to the initial view state.
+    // The store is kept in sync via BasicMap's onMove handler during the animation,
+    // so no explicit store patch is needed here. Passing padding explicitly ensures
+    // it is also reset and propagated through onMove.
     map.flyTo({
       center: [targetViewState.longitude, targetViewState.latitude],
       zoom: targetViewState.zoom,
-      bearing: ('bearing' in targetViewState ? targetViewState.bearing : 0) as number,
-      pitch: ('pitch' in targetViewState ? targetViewState.pitch : 0) as number,
+      bearing: targetViewState.bearing,
+      pitch: targetViewState.pitch,
+      padding: targetViewState.padding,
       duration: mapAnimation.duration,
     });
-
-    // Update the store
-    patchMapViewState(targetViewState);
   }, [map, isMobile]);
 
   useEffect(() => {
     if (!map) return;
 
-    // Create a custom control that includes the native NavigationControl and a reset button
+    // Create a custom control with zoom in/out, compass, and reset buttons
     const customControl: IControl = {
       onAdd: (mapInstance) => {
         // Create the main container

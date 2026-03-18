@@ -1,7 +1,18 @@
 import { screen } from '@testing-library/react';
+import { useMap } from 'react-map-gl/mapbox';
 import { mapConfig } from '@/configs/map';
 import { renderWithQueryClient } from '@/test/queryClientUtils';
 import BasicMap from '../BasicMap';
+
+const mockAddControl = vi.fn();
+const mockRemoveControl = vi.fn();
+const mockMap = {
+  addControl: mockAddControl,
+  removeControl: mockRemoveControl,
+  on: vi.fn(),
+  off: vi.fn(),
+  getMap: vi.fn(),
+};
 
 vi.mock('react-map-gl/mapbox', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="test-map">{children}</div>,
@@ -74,10 +85,18 @@ describe('BasicMap Component', () => {
     expect(screen.getByTestId('test-map')).toBeInTheDocument();
   });
 
-  it('renders navigation control when enabled', () => {
+  it('calls addControl when navigationControl is enabled', () => {
     mapConfig.accessToken = 'test-api-key';
-    renderWithQueryClient(<BasicMap navigationControl />);
-    expect(screen.getByTestId('test-map')).toBeInTheDocument();
+    vi.mocked(useMap).mockReturnValue({ current: mockMap } as unknown as ReturnType<typeof useMap>);
+    renderWithQueryClient(<BasicMap navigationControl={true} />);
+    expect(mockAddControl).toHaveBeenCalled();
+  });
+
+  it('does not call addControl when navigationControl is disabled', () => {
+    mapConfig.accessToken = 'test-api-key';
+    vi.mocked(useMap).mockReturnValue({ current: mockMap } as unknown as ReturnType<typeof useMap>);
+    renderWithQueryClient(<BasicMap navigationControl={false} />);
+    expect(mockAddControl).not.toHaveBeenCalled();
   });
 });
 
