@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useCallback } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
 import type { IControl } from 'mapbox-gl';
 import { initialMapViewState, initialMobileMapViewState, mapAnimation } from '@/configs/map';
-import { useDeviceType } from '@/hooks';
+import { useDeviceTypes } from '@/hooks';
 
 interface CustomNavigationControlProps {
   position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
@@ -14,7 +14,7 @@ interface CustomNavigationControlProps {
  */
 const CustomNavigationControl: React.FC<CustomNavigationControlProps> = ({ position = 'top-right' }) => {
   const { current: map } = useMap();
-  const { isMobile } = useDeviceType();
+  const { isMobile } = useDeviceTypes();
   const controlRef = useRef<IControl | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
