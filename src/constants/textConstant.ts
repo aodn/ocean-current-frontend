@@ -7,6 +7,7 @@ export enum GeneralText {
   READ_MORE = 'Read more',
   START_DATE = 'Start Date',
   END_DATE = 'End Date',
+  LEGACY_SITE = 'Legacy Site',
 }
 
 export enum ProductSidebarText {
@@ -42,4 +43,9 @@ export enum FooterText {
   BACK_TO_TOP = 'Back to Top',
   CONTACT_US = 'Contact Us',
   FEEDBACK = 'Feedback',
+}
+
+export enum ExternalUrls {
+  IMOS = 'https://imos.org.au/',
+  OCEAN_CURRENT_LEGACY = 'https://oceancurrent.aodn.org.au/',
 }

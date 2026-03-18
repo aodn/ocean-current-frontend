@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { ArgoProfile } from '@/types/argo';
-import { useQueryParams, useDeviceType } from '@/hooks';
+import { useQueryParams, useDeviceTypes } from '@/hooks';
 import {
   getBoundsFromCoordsArray,
   expandBoundsWithMercatorMargin,
@@ -44,7 +44,7 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
   const eventAdded = useRef(false);
 
   const { updateQueryParams } = useQueryParams();
-  const { isMobile } = useDeviceType();
+  const { isMobile } = useDeviceTypes();
 
   const circleRadius = isMobile ? 8 : 6;
   const hoverCircleRadius = isMobile ? 10 : 8;

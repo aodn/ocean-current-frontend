@@ -1,5 +1,5 @@
 {
-  "name": "vite-project",
+  "name": "ocean-current-frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -21,7 +21,7 @@
     "prettier": "prettier . --check ",
     "prettier:fix": "prettier . --write",
     "preview": "vite preview",
-    "build:preview": "tsc && vite build && vite preview",
+    "preview:build": "tsc && vite build && vite preview",
     "postinstall": "husky"
   },
   "dependencies": {
