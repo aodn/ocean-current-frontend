@@ -7,11 +7,10 @@ import useRegionData from '../hooks/useRegionData';
 
 vi.mock('react-map-gl/mapbox', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="test-map">{children}</div>,
-  NavigationControl: () => <div>NavigationControl</div>,
   Source: ({ children }: { children: React.ReactNode }) => <div>{children}</div>, // Mock Source
   Layer: ({ children }: { children: React.ReactNode }) => <div>{children}</div>, // Mock Layer
   ViewStateChangeEvent: () => <div>ViewStateChangeEvent</div>,
-  useMap: vi.fn(() => ({})),
+  useMap: vi.fn(() => ({ current: null })),
 }));
 
 vi.mock('../layers/RegionPolygonLayer/RegionPolygonLayer', () => {
@@ -47,7 +46,7 @@ describe('BasicMap Component', () => {
     renderWithQueryClient(<BasicMap />);
 
     // Assert
-    expect(screen.getByText('NavigationControl')).toBeInTheDocument();
+    expect(screen.getByTestId('test-map')).toBeInTheDocument();
   });
 
   it('displays error message when API key is missing', () => {

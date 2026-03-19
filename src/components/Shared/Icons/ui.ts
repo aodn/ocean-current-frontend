@@ -10,6 +10,7 @@ import Download from '@/assets/icons/download-icon.svg?react';
 import Reset from '@/assets/icons/reset-icon.svg?react';
 import Map from '@/assets/icons/map-icon.svg?react';
 import Video from '@/assets/icons/video-icon.svg?react';
+import MapReset from '@/assets/icons/map-reset.svg?react';
 import { withIcon } from './withIcon';
 
 export const ArrowIcon = withIcon(Arrow);
@@ -24,3 +25,4 @@ export const DownloadIcon = withIcon(Download);
 export const ResetIcon = withIcon(Reset);
 export const MapIcon = withIcon(Map);
 export const VideoIcon = withIcon(Video);
+export const MapResetIcon = withIcon(MapReset);

@@ -47,6 +47,7 @@ export const initialMiniMapViewState = {
 
 export const initialMobileMapViewState = {
   mapViewState: {
+    ...initialMapViewState.mapViewState,
     latitude: -27.5,
     longitude: 133,
     zoom: 2.3,

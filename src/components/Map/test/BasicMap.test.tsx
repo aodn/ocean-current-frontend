@@ -1,15 +1,25 @@
 import { screen } from '@testing-library/react';
+import { useMap } from 'react-map-gl/mapbox';
 import { mapConfig } from '@/configs/map';
 import { renderWithQueryClient } from '@/test/queryClientUtils';
 import BasicMap from '../BasicMap';
 
+const mockAddControl = vi.fn();
+const mockRemoveControl = vi.fn();
+const mockMap = {
+  addControl: mockAddControl,
+  removeControl: mockRemoveControl,
+  on: vi.fn(),
+  off: vi.fn(),
+  getMap: vi.fn(),
+};
+
 vi.mock('react-map-gl/mapbox', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="test-map">{children}</div>,
-  NavigationControl: () => <div>NavigationControl</div>,
   Source: ({ children }: { children: React.ReactNode }) => <div>{children}</div>, // Mock Source
   Layer: ({ children }: { children: React.ReactNode }) => <div>{children}</div>, // Mock Layer
   ViewStateChangeEvent: () => <div>ViewStateChangeEvent</div>,
-  useMap: vi.fn(() => ({})),
+  useMap: vi.fn(() => ({ current: null })),
 }));
 
 vi.mock('../layers/RegionPolygonLayer/RegionPolygonLayer', () => {
@@ -49,7 +59,7 @@ describe('BasicMap Component', () => {
     renderWithQueryClient(<BasicMap />);
 
     // Assert
-    expect(screen.getByText('NavigationControl')).toBeInTheDocument();
+    expect(screen.getByTestId('test-map')).toBeInTheDocument();
   });
 
   it('displays error message when API key is missing', () => {
@@ -75,9 +85,18 @@ describe('BasicMap Component', () => {
     expect(screen.getByTestId('test-map')).toBeInTheDocument();
   });
 
-  it('renders navigation control when enabled', () => {
-    renderWithQueryClient(<BasicMap navigationControl />);
-    expect(screen.getByText('NavigationControl')).toBeInTheDocument();
+  it('calls addControl when navigationControl is enabled', () => {
+    mapConfig.accessToken = 'test-api-key';
+    vi.mocked(useMap).mockReturnValue({ current: mockMap } as unknown as ReturnType<typeof useMap>);
+    renderWithQueryClient(<BasicMap navigationControl={true} />);
+    expect(mockAddControl).toHaveBeenCalled();
+  });
+
+  it('does not call addControl when navigationControl is disabled', () => {
+    mapConfig.accessToken = 'test-api-key';
+    vi.mocked(useMap).mockReturnValue({ current: mockMap } as unknown as ReturnType<typeof useMap>);
+    renderWithQueryClient(<BasicMap navigationControl={false} />);
+    expect(mockAddControl).not.toHaveBeenCalled();
   });
 });
 
