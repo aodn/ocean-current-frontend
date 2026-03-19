@@ -88,8 +88,10 @@ const CustomNavigationControl: React.FC<CustomNavigationControlProps> = ({ posit
           align-items: center;
           justify-content: center;
         `;
-        resetButton.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M204-318q-22-38-33-78t-11-82q0-134 93-228t227-94h7l-64-64 56-56 160 160-160 160-56-56 64-64h-7q-100 0-170 70.5T240-478q0 26 6 51t18 49l-60 60ZM481-40 321-200l160-160 56 56-64 64h7q100 0 170-70.5T720-482q0-26-6-51t-18-49l60-60q22 38 33 78t11 82q0 134-93 228t-227 94h-7l64 64-56 56Z"/></svg>
+        resetButton.innerHTML = `<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="20px" fill="currentColor">
+          <path d="M26.16,29.86l-6.14,6.14-.02-3.67c-3.3,0-6.4-1.31-8.69-3.6-4.64-4.63-4.89-12.27-.3-17.1-1.87,3.45-1.95,7.37.09,10.75,1.83,3.03,5.21,5.04,8.9,5.01l.03-3.66,6.14,6.13Z"/>
+          <path d="M20.01,12.61l-.03,3.67-6.14-6.14,6.14-6.14.02,3.68c4.79-.02,9.11,2.8,11.12,7.01,2.13,4.49,1.4,9.96-2.07,13.61,1.83-3.48,1.9-7.36-.16-10.73-1.82-2.98-5.17-4.98-8.88-4.97Z"/>
+          </svg>
         `;
         resetButton.addEventListener('click', () => handleReset(mapInstance));
         container.appendChild(resetButton);
