@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
-import type { IControl } from 'mapbox-gl';
+import type { IControl, Map } from 'mapbox-gl';
 import { initialMapViewState, initialMobileMapViewState, mapAnimation } from '@/configs/map';
 import { useDeviceTypes } from '@/hooks';
 
@@ -18,25 +18,28 @@ const CustomNavigationControl: React.FC<CustomNavigationControlProps> = ({ posit
   const controlRef = useRef<IControl | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const handleReset = useCallback(() => {
-    if (!map) return;
+  const handleReset = useCallback(
+    (map: Map) => {
+      if (!map) return;
 
-    // Determine which initial state to use
-    const targetViewState = isMobile ? initialMobileMapViewState.mapViewState : initialMapViewState.mapViewState;
+      // Determine which initial state to use
+      const targetViewState = isMobile ? initialMobileMapViewState.mapViewState : initialMapViewState.mapViewState;
 
-    // Animate to the initial view state.
-    // The store is kept in sync via BasicMap's onMove handler during the animation,
-    // so no explicit store patch is needed here. Passing padding explicitly ensures
-    // it is also reset and propagated through onMove.
-    map.flyTo({
-      center: [targetViewState.longitude, targetViewState.latitude],
-      zoom: targetViewState.zoom,
-      bearing: targetViewState.bearing,
-      pitch: targetViewState.pitch,
-      padding: targetViewState.padding,
-      duration: mapAnimation.duration,
-    });
-  }, [map, isMobile]);
+      // Animate to the initial view state.
+      // The store is kept in sync via BasicMap's onMove handler during the animation,
+      // so no explicit store patch is needed here. Passing padding explicitly ensures
+      // it is also reset and propagated through onMove.
+      map.flyTo({
+        center: [targetViewState.longitude, targetViewState.latitude],
+        zoom: targetViewState.zoom,
+        bearing: targetViewState.bearing,
+        pitch: targetViewState.pitch,
+        padding: targetViewState.padding,
+        duration: mapAnimation.duration,
+      });
+    },
+    [isMobile],
+  );
 
   useEffect(() => {
     if (!map) return;
@@ -88,7 +91,7 @@ const CustomNavigationControl: React.FC<CustomNavigationControlProps> = ({ posit
         resetButton.innerHTML = `
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M204-318q-22-38-33-78t-11-82q0-134 93-228t227-94h7l-64-64 56-56 160 160-160 160-56-56 64-64h-7q-100 0-170 70.5T240-478q0 26 6 51t18 49l-60 60ZM481-40 321-200l160-160 56 56-64 64h7q100 0 170-70.5T720-482q0-26-6-51t-18-49l60-60q22 38 33 78t11 82q0 134-93 228t-227 94h-7l64 64-56 56Z"/></svg>
         `;
-        resetButton.addEventListener('click', handleReset);
+        resetButton.addEventListener('click', () => handleReset(mapInstance));
         container.appendChild(resetButton);
 
         return container;
