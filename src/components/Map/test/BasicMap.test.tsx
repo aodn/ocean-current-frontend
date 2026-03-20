@@ -4,6 +4,19 @@ import { mapConfig } from '@/configs/map';
 import { renderWithQueryClient } from '@/test/queryClientUtils';
 import BasicMap from '../BasicMap';
 
+let lastMapProps: Record<string, unknown> = {};
+
+const simulateMobile = () =>
+  vi.mocked(window.matchMedia).mockImplementation(
+    (query: string) =>
+      ({
+        matches: query.includes('max-width'),
+        media: query,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      }) as unknown as MediaQueryList,
+  );
+
 const mockAddControl = vi.fn();
 const mockRemoveControl = vi.fn();
 const mockMap = {
@@ -15,24 +28,23 @@ const mockMap = {
 };
 
 vi.mock('react-map-gl/mapbox', () => ({
-  default: ({ children }: { children: React.ReactNode }) => <div data-testid="test-map">{children}</div>,
+  default: (props: Record<string, unknown>) => {
+    lastMapProps = props;
+    return <div data-testid="test-map">{props.children as React.ReactNode}</div>;
+  },
   Source: ({ children }: { children: React.ReactNode }) => <div>{children}</div>, // Mock Source
   Layer: ({ children }: { children: React.ReactNode }) => <div>{children}</div>, // Mock Layer
   ViewStateChangeEvent: () => <div>ViewStateChangeEvent</div>,
   useMap: vi.fn(() => ({ current: null })),
 }));
 
-vi.mock('../layers/RegionPolygonLayer/RegionPolygonLayer', () => {
-  return {
-    default: () => <div>RegionPolygonLayer</div>,
-  };
-});
+vi.mock('../layers/RegionPolygonLayer', () => ({
+  default: () => <div>RegionPolygonLayer</div>,
+}));
 
-vi.mock('../layers/ArgoAsProductLayer/ArgoAsProductLayer.tsx', () => {
-  return {
-    default: () => <div>ArgoAsProductLayerLayer</div>,
-  };
-});
+vi.mock('../layers/ArgoAsProductLayer', () => ({
+  default: () => <div>ArgoAsProductLayer</div>,
+}));
 
 // Mock React Router hooks
 vi.mock('react-router', async () => {
@@ -49,6 +61,16 @@ vi.mock('react-router', async () => {
 describe('BasicMap Component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // Restore desktop matchMedia (all queries return false) after any mobile test
+    vi.mocked(window.matchMedia).mockImplementation(
+      (query: string) =>
+        ({
+          matches: false,
+          media: query,
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+        }) as unknown as MediaQueryList,
+    );
   });
 
   it('renders correctly with default props', () => {
@@ -97,6 +119,27 @@ describe('BasicMap Component', () => {
     vi.mocked(useMap).mockReturnValue({ current: mockMap } as unknown as ReturnType<typeof useMap>);
     renderWithQueryClient(<BasicMap navigationControl={false} />);
     expect(mockAddControl).not.toHaveBeenCalled();
+  });
+
+  it('disables cooperativeGestures on desktop', () => {
+    mapConfig.accessToken = 'test-api-key';
+    // matchMedia returns false (desktop) — default from setup.ts
+    renderWithQueryClient(<BasicMap />);
+    expect(lastMapProps.cooperativeGestures).toBe(false);
+  });
+
+  it('enables cooperativeGestures on mobile main map', () => {
+    mapConfig.accessToken = 'test-api-key';
+    simulateMobile();
+    renderWithQueryClient(<BasicMap isMiniMap={false} />);
+    expect(lastMapProps.cooperativeGestures).toBe(true);
+  });
+
+  it('disables cooperativeGestures on mobile mini-map', () => {
+    mapConfig.accessToken = 'test-api-key';
+    simulateMobile();
+    renderWithQueryClient(<BasicMap isMiniMap={true} />);
+    expect(lastMapProps.cooperativeGestures).toBe(false);
   });
 });
 
