@@ -8,9 +8,9 @@ const MainLayout: React.FC = () => {
       <NavbarMobile className="md:hidden" />
       <Navbar className="mx-auto hidden w-full md:block" />
 
-      <div className="flex w-full grow justify-center md:px-0">
+      <main className="flex w-full grow justify-center md:px-0">
         <Outlet />
-      </div>
+      </main>
 
       <Footer />
     </div>
