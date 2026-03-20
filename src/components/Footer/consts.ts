@@ -49,7 +49,7 @@ export const FOOTER_ACKNOWLEDGE_TEXT: string =
   'peoples past and present.';
 
 export const FEEDBACK_LINK: string = 'https://github.com/aodn/ocean-current-frontend/issues/new/choose';
-export const COPYRIGHT_TEXT: string = `© IMOS ${dayjs().year()}`;
+export const COPYRIGHT_TEXT: string = `© IMOS ${dayjs().year()}. `;
 
 export const CONTACT_EMAIL: string = 'info@aodn.org.au';
 export const CONTACT_SUBJECT: string = 'Ocean Current Enquiry';

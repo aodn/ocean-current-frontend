@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from '@/assets/images/imos-logo.png';
 import { BrandingText, FooterText } from '@/constants/textConstant.ts';
+import { appVersion } from '@/configs/version.ts';
 import { Button } from '../Shared/index.tsx';
 import {
   COPYRIGHT_TEXT,
@@ -84,7 +85,10 @@ const Footer: React.FC = () => {
 
           <div className="flex items-center justify-between gap-1 sm:gap-4">
             <div className="flex items-center">
-              <p className="text-base text-imos-nav-text">{COPYRIGHT_TEXT}</p>
+              <p className="text-base text-imos-nav-text">
+                {COPYRIGHT_TEXT}
+                Version: {appVersion}
+              </p>
             </div>
             <div className="flex flex-nowrap gap-1 sm:gap-3">
               {FOOTER_SOCIALS.map(({ alt, src, url }: FooterIcon, index: number) => (
