@@ -162,6 +162,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
       dragRotate={false}
       touchPitch={false}
       pitchWithRotate={false}
+      cooperativeGestures={true}
     >
       {children}
       {navigationControl && <CustomNavigationControl position="top-right" />}
