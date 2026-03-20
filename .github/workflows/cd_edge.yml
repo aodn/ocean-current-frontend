@@ -44,7 +44,7 @@ jobs:
         run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
 
       - name: Set version
-        run: echo "VITE_APP_VERSION=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        run: echo "VITE_APP_VERSION=${{ github.event.workflow_run.head_branch }}-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Build the front end
         env:
