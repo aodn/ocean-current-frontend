@@ -98,4 +98,11 @@ describe('Footer Component', () => {
     const copyrightText = screen.getByText(/© IMOS \d{4}/);
     expect(copyrightText).toBeVisible();
   });
+
+  it('should render version information', () => {
+    render(<Footer />);
+
+    const versionText = screen.getByText(/version/i);
+    expect(versionText).toBeVisible();
+  });
 });

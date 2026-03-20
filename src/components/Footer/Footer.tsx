@@ -86,8 +86,9 @@ const Footer: React.FC = () => {
           <div className="flex items-center justify-between gap-1 sm:gap-4">
             <div className="flex items-center">
               <p className="text-base text-imos-nav-text">
-                {COPYRIGHT_TEXT}
-                Version: {appVersion}
+                <span>{COPYRIGHT_TEXT}</span>
+                <span>. </span>
+                <span>Version: {appVersion}</span>
               </p>
             </div>
             <div className="flex flex-nowrap gap-1 sm:gap-3">
