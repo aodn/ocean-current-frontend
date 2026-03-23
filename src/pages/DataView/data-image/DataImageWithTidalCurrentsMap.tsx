@@ -109,7 +109,7 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
       {isProductImageLoading && <Loading className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />}
       <div
         className={cn('bg-white" relative inline-block h-full w-full', {
-          'visibility-hidden opacity-0': isProductImageLoading,
+          'invisible opacity-0': isProductImageLoading,
         })}
       >
         <img

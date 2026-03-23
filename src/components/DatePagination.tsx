@@ -6,6 +6,7 @@ import { DateFormat } from '@/types/date';
 import { ProductID } from '@/types/product';
 import { ProductMenubarText } from '@/constants/textConstant';
 import useProductStore from '@/stores/product-store/productStore';
+import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 import OceanCurrentDatePicker from './DatePicker/OceanCurrentDatePicker';
 import { Loading } from './Shared';
 
@@ -24,6 +25,8 @@ interface DatePaginationProps {
 const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, initialDate, mode = 'range' }) => {
   const { isLoading, dateList, dateRange } = useDateList({ productId, mode });
   const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
+  const shouldRenderProductContent = useShowProductOverMap();
+
   // For range mode, use DAY format
   const effectiveDateFormat = mode === 'range' ? DateFormat.DAY : dateFormat;
   const { navigationMode, dateListNavigation, dateRangeNavigation } = useDateNavigation({
@@ -43,7 +46,7 @@ const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, 
   const adjustedCanGoNext = canGoNext && !isSstTimeseries;
   const adjustedCanGoPrevious = canGoPrevious && !isSstTimeseries;
 
-  if (isLoading || isProductImageLoading) {
+  if (isLoading || (isProductImageLoading && shouldRenderProductContent)) {
     return (
       <div className="flex h-full w-full items-center justify-center" aria-busy="true" aria-label="Loading content">
         <Loading loadingSize="h-8 w-8" />

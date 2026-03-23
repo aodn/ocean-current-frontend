@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Dropdown, Loading } from '@/components/Shared';
+import { setIsProductImageLoading } from '@/stores/product-store/productStore';
 import { buildCurrentMetersDataImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import { CurrentMetersPlotPath, CurrentMetersPlotTitle } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
@@ -46,6 +47,12 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
       setSelectedDepthTimeId(depthTimeElements[0].id);
     }
   }, [depthTimeElements, velocityElements]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      setIsProductImageLoading(false);
+    }
+  }, [isLoading]);
 
   return (
     <div className="h-full bg-white px-4 py-2">

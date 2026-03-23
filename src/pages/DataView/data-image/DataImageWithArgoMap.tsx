@@ -12,6 +12,9 @@ import { useImageTags } from '@/services/hooks';
 import { ProductID } from '@/types/product';
 import { DateFormat } from '@/types/date';
 import { useResizeObserver } from '@/hooks';
+import useProductStore, { setIsProductImageLoading } from '@/stores/product-store/productStore';
+import { Loading } from '@/components/Shared';
+import { cn } from '@/utils/classname-util/cn';
 
 type DataImageWithArgoMapProps = {
   src: string;
@@ -39,12 +42,14 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<TooltipState>(null);
   const { mainProduct } = useProductConvert();
+  const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
   // Non-Tidal SLA product images use HOUR format but its tag file uses DAY format
   const tagDateFormat = productId === 'adjustedSeaLevelAnomaly-nonTidalSla' ? DateFormat.DAY : dateFormat;
   const { data } = useImageTags({ date, tagPath: argoTagFilePath, regionCode, dateFormat: tagDateFormat });
   const alt = `${productId} data in ${regionCode} at ${dateFormatted}`;
 
   const handleLoad = useCallback(() => {
+    setIsProductImageLoading(false);
     if (!imgRef.current) return;
 
     const { naturalWidth, naturalHeight, width, height } = imgRef.current;
@@ -117,42 +122,46 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
 
   return (
     <div className="relative inline-block h-full w-full bg-white">
-      <img
-        ref={imgRef}
-        src={src}
-        alt={alt}
-        useMap="#argo-tag-map"
-        className="max-h-[80vh] select-none object-contain"
-        onError={() => {
-          setImgLoadError('Image not available');
-        }}
-      />
-      <map name="argo-tag-map">
-        {coords.map((area, index) => (
-          <area
-            key={area.tooltip ? `${area.tooltip}-${area.coords[0]}-${area.coords[1]}` : index}
-            shape={area.shape}
-            coords={area.coords.join(',')}
-            alt={area.tooltip || `Area ${index + 1}`}
-            data-tooltip={area.tooltip}
-            onMouseEnter={(e) => area.tooltip && setTooltip({ text: area.tooltip, x: e.clientX, y: e.clientY })}
-            onMouseMove={(e) => setTooltip((prev) => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null))}
-            onMouseLeave={() => setTooltip(null)}
-            onClick={() => handleCircleClick(area)}
-            aria-hidden="true"
-            className="cursor-pointer"
-          />
-        ))}
-      </map>
-      {tooltip && (
-        <div
-          data-testid="image-map-tooltip"
-          className="pointer-events-none fixed z-50 inline-flex min-h-6 flex-col items-center justify-center gap-2 rounded bg-zinc-50 px-2.5 py-1 text-sm font-normal leading-5 shadow-[0_0_4px_0_rgba(0,0,0,0.25)]"
-          style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
-        >
-          {tooltip.text}
-        </div>
-      )}
+      {isProductImageLoading && <Loading className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />}
+      <div className={cn('relative inline-block h-full w-full', { 'invisible opacity-0': isProductImageLoading })}>
+        <img
+          ref={imgRef}
+          src={src}
+          alt={alt}
+          useMap="#argo-tag-map"
+          className="max-h-[80vh] select-none object-contain"
+          onError={() => {
+            setIsProductImageLoading(false);
+            setImgLoadError('Image not available');
+          }}
+        />
+        <map name="argo-tag-map">
+          {coords.map((area, index) => (
+            <area
+              key={`${area.tooltip ?? ''}-${area.coords[0]}-${area.coords[1]}-${index}`}
+              shape={area.shape}
+              coords={area.coords.join(',')}
+              alt={area.tooltip || `Area ${index + 1}`}
+              data-tooltip={area.tooltip}
+              onMouseEnter={(e) => area.tooltip && setTooltip({ text: area.tooltip, x: e.clientX, y: e.clientY })}
+              onMouseMove={(e) => setTooltip((prev) => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null))}
+              onMouseLeave={() => setTooltip(null)}
+              onClick={() => handleCircleClick(area)}
+              aria-hidden="true"
+              className="cursor-pointer"
+            />
+          ))}
+        </map>
+        {tooltip && (
+          <div
+            data-testid="image-map-tooltip"
+            className="pointer-events-none fixed z-50 inline-flex min-h-6 flex-col items-center justify-center gap-2 rounded bg-zinc-50 px-2.5 py-1 text-sm font-normal leading-5 shadow-[0_0_4px_0_rgba(0,0,0,0.25)]"
+            style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
+          >
+            {tooltip.text}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

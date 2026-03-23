@@ -7,6 +7,9 @@ import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import useBuoyTags from '@/services/hooks/useBuoyTags';
 import { useResizeObserver } from '@/hooks';
+import useProductStore, { setIsProductImageLoading } from '@/stores/product-store/productStore';
+import { Loading } from '@/components/Shared';
+import { cn } from '@/utils/classname-util/cn';
 
 const buildBuoyTimeseriesImagePath = (buoyLocation: string, date: Dayjs): string => {
   const formattedDate = date.format('YYYYMMDDHH');
@@ -28,10 +31,12 @@ const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, produc
   const { mainProduct } = useProductConvert();
   const { data } = useBuoyTags(date);
   const navigate = useNavigate();
+  const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
 
   const alt = `${productId} data at ${dateFormatted}`;
 
   const handleLoad = useCallback(() => {
+    setIsProductImageLoading(false);
     if (!imgRef.current || !data) return;
 
     const { naturalWidth, naturalHeight, width, height } = imgRef.current;
@@ -98,29 +103,33 @@ const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, produc
 
   return (
     <div className="relative inline-block h-full w-full bg-white">
-      <img
-        ref={imgRef}
-        src={src}
-        alt={alt}
-        useMap="#buoy-tag-map"
-        className="max-h-[80vh] select-none object-contain"
-        onError={() => {
-          setImgLoadError('Image not available');
-        }}
-      />
-      <map name="buoy-tag-map">
-        {coords.map((area) => (
-          <area
-            key={`${area.title}-${area.href}`}
-            shape={area.shape}
-            coords={area.coords.join(',')}
-            alt={area.alt || `${area.title} buoy`}
-            onClick={(e) => handleCircleClick(e, area)}
-            href={area.href}
-            className="cursor-pointer"
-          />
-        ))}
-      </map>
+      {isProductImageLoading && <Loading className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />}
+      <div className={cn('relative inline-block h-full w-full', { 'invisible opacity-0': isProductImageLoading })}>
+        <img
+          ref={imgRef}
+          src={src}
+          alt={alt}
+          useMap="#buoy-tag-map"
+          className="max-h-[80vh] select-none object-contain"
+          onError={() => {
+            setIsProductImageLoading(false);
+            setImgLoadError('Image not available');
+          }}
+        />
+        <map name="buoy-tag-map">
+          {coords.map((area) => (
+            <area
+              key={`${area.title}-${area.href}`}
+              shape={area.shape}
+              coords={area.coords.join(',')}
+              alt={area.alt || `${area.title} buoy`}
+              onClick={(e) => handleCircleClick(e, area)}
+              href={area.href}
+              className="cursor-pointer"
+            />
+          ))}
+        </map>
+      </div>
     </div>
   );
 };
