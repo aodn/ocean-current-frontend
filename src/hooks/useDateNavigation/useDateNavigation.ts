@@ -8,6 +8,7 @@ import { isHourlyFormat, findFirstDateTimeForSelectedDay } from '@/utils/date-ut
 import { findClosestDateIndex, findNearestDateWithinWindow } from '@/utils/date-utils/date';
 import { NEAREST_DATE_SEARCH_CONFIG } from '@/constants/product';
 import { isCurrentYearOptionId } from '@/data/current-meter/sidebarOptions';
+import { setIsProductImageLoading } from '@/stores/product-store/productStore';
 
 type NavigationMode = 'dateList' | 'dateRange';
 
@@ -277,6 +278,7 @@ export const useDateListNavigation = ({
           },
           { replace },
         );
+        setIsProductImageLoading(true);
       }
     },
     [formatDate, dates, setSearchParams, argoProfiles],
@@ -388,6 +390,7 @@ export const useDateRangeNavigation = ({ dateFormat, dateRange }: UseDateRangeNa
         },
         { replace },
       );
+      setIsProductImageLoading(true);
     },
     [formatDate, dateRange, setSearchParams, argoProfiles],
   );
