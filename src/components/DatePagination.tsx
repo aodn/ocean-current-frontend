@@ -15,6 +15,7 @@ interface DatePaginationProps {
   dateFormat: DateFormat;
   initialDate?: string;
   mode?: 'range' | 'list';
+  showVideo?: boolean;
 }
 
 /**
@@ -22,7 +23,13 @@ interface DatePaginationProps {
  * In 'range' mode, it allows users to select a single date within the range (start date and end date).
  * In 'list' mode, it allows users to select a single date from a list of available dates.
  */
-const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, initialDate, mode = 'range' }) => {
+const DatePagination: React.FC<DatePaginationProps> = ({
+  productId,
+  dateFormat,
+  initialDate,
+  mode = 'range',
+  showVideo,
+}) => {
   const { isLoading, dateList, dateRange } = useDateList({ productId, mode });
   const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
   const shouldRenderProductContent = useShowProductOverMap();
@@ -60,11 +67,11 @@ const DatePagination: React.FC<DatePaginationProps> = ({ productId, dateFormat, 
       selectedDate={currentDate.toDate()}
       goToNext={goToNext}
       goToPrevious={goToPrevious}
-      canGoNext={adjustedCanGoNext}
-      canGoPrevious={adjustedCanGoPrevious}
+      canGoNext={adjustedCanGoNext && !showVideo}
+      canGoPrevious={adjustedCanGoPrevious && !showVideo}
       dateFormat={effectiveDateFormat}
       onChange={(date: Date | null) => updateDate(dayjs(date), { reStart: true })}
-      isDatePickerDisabled={isDatePickerDisabled}
+      isDatePickerDisabled={isDatePickerDisabled || !!showVideo}
       displayText={displayText}
       startDate={dateRange?.startDate}
       endDate={dateRange?.endDate}

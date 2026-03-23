@@ -78,10 +78,6 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     setShowVideo(!showVideo);
   };
 
-  const exitVideo = () => {
-    setShowVideo(false);
-  };
-
   const handleToggleMap = () => {
     setShowMap(!showMap);
     if (showVideo) {
@@ -90,7 +86,6 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
   };
 
   const handleReset = () => {
-    exitVideo();
     if (isCurrentMeters) {
       resetCurrentMetersStore();
       return updateQueryParamsAndNavigate(`current-meters/${defaultCurrentMetersSubProduct}`, initialState);
@@ -184,7 +179,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
               onChange={(elem) => handleCurrentMetersDateChange(elem.id)}
             />
           ) : (
-            <DatePagination productId={productId} dateFormat={dateFormat} mode={mode} />
+            <DatePagination productId={productId} dateFormat={dateFormat} mode={mode} showVideo={showVideo} />
           )}
         </div>
 
@@ -193,7 +188,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
           onClick={handleReset}
           className="flex-center h-11 w-12 shrink-0 rounded-md border-imos-calypso-blue/50 bg-white !p-3 md:border-none md:!p-4"
           aria-label="Reset to latest date"
-          disabled={resetBtnDisabled}
+          disabled={resetBtnDisabled || showVideo}
           borderRadius="extraSmall"
         >
           <ResetIcon color="imos-deep-blue" size="lg" />
