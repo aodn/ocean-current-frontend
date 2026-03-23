@@ -106,6 +106,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
           return dateMonth === currentMonth;
         })?.date || latestDate;
 
+      if (climatologyDate && climatologyDate !== searchParams.get('date')) setIsProductImageLoading(true);
       return updateQueryParams({ date: climatologyDate });
     }
 
