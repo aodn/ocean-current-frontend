@@ -10,7 +10,7 @@ import useCurrentMetersStore, {
   resetCurrentMetersStore,
   setCurrentMetersDate,
 } from '@/stores/current-meters-store/currentMeters';
-import useProductStore from '@/stores/product-store/productStore';
+import useProductStore, { setIsProductImageLoading } from '@/stores/product-store/productStore';
 import useProductDateFormat from '@/stores/product-store/hooks/useProductDateFormat';
 import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { CurrentMetersSubProductsKey } from '@/constants/currentMeters';
@@ -35,7 +35,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
   const argoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
 
   const { date: currentMetersDate, property, depth, region, deploymentPlot } = useCurrentMetersStore();
-  const [_, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const {
     isArgo,
     isCurrentMeters,
@@ -112,16 +112,23 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     if (isArgo) {
       if (isArgoValid) {
         const latestArgoProfileCycle = argoProfileCycles.find((cycle) => cycle.date === latestDate)?.cycle;
-        if (latestArgoProfileCycle !== undefined)
+        if (latestArgoProfileCycle !== undefined) {
+          if (latestDate !== searchParams.get('date')) setIsProductImageLoading(true);
           updateQueryParams({ cycle: latestArgoProfileCycle, date: latestDate });
+        }
         return;
       }
 
-      return updateQueryParams({ date: latestArgoLocationsData?.regionLatestDates[0].latestDate });
+      const latestArgoDate = latestArgoLocationsData?.regionLatestDates[0].latestDate;
+      if (latestArgoDate && latestArgoDate !== searchParams.get('date')) setIsProductImageLoading(true);
+      return updateQueryParams({ date: latestArgoDate });
     }
 
     if (isTidalCurrentsPointSelected) {
       return updateQueryParams({ date: dateList.at(-1)?.date ?? toYYYYMM(new Date()) });
+    }
+    if (latestDate && latestDate !== searchParams.get('date')) {
+      setIsProductImageLoading(true);
     }
     updateQueryParams({ date: latestDate });
   };
