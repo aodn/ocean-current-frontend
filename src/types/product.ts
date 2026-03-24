@@ -1,6 +1,6 @@
 import { DateConfig } from './date';
 
-export type StandaloneProductID = 'argo' | 'EACMooringArray' | 'gliders' | 'myOceanCurrent';
+export type StandaloneProductID = 'argo' | 'EACMooringArray' | 'gliders' | 'myOceanCurrent' | 'fishSOOP';
 
 export type ProductGroupID =
   | 'fourHourSst'
@@ -130,7 +130,13 @@ export const tidalCurrentsProductIDs = ['tidalCurrents-spd', 'tidalCurrents-sl']
 export function isTidalCurrents(id: AnyProductID): id is (typeof tidalCurrentsProductIDs)[number] {
   return tidalCurrentsProductIDs.includes(id as (typeof tidalCurrentsProductIDs)[number]);
 }
-export const standaloneProductIDs: StandaloneProductID[] = ['argo', 'EACMooringArray', 'gliders', 'myOceanCurrent'];
+export const standaloneProductIDs: StandaloneProductID[] = [
+  'argo',
+  'EACMooringArray',
+  'gliders',
+  'myOceanCurrent',
+  'fishSOOP',
+];
 
 export function isProductGroupId(id: AnyProductID): id is ProductGroupID {
   return productGroupIDs.includes(id as ProductGroupID);
