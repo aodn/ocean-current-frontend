@@ -26,6 +26,8 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [selectedVelocityId, setSelectedVelocityId] = useState<string | null>(null);
   const [selectedDepthTimeId, setSelectedDepthTimeId] = useState<string | null>(null);
+  const [velocityImageLoaded, setVelocityImageLoaded] = useState(false);
+  const [depthTimeImageLoaded, setDepthTimeImageLoaded] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['current-meters-plots', deploymentPlot],
@@ -49,10 +51,29 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
   }, [depthTimeElements, velocityElements]);
 
   useEffect(() => {
-    if (!isLoading) {
+    setVelocityImageLoaded(false);
+  }, [selectedVelocityId]);
+
+  useEffect(() => {
+    setDepthTimeImageLoaded(false);
+  }, [selectedDepthTimeId]);
+
+  useEffect(() => {
+    if (isLoading) return;
+    const velocityDone = !selectedVelocityId || !velocityList || velocityImageLoaded;
+    const depthTimeDone = !selectedDepthTimeId || !depthTimeList || depthTimeImageLoaded;
+    if (velocityDone && depthTimeDone) {
       setIsProductImageLoading(false);
     }
-  }, [isLoading]);
+  }, [
+    isLoading,
+    velocityImageLoaded,
+    depthTimeImageLoaded,
+    selectedVelocityId,
+    selectedDepthTimeId,
+    velocityList,
+    depthTimeList,
+  ]);
 
   return (
     <div className="h-full bg-white px-4 py-2">
@@ -74,6 +95,8 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
             src={buildCurrentMetersDataImageUrl(velocityList.path, selectedVelocityId)}
             alt={`Layer-average velocity vector scatter plots for deployment plot ${deploymentPlot}`}
             className="mt-2 max-h-[80vh] select-none object-contain"
+            onLoad={() => setVelocityImageLoaded(true)}
+            onError={() => setVelocityImageLoaded(true)}
           />
         )}
       </div>
@@ -95,6 +118,8 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
             src={buildCurrentMetersDataImageUrl(depthTimeList.path, selectedDepthTimeId)}
             alt={`Depth-time plots for deployment plot ${deploymentPlot}`}
             className="mt-2 max-h-[80vh] select-none object-contain"
+            onLoad={() => setDepthTimeImageLoaded(true)}
+            onError={() => setDepthTimeImageLoaded(true)}
           />
         )}
       </div>

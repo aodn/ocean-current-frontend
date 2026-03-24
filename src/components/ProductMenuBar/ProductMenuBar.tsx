@@ -121,7 +121,11 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     }
 
     if (isTidalCurrentsPointSelected) {
-      return updateQueryParams({ date: dateList.at(-1)?.date ?? toYYYYMM(new Date()) });
+      const tidalCurrentsDate = dateList.at(-1)?.date ?? toYYYYMM(new Date());
+      if (tidalCurrentsDate && tidalCurrentsDate !== searchParams.get('date')) {
+        setIsProductImageLoading(true);
+      }
+      return updateQueryParams({ date: tidalCurrentsDate });
     }
     if (latestDate && latestDate !== searchParams.get('date')) {
       setIsProductImageLoading(true);
@@ -130,6 +134,9 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
   };
 
   const handleCurrentMetersDateChange = (id: string) => {
+    if (id !== currentMetersDate) {
+      setIsProductImageLoading(true);
+    }
     setCurrentMetersDate(id as string);
     setSearchParams({ property, depth, region, deploymentPlot, date: id });
   };

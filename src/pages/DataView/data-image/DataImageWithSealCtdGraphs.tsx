@@ -134,6 +134,7 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
   const handleImageLoad = useCallback(() => {
     if (!firstImgRef.current) return;
     scaleImageCoordinates();
+    setIsProductImageLoading(false);
   }, [scaleImageCoordinates]);
 
   useEffect(() => {
@@ -207,14 +208,7 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
                 setIsProductImageLoading(false);
                 setImageRenderError('Image not available');
               }}
-              onLoad={
-                isFirstImage
-                  ? () => {
-                      scaleImageCoordinates();
-                      setIsProductImageLoading(false);
-                    }
-                  : undefined
-              }
+              onLoad={isFirstImage ? handleImageLoad : undefined}
             />
 
             {hasImagesLoaded && (

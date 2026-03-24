@@ -36,9 +36,7 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
   const [areas, setAreas] = useState<MapImageAreas[]>();
   const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId);
-  const { isProductImageLoading } = useProductStore((state) => ({
-    isProductImageLoading: state.isProductImageLoading,
-  }));
+  const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
 
   const { data: apiTagData = [] } = useQuery({
     queryKey: ['tidalCurrentsTags', date.format(DateFormat.MINUTE), productId, region],
@@ -108,7 +106,7 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
     <div className="relative inline-block h-full w-full bg-white">
       {isProductImageLoading && <Loading className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />}
       <div
-        className={cn('bg-white" relative inline-block h-full w-full', {
+        className={cn('relative inline-block h-full w-full bg-white', {
           'invisible opacity-0': isProductImageLoading,
         })}
       >
