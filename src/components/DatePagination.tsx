@@ -7,6 +7,7 @@ import { ProductID } from '@/types/product';
 import { ProductMenubarText } from '@/constants/textConstant';
 import useProductStore from '@/stores/product-store/productStore';
 import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
+import { cn } from '@/utils/classname-util/cn';
 import OceanCurrentDatePicker from './DatePicker/OceanCurrentDatePicker';
 import { Loading } from './Shared';
 
@@ -53,29 +54,46 @@ const DatePagination: React.FC<DatePaginationProps> = ({
   const adjustedCanGoNext = canGoNext && !isSstTimeseries;
   const adjustedCanGoPrevious = canGoPrevious && !isSstTimeseries;
 
-  if (isLoading || (isProductImageLoading && shouldRenderProductContent)) {
+  // Initial data load — date picker data not yet available, spinner only
+  if (isLoading) {
     return (
       <div className="flex h-full w-full items-center justify-center" aria-busy="true" aria-label="Loading content">
         <Loading loadingSize="h-8 w-8" />
       </div>
     );
   }
+
+  const isImageLoading = isProductImageLoading && shouldRenderProductContent;
+
   return (
-    <OceanCurrentDatePicker
-      productId={productId}
-      dateList={dateList}
-      selectedDate={currentDate.toDate()}
-      goToNext={goToNext}
-      goToPrevious={goToPrevious}
-      canGoNext={adjustedCanGoNext && !showVideo}
-      canGoPrevious={adjustedCanGoPrevious && !showVideo}
-      dateFormat={effectiveDateFormat}
-      onChange={(date: Date | null) => updateDate(dayjs(date), { reStart: true })}
-      isDatePickerDisabled={isDatePickerDisabled || !!showVideo}
-      displayText={displayText}
-      startDate={dateRange?.startDate}
-      endDate={dateRange?.endDate}
-    />
+    <div className="relative flex h-full w-full">
+      {isImageLoading && (
+        <div
+          className="absolute inset-0 z-10 flex items-center justify-center"
+          aria-busy="true"
+          aria-label="Loading content"
+        >
+          <Loading loadingSize="h-8 w-8" />
+        </div>
+      )}
+      <div className={cn('flex h-full w-full', { invisible: isImageLoading })}>
+        <OceanCurrentDatePicker
+          productId={productId}
+          dateList={dateList}
+          selectedDate={currentDate.toDate()}
+          goToNext={goToNext}
+          goToPrevious={goToPrevious}
+          canGoNext={adjustedCanGoNext && !showVideo}
+          canGoPrevious={adjustedCanGoPrevious && !showVideo}
+          dateFormat={effectiveDateFormat}
+          onChange={(date: Date | null) => updateDate(dayjs(date), { reStart: true })}
+          isDatePickerDisabled={isDatePickerDisabled || !!showVideo}
+          displayText={displayText}
+          startDate={dateRange?.startDate}
+          endDate={dateRange?.endDate}
+        />
+      </div>
+    </div>
   );
 };
 
