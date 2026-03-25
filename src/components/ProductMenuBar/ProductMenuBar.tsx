@@ -10,7 +10,7 @@ import useCurrentMetersStore, {
   resetCurrentMetersStore,
   setCurrentMetersDate,
 } from '@/stores/current-meters-store/currentMeters';
-import useProductStore from '@/stores/product-store/productStore';
+import useProductStore, { setIsProductImageLoading } from '@/stores/product-store/productStore';
 import useProductDateFormat from '@/stores/product-store/hooks/useProductDateFormat';
 import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { CurrentMetersSubProductsKey } from '@/constants/currentMeters';
@@ -35,7 +35,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
   const argoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
 
   const { date: currentMetersDate, property, depth, region, deploymentPlot } = useCurrentMetersStore();
-  const [_, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const {
     isArgo,
     isCurrentMeters,
@@ -73,13 +73,11 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
 
   const { isLoading: isProductDateListLoading, dateList } = useDateList({ productId, mode });
   const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId);
+  const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
+  const isImageLoading = isProductImageLoading && shouldRenderProductContent;
 
   const handleToggleVideo = () => {
     setShowVideo(!showVideo);
-  };
-
-  const exitVideo = () => {
-    setShowVideo(false);
   };
 
   const handleToggleMap = () => {
@@ -90,7 +88,6 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
   };
 
   const handleReset = () => {
-    exitVideo();
     if (isCurrentMeters) {
       resetCurrentMetersStore();
       return updateQueryParamsAndNavigate(`current-meters/${defaultCurrentMetersSubProduct}`, initialState);
@@ -106,27 +103,42 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
           return dateMonth === currentMonth;
         })?.date || latestDate;
 
+      if (climatologyDate && climatologyDate !== searchParams.get('date')) setIsProductImageLoading(true);
       return updateQueryParams({ date: climatologyDate });
     }
 
     if (isArgo) {
       if (isArgoValid) {
         const latestArgoProfileCycle = argoProfileCycles.find((cycle) => cycle.date === latestDate)?.cycle;
-        if (latestArgoProfileCycle !== undefined)
+        if (latestArgoProfileCycle !== undefined) {
+          if (latestDate !== searchParams.get('date')) setIsProductImageLoading(true);
           updateQueryParams({ cycle: latestArgoProfileCycle, date: latestDate });
+        }
         return;
       }
 
-      return updateQueryParams({ date: latestArgoLocationsData?.regionLatestDates[0].latestDate });
+      const latestArgoDate = latestArgoLocationsData?.regionLatestDates[0].latestDate;
+      if (latestArgoDate && latestArgoDate !== searchParams.get('date')) setIsProductImageLoading(true);
+      return updateQueryParams({ date: latestArgoDate });
     }
 
     if (isTidalCurrentsPointSelected) {
-      return updateQueryParams({ date: dateList.at(-1)?.date ?? toYYYYMM(new Date()) });
+      const tidalCurrentsDate = dateList.at(-1)?.date ?? toYYYYMM(new Date());
+      if (tidalCurrentsDate && tidalCurrentsDate !== searchParams.get('date')) {
+        setIsProductImageLoading(true);
+      }
+      return updateQueryParams({ date: tidalCurrentsDate });
+    }
+    if (latestDate && latestDate !== searchParams.get('date')) {
+      setIsProductImageLoading(true);
     }
     updateQueryParams({ date: latestDate });
   };
 
   const handleCurrentMetersDateChange = (id: string) => {
+    if (id !== currentMetersDate) {
+      setIsProductImageLoading(true);
+    }
     setCurrentMetersDate(id as string);
     setSearchParams({ property, depth, region, deploymentPlot, date: id });
   };
@@ -176,7 +188,13 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
               onChange={(elem) => handleCurrentMetersDateChange(elem.id)}
             />
           ) : (
-            <DatePagination productId={productId} dateFormat={dateFormat} mode={mode} />
+            <DatePagination
+              productId={productId}
+              dateFormat={dateFormat}
+              mode={mode}
+              showVideo={showVideo}
+              isImageLoading={isImageLoading}
+            />
           )}
         </div>
 
@@ -185,7 +203,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
           onClick={handleReset}
           className="flex-center h-11 w-12 shrink-0 rounded-md border-imos-calypso-blue/50 bg-white !p-3 md:border-none md:!p-4"
           aria-label="Reset to latest date"
-          disabled={resetBtnDisabled}
+          disabled={resetBtnDisabled || showVideo || isImageLoading}
           borderRadius="extraSmall"
         >
           <ResetIcon color="imos-deep-blue" size="lg" />

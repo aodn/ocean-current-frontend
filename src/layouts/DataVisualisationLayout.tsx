@@ -85,9 +85,9 @@ const DataVisualisationLayout: React.FC = () => {
       try {
         const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope, hasSelectedParams.point);
 
-        const getFallbackYear = () => (date ? date.year() : dayjs().year());
-        const getFallbackMonth = () => (date ? date.month() + 1 : dayjs().month() + 1);
-        const getFallbackDay = () => (date ? date.date() : dayjs().date());
+        const getFallbackYear = () => (date && date.isValid() ? date.year() : dayjs().year());
+        const getFallbackMonth = () => (date && date.isValid() ? date.month() + 1 : dayjs().month() + 1);
+        const getFallbackDay = () => (date && date.isValid() ? date.date() : dayjs().date());
 
         if (dateString.length === 2) {
           if (dateFormat === DateFormat.MONTH_ONLY) {

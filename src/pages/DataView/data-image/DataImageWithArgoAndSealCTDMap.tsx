@@ -10,6 +10,9 @@ import { getSealCtdMapTags } from '@/services/sealCtd';
 import { parseArgoAndSealLocationsTagData } from '@/utils/seal-ctd-utils/sealStdTags';
 import { DateFormat } from '@/types/date';
 import { useResizeObserver } from '@/hooks';
+import useProductStore, { setIsProductImageLoading } from '@/stores/product-store/productStore';
+import { Loading } from '@/components/Shared';
+import { cn } from '@/utils/classname-util/cn';
 
 type DataImageWithArgoAndSealCTDMapProps = {
   src: string;
@@ -31,8 +34,10 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
   const [argoCoords, setArgoCoords] = useState<ImageTagMapArea[]>([]);
   const [sealCoords, setSealCoords] = useState<MapImageAreas[]>([]);
   const [imgLoadError, setImgLoadError] = useState<string | null>(null);
+  const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
 
   const handleLoad = useCallback(() => {
+    setIsProductImageLoading(false);
     if (!imgRef.current) return;
     if (argoData.length === 0 && sealData.length === 0) return;
 
@@ -146,46 +151,50 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
 
   return (
     <div className="relative inline-block h-full w-full bg-white">
-      <img
-        ref={imgRef}
-        src={src}
-        alt={`Argo and Seal locations in ${regionCode}`}
-        useMap="#argo-and-seal-tag-map"
-        className="max-h-[80vh] w-full select-none object-contain"
-        onError={() => {
-          setImgLoadError('Image not available');
-        }}
-      />
-      <map name="argo-and-seal-tag-map">
-        {argoCoords.map((area, index) => (
-          <area
-            key={area.wmoId ?? index}
-            shape={area.shape}
-            coords={area.coords.join(',')}
-            alt={`Argo wmoId ${area.wmoId}`}
-            onClick={() => handleCircleClick(area)}
-            onKeyDown={(e) => handleKeyDown(e, area)}
-            tabIndex={0}
-            title={`Argo wmoId ${area.wmoId}`}
-            role="link"
-            className="cursor-pointer"
-          />
-        ))}
-        {sealCoords.map((area) => (
-          <area
-            key={area.name}
-            shape={area.shape}
-            coords={area.coords.join(',')}
-            alt={`Seal tag ${area.name}`}
-            onClick={() => handleCircleClick(area)}
-            onKeyDown={(e) => handleKeyDown(e, area)}
-            tabIndex={0}
-            title={`Seal tag ${area.name}`}
-            role="link"
-            className="cursor-pointer"
-          />
-        ))}
-      </map>
+      {isProductImageLoading && <Loading className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />}
+      <div className={cn('relative inline-block h-full w-full', { 'invisible opacity-0': isProductImageLoading })}>
+        <img
+          ref={imgRef}
+          src={src}
+          alt={`Argo and Seal locations in ${regionCode}`}
+          useMap="#argo-and-seal-tag-map"
+          className="max-h-[80vh] w-full select-none object-contain"
+          onError={() => {
+            setIsProductImageLoading(false);
+            setImgLoadError('Image not available');
+          }}
+        />
+        <map name="argo-and-seal-tag-map">
+          {argoCoords.map((area, index) => (
+            <area
+              key={area.wmoId ?? index}
+              shape={area.shape}
+              coords={area.coords.join(',')}
+              alt={`Argo wmoId ${area.wmoId}`}
+              onClick={() => handleCircleClick(area)}
+              onKeyDown={(e) => handleKeyDown(e, area)}
+              tabIndex={0}
+              title={`Argo wmoId ${area.wmoId}`}
+              role="link"
+              className="cursor-pointer"
+            />
+          ))}
+          {sealCoords.map((area) => (
+            <area
+              key={area.name}
+              shape={area.shape}
+              coords={area.coords.join(',')}
+              alt={`Seal tag ${area.name}`}
+              onClick={() => handleCircleClick(area)}
+              onKeyDown={(e) => handleKeyDown(e, area)}
+              tabIndex={0}
+              title={`Seal tag ${area.name}`}
+              role="link"
+              className="cursor-pointer"
+            />
+          ))}
+        </map>
+      </div>
     </div>
   );
 };

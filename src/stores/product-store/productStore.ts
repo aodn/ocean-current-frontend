@@ -10,6 +10,7 @@ const initialState: State = {
     regionScope: RegionScope.State,
     regionTitle: 'Au',
   },
+  isProductImageLoading: true,
 };
 
 const useProductStore = create<State & Actions>()(
@@ -18,7 +19,11 @@ const useProductStore = create<State & Actions>()(
     actions: {
       setProductData: (product) => set({ productParams: product }, false, 'setProductData'),
       setProductId: (productId) =>
-        set((state) => ({ productParams: { ...state.productParams, productId } }), false, 'setProductId'),
+        set(
+          (state) => ({ productParams: { ...state.productParams, productId }, isProductImageLoading: true }),
+          false,
+          'setProductId',
+        ),
       setRegionCode: (regionCode) =>
         set(
           (state) => ({
@@ -43,10 +48,13 @@ const useProductStore = create<State & Actions>()(
           false,
           'setRegionTitle',
         ),
+      setIsProductImageLoading: (isLoading: boolean) =>
+        set({ isProductImageLoading: isLoading }, false, 'setIsProductImageLoading'),
     },
   })),
 );
 
-export const { setProductId, setRegionScope, setRegionTitle, setRegionCode } = useProductStore.getState().actions;
+export const { setProductId, setRegionScope, setRegionTitle, setRegionCode, setIsProductImageLoading } =
+  useProductStore.getState().actions;
 
 export default useProductStore;

@@ -85,7 +85,6 @@ const formatDateByProductId = (productId: ProductID, date: string, regionScope: 
       ? product.dateFormat.localFormat
       : product.dateFormat.stateFormat
     : DateFormat.DAY;
-
   return dayjs(date).format(dateFormat || DateFormat.DAY);
 };
 
@@ -97,7 +96,6 @@ const buildDefaultFallbackImageUrl = (
   isProxyRequired: boolean = false,
 ): string => {
   const product = findLeafFlatProductById(productId);
-
   if (!product) {
     throw new Error(`Product with id ${productId} not found`);
   }

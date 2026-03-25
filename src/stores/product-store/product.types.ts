@@ -10,6 +10,7 @@ type ProductParamState = {
 
 export type State = {
   productParams: ProductParamState;
+  isProductImageLoading: boolean;
 };
 
 export type Actions = {
@@ -19,5 +20,6 @@ export type Actions = {
     setRegionCode: (regionCode: string) => void;
     setRegionScope: (regionScope: RegionScope) => void;
     setRegionTitle: (regionTitle: string) => void;
+    setIsProductImageLoading: (isLoading: boolean) => void;
   };
 };
