@@ -62,6 +62,20 @@ describe('useSetProductId', () => {
     expect(setProductId).toHaveBeenCalledWith('fourHourSst-sstFilled');
   });
 
+  it('should not call setProductId and not throw when getProductByPath throws', () => {
+    vi.mocked(useProductPathFromUrl).mockReturnValue({
+      mainProduct: 'invalid-path',
+      subProduct: null as never,
+    });
+
+    vi.mocked(getProductByPath).mockImplementation(() => {
+      throw new Error('Product not found');
+    });
+
+    expect(() => renderHook(() => useSetProductId('product', setProductId))).not.toThrow();
+    expect(setProductId).not.toHaveBeenCalled();
+  });
+
   it('should update product ID when dependencies change', () => {
     // Initial mock setup
     vi.mocked(useProductPathFromUrl).mockReturnValue({
