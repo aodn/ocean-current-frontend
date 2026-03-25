@@ -10,9 +10,17 @@ import useProductStore, {
   setRegionCode,
 } from '@/stores/product-store/productStore';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { useProductFromUrl, useProductSearchParam, useSetProductId, useUrlType, useIsTabletOrDesktop } from '@/hooks';
+import {
+  useProductFromUrl,
+  useProductSearchParam,
+  useSetProductId,
+  useUrlType,
+  useIsTabletOrDesktop,
+  useIsProductFromUrlKnown,
+} from '@/hooks';
 import { getRegionByRegionCode } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
+import ErrorContent from '@/errors/error-content/ErrorContent';
 import { ArrowIcon } from '@/components/Shared/Icons';
 import { RegionScope } from '@/constants/region';
 import { Loading } from '@/components/Shared';
@@ -52,6 +60,7 @@ const DataVisualisationLayout: React.FC = () => {
   const toggleSidebar = () => setSidebarVisible((prev) => !prev);
   const { hasSelectedParams } = useUrlParams();
   const urlType = useUrlType();
+  const isKnownProduct = useIsProductFromUrlKnown(urlType);
   useSetProductId(urlType, setProductId);
 
   const dateFromUrl = searchParams.get('date') || dayjs().format('YYYYMMDD');
@@ -228,6 +237,14 @@ const DataVisualisationLayout: React.FC = () => {
       setShowMap(false);
     }
   }, [interactiveLayerClickTimestamp, isDesktopOrTablet, showMap]);
+
+  if (isKnownProduct === false) {
+    return (
+      <div className="relative mx-auto mb-4 mt-4 flex w-full max-w-8xl px-4 md:mb-9 md:min-h-[800px]">
+        <ErrorContent title="Product Not Available" description="The product you are looking for is not available." />
+      </div>
+    );
+  }
 
   if (!productId) {
     return <Loading />;
