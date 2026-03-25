@@ -59,7 +59,6 @@ export const linksData: LinkItem[] = [
       {
         id: 'monthlyMeans',
         Icon: MonthlyMeansIcon,
-
         title: 'Monthly Means',
         description: 'Monthly temperature averages',
         url: '/map/monthly-means/30-day',
