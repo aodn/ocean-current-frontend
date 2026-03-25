@@ -1236,6 +1236,27 @@ const SealCtdModalData = () => {
         here contains data from microwave (MW) and infrared (IR) sensors, optimally interpolated onto a global grid by
         REMSS.
       </p>
+      <p className="mb-4">
+        See more information about the Seal-CTD product and how to interpret it
+        <a
+          href="https://oceancurrent.aodn.org.au/news.php#SealCTDs_Temperature_and_Salinity_Profiles_from_Ocean_Mammals"
+          className="oc-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          here
+        </a>
+        and
+        <a
+          href="https://oceancurrent.aodn.org.au/news.php#Profiling_the_waters_around_the_Kerguelen_Plateau_hard_working_seals_and_drifting_Argo_floats"
+          className="oc-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          here
+        </a>
+        .
+      </p>
     </div>
   );
 };
