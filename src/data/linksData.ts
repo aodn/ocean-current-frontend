@@ -15,6 +15,7 @@ import {
   GlidersIcon,
   MyOceanCurrentIcon,
   SwotIcon,
+  FishSOOPIcon,
 } from '@/components/Shared/Icons';
 
 export const linksData: LinkItem[] = [
@@ -59,7 +60,6 @@ export const linksData: LinkItem[] = [
       {
         id: 'monthlyMeans',
         Icon: MonthlyMeansIcon,
-
         title: 'Monthly Means',
         description: 'Monthly temperature averages',
         url: '/map/monthly-means/30-day',
@@ -135,6 +135,13 @@ export const linksData: LinkItem[] = [
         title: 'EAC Mooring Array',
         description: 'Monitoring station network',
         url: '/map/eac-mooring-array?region=Brisbane',
+      },
+      {
+        id: 'fishSOOP',
+        Icon: FishSOOPIcon,
+        title: 'FishSOOP pilot',
+        description: 'Fishing Vessels as Ships Of Opportunity',
+        url: 'https://oceancurrent.aodn.org.au/fishsoop',
       },
     ],
   },

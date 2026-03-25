@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 112" fill="currentColor">
+  <!-- Mast -->
+  <rect x="59" y="16" width="3" height="24"/>
+
+  <!-- Signal / radio waves from mast -->
+  <path d="M64,33 A10,10 0 0,1 64,20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M68,38 A17,17 0 0,1 68,15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Cabin / wheelhouse -->
+  <rect x="42" y="40" width="32" height="14" rx="2"/>
+
+  <!-- Boat hull -->
+  <path d="M26,54 L30,67 L84,67 L80,54 Z"/>
+
+  <!-- Water waves -->
+  <path d="M8,72 Q18,67 28,72 Q38,77 48,72 Q58,67 68,72 Q78,77 88,72 L104,72 L104,77 Q88,82 78,77 Q68,72 58,77 Q48,82 38,77 Q28,72 18,77 L8,77 Z"/>
+
+  <!-- Fishing line from bow down to hook -->
+  <path d="M34,67 Q22,79 25,94" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- J-hook body -->
+  <path d="M25,94 Q25,108 34,108 Q43,108 43,100" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Hook barb -->
+  <path d="M43,100 Q40,95 36,97" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</svg>

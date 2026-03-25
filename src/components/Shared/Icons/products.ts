@@ -13,6 +13,7 @@ import EACMooringArray from '@/assets/icons/products/eac-mooring-array.svg?react
 import Gliders from '@/assets/icons/products/gliders.svg?react';
 import MyOceanCurrent from '@/assets/icons/products/my-ocean-current.svg?react';
 import Swot from '@/assets/icons/products/swot.svg?react';
+import FishSOOP from '@/assets/icons/products/fish-soop.svg?react';
 import { withIcon } from './withIcon';
 
 export const OceanColourIcon = withIcon(OceanColour);
@@ -30,3 +31,4 @@ export const EACMooringArrayIcon = withIcon(EACMooringArray);
 export const GlidersIcon = withIcon(Gliders);
 export const MyOceanCurrentIcon = withIcon(MyOceanCurrent);
 export const SwotIcon = withIcon(Swot);
+export const FishSOOPIcon = withIcon(FishSOOP);
