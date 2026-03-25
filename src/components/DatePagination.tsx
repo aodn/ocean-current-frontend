@@ -5,8 +5,6 @@ import { useDateList } from '@/hooks';
 import { DateFormat } from '@/types/date';
 import { ProductID } from '@/types/product';
 import { ProductMenubarText } from '@/constants/textConstant';
-import useProductStore from '@/stores/product-store/productStore';
-import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 import OceanCurrentDatePicker from './DatePicker/OceanCurrentDatePicker';
 import { Loading } from './Shared';
 
@@ -16,6 +14,7 @@ interface DatePaginationProps {
   initialDate?: string;
   mode?: 'range' | 'list';
   showVideo?: boolean;
+  isImageLoading?: boolean;
 }
 
 /**
@@ -29,10 +28,9 @@ const DatePagination: React.FC<DatePaginationProps> = ({
   initialDate,
   mode = 'range',
   showVideo,
+  isImageLoading,
 }) => {
   const { isLoading, dateList, dateRange } = useDateList({ productId, mode });
-  const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
-  const shouldRenderProductContent = useShowProductOverMap();
 
   // For range mode, use DAY format
   const effectiveDateFormat = mode === 'range' ? DateFormat.DAY : dateFormat;
@@ -61,8 +59,6 @@ const DatePagination: React.FC<DatePaginationProps> = ({
       </div>
     );
   }
-
-  const isImageLoading = isProductImageLoading && shouldRenderProductContent;
 
   return (
     <div className="relative flex h-full w-full">

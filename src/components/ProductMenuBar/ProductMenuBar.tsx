@@ -73,6 +73,8 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
 
   const { isLoading: isProductDateListLoading, dateList } = useDateList({ productId, mode });
   const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId);
+  const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
+  const isImageLoading = isProductImageLoading && shouldRenderProductContent;
 
   const handleToggleVideo = () => {
     setShowVideo(!showVideo);
@@ -186,7 +188,13 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
               onChange={(elem) => handleCurrentMetersDateChange(elem.id)}
             />
           ) : (
-            <DatePagination productId={productId} dateFormat={dateFormat} mode={mode} showVideo={showVideo} />
+            <DatePagination
+              productId={productId}
+              dateFormat={dateFormat}
+              mode={mode}
+              showVideo={showVideo}
+              isImageLoading={isImageLoading}
+            />
           )}
         </div>
 
@@ -195,7 +203,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
           onClick={handleReset}
           className="flex-center h-11 w-12 shrink-0 rounded-md border-imos-calypso-blue/50 bg-white !p-3 md:border-none md:!p-4"
           aria-label="Reset to latest date"
-          disabled={resetBtnDisabled || showVideo}
+          disabled={resetBtnDisabled || showVideo || isImageLoading}
           borderRadius="extraSmall"
         >
           <ResetIcon color="imos-deep-blue" size="lg" />

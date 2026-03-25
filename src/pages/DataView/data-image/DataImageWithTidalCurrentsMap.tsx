@@ -37,6 +37,7 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   const [areas, setAreas] = useState<MapImageAreas[]>();
   const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId);
   const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
+  const renderedSrc = useRef('');
 
   const { data: apiTagData = [] } = useQuery({
     queryKey: ['tidalCurrentsTags', date.format(DateFormat.MINUTE), productId, region],
@@ -98,6 +99,13 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
     }
   };
 
+  // Ensure product image loading state is false, when date update but src remains the same. As the cached image will not trigger onLoad again.
+  useEffect(() => {
+    if (renderedSrc.current === src) {
+      setIsProductImageLoading(false);
+    }
+  }, [src, date]);
+
   if (!src || imgLoadError) {
     return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
   }
@@ -118,6 +126,7 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
           className="max-h-[80vh] select-none object-contain"
           onLoad={() => {
             if (!isTidalCurrentsPointSelected) handleImageLoad(tagData);
+            renderedSrc.current = src;
             setIsProductImageLoading(false);
           }}
           onError={() => {
