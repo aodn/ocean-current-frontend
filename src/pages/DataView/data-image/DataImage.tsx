@@ -11,7 +11,6 @@ interface DataImageProps {
 const DataImage: React.FC<DataImageProps> = ({ src, onError }) => {
   const imgRef = useRef<HTMLImageElement | null>(null);
   const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
-
   // onLoad won't fire if the src doesn't change (e.g. two dates that map to the same image URL).
   // Defer the complete check to a macrotask so React has committed all pending updates
   // (Zustand + React Router) before we evaluate whether the image is already loaded.

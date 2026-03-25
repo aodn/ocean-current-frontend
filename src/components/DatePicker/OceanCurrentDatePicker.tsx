@@ -68,7 +68,7 @@ const OceanCurrentDatePicker: React.FC<OceanCurrentDatePickerProps> = ({
           <button
             data-testid="date-previous-button"
             onClick={goToPrevious}
-            disabled={!canGoPrevious}
+            disabled={!canGoPrevious || isDatePickerDisabled}
             className="cursor-pointer rounded bg-transparent p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
           >
             <img className="h-4 w-4 rotate-90" src={arrowIcon} alt="left arrow icon" />
@@ -99,7 +99,7 @@ const OceanCurrentDatePicker: React.FC<OceanCurrentDatePickerProps> = ({
           <button
             data-testid="date-next-button"
             onClick={goToNext}
-            disabled={!canGoNext}
+            disabled={!canGoNext || isDatePickerDisabled}
             className="cursor-pointer rounded bg-transparent p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
           >
             <img className="h-4 w-4 -rotate-90" src={arrowIcon} alt="right arrow icon" />

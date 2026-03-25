@@ -83,18 +83,23 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   }, [src]);
 
   useEffect(() => {
-    const imageElement = imgRef.current;
-    if (imageElement) {
-      if (imageElement.complete) {
-        handleLoad();
-      } else {
-        imageElement.addEventListener('load', handleLoad);
+    let imgElement: HTMLImageElement | null = imgRef.current;
+    // Ensure imgRef.current is not null and handle cached images that may not trigger onLoad
+    const timoutId = setTimeout(() => {
+      if (imgRef.current) {
+        if (imgRef.current.complete) {
+          handleLoad();
+        } else {
+          imgRef.current.addEventListener('load', handleLoad);
+          imgElement = imgRef.current;
+        }
       }
-    }
+    }, 100);
 
     return () => {
-      if (imageElement) {
-        imageElement.removeEventListener('load', handleLoad);
+      clearTimeout(timoutId);
+      if (imgElement) {
+        imgElement.removeEventListener('load', handleLoad);
       }
     };
   }, [data, dateFormatted, handleLoad, src]);

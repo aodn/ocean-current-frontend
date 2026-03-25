@@ -64,7 +64,6 @@ const ProductContent: React.FC = () => {
     () => (productChecks.isOceanColourChlA ? processOceanColourDateList(oceanColourImageData) : []),
     [productChecks.isOceanColourChlA, oceanColourImageData],
   );
-
   // Build image URL
   const chooseImg = useCallback((): string | undefined => {
     try {
@@ -289,7 +288,6 @@ const ProductContent: React.FC = () => {
       />
     );
   }
-
   // Default data image
   return <DataImage src={chooseImg()!} onError={handleError} />;
 };
