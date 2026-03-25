@@ -16,19 +16,23 @@ export const useProductIdFromUrl = (type: UrlType) => {
 
     const mainProductOnlyExist = mainProductOnlyMatch?.params?.product;
 
-    if (mainProductWithSubProductExist) {
-      return {
-        mainProduct: getProductByPath(mainProductWithSubProductMatch.params.product!).key as ProductGroupID,
-        subProduct: getProductByPath(
-          mainProductWithSubProductMatch.params.product!,
-          mainProductWithSubProductMatch.params.subProduct!,
-        ).key as ChildProductID,
-      };
-    } else if (mainProductOnlyExist) {
-      return {
-        mainProduct: getProductByPath(mainProductOnlyMatch.params.product!).key as StandaloneProductID,
-        subProduct: null as never,
-      };
+    try {
+      if (mainProductWithSubProductExist) {
+        return {
+          mainProduct: getProductByPath(mainProductWithSubProductMatch.params.product!).key as ProductGroupID,
+          subProduct: getProductByPath(
+            mainProductWithSubProductMatch.params.product!,
+            mainProductWithSubProductMatch.params.subProduct!,
+          ).key as ChildProductID,
+        };
+      } else if (mainProductOnlyExist) {
+        return {
+          mainProduct: getProductByPath(mainProductOnlyMatch.params.product!).key as StandaloneProductID,
+          subProduct: null as never,
+        };
+      }
+    } catch {
+      // Invalid product path — return undefined so callers can handle gracefully
     }
   };
 

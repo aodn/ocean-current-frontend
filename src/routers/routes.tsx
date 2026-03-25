@@ -1,5 +1,5 @@
 import { Navigate, type RouteObject } from 'react-router';
-import { Home, MapView, DataView, NotFound } from '@/pages';
+import { Home, MapView, DataView, ErrorPage } from '@/pages';
 import MainLayout from '@/layouts/MainLayout';
 import MapLayout from '@/layouts/MapLayout';
 import DataVisualisationLayout from '@/layouts/DataVisualisationLayout';
@@ -66,11 +66,11 @@ const routes: RouteObject[] = [
 
   {
     path: APP_ROUTES.NOT_FOUND,
-    element: <NotFound />,
+    element: <ErrorPage />,
   },
   {
     path: '*',
-    element: <NotFound />,
+    element: <ErrorPage />,
   },
 ];
 

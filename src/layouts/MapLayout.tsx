@@ -3,9 +3,10 @@ import { Outlet, useSearchParams } from 'react-router';
 import dayjs from 'dayjs';
 import { setProductId } from '@/stores/product-store/productStore';
 import { setDate } from '@/stores/date-store/dateStore';
-import { useSetProductId, useUrlType } from '@/hooks';
+import { useSetProductId, useUrlType, useIsProductFromUrlKnown } from '@/hooks';
 import MapSidebar from '@/components/MapSidebar/MapSidebar';
 import { Loading } from '@/components/Shared';
+import ErrorContent from '@/errors/error-content/ErrorContent';
 import ProductDropdown from '@/components/DataVisualisationSidebar/components/ProductDropdown';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
@@ -26,7 +27,16 @@ const MapLayout: React.FC = () => {
   }, [isArgo, searchParams]);
 
   const urlType = useUrlType();
+  const isKnownProduct = useIsProductFromUrlKnown(urlType);
   useSetProductId(urlType, setProductId);
+
+  if (isKnownProduct === false) {
+    return (
+      <div className="relative mx-auto mb-4 mt-4 flex w-full max-w-8xl px-4 md:mb-9 md:min-h-[800px]">
+        <ErrorContent title="Product Not Available" description="The product you are looking for is not available." />
+      </div>
+    );
+  }
 
   if (!mainProduct) {
     return <Loading />;
