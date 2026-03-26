@@ -99,16 +99,16 @@ export const productInfoList: ProductInfo[] = [
   },
   {
     id: 'sealCtd',
-    title: 'SealCTDs: Temperature and Salinity Profiles from Ocean Mammals',
+    title: 'Temperature and Salinity profiles measured by animal-borne CTDs',
     summary:
-      'The IMOS Animal Tracking Facility has deployed over 250 SealCTDs (miniaturized CTD sensors with an ARGOS antenna) on Elephant Seals, Sea Lions, Fur Seals and Weddell Seals since 2009.',
+      'The SealCTD product shows near real time location of seals equipped with CTD instruments, overlaid on SST maps and ice coverage.',
     description: SealCtdModalData,
   },
   {
     id: 'sealCtdTags',
-    title: 'SealCTDs: Temperature and Salinity Profiles from Ocean Mammals',
+    title: 'Temperature and Salinity profiles measured by animal-borne CTDs',
     summary:
-      'The IMOS Animal Tracking Facility has deployed over 250 SealCTDs (miniaturized CTD sensors with an ARGOS antenna) on Elephant Seals, Sea Lions, Fur Seals and Weddell Seals since 2009.',
+      'The SealCTD product shows near real time location of seals equipped with CTD instruments, overlaid on SST maps and ice coverage.',
     description: SealCtdModalData,
   },
   {
