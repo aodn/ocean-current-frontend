@@ -45,6 +45,7 @@ export default ({ mode }) => {
             },
           })
         : undefined,
+      titlePlugin(mode),
       googleAnalyticsPlugin(),
       newRelicPlugin(),
     ],
@@ -89,6 +90,21 @@ export default ({ mode }) => {
       },
     },
   });
+};
+
+const titlePlugin = (mode: string) => {
+  const modeTitle: Record<string, string> = {
+    development: '[DEV] IMOS-OceanCurrent',
+    edge: '[EDGE] IMOS-OceanCurrent',
+  };
+  const title = process.env.VITE_APP_TITLE ?? modeTitle[mode] ?? null;
+  return {
+    name: 'vite-plugin-title',
+    transformIndexHtml(html: string) {
+      if (!title) return html;
+      return html.replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`);
+    },
+  };
 };
 
 const googleAnalyticsPlugin = () => {
