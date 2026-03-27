@@ -2,9 +2,9 @@ import React from 'react';
 import { RootProductID } from '@/types/product';
 
 export type LegendItem = {
-  icon: string;
-  label: string;
-  shape: React.ReactNode;
+  icon?: string;
+  label?: string;
+  shape?: React.ReactNode;
   description?: string;
 };
 
@@ -92,6 +92,24 @@ const COMMON_LEGEND_ITEMS = {
       'daily cumulative EAC transport from North Stradbroke to the outer EAC mooring, summed from the sea surface to 1500 m depth.',
   },
 
+  // EAC Mooring Array - description only (popup only, no sidebar shape)
+  eacIsobaths: {
+    label: 'Selected isobaths',
+    description: 'grey and cyan contours, in metres.',
+  },
+  eacAdjustedSeaLevel: {
+    label: 'Adjusted Sea Level (ASL=ASLA plus Mean Dynamic Topography)',
+    description: 'white contours every 0.1 m.',
+  },
+  eacGeostrophicVelocity: {
+    label: 'Geostrophic velocity',
+    description:
+      'black arrows, where length indicates both speed and distance something would travel over a 12hr or 24hr period (as indicated) at this velocity. Derived from ASL.',
+  },
+  eacAslLatency: {
+    description: 'The latest ASL (NRT00) map is usually dated 4 days behind real time, as indicated.',
+  },
+
   // Seal CTD
   ctdProfile: {
     icon: 'dive-point',
@@ -175,6 +193,10 @@ export const productLegends: ProductLegend[] = [
       COMMON_LEGEND_ITEMS.ship,
       COMMON_LEGEND_ITEMS.mooring,
       COMMON_LEGEND_ITEMS.eacCumulativeTransport,
+      COMMON_LEGEND_ITEMS.eacIsobaths,
+      COMMON_LEGEND_ITEMS.eacAdjustedSeaLevel,
+      COMMON_LEGEND_ITEMS.eacGeostrophicVelocity,
+      COMMON_LEGEND_ITEMS.eacAslLatency,
     ],
   },
 ];
