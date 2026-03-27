@@ -69,7 +69,7 @@ export default ({ mode }: ConfigEnv) => {
           rewrite: (path) => path.replace(/^\/api\/v1/, ''),
           configure: (proxy, options) => {
             proxy.on('proxyReq', (_, req) =>
-              logProxy(req.method ?? 'UNKNOWN', req.url ?? 'UNKNOWN', options.target ?? ''),
+              logProxy(req.method ?? 'UNKNOWN', req.url ?? 'UNKNOWN', options.target ?? 'UNKNOWN'),
             );
           },
         },
@@ -79,7 +79,7 @@ export default ({ mode }: ConfigEnv) => {
           rewrite: (path) => path.replace(/^\/resource/, ''),
           configure: (proxy, options) => {
             proxy.on('proxyReq', (_, req) =>
-              logProxy(req.method ?? 'UNKNOWN', req.url ?? 'UNKNOWN', options.target ?? ''),
+              logProxy(req.method ?? 'UNKNOWN', req.url ?? 'UNKNOWN', options.target ?? 'UNKNOWN'),
             );
           },
         },
@@ -89,7 +89,7 @@ export default ({ mode }: ConfigEnv) => {
           rewrite: (path) => path.replace(/^\/storage/, ''),
           configure: (proxy, options) => {
             proxy.on('proxyReq', (_, req) =>
-              logProxy(req.method ?? 'UNKNOWN', req.url ?? 'UNKNOWN', options.target ?? ''),
+              logProxy(req.method ?? 'UNKNOWN', req.url ?? 'UNKNOWN', options.target ?? 'UNKNOWN'),
             );
           },
         },
