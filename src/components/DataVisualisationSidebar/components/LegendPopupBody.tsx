@@ -9,21 +9,25 @@ const LegendPopupBody: React.FC<LegendPopupBodyProps> = ({ legendItems }) => {
   return (
     <div className="p-4">
       <h2 className="text-lg font-bold">Legend Details</h2>
-      {legendItems.map((item, index) => (
-        <div key={`${item.label ?? ''}-popup-${index}`} className="mt-2 flex items-start">
-          {item.shape && <div className="mr-2 mt-1 flex shrink-0 items-center justify-center">{item.shape}</div>}
-          <div>
-            {item.label ? (
-              <>
-                <span className="mr-1 font-bold text-imos-dark-grey">{item.label}: </span>
-                <span className="text-imos-dark-grey">{item.description ?? item.label.toLowerCase()}</span>
-              </>
-            ) : (
-              <span className="text-imos-dark-grey">{item.description}</span>
-            )}
+      {legendItems.map((item, index) => {
+        if (!item.label && !item.description) return null;
+        const keyBase = item.label ?? item.description ?? 'legend-item';
+        return (
+          <div key={`${keyBase}-popup-${index}`} className="mt-2 flex items-start">
+            {item.shape && <div className="mr-2 mt-1 flex shrink-0 items-center justify-center">{item.shape}</div>}
+            <div>
+              {item.label ? (
+                <>
+                  <span className="mr-1 font-bold text-imos-dark-grey">{item.label}: </span>
+                  <span className="text-imos-dark-grey">{item.description ?? item.label.toLowerCase()}</span>
+                </>
+              ) : (
+                <span className="text-imos-dark-grey">{item.description}</span>
+              )}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };
