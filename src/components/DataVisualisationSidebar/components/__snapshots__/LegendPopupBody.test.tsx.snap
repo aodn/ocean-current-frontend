@@ -1,0 +1,67 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`LegendPopupBody > matches snapshot 1`] = `
+<div>
+  <div
+    class="p-4"
+  >
+    <h2
+      class="text-lg font-bold"
+    >
+      Legend Details
+    </h2>
+    <div
+      class="mt-2 flex items-start"
+    >
+      <div
+        class="mr-2 mt-1 flex shrink-0 items-center justify-center"
+      >
+        <div
+          data-testid="argo-shape"
+        />
+      </div>
+      <div>
+        <span
+          class="mr-1 font-bold text-imos-dark-grey"
+        >
+          Argo
+          : 
+        </span>
+        <span
+          class="text-imos-dark-grey"
+        >
+          pink circle at the location of any profile
+        </span>
+      </div>
+    </div>
+    <div
+      class="mt-2 flex items-start"
+    >
+      <div>
+        <span
+          class="mr-1 font-bold text-imos-dark-grey"
+        >
+          Selected isobaths
+          : 
+        </span>
+        <span
+          class="text-imos-dark-grey"
+        >
+          grey and cyan contours, in metres.
+        </span>
+      </div>
+    </div>
+    <div
+      class="mt-2 flex items-start"
+    >
+      <div>
+        <span
+          class="text-imos-dark-grey"
+        >
+          The latest ASL (NRT00) map is usually dated 4 days behind real time.
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
