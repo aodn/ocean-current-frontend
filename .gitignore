@@ -46,6 +46,7 @@ playwright.local.config.ts
 tests/screenshots/
 
 .eslintcache
+*.tsbuildinfo
 
 # AI
 .claude
