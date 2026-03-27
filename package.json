@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "dev:log": "VITE_PROXY_LOG=true vite",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.node.json --noEmit",
     "build": "tsc && vite build",
     "build:edge": "tsc && vite build --mode edge",
     "test": "vitest --watch=false",
