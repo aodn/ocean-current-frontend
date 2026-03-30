@@ -55,7 +55,7 @@ const HomeMapCarousel: React.FC = () => {
   }, [selectedProduct.id]);
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col" onMouseEnter={stopCarousel} onMouseLeave={startCarousel}>
       <div className="relative flex-1" ref={mapWrapperRef}>
         <div className={cn('h-full', { 'pointer-events-none invisible': isStaticImageProduct })} ref={mapInnerRef}>
           <ErrorBoundary>
