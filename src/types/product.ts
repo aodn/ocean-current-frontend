@@ -8,7 +8,6 @@ export type ProductGroupID =
   | 'oceanColour'
   | 'adjustedSeaLevelAnomaly'
   | 'monthlyMeans'
-  | 'climatology'
   | 'tidalCurrents'
   | 'currentMeters'
   | 'sealCtd'
@@ -28,6 +27,8 @@ export type ChildProductID =
   | 'sixDaySst-sstAnomaly'
   | 'sixDaySst-centiles'
   | 'sixDaySst-timeseries'
+  | 'sixDaySst-climatologySst'
+  | 'sixDaySst-climatologyDataCount'
   // Ocean Colour children
   | 'oceanColour-chlA'
   | 'oceanColour-chlAAge'
@@ -40,9 +41,6 @@ export type ChildProductID =
   | 'monthlyMeans-30day'
   | 'monthlyMeans-climatology'
   // | 'monthlyMeans-CLIM_CNESCARS' // This product was removed from the original site
-  // Climatology children
-  | 'climatology-sst'
-  | 'climatology-dataCount'
   // Tidal Currents children
   | 'tidalCurrents-spd'
   | 'tidalCurrents-sl'
@@ -77,7 +75,6 @@ export const productGroupIDs: ProductGroupID[] = [
   'oceanColour',
   'adjustedSeaLevelAnomaly',
   'monthlyMeans',
-  'climatology',
   'tidalCurrents',
   'currentMeters',
   'sealCtd',
@@ -95,6 +92,8 @@ export const childProductIDs: ChildProductID[] = [
   'sixDaySst-sstAnomaly',
   'sixDaySst-centiles',
   'sixDaySst-timeseries',
+  'sixDaySst-climatologySst',
+  'sixDaySst-climatologyDataCount',
   'oceanColour-chlA',
   'oceanColour-chlAAge',
   'adjustedSeaLevelAnomaly-sla',
@@ -104,8 +103,6 @@ export const childProductIDs: ChildProductID[] = [
   'monthlyMeans-30day',
   'monthlyMeans-climatology',
   // 'monthlyMeans-CLIM_CNESCARS', // This product was removed from the original site
-  'climatology-sst',
-  'climatology-dataCount',
   'tidalCurrents-spd',
   'tidalCurrents-sl',
   'currentMeters-mooredInstrumentArray',

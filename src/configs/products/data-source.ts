@@ -42,13 +42,20 @@ export const API_LATEST_DATES_DISABLED_PRODUCTS: ProductID[] = [
   'currentMeters-southernOcean',
   'monthlyMeans-30day',
   'monthlyMeans-climatology',
+  'sixDaySst-climatologySst',
+  'sixDaySst-climatologyDataCount',
 ];
 
 /**
  * List of product IDs that will always use fixed data regardless of API implementation
  * These are typically products with simple monthly data or other special cases
  */
-export const FIXED_IMAGE_LIST_PRODUCTS: ProductID[] = ['monthlyMeans-30day', 'monthlyMeans-climatology'];
+export const FIXED_IMAGE_LIST_PRODUCTS: ProductID[] = [
+  'monthlyMeans-30day',
+  'monthlyMeans-climatology',
+  'sixDaySst-climatologySst',
+  'sixDaySst-climatologyDataCount',
+];
 
 export const PRODUCTS_WITH_ARGO_DATA: RootProductID[] = [
   'fourHourSst',
