@@ -40,9 +40,26 @@ export interface SoopImageTag {
   shipName: string;
 }
 
-export type ImageTag = ArgoImageTag | SoopImageTag;
+export interface FishSoopImageTag {
+  type: 'FishSOOP';
+  coordX: number;
+  coordY: number;
+  region: string;
+  year: string;
+  date: string;
+}
+
+export interface ANNNImageTag {
+  type: 'ANNN';
+  coordX: number;
+  coordY: number;
+  shipName: string;
+}
+
+export type ImageTag = ArgoImageTag | SoopImageTag | FishSoopImageTag | ANNNImageTag;
 
 export interface ImageTagMapArea {
+  type: ANNNImageTag['type'] | SoopImageTag['type'] | FishSoopImageTag['type'] | ArgoImageTag['type'];
   shape: string;
   coords: number[];
   href: string;

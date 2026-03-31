@@ -42,6 +42,7 @@ const parseArgoAndSealLocationsTagData = (input: string) => {
 
     if (parts[0] === 'Argo') {
       argoTags.push({
+        type: 'Argo',
         shape: 'circle',
         coords: [x, y, 5],
         href: '#',

@@ -34,7 +34,6 @@ const useImageTags = ({ date, tagPath, regionCode, dateFormat }: UseImageTagsOpt
     queryFn: () => fetchArgoTags(formattedDate, tagPath, regionPath()),
     ...sharedQueryConfig,
   });
-
   const parsedData = useMemo(() => (data ? parseImageTagsFromText(data) : []), [data]);
   return { data: parsedData, loading: isLoading, error };
 };

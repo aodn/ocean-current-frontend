@@ -54,26 +54,53 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
 
     const { naturalWidth, naturalHeight, width, height } = imgRef.current;
     const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
-    const originalCoords = data.map((item) => {
-      if (item.type === 'SOOP') {
-        return {
-          shape: 'circle',
-          coords: [item.coordX, item.coordY, 10],
-          href: '',
-          tooltip: item.shipName,
-        };
-      }
-      return {
-        shape: 'circle',
-        coords: [item.coordX, item.coordY, 10],
-        href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${dateFormatted}`,
-        wmoId: item.wmoId,
-        cycle: item.cycle,
-        tooltip: item.dataSource,
-      };
-    });
-    const convertedCoords = convertCoordsBasedOnImageScale(originalCoords, scaleX, scaleY, naturalHeight);
-    setCoords(convertedCoords as ImageTagMapArea[]);
+    const originalCoords = data
+      .map((item) => {
+        const { type, coordX, coordY } = item;
+        if (type === 'SOOP') {
+          return {
+            type,
+            shape: 'circle',
+            coords: [coordX, coordY, 10],
+            href: '',
+            tooltip: item.shipName,
+          };
+        }
+        if (type === 'FishSOOP') {
+          //fishsoop image url expected to be https://oceancurrent.aodn.org.au/fishsoop/{region}/{year}/{date}.gif
+          //temp fix, point to the page. expected to be https://oceancurrent.aodn.org.au/fishsoop_php/fsa.php?region={region}&date={date} like https://oceancurrent.aodn.org.au/fishsoop_php/fsa.php?region=TasE&date=20260302
+          return {
+            type,
+            shape: 'circle',
+            coords: [coordX, coordY, 10],
+            href: `https://oceancurrent.aodn.org.au/fishsoop_php/fsa.php?region=${item.region}&date=${dayjs(item.date).format('YYYYMMDD')}`,
+            //region and date should come from txt file through api, not regionCode.
+            tooltip: type + item.region + item.date,
+          };
+        }
+        if (type === 'Argo') {
+          return {
+            type,
+            shape: 'circle',
+            coords: [coordX, coordY, 10],
+            href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${dateFormatted}`,
+            wmoId: item.wmoId,
+            cycle: item.cycle,
+            tooltip: item.dataSource,
+          };
+        }
+        if (type === 'ANNN') {
+          return {
+            type,
+            shape: 'circle',
+            coords: [coordX, coordY, 10],
+            href: '',
+            tooltip: type + item.shipName,
+          };
+        }
+      })
+      .filter((e) => !!e);
+    setCoords(convertCoordsBasedOnImageScale(originalCoords, scaleX, scaleY, naturalHeight) as ImageTagMapArea[]);
   }, [data, dateFormatted]);
 
   useResizeObserver('window', handleLoad);
@@ -105,20 +132,26 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   }, [data, dateFormatted, handleLoad, src]);
 
   const handleCircleClick = async (area: ImageTagMapArea) => {
-    if (!area.wmoId) return;
+    let newPath = '';
+    if (area.type === 'Argo') {
+      if (!area.wmoId) return;
 
-    const data = await fetchArgoProfileCyclesByWmoId(area.wmoId.toString());
-    const dates = data.map((item) => item.date);
-    const mostRecentDate = findMostRecentDateBefore(dates, dateFormatted);
-    const mostRecentItem = data.find((item) => item.date === mostRecentDate);
+      const data = await fetchArgoProfileCyclesByWmoId(area.wmoId.toString());
+      const dates = data.map((item) => item.date);
+      const mostRecentDate = findMostRecentDateBefore(dates, dateFormatted);
+      const mostRecentItem = data.find((item) => item.date === mostRecentDate);
 
-    if (!mostRecentItem) {
-      return;
+      if (!mostRecentItem) {
+        return;
+      }
+
+      newPath = `/product/argo?wmoid=${area.wmoId}&cycle=${mostRecentItem.cycle}&depth=0-2000m&date=${mostRecentDate}`;
+    }
+    if (area.type === 'FishSOOP') {
+      newPath = area.href;
     }
 
-    const newPath = `/product/argo?wmoid=${area.wmoId}&cycle=${mostRecentItem.cycle}&depth=0-2000m&date=${mostRecentDate}`;
-
-    window.open(newPath, '_blank', 'noopener,noreferrer');
+    if (newPath) window.open(newPath, '_blank', 'noopener,noreferrer');
   };
 
   if (imgLoadError) {

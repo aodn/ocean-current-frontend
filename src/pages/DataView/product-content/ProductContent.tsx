@@ -207,7 +207,7 @@ const ProductContent: React.FC = () => {
     );
   }
 
-  // Render with Argo tags
+  // Render with Argo tags: eac-mooring-array, four-hour-sst, six-hour-sst, and ocean-colour-chl-a, adjusted-sea-level-anomaly
   if (shouldRenderDataImageWithArgoTags) {
     return (
       <DataImageWithArgoMap
