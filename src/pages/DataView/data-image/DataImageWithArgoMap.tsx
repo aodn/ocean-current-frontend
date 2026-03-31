@@ -45,7 +45,6 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   // Non-Tidal SLA product images use HOUR format but its tag file uses DAY format
   const tagDateFormat = productId === 'adjustedSeaLevelAnomaly-nonTidalSla' ? DateFormat.DAY : dateFormat;
   const { data } = useImageTags({ date, tagPath: argoTagFilePath, regionCode, dateFormat: tagDateFormat });
-  const alt = `${productId} data in ${regionCode} at ${dateFormatted}`;
 
   const handleLoad = useCallback(() => {
     setIsProductImageLoading(false);
@@ -130,34 +129,6 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
     };
   }, [data, dateFormatted, handleLoad, src]);
 
-  // const handleCircleClick = async (area: ImageTagMapArea) => {
-  //   let newPath = '';
-  //   if (area.type === 'Argo') {
-  //     if (!area.wmoId) return;
-
-  //     const data = await fetchArgoProfileCyclesByWmoId(area.wmoId.toString());
-  //     const dates = data.map((item) => item.date);
-  //     const mostRecentDate = findMostRecentDateBefore(dates, dateFormatted);
-  //     const mostRecentItem = data.find((item) => item.date === mostRecentDate);
-
-  //     if (!mostRecentItem) {
-  //       return;
-  //     }
-
-  //     newPath = `/product/argo?wmoid=${area.wmoId}&cycle=${mostRecentItem.cycle}&depth=0-2000m&date=${mostRecentDate}`;
-  //   }
-  //   if (area.type === 'FishSOOP') {
-  //     newPath = area.href;
-  //   }
-
-  //   if (newPath) window.open(newPath, '_blank', 'noopener,noreferrer');
-  // };
-
-  const handleCircleClick = (area: ImageTagMapArea) => {
-    if (!area.href) return;
-    window.open(area.href, '_blank', 'noopener,noreferrer');
-  };
-
   if (imgLoadError) {
     return <ErrorImage productId={mainProduct!.key} date={date} />;
   }
@@ -169,7 +140,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
         <img
           ref={imgRef}
           src={src}
-          alt={alt}
+          alt={`${productId} data in ${regionCode} at ${dateFormatted}`}
           useMap="#argo-tag-map"
           className="max-h-[80vh] select-none object-contain"
           onError={() => {
@@ -188,7 +159,9 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
               onMouseEnter={(e) => area.tooltip && setTooltip({ text: area.tooltip, x: e.clientX, y: e.clientY })}
               onMouseMove={(e) => setTooltip((prev) => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null))}
               onMouseLeave={() => setTooltip(null)}
-              onClick={() => handleCircleClick(area)}
+              href={area.href || undefined}
+              target="_blank"
+              rel="noopener noreferrer"
               aria-hidden="true"
               className="cursor-pointer"
             />
