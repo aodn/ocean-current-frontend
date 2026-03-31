@@ -6,7 +6,7 @@ import {
   SoopImageTag,
   StateLocalPathValue,
   FishSoopImageTag,
-  ANNNImageTag,
+  ANMNImageTag,
 } from '@/types/argo';
 import { MapImageAreas } from '@/types/dataImage';
 import { ProductID } from '@/types/product';
@@ -53,13 +53,13 @@ const parseLine = (line: string): ImageTag | null => {
       date,
     } as FishSoopImageTag;
   }
-  if (type === 'ANNN' && parts.length >= 4) {
+  if (type === 'ANMN' && parts.length >= 4) {
     return {
-      type: 'ANNN',
+      type: 'ANMN',
       coordX: parseFloat(parts[1]),
       coordY: parseFloat(parts[2]),
       shipName: parts[3],
-    } as ANNNImageTag;
+    } as ANMNImageTag;
   }
   return null;
 };

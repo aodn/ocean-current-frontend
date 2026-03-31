@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
-import { findMostRecentDateBefore, getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
+import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { calculateImageScales } from '@/utils/general-utils/general';
 import { ImageTagMapArea } from '@/types/argo';
 import { convertCoordsBasedOnImageScale } from '@/utils/argo-utils/argoTag';
@@ -89,7 +88,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
             tooltip: item.dataSource,
           };
         }
-        if (type === 'ANNN') {
+        if (type === 'ANMN') {
           return {
             type,
             shape: 'circle',
@@ -131,27 +130,32 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
     };
   }, [data, dateFormatted, handleLoad, src]);
 
-  const handleCircleClick = async (area: ImageTagMapArea) => {
-    let newPath = '';
-    if (area.type === 'Argo') {
-      if (!area.wmoId) return;
+  // const handleCircleClick = async (area: ImageTagMapArea) => {
+  //   let newPath = '';
+  //   if (area.type === 'Argo') {
+  //     if (!area.wmoId) return;
 
-      const data = await fetchArgoProfileCyclesByWmoId(area.wmoId.toString());
-      const dates = data.map((item) => item.date);
-      const mostRecentDate = findMostRecentDateBefore(dates, dateFormatted);
-      const mostRecentItem = data.find((item) => item.date === mostRecentDate);
+  //     const data = await fetchArgoProfileCyclesByWmoId(area.wmoId.toString());
+  //     const dates = data.map((item) => item.date);
+  //     const mostRecentDate = findMostRecentDateBefore(dates, dateFormatted);
+  //     const mostRecentItem = data.find((item) => item.date === mostRecentDate);
 
-      if (!mostRecentItem) {
-        return;
-      }
+  //     if (!mostRecentItem) {
+  //       return;
+  //     }
 
-      newPath = `/product/argo?wmoid=${area.wmoId}&cycle=${mostRecentItem.cycle}&depth=0-2000m&date=${mostRecentDate}`;
-    }
-    if (area.type === 'FishSOOP') {
-      newPath = area.href;
-    }
+  //     newPath = `/product/argo?wmoid=${area.wmoId}&cycle=${mostRecentItem.cycle}&depth=0-2000m&date=${mostRecentDate}`;
+  //   }
+  //   if (area.type === 'FishSOOP') {
+  //     newPath = area.href;
+  //   }
 
-    if (newPath) window.open(newPath, '_blank', 'noopener,noreferrer');
+  //   if (newPath) window.open(newPath, '_blank', 'noopener,noreferrer');
+  // };
+
+  const handleCircleClick = (area: ImageTagMapArea) => {
+    if (!area.href) return;
+    window.open(area.href, '_blank', 'noopener,noreferrer');
   };
 
   if (imgLoadError) {

@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchArgoTags } from '@/services/argo';
 import { parseImageTagsFromText } from '@/utils/argo-utils/argoTag';
+import { removeDuplicates } from '@/utils/array-utils';
 import { sharedQueryConfig } from '@/configs/query';
 import { DateFormat } from '@/types/date';
 
@@ -34,7 +35,8 @@ const useImageTags = ({ date, tagPath, regionCode, dateFormat }: UseImageTagsOpt
     queryFn: () => fetchArgoTags(formattedDate, tagPath, regionPath()),
     ...sharedQueryConfig,
   });
-  const parsedData = useMemo(() => (data ? parseImageTagsFromText(data) : []), [data]);
+  const parsedData = useMemo(() => (data ? removeDuplicates(parseImageTagsFromText(data)) : []), [data]);
+
   return { data: parsedData, loading: isLoading, error };
 };
 

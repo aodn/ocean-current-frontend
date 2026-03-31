@@ -49,17 +49,17 @@ export interface FishSoopImageTag {
   date: string;
 }
 
-export interface ANNNImageTag {
-  type: 'ANNN';
+export interface ANMNImageTag {
+  type: 'ANMN';
   coordX: number;
   coordY: number;
   shipName: string;
 }
 
-export type ImageTag = ArgoImageTag | SoopImageTag | FishSoopImageTag | ANNNImageTag;
+export type ImageTag = ArgoImageTag | SoopImageTag | FishSoopImageTag | ANMNImageTag;
 
 export interface ImageTagMapArea {
-  type: ANNNImageTag['type'] | SoopImageTag['type'] | FishSoopImageTag['type'] | ArgoImageTag['type'];
+  type: ANMNImageTag['type'] | SoopImageTag['type'] | FishSoopImageTag['type'] | ArgoImageTag['type'];
   shape: string;
   coords: number[];
   href: string;
