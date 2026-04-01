@@ -69,6 +69,41 @@ describe('useImageTags', () => {
     expect(result.current.error).toBeNull();
   });
 
+  it('should deduplicate parsed tags, keeping the first occurrence', async () => {
+    const mockData = 'mock data';
+    const tag1 = {
+      type: 'Argo' as const,
+      coordX: 1,
+      coordY: 2,
+      wmoId: 123,
+      cycle: 1,
+      institution: 'inst1',
+      dataSource: 'source1',
+    };
+    const tag2 = {
+      type: 'Argo' as const,
+      coordX: 3,
+      coordY: 4,
+      wmoId: 456,
+      cycle: 2,
+      institution: 'inst2',
+      dataSource: 'source2',
+    };
+    const parsedData = [tag1, tag2, { ...tag1 }];
+
+    vi.mocked(fetchArgoTags).mockResolvedValue(mockData);
+    vi.mocked(parseImageTagsFromText).mockReturnValue(parsedData);
+
+    const { result } = setup();
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
+
+    // duplicate of tag1 at index 2 is removed; tag1 (first occurrence) and tag2 are kept in order
+    expect(result.current.data).toEqual([tag1, tag2]);
+  });
+
   it('should handle error state', async () => {
     const error = new Error('Fetch error');
     vi.mocked(fetchArgoTags).mockRejectedValue(error);

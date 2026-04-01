@@ -42,8 +42,9 @@ const parseLine = (line: string): ImageTag | null => {
       shipName: parts[3],
     } as SoopImageTag;
   }
-  if (type === 'FishSOOP' && parts.length >= 7) {
+  if (type === 'FishSOOP' && parts.length >= 4) {
     const [region, year, date] = parts[3].split('/');
+    if (!region || !year || !date) return null;
     return {
       type: 'FishSOOP',
       coordX: parseFloat(parts[1]),

@@ -52,32 +52,26 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
 
     const { naturalWidth, naturalHeight, width, height } = imgRef.current;
     const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
-    const originalCoords = data
-      .map((item) => {
-        const { type, coordX, coordY } = item;
-        if (type === 'SOOP') {
-          return {
-            type,
-            shape: 'circle',
-            coords: [coordX, coordY, 10],
-            href: '',
-            tooltip: item.shipName,
-          };
-        }
-        if (type === 'FishSOOP') {
+    const originalCoords = data.reduce<ImageTagMapArea[]>((acc, item) => {
+      const { type, coordX, coordY } = item;
+      switch (type) {
+        case 'SOOP':
+          acc.push({ type, shape: 'circle', coords: [coordX, coordY, 10], href: '', tooltip: item.shipName });
+          break;
+        case 'FishSOOP':
           //fishsoop image url expected to be https://oceancurrent.aodn.org.au/fishsoop/{region}/{year}/{date}.gif
           //temp fix, point to the page. expected to be https://oceancurrent.aodn.org.au/fishsoop_php/fsa.php?region={region}&date={date} like https://oceancurrent.aodn.org.au/fishsoop_php/fsa.php?region=TasE&date=20260302
-          return {
+          acc.push({
             type,
             shape: 'circle',
             coords: [coordX, coordY, 10],
-            href: `https://oceancurrent.aodn.org.au/fishsoop_php/fsa.php?region=${item.region}&date=${dayjs(item.date).format('YYYYMMDD')}`,
             //region and date should come from txt file through api, not regionCode.
+            href: `https://oceancurrent.aodn.org.au/fishsoop_php/fsa.php?region=${encodeURIComponent(item.region)}&date=${encodeURIComponent(item.date)}`,
             tooltip: type + item.region + item.date,
-          };
-        }
-        if (type === 'Argo') {
-          return {
+          });
+          break;
+        case 'Argo':
+          acc.push({
             type,
             shape: 'circle',
             coords: [coordX, coordY, 10],
@@ -85,19 +79,18 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
             wmoId: item.wmoId,
             cycle: item.cycle,
             tooltip: item.dataSource,
-          };
+          });
+          break;
+        case 'ANMN':
+          acc.push({ type, shape: 'circle', coords: [coordX, coordY, 10], href: '', tooltip: type + item.shipName });
+          break;
+        default: {
+          const _exhaustiveCheck: never = item;
+          console.error('Unhandled ImageTag type:', _exhaustiveCheck);
         }
-        if (type === 'ANMN') {
-          return {
-            type,
-            shape: 'circle',
-            coords: [coordX, coordY, 10],
-            href: '',
-            tooltip: type + item.shipName,
-          };
-        }
-      })
-      .filter((e) => !!e);
+      }
+      return acc;
+    }, []);
     setCoords(convertCoordsBasedOnImageScale(originalCoords, scaleX, scaleY, naturalHeight) as ImageTagMapArea[]);
   }, [data, dateFormatted]);
 
