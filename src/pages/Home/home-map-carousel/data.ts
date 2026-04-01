@@ -2,12 +2,12 @@ import { HomeProductData } from './types';
 
 export const productsData: HomeProductData[] = [
   {
-    title: 'Daily Sea Surface Temperature',
+    title: 'Sea Surface Temperature',
     id: 'sixDaySst-sst',
     mainProduct: 'sixDaySst',
     subProduct: 'sixDaySst-sst',
     description:
-      'Provides daily satellite measurements of ocean surface temperature, essential for monitoring thermal conditions and ocean currents',
+      'Maps of SST, SST anomaly, and SST centiles combined with geostrophic currents from remote sensing and sub-surface measurements from in-situ instruments.',
   },
   {
     title: 'Chlorophyll-a Concentration',
@@ -15,7 +15,7 @@ export const productsData: HomeProductData[] = [
     mainProduct: 'oceanColour',
     subProduct: 'oceanColour-chlA',
     description:
-      'Offers insights into phytoplankton concentration and water quality, crucial for understanding marine ecosystem health',
+      'Maps of chlorophyll-a estimated from satellite observations of the colour of the ocean. This is a proxy for phytoplankton abundance.',
   },
   {
     title: 'Adjusted Sea Level Anomaly',
@@ -23,14 +23,15 @@ export const productsData: HomeProductData[] = [
     mainProduct: 'adjustedSeaLevelAnomaly',
     subProduct: 'adjustedSeaLevelAnomaly-sla',
     description:
-      'Shows deviations in sea level after accounting for atmospheric pressure and tides, helping track ocean circulation patterns.',
+      'Maps of Adjusted SLA and centiles combined with atmospheric mean sea level pressure and sub-surface measurements from in-situ instruments.',
   },
   {
     title: 'Surface Waves',
     id: 'surfaceWaves-wave',
     mainProduct: 'surfaceWaves',
     subProduct: 'surfaceWaves-wave',
-    description: 'Monitors wave heights and patterns, important for marine navigation and coastal management.',
+    description:
+      'Maps of modelled surface wave fields and wave measurements from coastal wave buoys and remote sensing.',
   },
   {
     title: 'SealCTD',
