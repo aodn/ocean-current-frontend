@@ -117,7 +117,7 @@ export const OC_PRODUCTS: Product[] = [
         stateSegment: 'STATE_CLIM',
         dateFormat: {
           localFormat: DateFormat.MONTH_ONLY,
-          stateFormat: DateFormat.MONTH_ONLY,
+          stateFormat: null,
         },
       },
       {
@@ -129,7 +129,7 @@ export const OC_PRODUCTS: Product[] = [
         stateSegment: 'STATE_CLIM',
         dateFormat: {
           localFormat: DateFormat.MONTH_ONLY,
-          stateFormat: DateFormat.MONTH_ONLY,
+          stateFormat: null,
         },
       },
     ],

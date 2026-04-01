@@ -108,17 +108,6 @@ describe('buildProductImageUrlByProductId', () => {
   });
 
   describe('sixDaySst climatology', () => {
-    it('should use STATE_CLIM segment for climatologySst state region', () => {
-      const productId = 'sixDaySst-climatologySst';
-      const region = 'Au';
-      const regionScope = RegionScope.State;
-      const date = '202603';
-
-      const imageUrl = buildStaticImageUrl(productId, dayjs(date), region, regionScope, regionScope, region);
-
-      expect(imageUrl).toBe(`${imageBaseUrl}/STATE_CLIM/SST/Au/03.gif`);
-    });
-
     it('should use DR_SST_CLIM segment for climatologySst local region', () => {
       const productId = 'sixDaySst-climatologySst';
       const region = 'Adelaide';
@@ -128,17 +117,6 @@ describe('buildProductImageUrlByProductId', () => {
       const imageUrl = buildStaticImageUrl(productId, dayjs(date), region, regionScope, regionScope, region);
 
       expect(imageUrl).toBe(`${imageBaseUrl}/DR_SST_CLIM/SST/Adelaide/03.gif`);
-    });
-
-    it('should use STATE_CLIM segment for climatologyDataCount state region', () => {
-      const productId = 'sixDaySst-climatologyDataCount';
-      const region = 'Au';
-      const regionScope = RegionScope.State;
-      const date = '202603';
-
-      const imageUrl = buildStaticImageUrl(productId, dayjs(date), region, regionScope, regionScope, region);
-
-      expect(imageUrl).toBe(`${imageBaseUrl}/STATE_CLIM/NMON/Au/03.gif`);
     });
 
     it('should use DR_SST_CLIM segment for climatologyDataCount local region', () => {
