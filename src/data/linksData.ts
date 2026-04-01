@@ -33,8 +33,7 @@ export const linksData: LinkItem[] = [
         id: 'sixDaySst-sst',
         Icon: SixHourSSTIcon,
         title: 'Daily SST (6-day composite)',
-        description:
-          'SST, anomalies, and percentiles at 1-day intervals with  location of in situ instruments overlaid',
+        description: 'SST, anomalies, and percentiles at 1-day intervals with location of in situ instruments overlaid',
         url: '/map/six-day-sst/sst',
       },
       {
@@ -85,7 +84,7 @@ export const linksData: LinkItem[] = [
         Icon: SwotIcon,
         title: 'SWOT and GSLA',
         description:
-          'Wide-swath altimetry data over gridded Adj SLA intervals with  location of in situ instruments overlaid',
+          'Wide-swath altimetry data over gridded Adj SLA intervals with location of in situ instruments overlaid',
         url: 'https://oceancurrent.aodn.org.au/product.php?product=swot&region=Au',
       },
     ],
@@ -136,7 +135,7 @@ export const linksData: LinkItem[] = [
         id: 'EACMooringArray',
         Icon: EACMooringArrayIcon,
         title: 'EAC Mooring Array',
-        description: 'Temperature, salinity, velocities, and their anomalies of the East Australian Current at 27.5oS',
+        description: 'Temperature, salinity, velocities, and their anomalies of the East Australian Current at 27.5°S',
         url: '/map/eac-mooring-array?region=Brisbane',
       },
       {
