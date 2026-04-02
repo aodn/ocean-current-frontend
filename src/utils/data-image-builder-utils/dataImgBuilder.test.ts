@@ -108,8 +108,8 @@ describe('buildProductImageUrlByProductId', () => {
   });
 
   describe('sixDaySst climatology', () => {
-    it('should use DR_SST_CLIM segment for climatologySst local region', () => {
-      const productId = 'sixDaySst-climatologySst';
+    it('should use DR_SST_CLIM segment for climatology local region', () => {
+      const productId = 'sixDaySst-climatology';
       const region = 'Adelaide';
       const regionScope = RegionScope.Local;
       const date = '202603';

@@ -109,24 +109,22 @@ export const OC_PRODUCTS: Product[] = [
         },
       },
       {
-        title: 'SST Climatology',
-        key: 'sixDaySst-climatologySst',
-        path: 'sst-climatology',
+        title: 'Climatology',
+        key: 'sixDaySst-climatology',
+        path: 'climatology',
         imgPath: 'SST',
         localSegment: 'DR_SST_CLIM',
-        stateSegment: 'STATE_CLIM',
         dateFormat: {
           localFormat: DateFormat.MONTH_ONLY,
           stateFormat: null,
         },
       },
       {
-        title: 'Data Count',
+        title: 'SSTAARS Data Count',
         key: 'sixDaySst-climatologyDataCount',
         path: 'data-count',
         imgPath: 'NMON',
         localSegment: 'DR_SST_CLIM',
-        stateSegment: 'STATE_CLIM',
         dateFormat: {
           localFormat: DateFormat.MONTH_ONLY,
           stateFormat: null,

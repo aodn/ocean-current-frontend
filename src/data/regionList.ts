@@ -401,7 +401,7 @@ export const productRegionMap: ProductRegionMap = {
       'Vanuatu',
     ],
   },
-  'sixDaySst-climatologySst': {
+  'sixDaySst-climatology': {
     state: [],
     local: [
       'Adelaide',

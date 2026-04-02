@@ -27,7 +27,7 @@ export type ChildProductID =
   | 'sixDaySst-sstAnomaly'
   | 'sixDaySst-centiles'
   | 'sixDaySst-timeseries'
-  | 'sixDaySst-climatologySst'
+  | 'sixDaySst-climatology'
   | 'sixDaySst-climatologyDataCount'
   // Ocean Colour children
   | 'oceanColour-chlA'
@@ -92,7 +92,7 @@ export const childProductIDs: ChildProductID[] = [
   'sixDaySst-sstAnomaly',
   'sixDaySst-centiles',
   'sixDaySst-timeseries',
-  'sixDaySst-climatologySst',
+  'sixDaySst-climatology',
   'sixDaySst-climatologyDataCount',
   'oceanColour-chlA',
   'oceanColour-chlAAge',

@@ -42,7 +42,7 @@ export const API_LATEST_DATES_DISABLED_PRODUCTS: ProductID[] = [
   'currentMeters-southernOcean',
   'monthlyMeans-30day',
   'monthlyMeans-climatology',
-  'sixDaySst-climatologySst',
+  'sixDaySst-climatology',
   'sixDaySst-climatologyDataCount',
 ];
 
@@ -53,7 +53,7 @@ export const API_LATEST_DATES_DISABLED_PRODUCTS: ProductID[] = [
 export const FIXED_IMAGE_LIST_PRODUCTS: ProductID[] = [
   'monthlyMeans-30day',
   'monthlyMeans-climatology',
-  'sixDaySst-climatologySst',
+  'sixDaySst-climatology',
   'sixDaySst-climatologyDataCount',
 ];
 
