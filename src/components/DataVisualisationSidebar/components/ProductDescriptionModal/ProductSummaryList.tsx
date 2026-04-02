@@ -1,10 +1,8 @@
 import {
   AdjustedSeaLevelAnomalyModalData,
-  ClimatologyModalData,
   FourHourSstModalData,
   OceanColourModalData,
   SixDaySstModalData,
-  SixDaySstTimeseriesModalData,
   SurfaceWaveModalData,
   EACMooringArrayModalData,
   CurrentMetersModalData,
@@ -24,28 +22,9 @@ export const productInfoList: ProductInfo[] = [
   },
   {
     id: 'sixDaySst',
-    title: 'Six Day Sst',
+    title: 'Daily SST (6-day composite)',
     summary: 'Sea Surface Temperature (°C) 6-day composite of night-only SST',
     description: SixDaySstModalData,
-    childrenInfo: {
-      'sixDaySst-timeseries': {
-        title: 'Monthly Mean SST Anomalies (SST Anom vs Time)',
-        summary: 'Time series analysis of SST anomalies over time, showing trends and patterns.',
-        description: SixDaySstTimeseriesModalData,
-      },
-      'sixDaySst-climatology': {
-        title: 'Climatology',
-        summary:
-          'SSTAARS is a climatology of Australian regional seas, using 25 years of daily night-only SST data. It provides seasonal SST patterns, cloud-free data counts, sea level height, geostrophic velocity, and bathymetry contours, available from AODN.',
-        description: ClimatologyModalData,
-      },
-      'sixDaySst-climatologyDataCount': {
-        title: 'Data Count',
-        summary:
-          'Number of cloud-free observations used to construct the SSTAARS climatology across Australian regional seas.',
-        description: ClimatologyModalData,
-      },
-    },
   },
   {
     id: 'oceanColour',

@@ -25,7 +25,7 @@ export const NavbarMobile = ({ className }: { className?: string }) => {
             <img className="h-12" src={logo} alt="IMOS logo navbar" />{' '}
           </LinkOrAnchor>
           <div className="mx-7 h-12 w-0.5 bg-imos-title-blue opacity-50" aria-hidden="true"></div>
-          <div className="flex flex-col justify-center text-xl font-light text-imos-title-blue">
+          <div className="flex flex-col justify-center font-poppins text-xl font-light text-imos-title-blue">
             <Link className="mr-auto" to={'/'}>
               {BrandingText.OC_PASCAL_CASE}
             </Link>

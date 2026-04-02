@@ -63,7 +63,7 @@ const Navbar = ({ className }: { className?: string }) => {
             />
           </LinkOrAnchor>
           <div className="mx-3 h-10 w-0.5 bg-imos-title-blue opacity-50 lg:mx-7 lg:h-12" aria-hidden="true"></div>
-          <div className="flex flex-col justify-center text-base font-light text-imos-title-blue lg:text-xl">
+          <div className="flex flex-col justify-center font-poppins text-base font-light text-imos-title-blue lg:text-xl">
             <Link className="mr-auto" to={'/'}>
               {BrandingText.OC_PASCAL_CASE}
             </Link>
