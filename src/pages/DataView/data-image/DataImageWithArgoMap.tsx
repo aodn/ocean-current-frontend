@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
-import { findMostRecentDateBefore, getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
+import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { calculateImageScales } from '@/utils/general-utils/general';
 import { ImageTagMapArea } from '@/types/argo';
 import { convertCoordsBasedOnImageScale } from '@/utils/argo-utils/argoTag';
@@ -46,7 +45,6 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   // Non-Tidal SLA product images use HOUR format but its tag file uses DAY format
   const tagDateFormat = productId === 'adjustedSeaLevelAnomaly-nonTidalSla' ? DateFormat.DAY : dateFormat;
   const { data } = useImageTags({ date, tagPath: argoTagFilePath, regionCode, dateFormat: tagDateFormat });
-  const alt = `${productId} data in ${regionCode} at ${dateFormatted}`;
 
   const handleLoad = useCallback(() => {
     setIsProductImageLoading(false);
@@ -54,26 +52,46 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
 
     const { naturalWidth, naturalHeight, width, height } = imgRef.current;
     const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
-    const originalCoords = data.map((item) => {
-      if (item.type === 'SOOP') {
-        return {
-          shape: 'circle',
-          coords: [item.coordX, item.coordY, 10],
-          href: '',
-          tooltip: item.shipName,
-        };
+    const originalCoords = data.reduce<ImageTagMapArea[]>((acc, item) => {
+      const { type, coordX, coordY } = item;
+      switch (type) {
+        case 'SOOP':
+          acc.push({ type, shape: 'circle', coords: [coordX, coordY, 10], href: '', tooltip: item.shipName });
+          break;
+        case 'FishSOOP':
+          //fishsoop image url expected to be https://oceancurrent.aodn.org.au/fishsoop/{region}/{year}/{date}.gif
+          //temp fix, point to the page. expected to be https://oceancurrent.aodn.org.au/fishsoop_php/fsa.php?region={region}&date={date} like https://oceancurrent.aodn.org.au/fishsoop_php/fsa.php?region=TasE&date=20260302
+          acc.push({
+            type,
+            shape: 'circle',
+            coords: [coordX, coordY, 10],
+            //region and date should come from txt file through api, not regionCode.
+            href: `https://oceancurrent.aodn.org.au/fishsoop_php/fsa.php?region=${encodeURIComponent(item.region)}&date=${encodeURIComponent(item.date)}`,
+            tooltip: type + item.region + item.date,
+          });
+          break;
+        case 'Argo':
+          acc.push({
+            type,
+            shape: 'circle',
+            coords: [coordX, coordY, 10],
+            href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${dateFormatted}`,
+            wmoId: item.wmoId,
+            cycle: item.cycle,
+            tooltip: item.dataSource,
+          });
+          break;
+        case 'ANMN':
+          acc.push({ type, shape: 'circle', coords: [coordX, coordY, 10], href: '', tooltip: type + item.shipName });
+          break;
+        default: {
+          const _exhaustiveCheck: never = item;
+          console.error('Unhandled ImageTag type:', _exhaustiveCheck);
+        }
       }
-      return {
-        shape: 'circle',
-        coords: [item.coordX, item.coordY, 10],
-        href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${dateFormatted}`,
-        wmoId: item.wmoId,
-        cycle: item.cycle,
-        tooltip: item.dataSource,
-      };
-    });
-    const convertedCoords = convertCoordsBasedOnImageScale(originalCoords, scaleX, scaleY, naturalHeight);
-    setCoords(convertedCoords as ImageTagMapArea[]);
+      return acc;
+    }, []);
+    setCoords(convertCoordsBasedOnImageScale(originalCoords, scaleX, scaleY, naturalHeight) as ImageTagMapArea[]);
   }, [data, dateFormatted]);
 
   useResizeObserver('window', handleLoad);
@@ -104,23 +122,6 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
     };
   }, [data, dateFormatted, handleLoad, src]);
 
-  const handleCircleClick = async (area: ImageTagMapArea) => {
-    if (!area.wmoId) return;
-
-    const data = await fetchArgoProfileCyclesByWmoId(area.wmoId.toString());
-    const dates = data.map((item) => item.date);
-    const mostRecentDate = findMostRecentDateBefore(dates, dateFormatted);
-    const mostRecentItem = data.find((item) => item.date === mostRecentDate);
-
-    if (!mostRecentItem) {
-      return;
-    }
-
-    const newPath = `/product/argo?wmoid=${area.wmoId}&cycle=${mostRecentItem.cycle}&depth=0-2000m&date=${mostRecentDate}`;
-
-    window.open(newPath, '_blank', 'noopener,noreferrer');
-  };
-
   if (imgLoadError) {
     return <ErrorImage productId={mainProduct!.key} date={date} />;
   }
@@ -132,7 +133,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
         <img
           ref={imgRef}
           src={src}
-          alt={alt}
+          alt={`${productId} data in ${regionCode} at ${dateFormatted}`}
           useMap="#argo-tag-map"
           className="max-h-[80vh] select-none object-contain"
           onError={() => {
@@ -151,7 +152,9 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
               onMouseEnter={(e) => area.tooltip && setTooltip({ text: area.tooltip, x: e.clientX, y: e.clientY })}
               onMouseMove={(e) => setTooltip((prev) => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null))}
               onMouseLeave={() => setTooltip(null)}
-              onClick={() => handleCircleClick(area)}
+              href={area.href || undefined}
+              target="_blank"
+              rel="noopener noreferrer"
               aria-hidden="true"
               className="cursor-pointer"
             />
