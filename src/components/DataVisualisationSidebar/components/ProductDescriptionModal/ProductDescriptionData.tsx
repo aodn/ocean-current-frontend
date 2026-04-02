@@ -79,40 +79,6 @@ const SixDaySstModalData = () => {
   );
 };
 
-const SixDaySstTimeseriesModalData = () => {
-  return (
-    <div className="p-4 text-gray-800">
-      <p className="mb-2">
-        The Monthly Mean SST Anomalies are created using the daily time series (since 1993- present) of IMOS L3SM-1d
-        night-only SST (QL&gt;=4). The SST observations for each of the smaller map regions are converted to anomalies
-        using the SSTAARS climatology then averaged spatially and over each month.
-      </p>
-      <p className="mb-2">
-        Accessing the full SST dataset of almost 30 years of daily data has been made feasible with the help of Edward
-        King in the IMOS Satellite Remote Sensing sub-facility which has reformatted the data for rapid access as a time
-        series. These time series underpin the SSTAARS climatology and are the pre-cursor to the AODN providing similar
-        access in the near future.
-      </p>
-      <p className="mb-2">
-        Plots are updated daily. The estimate of the monthly average for the latest month is only a draft estimate. It
-        is first included in the plots after the 15th of the month and updated daily as more data becomes available.
-      </p>
-      <p className="mb-2">
-        Click{' '}
-        <a
-          href="https://oceancurrent.aodn.org.au/whatsshown.php"
-          target="_blank"
-          rel="noreferrer noopener"
-          className="text-imos-sea-blue"
-        >
-          here{' '}
-        </a>
-        for an overview of what&apos;s shown in these maps.
-      </p>
-    </div>
-  );
-};
-
 const AdjustedSeaLevelAnomalyModalData = () => {
   return (
     <div className="p-4 text-gray-800">
@@ -237,37 +203,6 @@ const FourHourSstModalData = () => {
         <strong className="text-imos-sea-blue">Wind Speed:</strong> BoM ACCESS-R 3hr average wind speed and direction
         for the analysis time
       </div>
-    </div>
-  );
-};
-
-const ClimatologyModalData = () => {
-  return (
-    <div className="p-4 text-gray-800">
-      <p className="mb-2">
-        SSTAARS (SST Atlas of Australian Regional Seas) was created by fitting four annual sinusoids (and a trend) to 25
-        years of daily, night-only AVHRR SST, L3S-1d, provided by the Bureau of Meteorology (BoM). The climatology
-        provides a functional form of the seasonal SST for every 2km x 2km pixel which can be evaluated daily and is
-        available from the AODN.
-      </p>
-      <div className="mb-3">
-        <strong className="text-imos-sea-blue">SST:</strong> the annual mean and monthly evaluations of SSTAARS SST
-        (without the trend)
-      </div>
-      <div className="mb-3">
-        <strong className="text-imos-sea-blue">Data Count:</strong> the total number of days of cloud free SST at each
-        pixel that were available for the climatology for each month - out of a possible 750 days.
-      </div>
-      <div className="mb-3">
-        <strong className="text-imos-sea-blue">Sea level height:</strong> seasonal GSLA + OFAM3 mean sea level height,
-        white contours every 0.1m.
-      </div>
-      <div className="mb-3">Geostrophic velocity: estimated from the sea level height</div>
-      <p className="mb-3">
-        <strong className="text-imos-sea-blue">Bathymetry:</strong> We have included a few more bottom contours to help
-        interpret the climatology. The 10m, 200m and 1000m contours of bathymetry in cyan and the 50m contour in dark
-        blue.
-      </p>
     </div>
   );
 };
@@ -2076,10 +2011,8 @@ const SurfaceWaveModalData = () => {
 export {
   OceanColourModalData,
   SixDaySstModalData,
-  SixDaySstTimeseriesModalData,
   AdjustedSeaLevelAnomalyModalData,
   FourHourSstModalData,
-  ClimatologyModalData,
   SurfaceWaveModalData,
   EACMooringArrayModalData,
   CurrentMetersModalData,
