@@ -46,7 +46,7 @@ const SixDaySstModalData = () => {
       <div className="mb-3">
         <p className="mb-2">
           <strong className="text-imos-sea-blue">Timeseries:</strong> The Monthly Mean SST Anomalies are created using
-          the daily time series (since 1993- present) of IMOS L3SM-1d night-only SST (QL&gt;=4). The SST observations
+          the daily time series (since 1993 - present) of IMOS L3SM-1d night-only SST (QL&gt;=4). The SST observations
           for each of the smaller map regions are converted to anomalies using the SSTAARS climatology then averaged
           spatially and over each month.
         </p>
