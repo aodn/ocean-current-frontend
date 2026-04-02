@@ -107,6 +107,30 @@ describe('buildProductImageUrlByProductId', () => {
     });
   });
 
+  describe('sixDaySst climatology', () => {
+    it('should use DR_SST_CLIM segment for climatology local region', () => {
+      const productId = 'sixDaySst-climatology';
+      const region = 'Adelaide';
+      const regionScope = RegionScope.Local;
+      const date = '202603';
+
+      const imageUrl = buildStaticImageUrl(productId, dayjs(date), region, regionScope, regionScope, region);
+
+      expect(imageUrl).toBe(`${imageBaseUrl}/DR_SST_CLIM/SST/Adelaide/03.gif`);
+    });
+
+    it('should use DR_SST_CLIM segment for climatologyDataCount local region', () => {
+      const productId = 'sixDaySst-climatologyDataCount';
+      const region = 'Brisbane';
+      const regionScope = RegionScope.Local;
+      const date = '202603';
+
+      const imageUrl = buildStaticImageUrl(productId, dayjs(date), region, regionScope, regionScope, region);
+
+      expect(imageUrl).toBe(`${imageBaseUrl}/DR_SST_CLIM/NMON/Brisbane/03.gif`);
+    });
+  });
+
   describe('buildSSTTimeseriesImageUrl', () => {
     it('should return the correct image url for SST Timeseries', () => {
       // Arrange

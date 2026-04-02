@@ -108,6 +108,28 @@ export const OC_PRODUCTS: Product[] = [
           stateFormat: null,
         },
       },
+      {
+        title: 'Climatology',
+        key: 'sixDaySst-climatology',
+        path: 'climatology',
+        imgPath: 'SST',
+        localSegment: 'DR_SST_CLIM',
+        dateFormat: {
+          localFormat: DateFormat.MONTH_ONLY,
+          stateFormat: null,
+        },
+      },
+      {
+        title: 'SSTAARS Data Count',
+        key: 'sixDaySst-climatologyDataCount',
+        path: 'data-count',
+        imgPath: 'NMON',
+        localSegment: 'DR_SST_CLIM',
+        dateFormat: {
+          localFormat: DateFormat.MONTH_ONLY,
+          stateFormat: null,
+        },
+      },
     ],
   },
   {
@@ -265,37 +287,6 @@ export const OC_PRODUCTS: Product[] = [
         },
       },
       */
-    ],
-  },
-  {
-    title: 'Climatology',
-    key: 'climatology',
-    path: 'climatology',
-    latestEntry: null,
-    dateFormat: null,
-    localSegment: 'DR_SST_CLIM',
-    stateSegment: 'STATE_CLIM',
-    children: [
-      {
-        title: 'SST',
-        key: 'climatology-sst',
-        path: 'sst',
-        imgPath: 'SST',
-        dateFormat: {
-          localFormat: DateFormat.MONTH_ONLY,
-          stateFormat: DateFormat.MONTH_ONLY,
-        },
-      },
-      {
-        title: 'Data Count',
-        key: 'climatology-dataCount',
-        path: 'data-count',
-        imgPath: 'NMON',
-        dateFormat: {
-          localFormat: DateFormat.MONTH_ONLY,
-          stateFormat: DateFormat.MONTH_ONLY,
-        },
-      },
     ],
   },
   {

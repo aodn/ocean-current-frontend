@@ -33,6 +33,18 @@ export const productInfoList: ProductInfo[] = [
         summary: 'Time series analysis of SST anomalies over time, showing trends and patterns.',
         description: SixDaySstTimeseriesModalData,
       },
+      'sixDaySst-climatology': {
+        title: 'Climatology',
+        summary:
+          'SSTAARS is a climatology of Australian regional seas, using 25 years of daily night-only SST data. It provides seasonal SST patterns, cloud-free data counts, sea level height, geostrophic velocity, and bathymetry contours, available from AODN.',
+        description: ClimatologyModalData,
+      },
+      'sixDaySst-climatologyDataCount': {
+        title: 'Data Count',
+        summary:
+          'Number of cloud-free observations used to construct the SSTAARS climatology across Australian regional seas.',
+        description: ClimatologyModalData,
+      },
     },
   },
   {
@@ -68,13 +80,6 @@ export const productInfoList: ProductInfo[] = [
     title: 'Monthly Means',
     summary: null,
     description: () => null,
-  },
-  {
-    id: 'climatology',
-    title: 'Climatology',
-    summary:
-      'SSTAARS is a climatology of Australian regional seas, using 25 years of daily night-only SST data. It provides seasonal SST patterns, cloud-free data counts, sea level height, geostrophic velocity, and bathymetry contours, available from AODN.',
-    description: ClimatologyModalData,
   },
   {
     id: 'argo',

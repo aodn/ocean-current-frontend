@@ -9,7 +9,6 @@ import {
   TidalCurrentsIcon,
   CurrentMetersIcon,
   SealCTDIcon,
-  ClimatologyIcon,
   EACMooringArrayIcon,
 } from '@/components/Shared/Icons';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
@@ -45,11 +44,6 @@ export const sidebarProductsNav: DropdownElement<RootProductID>[] = [
     id: 'monthlyMeans',
     label: 'Monthly Means',
     Icon: MonthlyMeansIcon,
-  },
-  {
-    id: 'climatology',
-    label: 'Climatology SST',
-    Icon: ClimatologyIcon,
   },
   {
     id: 'argo',

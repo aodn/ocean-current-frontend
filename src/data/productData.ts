@@ -50,8 +50,8 @@ const buildFlattenedLeafProducts = (products: Product[]): LeafFlatProduct[] => {
           ...child,
           parentId: product.key,
           latestEntry: product.latestEntry,
-          localSegment: product.localSegment,
-          stateSegment: product.stateSegment,
+          localSegment: child.localSegment ?? product.localSegment,
+          stateSegment: child.stateSegment ?? product.stateSegment,
         });
       });
     }

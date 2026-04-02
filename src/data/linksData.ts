@@ -66,11 +66,11 @@ export const linksData: LinkItem[] = [
         url: '/map/monthly-means/30-day',
       },
       {
-        id: 'climatology-sst',
+        id: 'sixDaySst-climatology',
         Icon: ClimatologyIcon,
-        title: 'Climatology SST',
+        title: 'Climatology',
         description: 'SSTAARS Climatology',
-        url: '/map/climatology/sst',
+        url: '/product/six-day-sst/climatology',
       },
       {
         id: 'myOceanCurrent',

@@ -12,7 +12,8 @@ const useProductCheck = () => {
   const isCurrentMeters = mainProductId === 'currentMeters';
   const isCurrentMetersMooredInstrumentArray =
     mainProductId === 'currentMeters' && subProduct?.key === 'currentMeters-mooredInstrumentArray';
-  const isClimatology = mainProductId === 'climatology';
+  const isClimatology =
+    subProduct?.key === 'sixDaySst-climatology' || subProduct?.key === 'sixDaySst-climatologyDataCount';
   const isMonthlyMeans = mainProductId === 'monthlyMeans';
   const isEACMooringArray = mainProductId === 'EACMooringArray';
   const isTidalCurrents = mainProductId === 'tidalCurrents';

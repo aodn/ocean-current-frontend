@@ -161,10 +161,6 @@ export const productLegends: ProductLegend[] = [
     items: null,
   },
   {
-    id: 'climatology',
-    items: null,
-  },
-  {
     id: 'argo',
     items: null,
   },
