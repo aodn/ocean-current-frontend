@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import crossImage from '@/assets/icons/cross-icon.svg';
-import { useOutsideClick } from '@/hooks';
+import { useBodyScrollLock, useOutsideClick } from '@/hooks';
 import { PopupProps } from './types/popup.types';
 
 const Popup: React.FC<PopupProps> = ({ title, body, isOpen, onClose, imageUrl, isImage = false }) => {
@@ -9,6 +9,8 @@ const Popup: React.FC<PopupProps> = ({ title, body, isOpen, onClose, imageUrl, i
   useOutsideClick<HTMLDivElement>(popupRef, () => {
     return onClose();
   });
+
+  useBodyScrollLock(isOpen);
 
   if (!isOpen) return null;
 
