@@ -19,11 +19,8 @@ const Navbar = ({ className }: { className?: string }) => {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
   const handleScroll = () => {
-    if (window.scrollY > 0) {
-      setIsScrolled(true);
-    } else {
-      setIsScrolled(false);
-    }
+    if (document.body.style.position === 'fixed') return;
+    setIsScrolled(window.scrollY > 0);
   };
 
   useEffect(() => {

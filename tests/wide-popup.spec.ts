@@ -62,16 +62,16 @@ test.describe('Wide Popup (About dataset)', () => {
   test('background is not scrollable when popup is open', async ({ page }) => {
     await page.getByText('About EAC mooring array dataset').click();
 
-    const bodyOverflow = await page.evaluate(() => document.body.style.overflow);
-    expect(bodyOverflow).toBe('hidden');
+    const bodyPosition = await page.evaluate(() => document.body.style.position);
+    expect(bodyPosition).toBe('fixed');
   });
 
   test('background scroll is restored after popup is closed', async ({ page }) => {
     await page.getByText('About EAC mooring array dataset').click();
     await page.getByRole('button', { name: 'Close' }).click();
 
-    const bodyOverflow = await page.evaluate(() => document.body.style.overflow);
-    expect(bodyOverflow).toBe('');
+    const bodyPosition = await page.evaluate(() => document.body.style.position);
+    expect(bodyPosition).toBe('');
   });
 
   test('popup content is scrollable when content overflows', async ({ page }) => {

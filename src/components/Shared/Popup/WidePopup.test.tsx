@@ -35,15 +35,15 @@ describe('WidePopup', () => {
 
   it('locks body scroll when open', () => {
     render(<WidePopup {...defaultProps} />);
-    expect(document.body.style.overflow).toBe('hidden');
+    expect(document.body.style.position).toBe('fixed');
   });
 
   it('restores body scroll when closed', () => {
     const { rerender } = render(<WidePopup {...defaultProps} />);
-    expect(document.body.style.overflow).toBe('hidden');
+    expect(document.body.style.position).toBe('fixed');
 
     rerender(<WidePopup {...defaultProps} isOpen={false} />);
-    expect(document.body.style.overflow).toBe('');
+    expect(document.body.style.position).toBe('');
   });
 
   it('renders without body prop', () => {

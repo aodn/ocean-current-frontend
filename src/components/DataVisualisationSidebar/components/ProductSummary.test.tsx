@@ -74,6 +74,6 @@ describe('ProductSummary', () => {
   it('locks body scroll when wide popup is open', () => {
     render(<ProductSummary productInfo={productInfoWithAbout} />);
     fireEvent.click(screen.getByText('About this dataset'));
-    expect(document.body.style.overflow).toBe('hidden');
+    expect(document.body.style.position).toBe('fixed');
   });
 });

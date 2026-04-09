@@ -15,7 +15,7 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
   };
 
   const handleAboutPopup = () => {
-    setIsAboutPopupOpen(!isAboutPopupOpen);
+    setIsAboutPopupOpen((prev) => !prev);
   };
 
   const PopupBody = () => {
@@ -39,7 +39,7 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
 
           {aboutButtonText && aboutDescription && (
             <Button onClick={handleAboutPopup} size="full" borderRadius="small" type="secondary" className="mt-3">
-              <span className="text-imos-dark-grey">{aboutButtonText}</span>
+              <span className="min-w-0 truncate text-imos-dark-grey">{aboutButtonText}</span>
             </Button>
           )}
         </div>
