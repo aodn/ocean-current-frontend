@@ -5,6 +5,7 @@ import {
   SixDaySstModalData,
   SurfaceWaveModalData,
   EACMooringArrayModalData,
+  EACMooringArrayAboutData,
   CurrentMetersModalData,
   ArgoModalData,
   TidalCurrentsModalData,
@@ -101,5 +102,8 @@ export const productInfoList: ProductInfo[] = [
     summary:
       'Daily estimates of East Australian Current (EAC) properties calculated from the CSIRO EAC gridded mooring product.',
     description: EACMooringArrayModalData,
+    aboutButtonText: 'About EAC mooring array dataset',
+    aboutTitle: 'EAC Mooring Array (2012-2022)',
+    aboutDescription: EACMooringArrayAboutData,
   },
 ];

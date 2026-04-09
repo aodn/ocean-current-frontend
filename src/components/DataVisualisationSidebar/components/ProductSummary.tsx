@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
-import { Popup, TruncateText } from '@/components/Shared';
+import { Button, Popup, WidePopup, TruncateText } from '@/components/Shared';
 import { GeneralText } from '@/constants/textConstant';
 import { ArrowWithTailIcon, InfoIcon } from '@/components/Shared/Icons';
 import { ProductSummaryProp } from '../types';
 
 const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  if (!productInfo) return;
-  const { title, summary, description } = productInfo;
+  const [isAboutPopupOpen, setIsAboutPopupOpen] = useState(false);
+  if (!productInfo) return null;
+  const { title, summary, description, aboutButtonText, aboutTitle, aboutDescription } = productInfo;
 
   const handlePopup = () => {
     setIsPopupOpen(!isPopupOpen);
+  };
+
+  const handleAboutPopup = () => {
+    setIsAboutPopupOpen((prev) => !prev);
   };
 
   const PopupBody = () => {
@@ -31,9 +36,24 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
             <p className="mr-2 cursor-pointer font-semibold text-imos-dark-grey">{GeneralText.READ_MORE}</p>
             <ArrowWithTailIcon className="cursor-pointer" />
           </div>
+
+          {aboutButtonText && aboutDescription && (
+            <Button onClick={handleAboutPopup} size="full" borderRadius="small" type="secondary" className="mt-3">
+              <span className="min-w-0 truncate text-imos-dark-grey">{aboutButtonText}</span>
+            </Button>
+          )}
         </div>
 
         <Popup title={title} body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
+
+        {aboutDescription && isAboutPopupOpen && (
+          <WidePopup
+            title={aboutTitle || title}
+            body={() => aboutDescription() ?? <></>}
+            isOpen={isAboutPopupOpen}
+            onClose={handleAboutPopup}
+          />
+        )}
       </>
     )
   );
