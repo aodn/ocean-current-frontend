@@ -2078,7 +2078,7 @@ const EACMooringArrayAboutData = () => {
         </p>
         <p>
           In IMOS-OceanCurrent, we have used the gridded product to calculate daily temperature, salinity, and velocity
-          anomalies for the 8 years of EAC mooring array data. The result are vertical sections of these properties,
+          anomalies for the 8 years of EAC mooring array data. The results are vertical sections of these properties,
           showing how the EAC changes in time. To aid interpretation, we show these vertical sections alongside our
           usual maps of remotely-sensed data, with Argo floats occasionally complementing the sub-surface data near the
           array.

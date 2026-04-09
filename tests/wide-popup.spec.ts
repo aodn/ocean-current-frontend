@@ -20,7 +20,7 @@ test.describe('Wide Popup (About dataset)', () => {
     await expect(popupTitle).toBeVisible();
 
     // Close button should be visible
-    const closeButton = page.getByAltText('Close');
+    const closeButton = page.getByRole('button', { name: 'Close' });
     await expect(closeButton).toBeVisible();
   });
 
@@ -41,7 +41,7 @@ test.describe('Wide Popup (About dataset)', () => {
     await expect(popupTitle).toBeVisible();
 
     // Click close button
-    await page.getByAltText('Close').click();
+    await page.getByRole('button', { name: 'Close' }).click();
 
     // Popup should be gone
     await expect(popupTitle).not.toBeVisible();
@@ -68,7 +68,7 @@ test.describe('Wide Popup (About dataset)', () => {
 
   test('background scroll is restored after popup is closed', async ({ page }) => {
     await page.getByText('About EAC mooring array dataset').click();
-    await page.getByAltText('Close').click();
+    await page.getByRole('button', { name: 'Close' }).click();
 
     const bodyOverflow = await page.evaluate(() => document.body.style.overflow);
     expect(bodyOverflow).toBe('');
@@ -78,7 +78,7 @@ test.describe('Wide Popup (About dataset)', () => {
     await page.getByText('About EAC mooring array dataset').click();
 
     // The scrollable body container
-    const scrollContainer = page.locator('.overflow-y-auto').first();
+    const scrollContainer = page.getByTestId('wide-popup-body');
     await expect(scrollContainer).toBeVisible();
 
     const scrollHeight = await scrollContainer.evaluate((el) => el.scrollHeight);

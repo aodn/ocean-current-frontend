@@ -23,13 +23,13 @@ describe('WidePopup', () => {
 
   it('renders the close button', () => {
     render(<WidePopup {...defaultProps} />);
-    expect(screen.getByAltText('Close')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument();
   });
 
   it('calls onClose when close button is clicked', () => {
     const onClose = vi.fn();
     render(<WidePopup {...defaultProps} onClose={onClose} />);
-    fireEvent.click(screen.getByAltText('Close'));
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
     expect(onClose).toHaveBeenCalledOnce();
   });
 

@@ -7,7 +7,7 @@ import { ProductSummaryProp } from '../types';
 const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isAboutPopupOpen, setIsAboutPopupOpen] = useState(false);
-  if (!productInfo) return;
+  if (!productInfo) return null;
   const { title, summary, description, aboutButtonText, aboutTitle, aboutDescription } = productInfo;
 
   const handlePopup = () => {
@@ -46,7 +46,7 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
 
         <Popup title={title} body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
 
-        {aboutDescription && (
+        {aboutDescription && isAboutPopupOpen && (
           <WidePopup
             title={aboutTitle || title}
             body={() => aboutDescription() ?? <></>}
