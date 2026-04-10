@@ -5,12 +5,12 @@ import {
   SixDaySstModalData,
   SurfaceWaveModalData,
   EACMooringArrayModalData,
-  EACMooringArrayAboutData,
   CurrentMetersModalData,
   ArgoModalData,
   TidalCurrentsModalData,
   SealCtdModalData,
 } from '@/components/DataVisualisationSidebar/components/ProductDescriptionModal/ProductDescriptionData';
+import { EACMooringArrayAboutData } from '@/pages/AboutView/AboutData';
 import { ProductInfo } from '../../types';
 
 export const productInfoList: ProductInfo[] = [

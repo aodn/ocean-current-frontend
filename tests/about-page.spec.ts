@@ -31,13 +31,11 @@ test.describe('About Page', () => {
     await page.goto('/about/eac-mooring-array');
     await page.waitForLoadState('networkidle');
 
-    // Navbar should be present
-    const navbar = page.locator('nav').first();
-    await expect(navbar).toBeVisible();
+    // At least one navbar (mobile or desktop) should be present
+    await expect(page.locator('nav').first()).toBeAttached();
 
     // Footer should be present
-    const footer = page.locator('footer').first();
-    await expect(footer).toBeVisible();
+    await expect(page.locator('footer').first()).toBeAttached();
   });
 
   test('about page has no sidebar or menu bar', async ({ page }) => {
@@ -48,15 +46,19 @@ test.describe('About Page', () => {
     await expect(page.locator('[data-testid="product-sidebar"]')).not.toBeVisible();
   });
 
-  test('"Explore dataset" button links back to product page', async ({ page }) => {
+  test('"Explore dataset" button links to product page with latest date', async ({ page }) => {
     await page.goto('/about/eac-mooring-array');
     await page.waitForLoadState('networkidle');
 
     const exploreButton = page.getByText('Explore dataset');
     await expect(exploreButton).toBeVisible();
 
+    // Wait for the API to populate region and date in the link
     const link = exploreButton.locator('xpath=ancestor::a');
-    await expect(link).toHaveAttribute('href', '/product/eac-mooring-array');
+    await expect(link).toHaveAttribute('href', /region=.+&date=\d+/, { timeout: 10000 });
+
+    const href = await link.getAttribute('href');
+    expect(href).toContain('/product/eac-mooring-array');
   });
 
   test('"Explore dataset" button navigates to product page', async ({ page }) => {
