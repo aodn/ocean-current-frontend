@@ -69,7 +69,7 @@ export const linksData: LinkItem[] = [
         id: 'sixDaySst-climatology',
         Icon: ClimatologyIcon,
         title: 'Climatology',
-        description: 'SSTAARS Climatology',
+        description: 'SSTAARS climatology',
         url: '/product/six-day-sst/climatology',
       },
       {
@@ -96,7 +96,7 @@ export const linksData: LinkItem[] = [
         id: 'argo',
         Icon: ArgoIcon,
         title: 'Argo',
-        description: 'Temperature and Salinity down to 2000 m',
+        description: 'Temperature and salinity down to 2000 m',
         url: '/map/argo',
       },
       {
@@ -124,7 +124,7 @@ export const linksData: LinkItem[] = [
         id: 'sealCtd',
         Icon: SealCTDIcon,
         title: 'SealCTD',
-        description: 'Temperature and Salinity down to ~800 m',
+        description: 'Temperature and salinity down to ~800 m',
         url: '/product/seal-ctd/tracks?region=POLAR&date=20240522', // falls back to this date if API call fails
       },
       /*
@@ -141,8 +141,8 @@ export const linksData: LinkItem[] = [
       {
         id: 'fishSOOP',
         Icon: FishSOOPIcon,
-        title: 'FishSOOP pilot',
-        description: 'Fishing Vessels as Ships Of Opportunity',
+        title: 'FishSOOP',
+        description: 'Near-coast temperature profiles',
         url: 'https://oceancurrent.aodn.org.au/fishsoop',
       },
     ],
