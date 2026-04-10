@@ -16,7 +16,7 @@ export const useMenuAccordion = () => {
   const isLinkActive = (url: string): boolean => {
     const processedCurrentPath =
       location.pathname.split('/product')[1] || location.pathname.split('/map')[1] || location.pathname;
-    const linkPathProduct = url.split('?')[0].split('/map')[1];
+    const linkPathProduct = url.split('?')[0].split('/map')[1] || url.split('?')[0].split('/product')[1];
 
     return !!linkPathProduct && processedCurrentPath.startsWith(linkPathProduct);
   };
