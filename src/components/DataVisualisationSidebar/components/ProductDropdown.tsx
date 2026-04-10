@@ -71,7 +71,8 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
 
       if (id === 'EACMooringArray') {
         queryToUpdate = {
-          date: convertedDate,
+          region: 'Brisbane',
+          date: '20220725', // TODO: hardcoded data for EAC Mooring Array
           property: null,
           depth: null,
           point: null,
