@@ -31,6 +31,10 @@ describe('AboutView', () => {
     } as ReturnType<typeof useRegionLatestDates>);
   });
 
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('renders about content for a valid product with aboutDescription', () => {
     renderWithRoute('/about/eac-mooring-array');
 
@@ -38,25 +42,18 @@ describe('AboutView', () => {
     expect(screen.getByText(/The East Australian Current \(EAC\) is the complex/)).toBeInTheDocument();
   });
 
-  it('renders "Explore dataset" button linking to the product page', () => {
+  it('renders "Explore dataset" button', () => {
     renderWithRoute('/about/eac-mooring-array');
 
-    const link = screen.getByText('Explore dataset').closest('a');
-    expect(link).toHaveAttribute('href', '/product/eac-mooring-array');
+    expect(screen.getByText('Explore dataset')).toBeInTheDocument();
   });
 
-  it('includes region and date in explore link when latest dates are available', () => {
-    vi.mocked(useRegionLatestDates).mockReturnValue({
-      data: {
-        productId: 'EACMooringArray',
-        regionLatestDates: [{ region: 'Brisbane', latestDate: '20240315', path: '' }],
-      },
-    } as ReturnType<typeof useRegionLatestDates>);
-
+  it('renders "Explore dataset" as a button element, not a link', () => {
     renderWithRoute('/about/eac-mooring-array');
 
-    const link = screen.getByText('Explore dataset').closest('a');
-    expect(link).toHaveAttribute('href', '/product/eac-mooring-array?region=Brisbane&date=20240315');
+    const btn = screen.getByText('Explore dataset').closest('button');
+    expect(btn).toBeInTheDocument();
+    expect(screen.getByText('Explore dataset').closest('a')).toBeNull();
   });
 
   it('renders error state for a product without aboutDescription', () => {

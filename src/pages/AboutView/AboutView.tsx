@@ -1,18 +1,19 @@
 import React from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { getProductByPath } from '@/utils/product-utils/product';
 import { getProductInfoByKey } from '@/components/DataVisualisationSidebar/utils';
 import { useRegionLatestDates } from '@/services/hooks/useRegionLatestDates';
 import { ProductID } from '@/types/product';
-import { Button, LinkOrAnchor } from '@/components/Shared';
+import { Button } from '@/components/Shared';
 import ErrorContent from '@/errors/error-content/ErrorContent';
 import { GeneralText } from '@/constants/textConstant';
 
 const AboutView: React.FC = () => {
   const { product: productPath, subProduct: subProductPath } = useParams<{
-    product: string;
-    subProduct: string;
+    product?: string;
+    subProduct?: string;
   }>();
+  const navigate = useNavigate();
 
   let mainProductKey: string | undefined;
   let subProductKey: string | undefined;
@@ -30,7 +31,8 @@ const AboutView: React.FC = () => {
   }
 
   const productInfo = mainProductKey ? getProductInfoByKey(mainProductKey, subProductKey) : null;
-  const { data: latestDates } = useRegionLatestDates((subProductKey || mainProductKey) as ProductID, !!mainProductKey);
+  const leafProductId = (subProductKey || mainProductKey) as ProductID | undefined;
+  const { data: latestDates } = useRegionLatestDates(leafProductId ?? ('' as ProductID), !!leafProductId);
 
   const latestRegion = latestDates?.regionLatestDates[0];
   const basePath = subProductPath ? `/product/${productPath}/${subProductPath}` : `/product/${productPath}`;
@@ -58,11 +60,9 @@ const AboutView: React.FC = () => {
       </div>
       <div className="px-6 pb-6 pt-6 md:px-10">
         <div className="mb-4">
-          <LinkOrAnchor to={explorePath}>
-            <Button borderRadius="small" type="secondary" className="md:!px-4">
-              <span className="text-lg text-imos-deep-blue">{GeneralText.EXPLORE_DATASET}</span>
-            </Button>
-          </LinkOrAnchor>
+          <Button onClick={() => navigate(explorePath)} borderRadius="small" type="secondary" className="md:!px-4">
+            <span className="text-lg text-imos-deep-blue">{GeneralText.EXPLORE_DATASET}</span>
+          </Button>
         </div>
         {productInfo.aboutDescription()}
       </div>

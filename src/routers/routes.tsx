@@ -68,6 +68,10 @@ const routes: RouteObject[] = [
         element: <AboutLayout />,
         children: [
           {
+            index: true,
+            element: <Navigate to={APP_ROUTES.NOT_FOUND} replace />,
+          },
+          {
             path: ':product/:subProduct',
             element: <AboutView />,
           },

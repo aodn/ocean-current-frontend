@@ -1,10 +1,11 @@
-import { describe, it, expect } from 'vitest';
+import type { ReactElement } from 'react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { ProductInfo } from '../types';
 import ProductSummary from './ProductSummary';
 
-const renderWithRouter = (ui: React.ReactElement, initialEntry = '/product/eac-mooring-array') => {
+const renderWithRouter = (ui: ReactElement, initialEntry = '/product/eac-mooring-array') => {
   return render(<MemoryRouter initialEntries={[initialEntry]}>{ui}</MemoryRouter>);
 };
 
@@ -23,6 +24,14 @@ const productInfoWithAbout: ProductInfo = {
 };
 
 describe('ProductSummary', () => {
+  beforeEach(() => {
+    vi.spyOn(window, 'open').mockImplementation(() => null);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('renders nothing when summary is null', () => {
     renderWithRouter(<ProductSummary productInfo={{ ...baseProductInfo, summary: null }} />);
     expect(screen.queryByText('Read more')).not.toBeInTheDocument();
@@ -56,16 +65,15 @@ describe('ProductSummary', () => {
     expect(screen.getByText('About this dataset')).toBeInTheDocument();
   });
 
-  it('renders about button as a link that opens in a new tab', () => {
+  it('clicking about button opens the about page in a new tab', () => {
     renderWithRouter(<ProductSummary productInfo={productInfoWithAbout} />);
-    const link = screen.getByText('About this dataset').closest('a');
-    expect(link).toHaveAttribute('href', '/about/eac-mooring-array');
-    expect(link).toHaveAttribute('target', '_blank');
+    fireEvent.click(screen.getByText('About this dataset'));
+    expect(window.open).toHaveBeenCalledWith('/about/eac-mooring-array', '_blank', 'noopener,noreferrer');
   });
 
-  it('renders about link with subProduct when on a sub-product route', () => {
+  it('clicking about button opens the correct path with subProduct', () => {
     renderWithRouter(<ProductSummary productInfo={productInfoWithAbout} />, '/product/six-day-sst/sst');
-    const link = screen.getByText('About this dataset').closest('a');
-    expect(link).toHaveAttribute('href', '/about/six-day-sst/sst');
+    fireEvent.click(screen.getByText('About this dataset'));
+    expect(window.open).toHaveBeenCalledWith('/about/six-day-sst/sst', '_blank', 'noopener,noreferrer');
   });
 });

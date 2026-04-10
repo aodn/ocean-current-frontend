@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('About Page', () => {
-  test('about button on product page opens about page in same tab', async ({ page }) => {
+  test('about button on product page has link to about page', async ({ page }) => {
     await page.goto('/product/eac-mooring-array?region=Brisbane');
     await page.waitForLoadState('networkidle');
 
@@ -46,29 +46,18 @@ test.describe('About Page', () => {
     await expect(page.locator('[data-testid="product-sidebar"]')).not.toBeVisible();
   });
 
-  test('"Explore dataset" button links to product page with latest date', async ({ page }) => {
+  test('"Explore dataset" button navigates to product page with latest date', async ({ page }) => {
     await page.goto('/about/eac-mooring-array');
     await page.waitForLoadState('networkidle');
 
-    const exploreButton = page.getByText('Explore dataset');
-    await expect(exploreButton).toBeVisible();
-
-    // Wait for the API to populate region and date in the link
-    const link = exploreButton.locator('xpath=ancestor::a');
-    await expect(link).toHaveAttribute('href', /region=.+&date=\d+/, { timeout: 10000 });
-
-    const href = await link.getAttribute('href');
-    expect(href).toContain('/product/eac-mooring-array');
-  });
-
-  test('"Explore dataset" button navigates to product page', async ({ page }) => {
-    await page.goto('/about/eac-mooring-array');
-    await page.waitForLoadState('networkidle');
+    await expect(page.getByText('Explore dataset')).toBeVisible();
 
     await page.getByText('Explore dataset').click();
     await page.waitForLoadState('networkidle');
 
     expect(page.url()).toContain('/product/eac-mooring-array');
+    // URL should include region and date from latest-dates API
+    expect(page.url()).toMatch(/region=.+&date=\d+/);
   });
 
   test('about page shows error for product without about content', async ({ page }) => {

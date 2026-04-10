@@ -44,11 +44,15 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
           </div>
 
           {aboutButtonText && aboutDescription && aboutPath && (
-            <a href={aboutPath} target="_blank" rel="noopener noreferrer">
-              <Button size="full" borderRadius="small" type="secondary" className="mt-3">
-                <span className="min-w-0 truncate text-imos-dark-grey">{aboutButtonText}</span>
-              </Button>
-            </a>
+            <Button
+              onClick={() => window.open(aboutPath, '_blank', 'noopener,noreferrer')}
+              size="full"
+              borderRadius="small"
+              type="secondary"
+              className="mt-3"
+            >
+              <span className="min-w-0 truncate text-imos-dark-grey">{aboutButtonText}</span>
+            </Button>
           )}
         </div>
 
