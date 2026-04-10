@@ -56,7 +56,7 @@ export const linksData: LinkItem[] = [
         Icon: SurfaceWavesIcon,
         title: 'Surface Waves',
         description: 'Height, direction, and period from modelled and observed surface waves',
-        url: '/map/surface-waves',
+        url: '/product/surface-waves/wave?region=Au',
       },
       {
         id: 'monthlyMeans',
@@ -136,7 +136,7 @@ export const linksData: LinkItem[] = [
         Icon: EACMooringArrayIcon,
         title: 'EAC Mooring Array',
         description: 'Temperature, salinity, velocities, and their anomalies of the East Australian Current at 27.5°S',
-        url: '/map/eac-mooring-array?region=Brisbane',
+        url: '/product/eac-mooring-array?region=Brisbane&date=20220725',
       },
       {
         id: 'fishSOOP',
