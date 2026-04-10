@@ -67,7 +67,7 @@ const Navbar = ({ className }: { className?: string }) => {
           </div>
         </div>
 
-        <div className="flex items-center justify-center capitalize text-black max-md:flex-wrap">
+        <div className="flex items-center justify-center text-black max-md:flex-wrap">
           <div
             onMouseLeave={() => closeNavbarMenu()}
             className="relative flex justify-between gap-3 self-start text-base font-semibold leading-snug text-imos-nav-text max-md:max-w-full max-md:flex-wrap md:gap-8 lg:gap-12 xl:gap-20"
