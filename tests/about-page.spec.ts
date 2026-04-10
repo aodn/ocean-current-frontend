@@ -1,16 +1,17 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('About Page', () => {
-  test('about button on product page has link to about page', async ({ page }) => {
+  test('about button on product page is visible and opens about page in a new tab', async ({ page, context }) => {
     await page.goto('/product/eac-mooring-array?region=Brisbane');
     await page.waitForLoadState('networkidle');
 
     const aboutButton = page.getByText('About EAC mooring array dataset');
     await expect(aboutButton).toBeVisible();
 
-    // The button should be wrapped in a link to the about page
-    const link = aboutButton.locator('xpath=ancestor::a');
-    await expect(link).toHaveAttribute('href', '/about/eac-mooring-array');
+    const [newTab] = await Promise.all([context.waitForEvent('page'), aboutButton.click()]);
+
+    await newTab.waitForLoadState('networkidle');
+    expect(newTab.url()).toContain('/about/eac-mooring-array');
   });
 
   test('about page renders heading and content', async ({ page }) => {
