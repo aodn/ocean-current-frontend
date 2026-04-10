@@ -1,8 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Wide Popup (About dataset)', () => {
+test.describe('About Dataset Button (formerly Wide Popup)', () => {
   test.beforeEach(async ({ page }) => {
-    // Navigate to the EAC Mooring Array product page with the required region
     await page.goto('/product/eac-mooring-array?region=Brisbane');
     await page.waitForLoadState('networkidle');
   });
@@ -12,79 +11,15 @@ test.describe('Wide Popup (About dataset)', () => {
     await expect(aboutButton).toBeVisible();
   });
 
-  test('clicking about button opens the wide popup', async ({ page }) => {
+  test('clicking about button navigates to the about page', async ({ page }) => {
     await page.getByText('About EAC mooring array dataset').click();
+    await page.waitForLoadState('networkidle');
 
-    // Popup title should be visible
-    const popupTitle = page.getByText('EAC Mooring Array (2012-2022)');
-    await expect(popupTitle).toBeVisible();
+    // Should navigate to about page
+    expect(page.url()).toContain('/about/eac-mooring-array');
 
-    // Close button should be visible
-    const closeButton = page.getByRole('button', { name: 'Close' });
-    await expect(closeButton).toBeVisible();
-  });
-
-  test('wide popup contains the article content', async ({ page }) => {
-    await page.getByText('About EAC mooring array dataset').click();
-
-    // Check for key content paragraphs
+    // About page content should be visible
+    await expect(page.getByText('EAC Mooring Array (2012-2022)')).toBeVisible();
     await expect(page.getByText(/The East Australian Current \(EAC\) is the complex/)).toBeVisible();
-
-    // Check for the figure caption
-    await expect(page.getByText(/Figure 1:.*Location of the EAC moorings/)).toBeVisible();
-  });
-
-  test('wide popup can be closed via close button', async ({ page }) => {
-    await page.getByText('About EAC mooring array dataset').click();
-
-    const popupTitle = page.getByText('EAC Mooring Array (2012-2022)');
-    await expect(popupTitle).toBeVisible();
-
-    // Click close button
-    await page.getByRole('button', { name: 'Close' }).click();
-
-    // Popup should be gone
-    await expect(popupTitle).not.toBeVisible();
-  });
-
-  test('wide popup can be closed by clicking outside', async ({ page }) => {
-    await page.getByText('About EAC mooring array dataset').click();
-
-    const popupTitle = page.getByText('EAC Mooring Array (2012-2022)');
-    await expect(popupTitle).toBeVisible();
-
-    // Click the overlay area (top-left corner, outside the popup card)
-    await page.mouse.click(10, 10);
-
-    await expect(popupTitle).not.toBeVisible();
-  });
-
-  test('background is not scrollable when popup is open', async ({ page }) => {
-    await page.getByText('About EAC mooring array dataset').click();
-
-    const bodyPosition = await page.evaluate(() => document.body.style.position);
-    expect(bodyPosition).toBe('fixed');
-  });
-
-  test('background scroll is restored after popup is closed', async ({ page }) => {
-    await page.getByText('About EAC mooring array dataset').click();
-    await page.getByRole('button', { name: 'Close' }).click();
-
-    const bodyPosition = await page.evaluate(() => document.body.style.position);
-    expect(bodyPosition).toBe('');
-  });
-
-  test('popup content is scrollable when content overflows', async ({ page }) => {
-    await page.getByText('About EAC mooring array dataset').click();
-
-    // The scrollable body container
-    const scrollContainer = page.getByTestId('wide-popup-body');
-    await expect(scrollContainer).toBeVisible();
-
-    const scrollHeight = await scrollContainer.evaluate((el) => el.scrollHeight);
-    const clientHeight = await scrollContainer.evaluate((el) => el.clientHeight);
-
-    // Content should overflow (scrollHeight > clientHeight)
-    expect(scrollHeight).toBeGreaterThan(clientHeight);
   });
 });

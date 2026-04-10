@@ -5,7 +5,7 @@ import { useBodyScrollLock, useOutsideClick } from '@/hooks';
 interface WidePopupProps {
   isOpen: boolean;
   onClose: () => void;
-  title?: string;
+  title: string;
   body?: () => JSX.Element;
 }
 

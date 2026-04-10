@@ -1,26 +1,32 @@
 import React, { useState } from 'react';
-import { Button, Popup, WidePopup, TruncateText } from '@/components/Shared';
+import { Button, Popup, TruncateText } from '@/components/Shared';
 import { GeneralText } from '@/constants/textConstant';
 import { ArrowWithTailIcon, InfoIcon } from '@/components/Shared/Icons';
+import { useProductFromUrl, useUrlType } from '@/hooks';
+import { APP_ROUTES } from '@/routers/routes';
 import { ProductSummaryProp } from '../types';
 
 const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isAboutPopupOpen, setIsAboutPopupOpen] = useState(false);
+  const urlType = useUrlType();
+  const productFromUrl = useProductFromUrl(urlType);
+
   if (!productInfo) return null;
-  const { title, summary, description, aboutButtonText, aboutTitle, aboutDescription } = productInfo;
+  const { title, summary, description, aboutButtonText, aboutDescription } = productInfo;
 
   const handlePopup = () => {
     setIsPopupOpen(!isPopupOpen);
   };
 
-  const handleAboutPopup = () => {
-    setIsAboutPopupOpen((prev) => !prev);
-  };
-
   const PopupBody = () => {
     return <div className="p-4">{description()}</div>;
   };
+
+  const aboutPath = productFromUrl
+    ? productFromUrl.subProduct
+      ? `${APP_ROUTES.ABOUT}/${productFromUrl.mainProduct}/${productFromUrl.subProduct}`
+      : `${APP_ROUTES.ABOUT}/${productFromUrl.mainProduct}`
+    : null;
 
   return (
     summary &&
@@ -37,23 +43,16 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
             <ArrowWithTailIcon className="cursor-pointer" />
           </div>
 
-          {aboutButtonText && aboutDescription && (
-            <Button onClick={handleAboutPopup} size="full" borderRadius="small" type="secondary" className="mt-3">
-              <span className="min-w-0 truncate text-imos-dark-grey">{aboutButtonText}</span>
-            </Button>
+          {aboutButtonText && aboutDescription && aboutPath && (
+            <a href={aboutPath} target="_blank" rel="noopener noreferrer">
+              <Button size="full" borderRadius="small" type="secondary" className="mt-3">
+                <span className="min-w-0 truncate text-imos-dark-grey">{aboutButtonText}</span>
+              </Button>
+            </a>
           )}
         </div>
 
         <Popup title={title} body={PopupBody} isOpen={isPopupOpen} onClose={handlePopup} />
-
-        {aboutDescription && isAboutPopupOpen && (
-          <WidePopup
-            title={aboutTitle || title}
-            body={() => aboutDescription() ?? <></>}
-            isOpen={isAboutPopupOpen}
-            onClose={handleAboutPopup}
-          />
-        )}
       </>
     )
   );
