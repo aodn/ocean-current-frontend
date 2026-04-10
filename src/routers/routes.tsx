@@ -1,14 +1,16 @@
 import { Navigate, type RouteObject } from 'react-router';
-import { Home, MapView, DataView, ErrorPage } from '@/pages';
+import { Home, MapView, DataView, ErrorPage, AboutView } from '@/pages';
 import MainLayout from '@/layouts/MainLayout';
 import MapLayout from '@/layouts/MapLayout';
 import DataVisualisationLayout from '@/layouts/DataVisualisationLayout';
+import AboutLayout from '@/layouts/AboutLayout';
 import { createProductRedirects } from './utils';
 
 export const APP_ROUTES = {
   HOME: '/',
   PRODUCT: '/product',
   MAP: '/map',
+  ABOUT: '/about',
   NOT_FOUND: '/404',
 } as const;
 
@@ -58,6 +60,24 @@ const routes: RouteObject[] = [
           {
             path: ':product',
             element: <MapView />,
+          },
+        ],
+      },
+      {
+        path: APP_ROUTES.ABOUT,
+        element: <AboutLayout />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to={APP_ROUTES.NOT_FOUND} replace />,
+          },
+          {
+            path: ':product/:subProduct',
+            element: <AboutView />,
+          },
+          {
+            path: ':product',
+            element: <AboutView />,
           },
         ],
       },

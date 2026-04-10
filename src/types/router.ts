@@ -3,7 +3,7 @@ export interface VideoPlayerOutletContext {
   loading: boolean;
 }
 
-export type UrlType = 'map' | 'product';
+export type UrlType = 'map' | 'product' | 'about';
 
 export enum ProductPath {
   SEAL_CTD = 'seal-ctd',

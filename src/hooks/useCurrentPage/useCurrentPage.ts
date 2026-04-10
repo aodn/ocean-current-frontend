@@ -10,6 +10,7 @@ export function useCurrentPage(): AppRoute {
   if (location.pathname === APP_ROUTES.HOME) return APP_ROUTES.HOME;
   if (location.pathname.startsWith(APP_ROUTES.PRODUCT)) return APP_ROUTES.PRODUCT;
   if (location.pathname.startsWith(APP_ROUTES.MAP)) return APP_ROUTES.MAP;
+  if (location.pathname.startsWith(APP_ROUTES.ABOUT)) return APP_ROUTES.ABOUT;
 
   return APP_ROUTES.NOT_FOUND;
 }

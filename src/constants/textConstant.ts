@@ -8,6 +8,7 @@ export enum GeneralText {
   START_DATE = 'Start Date',
   END_DATE = 'End Date',
   LEGACY_SITE = 'Legacy Site',
+  EXPLORE_DATASET = 'Explore dataset',
 }
 
 export enum ProductSidebarText {
