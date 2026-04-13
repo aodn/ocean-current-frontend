@@ -8,7 +8,7 @@ import { isHourlyFormat, findFirstDateTimeForSelectedDay } from '@/utils/date-ut
 import { findClosestDateIndex, findNearestDateWithinWindow } from '@/utils/date-utils/date';
 import { NEAREST_DATE_SEARCH_CONFIG } from '@/constants/product';
 import { isCurrentYearOptionId } from '@/data/current-meter/sidebarOptions';
-import { setIsProductImageLoading } from '@/stores/product-store/productStore';
+import { setIsDateResolving, setIsProductImageLoading } from '@/stores/product-store/productStore';
 
 type NavigationMode = 'dateList' | 'dateRange';
 
@@ -249,6 +249,7 @@ export const useDateListNavigation = ({
   useEffect(() => {
     if (resolvedDateParam && resolvedDateParam !== resolvedDateRef.current) {
       resolvedDateRef.current = resolvedDateParam;
+      setIsDateResolving(true);
       setSearchParams(
         (prev) => {
           const newParams = new URLSearchParams(prev);
@@ -257,6 +258,8 @@ export const useDateListNavigation = ({
         },
         { replace: true },
       );
+    } else if (!resolvedDateParam) {
+      setIsDateResolving(false);
     }
   }, [resolvedDateParam, setSearchParams]);
 

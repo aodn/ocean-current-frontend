@@ -12,7 +12,7 @@ import { getTidalCurrentsTagsData } from '@/services/tidalCurrents';
 import { useResizeObserver } from '@/hooks';
 import { sharedQueryConfig } from '@/configs/query';
 import useProductStore, { setIsProductImageLoading } from '@/stores/product-store/productStore';
-import { Loading } from '@/components/Shared';
+import { LinearProgress } from '@/components/Shared';
 import { cn } from '@/utils/classname-util/cn';
 import { useTidalCurrentPoint } from '../product-content/hooks/useTidalCurrentPoint';
 
@@ -112,7 +112,11 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
 
   return (
     <div className="relative inline-block h-full w-full bg-white">
-      {isProductImageLoading && <Loading className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />}
+      {isProductImageLoading ? (
+        <LinearProgress className="absolute left-0 right-0 top-0" />
+      ) : (
+        <div className="left-0 right-0 top-0 h-1" />
+      )}{' '}
       <div
         className={cn('relative inline-block h-full w-full bg-white', {
           'invisible opacity-0': isProductImageLoading,

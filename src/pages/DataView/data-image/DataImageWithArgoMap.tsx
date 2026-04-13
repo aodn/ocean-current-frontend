@@ -12,7 +12,7 @@ import { ProductID } from '@/types/product';
 import { DateFormat } from '@/types/date';
 import { useResizeObserver } from '@/hooks';
 import useProductStore, { setIsProductImageLoading } from '@/stores/product-store/productStore';
-import { Loading } from '@/components/Shared';
+import { LinearProgress } from '@/components/Shared';
 import { cn } from '@/utils/classname-util/cn';
 
 type DataImageWithArgoMapProps = {
@@ -42,6 +42,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   const [tooltip, setTooltip] = useState<TooltipState>(null);
   const { mainProduct } = useProductConvert();
   const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
+  const isDateResolving = useProductStore((state) => state.isDateResolving);
   // Non-Tidal SLA product images use HOUR format but its tag file uses DAY format
   const tagDateFormat = productId === 'adjustedSeaLevelAnomaly-nonTidalSla' ? DateFormat.DAY : dateFormat;
   const { data } = useImageTags({ date, tagPath: argoTagFilePath, regionCode, dateFormat: tagDateFormat });
@@ -122,14 +123,24 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
     };
   }, [data, dateFormatted, handleLoad, src]);
 
+  //TODO: in same product, when select reigion, still see error image becaue, find neraest date is run again and date moved.
+
+  if (isDateResolving) {
+    return <LinearProgress className="absolute left-0 right-0 top-0" />;
+  }
+
   if (imgLoadError) {
     return <ErrorImage productId={mainProduct!.key} date={date} />;
   }
 
   return (
     <div className="relative inline-block h-full w-full bg-white">
-      {isProductImageLoading && <Loading className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />}
-      <div className={cn('relative inline-block h-full w-full', { 'invisible opacity-0': isProductImageLoading })}>
+      {isProductImageLoading ? (
+        <LinearProgress className="absolute left-0 right-0 top-0" />
+      ) : (
+        <div className="left-0 right-0 top-0 h-1" />
+      )}
+      <div className={cn('relative inline-block h-full w-full')}>
         <img
           ref={imgRef}
           src={src}
