@@ -2,6 +2,7 @@ import Button from './Button/Button';
 import Dropdown from './Dropdown/Dropdown';
 import Slider from './Slider/Slider';
 import Loading from './Loading/Loading';
+import LinearProgress from './LinearProgress/LinearProgress';
 import Popup from './Popup/Popup';
 import ToggleButton from './ToggleButton/ToggleButton';
 import TruncateText from './TruncateText/TruncateText';
@@ -10,5 +11,16 @@ import ShareButton from './ShareButton/ShareButton';
 
 export * from './Collapsible';
 
-export { Button, Dropdown, Slider, Loading, Popup, ToggleButton, TruncateText, LinkOrAnchor, ShareButton };
+export {
+  Button,
+  Dropdown,
+  Slider,
+  Loading,
+  LinearProgress,
+  Popup,
+  ToggleButton,
+  TruncateText,
+  LinkOrAnchor,
+  ShareButton,
+};
 export * from './Overlay/Overlay';

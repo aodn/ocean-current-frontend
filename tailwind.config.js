@@ -59,6 +59,15 @@ export default {
       },
       height: { 18: '4.5rem' },
       borderWidth: { 1: '1px' },
+      keyframes: {
+        'linear-progress': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(300%)' },
+        },
+      },
+      animation: {
+        'linear-progress': 'linear-progress 1.4s ease-in-out infinite',
+      },
     },
   },
   plugins: [],
