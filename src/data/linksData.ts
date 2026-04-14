@@ -69,7 +69,7 @@ export const linksData: LinkItem[] = [
         id: 'sixDaySst-climatology',
         Icon: ClimatologyIcon,
         title: 'Climatology',
-        description: 'SSTAARS climatology',
+        description: 'Maps of SST and Adj SLA climatological values',
         url: '/product/six-day-sst/climatology',
       },
       {
