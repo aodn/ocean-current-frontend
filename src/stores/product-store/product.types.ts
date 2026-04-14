@@ -11,6 +11,7 @@ type ProductParamState = {
 export type State = {
   productParams: ProductParamState;
   isProductImageLoading: boolean;
+  isDateResolving: boolean;
 };
 
 export type Actions = {
@@ -21,5 +22,6 @@ export type Actions = {
     setRegionScope: (regionScope: RegionScope) => void;
     setRegionTitle: (regionTitle: string) => void;
     setIsProductImageLoading: (isLoading: boolean) => void;
+    setIsDateResolving: (isResolving: boolean) => void;
   };
 };

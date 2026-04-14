@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import useProductStore, { setIsProductImageLoading } from '@/stores/product-store/productStore';
-import { Loading } from '@/components/Shared';
+import { LinearProgress } from '@/components/Shared';
 import { cn } from '@/utils/classname-util/cn';
 
 interface DataImageProps {
@@ -26,7 +26,11 @@ const DataImage: React.FC<DataImageProps> = ({ src, onError }) => {
 
   return (
     <div className="relative h-full bg-white">
-      {isProductImageLoading && <Loading className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />}
+      {isProductImageLoading ? (
+        <LinearProgress className="absolute left-0 right-0 top-0" />
+      ) : (
+        <div className="h-1 w-full" />
+      )}
       <img
         ref={imgRef}
         className={cn('max-h-[80vh] w-full select-none object-contain', {

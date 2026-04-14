@@ -11,6 +11,7 @@ const initialState: State = {
     regionTitle: 'Au',
   },
   isProductImageLoading: true,
+  isDateResolving: true, // when finish finding the nearest date for the given date param, set it to false.
 };
 
 const useProductStore = create<State & Actions>()(
@@ -50,11 +51,18 @@ const useProductStore = create<State & Actions>()(
         ),
       setIsProductImageLoading: (isLoading: boolean) =>
         set({ isProductImageLoading: isLoading }, false, 'setIsProductImageLoading'),
+      setIsDateResolving: (isResolving: boolean) => set({ isDateResolving: isResolving }, false, 'setIsDateResolving'),
     },
   })),
 );
 
-export const { setProductId, setRegionScope, setRegionTitle, setRegionCode, setIsProductImageLoading } =
-  useProductStore.getState().actions;
+export const {
+  setProductId,
+  setRegionScope,
+  setRegionTitle,
+  setRegionCode,
+  setIsProductImageLoading,
+  setIsDateResolving,
+} = useProductStore.getState().actions;
 
 export default useProductStore;
