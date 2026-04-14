@@ -90,6 +90,8 @@ const EACMooringArrayAboutData = () => {
         <img
           src="/resource/EAC_fig_ADCP.gif"
           alt="EAC mooring array Figure 1: (a) Location of the EAC moorings; (b) Vertical distribution of instruments at each mooring"
+          loading="lazy"
+          decoding="async"
           className="w-full rounded"
         />
         <p className="text-sm leading-normal text-imos-dark-grey">
@@ -128,6 +130,8 @@ const ArgoAboutData = () => {
         <img
           src="/resource/profiles/map/20110920.gif"
           alt="Example Argo position map for 20 September 2011"
+          loading="lazy"
+          decoding="async"
           className="w-full rounded"
         />
       </a>
@@ -153,6 +157,8 @@ const ArgoAboutData = () => {
         <img
           src="/resource/profiles/5903622/20110915_5903622_44.gif"
           alt="Example Argo profile plot for float 5903622, cycle 44, 15 September 2011"
+          loading="lazy"
+          decoding="async"
           className="w-full rounded"
         />
       </a>
@@ -255,6 +261,8 @@ const ArgoAboutData = () => {
         <img
           src="/resource/profiles/5903677/20110725_5903677_12.gif"
           alt="Example Argo profile showing a submerged mixed layer, float 5903677, 25 July 2011"
+          loading="lazy"
+          decoding="async"
           className="w-full rounded"
         />
       </a>
@@ -295,6 +303,8 @@ const ArgoAboutData = () => {
         <img
           src="/resource/profiles/5901658/20110919_5901658_126.gif"
           alt="Example Argo profile showing disagreement between synTS and Argo, float 5901658, 19 September 2011"
+          loading="lazy"
+          decoding="async"
           className="w-full rounded"
         />
       </a>

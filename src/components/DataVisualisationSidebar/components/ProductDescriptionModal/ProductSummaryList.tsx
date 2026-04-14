@@ -67,7 +67,7 @@ export const productInfoList: ProductInfo[] = [
     summary:
       'Temperature and salinity data from the selected float compared with satellite-adjusted climatology, down to 2000m in the Australian region.',
     description: ArgoModalData,
-    aboutButtonText: 'About Argo profiles dataset',
+    aboutButtonText: 'About Argo profiles',
     aboutTitle: "Argo temperature and salinity down to 2000m - what's shown",
     aboutDescription: ArgoAboutData,
   },
