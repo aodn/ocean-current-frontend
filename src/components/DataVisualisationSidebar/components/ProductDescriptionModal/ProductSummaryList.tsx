@@ -10,7 +10,7 @@ import {
   TidalCurrentsModalData,
   SealCtdModalData,
 } from '@/components/DataVisualisationSidebar/components/ProductDescriptionModal/ProductDescriptionData';
-import { EACMooringArrayAboutData } from '@/pages/AboutView/AboutData';
+import { EACMooringArrayAboutData, ArgoAboutData } from '@/pages/AboutView/AboutData';
 import { ProductInfo } from '../../types';
 
 export const productInfoList: ProductInfo[] = [
@@ -67,6 +67,9 @@ export const productInfoList: ProductInfo[] = [
     summary:
       'Temperature and salinity data from the selected float compared with satellite-adjusted climatology, down to 2000m in the Australian region.',
     description: ArgoModalData,
+    aboutButtonText: 'About Argo profiles dataset',
+    aboutTitle: "Argo temperature and salinity down to 2000m - what's shown",
+    aboutDescription: ArgoAboutData,
   },
   {
     id: 'tidalCurrents',
