@@ -115,13 +115,9 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
       {isProductImageLoading ? (
         <LinearProgress className="absolute left-0 right-0 top-0" />
       ) : (
-        <div className="left-0 right-0 top-0 h-1" />
-      )}{' '}
-      <div
-        className={cn('relative inline-block h-full w-full bg-white', {
-          'invisible opacity-0': isProductImageLoading,
-        })}
-      >
+        <div className="h-1 w-full" />
+      )}
+      <div className={cn('relative inline-block h-full w-full bg-white')}>
         <img
           ref={imgRef}
           src={src}

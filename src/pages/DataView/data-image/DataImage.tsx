@@ -29,8 +29,8 @@ const DataImage: React.FC<DataImageProps> = ({ src, onError }) => {
       {isProductImageLoading ? (
         <LinearProgress className="absolute left-0 right-0 top-0" />
       ) : (
-        <div className="left-0 right-0 top-0 h-1" />
-      )}{' '}
+        <div className="h-1 w-full" />
+      )}
       <img
         ref={imgRef}
         className={cn('max-h-[80vh] w-full select-none object-contain', {
