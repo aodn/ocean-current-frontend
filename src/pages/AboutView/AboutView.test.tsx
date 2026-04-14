@@ -68,6 +68,13 @@ describe('AboutView', () => {
     expect(screen.getByText('About Content Not Available')).toBeInTheDocument();
   });
 
+  it('renders about content for the Argo profiles product', () => {
+    renderWithRoute('/about/argo');
+
+    expect(screen.getByText("Argo temperature and salinity down to 2000m - what's shown")).toBeInTheDocument();
+    expect(screen.getByText(/show floats that reported data within a few days/)).toBeInTheDocument();
+  });
+
   it('renders error state for a sub-product route without about content', () => {
     renderWithRoute('/about/six-day-sst/sst');
 

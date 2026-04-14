@@ -111,13 +111,13 @@ const ArgoAboutData = () => {
   return (
     <div className="space-y-4 text-base leading-relaxed text-imos-nav-text">
       <p>
-        The Argo like the example below show floats that reported data within a few days of the indicated date. The
-        colour-fill of the float indicates the difference between the float&apos;s estimate of steric height anomaly
-        (relative to 1000m) and the satellite altimeters&apos; estimate of the sea level anomaly (relative to the
-        long-term mean, see panel 5 discussion below). Green signals that both observing systems are in agreement, while
-        blue or red indicates that there might be a problem we need to investigate. Unfilled circles indicate floats
-        that did not produce useful data to at least 1000m. The [PREV] button will go back several years. The [DATE
-        INDEX] goes back to 2004.
+        The Argo position maps, like the example below, show floats that reported data within a few days of the
+        indicated date. The colour-fill of the float indicates the difference between the float&apos;s estimate of
+        steric height anomaly (relative to 1000m) and the satellite altimeters&apos; estimate of the sea level anomaly
+        (relative to the long-term mean, see panel 5 discussion below). Green signals that both observing systems are in
+        agreement, while blue or red indicates that there might be a problem we need to investigate. Unfilled circles
+        indicate floats that did not produce useful data to at least 1000m. The [PREV] button will go back several
+        years. The [DATE INDEX] goes back to 2004.
       </p>
       <a
         href="https://oceancurrent.aodn.org.au/profiles/map.php?link=map/20110920.html"
@@ -168,7 +168,7 @@ const ArgoAboutData = () => {
         <li>
           The seasonal ocean climatology to which the Argo data is compared is{' '}
           <a
-            href="http://www.marine.csiro.au/~dunn/cars2009/"
+            href="https://www.marine.csiro.au/~dunn/cars2009/"
             target="_blank"
             rel="noreferrer noopener"
             className="text-imos-sea-blue"
@@ -203,7 +203,7 @@ const ArgoAboutData = () => {
           ).
         </li>
       </ol>
-      <h5 className="font-semibold">Panels 1 and 2 (from left)</h5>
+      <p className="font-semibold">Panels 1 and 2 (from left)</p>
       <p>
         The <strong>black</strong> lines are the fast delivery versions of the Argo float&apos;s temperature and
         salinity observations. <strong>Linetypes:</strong> dotted=raw data, dashed=QC&apos;d raw data,
@@ -213,20 +213,20 @@ const ArgoAboutData = () => {
         at the location of the Argo float. In the example above, Argo and synTS are in near-perfect agreement that the
         ocean is colder than normal all the way to 2000m and fresher than normal down to 1000m.
       </p>
-      <h5 className="font-semibold">Panel 3</h5>
+      <p className="font-semibold">Panel 3</p>
       <p>
         These lines show differences from the climatological profiles, of both temperature and salinity. The Argo T, S
         and P data are only those that pass the fast delivery QC, i.e. flags 1, 2 or 5. Dashed lines are the original
         instrument data, solid lines are adjusted (by the PI), e.g. for known calibration error.
       </p>
-      <h5 className="font-semibold">Panel 4</h5>
+      <p className="font-semibold">Panel 4</p>
       <p>
         This shows the AMSR-E (Advanced Microwave Scanning Radiometer, which has only coarse spatial resolution but sees
         through cloud) three-day average sea surface temperature to show the regional context of the Argo profile. The
         surface-most Argo observation is encoded within the symbol for comparison with the satellite. The colour bar
         (not shown) is 6K wide and is centered on the climatological value at the float&apos;s location.
       </p>
-      <h5 className="font-semibold">Panel 5</h5>
+      <p className="font-semibold">Panel 5</p>
       <p>
         This shows the altimetric sea level anomaly (colour bar is -0.6 to 0.6m) for comparison with h1000, the surface
         steric height anomaly relative to 1000m. These are different quantities, the first estimated at coarse
@@ -237,7 +237,7 @@ const ArgoAboutData = () => {
         particular float sampled to nearly 2000m so h2000, the steric height anomaly relative to 2000m, has also been
         calculated and this value (-0.48m) is even closer to the altimetric estimate (-0.51m) than h1000 (-0.4m).
       </p>
-      <h4 className="text-base font-semibold">Example 2: A submerged mixed layer</h4>
+      <h3 className="text-base font-semibold">Example 2: A submerged mixed layer</h3>
       <p>
         It is not usually as easy as it was for the example above to estimate the subsurface properties of the ocean
         from satellite data. This is illustrated by the plot below, which describes a relatively warm, but salty and
@@ -258,7 +258,7 @@ const ArgoAboutData = () => {
           className="w-full rounded"
         />
       </a>
-      <h4 className="text-base font-semibold">Example 3: disagreement of Argo and synTS</h4>
+      <h3 className="text-base font-semibold">Example 3: disagreement of Argo and synTS</h3>
       <p>
         We&apos;re not yet sure why the image below shows so much disagreement between synTS and Argo. The synTS
         estimate of the vertical structure of the warm (and slightly salty) anomaly is confirmed by Argo but the synTS
