@@ -38,6 +38,7 @@ export const productsData: HomeProductData[] = [
     id: 'sealCtd-sealTracks',
     mainProduct: 'sealCtd',
     subProduct: 'sealCtd-sealTracks',
-    description: 'Temperature and Salinity Profiles from Ocean Mammals',
+    description:
+      'Maps of SST and ice coverage combined with locations of temperature and salinity profiles measured by Argo floats and animal-borne sensors.',
   },
 ];
