@@ -30,7 +30,7 @@ const NEWS_DATA = [
 
 export const HomeNews = () => {
   return (
-    <div className="m-auto w-full max-w-7xl">
+    <div className="m-auto w-full max-w-8xl">
       <h2 className="mb-4 px-2 font-open-sans text-3xl font-medium text-imos-dark-grey md:mb-8 md:text-4xl">
         {News.ALL_NEWS}
       </h2>
