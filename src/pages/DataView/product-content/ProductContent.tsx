@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useOutletContext } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
 import {
   buildArgoImageUrl,
   buildCurrentMetersMapImageUrl,
@@ -15,6 +16,7 @@ import { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import { Loading } from '@/components/Shared';
 import { checkProductHasSubProduct } from '@/utils/product-utils/product';
 import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
+import { sharedQueryConfig } from '@/configs/query';
 import { VideoPlayerOutletContext } from '@/types/router';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import { CurrentMetersSubProductsKey } from '@/constants/currentMeters';
@@ -155,16 +157,19 @@ const ProductContent: React.FC = () => {
     useArgoProfileCycles,
   ]);
 
-  // Fetch Argo profile cycles
+  // Fetch Argo profile cycles — shares cache with useDateList and WmoSection via the same query key
+  const { data: argoProfileCyclesData } = useQuery({
+    queryKey: ['argoDateList', argoParams.worldMeteorologicalOrgId],
+    queryFn: () => fetchArgoProfileCyclesByWmoId(argoParams.worldMeteorologicalOrgId),
+    enabled: productChecks.isArgo && !!argoParams.worldMeteorologicalOrgId,
+    ...sharedQueryConfig,
+  });
+
   useEffect(() => {
-    const getArgoProfileCycles = async (wmoId: string) => {
-      const data = await fetchArgoProfileCyclesByWmoId(wmoId);
-      setArgoProfileCycles(data);
-    };
-    if (productChecks.isArgo && argoParams.worldMeteorologicalOrgId) {
-      getArgoProfileCycles(argoParams.worldMeteorologicalOrgId);
+    if (argoProfileCyclesData) {
+      setArgoProfileCycles(argoProfileCyclesData);
     }
-  }, [productChecks.isArgo, argoParams.worldMeteorologicalOrgId]);
+  }, [argoProfileCyclesData]);
 
   // Early returns for error/loading states
   if (productChecks.isArgo && !argoParams.worldMeteorologicalOrgId) {
