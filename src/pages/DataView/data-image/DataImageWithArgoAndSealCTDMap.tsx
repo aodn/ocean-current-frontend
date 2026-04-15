@@ -33,7 +33,8 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
   const [sealData, setSealData] = useState<MapImageAreas[]>([]);
   const [argoCoords, setArgoCoords] = useState<ImageTagMapArea[]>([]);
   const [sealCoords, setSealCoords] = useState<MapImageAreas[]>([]);
-  const [imgLoadError, setImgLoadError] = useState<string | null>(null);
+  const [imgErrorSrc, setImgErrorSrc] = useState<string | null>(null);
+  const imgLoadError = imgErrorSrc === src;
   const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
 
   const handleLoad = useCallback(() => {
@@ -99,10 +100,6 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
   useResizeObserver('window', handleLoad);
 
   useEffect(() => {
-    setImgLoadError(null);
-  }, [src]);
-
-  useEffect(() => {
     const fetchTagsData = async () => {
       const mapTags = await getSealCtdMapTags(regionCode, formattedDate);
       if (mapTags) {
@@ -165,7 +162,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
           className="max-h-[80vh] w-full select-none object-contain"
           onError={() => {
             setIsProductImageLoading(false);
-            setImgLoadError('Image not available');
+            setImgErrorSrc(src);
           }}
         />
         <map name="argo-and-seal-tag-map">

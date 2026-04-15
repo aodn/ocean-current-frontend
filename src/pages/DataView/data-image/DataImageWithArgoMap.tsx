@@ -10,7 +10,7 @@ import { RegionScope } from '@/constants/region';
 import { useImageTags } from '@/services/hooks';
 import { ProductID } from '@/types/product';
 import { DateFormat } from '@/types/date';
-import { useResizeObserver } from '@/hooks';
+import { useDateList, useResizeObserver } from '@/hooks';
 import useProductStore, { setIsProductImageLoading } from '@/stores/product-store/productStore';
 import { LinearProgress } from '@/components/Shared';
 import { cn } from '@/utils/classname-util/cn';
@@ -38,7 +38,9 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   const dateFormatted = dayjs(date).format(dateFormat);
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [coords, setCoords] = useState<ImageTagMapArea[]>([]);
-  const [imgLoadError, setImgLoadError] = useState<string | null>(null);
+  // Track which src caused the error so stale errors from the previous src don't flash.
+  const [imgErrorSrc, setImgErrorSrc] = useState<string | null>(null);
+  const imgLoadError = imgErrorSrc === src;
   const [tooltip, setTooltip] = useState<TooltipState>(null);
   const { mainProduct } = useProductConvert();
   const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
@@ -46,6 +48,8 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   // Non-Tidal SLA product images use HOUR format but its tag file uses DAY format
   const tagDateFormat = productId === 'adjustedSeaLevelAnomaly-nonTidalSla' ? DateFormat.DAY : dateFormat;
   const { data } = useImageTags({ date, tagPath: argoTagFilePath, regionCode, dateFormat: tagDateFormat });
+
+  const { isLoading: isDateListLoading } = useDateList({ productId, mode: 'list' });
 
   const handleLoad = useCallback(() => {
     setIsProductImageLoading(false);
@@ -98,10 +102,6 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   useResizeObserver('window', handleLoad);
 
   useEffect(() => {
-    setImgLoadError(null);
-  }, [src]);
-
-  useEffect(() => {
     let imgElement: HTMLImageElement | null = imgRef.current;
     // Ensure imgRef.current is not null and handle cached images that may not trigger onLoad
     const timoutId = setTimeout(() => {
@@ -123,13 +123,16 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
     };
   }, [data, dateFormatted, handleLoad, src]);
 
-  //TODO: in same product, when select reigion, still see error image becaue, find neraest date is run again and date moved.
-
   if (isDateResolving) {
     return <LinearProgress className="absolute left-0 right-0 top-0" />;
   }
 
   if (imgLoadError) {
+    // Date list is still loading — a valid date may be determined shortly.
+    // Show LinearProgress instead of ErrorImage to avoid a misleading error state.
+    if (isDateListLoading) {
+      return <LinearProgress className="absolute left-0 right-0 top-0" />;
+    }
     return <ErrorImage productId={mainProduct!.key} date={date} />;
   }
 
@@ -149,7 +152,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
           className="max-h-[80vh] select-none object-contain"
           onError={() => {
             setIsProductImageLoading(false);
-            setImgLoadError('Image not available');
+            setImgErrorSrc(src);
           }}
         />
         <map name="argo-tag-map">

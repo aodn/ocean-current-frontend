@@ -33,13 +33,10 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
   const regionArr = currentMetersRegionAreasMap[regionCode];
   const [_, setSearchParams] = useSearchParams();
   const imgRef = useRef<HTMLImageElement | null>(null);
-  const [imgLoadError, setImgLoadError] = useState<string | null>(null);
+  const [imgErrorSrc, setImgErrorSrc] = useState<string | null>(null);
+  const imgLoadError = imgErrorSrc === src;
   const [areas, setAreas] = useState<MapImageAreas[]>(regionArr);
   const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
-
-  useEffect(() => {
-    if (!src) setImgLoadError('Missing Image');
-  }, [src]);
 
   const handleImageLoad = useCallback(() => {
     setIsProductImageLoading(false);
@@ -70,7 +67,7 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
     };
   }, [src, date, handleImageLoad]);
 
-  if (imgLoadError) {
+  if (!src || imgLoadError) {
     return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
   }
 
@@ -120,7 +117,7 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
           className="max-h-[80vh] select-none object-contain"
           onError={() => {
             setIsProductImageLoading(false);
-            setImgLoadError('Image not available');
+            setImgErrorSrc(src);
           }}
         />
         <map name="current-meters-map">
