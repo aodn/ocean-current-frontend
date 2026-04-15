@@ -20,6 +20,7 @@ export enum ProductSidebarText {
   PROPERTY = 'Property',
   DEPLOYMENT_PLOT = 'Deployment Plot',
   ARGO_PROFILES = 'Argo Profiles',
+  WMO = 'WMO',
 }
 
 export enum ProductMenubarText {
@@ -33,11 +34,12 @@ export enum ProductMenubarText {
   ANIMATION_SPEED = 'Animation Speed',
   SIX_DAY_SST_TIMESERIES_DATE = '1993 - latest',
   SELECT_REGION = 'Select Region',
+  WMO_NUMBER = 'WMO number',
 }
 
 export enum News {
   NEWS = 'News',
-  ALL_NEWS = 'All news',
+  ALL_NEWS = "Read What's new",
 }
 
 export enum FooterText {

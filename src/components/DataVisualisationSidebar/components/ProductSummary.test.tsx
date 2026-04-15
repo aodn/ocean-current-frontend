@@ -71,9 +71,9 @@ describe('ProductSummary', () => {
     expect(window.open).toHaveBeenCalledWith('/about/eac-mooring-array', '_blank', 'noopener,noreferrer');
   });
 
-  it('clicking about button opens the correct path with subProduct', () => {
+  it('clicking about button opens the main product path even when on a sub-product', () => {
     renderWithRouter(<ProductSummary productInfo={productInfoWithAbout} />, '/product/six-day-sst/sst');
     fireEvent.click(screen.getByText('About this dataset'));
-    expect(window.open).toHaveBeenCalledWith('/about/six-day-sst/sst', '_blank', 'noopener,noreferrer');
+    expect(window.open).toHaveBeenCalledWith('/about/six-day-sst', '_blank', 'noopener,noreferrer');
   });
 });

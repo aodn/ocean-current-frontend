@@ -25,6 +25,7 @@ import MiniMap from './components/MiniMap';
 import ProductDropdown from './components/ProductDropdown';
 import CurrentMetersFilters from './components/CurrentMetersFilters';
 import { dataSources, getProductInfoByKey } from './utils';
+import WmoSection from './components/WmoSection';
 import ArgoFilters from './components/ArgoFilters';
 import ProductSummary from './components/ProductSummary';
 import SubProductOptions from './components/SubProductOptions';
@@ -129,6 +130,12 @@ const ProductSideBar: React.FC = () => {
         {filteredDataSources.length > 0 && (
           <CollapsibleSection title={ProductSidebarText.DATA_SOURCES}>
             <DataSources filteredDataSources={filteredDataSources} />
+          </CollapsibleSection>
+        )}
+
+        {isArgo && (
+          <CollapsibleSection title={ProductSidebarText.WMO}>
+            <WmoSection />
           </CollapsibleSection>
         )}
 

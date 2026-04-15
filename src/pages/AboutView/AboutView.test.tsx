@@ -81,4 +81,11 @@ describe('AboutView', () => {
     expect(screen.getByText('About Content Not Available')).toBeInTheDocument();
     expect(screen.queryByText('Explore dataset')).not.toBeInTheDocument();
   });
+
+  it('renders about content for the current meters product', () => {
+    renderWithRoute('/about/current-meters');
+
+    expect(screen.getByText('Definitions and revisions')).toBeInTheDocument();
+    expect(screen.getByText(/Acoustic Doppler Current Profiler/)).toBeInTheDocument();
+  });
 });

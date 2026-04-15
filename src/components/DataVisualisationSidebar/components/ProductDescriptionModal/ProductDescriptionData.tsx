@@ -484,7 +484,7 @@ const TidalCurrentsModalData = () => {
         </a>
         (see the &apos;Tidal streams&apos; button):
       </p>
-      <ol className="list-decimal pl-5 font-sans leading-relaxed text-gray-800">
+      <ol className="list-decimal pl-5 font-open-sans leading-relaxed text-gray-800">
         <li>
           the
           <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P34/mapst/01_Aust_M2_1.html" className="oc-link">
@@ -1233,19 +1233,19 @@ const SealCtdModalData = () => {
 const SurfaceWaveModalData = () => {
   return (
     <div>
-      <p className="font-sans leading-relaxed text-gray-800">
+      <p className="font-open-sans leading-relaxed text-gray-800">
         The map represents a snapshot of surface wave conditions around Australia.
       </p>
-      <p className="font-sans leading-relaxed text-gray-800">
+      <p className="font-open-sans leading-relaxed text-gray-800">
         The background wavefield (significant wave height and peak wave direction) is extracted from the analysis
         timestep t0 of BoM&apos;s AUSWAVE-R model. This wavefield is generated at 2-hourly analysis timesteps of the
         AUSWAVE-R model. The small black arrows represent peak wave direction.
       </p>
-      <p className="font-sans leading-relaxed text-gray-800">
+      <p className="font-open-sans leading-relaxed text-gray-800">
         Wave observations from various sources centred around t0 are also displayed on the map when available. These
         observations are:
       </p>
-      <ul className="list-disc pl-5 font-sans leading-relaxed text-gray-800">
+      <ul className="list-disc pl-5 font-open-sans leading-relaxed text-gray-800">
         <li>
           Wave measurements from Australia&apos;s coastal wave buoy network at t0 +/- 3 hrs, extracted from AODN&apos;s
           near real time feed of the national waverider buoys observations.
@@ -1272,14 +1272,14 @@ const SurfaceWaveModalData = () => {
           limitation in mind.
         </li>
       </ul>
-      <p className="font-sans leading-relaxed text-gray-800">
+      <p className="font-open-sans leading-relaxed text-gray-800">
         The significant wave height is the average height of the highest third of the waves. Maximum wave heights of
         twice the significant wave height can be expected about three times in 24 hours.
       </p>
 
-      <h3 className="my-2 font-sans text-2xl font-medium text-gray-800">Legend</h3>
+      <h3 className="my-2 font-open-sans text-2xl font-medium text-gray-800">Legend</h3>
 
-      <p className="font-sans leading-relaxed text-gray-800">
+      <p className="font-open-sans leading-relaxed text-gray-800">
         Wave buoy: circle near Australian coastline at location of wave buoy displaying measurement in the window t0 +/-
         3 hrs. The colour shown inside the circles (colourbar) represents significant wave height (SWH). The wedge in
         the middle indicates wave direction, with the wave coming from the broad side of wedge. The wedge thickness
@@ -1290,20 +1290,20 @@ const SurfaceWaveModalData = () => {
         maximum wave height.
       </p>
 
-      <p className="font-sans leading-relaxed text-gray-800">
+      <p className="font-open-sans leading-relaxed text-gray-800">
         Altimeter pass: two parallel lines (along satellite track) with small pink dots in the centre represent
         satellite altimeter passes in the window t0 +/- 3 hr. The colour within the lines indicates corrected altimeter
         SWH.
       </p>
 
-      <p className="font-sans leading-relaxed text-gray-800">
+      <p className="font-open-sans leading-relaxed text-gray-800">
         SAR pass: a circle filled with white, grey, or black colour represents SAR mean wave period (T<sub>z</sub>)
         regimes of T<sub>z</sub> ≤ 8, 8 &lt; T<sub>z</sub>≤ 12, T<sub>z</sub> &gt; 12, respectively. The arrow connected
         to the circle represents the peak wave direction.
       </p>
 
-      <h3 className="my-2 font-sans text-2xl font-medium text-gray-800">Data sources</h3>
-      <ol className="list-decimal pl-5 font-sans leading-relaxed text-gray-800">
+      <h3 className="my-2 font-open-sans text-2xl font-medium text-gray-800">Data sources</h3>
+      <ol className="list-decimal pl-5 font-open-sans leading-relaxed text-gray-800">
         <li>
           <a href="http://www.bom.gov.au/nwp/doc/auswave/data.shtml" className="text-blue-500">
             BOM&apos;s AUSWAVE analysis 0000 timestep
