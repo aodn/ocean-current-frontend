@@ -50,5 +50,6 @@ export enum FooterText {
 
 export enum ExternalUrls {
   IMOS = 'https://imos.org.au/',
+  OCEAN_CURRENT_NEWS = 'https://imos.org.au/news/category/imos-oceancurrent-facility-news',
   OCEAN_CURRENT_LEGACY = 'https://oceancurrent.aodn.org.au/',
 }
