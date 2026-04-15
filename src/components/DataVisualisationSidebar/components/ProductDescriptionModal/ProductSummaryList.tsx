@@ -85,8 +85,9 @@ export const productInfoList: ProductInfo[] = [
       "The overview map is your entry point to a series of maps showing a few properties of Australia's ocean currents: mean (all-time, annual and seasonal), standard deviation for various layers and time-windows, and tidal harmonics for the depth-average flow.",
     description: CurrentMetersModalData,
     aboutButtonText: 'Definitions and revisions',
-    aboutTitle: 'IMOS current meters on coastal and deep water moorings around Australia',
+    aboutTitle: 'Definitions and revisions',
     aboutDescription: CurrentMetersAboutData,
+    aboutMainProductOnly: true,
   },
   {
     id: 'sealCtd',

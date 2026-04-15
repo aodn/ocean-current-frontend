@@ -12,7 +12,7 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
   const productFromUrl = useProductFromUrl(urlType);
 
   if (!productInfo) return null;
-  const { title, summary, description, aboutButtonText, aboutDescription } = productInfo;
+  const { title, summary, description, aboutButtonText, aboutDescription, aboutMainProductOnly } = productInfo;
 
   const handlePopup = () => {
     setIsPopupOpen(!isPopupOpen);
@@ -23,7 +23,7 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
   };
 
   const aboutPath = productFromUrl
-    ? productFromUrl.subProduct
+    ? productFromUrl.subProduct && !aboutMainProductOnly
       ? `${APP_ROUTES.ABOUT}/${productFromUrl.mainProduct}/${productFromUrl.subProduct}`
       : `${APP_ROUTES.ABOUT}/${productFromUrl.mainProduct}`
     : null;
