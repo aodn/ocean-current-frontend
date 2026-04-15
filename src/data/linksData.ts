@@ -1,4 +1,5 @@
 import { LinkItem } from '@/types/navbar';
+import { ExternalUrls } from '@/constants/textConstant';
 import {
   OceanColourIcon,
   AdjustedSeaLevelAnomalyIcon,
@@ -149,7 +150,7 @@ export const linksData: LinkItem[] = [
   },
   {
     title: 'News',
-    url: 'https://imos.org.au/news/category/imos-oceancurrent',
+    url: ExternalUrls.OCEAN_CURRENT_NEWS,
   },
   {
     title: 'Guided Tour',

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { resetArgoStore } from '@/stores/argo-store/argoStore';
 import { resetMapStore } from '@/stores/map-store/mapStore';
-import { BrandingText, News } from '@/constants/textConstant';
+import { BrandingText, ExternalUrls, News } from '@/constants/textConstant';
 import { Button } from '@/components/Shared';
 import HomeMapCarousel from './home-map-carousel/HomeMapCarousel';
 import HomeProductCarousel from './home-product-carousel/HomeProductCarousel';
@@ -40,7 +40,7 @@ const Home: React.FC = () => {
           </h2>
           <Button
             type="tertiary"
-            onClick={() => window.open('https://imos.org.au/news/category/imos-oceancurrent', '_blank')}
+            onClick={() => window.open(ExternalUrls.OCEAN_CURRENT_NEWS, '_blank')}
             className="h-12 min-w-40 self-center text-2xl"
           >
             {News.ALL_NEWS}
