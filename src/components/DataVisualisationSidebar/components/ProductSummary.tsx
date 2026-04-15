@@ -22,11 +22,7 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
     return <div className="p-4">{description()}</div>;
   };
 
-  const aboutPath = productFromUrl
-    ? productFromUrl.subProduct
-      ? `${APP_ROUTES.ABOUT}/${productFromUrl.mainProduct}/${productFromUrl.subProduct}`
-      : `${APP_ROUTES.ABOUT}/${productFromUrl.mainProduct}`
-    : null;
+  const aboutPath = productFromUrl ? `${APP_ROUTES.ABOUT}/${productFromUrl.mainProduct}` : null;
 
   return (
     summary &&
