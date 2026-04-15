@@ -2,7 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { createTestQueryClient } from '@/configs/query';
 import { useRegionLatestDates } from '@/services/hooks';
 import { useQueryParams } from '@/hooks';
 import ArgoMapMenuBar from './ArgoMapMenuBar';
@@ -27,7 +28,7 @@ vi.mock('@/components/DataVisualisationSidebar/components/WmoListPopup', () => (
 const LATEST_DATE = '20260301';
 
 const renderComponent = () => {
-  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  const queryClient = createTestQueryClient();
   return render(
     <QueryClientProvider client={queryClient}>
       <MemoryRouter>

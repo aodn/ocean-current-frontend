@@ -5,6 +5,7 @@ import { LinearProgress, WidePopup } from '@/components/Shared';
 import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
 import { sharedQueryConfig } from '@/configs/query';
 import { ArgoDepths } from '@/constants/argo';
+import { ProductMenubarText } from '@/constants/textConstant';
 import {
   NOT_REPORTED_FLOAT_IDS,
   NOT_REPORTED_FLOATS_HEADER,
@@ -65,6 +66,7 @@ const WmoListPopup: React.FC<WmoListPopupProps> = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
 
   const handleSelect = async (id: string) => {
+    if (loadingId) return;
     setLoadingId(id);
     try {
       const cycles = await queryClient.fetchQuery({
@@ -73,6 +75,10 @@ const WmoListPopup: React.FC<WmoListPopupProps> = ({ isOpen, onClose }) => {
         ...sharedQueryConfig,
       });
       const latest = cycles[cycles.length - 1];
+      if (!latest) {
+        console.error(`No cycles found for WMO ID: ${id}`);
+        return;
+      }
       onClose();
       navigate(`/product/argo?wmoid=${id}&cycle=${latest.cycle}&depth=${ArgoDepths['2000M']}&date=${latest.date}`);
     } finally {
@@ -84,7 +90,7 @@ const WmoListPopup: React.FC<WmoListPopupProps> = ({ isOpen, onClose }) => {
     <WidePopup
       isOpen={isOpen}
       onClose={onClose}
-      title="WMO Number"
+      title={ProductMenubarText.WMO_NUMBER}
       body={() => <WmoPopupBody loadingId={loadingId} onSelect={handleSelect} />}
     />
   );

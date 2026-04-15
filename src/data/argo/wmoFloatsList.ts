@@ -1,5 +1,6 @@
-export const REPORTED_FLOATS_HEADER =
-  'Floats that reported in the 30d to 14-Apr-2026: (940 in the region: 91 219 -66 9)';
+import dayjs from 'dayjs';
+
+export const REPORTED_FLOATS_HEADER = `Floats that reported in the 30d to ${dayjs().format('D-MMM-YYYY')} (region: 91°E–219°E, 66°S–9°S)`;
 
 export const REPORTED_FLOAT_IDS: string[] = [
   '1901741',
@@ -944,8 +945,7 @@ export const REPORTED_FLOAT_IDS: string[] = [
   '7902379',
 ];
 
-export const NOT_REPORTED_FLOATS_HEADER =
-  'Floats that did not report in the last month: (2608 in the region: 91 219 -66 9)';
+export const NOT_REPORTED_FLOATS_HEADER = 'Floats that did not report in the last month (region: 91°E–219°E, 66°S–9°S)';
 
 export const NOT_REPORTED_FLOAT_IDS: string[] = [
   '1900046',
