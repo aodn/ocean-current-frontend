@@ -40,7 +40,7 @@ const Home: React.FC = () => {
           </h2>
           <Button
             type="tertiary"
-            onClick={() => window.open(ExternalUrls.OCEAN_CURRENT_NEWS, '_blank')}
+            onClick={() => window.open(ExternalUrls.OCEAN_CURRENT_NEWS, '_blank', 'noopener,noreferrer')}
             className="h-12 min-w-40 self-center text-2xl"
           >
             {News.ALL_NEWS}
