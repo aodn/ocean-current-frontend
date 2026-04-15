@@ -346,7 +346,7 @@ const CurrentMetersAboutData = () => {
           <strong>ADCP-P</strong> - Pressure at the depth of the ADCP. This is a measure of both the mooring motion and
           the tidal elevation, and is shown to help trouble-shoot apparently spurious estimates of U and V. In some
           files this is a constant. Note that some instruments may suffer drift of the pressure data. Note also that
-          moorings lines do stretch with time, so decreasing instrument depth is perfectly plausible.
+          mooring lines do stretch with time, so decreasing instrument depth is perfectly plausible.
         </p>
         <p>
           <strong>ADCP-D</strong> - Depth of the ADCP. For some files this is missing, so we use ADCP-P, or the
