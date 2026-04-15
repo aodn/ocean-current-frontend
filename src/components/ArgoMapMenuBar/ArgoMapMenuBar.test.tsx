@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useRegionLatestDates } from '@/services/hooks';
 import { useQueryParams } from '@/hooks';
 import ArgoMapMenuBar from './ArgoMapMenuBar';
@@ -19,14 +20,22 @@ vi.mock('@/components/ArgoDatePagination', () => ({
   default: () => <div data-testid="argo-date-pagination" />,
 }));
 
+vi.mock('@/components/DataVisualisationSidebar/components/WmoListPopup', () => ({
+  default: () => null,
+}));
+
 const LATEST_DATE = '20260301';
 
-const renderComponent = () =>
-  render(
-    <MemoryRouter>
-      <ArgoMapMenuBar />
-    </MemoryRouter>,
+const renderComponent = () => {
+  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  return render(
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter>
+        <ArgoMapMenuBar />
+      </MemoryRouter>
+    </QueryClientProvider>,
   );
+};
 
 describe('ArgoMapMenuBar', () => {
   beforeEach(() => {

@@ -173,7 +173,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
           </p>
         </Button>
       </div>
-      <div className="flex w-full flex-wrap items-center gap-2 font-sans font-medium text-imos-dark-grey md:mb-2 md:gap-3">
+      <div className="flex w-full flex-wrap items-center gap-2 font-open-sans font-medium text-imos-dark-grey md:mb-2 md:gap-3">
         <div className="flex h-11 grow basis-[calc(100%-4rem)] items-center justify-between rounded-md border border-imos-calypso-blue/50 bg-white md:grow md:basis-auto md:border-none">
           {isCurrentMeters ? (
             <Dropdown
