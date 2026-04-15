@@ -27,7 +27,8 @@ const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, produc
   const dateFormatted = dayjs(date).format('YYYYMMDD');
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [coords, setCoords] = useState<BuoyTagMapArea[]>([]);
-  const [imgLoadError, setImgLoadError] = useState<string | null>(null);
+  const [imgErrorSrc, setImgErrorSrc] = useState<string | null>(null);
+  const imgLoadError = imgErrorSrc === src;
   const { mainProduct } = useProductConvert();
   const { data } = useBuoyTags(date);
   const navigate = useNavigate();
@@ -64,10 +65,6 @@ const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, produc
   }, [data, date]);
 
   useResizeObserver('window', handleLoad);
-
-  useEffect(() => {
-    setImgLoadError(null);
-  }, [src]);
 
   useEffect(() => {
     const imageElement = imgRef.current;
@@ -117,7 +114,7 @@ const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, produc
           className="max-h-[80vh] select-none object-contain"
           onError={() => {
             setIsProductImageLoading(false);
-            setImgLoadError('Image not available');
+            setImgErrorSrc(src);
           }}
         />
         <map name="buoy-tag-map">

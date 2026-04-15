@@ -33,7 +33,8 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
 }) => {
   const [_, setSearchParams] = useSearchParams();
   const imgRef = useRef<HTMLImageElement | null>(null);
-  const [imgLoadError, setImgLoadError] = useState<string | null>(null);
+  const [imgErrorSrc, setImgErrorSrc] = useState<string | null>(null);
+  const imgLoadError = imgErrorSrc === src;
   const [areas, setAreas] = useState<MapImageAreas[]>();
   const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId);
   const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
@@ -49,10 +50,6 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   });
 
   const tagData = region === 'Aust' ? regionArr : apiTagData;
-
-  useEffect(() => {
-    setImgLoadError(null);
-  }, [src]);
 
   const handleImageLoad = useCallback(async (tagData: MapImageAreas[] | Record<string, string | number[]>[]) => {
     if (!imgRef.current) return;
@@ -130,7 +127,7 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
             setIsProductImageLoading(false);
           }}
           onError={() => {
-            setImgLoadError('Image not available');
+            setImgErrorSrc(src);
             setIsProductImageLoading(false);
           }}
         />

@@ -11,7 +11,7 @@ const initialState: State = {
     regionTitle: 'Au',
   },
   isProductImageLoading: true,
-  isDateResolving: true, // when finish finding the nearest date for the given date param, set it to false.
+  isDateResolving: false,
 };
 
 const useProductStore = create<State & Actions>()(
