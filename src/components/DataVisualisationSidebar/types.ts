@@ -9,7 +9,6 @@ export type ProductInfo = {
   aboutButtonText?: string;
   aboutTitle?: string;
   aboutDescription?: () => JSX.Element | null;
-  aboutMainProductOnly?: boolean;
   childrenInfo?: {
     [childId: string]: {
       summary: string | null;

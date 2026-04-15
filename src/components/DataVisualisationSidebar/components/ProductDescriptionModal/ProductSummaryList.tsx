@@ -87,7 +87,6 @@ export const productInfoList: ProductInfo[] = [
     aboutButtonText: 'Definitions and revisions',
     aboutTitle: 'Definitions and revisions',
     aboutDescription: CurrentMetersAboutData,
-    aboutMainProductOnly: true,
   },
   {
     id: 'sealCtd',
