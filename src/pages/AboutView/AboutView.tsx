@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 import { getProductByPath } from '@/utils/product-utils/product';
 import { getProductInfoByKey } from '@/components/DataVisualisationSidebar/utils';
 import { useRegionLatestDates } from '@/services/hooks/useRegionLatestDates';
-import { ProductID } from '@/types/product';
+import { ProductID, standaloneProductIDs, StandaloneProductID } from '@/types/product';
 import { Button } from '@/components/Shared';
 import ErrorContent from '@/errors/error-content/ErrorContent';
 import { GeneralText } from '@/constants/textConstant';
@@ -31,7 +31,10 @@ const AboutView: React.FC = () => {
   }
 
   const productInfo = mainProductKey ? getProductInfoByKey(mainProductKey, subProductKey) : null;
-  const leafProductId = (subProductKey || mainProductKey) as ProductID | undefined;
+  const isStandaloneMain = mainProductKey
+    ? standaloneProductIDs.includes(mainProductKey as StandaloneProductID)
+    : false;
+  const leafProductId = (subProductKey || (isStandaloneMain ? mainProductKey : undefined)) as ProductID | undefined;
   const { data: latestDates } = useRegionLatestDates(leafProductId ?? ('' as ProductID), !!leafProductId);
 
   const latestRegion = latestDates?.regionLatestDates[0];
