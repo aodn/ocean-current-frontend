@@ -31,13 +31,13 @@ const NEWS_DATA = [
 export const HomeNews = () => {
   return (
     <div className="m-auto w-full max-w-8xl">
-      <div className="mb-4 flex items-center justify-between px-2">
+      <div className="mb-4 flex flex-col justify-between gap-y-3 px-2 md:flex-row md:items-center">
         <h2 className="font-open-sans text-3xl font-medium text-imos-dark-grey md:mb-8 md:text-4xl">{News.NEWS}</h2>
         <a
           href="https://imos.org.au/news/category/imos-oceancurrent-facility-news"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-lg text-imos-dark-grey hover:underline"
+          className="flex w-full items-center justify-center rounded-lg border border-imos-dark-grey p-2 text-lg text-imos-dark-grey md:w-fit md:border-none md:hover:underline"
         >
           {News.ALL_NEWS}
         </a>
