@@ -10,7 +10,12 @@ import {
   TidalCurrentsModalData,
   SealCtdModalData,
 } from '@/components/DataVisualisationSidebar/components/ProductDescriptionModal/ProductDescriptionData';
-import { EACMooringArrayAboutData, ArgoAboutData, CurrentMetersAboutData } from '@/pages/AboutView/AboutData';
+import {
+  EACMooringArrayAboutData,
+  ArgoAboutData,
+  CurrentMetersAboutData,
+  TidalCurrentsAboutData,
+} from '@/pages/AboutView/AboutData';
 import { ProductInfo } from '../../types';
 
 export const productInfoList: ProductInfo[] = [
@@ -77,6 +82,9 @@ export const productInfoList: ProductInfo[] = [
     summary:
       'Predictions of tidal sea level and depth-average tidal current from tide gauge and current meter observations as well as from the CSIRO tidal model.',
     description: TidalCurrentsModalData,
+    aboutButtonText: 'About tidal currents',
+    aboutTitle: "Tidal current and sea level predictions - what's shown",
+    aboutDescription: TidalCurrentsAboutData,
   },
   {
     id: 'currentMeters',
