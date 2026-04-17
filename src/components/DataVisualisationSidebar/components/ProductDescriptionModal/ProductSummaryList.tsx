@@ -82,8 +82,8 @@ export const productInfoList: ProductInfo[] = [
     summary:
       'Predictions of tidal sea level and depth-average tidal current from tide gauge and current meter observations as well as from the CSIRO tidal model.',
     description: TidalCurrentsModalData,
-    aboutButtonText: 'About tidal currents',
-    aboutTitle: "Tidal current and sea level predictions - what's shown",
+    aboutButtonText: 'About Tidal Currents',
+    aboutTitle: 'Tidal current and sea level predictions',
     aboutDescription: TidalCurrentsAboutData,
   },
   {

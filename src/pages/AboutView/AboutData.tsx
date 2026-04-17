@@ -315,7 +315,7 @@ const ArgoAboutData = () => {
 const TidalCurrentsAboutData = () => {
   return (
     <div className="space-y-4 text-base leading-relaxed text-imos-nav-text">
-      <h3 className="text-base font-semibold">What&apos;s shown for each of the black boxes in the index map above</h3>
+      <h2 className="text-2xl font-semibold">What&apos;s shown for each of the black boxes in the index map</h2>
       <h3 className="text-base font-semibold">1) Half-hourly, regional maps</h3>
       <div className="mx-auto max-w-xl">
         <a
@@ -407,7 +407,7 @@ const TidalCurrentsAboutData = () => {
         with actual observations reveals how Australia&apos;s ocean currents range from tidally-dominated (e.g. in Bass
         Strait as shown at right), to mixed (e.g.{' '}
         <a
-          href="https://oceancurrent.aodn.org.au/tides/monthplots/IMOS_GBRPPS_201207.html"
+          href=" https://oceancurrent.aodn.org.au/tides/monthplots/IMOS_GBRPPS_201207.gif"
           target="_blank"
           rel="noreferrer noopener"
           className="text-imos-sea-blue"
@@ -416,7 +416,7 @@ const TidalCurrentsAboutData = () => {
         </a>
         ) to non-tidal, such as off{' '}
         <a
-          href="https://oceancurrent.aodn.org.au/tides/monthplots/IMOS_BMP070_201704.html"
+          href="https://oceancurrent.aodn.org.au/tides/monthplots/IMOS_BMP070_201704.gif"
           target="_blank"
           rel="noreferrer noopener"
           className="text-imos-sea-blue"
@@ -450,7 +450,7 @@ const TidalCurrentsAboutData = () => {
           Focus on slack tides.
         </li>
       </ul>
-      <h3 className="text-base font-semibold">Technical information</h3>
+      <h2 className="text-2xl font-semibold">Technical information</h2>
       <h3 className="text-base font-semibold">Current velocity observations</h3>
       <p>
         A novel aspect of the work presented here is the presentation and assessment of predictions of depth-averaged
@@ -487,7 +487,7 @@ const TidalCurrentsAboutData = () => {
           <strong>60 IMOS ADCPs;</strong> these Acoustic Doppler Current Profilers were deployed by or have been
           contributed to{' '}
           <a
-            href="https://oceancurrent.aodn.org.au/timeseries"
+            href="https://oceancurrent.aodn.org.au/about/current-meters"
             target="_blank"
             rel="noreferrer noopener"
             className="text-imos-sea-blue"
@@ -544,7 +544,7 @@ const TidalCurrentsAboutData = () => {
           hodograph at right (click to enlarge). Neither the tidal self-prediction nor the model represent this. The
           impeller of the{' '}
           <a
-            href="https://oceancurrent.aodn.org.au/tides/monthplots/UNSW_Creal_Rf_198412.html"
+            href="https://oceancurrent.aodn.org.au/tides/monthplots/UNSW_Creal_Rf_198412.gif"
             target="_blank"
             rel="noreferrer noopener"
             className="text-imos-sea-blue"
@@ -557,7 +557,12 @@ const TidalCurrentsAboutData = () => {
         <li>
           <strong>14 ARENA ADCPs:</strong> These were deployed in Banks Strait (NE Tas) and Clarence Strait (near
           Darwin) by Penesis et al. (2020) as part of{' '}
-          <a href="http://austen.org.au/" target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue">
+          <a
+            href="https://arena.gov.au/knowledge-bank/tidal-energy-in-australia/"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="text-imos-sea-blue"
+          >
             AUSTEn
           </a>
           , to assess the renewable energy potential of the strong currents there.
@@ -666,7 +671,7 @@ const TidalCurrentsAboutData = () => {
         <li>
           the{' '}
           <a
-            href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P34/mapst/01_Aust_M2_1.html"
+            href="https://oceancurrent-beta.aodn.org.au/product/current-meters/moored-instrument-array?depth=1&property=M2&region=01_Aust&date=0000&deploymentPlot="
             target="_blank"
             rel="noreferrer noopener"
             className="text-imos-sea-blue"
@@ -675,7 +680,7 @@ const TidalCurrentsAboutData = () => {
           </a>{' '}
           of the current is weaker than (or comparable to) the{' '}
           <a
-            href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P34/mapst/01_Aust_vrms_1.html"
+            href="https://oceancurrent-beta.aodn.org.au/product/current-meters/moored-instrument-array?depth=1&property=vrms&region=01_Aust&date=0000&deploymentPlot="
             target="_blank"
             rel="noreferrer noopener"
             className="text-imos-sea-blue"
@@ -763,7 +768,7 @@ const TidalCurrentsAboutData = () => {
         They are smaller than the semi-diurnal (near 12h) constituents in most places, the SA Gulfs being a notable
         exception, where the{' '}
         <a
-          href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P34/mapst/08_SA_K1_1.html"
+          href="https://oceancurrent-beta.aodn.org.au/product/current-meters/moored-instrument-array?depth=1&property=K1&region=08_SA&date=0000&deploymentPlot="
           target="_blank"
           rel="noreferrer noopener"
           className="text-imos-sea-blue"
@@ -772,7 +777,7 @@ const TidalCurrentsAboutData = () => {
         </a>{' '}
         are stronger than the{' '}
         <a
-          href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P34/mapst/08_SA_M2_1.html"
+          href="https://oceancurrent-beta.aodn.org.au/product/current-meters/moored-instrument-array?depth=1&property=M2&region=08_SA&date=0000&deploymentPlot="
           target="_blank"
           rel="noreferrer noopener"
           className="text-imos-sea-blue"
@@ -923,7 +928,12 @@ const TidalCurrentsAboutData = () => {
       <h3 className="text-base font-semibold">For further information</h3>
       <ul className="list-disc space-y-2 pl-6">
         <li>
-          <a href="http://austen.org.au/" target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue">
+          <a
+            href="https://arena.gov.au/knowledge-bank/tidal-energy-in-australia/"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="text-imos-sea-blue"
+          >
             Australian Tidal Energy - AUSTEn
           </a>
         </li>
