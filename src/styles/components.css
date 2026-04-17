@@ -6,4 +6,36 @@
   .oc-link {
     @apply mx-1 text-imos-sea-blue;
   }
+
+  .hiddenArchivedNews {
+    @apply text-imos-text-grey;
+  }
+
+  .hiddenArchivedNews h2 {
+    @apply mb-6 text-4xl font-semibold text-imos-deep-blue;
+  }
+
+  .hiddenArchivedNews h3 {
+    @apply mb-4 mt-12 text-2xl font-semibold text-imos-title-blue;
+  }
+
+  .hiddenArchivedNews h5 {
+    @apply mb-4 text-base font-medium text-imos-subheading-grey;
+  }
+
+  .hiddenArchivedNews p {
+    @apply mb-6 text-base leading-8;
+  }
+
+  .hiddenArchivedNews article + article {
+    @apply mt-12 border-t border-imos-light-grey pt-12;
+  }
+
+  .hiddenArchivedNews a {
+    @apply text-imos-sea-blue underline underline-offset-2 hover:text-imos-hover-blue;
+  }
+
+  .hiddenArchivedNews a.anchor {
+    @apply text-imos-deep-blue no-underline hover:text-imos-sea-blue;
+  }
 }

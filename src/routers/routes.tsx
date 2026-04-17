@@ -4,6 +4,7 @@ import MainLayout from '@/layouts/MainLayout';
 import MapLayout from '@/layouts/MapLayout';
 import DataVisualisationLayout from '@/layouts/DataVisualisationLayout';
 import AboutLayout from '@/layouts/AboutLayout';
+import { HiddenArchivedNews } from '@/pages/HiddenArchivedNews/HiddenArchivedNews';
 import { createProductRedirects } from './utils';
 
 export const APP_ROUTES = {
@@ -11,6 +12,7 @@ export const APP_ROUTES = {
   PRODUCT: '/product',
   MAP: '/map',
   ABOUT: '/about',
+  HIDDEN_ARCHIVED_NEWS: '/hidden_archived_news',
   NOT_FOUND: '/404',
 } as const;
 
@@ -80,6 +82,10 @@ const routes: RouteObject[] = [
             element: <AboutView />,
           },
         ],
+      },
+      {
+        path: APP_ROUTES.HIDDEN_ARCHIVED_NEWS,
+        element: <HiddenArchivedNews />,
       },
     ],
   },
