@@ -58,7 +58,7 @@ export const HiddenArchivedNews = () => {
         <h2>OceanCurrent News</h2>
 
         <article>
-          <a name="20260319"></a>
+          <a id="20260319"></a>
           <h3 id="Coastal_currents_estimated_from_tide_gauges">
             <a href="#Coastal_currents_estimated_from_tide_gauges" className="anchor">
               Coastal currents estimated from tide gauges
@@ -109,19 +109,11 @@ export const HiddenArchivedNews = () => {
             need a long record of estimates in order to calculate some sort of probability (of high or low speeds, north
             or south direction, for example).
           </p>
-          <img
-            alt=""
-            src="https://oceancurrent.aodn.org.au/news/20260319/map_03_4_08_2015-2020.gif"
-            style={{ height: '460px', width: '500px' }}
-          />
-          <img
-            alt=""
-            src="https://oceancurrent.aodn.org.au/news/20260319/map_03_4_01_2009-2014.gif"
-            style={{ height: '424px', width: '500px' }}
-          />
+          <img alt="" src="news/20260319/map_03_4_08_2015-2020.gif" style={{ height: '460px', width: '500px' }} />
+          <img alt="" src="news/20260319/map_03_4_01_2009-2014.gif" style={{ height: '424px', width: '500px' }} />
         </article>
         <article>
-          <a name="20251222"></a>
+          <a id="20251222"></a>
           <h3 id="Sydney_to_Hobart_outlook">
             <a href="#Sydney_to_Hobart_outlook" className="anchor">
               Sydney to Hobart outlook
@@ -134,15 +126,15 @@ export const HiddenArchivedNews = () => {
             <em>22 December, 2025</em>
           </a>
           <p>
-            <a href="https://oceancurrent.aodn.org.au/Syd-Hob/2025122311.gif" target="_blank" rel="noreferrer">
-              <img src="https://oceancurrent.aodn.org.au/news/20251222/2025122311.gif" />
+            <a href="Syd-Hob/2025122311.gif" target="_blank" rel="noreferrer">
+              <img src="news/20251222/2025122311.gif" />
             </a>
             The positioning of ocean eddies this year is quite similar to last year. More specifically,
             <br />
             &nbsp;&nbsp;1. The main core of the East Australian Current will not affect the first stage of the race
             because it is presently about 150km east of Sydney. Closer to Sydney, there is possibly a weak adverse
             current. This was the situation last year - see the still below or re-live December 2024 by viewing this
-            <a href="https://oceancurrent.aodn.org.au/SNSW/2024/SNSW202412.mp4" target="_blank" rel="noreferrer">
+            <a href="SNSW/2024/SNSW202412.mp4" target="_blank" rel="noreferrer">
               animation
             </a>
             which shows how the eddy off Narooma was formed. The animation also includes measurements by current meters
@@ -153,7 +145,7 @@ export const HiddenArchivedNews = () => {
             presently off Jervis Bay but slipping to the south. It is very likely to give a boost to yachts in deep
             enough water to be in the current, the edge of which can be seen in a recent
             <a
-              href="https://oceancurrent.aodn.org.au/product.php?product=fourhour&amp;region=SNSW&amp;date=20251223180000&amp;rtype=DR"
+              href="product.php?product=fourhour&amp;region=SNSW&amp;date=20251223180000&amp;rtype=DR"
               target="_blank"
               rel="noreferrer"
             >
@@ -169,12 +161,12 @@ export const HiddenArchivedNews = () => {
             &nbsp;&nbsp;5. There is potential for adverse coastal currents off southern Tasmania.
             <br />
             <br />
-            <img src="https://oceancurrent.aodn.org.au/news/20251222/2024122602.gif" />
+            <img src="news/20251222/2024122602.gif" />
             <br />
           </p>
         </article>
         <article>
-          <a name="20251217"></a>
+          <a id="20251217"></a>
           <h3 id="FishSOOP_taking_the_temperature_of_the_coastal_ocean_from_fishing_vessels">
             <a href="#FishSOOP_taking_the_temperature_of_the_coastal_ocean_from_fishing_vessels" className="anchor">
               FishSOOP: taking the temperature of the coastal ocean, from fishing vessels
@@ -300,7 +292,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20251003"></a>
+          {/* <a id="20251003"></a> */}
           <h3 id="Adjusting_the_lenses_in_the_ocean">
             <a href="#Adjusting_the_lenses_in_the_ocean" className="anchor">
               Adjusting the lenses in the ocean
@@ -548,7 +540,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20250901"></a>
+          <a id="20250901"></a>
           <h3 id="An_eddy_amp_float_combo_in_the_Great_Australian_Bight">
             <a href="#An_eddy_amp_float_combo_in_the_Great_Australian_Bight" className="anchor">
               An eddy &amp; float combo in the Great Australian Bight
@@ -674,7 +666,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20250531"></a>
+          {/* <a id="20250531"></a> */}
           <h3 id="Cryptic_upwelling_off_Western_Australia">
             <a href="#Cryptic_upwelling_off_Western_Australia" className="anchor">
               Cryptic upwelling off Western Australia
@@ -782,7 +774,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20250331"></a>
+          {/* <a id="20250331"></a> */}
           <h3 id="TC_Alfred_rsquo_s_imprint_in_the_deep_ocean">
             <a href="#TC_Alfred_rsquo_s_imprint_in_the_deep_ocean" className="anchor">
               TC Alfred’s imprint in the deep ocean
@@ -924,7 +916,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20250130"></a>
+          {/* <a id="20250130"></a> */}
           <h3 id="Marine_Heatwave_off_WA">
             <a href="#Marine_Heatwave_off_WA" className="anchor">
               Marine Heatwave off WA
@@ -1032,7 +1024,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20241220"></a>
+          {/* <a id="20241220"></a> */}
           <h3 id="Sydney_to_Hobart_outlook">
             <a href="#Sydney_to_Hobart_outlook" className="anchor">
               Sydney to Hobart outlook
@@ -1142,7 +1134,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20240917"></a>
+          {/* <a id="20240917"></a> */}
           <h3 id="Rogue_waves_battering_Southern_Australia">
             <a href="#Rogue_waves_battering_Southern_Australia" className="anchor">
               Rogue waves battering Southern Australia
@@ -1239,7 +1231,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20240828"></a>
+          <a id="20240828"></a>
           <h3 id="Is_wide_swath_altimetry_useful_for_coastal_applications">
             <a href="#Is_wide_swath_altimetry_useful_for_coastal_applications" className="anchor">
               Is wide swath altimetry useful for coastal applications?
@@ -1442,7 +1434,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20240715"></a>
+          {/* <a id="20240715"></a> */}
           <h3 id="Swimmer_saved_by_smart_watch">
             <a href="#Swimmer_saved_by_smart_watch" className="anchor">
               Swimmer saved by smart watch
@@ -1495,7 +1487,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20240708"></a>
+          <a id="20240708"></a>
           <h3 id="_Monster_high_engulfing_the_nation">
             <a href="#_Monster_high_engulfing_the_nation" className="anchor">
               "Monster high engulfing the nation"
@@ -1577,7 +1569,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20240529"></a>
+          <a id="20240529"></a>
           <h3 id="The_impact_of_geomagnetic_storms_on_ocean_measurements">
             <a href="#The_impact_of_geomagnetic_storms_on_ocean_measurements" className="anchor">
               The impact of geomagnetic storms on ocean measurements
@@ -1677,7 +1669,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20240301"></a>
+          {/* <a id="20240301"></a> */}
           <h3 id="Maps_of_sea_level_and_surface_currents_like_you_ve_never_seen_before">
             <a href="#Maps_of_sea_level_and_surface_currents_like_you_ve_never_seen_before" className="anchor">
               Maps of sea level and surface currents like you've never seen before
@@ -1753,7 +1745,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20240202"></a>
+          {/* <a id="20240202"></a> */}
           <h3 id="A_Bonney_Bloom">
             <a href="#A_Bonney_Bloom" className="anchor">
               A Bonney Bloom{' '}
@@ -1811,7 +1803,7 @@ export const HiddenArchivedNews = () => {
           <div>&nbsp;</div>
         </article>
         <article>
-          <a name="20231222"></a>
+          <a id="20231222"></a>
           <h3 id="Sydney_to_Hobart_race_conditions_exceptional_currents">
             <a href="#Sydney_to_Hobart_race_conditions_exceptional_currents" className="anchor">
               Sydney to Hobart race conditions: exceptional currents
@@ -1868,7 +1860,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20231211"></a>
+          <a id="20231211"></a>
           <h3 id="An_early_Bonney_upwelling">
             <a href="#An_early_Bonney_upwelling" className="anchor">
               An early Bonney upwelling
@@ -1929,7 +1921,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20231013"></a>
+          <a id="20231013"></a>
           <h3 id="How_strong_is_the_East_Australian_Current_The_science_is_finally_in">
             <a href="#How_strong_is_the_East_Australian_Current_The_science_is_finally_in" className="anchor">
               How strong is the East Australian Current? The science is finally in.
@@ -1999,7 +1991,7 @@ export const HiddenArchivedNews = () => {
           <div>&nbsp;</div>
         </article>
         <article>
-          <a name="20230902"></a>
+          <a id="20230902"></a>
           <h3 id="When_is_slack_tide">
             <a href="#When_is_slack_tide" className="anchor">
               When is slack tide?{' '}
@@ -2038,7 +2030,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20230630"></a>
+          <a id="20230630"></a>
           <h3 id="OceanCurrent_goes_to_the_Gold_Coast">
             <a href="#OceanCurrent_goes_to_the_Gold_Coast" className="anchor">
               OceanCurrent goes to the Gold Coast
@@ -2080,7 +2072,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20230429"></a>
+          <a id="20230429"></a>
           <h3 id="West_coast_vs_east_coast_eddies_what_s_the_difference">
             <a href="#West_coast_vs_east_coast_eddies_what_s_the_difference" className="anchor">
               West coast vs east coast eddies - what's the difference?
@@ -2130,7 +2122,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20230402"></a>
+          <a id="20230402"></a>
           <h3 id="The_East_Australian_Current_summer_2023">
             <a href="#The_East_Australian_Current_summer_2023" className="anchor">
               The East Australian Current, summer 2023
@@ -2191,7 +2183,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20230228"></a>
+          <a id="20230228"></a>
           <h3 id="The_plume_and_the_bloom_ocean_colour_off_South_Australia_rsquo_s_coast">
             <a href="#The_plume_and_the_bloom_ocean_colour_off_South_Australia_rsquo_s_coast" className="anchor">
               The plume and the bloom: ocean colour off South Australia’s coast
@@ -2292,7 +2284,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20221223"></a>
+          <a id="20221223"></a>
           <h3 id="Sydney_to_Hobart_race_conditions">
             <a href="#Sydney_to_Hobart_race_conditions" className="anchor">
               Sydney to Hobart race conditions
@@ -2336,7 +2328,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20221220"></a>
+          <a id="20221220"></a>
           <h3 id="SWOT_A_new_type_of_satellite_altimeter_now_in_orbit">
             <a href="#SWOT_A_new_type_of_satellite_altimeter_now_in_orbit" className="anchor">
               SWOT: A new type of satellite altimeter; now in orbit!
@@ -2388,7 +2380,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20221102"></a>
+          <a id="20221102"></a>
           <h3 id="MyOceanCurrent">
             <a href="#MyOceanCurrent" className="anchor">
               MyOceanCurrent{' '}
@@ -2418,7 +2410,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20221005"></a>
+          <a id="20221005"></a>
           <h3 id="Following_La_Ni_ntilde_a">
             <a href="#Following_La_Ni_ntilde_a" className="anchor">
               Following La Niña
@@ -2505,7 +2497,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20220608"></a>
+          <a id="20220608"></a>
           <h3 id="Profiling_the_waters_around_the_Kerguelen_Plateau_hard_working_seals_and_drifting_Argo_floats">
             <a
               href="#Profiling_the_waters_around_the_Kerguelen_Plateau_hard_working_seals_and_drifting_Argo_floats"
@@ -2570,7 +2562,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20220412"></a>
+          <a id="20220412"></a>
           <h3 id="Monthly_Mean_SST_Anomalies_ndash_Time_Series_Product_The_Great_Barrier_Reef_and_New_Zealand">
             <a
               href="#Monthly_Mean_SST_Anomalies_ndash_Time_Series_Product_The_Great_Barrier_Reef_and_New_Zealand"
@@ -2593,7 +2585,7 @@ export const HiddenArchivedNews = () => {
               since 1993. The time series provide a way of putting events in the context of the last three decades. As
               has been widely reported (but usually for averages over much larger regions), almost all of the time
               series of temperature anomalies indicate a clear warming trend, including over the Great Barrier Reef.
-              <span style={{ msoSpacerun: 'yes' }}> </span>
+              <span> </span>
             </p>
 
             <p>
@@ -2661,7 +2653,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20220321"></a>
+          <a id="20220321"></a>
           <h3 id="Surface_waves_product_added_to_IMOS_OceanCurrent">
             <a href="#Surface_waves_product_added_to_IMOS_OceanCurrent" className="anchor">
               Surface waves product added to IMOS-OceanCurrent
@@ -2749,7 +2741,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20211215"></a>
+          <a id="20211215"></a>
           <h3 id="Sydney_to_Hobart_Outlook">
             <a href="#Sydney_to_Hobart_Outlook" className="anchor">
               Sydney to Hobart Outlook
@@ -2845,7 +2837,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20211124"></a>
+          <a id="20211124"></a>
           <h3 id="How_anomalous_is_this_anomaly">
             <a href="#How_anomalous_is_this_anomaly" className="anchor">
               How anomalous is this anomaly?
@@ -2890,7 +2882,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20210907"></a>
+          <a id="20210907"></a>
           <h3 id="Sea_level_and_storms_the_inverted_barometer_effect">
             <a href="#Sea_level_and_storms_the_inverted_barometer_effect" className="anchor">
               Sea level and storms: the inverted barometer effect
@@ -2943,7 +2935,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20210727"></a>
+          <a id="20210727"></a>
           <h3 id="Argo_float_deployments_around_New_Caledonia">
             <a href="#Argo_float_deployments_around_New_Caledonia" className="anchor">
               Argo float deployments around New Caledonia
@@ -2967,20 +2959,16 @@ export const HiddenArchivedNews = () => {
               <span lang="EN-GB" style={{ fontFamily: 'calibri, sans-serif' }}>
                 Five new Australian Argo floats funded by CSIRO and IMOS have been deployed over the past t
               </span>
-              <span style={{ WebkituserDrag: 'none' }}>hree</span>
-              <span style={{ WebkituserDrag: 'none' }}>&nbsp;weeks&nbsp;</span>
-              <span style={{ WebkituserDrag: 'none' }}>from</span>
-              <span style={{ WebkituserDrag: 'none' }}>
-                &nbsp;the RV Tangaroa in waters of the South Pacific (Figure 1). These&nbsp;
-              </span>
-              <span style={{ WebkituserDrag: 'none' }}>join 7 US-Argo floats also</span>
-              <span style={{ WebkituserDrag: 'none' }}>
-                &nbsp;deployed during the voyage – all aiming to sample temperature and salinity&nbsp;
-              </span>
-              <span style={{ WebkituserDrag: 'none' }}>in</span>
-              <span style={{ WebkituserDrag: 'none' }}>&nbsp;the top 2000 m of the ocean.</span>
+              <span>hree</span>
+              <span>&nbsp;weeks&nbsp;</span>
+              <span>from</span>
+              <span>&nbsp;the RV Tangaroa in waters of the South Pacific (Figure 1). These&nbsp;</span>
+              <span>join 7 US-Argo floats also</span>
+              <span>&nbsp;deployed during the voyage – all aiming to sample temperature and salinity&nbsp;</span>
+              <span>in</span>
+              <span>&nbsp;the top 2000 m of the ocean.</span>
             </span>
-            <span data-ccp-props='{"201341983":0,"335559739":160,"335559740":259}' style={{ WebkituserDrag: 'none' }}>
+            <span data-ccp-props='{"201341983":0,"335559739":160,"335559740":259}'>
               <span className="normaltextrun">
                 <span lang="EN-GB">&nbsp;</span>
               </span>
@@ -2997,24 +2985,22 @@ export const HiddenArchivedNews = () => {
                 Our new 6-day composites for regions of the South Pacific allow us to monitor the location of the floats
                 and&nbsp;
               </span>
-              <span style={{ WebkituserDrag: 'none' }}>the o</span>
-              <span style={{ WebkituserDrag: 'none' }}>cean</span>
-              <span style={{ WebkituserDrag: 'none' }}>&nbsp;properties and circulation of this area</span>
-              <span style={{ WebkituserDrag: 'none' }}>
+              <span>the o</span>
+              <span>cean</span>
+              <span>&nbsp;properties and circulation of this area</span>
+              <span>
                 . The Australian floats were deployed in waters surrounding
                 <a href="http://oceancurrent.imos.org.au/product.php?product=daily&amp;region=NewCal&amp;date=20210711104600&amp;rtype=DR">
                   New Caledonia
                 </a>
               </span>
-              <span style={{ WebkituserDrag: 'none' }}>.</span>
-              <span style={{ WebkituserDrag: 'none' }}>
-                &nbsp;Temperature and Salinity profiles at each dive (as&nbsp;
-              </span>
-              <span style={{ WebkituserDrag: 'none' }}>in Figure 2) can be seen by clicking&nbsp;</span>
-              <span style={{ WebkituserDrag: 'none' }}>o</span>
-              <span style={{ WebkituserDrag: 'none' }}>n the Argo floats in the map.</span>
+              <span>.</span>
+              <span>&nbsp;Temperature and Salinity profiles at each dive (as&nbsp;</span>
+              <span>in Figure 2) can be seen by clicking&nbsp;</span>
+              <span>o</span>
+              <span>n the Argo floats in the map.</span>
             </span>
-            <span data-ccp-props='{"201341983":0,"335559739":160,"335559740":259}' style={{ WebkituserDrag: 'none' }}>
+            <span data-ccp-props='{"201341983":0,"335559739":160,"335559740":259}'>
               <span className="normaltextrun">
                 <span lang="EN-GB">&nbsp;</span>
               </span>
@@ -3025,61 +3011,53 @@ export const HiddenArchivedNews = () => {
               <span lang="EN-GB" style={{ fontFamily: 'calibri, sans-serif' }}>
                 We expect these Argo floats to drift westwards
               </span>
-              <span style={{ WebkituserDrag: 'none' }}>&nbsp;with&nbsp;</span>
-              <span style={{ WebkituserDrag: 'none' }}>the&nbsp;</span>
-              <span style={{ WebkituserDrag: 'none' }}>North</span>
-              <span style={{ WebkituserDrag: 'none' }}>&nbsp;Caledonian&nbsp;</span>
-              <span style={{ WebkituserDrag: 'none' }}>Jet</span>
-              <span style={{ WebkituserDrag: 'none' }}>&nbsp;</span>
-              <span style={{ WebkituserDrag: 'none' }}>and the&nbsp;</span>
-              <span style={{ WebkituserDrag: 'none' }}>South Caledonian Jet</span>
-              <span style={{ WebkituserDrag: 'none' }}>&nbsp;</span>
-              <span style={{ WebkituserDrag: 'none' }}>(</span>
+              <span>&nbsp;with&nbsp;</span>
+              <span>the&nbsp;</span>
+              <span>North</span>
+              <span>&nbsp;Caledonian&nbsp;</span>
+              <span>Jet</span>
+              <span>&nbsp;</span>
+              <span>and the&nbsp;</span>
+              <span>South Caledonian Jet</span>
+              <span>&nbsp;</span>
+              <span>(</span>
               <a href="https://doi.org/10.1002/2013JC009678">
-                <span
-                  style={{ WebkituserDrag: 'none', backgroundPosition: '0% 100%', borderBottomColor: 'transparent' }}
-                >
-                  Ganachaud
-                </span>
+                <span style={{ backgroundPosition: '0% 100%', borderBottomColor: 'transparent' }}>Ganachaud</span>
               </a>
-              <span style={{ WebkituserDrag: 'none' }}>
+              <span>
                 <a href="https://doi.org/10.1002/2013JC009678">&nbsp;et al., 2014</a>; Figure&nbsp;
               </span>
-              <span style={{ WebkituserDrag: 'none' }}>3</span>
-              <span style={{ WebkituserDrag: 'none' }}>).</span>
-              <span style={{ WebkituserDrag: 'none' }}>&nbsp;</span>
-              <span style={{ WebkituserDrag: 'none' }}>Over the next four years or so, t</span>
-              <span style={{ WebkituserDrag: 'none' }}>
-                he floats will take measurements in the Coral Sea, the Tasman Sea
-              </span>
-              <span style={{ WebkituserDrag: 'none' }}>,</span>
-              <span style={{ WebkituserDrag: 'none' }}>&nbsp;or wherever the currents&nbsp;</span>
-              <span style={{ WebkituserDrag: 'none' }}>t</span>
-              <span style={{ WebkituserDrag: 'none' }}>ake</span>
-              <span style={{ WebkituserDrag: 'none' }}>&nbsp;them.&nbsp;</span>
+              <span>3</span>
+              <span>).</span>
+              <span>&nbsp;</span>
+              <span>Over the next four years or so, t</span>
+              <span>he floats will take measurements in the Coral Sea, the Tasman Sea</span>
+              <span>,</span>
+              <span>&nbsp;or wherever the currents&nbsp;</span>
+              <span>t</span>
+              <span>ake</span>
+              <span>&nbsp;them.&nbsp;</span>
             </span>
             <span className="normaltextrun">
-              <span style={{ WebkituserDrag: 'none' }}>Tracking the&nbsp;</span>
-              <span style={{ WebkituserDrag: 'none' }}>ocean temperature and salinity&nbsp;</span>
-              <span style={{ WebkituserDrag: 'none' }}>and the pathway of the floats to Australia’</span>
-              <span style={{ WebkituserDrag: 'none' }}>s east coast will provide in</span>
-              <span style={{ WebkituserDrag: 'none' }}>sights into the&nbsp;</span>
-              <span style={{ WebkituserDrag: 'none' }}>circulation of the western Pac</span>
-              <span style={{ WebkituserDrag: 'none' }}>
-                ific Ocean. All data from these floats, as from all Argo floats, is freely available thro
-              </span>
+              <span>Tracking the&nbsp;</span>
+              <span>ocean temperature and salinity&nbsp;</span>
+              <span>and the pathway of the floats to Australia’</span>
+              <span>s east coast will provide in</span>
+              <span>sights into the&nbsp;</span>
+              <span>circulation of the western Pac</span>
+              <span>ific Ocean. All data from these floats, as from all Argo floats, is freely available thro</span>
             </span>
             <span className="normaltextrun">
-              <span style={{ WebkituserDrag: 'none' }}>ugh</span>
+              <span>ugh</span>
             </span>
             <span className="normaltextrun">
-              <span style={{ WebkituserDrag: 'none' }}>&nbsp;the IMOS portal in near-real time (</span>
+              <span>&nbsp;the IMOS portal in near-real time (</span>
             </span>
             <a href="https://portal.aodn.org.au/" target="_blank" rel="noreferrer">
               <span style={{ textDecoration: 'none' }}>https://portal.aodn.org.au/</span>
             </a>
             ).
-            <span data-ccp-props='{"201341983":0,"335559739":160,"335559740":259}' style={{ WebkituserDrag: 'none' }}>
+            <span data-ccp-props='{"201341983":0,"335559739":160,"335559740":259}'>
               <span className="normaltextrun">
                 <span lang="EN-GB">&nbsp;</span>
               </span>
@@ -3090,27 +3068,25 @@ export const HiddenArchivedNews = () => {
               <span lang="EN-GB" style={{ fontFamily: 'calibri, sans-serif' }}>
                 The ship that deployed the floats, the RV Tangaroa, is a New Zealand
               </span>
-              <span style={{ WebkituserDrag: 'none' }}>
+              <span>
                 &nbsp;vessel, owned and operated by NIWA (National Institute of Water and Atmospheric Research). The
                 primary purpose&nbsp;
               </span>
-              <span style={{ WebkituserDrag: 'none' }}>of</span>
-              <span style={{ WebkituserDrag: 'none' }}>&nbsp;the ship’s voyage&nbsp;</span>
-              <span style={{ WebkituserDrag: 'none' }}>w</span>
-              <span style={{ WebkituserDrag: 'none' }}>a</span>
-              <span style={{ WebkituserDrag: 'none' }}>
-                s to deploy tsunami monitoring buoys. You can find more information abou
-              </span>
+              <span>of</span>
+              <span>&nbsp;the ship’s voyage&nbsp;</span>
+              <span>w</span>
+              <span>a</span>
+              <span>s to deploy tsunami monitoring buoys. You can find more information abou</span>
             </span>
             <span className="normaltextrun">
-              <span style={{ WebkituserDrag: 'none' }}>t the RV Tangaroa</span>
-              <span style={{ WebkituserDrag: 'none' }}>
+              <span>t the RV Tangaroa</span>
+              <span>
                 &nbsp;at
                 <a href="https://niwa.co.nz/services/vessels/niwa-vessels/rv-tangaroa">NIWA’s website</a>
               </span>
             </span>
             .
-            <span data-ccp-props='{"201341983":0,"335559739":160,"335559740":259}' style={{ WebkituserDrag: 'none' }}>
+            <span data-ccp-props='{"201341983":0,"335559739":160,"335559740":259}'>
               <span className="normaltextrun">
                 <span lang="EN-GB">&nbsp;</span>
               </span>
@@ -3130,7 +3106,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20210528"></a>
+          <a id="20210528"></a>
           <h3 id="Contrasting_East_Australian_Current_eddy_interactions">
             <a href="#Contrasting_East_Australian_Current_eddy_interactions" className="anchor">
               Contrasting East Australian Current - eddy interactions
@@ -3242,7 +3218,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20210517"></a>
+          <a id="20210517"></a>
           <h3 id="New_regional_areas_added_to_the_6_day_Sea_Surface_Temperature_product">
             <a href="#New_regional_areas_added_to_the_6_day_Sea_Surface_Temperature_product" className="anchor">
               New regional areas added to the 6-day Sea Surface Temperature product
@@ -3352,7 +3328,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20210419"></a>
+          <a id="20210419"></a>
           <h3 id="When_cyclones_collide">
             <a href="#When_cyclones_collide" className="anchor">
               When cyclones collide
@@ -3419,7 +3395,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20210314"></a>
+          <a id="20210314"></a>
           <h3 id="TC_Niran_rsquo_s_cold_core_eddy_heading_for_Lizard_Island">
             <a href="#TC_Niran_rsquo_s_cold_core_eddy_heading_for_Lizard_Island" className="anchor">
               TC Niran’s cold core eddy heading for Lizard Island
@@ -3494,7 +3470,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20210222"></a>
+          <a id="20210222"></a>
           <h3 id="Drifting_to_shore">
             <a href="#Drifting_to_shore" className="anchor">
               Drifting to shore{' '}
@@ -3621,7 +3597,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20210203"></a>
+          <a id="20210203"></a>
           <h3 id="The_January_2021_lsquo_Marine_Heatwave_rsquo_off_Southern_NSW">
             <a href="#The_January_2021_lsquo_Marine_Heatwave_rsquo_off_Southern_NSW" className="anchor">
               The January 2021 ‘Marine Heatwave’ off Southern NSW
@@ -3722,7 +3698,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20201224"></a>
+          <a id="20201224"></a>
           <h3 id="Launceston_to_Hobart_Currents">
             <a href="#Launceston_to_Hobart_Currents" className="anchor">
               Launceston to Hobart Currents
@@ -3849,7 +3825,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20201218"></a>
+          <a id="20201218"></a>
           <h3 id="Sydney_to_Hobart_Outlook">
             <a href="#Sydney_to_Hobart_Outlook" className="anchor">
               Sydney to Hobart Outlook
@@ -3974,7 +3950,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20201105"></a>
+          <a id="20201105"></a>
           <h3 id="Chlorophyll_imagery_from_MODIS_is_updating_again">
             <a href="#Chlorophyll_imagery_from_MODIS_is_updating_again" className="anchor">
               Chlorophyll imagery from MODIS is updating again
@@ -4002,7 +3978,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20200901"></a>
+          <a id="20200901"></a>
           <h3 id="Great_Barrier_Reef_Bleaching_2020">
             <a href="#Great_Barrier_Reef_Bleaching_2020" className="anchor">
               Great Barrier Reef Bleaching 2020
@@ -4015,7 +3991,7 @@ export const HiddenArchivedNews = () => {
             <em> 1 September, 2020</em>
           </a>
           <p>
-            <span style={{ msoAnsiLanguage: 'EN-AU' }}>
+            <span>
               <a href="news/20200901/GBR2020_Fig1.png" target="_blank">
                 <img
                   alt=""
@@ -4027,7 +4003,7 @@ export const HiddenArchivedNews = () => {
             </span>
             <span lang="EN-GB">
               <a href="https://www.coralcoe.org.au/media-releases/climate-change-triggers-great-barrier-reef-bleaching">
-                <span lang="EN-GB" style={{ msoAnsiLanguage: 'EN-AU' }}>
+                <span lang="EN-GB">
                   <span lang="EN-GB">
                     reported that the
                     <span lang="EN-GB">
@@ -4040,18 +4016,18 @@ export const HiddenArchivedNews = () => {
                 </span>
               </a>
             </span>
-            <span style={{ msoAnsiLanguage: 'EN-AU' }}>
+            <span>
               last summer. An aerial survey indicated bleaching occurred all along the length of the reef (Figure 1).
               This is the third bleaching event in the last 5 years extended much further south than in{' '}
             </span>
             <span lang="EN-GB">
               <a href="https://theconversation.com/back-to-back-bleaching-has-now-hit-two-thirds-of-the-great-barrier-reef-76092">
-                <span lang="EN-GB" style={{ msoAnsiLanguage: 'EN-AU' }}>
+                <span lang="EN-GB">
                   <span lang="EN-GB">2016 and 2017</span>
                 </span>
               </a>
             </span>
-            <span style={{ msoAnsiLanguage: 'EN-AU' }}>
+            <span>
               . Monthly mean sea surface temperature (SST) anomalies, averaged over sub-regions of the Great Barrier
               Reef (GBR) help quantify the heat stress (Figure 1). Although there can be a lot of variability at the
               reef-scale within each region, the bleaching events (indicated with grey) mostly coincide with high SST
@@ -4063,7 +4039,7 @@ export const HiddenArchivedNews = () => {
             </span>
           </p>
           <p>
-            <span style={{ msoAnsiLanguage: 'EN-AU' }}>
+            <span>
               <a href="news/20200901/MHWdays_NE_2020.png" target="_blank">
                 <img
                   alt=""
@@ -4081,12 +4057,12 @@ export const HiddenArchivedNews = () => {
             </span>
             <span lang="EN-GB">
               <a href="http://oceancurrent.imos.org.au/product.php?product=climatology&amp;region=CGBR&amp;date=20200212120000&amp;rtype=DR">
-                <span lang="EN-GB" style={{ msoAnsiLanguage: 'EN-AU' }}>
+                <span lang="EN-GB">
                   <span lang="EN-GB">up to a degree cooler than surrounding waters</span>
                 </span>
               </a>
             </span>
-            <span style={{ msoAnsiLanguage: 'EN-AU' }}>
+            <span>
               during summer. The source of the cooling is below-thermocline water offshore which is mixed with surface
               waters by strong tidal currents through the dense outer reef matrix in the far north and southern GBR.
               This cooling is clearly invaluable in times of severe heating but can be diminished with a deeper surface
@@ -4094,7 +4070,7 @@ export const HiddenArchivedNews = () => {
             </span>
           </p>
           <p>
-            <span style={{ msoAnsiLanguage: 'EN-AU' }}>
+            <span>
               Bleaching of inshore reefs in the Northern GBR is not explained with the number of marine heatwave days
               and this could indicate that cloud has impacted the estimate of the true number of heatwave days in this
               region or that other factors (e.g. prior bleaching) are implicated. Note, usually when assessing for the
@@ -4112,7 +4088,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20200826"></a>
+          <a id="20200826"></a>
           <h3 id="MODIS_Ocean_Colour_Outage">
             <a href="#MODIS_Ocean_Colour_Outage" className="anchor">
               MODIS Ocean Colour Outage
@@ -4125,7 +4101,7 @@ export const HiddenArchivedNews = () => {
             <em>26 August, 2020</em>
           </a>
           <p>
-            <span style={{ msoAnsiLanguage: 'EN-AU' }}>
+            <span>
               <img
                 alt=""
                 src="https://oceancurrent.aodn.org.au/news/20200826/Figure1.png"
@@ -4145,7 +4121,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20200528"></a>
+          <a id="20200528"></a>
           <h3 id="40h_adrift_in_the_EAC_a_survival_story">
             <a href="#40h_adrift_in_the_EAC_a_survival_story" className="anchor">
               40h adrift in the EAC - a survival story
@@ -4177,7 +4153,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20200416"></a>
+          <a id="20200416"></a>
           <h3 id="Glider_reveals_extreme_heating_to_40m_depth_on_the_Southern_GBR">
             <a href="#Glider_reveals_extreme_heating_to_40m_depth_on_the_Southern_GBR" className="anchor">
               Glider reveals extreme heating to 40m depth on the Southern GBR
@@ -4230,7 +4206,7 @@ export const HiddenArchivedNews = () => {
               />
             </a>
             <br />
-            <span style={{ msoAnsiLanguage: 'EN-AU' }}>
+            <span>
               When the SST anomaly, (using
               <span className="MsoHyperlink">
                 <a
@@ -4286,11 +4262,11 @@ export const HiddenArchivedNews = () => {
             &nbsp;
           </p>
           <p>
-            <span style={{ msoAnsiLanguage: 'EN-AU' }}>&nbsp;</span>
+            <span>&nbsp;</span>
           </p>
         </article>
         <article>
-          <a name="20200328"></a>
+          <a id="20200328"></a>
           <h3 id="Bonney_Coast_Upwelling_2020">
             <a href="#Bonney_Coast_Upwelling_2020" className="anchor">
               Bonney Coast Upwelling 2020
@@ -4366,7 +4342,7 @@ export const HiddenArchivedNews = () => {
             , there is a strong chlorophyll-a signal on the Bonney Coast shelf.
           </p>
           <p>
-            <span style={{ msoAnsiLanguage: 'EN-AU' }}>
+            <span>
               The beautiful wave-like features all along the outer edge of the cold water plume (Figures 1&amp;2) are
               most likely due to the shear between the plume and the water offshore. Despite the cloud, we can
               occasionally see (in
@@ -4384,7 +4360,7 @@ export const HiddenArchivedNews = () => {
             </span>
           </p>
           <p>
-            <span style={{ msoAnsiLanguage: 'EN-AU' }}>
+            <span>
               (Note, the geostrophic velocities (black vectors) on the shelf, in this region, are unreliable as we have
               no coastal sea level from the Bonney Coast and non-tidal sea level is found to be poorly correlated
               between the gulfs and Portland.)
@@ -4394,7 +4370,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20200312"></a>
+          <a id="20200312"></a>
           <h3 id="Port_to_Pub_2020">
             <a href="#Port_to_Pub_2020" className="anchor">
               Port to Pub 2020{' '}
@@ -4414,7 +4390,7 @@ export const HiddenArchivedNews = () => {
                 style={{ height: '211px', width: '400px' }}
               />
             </a>
-            <span style={{ msoAnsiLanguage: 'EN-AU' }}>
+            <span>
               The Port to Pub swim from Fremantle to Rottnest is coming up on Saturday March 21. Like last year, we have
               the
               <span className="MsoHyperlink">
@@ -4426,7 +4402,7 @@ export const HiddenArchivedNews = () => {
             </span>
           </p>
           <p>
-            <span style={{ msoAnsiLanguage: 'EN-AU' }}>
+            <span>
               In the water between Perth and Rottnest, the currents are usually strongest near Rottnest Island, and they
               are
               <span className="MsoHyperlink">
@@ -4441,7 +4417,7 @@ export const HiddenArchivedNews = () => {
             </span>
           </p>
           <p>
-            <span style={{ msoAnsiLanguage: 'EN-AU' }}>
+            <span>
               &nbsp;This coming Saturday the currents are expected to be fairly moderate and in the northward direction
               so if the race was on then we could expect a pretty fast race – but check in again next Wednesday for the
               race day forecast! Look for the green 'Port to Pub' button on the OceanCurrent home page.
@@ -4450,7 +4426,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20200303"></a>
+          <a id="20200303"></a>
           <h3 id="The_Great_Barrier_Reef_Cools_A_Little">
             <a href="#The_Great_Barrier_Reef_Cools_A_Little" className="anchor">
               The Great Barrier Reef Cools - A Little
@@ -4511,8 +4487,8 @@ export const HiddenArchivedNews = () => {
             still under threat.
             <br />
             <br />
-            <span style={{ msoAnsiLanguage: 'EN-AU' }}>Temperature records </span>(Figure 3)
-            <span style={{ msoAnsiLanguage: 'EN-AU' }}>
+            <span>Temperature records </span>(Figure 3)
+            <span>
               from the
               <a href="http://oceancurrent.imos.org.au/product.php?product=daily&amp;region=CGBR&amp;date=20200221083619&amp;rtype=DR">
                 glider deployed in the central GBR
@@ -4545,7 +4521,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20200224"></a>
+          <a id="20200224"></a>
           <h3 id="Heating_on_the_Great_Barrier_Reef_A_Brief_Reprieve">
             <a href="#Heating_on_the_Great_Barrier_Reef_A_Brief_Reprieve" className="anchor">
               Heating on the Great Barrier Reef: A Brief Reprieve?
@@ -4600,7 +4576,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20200221"></a>
+          <a id="20200221"></a>
           <h3 id="Rapid_warming_on_the_Great_Barrier_Reef">
             <a href="#Rapid_warming_on_the_Great_Barrier_Reef" className="anchor">
               Rapid warming on the Great Barrier Reef
@@ -4624,7 +4600,7 @@ export const HiddenArchivedNews = () => {
                 style={{ height: '388px', width: '350px' }}
               />
             </a>
-            <span style={{ msoAnsiLanguage: 'EN-AU' }}>
+            <span>
               Sea surface temperatures on the Great Barrier Reef (GBR) south of latitude 15°S were close to average in
               the first half of summer but they began to increase in mid-January, and have been above the 90th
               percentile since Feb 10. Mid-February is the time when water temperatures are usually at their maximum so
@@ -4663,7 +4639,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20200219"></a>
+          <a id="20200219"></a>
           <h3 id="Tropical_cyclones_and_upwelling_winds_cool_North_West_Shelf_waters">
             <a href="#Tropical_cyclones_and_upwelling_winds_cool_North_West_Shelf_waters" className="anchor">
               Tropical cyclones and upwelling winds cool North West Shelf waters
@@ -4681,7 +4657,7 @@ export const HiddenArchivedNews = () => {
               src="https://oceancurrent.aodn.org.au/news/20200219/NW_pctiles_20200212.gif"
               style={{ height: '266px', width: '400px' }}
             />
-            <span style={{ fontSize: '11pt', msoAnsiLanguage: 'EN-AU' }}>
+            <span style={{ fontSize: '11pt' }}>
               Early summer heating in waters off northwest Australia has been erased with the passage of
               <a
                 href="https://en.wikipedia.org/wiki/2019%E2%80%9320_Australian_region_cyclone_season#/media/File:2019-2020_Australian_region_cyclone_season_summary.png"
@@ -4709,9 +4685,9 @@ export const HiddenArchivedNews = () => {
                 Dec 26
               </a>
               ) indicated the surface layer was quite shallow (10-30m) and overlying a relatively cool subsurface layer,
-              providing a readily available <span style={{ msoSpacerun: 'yes' }}>&nbsp;</span>source of cool water. The
-              three cyclones that developed in January and February of this year were not particularly strong (only TC
-              Damien reached Category 2) but each of them left a path of cooled water in its wake.
+              providing a readily available <span>&nbsp;</span>source of cool water. The three cyclones that developed
+              in January and February of this year were not particularly strong (only TC Damien reached Category 2) but
+              each of them left a path of cooled water in its wake.
               <br />
               <br />
               TC Blake (Jan 6-8) travelled north to south between the two largest reef groups on NWS, Rowley Shoals and
@@ -4765,7 +4741,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20200117"></a>
+          <a id="20200117"></a>
           <h3 id="Strong_Upwelling_Again_for_the_West_Coast_of_New_Zealand">
             <a href="#Strong_Upwelling_Again_for_the_West_Coast_of_New_Zealand" className="anchor">
               Strong Upwelling Again for the West Coast of New Zealand
@@ -4842,7 +4818,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20191224"></a>
+          <a id="20191224"></a>
           <h3 id="Sydney_to_Hobart_update">
             <a href="#Sydney_to_Hobart_update" className="anchor">
               Sydney to Hobart update
@@ -4885,7 +4861,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20191223"></a>
+          <a id="20191223"></a>
           <h3 id="A_marine_heatwave_off_Western_Australia">
             <a href="#A_marine_heatwave_off_Western_Australia" className="anchor">
               A marine heatwave off Western Australia?
@@ -4969,7 +4945,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20191220"></a>
+          <a id="20191220"></a>
           <h3 id="Sydney_Hobart_briefing">
             <a href="#Sydney_Hobart_briefing" className="anchor">
               Sydney-Hobart briefing
@@ -5062,7 +5038,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20191215"></a>
+          <a id="20191215"></a>
           <h3 id="Early_summer_heating_and_cooling_extremes">
             <a href="#Early_summer_heating_and_cooling_extremes" className="anchor">
               Early summer heating and cooling extremes
@@ -5168,7 +5144,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20191122"></a>
+          <a id="20191122"></a>
           <h3 id="Cold_Start_to_Summer_for_Tasmanian_Coastal_Waters">
             <a href="#Cold_Start_to_Summer_for_Tasmanian_Coastal_Waters" className="anchor">
               Cold Start to Summer for Tasmanian Coastal Waters
@@ -5233,7 +5209,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20191028"></a>
+          <a id="20191028"></a>
           <h3 id="Harnessing_oceanographic_data_to_explain_spatial_variation_in_fish_condition">
             <a href="#Harnessing_oceanographic_data_to_explain_spatial_variation_in_fish_condition" className="anchor">
               Harnessing oceanographic data to explain spatial variation in fish condition
@@ -5304,7 +5280,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20190924"></a>
+          <a id="20190924"></a>
           <h3 id="Frontal_eddies_and_the_EAC_array">
             <a href="#Frontal_eddies_and_the_EAC_array" className="anchor">
               Frontal eddies and the EAC array
@@ -5362,7 +5338,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20190919"></a>
+          <a id="20190919"></a>
           <h3 id="Cold_core_eddy_diverts_EAC_waters_offshore_replacing_it_with_cold_water">
             <a href="#Cold_core_eddy_diverts_EAC_waters_offshore_replacing_it_with_cold_water" className="anchor">
               Cold core eddy diverts EAC waters offshore, replacing it with cold water
@@ -5429,7 +5405,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20190911"></a>
+          <a id="20190911"></a>
           <h3 id="Tidal_current_predictions_go_ahead_and_use_them_conditions_apply">
             <a href="#Tidal_current_predictions_go_ahead_and_use_them_conditions_apply" className="anchor">
               Tidal current predictions: go ahead and use them (conditions apply)
@@ -5522,7 +5498,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20190813"></a>
+          <a id="20190813"></a>
           <h3 id="Reversal_of_the_usual_flow_along_the_Great_Barrier_Reef">
             <a href="#Reversal_of_the_usual_flow_along_the_Great_Barrier_Reef" className="anchor">
               Reversal of the usual flow along the Great Barrier Reef
@@ -5597,7 +5573,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20190801"></a>
+          <a id="20190801"></a>
           <h3 id="Marine_heatwaves_ndash_looking_under_the_surface">
             <a href="#Marine_heatwaves_ndash_looking_under_the_surface" className="anchor">
               Marine heatwaves – looking under the surface
@@ -5689,7 +5665,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20190729"></a>
+          <a id="20190729"></a>
           <h3 id="Tropical_Cyclone_Oma_a_lasting_ocean_impact">
             <a href="#Tropical_Cyclone_Oma_a_lasting_ocean_impact" className="anchor">
               Tropical Cyclone Oma: a lasting ocean impact
@@ -5748,7 +5724,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20190527"></a>
+          <a id="20190527"></a>
           <h3 id="Persistent_Cold_Water_off_Western_Australia">
             <a href="#Persistent_Cold_Water_off_Western_Australia" className="anchor">
               Persistent Cold Water off Western Australia
@@ -5831,7 +5807,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20190521"></a>
+          <a id="20190521"></a>
           <h3 id="IMOS_in_the_wake_of_HMAS_Diamantina">
             <a href="#IMOS_in_the_wake_of_HMAS_Diamantina" className="anchor">
               IMOS in the wake of HMAS Diamantina
@@ -5904,7 +5880,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20190409"></a>
+          <a id="20190409"></a>
           <h3 id="Ocean_glider_reveals_the_impact_of_a_break_in_the_clouds">
             <a href="#Ocean_glider_reveals_the_impact_of_a_break_in_the_clouds" className="anchor">
               Ocean glider reveals the impact of a break in the clouds
@@ -5993,7 +5969,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20190327"></a>
+          <a id="20190327"></a>
           <h3 id="Great_Barrier_Reef_gets_a_reprieve_from_the_heat_this_year">
             <a href="#Great_Barrier_Reef_gets_a_reprieve_from_the_heat_this_year" className="anchor">
               Great Barrier Reef gets a reprieve from the heat this year
@@ -6063,7 +6039,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20190313"></a>
+          <a id="20190313"></a>
           <h3 id="Port_to_Pub_Swim_Strong_Northward_Currents_Forecast">
             <a href="#Port_to_Pub_Swim_Strong_Northward_Currents_Forecast" className="anchor">
               Port to Pub Swim: Strong Northward Currents Forecast
@@ -6100,7 +6076,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20190228"></a>
+          <a id="20190228"></a>
           <h3 id="Upwelling_keeps_South_Island_cool_this_summer">
             <a href="#Upwelling_keeps_South_Island_cool_this_summer" className="anchor">
               Upwelling keeps South Island cool this summer
@@ -6183,7 +6159,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20190220"></a>
+          <a id="20190220"></a>
           <h3 id="Weak_Northward_Currents_Forecast_for_Rottnest_Swim">
             <a href="#Weak_Northward_Currents_Forecast_for_Rottnest_Swim" className="anchor">
               Weak Northward Currents Forecast for Rottnest Swim
@@ -6244,7 +6220,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20190215"></a>
+          <a id="20190215"></a>
           <h3 id="The_2019_Rottnest_Swim_could_be_a_cold_one">
             <a href="#The_2019_Rottnest_Swim_could_be_a_cold_one" className="anchor">
               The 2019 Rottnest Swim could be a cold one
@@ -6299,7 +6275,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20190111"></a>
+          <a id="20190111"></a>
           <h3 id="Bluebottles_Upwelling_and_Tasman_Sea_Warming_ndash_that_Blocking_High_is_Back">
             <a href="#Bluebottles_Upwelling_and_Tasman_Sea_Warming_ndash_that_Blocking_High_is_Back" className="anchor">
               Bluebottles, Upwelling and Tasman Sea Warming – that Blocking High is Back.
@@ -6369,7 +6345,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20181222"></a>
+          <a id="20181222"></a>
           <h3 id="Sydney_Hobart_briefing">
             <a href="#Sydney_Hobart_briefing" className="anchor">
               Sydney-Hobart briefing
@@ -6417,7 +6393,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20181023"></a>
+          <a id="20181023"></a>
           <h3 id="How_did_Ella_s_message_in_a_bottle_get_to_Queensland_from_Tasmania">
             <a href="#How_did_Ella_s_message_in_a_bottle_get_to_Queensland_from_Tasmania" className="anchor">
               How did Ella's message in a bottle get to Queensland from Tasmania?
@@ -6493,7 +6469,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20181012"></a>
+          <a id="20181012"></a>
           <h3 id="Sea_Level_Rising_Faster_as_the_Ice_Sheets_Melt">
             <a href="#Sea_Level_Rising_Faster_as_the_Ice_Sheets_Melt" className="anchor">
               Sea Level: Rising Faster as the Ice Sheets Melt
@@ -6599,7 +6575,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20180906"></a>
+          <a id="20180906"></a>
           <h3 id="Argo_Observed_Bass_Strait_Water_Off_Central_New_South_Wales">
             <a href="#Argo_Observed_Bass_Strait_Water_Off_Central_New_South_Wales" className="anchor">
               Argo-Observed Bass Strait Water Off Central New South Wales
@@ -6683,7 +6659,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20180904"></a>
+          <a id="20180904"></a>
           <h3 id="Four_Hour_SST_and_a_New_Navigator">
             <a href="#Four_Hour_SST_and_a_New_Navigator" className="anchor">
               Four-Hour SST and a New Navigator
@@ -6747,7 +6723,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20180612"></a>
+          <a id="20180612"></a>
           <h3 id="Frontal_systems_on_the_Australian_north_west_shelf">
             <a href="#Frontal_systems_on_the_Australian_north_west_shelf" className="anchor">
               Frontal systems on the Australian north-west shelf
@@ -6815,7 +6791,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20180329"></a>
+          <a id="20180329"></a>
           <h3 id="Severe_Tropical_Cyclone_Marcus">
             <a href="#Severe_Tropical_Cyclone_Marcus" className="anchor">
               Severe Tropical Cyclone Marcus
@@ -6848,7 +6824,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20180315"></a>
+          <a id="20180315"></a>
           <h3 id="Bass_Strait_Glider_Reveals_the_Ancient_Bassian_Lake">
             <a href="#Bass_Strait_Glider_Reveals_the_Ancient_Bassian_Lake" className="anchor">
               Bass Strait Glider Reveals the Ancient Bassian Lake
@@ -6919,7 +6895,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20180314"></a>
+          <a id="20180314"></a>
           <h3 id="The_Port_to_Pub_swim_could_be_a_tough_one_this_year_Updated">
             <a href="#The_Port_to_Pub_swim_could_be_a_tough_one_this_year_Updated" className="anchor">
               The Port to Pub swim could be a tough one this year! Updated
@@ -6963,7 +6939,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20180307"></a>
+          <a id="20180307"></a>
           <h3 id="Newcastle_radar_monitoring_the_EAC_separation_point">
             <a href="#Newcastle_radar_monitoring_the_EAC_separation_point" className="anchor">
               Newcastle radar monitoring the EAC separation point
@@ -6992,7 +6968,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20180222"></a>
+          <a id="20180222"></a>
           <h3 id="Rottnest_Swim_Update_The_Forecast_is_Changing">
             <a href="#Rottnest_Swim_Update_The_Forecast_is_Changing" className="anchor">
               Rottnest Swim Update - The Forecast is Changing
@@ -7027,7 +7003,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20180221"></a>
+          <a id="20180221"></a>
           <h3 id="The_Rottnest_Swim_Forecast_Is_In">
             <a href="#The_Rottnest_Swim_Forecast_Is_In" className="anchor">
               The Rottnest Swim Forecast Is In!
@@ -7068,7 +7044,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20171220"></a>
+          <a id="20171220"></a>
           <h3 id="Sea_Surface_Temperatures_around_Tasmania_reached_extremes_this_November_but_how_deep_did_the_heating_go">
             <a
               href="#Sea_Surface_Temperatures_around_Tasmania_reached_extremes_this_November_but_how_deep_did_the_heating_go"
@@ -7153,7 +7129,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20171219"></a>
+          <a id="20171219"></a>
           <h3 id="Sydney_Hobart_briefing">
             <a href="#Sydney_Hobart_briefing" className="anchor">
               Sydney-Hobart briefing
@@ -7199,7 +7175,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20171204"></a>
+          <a id="20171204"></a>
           <h3 id="NSW_beaches_have_felt_the_cold_this_November">
             <a href="#NSW_beaches_have_felt_the_cold_this_November" className="anchor">
               NSW beaches have felt the cold this November
@@ -7278,7 +7254,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20170907"></a>
+          <a id="20170907"></a>
           <h3 id="New_SST_images_with_Himawari_8_ndash_coming_soon">
             <a href="#New_SST_images_with_Himawari_8_ndash_coming_soon" className="anchor">
               New SST images with Himawari-8 – coming soon!
@@ -7323,7 +7299,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20170728"></a>
+          <a id="20170728"></a>
           <h3 id="Jason_2_begins_a_new_phase_The_king_is_dead_long_live_the_king">
             <a href="#Jason_2_begins_a_new_phase_The_king_is_dead_long_live_the_king" className="anchor">
               Jason-2 begins a new phase: The king is dead, long live the king!
@@ -7393,7 +7369,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20170518"></a>
+          <a id="20170518"></a>
           <h3 id="Oceanographer_seals">
             <a href="#Oceanographer_seals" className="anchor">
               Oceanographer seals{' '}
@@ -7430,7 +7406,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20170427"></a>
+          <a id="20170427"></a>
           <h3 id="Fish_Die_Off_Continues_Now_on_Tasmanian_Beaches">
             <a href="#Fish_Die_Off_Continues_Now_on_Tasmanian_Beaches" className="anchor">
               Fish Die-Off Continues; Now on Tasmanian Beaches
@@ -7498,7 +7474,7 @@ export const HiddenArchivedNews = () => {
           <p>&nbsp;</p>
         </article>
         <article>
-          <a name="20170404"></a>
+          <a id="20170404"></a>
           <h3 id="Mass_Fish_Die_Off_at_Mallacoota_Upwelling_and_the_EAC">
             <a href="#Mass_Fish_Die_Off_at_Mallacoota_Upwelling_and_the_EAC" className="anchor">
               Mass Fish Die-Off at Mallacoota: Upwelling and the EAC?
@@ -7584,7 +7560,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20170324"></a>
+          <a id="20170324"></a>
           <h3 id="Final_Port_to_Pub_Ocean_Forecast">
             <a href="#Final_Port_to_Pub_Ocean_Forecast" className="anchor">
               Final Port-to-Pub Ocean Forecast
@@ -7621,7 +7597,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20170321"></a>
+          <a id="20170321"></a>
           <h3 id="The_Port_to_Pub_Ocean_Forecast">
             <a href="#The_Port_to_Pub_Ocean_Forecast" className="anchor">
               The Port-to-Pub Ocean Forecast
@@ -7657,7 +7633,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20170222"></a>
+          <a id="20170222"></a>
           <h3 id="Rottnest_Swim_Forecast">
             <a href="#Rottnest_Swim_Forecast" className="anchor">
               Rottnest Swim Forecast
@@ -7700,7 +7676,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20161222"></a>
+          <a id="20161222"></a>
           <h3 id="Sydney_Hobart_ocean_currents">
             <a href="#Sydney_Hobart_ocean_currents" className="anchor">
               Sydney-Hobart ocean currents
@@ -7765,7 +7741,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20161207"></a>
+          <a id="20161207"></a>
           <h3 id="SealCTDs_Temperature_and_Salinity_Profiles_from_Ocean_Mammals">
             <a href="#SealCTDs_Temperature_and_Salinity_Profiles_from_Ocean_Mammals" className="anchor">
               SealCTDs: Temperature and Salinity Profiles from Ocean Mammals
@@ -7834,7 +7810,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20160825"></a>
+          <a id="20160825"></a>
           <h3 id="EAC_Eddies_are_coming_to_Tasmania">
             <a href="#EAC_Eddies_are_coming_to_Tasmania" className="anchor">
               EAC Eddies are coming to Tasmania
@@ -7936,7 +7912,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20160704"></a>
+          <a id="20160704"></a>
           <h3 id="Is_La_Ni_ntilde_a_coming">
             <a href="#Is_La_Ni_ntilde_a_coming" className="anchor">
               Is La Niña coming?
@@ -7994,7 +7970,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20160608"></a>
+          <a id="20160608"></a>
           <h3 id="June_6_East_Coast_Low_Epic_Waves">
             <a href="#June_6_East_Coast_Low_Epic_Waves" className="anchor">
               June 6 East Coast Low - Epic Waves
@@ -8037,7 +8013,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20160524"></a>
+          <a id="20160524"></a>
           <h3 id="Slocum_gliders_track_sub_surface_warming_in_the_Great_Barrier_Reef">
             <a href="#Slocum_gliders_track_sub_surface_warming_in_the_Great_Barrier_Reef" className="anchor">
               Slocum gliders track sub-surface warming in the Great Barrier Reef
@@ -8135,7 +8111,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20160428"></a>
+          <a id="20160428"></a>
           <h3 id="Tracking_EAC_warm_core_eddies">
             <a href="#Tracking_EAC_warm_core_eddies" className="anchor">
               Tracking EAC warm core eddies
@@ -8213,7 +8189,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20160331"></a>
+          <a id="20160331"></a>
           <h3 id="The_EAC_Array_Revealing_the_Boundary_Current">
             <a href="#The_EAC_Array_Revealing_the_Boundary_Current" className="anchor">
               The EAC Array - Revealing the Boundary Current
@@ -8258,14 +8234,14 @@ export const HiddenArchivedNews = () => {
             presented in
             <a href="http://journals.ametsoc.org/doi/pdf/10.1175/JPO-D-15-0052.1">Sloyan et al, 2016</a>
           </p>
-          <video controls="" width="320px">
+          <video width="320px">
             <source src="https://oceancurrent.aodn.org.au/news/20160331/EAC_array_transport.mp4" type="video/mp4" />
             <source src="https://oceancurrent.aodn.org.au/news/20160331/EAC_array_transport.ogg" type="video/ogg" />
             <track kind="captions" />
           </video>
         </article>
         <article>
-          <a name="20160317"></a>
+          <a id="20160317"></a>
           <h3 id="Port_to_Pub_Swim_Ocean_Forecast">
             <a href="#Port_to_Pub_Swim_Ocean_Forecast" className="anchor">
               Port to Pub Swim - Ocean Forecast
@@ -8306,7 +8282,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20160226"></a>
+          <a id="20160226"></a>
           <h3 id="Rottnest_Channel_Swim_Forecast_Update">
             <a href="#Rottnest_Channel_Swim_Forecast_Update" className="anchor">
               Rottnest Channel Swim - Forecast Update
@@ -8356,7 +8332,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20160225"></a>
+          <a id="20160225"></a>
           <h3 id="Rottnest_Channel_Swim_The_Forecast_Is_In">
             <a href="#Rottnest_Channel_Swim_The_Forecast_Is_In" className="anchor">
               Rottnest Channel Swim - The Forecast Is In
@@ -8400,7 +8376,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20160217"></a>
+          <a id="20160217"></a>
           <h3 id="The_Bonney_Coast_Upwelling_biological_hotspot_sampled_by_an_IMOS_glider">
             <a href="#The_Bonney_Coast_Upwelling_biological_hotspot_sampled_by_an_IMOS_glider" className="anchor">
               The Bonney Coast Upwelling: biological hotspot sampled by an IMOS glider
@@ -8472,7 +8448,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20151224"></a>
+          <a id="20151224"></a>
           <h3 id="Sydney_Hobart_ocean_currents">
             <a href="#Sydney_Hobart_ocean_currents" className="anchor">
               Sydney-Hobart ocean currents
@@ -8502,7 +8478,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20151221"></a>
+          <a id="20151221"></a>
           <h3 id="A_record_of_record_sea_surface_temperatures">
             <a href="#A_record_of_record_sea_surface_temperatures" className="anchor">
               A record of record sea surface temperatures
@@ -8548,7 +8524,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20151113"></a>
+          <a id="20151113"></a>
           <h3 id="MH370_Are_they_searching_in_the_right_place">
             <a href="#MH370_Are_they_searching_in_the_right_place" className="anchor">
               MH370: Are they searching in the right place?
@@ -8601,7 +8577,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20150715"></a>
+          <a id="20150715"></a>
           <h3 id="Sea_level_in_the_western_equatorial_Pacific_drops_dramatically">
             <a href="#Sea_level_in_the_western_equatorial_Pacific_drops_dramatically" className="anchor">
               Sea level in the western equatorial Pacific drops dramatically
@@ -8658,7 +8634,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20150617"></a>
+          <a id="20150617"></a>
           <h3 id="Extraordinary_eddies_of_the_East_Australian_Current_probed_by_RV_Investigator">
             <a href="#Extraordinary_eddies_of_the_East_Australian_Current_probed_by_RV_Investigator" className="anchor">
               Extraordinary eddies of the East Australian Current probed by RV Investigator
@@ -8720,7 +8696,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20150605"></a>
+          <a id="20150605"></a>
           <h3 id="Slocum_glider_missions_reveal_pools_of_dense_shelf_water_the_winter_cascade">
             <a href="#Slocum_glider_missions_reveal_pools_of_dense_shelf_water_the_winter_cascade" className="anchor">
               Slocum glider missions reveal pools of dense shelf water - the 'winter cascade'
@@ -8769,7 +8745,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20150507"></a>
+          <a id="20150507"></a>
           <h3 id="What_does_a_warm_North_Pacific_mean_for_us">
             <a href="#What_does_a_warm_North_Pacific_mean_for_us" className="anchor">
               What does a warm North Pacific mean for us?
@@ -8817,7 +8793,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20150501"></a>
+          <a id="20150501"></a>
           <h3 id="NSW_floodwaters_seen_from_space_and_by_an_IMOS_glider">
             <a href="#NSW_floodwaters_seen_from_space_and_by_an_IMOS_glider" className="anchor">
               NSW floodwaters seen from space and by an IMOS glider
@@ -8892,7 +8868,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20150424"></a>
+          <a id="20150424"></a>
           <h3 id="El_Nino_Brewing">
             <a href="#El_Nino_Brewing" className="anchor">
               El Nino Brewing{' '}
@@ -8931,7 +8907,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20150416"></a>
+          <a id="20150416"></a>
           <h3 id="Shelf_edge_fronts_and_boundary_currents">
             <a href="#Shelf_edge_fronts_and_boundary_currents" className="anchor">
               Shelf-edge fronts and boundary currents
@@ -8981,7 +8957,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20150226"></a>
+          <a id="20150226"></a>
           <h3 id="Summer_sea_surface_temperature_summary">
             <a href="#Summer_sea_surface_temperature_summary" className="anchor">
               Summer sea surface temperature summary
@@ -9030,7 +9006,7 @@ export const HiddenArchivedNews = () => {
             the other hand, has had strong wind-driven upwelling since mid-January. Cold water due to upwelling is a
             usual summer occurence, but this year it was particularly strong.
           </p>
-          <video controls="" width="320px">
+          <video width="320px">
             <source src="https://oceancurrent.aodn.org.au/SAgulfs/2015/SAgulfs201503.mp4" type="video/mp4" />
             <track kind="captions" />
           </video>
@@ -9042,7 +9018,7 @@ export const HiddenArchivedNews = () => {
           </p>
         </article>
         <article>
-          <a name="20150225"></a>
+          <a id="20150225"></a>
           <h3 id="Northward_Currents_predicted_and_observed_for_the_Rottnest_Channel_Swim">
             <a href="#Northward_Currents_predicted_and_observed_for_the_Rottnest_Channel_Swim" className="anchor">
               Northward Currents predicted and observed for the Rottnest Channel Swim
@@ -9092,7 +9068,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20150220"></a>
+          <a id="20150220"></a>
           <h3 id="Northward_Currents_predicted_for_the_Rottnest_Channel_Swim">
             <a href="#Northward_Currents_predicted_for_the_Rottnest_Channel_Swim" className="anchor">
               Northward Currents predicted for the Rottnest Channel Swim
@@ -9133,7 +9109,7 @@ export const HiddenArchivedNews = () => {
           </div>
         </article>
         <article>
-          <a name="20150213"></a>
+          <a id="20150213"></a>
           <h3 id="Rottnest_Channel_Swim_pre_race_briefing">
             <a href="#Rottnest_Channel_Swim_pre_race_briefing" className="anchor">
               Rottnest Channel Swim pre-race briefing
