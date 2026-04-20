@@ -7,7 +7,7 @@ const BetaBanner: React.FC = () => {
   if (!visible) return null;
 
   return (
-    <div className="relative w-full bg-imos-light-blue py-1 pl-2 pr-6">
+    <div className="relative w-full bg-imos-light-blue py-1 pl-2 pr-6 shadow">
       <p className="text-center font-open-sans text-sm text-imos-dark-grey">
         This site is currently in beta. We’d greatly appreciate your feedback—
         <a
