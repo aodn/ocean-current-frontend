@@ -89,7 +89,7 @@ test.describe('Home Page Tests', () => {
     await expect(argoOption).toBeVisible();
   });
 
-  test('TC005: News Button Opens IMOS Ocean Current News Page', async ({ page, context }) => {
+  test('TC005: News Button Opens IMOS Ocean Current News Page', async ({ page }) => {
     // Navigate to the Ocean current page
     await page.goto('/');
     await page.waitForLoadState('networkidle');
@@ -98,18 +98,11 @@ test.describe('Home Page Tests', () => {
     const navbar = page.locator('nav');
     const newsLink = navbar.locator('a[href*="news"]').first();
 
-    // Listen for new pages (it opens in a new tab with target="_blank")
-    const pagePromise = context.waitForEvent('page');
-
     await newsLink.click();
+    await page.waitForLoadState('networkidle');
 
-    // Wait for new page to open
-    const newPage = await pagePromise;
-    await newPage.waitForLoadState();
-
-    // Verify the URL contains news-related content
-    expect(newPage.url()).toContain('news');
-    await newPage.close();
+    // Verify the URL navigated to the news page within the app
+    expect(page.url()).toContain('news');
   });
 
   test('TC006: Map Displays with Animated Subcategory Options', async ({ page }) => {
