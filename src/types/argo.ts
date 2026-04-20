@@ -56,10 +56,23 @@ export interface ANMNImageTag {
   shipName: string;
 }
 
-export type ImageTag = ArgoImageTag | SoopImageTag | FishSoopImageTag | ANMNImageTag;
+export interface ANFOGImageTag {
+  type: 'ANFOG';
+  coordX: number;
+  coordY: number;
+  shipName: string;
+  anfogUnknown: string;
+}
+
+export type ImageTag = ArgoImageTag | SoopImageTag | FishSoopImageTag | ANMNImageTag | ANFOGImageTag;
 
 export interface ImageTagMapArea {
-  type: ANMNImageTag['type'] | SoopImageTag['type'] | FishSoopImageTag['type'] | ArgoImageTag['type'];
+  type:
+    | ANMNImageTag['type']
+    | SoopImageTag['type']
+    | FishSoopImageTag['type']
+    | ArgoImageTag['type']
+    | ANFOGImageTag['type'];
   shape: string;
   coords: number[];
   href: string;

@@ -89,6 +89,15 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
         case 'ANMN':
           acc.push({ type, shape: 'circle', coords: [coordX, coordY, 10], href: '', tooltip: type + item.shipName });
           break;
+        case 'ANFOG':
+          acc.push({
+            type,
+            shape: 'circle',
+            coords: [coordX, coordY, 10],
+            href: `https://oceancurrent.aodn.org.au/gliders/${item.shipName}_nrt_12d/${dateFormatted + '00'}.gif`,
+            tooltip: item.anfogUnknown + item.shipName,
+          });
+          break;
         default: {
           const _exhaustiveCheck: never = item;
           console.error('Unhandled ImageTag type:', _exhaustiveCheck);
