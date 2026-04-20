@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-
+import { useScrollToHash } from '@/hooks/useScrollToHash/useScrollToHash';
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/anchor-has-content */
@@ -23,6 +23,7 @@ const normalizeUrl = (value: string) => {
 
 export const HiddenArchivedNews = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  useScrollToHash();
 
   useEffect(() => {
     const container = containerRef.current;

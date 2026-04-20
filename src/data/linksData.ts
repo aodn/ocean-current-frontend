@@ -1,5 +1,4 @@
 import { LinkItem } from '@/types/navbar';
-import { ExternalUrls } from '@/constants/textConstant';
 import {
   OceanColourIcon,
   AdjustedSeaLevelAnomalyIcon,
@@ -18,6 +17,7 @@ import {
   SwotIcon,
   FishSOOPIcon,
 } from '@/components/Shared/Icons';
+import { APP_ROUTES } from '@/routers/appRoutes';
 
 export const linksData: LinkItem[] = [
   {
@@ -150,7 +150,7 @@ export const linksData: LinkItem[] = [
   },
   {
     title: 'News',
-    url: ExternalUrls.OCEAN_CURRENT_NEWS,
+    url: APP_ROUTES.NEWS,
   },
   {
     title: 'Guided Tour',
