@@ -2,7 +2,6 @@ import React from 'react';
 import logo from '@/assets/images/imos-logo.png';
 import { BrandingText, FooterText } from '@/constants/textConstant.ts';
 import { appVersion } from '@/configs/version.ts';
-import { Button } from '../Shared/index.tsx';
 import {
   COPYRIGHT_TEXT,
   /* FEEDBACK_LINK, */ FOOTER_ACKNOWLEDGE_TEXT,
@@ -17,9 +16,9 @@ const Footer: React.FC = () => {
   };
 
   // TODO: Re-enable feedback link when the next review round starts
-  const handleClickFeedback = () => {
-    // window.open(FEEDBACK_LINK, '_blank');
-  };
+  // const handleClickFeedback = () => {
+  //   // window.open(FEEDBACK_LINK, '_blank');
+  // };
 
   return (
     <footer className="bg-white">
@@ -57,7 +56,7 @@ const Footer: React.FC = () => {
           <p className="text-base leading-7 text-imos-nav-text sm:leading-8">{FOOTER_ACKNOWLEDGE_TEXT}</p>
 
           <div className="grid grid-cols-2 gap-4 border-y border-imos-deeper-blue py-4 md:flex md:h-20 md:flex-row md:items-center md:justify-between">
-            <div className="flex w-full justify-center md:h-12 md:w-[200px] md:justify-start">
+            {/* <div className="flex w-full justify-center md:h-12 md:w-[200px] md:justify-start">
               <Button
                 type="primary"
                 size="full"
@@ -69,7 +68,7 @@ const Footer: React.FC = () => {
                   <p className="text-base">{FooterText.FEEDBACK}</p>
                 </div>
               </Button>
-            </div>
+            </div> */}
             {FOOTER_LINKS.map(({ text, url }) => (
               <a
                 key={text}
