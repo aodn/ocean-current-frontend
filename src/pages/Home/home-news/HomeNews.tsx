@@ -1,7 +1,7 @@
 import { News } from '@/constants/textConstant';
-import CostalImage from '@/assets/images/Coastal_currents_estimated_from_tide_gauges.jpg';
-import SydneyImage from '@/assets/images/Sydney_to_Hobart_outlook.jpg';
-import FishSOOPImage from '@/assets/images/FishSOOP_taking_the_temperature.jpg';
+import CostalImage from '@/assets/images/Coastal_currents_estimated_from_tide_gauges.gif';
+import SydneyImage from '@/assets/images/Sydney_to_Hobart_outlook.gif';
+import FishSOOPImage from '@/assets/images/FishSOOP_taking_the_temperature.gif';
 import { ArrowWithTailIcon } from '@/components/Shared/Icons';
 import { LinkOrAnchor } from '@/components/Shared';
 import { APP_ROUTES } from '@/routers/routes';
@@ -50,7 +50,7 @@ export const HomeNews = () => {
             key={news.title + news.authors + news.date}
             className="col-span-12 object-cover p-2 text-imos-dark-grey md:col-span-6 lg:col-span-4"
           >
-            <img src={news.image} alt={news.title} className="h-auto w-full rounded-md object-cover" />
+            <img src={news.image} alt={news.title} className="w-full rounded-md object-cover" />
             <div className="mt-3 flex justify-between gap-x-2 text-body md:mt-6">
               <p>{news.authors}</p>
               <p>{news.date} </p>
