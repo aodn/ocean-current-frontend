@@ -6,17 +6,10 @@ import DataVisualisationLayout from '@/layouts/DataVisualisationLayout';
 import AboutLayout from '@/layouts/AboutLayout';
 import { HiddenArchivedNews } from '@/pages/HiddenArchivedNews/HiddenArchivedNews';
 import { createProductRedirects } from './utils';
+import { APP_ROUTES } from './appRoutes';
 
-export const APP_ROUTES = {
-  HOME: '/',
-  PRODUCT: '/product',
-  MAP: '/map',
-  ABOUT: '/about',
-  HIDDEN_ARCHIVED_NEWS: '/hidden_archived_news',
-  NOT_FOUND: '/404',
-} as const;
-
-export type AppRoute = (typeof APP_ROUTES)[keyof typeof APP_ROUTES];
+export { APP_ROUTES };
+export type { AppRoute } from './appRoutes';
 
 const routes: RouteObject[] = [
   {
@@ -84,7 +77,7 @@ const routes: RouteObject[] = [
         ],
       },
       {
-        path: APP_ROUTES.HIDDEN_ARCHIVED_NEWS,
+        path: APP_ROUTES.NEWS,
         element: <HiddenArchivedNews />,
       },
     ],
