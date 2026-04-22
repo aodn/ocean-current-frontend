@@ -10225,7 +10225,7 @@ export const HiddenArchivedNews = () => {
           </article>
 
           <a
-            href="https://oceancurrent.aodn.org.au/technews.php"
+            href="https://oceancurrent.aodn.org.au/news_archive.php"
             className="flex h-[56px] w-[240px] items-center justify-center rounded bg-white text-[20px] text-[#3B6E8F] no-underline"
           >
             News Archive
