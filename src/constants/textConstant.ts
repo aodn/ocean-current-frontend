@@ -39,7 +39,7 @@ export enum ProductMenubarText {
 
 export enum News {
   ALL_NEWS = 'All news',
-  NEWS = "Read What's new",
+  NEWS = "Read what's new",
 }
 
 export enum FooterText {
