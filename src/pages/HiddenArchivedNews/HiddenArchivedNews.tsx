@@ -59,7 +59,7 @@ export const HiddenArchivedNews = () => {
           <article className="p-2">
             <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
               <div>
-                <h3 id="Coastal_currents_estimated_from_tide_gauges ">
+                <h3 id="Coastal_currents_estimated_from_tide_gauges">
                   <a href="#Coastal_currents_estimated_from_tide_gauges" className="anchor">
                     Coastal currents estimated from tide gauges
                   </a>
