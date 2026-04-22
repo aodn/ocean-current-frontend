@@ -34,11 +34,11 @@ export const HomeNews = () => {
   return (
     <div className="m-auto w-full max-w-8xl">
       <div className="mb-4 flex flex-col justify-between gap-y-3 px-2 md:flex-row md:items-center">
-        <h2 className="font-open-sans text-3xl font-medium text-imos-dark-grey md:mb-8 md:text-4xl">{News.NEWS}</h2>
+        <h2 className="font-open-sans text-3xl font-medium text-imos-dark-grey md:text-4xl">{News.NEWS}</h2>
 
         <LinkOrAnchor
           to={APP_ROUTES.NEWS}
-          className="flex w-full items-center justify-center rounded-lg border border-imos-dark-grey p-2 text-lg text-imos-dark-grey md:w-fit md:border-none md:hover:underline"
+          className="flex w-full items-center justify-center rounded-lg border border-imos-dark-grey bg-white p-2 text-lg text-imos-dark-grey md:w-[156px]"
         >
           {News.ALL_NEWS}
         </LinkOrAnchor>
@@ -57,7 +57,7 @@ export const HomeNews = () => {
             </div>
             <h3 className="mt-3 font-open-sans text-lg font-bold text-imos-dark-grey">{news.title}</h3>
             <LinkOrAnchor to={news.link} className="mt-4 inline-block hover:underline lg:mt-6">
-              <span className="text-body text-imos-dark-grey">Read more </span>
+              <span className="text-[16px] text-imos-dark-grey">Read more </span>
               <ArrowWithTailIcon size="xs" className="inline" />
             </LinkOrAnchor>
           </div>
