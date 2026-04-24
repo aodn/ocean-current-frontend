@@ -1,5 +1,8 @@
 import { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router';
 import { useScrollToHash } from '@/hooks/useScrollToHash/useScrollToHash';
+import { LinkOrAnchor } from '@/components/Shared';
+import { cn } from '@/utils/classname-util/cn';
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react/no-unescaped-entities */
 
@@ -19,7 +22,13 @@ const normalizeUrl = (value: string) => {
   }
 };
 
+type DateId = '2023-now' | '2020-2023' | 'older_than_2020';
+
+const DATE_SORT_IDS: DateId[] = ['2023-now', '2020-2023', 'older_than_2020'];
+
 export const HiddenArchivedNews = () => {
+  const { hash } = useLocation();
+  const activeId = (DATE_SORT_IDS.find((d) => hash === `#${d}`) ?? '2023-now') as DateId;
   const containerRef = useRef<HTMLDivElement | null>(null);
   useScrollToHash();
 
@@ -52,9 +61,31 @@ export const HiddenArchivedNews = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="hiddenArchivedNews mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div
+      ref={containerRef}
+      className="hiddenArchivedNews mx-auto max-w-7xl overflow-x-hidden px-4 py-12 sm:px-6 lg:px-8 [&_img]:max-w-full"
+    >
       <div>
-        <h2 className="pl-2">OceanCurrent News</h2>
+        <div className="flex flex-col items-center justify-between gap-y-4 lg:flex-row">
+          <h2 className="pl-2">OceanCurrent News</h2>
+          <div className="flex gap-2">
+            {DATE_SORT_IDS.map((d) => (
+              <LinkOrAnchor
+                key={d}
+                to={`#${d}`}
+                className={cn(
+                  'flex w-auto items-center justify-center whitespace-nowrap rounded-lg border px-3 py-2 text-sm no-underline hover:opacity-75 md:w-[156px] md:text-lg',
+                  activeId === d
+                    ? 'border-imos-calypso-blue bg-imos-calypso-blue text-white'
+                    : 'border-imos-light-grey bg-white text-imos-dark-grey',
+                )}
+              >
+                {d === 'older_than_2020' ? 'Older than 2020' : d}
+              </LinkOrAnchor>
+            ))}
+          </div>
+        </div>
+
         <div className="mt-10 flex flex-col gap-y-8">
           <article className="p-2">
             <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
@@ -2396,7 +2427,9 @@ export const HiddenArchivedNews = () => {
               </div>
 
               <div>
-                <p className="font-bold">28 February, 2023</p>
+                <p className="font-bold" id="2020-2023">
+                  28 February, 2023
+                </p>
               </div>
             </div>
 
@@ -5315,7 +5348,9 @@ export const HiddenArchivedNews = () => {
               </div>
 
               <div>
-                <p className="font-bold">24 December, 2019</p>
+                <p className="font-bold" id="older_than_2020">
+                  24 December, 2019
+                </p>
               </div>
             </div>
 
