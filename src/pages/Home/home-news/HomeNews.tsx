@@ -38,22 +38,24 @@ export const HomeNews = () => {
 
         <LinkOrAnchor
           to={APP_ROUTES.NEWS}
-          className="flex w-full items-center justify-center rounded-lg border border-imos-dark-grey bg-white p-2 text-lg text-imos-dark-grey md:w-[156px]"
+          className="flex w-full items-center justify-center rounded-lg border border-imos-dark-grey bg-white p-2 text-lg text-imos-dark-grey hover:opacity-75 md:w-[156px]"
         >
           {News.ALL_NEWS}
         </LinkOrAnchor>
       </div>
 
-      <div className="grid w-full grid-cols-12 gap-5 lg:gap-10">
+      <div className="grid w-full grid-cols-12 gap-5 lg:gap-20">
         {NEWS_DATA.map((news) => (
           <div
             key={news.title + news.authors + news.date}
-            className="col-span-12 object-cover p-2 text-imos-dark-grey md:col-span-6 lg:col-span-4"
+            className="col-span-12 flex flex-col object-cover p-2 text-imos-dark-grey md:col-span-6 lg:col-span-4"
           >
-            <img src={news.image} alt={news.title} className="w-full rounded-md object-cover" />
+            <img src={news.image} alt={news.title} className="h-80 self-center rounded-md object-contain" />
             <div className="mt-3 flex justify-between gap-x-2 text-body md:mt-6">
               <p>{news.authors}</p>
-              <p>{news.date} </p>
+              <LinkOrAnchor to={news.link} className="inline-block hover:underline">
+                {news.date}{' '}
+              </LinkOrAnchor>
             </div>
             <h3 className="mt-3 font-open-sans text-lg font-bold text-imos-dark-grey">{news.title}</h3>
             <LinkOrAnchor to={news.link} className="mt-4 inline-block hover:underline lg:mt-6">
