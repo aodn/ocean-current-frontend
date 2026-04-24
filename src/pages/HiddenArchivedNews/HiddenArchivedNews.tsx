@@ -90,7 +90,8 @@ export const HiddenArchivedNews = () => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  DM03
+                  {' '}
+                  DM03{' '}
                 </a>
                 of our Gridded Sea Level Anomaly product.
               </p>
@@ -102,7 +103,8 @@ export const HiddenArchivedNews = () => {
                 like the average magnitude, ratio of alongshore:across-shelf current variance, auto-correlation
                 time-scale etc, are about right. FFI see
                 <a href="../timeseries/DM03_ANMN/" target="_blank">
-                  more information
+                  {' '}
+                  more information{' '}
                 </a>
                 including explanation of what is shown in the example graphics shown here.&nbsp;
                 <br />
@@ -138,7 +140,11 @@ export const HiddenArchivedNews = () => {
 
             <div className="rounded-b bg-white p-4">
               <p>
-                <a href="Syd-Hob/2025122311.gif" target="_blank" rel="noreferrer">
+                <a
+                  href="https://oceancurrent.aodn.org.au/product.php?product=snapshot&region=SNSW&date=20251223110000&rtype=DR"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <img src="news/20251222/2025122311.gif" />
                 </a>
                 The positioning of ocean eddies this year is quite similar to last year. More specifically,
@@ -147,7 +153,8 @@ export const HiddenArchivedNews = () => {
                 because it is presently about 150km east of Sydney. Closer to Sydney, there is possibly a weak adverse
                 current. This was the situation last year - see the still below or re-live December 2024 by viewing this
                 <a href="SNSW/2024/SNSW202412.mp4" target="_blank" rel="noreferrer">
-                  animation
+                  {' '}
+                  animation{' '}
                 </a>
                 which shows how the eddy off Narooma was formed. The animation also includes measurements by current
                 meters off Sydney and Narooma (that are not available in real time) to show the rapid variations of
@@ -161,6 +168,7 @@ export const HiddenArchivedNews = () => {
                   target="_blank"
                   rel="noreferrer"
                 >
+                  {' '}
                   SST image for southern NSW
                 </a>
                 . Last year a similar eddy and associated current was off Narooma at race time.

@@ -38,7 +38,7 @@ export const HomeNews = () => {
 
         <LinkOrAnchor
           to={APP_ROUTES.NEWS}
-          className="flex w-full items-center justify-center rounded-lg border border-imos-dark-grey bg-white p-2 text-lg text-imos-dark-grey md:w-[156px]"
+          className="flex w-full items-center justify-center rounded-lg border border-imos-dark-grey bg-white p-2 text-lg text-imos-dark-grey hover:opacity-75 md:w-[156px]"
         >
           {News.ALL_NEWS}
         </LinkOrAnchor>

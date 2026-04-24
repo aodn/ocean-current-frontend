@@ -9,7 +9,7 @@ const BetaBanner: React.FC = () => {
   return (
     <div className="relative w-full bg-imos-light-blue py-1 pl-2 pr-6 shadow">
       <p className="text-left font-open-sans text-xs text-imos-dark-grey md:text-center md:text-sm">
-        This site is currently in beta. We’d greatly appreciate your feedback—
+        We’re giving the site a fresh new look. We’d greatly appreciate your feedback. {''}
         <a
           href="https://forms.office.com/Pages/ResponsePage.aspx?id=VV3rFZEZvEaNp6slI03uCCQYYrnLj4dIpn1c2hJluMRUQTJIWVMzMThYMUwxR0RKMUMyM0NEQVVXUS4u"
           target="_blank"
