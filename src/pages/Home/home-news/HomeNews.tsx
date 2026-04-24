@@ -53,7 +53,9 @@ export const HomeNews = () => {
             <img src={news.image} alt={news.title} className="w-full rounded-md object-cover" />
             <div className="mt-3 flex justify-between gap-x-2 text-body md:mt-6">
               <p>{news.authors}</p>
-              <p>{news.date} </p>
+              <LinkOrAnchor to={news.link} className="inline-block hover:underline">
+                {news.date}{' '}
+              </LinkOrAnchor>
             </div>
             <h3 className="mt-3 font-open-sans text-lg font-bold text-imos-dark-grey">{news.title}</h3>
             <LinkOrAnchor to={news.link} className="mt-4 inline-block hover:underline lg:mt-6">
