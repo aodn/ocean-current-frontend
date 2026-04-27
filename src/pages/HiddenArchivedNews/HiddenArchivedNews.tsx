@@ -194,7 +194,11 @@ export const HiddenArchivedNews = () => {
                   race because it is presently about 150km east of Sydney. Closer to Sydney, there is possibly a weak
                   adverse current. This was the situation last year - see the still below or re-live December 2024 by
                   viewing this
-                  <a href="SNSW/2024/SNSW202412.mp4" target="_blank" rel="noreferrer">
+                  <a
+                    href="https://oceancurrent-beta.aodn.org.au/product/four-hour-sst/sst-filled?region=SNSW&date=2024123102"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     {' '}
                     animation{' '}
                   </a>
@@ -206,7 +210,7 @@ export const HiddenArchivedNews = () => {
                   that is presently off Jervis Bay but slipping to the south. It is very likely to give a boost to
                   yachts in deep enough water to be in the current, the edge of which can be seen in a recent
                   <a
-                    href="product.php?product=fourhour&amp;region=SNSW&amp;date=20251223180000&amp;rtype=DR"
+                    href="https://oceancurrent-beta.aodn.org.au/product/four-hour-sst/sst-filled?region=SNSW&date=2025122318"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -314,7 +318,7 @@ export const HiddenArchivedNews = () => {
                   : cold water is normally submerged (because it is dense) and is high in nutrient (long story). If
                   something brings it up to the sun-lit waters, the phytoplankton can grow (see the&nbsp;
                   <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=oceancolour.CHL&amp;region=Brisbane2&amp;date=20251210161338&amp;rtype=DR"
+                    href="https://oceancurrent-beta.aodn.org.au/product/ocean-colour/chl-a?region=Brisbane2&date=2025121004"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -652,7 +656,7 @@ export const HiddenArchivedNews = () => {
                   An Argo float (WMO ID&nbsp;<strong>3902460</strong>) has been trapped in an anticyclonic eddy
                   propagating through the Great Australian Bight for over one year to date (Figure 1). The float was
                   first entrained by the eddy in 7 August 2024 (
-                  <a href="https://oceancurrent.aodn.org.au/profiles/cycle.php?wmoid=3902460&amp;cycle=60&amp;depth=0">
+                  <a href="https://oceancurrent-beta.aodn.org.au/product/argo?wmoid=3902460&cycle=60&depth=0-2000m&date=20240807">
                     cycle 60
                   </a>
                   , Fig 2a) and did three full loops at the eddy periphery before settling into the eddy core (Fig 2a,
@@ -663,24 +667,24 @@ export const HiddenArchivedNews = () => {
                   <br />
                   Over the past year, the float measured 37 profiles (one every 10 days) of temperature (T) and salinity
                   (S), with some of these profiles having an interesting pattern. On&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/profiles/cycle.php?wmoid=3902460&amp;cycle=65&amp;depth=0">
+                  <a href="https://oceancurrent-beta.aodn.org.au/product/argo?wmoid=3902460&cycle=65&depth=0-2000m&date=20240927">
                     27 Sep 2024
                   </a>
                   &nbsp;(cycle 65, Fig 2d), for example, the float measured a mid-depth T anomaly maximum at ~900 m,
                   with waters 1°C warmer than the satellite-adjusted climatology. Mid-depth anomalies become more
                   evident as the eddy propagates, and some of the T and S profiles have a 'staircase' pattern, evident
                   in&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/profiles/cycle.php?wmoid=3902460&amp;cycle=83&amp;depth=0">
+                  <a href="https://oceancurrent-beta.aodn.org.au/product/argo?wmoid=3902460&cycle=83&depth=0-2000m&date=20250330">
                     cycle 83
                   </a>
                   &nbsp;(Fig 2b), with large anomalies at 350 and 700-950 m. This and later cycles also show high values
                   of T and S&nbsp;&nbsp;well mixed in the top 60 m (top-400 m zoomed in&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/profiles/cycle.php?wmoid=3902460&amp;cycle=83&amp;depth=1">
+                  <a href="https://oceancurrent-beta.aodn.org.au/product/argo?wmoid=3902460&cycle=83&depth=0-400m&date=20250330">
                     here
                   </a>
                   ). This warm and salty mixed layer indicates the entrainment of coastal waters in the near-surface of
                   the eddy. Maps of&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/product.php?product=daily.SST&amp;region=AlbEsp&amp;date=20250313120000&amp;rtype=DR">
+                  <a href="https://oceancurrent-beta.aodn.org.au/product/six-day-sst/sst?wmoid=3902460&cycle=82&date=20250313&region=AlbEsp">
                     SST from March
                   </a>
                   , 2 weeks before cycle 83, show a filament of warm water extending from the coast to the open ocean in
@@ -722,11 +726,11 @@ export const HiddenArchivedNews = () => {
                   </a>
                   (Fig 3a), and IMOS-OceanCurrent adj. SLA maps show us the merge happening over 3 days (Fig 3b-d).
                   There wasn't a distinct change in the T and S profiles measured&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/profiles/cycle.php?wmoid=3902460&amp;cycle=83&amp;depth=0">
+                  <a href="https://oceancurrent-beta.aodn.org.au/product/argo?wmoid=3902460&cycle=83&depth=0-2000m&date=20250330">
                     before
                   </a>
                   &nbsp;and&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/profiles/cycle.php?wmoid=3902460&amp;cycle=83&amp;depth=0">
+                  <a href="https://oceancurrent-beta.aodn.org.au/product/argo?wmoid=3902460&cycle=84&depth=0-2000m&date=20250409">
                     after
                   </a>
                   &nbsp;the merge.
@@ -736,8 +740,8 @@ export const HiddenArchivedNews = () => {
                   Where did this eddy come from?&nbsp;&nbsp;Clicking backwards in time in our adj. SLA maps will give
                   you the answer.&nbsp;&nbsp;Our guess is that it came from the Tasman Sea, like the other eddies that
                   follow the&nbsp;
-                  <a href="https://doi.org/10.1029/2012GL053091">'Eddy Avenue'</a>&nbsp;from the EAC separation region,
-                  take a&nbsp;
+                  <a href="https://oceancurrent-beta.aodn.org.au/news#Tracking_EAC_warm_core_eddies">'Eddy Avenue'</a>
+                  &nbsp;from the EAC separation region, take a&nbsp;
                   <a href="https://oceancurrent.aodn.org.au/#Tracking_EAC_warm_core_eddies" className="anchor">
                     turn westwards south of Tasmania, and keep going
                   </a>
@@ -829,7 +833,7 @@ export const HiddenArchivedNews = () => {
                   Despite the mooring measurements showing cold temperatures on the shelf for around three months,
                   negative sea surface temperature anomalies off the southern WA coast were only seen in satellite data
                   from 20/Jan to 18/Feb,&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/product.php?product=daily&amp;region=Perth&amp;date=20240206170626&amp;rtype=DR">
+                  <a href="https://oceancurrent-beta.aodn.org.au/product/six-day-sst/sst?wmoid=3902460&cycle=84&date=20240206&region=Perth">
                     peaking on 6/Feb
                   </a>
                   . These conditions characterise a&nbsp;
@@ -924,7 +928,7 @@ export const HiddenArchivedNews = () => {
                   You can see the closed contours isobars&nbsp;(lines of same atmospheric pressure)&nbsp;&nbsp;forming a
                   coherent feature centred at 153.5°E, 13.5°S on the&nbsp;23 Feb, that then moves southward over the
                   following week (click forward on the maps,
-                  <a href="http://oceancurrent.aodn.org.au/product.php?product=gsla&amp;region=NE&amp;date=20250223112742&amp;rtype=SR">
+                  <a href="https://oceancurrent-beta.aodn.org.au/product/adjusted-sea-level-anomaly/sla?wmoid=3902460&cycle=84&date=20250223&region=NE">
                     from 23 Feb
                   </a>
                   ).
@@ -947,7 +951,7 @@ export const HiddenArchivedNews = () => {
                   <br />
                   Cyclones also leave an imprint in the ocean by transferring energy to the ocean through wind friction,
                   forming waves. Surface waves below TC Alfred were over 8 m high, as shown in our&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/waves/waves3.php?date=20250301120000">
+                  <a href="https://oceancurrent-beta.aodn.org.au/product/surface-waves/wave?region=Au&date=2025030112">
                     surface wave maps from 1st&nbsp;March
                   </a>
                   &nbsp;– read more about TC Alfred and surface waves at the&nbsp;
@@ -961,7 +965,7 @@ export const HiddenArchivedNews = () => {
                   TC Alfred drew heat from the ocean as it moved and intensified, cooling the sea surface temperature on
                   its wake. There was a ~2°C drop in waters of the Coral Sea between&nbsp;22 February&nbsp;and&nbsp;2
                   March&nbsp;(Figure 3). The cooler patch of water after the TC passing is even clearer in maps of&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/product.php?product=daily.SST_ANOM&amp;region=NE&amp;date=20250302120000&amp;rtype=SR">
+                  <a href="https://oceancurrent-beta.aodn.org.au/product/six-day-sst/sst-anomaly?region=NE&date=20250302">
                     SST anomalies
                   </a>
                   .&nbsp;
@@ -976,11 +980,11 @@ export const HiddenArchivedNews = () => {
                   <strong>Sub-surface temperature and salinity</strong>
                   <br />
                   An&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/profiles/cycle.php?wmoid=5905569&amp;cycle=26&amp;depth=1">
+                  <a href="https://oceancurrent-beta.aodn.org.au/product/argo?wmoid=5905569&cycle=26&depth=0-2000m&date=20250304">
                     Argo float surfaced right below the cyclone on the 4th&nbsp;of March
                   </a>
                   &nbsp;(red box in Figure 2). We can compare its measurements to the measurements taken by a&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/profiles/cycle.php?wmoid=5905663&amp;cycle=235&amp;depth=1">
+                  <a href="https://oceancurrent-beta.aodn.org.au/product/argo?wmoid=5905663&cycle=235&depth=0-2000m&date=20250303">
                     nearby float at the same location, but before the cyclone passed
                   </a>
                   &nbsp;(blue box in Figure 2).
