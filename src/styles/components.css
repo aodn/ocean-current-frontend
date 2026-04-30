@@ -7,31 +7,31 @@
     @apply mx-1 text-imos-sea-blue;
   }
 
-  .hiddenArchivedNews {
+  .newsComponent {
     @apply text-[#090C02];
   }
 
-  .hiddenArchivedNews h2 {
+  .newsComponent h2 {
     @apply text-4xl font-semibold text-[#090C02];
   }
 
-  .hiddenArchivedNews h3 {
+  .newsComponent h3 {
     @apply text-2xl font-semibold text-[#090C02];
   }
 
-  .hiddenArchivedNews h5 {
+  .newsComponent h5 {
     @apply text-base font-medium text-[#090C02];
   }
 
-  .hiddenArchivedNews p {
+  .newsComponent p {
     @apply text-base leading-8;
   }
 
-  .hiddenArchivedNews a {
+  .newsComponent a {
     @apply text-imos-sea-blue underline underline-offset-2 hover:text-imos-hover-blue;
   }
 
-  .hiddenArchivedNews a.anchor {
+  .newsComponent a.anchor {
     @apply text-[#090C02] no-underline;
   }
 }

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router';
 import { cn } from '@/utils/classname-util/cn';
+import { useScrollToHash } from '@/hooks/useScrollToHash/useScrollToHash';
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react/no-unescaped-entities */
 
@@ -24,10 +25,11 @@ type DateId = '2023-now' | '2020-2023' | 'older_than_2020';
 
 const DATE_SORT_IDS: DateId[] = ['2023-now', '2020-2023', 'older_than_2020'];
 
-export const HiddenArchivedNews = () => {
+export const News = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedFilter = (searchParams.get('filter') as DateId | null) ?? null;
   const containerRef = useRef<HTMLDivElement | null>(null);
+  useScrollToHash();
 
   useEffect(() => {
     const container = containerRef.current;
@@ -58,7 +60,7 @@ export const HiddenArchivedNews = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="hiddenArchivedNews [&_img]:max-w-full">
+    <div ref={containerRef} className="newsComponent [&_img]:max-w-full">
       <div>
         <div className="flex flex-col items-center justify-between gap-y-4 lg:flex-row">
           <h2 className="pl-2">OceanCurrent News</h2>
@@ -10392,4 +10394,4 @@ export const HiddenArchivedNews = () => {
   );
 };
 
-export default HiddenArchivedNews;
+export default News;
