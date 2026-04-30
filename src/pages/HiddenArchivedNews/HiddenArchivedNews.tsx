@@ -58,10 +58,7 @@ export const HiddenArchivedNews = () => {
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className="hiddenArchivedNews mx-auto max-w-7xl overflow-x-hidden px-4 py-12 sm:px-6 lg:px-8 [&_img]:max-w-full"
-    >
+    <div ref={containerRef} className="hiddenArchivedNews [&_img]:max-w-full">
       <div>
         <div className="flex flex-col items-center justify-between gap-y-4 lg:flex-row">
           <h2 className="pl-2">OceanCurrent News</h2>
@@ -10394,3 +10391,5 @@ export const HiddenArchivedNews = () => {
     </div>
   );
 };
+
+export default HiddenArchivedNews;

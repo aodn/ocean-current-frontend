@@ -1,11 +1,7 @@
 import { Navigate, type RouteObject } from 'react-router';
-import { Home, MapView, DataView, ErrorPage, AboutView } from '@/pages';
-import MainLayout from '@/layouts/MainLayout';
-import MapLayout from '@/layouts/MapLayout';
-import DataVisualisationLayout from '@/layouts/DataVisualisationLayout';
-import AboutLayout from '@/layouts/AboutLayout';
-import { HiddenArchivedNews } from '@/pages/HiddenArchivedNews/HiddenArchivedNews';
-import { createProductRedirects } from './utils';
+import { Home, MapView, DataView, ErrorPage, AboutView, HiddenArchivedNews } from '@/pages';
+import { MainLayout, MapLayout, DataVisualisationLayout, AboutLayout, NewsLayout } from '@/layouts';
+import { createProductRedirects, NewsPhpRedirect } from './utils';
 import { APP_ROUTES } from './appRoutes';
 
 export { APP_ROUTES };
@@ -78,11 +74,20 @@ const routes: RouteObject[] = [
       },
       {
         path: APP_ROUTES.NEWS,
-        element: <HiddenArchivedNews />,
+        element: <NewsLayout />,
+        children: [
+          {
+            index: true,
+            element: <HiddenArchivedNews />,
+          },
+        ],
       },
     ],
   },
-
+  {
+    path: '/news.php',
+    element: <NewsPhpRedirect />,
+  },
   {
     path: APP_ROUTES.NOT_FOUND,
     element: <ErrorPage />,
