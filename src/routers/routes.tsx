@@ -1,5 +1,5 @@
 import { Navigate, type RouteObject } from 'react-router';
-import { Home, MapView, DataView, ErrorPage, AboutView, HiddenArchivedNews } from '@/pages';
+import { Home, MapView, DataView, ErrorPage, AboutView, News } from '@/pages';
 import { MainLayout, MapLayout, DataVisualisationLayout, AboutLayout, NewsLayout } from '@/layouts';
 import { createProductRedirects, NewsPhpRedirect } from './utils';
 import { APP_ROUTES } from './appRoutes';
@@ -78,7 +78,7 @@ const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <HiddenArchivedNews />,
+            element: <News />,
           },
         ],
       },
