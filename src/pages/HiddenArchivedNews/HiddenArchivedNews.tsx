@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router';
 import { cn } from '@/utils/classname-util/cn';
+import { useScrollToHash } from '@/hooks/useScrollToHash/useScrollToHash';
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react/no-unescaped-entities */
 
@@ -28,6 +29,7 @@ export const HiddenArchivedNews = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedFilter = (searchParams.get('filter') as DateId | null) ?? null;
   const containerRef = useRef<HTMLDivElement | null>(null);
+  useScrollToHash();
 
   useEffect(() => {
     const container = containerRef.current;
