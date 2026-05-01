@@ -100,7 +100,9 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
       const currentMonth = dayjs().month() + 1;
       const climatologyDate =
         dateList.find((dateItem) => {
-          const dateMonth = dayjs(dateItem.date, DateFormat.MONTH_ONLY).month() + 1;
+          const parsedMonth = dayjs(dateItem.date, DateFormat.MONTH_ONLY, true);
+          if (!parsedMonth.isValid()) return false;
+          const dateMonth = parsedMonth.month() + 1;
           return dateMonth === currentMonth;
         })?.date || latestDate;
 
