@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import dayjs from 'dayjs';
 import { useSearchParams } from 'react-router';
 import { useDateList, useQueryParams, useArgoProductValidQueryParams } from '@/hooks';
 import { Dropdown, Button, ShareButton } from '@/components/Shared';
@@ -12,6 +13,7 @@ import useCurrentMetersStore, {
 } from '@/stores/current-meters-store/currentMeters';
 import useProductStore, { setIsProductImageLoading } from '@/stores/product-store/productStore';
 import useProductDateFormat from '@/stores/product-store/hooks/useProductDateFormat';
+import { DateFormat } from '@/types/date';
 import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { CurrentMetersSubProductsKey } from '@/constants/currentMeters';
 import useArgoStore from '@/stores/argo-store/argoStore';
@@ -94,12 +96,13 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     }
 
     const latestDate = dateList?.[dateList.length - 1]?.date;
-
     if (isClimatology) {
-      const currentMonth = new Date().getMonth() + 1;
+      const currentMonth = dayjs().month() + 1;
       const climatologyDate =
         dateList.find((dateItem) => {
-          const dateMonth = new Date(dateItem.date).getMonth() + 1;
+          const parsedMonth = dayjs(dateItem.date, DateFormat.MONTH_ONLY, true);
+          if (!parsedMonth.isValid()) return false;
+          const dateMonth = parsedMonth.month() + 1;
           return dateMonth === currentMonth;
         })?.date || latestDate;
 
