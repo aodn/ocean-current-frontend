@@ -7,13 +7,13 @@ const BetaBanner: React.FC = () => {
   if (!visible) return null;
 
   return (
-    <div className="relative w-full bg-imos-light-blue py-1 pl-2 pr-6 shadow">
-      <p className="text-left font-open-sans text-xs text-imos-dark-grey md:text-center md:text-sm">
-        We’re giving the site a fresh new look. We’d greatly appreciate your feedback. {''}
+    <div className="relative flex min-h-11 w-full items-center bg-imos-pale-blue py-2 pl-2 pr-6 shadow md:h-11 md:py-0">
+      <p className="m-0 w-full text-left font-open-sans text-base text-imos-dark-grey md:text-center">
+        We&rsquo;re giving the site a fresh new look. We&rsquo;d greatly appreciate your feedback. {''}
         <a
           href="https://forms.office.com/Pages/ResponsePage.aspx?id=VV3rFZEZvEaNp6slI03uCCQYYrnLj4dIpn1c2hJluMRUQTJIWVMzMThYMUwxR0RKMUMyM0NEQVVXUS4u"
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           className="font-bold text-imos-dark-grey underline-offset-2 hover:underline"
         >
           [click here]
