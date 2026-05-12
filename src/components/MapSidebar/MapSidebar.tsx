@@ -2,7 +2,6 @@ import useProductStore from '@/stores/product-store/productStore';
 import { getProductPathWithSubProduct } from '@/utils/product-utils/product';
 import { sidebarProductsNav } from '@/data/sidebarProductsNav';
 import { useQueryParams } from '@/hooks';
-import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { RootProductID } from '@/types/product';
 
 const MapSidebar: React.FC = () => {
@@ -23,7 +22,7 @@ const MapSidebar: React.FC = () => {
     }
 
     if (id === 'currentMeters') {
-      queryToUpdate = { date: currentMeterSYearOptionsData[0].id, region: null };
+      queryToUpdate = { region: null };
     }
 
     const targetPath = getProductPathWithSubProduct(id);
