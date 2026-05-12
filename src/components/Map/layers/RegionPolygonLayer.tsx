@@ -37,9 +37,14 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
   const productId = useProductStore((state) => state.productParams.productId);
   const selectedRegionTitle = getRegionTitleByRegionCode(regionCodeFromUrl, productId) || 'Au';
   const regionGeoJsonData = useRegionPolygons();
-  const { isOceanColour, isCurrentMetersMooredInstrumentArray } = useProductCheck();
+  const { isOceanColour, isCurrentMetersMooredInstrumentArray, isSealCtd, isSealCtdTags } = useProductCheck();
 
-  const { data: regionLatestDates, isLoading: isLoadingLatestDates } = useRegionLatestDates(productId);
+  const isSealCtdRelatedProduct = isSealCtd || isSealCtdTags;
+
+  // SealCTD related products on the map only use the seal CTD tracks data source
+  const { data: regionLatestDates, isLoading: isLoadingLatestDates } = useRegionLatestDates(
+    isSealCtdRelatedProduct ? 'sealCtd-sealTracks' : productId,
+  );
 
   const {
     property: currentMetersProperty,
@@ -204,7 +209,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
 
           let targetPath = `/product/${baseProductPath}`;
           let queryObject: Record<string, unknown> = {};
-          let replace = false;
+          let replaceExistingParams = false;
 
           if (isCurrentMetersMooredInstrumentArray) {
             queryObject = {
@@ -214,13 +219,21 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
               property: currentMetersProperty,
               deploymentPlot: null,
             };
-          } else if (baseProductPath.includes(ProductPath.SEAL_CTD_TAGS)) {
-            targetPath = `/product/${ProductPath.SEAL_CTD}/tracks`;
-            queryObject = { region: regionCode, sealId: null };
           } else {
             const dateFromQuery = searchParams.date;
 
-            if (productId === 'monthlyMeans-30day') {
+            if (productId === 'surfaceWaves-wave') {
+              const waveLatestDate =
+                regionLatestDates?.regionLatestDates?.find((item: RegionLatestDate) => item.region === regionCode)
+                  ?.latestDate || fallbackLatestDate;
+
+              replaceExistingParams = true;
+              queryObject = { region: regionCode, date: waveLatestDate };
+            } else if (productId === 'surfaceWaves-buoyTimeseries') {
+              replaceExistingParams = true;
+              queryObject = { region: 'Au', date: dateFromUrl };
+              targetPath = '/product/surface-waves/wave';
+            } else if (productId === 'monthlyMeans-30day') {
               let monthlyMeansDate = getMonthlyMeansDate();
 
               if (
@@ -245,35 +258,27 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
               }
 
               queryObject = { region: regionCode, date: monthlyMeansDate, point: null };
-              replace = true;
+              replaceExistingParams = true;
             } else {
               const foundRegionLatestDate = regionLatestDates?.regionLatestDates?.find(
                 (item: RegionLatestDate) => item.region === regionCode,
               )?.latestDate;
 
               const latestDate = foundRegionLatestDate || fallbackLatestDate;
-              queryObject = dateFromQuery
-                ? { region: regionCode, point: null }
-                : { region: regionCode, date: latestDate, point: null };
-            }
 
-            if (productId === 'surfaceWaves-wave') {
-              const waveLatestDate =
-                regionLatestDates?.regionLatestDates?.find((item: RegionLatestDate) => item.region === regionCode)
-                  ?.latestDate || fallbackLatestDate;
-
-              replace = true;
-              queryObject = { region: regionCode, date: waveLatestDate };
-            }
-
-            if (productId === 'surfaceWaves-buoyTimeseries') {
-              replace = true;
-              queryObject = { region: 'Au', date: dateFromUrl };
-              targetPath = '/product/surface-waves/wave';
+              if (isSealCtdRelatedProduct) {
+                replaceExistingParams = true;
+                targetPath = `/product/${ProductPath.SEAL_CTD}/tracks`;
+                queryObject = { region: regionCode, date: latestDate, point: null };
+              } else {
+                queryObject = dateFromQuery
+                  ? { region: regionCode, point: null }
+                  : { region: regionCode, date: latestDate, point: null };
+              }
             }
           }
 
-          updateQueryParamsAndNavigate(targetPath, queryObject, replace);
+          updateQueryParamsAndNavigate(targetPath, queryObject, replaceExistingParams);
         };
 
         navigateAfterAnimation();
@@ -285,18 +290,19 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
       isLoadingLatestDates,
       mapFitBounds,
       baseProductPath,
+      isCurrentMetersMooredInstrumentArray,
       updateQueryParamsAndNavigate,
       currentMetersDate,
       currentMetersDepth,
       currentMetersProperty,
       searchParams.date,
+      productId,
       regionLatestDates?.regionLatestDates,
       fallbackLatestDate,
-      productId,
       dateFromUrl,
       getMonthlyMeansDate,
       validateImageExists,
-      isCurrentMetersMooredInstrumentArray,
+      isSealCtdRelatedProduct,
     ],
   );
 
