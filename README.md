@@ -11,8 +11,8 @@ Welcome to our project, aimed at redefining the user experience and accessibilit
 
 ### Prerequisites
 
-- Node.js installed on your system with version 18.19.1 or superior (you can use [nvm](https://github.com/nvm-sh/nvm) for changing the node version).
-- Yarn 4.1.0
+- Node.js 22 or later (you can use [nvm](https://github.com/nvm-sh/nvm) — run `nvm use` to switch to the version in `.nvmrc`).
+- Yarn 4.14.1
 
 ### Installation
 
