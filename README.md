@@ -11,7 +11,7 @@ Welcome to our project, aimed at redefining the user experience and accessibilit
 
 ### Prerequisites
 
-- Node.js 22 or later (you can use [nvm](https://github.com/nvm-sh/nvm) — run `nvm use` to switch to the version in `.nvmrc`).
+- Node.js 24 or later (you can use [nvm](https://github.com/nvm-sh/nvm) — run `nvm use` to switch to the version in `.nvmrc`).
 - Yarn 4.14.1
 
 ### Installation
