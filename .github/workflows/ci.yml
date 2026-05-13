@@ -31,11 +31,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
 
-      - name: Install Yarn globally
-        run: npm install -g yarn
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Install dependencies
-        run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
+        run: yarn install --immutable
 
       - name: Run linting
         run: yarn run lint
@@ -58,11 +58,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
 
-      - name: Install Yarn globally
-        run: npm install -g yarn
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Install dependencies
-        run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
+        run: yarn install --immutable
 
       - name: Run coverage tests
         run: yarn run coverage
@@ -85,11 +85,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
 
-      - name: Install Yarn globally
-        run: npm install -g yarn
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Install dependencies
-        run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
+        run: yarn install --immutable
 
       - name: Build the front end
         run: yarn build
@@ -113,11 +113,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
 
-      - name: Install Yarn globally
-        run: npm install -g yarn
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Install dependencies
-        run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
+        run: yarn install --immutable
 
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps chromium
