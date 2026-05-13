@@ -271,12 +271,12 @@ const ProductContent: React.FC = () => {
     );
   }
 
-  // Current meters
+  // Use the store (not the URL) as source of truth — a stale URL deploymentPlot
+  // would otherwise route to the plot view with an empty store value.
   if (productChecks.isCurrentMeters) {
     if (
       subProduct?.key === CurrentMetersSubProductsKey.MOORED_INSTRUMENT_ARRAY &&
-      currentMetersParams.deploymentPlot === '' &&
-      !hasSelectedParams.deploymentPlot
+      currentMetersParams.deploymentPlot === ''
     ) {
       return (
         <DataImageWithCurrentMetersMap

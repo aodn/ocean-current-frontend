@@ -16,6 +16,7 @@ import { useResizeObserver } from '@/hooks';
 import useProductStore, { setIsProductImageLoading } from '@/stores/product-store/productStore';
 import { LinearProgress } from '@/components/Shared';
 import { cn } from '@/utils/classname-util/cn';
+import omitEmptyParams from '@/hooks/useQueryParams/omitEmptyParams';
 
 type DataImageWithCurrentMetersMapProps = {
   mainProduct: Product | null;
@@ -78,24 +79,27 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
 
     if (type === 'region' && code) {
       setRegion(code);
-      setSearchParams({
-        property: CurrentMetersProperty.vrms,
-        depth: CurrentMetersDepth.ONE,
-        region: code,
-        date: date,
-        deploymentPlot: '',
-      });
+      setSearchParams(
+        omitEmptyParams({
+          property: CurrentMetersProperty.vrms,
+          depth: CurrentMetersDepth.ONE,
+          region: code,
+          date: date,
+        }),
+      );
     }
 
     if (type === 'plot' || type === 'text') {
       setDeploymentPlot(name as CurrentMetersDeploymentPlotNames);
-      setSearchParams({
-        property: CurrentMetersProperty.vrms,
-        depth: CurrentMetersDepth.ONE,
-        region: getRegion,
-        date: currentMeterSYearOptionsData[0].id, // all time
-        deploymentPlot: name,
-      });
+      setSearchParams(
+        omitEmptyParams({
+          property: CurrentMetersProperty.vrms,
+          depth: CurrentMetersDepth.ONE,
+          region: getRegion,
+          date: currentMeterSYearOptionsData[0].id, // all time
+          deploymentPlot: name,
+        }),
+      );
     }
   };
 

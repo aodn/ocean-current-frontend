@@ -5,7 +5,13 @@ import { ProductSidebarText } from '@/constants/textConstant';
 import useDateStore from '@/stores/date-store/dateStore';
 import { useMultipleRegionLatestDates } from '@/services/hooks';
 import { setProductId } from '@/stores/product-store/productStore';
-import { setCurrentMetersDate, setDepth, setProperty, setRegion } from '@/stores/current-meters-store/currentMeters';
+import {
+  setCurrentMetersDate,
+  setDepth,
+  setDeploymentPlot,
+  setProperty,
+  setRegion,
+} from '@/stores/current-meters-store/currentMeters';
 import {
   CurrentMetersDepth,
   CurrentMetersProperty,
@@ -90,6 +96,14 @@ const ProductSideBar: React.FC = () => {
         date: allTime,
         depth: CurrentMetersDepth.ONE,
       };
+    }
+
+    // Switching to moored-instrument-array means returning to the region
+    // overview, so any plot carried over from another sub-product would
+    // point at a deployment that does not exist here and would fail to load.
+    if (isCurrentMeters && subProductPath === mooredInstrumentArrayPath) {
+      setDeploymentPlot('');
+      updateParam = { deploymentPlot: null };
     }
 
     if (isSealCtd) {
