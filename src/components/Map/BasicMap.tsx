@@ -64,7 +64,11 @@ const BasicMap: React.FC<BasicMapProps> = ({
   useResizeObserver((mapWrapperRef as React.RefObject<HTMLDivElement>) || null, handleMapResize);
 
   useEffect(() => {
+    if (isMiniMap) return;
     resetCurrentMetersStore();
+  }, [isMiniMap]);
+
+  useEffect(() => {
     if (isMobile) {
       patchMapViewState(initialMobileMapViewState.mapViewState);
     }
