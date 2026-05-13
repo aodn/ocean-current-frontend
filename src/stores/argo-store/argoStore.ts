@@ -14,31 +14,35 @@ const initialState: State = {
 };
 
 const useArgoStore = create<State & Actions>()(
-  devtools((set) => ({
-    ...initialState,
-    actions: {
-      setSelectedArgoParams: (argoParams) => set({ selectedArgoParams: argoParams }, false, 'setSelectedArgoParams'),
-      setArgoCycle: (cycle) =>
-        set(
-          (state) => ({
-            selectedArgoParams: { ...state.selectedArgoParams, cycle },
-          }),
-          false,
-          'setArgoCycle',
-        ),
-      setArgoDepth: (depth) =>
-        set(
-          (state) => ({
-            selectedArgoParams: { ...state.selectedArgoParams, depth },
-          }),
-          false,
-          'setArgoDepth',
-        ),
-      setArgoMetaData: (metaData) => set({ argoMetaData: metaData }, false, 'setArgoMetaData'),
-      setArgoProfileCycles: (profileCycles) => set({ argoProfileCycles: profileCycles }, false, 'setArgoProfileCycles'),
-      reset: () => set(initialState, false, 'resetArgoStore'),
-    },
-  })),
+  devtools(
+    (set) => ({
+      ...initialState,
+      actions: {
+        setSelectedArgoParams: (argoParams) => set({ selectedArgoParams: argoParams }, false, 'setSelectedArgoParams'),
+        setArgoCycle: (cycle) =>
+          set(
+            (state) => ({
+              selectedArgoParams: { ...state.selectedArgoParams, cycle },
+            }),
+            false,
+            'setArgoCycle',
+          ),
+        setArgoDepth: (depth) =>
+          set(
+            (state) => ({
+              selectedArgoParams: { ...state.selectedArgoParams, depth },
+            }),
+            false,
+            'setArgoDepth',
+          ),
+        setArgoMetaData: (metaData) => set({ argoMetaData: metaData }, false, 'setArgoMetaData'),
+        setArgoProfileCycles: (profileCycles) =>
+          set({ argoProfileCycles: profileCycles }, false, 'setArgoProfileCycles'),
+        reset: () => set(initialState, false, 'resetArgoStore'),
+      },
+    }),
+    { name: 'Argo Store' },
+  ),
 );
 
 export const {

@@ -27,14 +27,13 @@ describe('ErrorImage Component', () => {
   });
 
   it('renders the NotFoundIcon', () => {
-    const { container } = render(
+    render(
       <BrowserRouter>
         <ErrorImage date={mockDate} productId={mockProduct} />
       </BrowserRouter>,
     );
 
-    const img = container.querySelector('img');
-    expect(img).toHaveAttribute('src', '/src/assets/icons/not-found-icon.svg');
+    expect(screen.getByAltText('not found icon')).toBeInTheDocument();
   });
 
   it('renders the error message', () => {
