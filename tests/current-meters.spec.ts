@@ -6,7 +6,6 @@ test.describe('Current Meters Tests', () => {
     // used to push extra history entries via setSearchParams during the
     // fix-up effect, trapping the user when they pressed back.
     await page.goto('/map/current-meters/moored-instrument-array');
-    await page.waitForLoadState('networkidle');
 
     const mapCanvas = page.locator('.mapboxgl-canvas').first();
     await expect(mapCanvas).toBeVisible();
@@ -42,7 +41,7 @@ test.describe('Current Meters Tests', () => {
     // Press the browser back button — it should return us to the map view
     // on the first press (no history pollution).
     await page.goBack();
-    await page.waitForLoadState('networkidle');
+    await page.waitForURL(/\/map\/current-meters\/moored-instrument-array/);
     expect(page.url()).toMatch(/\/map\/current-meters\/moored-instrument-array/);
   });
 
@@ -51,9 +50,10 @@ test.describe('Current Meters Tests', () => {
     // moored-instrument-array sub-product because the overview map is the
     // default. omitEmptyParams + the fix-up effect should keep the URL clean.
     await page.goto('/product/current-meters/moored-instrument-array?region=01_Aust&date=0000');
-    await page.waitForLoadState('networkidle');
-    // Allow the URL-to-store sync and fix-up effects to settle.
-    await page.waitForTimeout(1500);
+    // Wait for the product sidebar to mount so its fix-up effect has run.
+    await expect(page.getByText('Region', { exact: true })).toBeVisible();
+    // Give the fix-up effect a small window to write to the URL if it intends to.
+    await page.waitForTimeout(500);
 
     expect(page.url()).not.toContain('deploymentPlot=');
   });
@@ -63,8 +63,6 @@ test.describe('Current Meters Tests', () => {
     // When the user switches back to moored-instrument-array, the stale plot
     // must be cleared so the overview map is shown instead of the plot view.
     await page.goto('/product/current-meters/shelf');
-    await page.waitForLoadState('networkidle');
-
     // Wait for the Shelf fix-up to write a deploymentPlot into the URL.
     await page.waitForURL(/deploymentPlot=/, { timeout: 5000 });
     expect(page.url()).toContain('deploymentPlot=');
@@ -74,11 +72,10 @@ test.describe('Current Meters Tests', () => {
     await expect(miaButton).toBeVisible();
     await miaButton.click();
 
-    await page.waitForURL(/\/product\/current-meters\/moored-instrument-array/, { timeout: 5000 });
-    await page.waitForLoadState('networkidle');
-    // Allow the fix-up transition guard to run.
-    await page.waitForTimeout(800);
-
+    await page.waitForURL(
+      (url) => url.pathname.endsWith('/moored-instrument-array') && !url.search.includes('deploymentPlot='),
+      { timeout: 5000 },
+    );
     expect(page.url()).not.toContain('deploymentPlot=');
   });
 
@@ -89,9 +86,10 @@ test.describe('Current Meters Tests', () => {
     await page.goto(
       '/product/current-meters/moored-instrument-array?region=01_Aust&date=0000&depth=1&property=vrms&deploymentPlot=NWSLYN',
     );
-    await page.waitForLoadState('networkidle');
-    // Let the mini map's BasicMap mount effect and the URL-to-store sync run.
-    await page.waitForTimeout(1500);
+    // Wait for the product sidebar to mount.
+    await expect(page.getByText('Region', { exact: true })).toBeVisible();
+    // Give the BasicMap mount effect a window to (incorrectly) clear it.
+    await page.waitForTimeout(800);
 
     expect(page.url()).toContain('deploymentPlot=NWSLYN');
   });
