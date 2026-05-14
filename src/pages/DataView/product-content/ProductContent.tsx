@@ -57,30 +57,43 @@ const ProductContent: React.FC = () => {
     tidalCurrentsImageData,
     dateString,
   } = useProductContentData();
+
+  const {
+    isArgo,
+    isCurrentMeters,
+    isTidalCurrents,
+    isSealCtd,
+    isSealCtdTags,
+    isOceanColourChlA,
+    isSurfaceWavesBuoyTimeseries,
+  } = productChecks;
+
   // Determine if we should render with argo tags
   const shouldRenderDataImageWithArgoTags = useMemo(
-    () => !productChecks.isArgo && checkArgoTagsAvailability(useProductId, regionData.scope),
-    [productChecks.isArgo, useProductId, regionData.scope],
+    () => !isArgo && checkArgoTagsAvailability(useProductId, regionData.scope),
+    [isArgo, useProductId, regionData.scope],
   );
   // Process ocean colour date list
   const oceanColourDateList = useMemo(
-    () => (productChecks.isOceanColourChlA ? processOceanColourDateList(oceanColourImageData) : []),
-    [productChecks.isOceanColourChlA, oceanColourImageData],
+    () => (isOceanColourChlA ? processOceanColourDateList(oceanColourImageData) : []),
+    [isOceanColourChlA, oceanColourImageData],
   );
 
   // Fetch Argo profile cycles — shares cache with useDateList and WmoSection via the same query key
-  const { data: argoProfileCyclesData, isSuccess: isArgoProfileCyclesSuccess } = useQuery({
+  const {
+    data: argoProfileCyclesData,
+    isSuccess: isArgoProfileCyclesSuccess,
+    isError: isArgoProfileCyclesError,
+  } = useQuery({
     queryKey: ['argoDateList', argoParams.worldMeteorologicalOrgId],
     queryFn: () => fetchArgoProfileCyclesByWmoId(argoParams.worldMeteorologicalOrgId),
-    enabled: productChecks.isArgo && !!argoParams.worldMeteorologicalOrgId,
+    enabled: isArgo && !!argoParams.worldMeteorologicalOrgId,
     ...sharedQueryConfig,
   });
 
   // Build image URL
   const chooseImg = useCallback((): string | undefined => {
     try {
-      const { isArgo, isCurrentMeters, isTidalCurrents, isSealCtd, isSealCtdTags } = productChecks;
-
       // Video-disabled products with specialized params
       switch (true) {
         case isArgo: {
@@ -128,7 +141,11 @@ const ProductContent: React.FC = () => {
       }
     }
   }, [
-    productChecks,
+    isArgo,
+    isCurrentMeters,
+    isTidalCurrents,
+    isSealCtd,
+    isSealCtdTags,
     useProductId,
     useDate,
     regionData,
@@ -182,19 +199,19 @@ const ProductContent: React.FC = () => {
   }, [argoProfileCyclesData]);
 
   // Early returns for error/loading states
-  if (productChecks.isArgo && !argoParams.worldMeteorologicalOrgId) {
+  if (isArgo && !argoParams.worldMeteorologicalOrgId) {
     return <ErrorImage date={useDate} productId="argo" />;
   }
 
-  if (productChecks.isArgo && !isArgoProfileCyclesSuccess) {
-    return <Loading />;
+  if (isArgo && !isArgoProfileCyclesSuccess) {
+    return isArgoProfileCyclesError ? <ErrorImage date={useDate} productId="argo" /> : <Loading />;
   }
 
-  if (productChecks.isArgo && !argoProfileCyclesData?.find(({ cycle }) => cycle === argoParams.cycle)) {
+  if (isArgo && !argoProfileCyclesData?.find(({ cycle }) => cycle === argoParams.cycle)) {
     return <ErrorImage date={useDate} productId="argo" />;
   }
 
-  if (productChecks.isSurfaceWavesBuoyTimeseries && !hasSelectedParams.buoyRegion) {
+  if (isSurfaceWavesBuoyTimeseries && !hasSelectedParams.buoyRegion) {
     return <ErrorImage date={useDate} productId="surfaceWaves-buoyTimeseries" />;
   }
 
@@ -245,7 +262,7 @@ const ProductContent: React.FC = () => {
   }
 
   // Tidal currents
-  if (productChecks.isTidalCurrents) {
+  if (isTidalCurrents) {
     return (
       <DataImageWithTidalCurrentsMap
         mainProduct={mainProduct}
@@ -291,7 +308,7 @@ const ProductContent: React.FC = () => {
 
   // Use the store (not the URL) as source of truth — a stale URL deploymentPlot
   // would otherwise route to the plot view with an empty store value.
-  if (productChecks.isCurrentMeters) {
+  if (isCurrentMeters) {
     if (
       subProduct?.key === CurrentMetersSubProductsKey.MOORED_INSTRUMENT_ARRAY &&
       currentMetersParams.deploymentPlot === ''
