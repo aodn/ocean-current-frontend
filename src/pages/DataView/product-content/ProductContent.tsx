@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useOutletContext } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
+import dayjs from 'dayjs';
 import {
   buildArgoImageUrl,
   buildCurrentMetersMapImageUrl,
@@ -66,6 +67,15 @@ const ProductContent: React.FC = () => {
     () => (productChecks.isOceanColourChlA ? processOceanColourDateList(oceanColourImageData) : []),
     [productChecks.isOceanColourChlA, oceanColourImageData],
   );
+
+  // Fetch Argo profile cycles — shares cache with useDateList and WmoSection via the same query key
+  const { data: argoProfileCyclesData, isSuccess: isArgoProfileCyclesSuccess } = useQuery({
+    queryKey: ['argoDateList', argoParams.worldMeteorologicalOrgId],
+    queryFn: () => fetchArgoProfileCyclesByWmoId(argoParams.worldMeteorologicalOrgId),
+    enabled: productChecks.isArgo && !!argoParams.worldMeteorologicalOrgId,
+    ...sharedQueryConfig,
+  });
+
   // Build image URL
   const chooseImg = useCallback((): string | undefined => {
     try {
@@ -73,8 +83,15 @@ const ProductContent: React.FC = () => {
 
       // Video-disabled products with specialized params
       switch (true) {
-        case isArgo:
-          return buildArgoImageUrl(argoParams.worldMeteorologicalOrgId, useDate, argoParams.cycle, argoParams.depth);
+        case isArgo: {
+          const { date: cycleDate } = argoProfileCyclesData!.find(({ cycle }) => cycle === argoParams.cycle)!;
+          return buildArgoImageUrl(
+            argoParams.worldMeteorologicalOrgId,
+            dayjs(cycleDate),
+            argoParams.cycle,
+            argoParams.depth,
+          );
+        }
         case isCurrentMeters:
           return buildCurrentMetersMapImageUrl(
             currentMetersParams.region,
@@ -117,6 +134,7 @@ const ProductContent: React.FC = () => {
     regionData,
     useRegionCode,
     argoParams,
+    argoProfileCyclesData,
     currentMetersParams,
     hasSelectedParams,
     urlParams,
@@ -157,14 +175,6 @@ const ProductContent: React.FC = () => {
     useArgoProfileCycles,
   ]);
 
-  // Fetch Argo profile cycles — shares cache with useDateList and WmoSection via the same query key
-  const { data: argoProfileCyclesData } = useQuery({
-    queryKey: ['argoDateList', argoParams.worldMeteorologicalOrgId],
-    queryFn: () => fetchArgoProfileCyclesByWmoId(argoParams.worldMeteorologicalOrgId),
-    enabled: productChecks.isArgo && !!argoParams.worldMeteorologicalOrgId,
-    ...sharedQueryConfig,
-  });
-
   useEffect(() => {
     if (argoProfileCyclesData) {
       setArgoProfileCycles(argoProfileCyclesData);
@@ -173,6 +183,14 @@ const ProductContent: React.FC = () => {
 
   // Early returns for error/loading states
   if (productChecks.isArgo && !argoParams.worldMeteorologicalOrgId) {
+    return <ErrorImage date={useDate} productId="argo" />;
+  }
+
+  if (productChecks.isArgo && !isArgoProfileCyclesSuccess) {
+    return <Loading />;
+  }
+
+  if (productChecks.isArgo && !argoProfileCyclesData?.find(({ cycle }) => cycle === argoParams.cycle)) {
     return <ErrorImage date={useDate} productId="argo" />;
   }
 
