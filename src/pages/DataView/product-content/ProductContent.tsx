@@ -97,13 +97,10 @@ const ProductContent: React.FC = () => {
       // Video-disabled products with specialized params
       switch (true) {
         case isArgo: {
-          const { date: cycleDate } = argoProfileCyclesData!.find(({ cycle }) => cycle === argoParams.cycle)!;
-          return buildArgoImageUrl(
-            argoParams.worldMeteorologicalOrgId,
-            dayjs(cycleDate),
-            argoParams.cycle,
-            argoParams.depth,
-          );
+          // Fall back to useDate if the cycle isn't in the API data yet (scheduled task lag).
+          const found = argoProfileCyclesData?.find(({ cycle }) => cycle === argoParams.cycle);
+          const cycleDate = found ? dayjs(found.date) : useDate;
+          return buildArgoImageUrl(argoParams.worldMeteorologicalOrgId, cycleDate, argoParams.cycle, argoParams.depth);
         }
         case isCurrentMeters:
           return buildCurrentMetersMapImageUrl(
@@ -205,10 +202,6 @@ const ProductContent: React.FC = () => {
 
   if (isArgo && !isArgoProfileCyclesSuccess) {
     return isArgoProfileCyclesError ? <ErrorImage date={useDate} productId="argo" /> : <Loading />;
-  }
-
-  if (isArgo && !argoProfileCyclesData?.find(({ cycle }) => cycle === argoParams.cycle)) {
-    return <ErrorImage date={useDate} productId="argo" />;
   }
 
   if (isSurfaceWavesBuoyTimeseries && !hasSelectedParams.buoyRegion) {

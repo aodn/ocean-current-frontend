@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -91,6 +91,37 @@ describe('ProductContent — Argo profile cycles query states', () => {
     vi.mocked(fetchArgoProfileCyclesByWmoId).mockRejectedValue(new Error('Network error'));
 
     renderComponent();
+
+    await waitFor(() => {
+      expect(screen.getByAltText('not found icon')).toBeInTheDocument();
+    });
+  });
+});
+
+describe('ProductContent — Argo cycle absent from API data (scheduled task lag)', () => {
+  beforeEach(() => {
+    const mock = mockArgoData as unknown as ReturnType<typeof useProductContentData>;
+    vi.mocked(useProductContentData).mockReturnValue(mock);
+    // API returns cycles, but not the one the user selected (cycle '001')
+    vi.mocked(fetchArgoProfileCyclesByWmoId).mockResolvedValue([
+      { cycle: '999', date: '20241231', filename: 'other.png' },
+    ]);
+  });
+
+  it('renders the image using fallback date when cycle is missing from API data', async () => {
+    renderComponent();
+
+    await waitFor(() => {
+      expect(screen.getByAltText('product')).toBeInTheDocument();
+    });
+    expect(screen.queryByAltText('not found icon')).not.toBeInTheDocument();
+  });
+
+  it('shows ErrorImage when cycle is missing from API data and the image 404s', async () => {
+    renderComponent();
+
+    const img = await waitFor(() => screen.getByAltText('product'));
+    fireEvent.error(img);
 
     await waitFor(() => {
       expect(screen.getByAltText('not found icon')).toBeInTheDocument();
