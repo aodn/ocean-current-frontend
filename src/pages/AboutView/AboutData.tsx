@@ -1,7 +1,7 @@
 const EACMooringArrayAboutData = () => {
   return (
     <div className="flex flex-col gap-6 md:flex-row">
-      <div className="flex-1 space-y-4 text-base leading-relaxed text-imos-nav-text">
+      <div className="text-imos-nav-text flex-1 space-y-4 text-base leading-relaxed">
         <p>
           The East Australian Current (EAC) is the complex, highly energetic western boundary current that flows along
           the east coast of Australia. As the strongest current in the region, the EAC and its associated turbulent
@@ -92,9 +92,9 @@ const EACMooringArrayAboutData = () => {
           alt="EAC mooring array Figure 1: (a) Location of the EAC moorings; (b) Vertical distribution of instruments at each mooring"
           loading="lazy"
           decoding="async"
-          className="w-full rounded"
+          className="w-full rounded-sm"
         />
-        <p className="text-sm leading-normal text-imos-dark-grey">
+        <p className="text-imos-dark-grey text-sm leading-normal">
           Figure 1: (a) Location of the EAC moorings (red diamonds); (b) Vertical distribution of instruments at each
           mooring. Australia&apos;s eastern continental shelf break and adjacent deep abyssal plain are shown in black.
           From the continental shelf to the offshore deep ocean, the moorings are: National Reference Station North
@@ -111,7 +111,7 @@ const EACMooringArrayAboutData = () => {
 
 const ArgoAboutData = () => {
   return (
-    <div className="space-y-4 text-base leading-relaxed text-imos-nav-text">
+    <div className="text-imos-nav-text space-y-4 text-base leading-relaxed">
       <p>
         The Argo position maps, like the example below, show floats that reported data within a few days of the
         indicated date. The colour-fill of the float indicates the difference between the float&apos;s estimate of
@@ -132,7 +132,7 @@ const ArgoAboutData = () => {
           alt="Example Argo position map for 20 September 2011"
           loading="lazy"
           decoding="async"
-          className="w-full rounded"
+          className="w-full rounded-sm"
         />
       </a>
       <p>
@@ -159,7 +159,7 @@ const ArgoAboutData = () => {
           alt="Example Argo profile plot for float 5903622, cycle 44, 15 September 2011"
           loading="lazy"
           decoding="async"
-          className="w-full rounded"
+          className="w-full rounded-sm"
         />
       </a>
       <p>
@@ -263,7 +263,7 @@ const ArgoAboutData = () => {
           alt="Example Argo profile showing a submerged mixed layer, float 5903677, 25 July 2011"
           loading="lazy"
           decoding="async"
-          className="w-full rounded"
+          className="w-full rounded-sm"
         />
       </a>
       <h3 className="text-base font-semibold">Example 3: disagreement of Argo and synTS</h3>
@@ -305,7 +305,7 @@ const ArgoAboutData = () => {
           alt="Example Argo profile showing disagreement between synTS and Argo, float 5901658, 19 September 2011"
           loading="lazy"
           decoding="async"
-          className="w-full rounded"
+          className="w-full rounded-sm"
         />
       </a>
     </div>
@@ -314,7 +314,7 @@ const ArgoAboutData = () => {
 
 const TidalCurrentsAboutData = () => {
   return (
-    <div className="space-y-4 text-base leading-relaxed text-imos-nav-text">
+    <div className="text-imos-nav-text space-y-4 text-base leading-relaxed">
       <h2 className="text-2xl font-semibold">What&apos;s shown for each of the black boxes in the index map</h2>
       <h3 className="text-base font-semibold">1) Half-hourly, regional maps</h3>
       <div className="mx-auto max-w-xl">
@@ -329,7 +329,7 @@ const TidalCurrentsAboutData = () => {
             alt="Darwin tidal current speed map"
             loading="lazy"
             decoding="async"
-            className="rounded"
+            className="rounded-sm"
           />
         </a>
         <a
@@ -343,7 +343,7 @@ const TidalCurrentsAboutData = () => {
             alt="Hydrographer's Passage tidal current speed map"
             loading="lazy"
             decoding="async"
-            className="rounded"
+            className="rounded-sm"
           />
         </a>
       </div>
@@ -385,7 +385,7 @@ const TidalCurrentsAboutData = () => {
             alt="Month-per-page graph comparing observation-based and model-based tidal predictions, UTas ARENA CW4, April 2018"
             loading="lazy"
             decoding="async"
-            className="w-full rounded"
+            className="w-full rounded-sm"
           />
         </a>
       </div>
@@ -478,7 +478,7 @@ const TidalCurrentsAboutData = () => {
             alt="Hodograph showing tidal current at Tern Island"
             loading="lazy"
             decoding="async"
-            className="w-full rounded"
+            className="w-full rounded-sm"
           />
         </a>
       </div>
@@ -1011,7 +1011,7 @@ const TidalCurrentsAboutData = () => {
 
 const CurrentMetersAboutData = () => {
   return (
-    <div className="space-y-8 text-base leading-relaxed text-imos-nav-text">
+    <div className="text-imos-nav-text space-y-8 text-base leading-relaxed">
       <div className="space-y-4">
         <h2 className="text-2xl font-semibold">Definitions</h2>
         <p>

@@ -56,15 +56,15 @@ const AboutView: React.FC = () => {
 
   return (
     <div className="rounded-lg bg-white">
-      <div className="flex items-center justify-center rounded-t-lg bg-imos-cloud-tint/70 px-12 py-4">
-        <h1 className="text-center font-poppins text-xl font-medium text-imos-deep-blue">
+      <div className="bg-imos-cloud-tint/70 flex items-center justify-center rounded-t-lg px-12 py-4">
+        <h1 className="font-poppins text-imos-deep-blue text-center text-xl font-medium">
           {productInfo.aboutTitle || productInfo.title}
         </h1>
       </div>
-      <div className="px-6 pb-6 pt-6 md:px-10">
+      <div className="px-6 pt-6 pb-6 md:px-10">
         <div className="mb-4">
-          <Button onClick={() => navigate(explorePath)} borderRadius="small" type="secondary" className="md:!px-4">
-            <span className="text-lg text-imos-deep-blue">{GeneralText.EXPLORE_DATASET}</span>
+          <Button onClick={() => navigate(explorePath)} borderRadius="small" type="secondary" className="md:px-4!">
+            <span className="text-imos-deep-blue text-lg">{GeneralText.EXPLORE_DATASET}</span>
           </Button>
         </div>
         {productInfo.aboutDescription()}

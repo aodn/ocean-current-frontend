@@ -76,10 +76,10 @@ export const News = () => {
                   }
                 }}
                 className={cn(
-                  'flex w-auto cursor-pointer items-center justify-center whitespace-nowrap rounded-lg border px-3 py-2 text-sm hover:opacity-75 md:w-[156px] md:text-lg',
+                  'flex w-auto cursor-pointer items-center justify-center rounded-lg border px-3 py-2 text-sm whitespace-nowrap hover:opacity-75 md:w-[156px] md:text-lg',
                   selectedFilter === d
                     ? 'border-imos-calypso-blue bg-imos-calypso-blue text-white'
-                    : 'border-imos-light-grey bg-white text-imos-dark-grey',
+                    : 'border-imos-light-grey text-imos-dark-grey bg-white',
                 )}
               >
                 {d === 'older_than_2020' ? 'Older than 2020' : d}
@@ -96,7 +96,7 @@ export const News = () => {
             )}
           >
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Coastal_currents_estimated_from_tide_gauges">
                     <a href="#Coastal_currents_estimated_from_tide_gauges" className="anchor">
@@ -161,7 +161,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Sydney_to_Hobart_outlook">
                     <a href="#Sydney_to_Hobart_outlook" className="anchor">
@@ -233,7 +233,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="FishSOOP_taking_the_temperature_of_the_coastal_ocean_from_fishing_vessels">
                     <a
@@ -370,7 +370,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Adjusting_the_lenses_in_the_ocean">
                     <a href="#Adjusting_the_lenses_in_the_ocean" className="anchor">
@@ -627,7 +627,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="An_eddy_amp_float_combo_in_the_Great_Australian_Bight">
                     <a href="#An_eddy_amp_float_combo_in_the_Great_Australian_Bight" className="anchor">
@@ -762,7 +762,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Cryptic_upwelling_off_Western_Australia">
                     <a href="#Cryptic_upwelling_off_Western_Australia" className="anchor">
@@ -882,7 +882,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="TC_Alfred_rsquo_s_imprint_in_the_deep_ocean">
                     <a href="#TC_Alfred_rsquo_s_imprint_in_the_deep_ocean" className="anchor">
@@ -1031,7 +1031,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Marine_Heatwave_off_WA">
                     <a href="#Marine_Heatwave_off_WA" className="anchor">
@@ -1149,7 +1149,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Sydney_to_Hobart_outlook">
                     <a href="#Sydney_to_Hobart_outlook" className="anchor">
@@ -1270,7 +1270,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Rogue_waves_battering_Southern_Australia">
                     <a href="#Rogue_waves_battering_Southern_Australia" className="anchor">
@@ -1375,7 +1375,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Is_wide_swath_altimetry_useful_for_coastal_applications">
                     <a href="#Is_wide_swath_altimetry_useful_for_coastal_applications" className="anchor">
@@ -1595,7 +1595,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Swimmer_saved_by_smart_watch">
                     <a href="#Swimmer_saved_by_smart_watch" className="anchor">
@@ -1655,7 +1655,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="_Monster_high_engulfing_the_nation">
                     <a href="#_Monster_high_engulfing_the_nation" className="anchor">
@@ -1744,7 +1744,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="The_impact_of_geomagnetic_storms_on_ocean_measurements">
                     <a href="#The_impact_of_geomagnetic_storms_on_ocean_measurements" className="anchor">
@@ -1853,7 +1853,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Maps_of_sea_level_and_surface_currents_like_you_ve_never_seen_before">
                     <a href="#Maps_of_sea_level_and_surface_currents_like_you_ve_never_seen_before" className="anchor">
@@ -1937,7 +1937,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="A_Bonney_Bloom">
                     <a href="#A_Bonney_Bloom" className="anchor">
@@ -2003,7 +2003,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Sydney_to_Hobart_race_conditions_exceptional_currents">
                     <a href="#Sydney_to_Hobart_race_conditions_exceptional_currents" className="anchor">
@@ -2068,7 +2068,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="An_early_Bonney_upwelling">
                     <a href="#An_early_Bonney_upwelling" className="anchor">
@@ -2136,7 +2136,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="How_strong_is_the_East_Australian_Current_The_science_is_finally_in">
                     <a href="#How_strong_is_the_East_Australian_Current_The_science_is_finally_in" className="anchor">
@@ -2215,7 +2215,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="When_is_slack_tide">
                     <a href="#When_is_slack_tide" className="anchor">
@@ -2261,7 +2261,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="OceanCurrent_goes_to_the_Gold_Coast">
                     <a href="#OceanCurrent_goes_to_the_Gold_Coast" className="anchor">
@@ -2311,7 +2311,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="West_coast_vs_east_coast_eddies_what_s_the_difference">
                     <a href="#West_coast_vs_east_coast_eddies_what_s_the_difference" className="anchor">
@@ -2369,7 +2369,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="The_East_Australian_Current_summer_2023">
                     <a href="#The_East_Australian_Current_summer_2023" className="anchor">
@@ -2446,7 +2446,7 @@ export const News = () => {
             )}
           >
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="The_plume_and_the_bloom_ocean_colour_off_South_Australia_rsquo_s_coast">
                     <a
@@ -2560,7 +2560,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Sydney_to_Hobart_race_conditions">
                     <a href="#Sydney_to_Hobart_race_conditions" className="anchor">
@@ -2613,7 +2613,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="SWOT_A_new_type_of_satellite_altimeter_now_in_orbit">
                     <a href="#SWOT_A_new_type_of_satellite_altimeter_now_in_orbit" className="anchor">
@@ -2672,7 +2672,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="MyOceanCurrent">
                     <a href="#MyOceanCurrent" className="anchor">
@@ -2709,7 +2709,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Following_La_Ni_ntilde_a">
                     <a href="#Following_La_Ni_ntilde_a" className="anchor">
@@ -2810,7 +2810,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Profiling_the_waters_around_the_Kerguelen_Plateau_hard_working_seals_and_drifting_Argo_floats">
                     <a
@@ -2883,7 +2883,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Monthly_Mean_SST_Anomalies_ndash_Time_Series_Product_The_Great_Barrier_Reef_and_New_Zealand">
                     <a
@@ -2982,7 +2982,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Surface_waves_product_added_to_IMOS_OceanCurrent">
                     <a href="#Surface_waves_product_added_to_IMOS_OceanCurrent" className="anchor">
@@ -3079,7 +3079,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Sydney_to_Hobart_Outlook">
                     <a href="#Sydney_to_Hobart_Outlook" className="anchor">
@@ -3184,7 +3184,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="How_anomalous_is_this_anomaly">
                     <a href="#How_anomalous_is_this_anomaly" className="anchor">
@@ -3236,7 +3236,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Sea_level_and_storms_the_inverted_barometer_effect">
                     <a href="#Sea_level_and_storms_the_inverted_barometer_effect" className="anchor">
@@ -3297,7 +3297,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Argo_float_deployments_around_New_Caledonia">
                     <a href="#Argo_float_deployments_around_New_Caledonia" className="anchor">
@@ -3477,7 +3477,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Contrasting_East_Australian_Current_eddy_interactions">
                     <a href="#Contrasting_East_Australian_Current_eddy_interactions" className="anchor">
@@ -3613,7 +3613,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="New_regional_areas_added_to_the_6_day_Sea_Surface_Temperature_product">
                     <a href="#New_regional_areas_added_to_the_6_day_Sea_Surface_Temperature_product" className="anchor">
@@ -3731,7 +3731,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="When_cyclones_collide">
                     <a href="#When_cyclones_collide" className="anchor">
@@ -3809,7 +3809,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="TC_Niran_rsquo_s_cold_core_eddy_heading_for_Lizard_Island">
                     <a href="#TC_Niran_rsquo_s_cold_core_eddy_heading_for_Lizard_Island" className="anchor">
@@ -3894,7 +3894,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Drifting_to_shore">
                     <a href="#Drifting_to_shore" className="anchor">
@@ -4033,7 +4033,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="The_January_2021_lsquo_Marine_Heatwave_rsquo_off_Southern_NSW">
                     <a href="#The_January_2021_lsquo_Marine_Heatwave_rsquo_off_Southern_NSW" className="anchor">
@@ -4148,7 +4148,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Launceston_to_Hobart_Currents">
                     <a href="#Launceston_to_Hobart_Currents" className="anchor">
@@ -4284,7 +4284,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Sydney_to_Hobart_Outlook">
                     <a href="#Sydney_to_Hobart_Outlook" className="anchor">
@@ -4418,7 +4418,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Chlorophyll_imagery_from_MODIS_is_updating_again">
                     <a href="#Chlorophyll_imagery_from_MODIS_is_updating_again" className="anchor">
@@ -4454,7 +4454,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Great_Barrier_Reef_Bleaching_2020">
                     <a href="#Great_Barrier_Reef_Bleaching_2020" className="anchor">
@@ -4577,7 +4577,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="MODIS_Ocean_Colour_Outage">
                     <a href="#MODIS_Ocean_Colour_Outage" className="anchor">
@@ -4617,7 +4617,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="40h_adrift_in_the_EAC_a_survival_story">
                     <a href="#40h_adrift_in_the_EAC_a_survival_story" className="anchor">
@@ -4656,7 +4656,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Glider_reveals_extreme_heating_to_40m_depth_on_the_Southern_GBR">
                     <a href="#Glider_reveals_extreme_heating_to_40m_depth_on_the_Southern_GBR" className="anchor">
@@ -4777,7 +4777,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Bonney_Coast_Upwelling_2020">
                     <a href="#Bonney_Coast_Upwelling_2020" className="anchor">
@@ -4889,7 +4889,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Port_to_Pub_2020">
                     <a href="#Port_to_Pub_2020" className="anchor">
@@ -4956,7 +4956,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="The_Great_Barrier_Reef_Cools_A_Little">
                     <a href="#The_Great_Barrier_Reef_Cools_A_Little" className="anchor">
@@ -5061,7 +5061,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Heating_on_the_Great_Barrier_Reef_A_Brief_Reprieve">
                     <a href="#Heating_on_the_Great_Barrier_Reef_A_Brief_Reprieve" className="anchor">
@@ -5124,7 +5124,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Rapid_warming_on_the_Great_Barrier_Reef">
                     <a href="#Rapid_warming_on_the_Great_Barrier_Reef" className="anchor">
@@ -5194,7 +5194,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Tropical_cyclones_and_upwelling_winds_cool_North_West_Shelf_waters">
                     <a href="#Tropical_cyclones_and_upwelling_winds_cool_North_West_Shelf_waters" className="anchor">
@@ -5303,7 +5303,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Strong_Upwelling_Again_for_the_West_Coast_of_New_Zealand">
                     <a href="#Strong_Upwelling_Again_for_the_West_Coast_of_New_Zealand" className="anchor">
@@ -5397,7 +5397,7 @@ export const News = () => {
             )}
           >
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Sydney_to_Hobart_update">
                     <a href="#Sydney_to_Hobart_update" className="anchor">
@@ -5450,7 +5450,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="A_marine_heatwave_off_Western_Australia">
                     <a href="#A_marine_heatwave_off_Western_Australia" className="anchor">
@@ -5541,7 +5541,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Sydney_Hobart_briefing">
                     <a href="#Sydney_Hobart_briefing" className="anchor">
@@ -5643,7 +5643,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Early_summer_heating_and_cooling_extremes">
                     <a href="#Early_summer_heating_and_cooling_extremes" className="anchor">
@@ -5757,7 +5757,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Cold_Start_to_Summer_for_Tasmanian_Coastal_Waters">
                     <a href="#Cold_Start_to_Summer_for_Tasmanian_Coastal_Waters" className="anchor">
@@ -5830,7 +5830,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Harnessing_oceanographic_data_to_explain_spatial_variation_in_fish_condition">
                     <a
@@ -5912,7 +5912,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Frontal_eddies_and_the_EAC_array">
                     <a href="#Frontal_eddies_and_the_EAC_array" className="anchor">
@@ -5979,7 +5979,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Cold_core_eddy_diverts_EAC_waters_offshore_replacing_it_with_cold_water">
                     <a
@@ -6058,7 +6058,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Tidal_current_predictions_go_ahead_and_use_them_conditions_apply">
                     <a href="#Tidal_current_predictions_go_ahead_and_use_them_conditions_apply" className="anchor">
@@ -6158,7 +6158,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Reversal_of_the_usual_flow_along_the_Great_Barrier_Reef">
                     <a href="#Reversal_of_the_usual_flow_along_the_Great_Barrier_Reef" className="anchor">
@@ -6240,7 +6240,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Marine_heatwaves_ndash_looking_under_the_surface">
                     <a href="#Marine_heatwaves_ndash_looking_under_the_surface" className="anchor">
@@ -6342,7 +6342,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Tropical_Cyclone_Oma_a_lasting_ocean_impact">
                     <a href="#Tropical_Cyclone_Oma_a_lasting_ocean_impact" className="anchor">
@@ -6408,7 +6408,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Persistent_Cold_Water_off_Western_Australia">
                     <a href="#Persistent_Cold_Water_off_Western_Australia" className="anchor">
@@ -6499,7 +6499,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="IMOS_in_the_wake_of_HMAS_Diamantina">
                     <a href="#IMOS_in_the_wake_of_HMAS_Diamantina" className="anchor">
@@ -6582,7 +6582,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Ocean_glider_reveals_the_impact_of_a_break_in_the_clouds">
                     <a href="#Ocean_glider_reveals_the_impact_of_a_break_in_the_clouds" className="anchor">
@@ -6679,7 +6679,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Great_Barrier_Reef_gets_a_reprieve_from_the_heat_this_year">
                     <a href="#Great_Barrier_Reef_gets_a_reprieve_from_the_heat_this_year" className="anchor">
@@ -6757,7 +6757,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Port_to_Pub_Swim_Strong_Northward_Currents_Forecast">
                     <a href="#Port_to_Pub_Swim_Strong_Northward_Currents_Forecast" className="anchor">
@@ -6802,7 +6802,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Upwelling_keeps_South_Island_cool_this_summer">
                     <a href="#Upwelling_keeps_South_Island_cool_this_summer" className="anchor">
@@ -6897,7 +6897,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Weak_Northward_Currents_Forecast_for_Rottnest_Swim">
                     <a href="#Weak_Northward_Currents_Forecast_for_Rottnest_Swim" className="anchor">
@@ -6966,7 +6966,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="The_2019_Rottnest_Swim_could_be_a_cold_one">
                     <a href="#The_2019_Rottnest_Swim_could_be_a_cold_one" className="anchor">
@@ -7028,7 +7028,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Bluebottles_Upwelling_and_Tasman_Sea_Warming_ndash_that_Blocking_High_is_Back">
                     <a
@@ -7108,7 +7108,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Sydney_Hobart_briefing">
                     <a href="#Sydney_Hobart_briefing" className="anchor">
@@ -7163,7 +7163,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="How_did_Ella_s_message_in_a_bottle_get_to_Queensland_from_Tasmania">
                     <a href="#How_did_Ella_s_message_in_a_bottle_get_to_Queensland_from_Tasmania" className="anchor">
@@ -7249,7 +7249,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Sea_Level_Rising_Faster_as_the_Ice_Sheets_Melt">
                     <a href="#Sea_Level_Rising_Faster_as_the_Ice_Sheets_Melt" className="anchor">
@@ -7364,7 +7364,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Argo_Observed_Bass_Strait_Water_Off_Central_New_South_Wales">
                     <a href="#Argo_Observed_Bass_Strait_Water_Off_Central_New_South_Wales" className="anchor">
@@ -7458,7 +7458,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Four_Hour_SST_and_a_New_Navigator">
                     <a href="#Four_Hour_SST_and_a_New_Navigator" className="anchor">
@@ -7531,7 +7531,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Frontal_systems_on_the_Australian_north_west_shelf">
                     <a href="#Frontal_systems_on_the_Australian_north_west_shelf" className="anchor">
@@ -7609,7 +7609,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Severe_Tropical_Cyclone_Marcus">
                     <a href="#Severe_Tropical_Cyclone_Marcus" className="anchor">
@@ -7650,7 +7650,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Bass_Strait_Glider_Reveals_the_Ancient_Bassian_Lake">
                     <a href="#Bass_Strait_Glider_Reveals_the_Ancient_Bassian_Lake" className="anchor">
@@ -7729,7 +7729,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="The_Port_to_Pub_swim_could_be_a_tough_one_this_year_Updated">
                     <a href="#The_Port_to_Pub_swim_could_be_a_tough_one_this_year_Updated" className="anchor">
@@ -7780,7 +7780,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Newcastle_radar_monitoring_the_EAC_separation_point">
                     <a href="#Newcastle_radar_monitoring_the_EAC_separation_point" className="anchor">
@@ -7816,7 +7816,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Rottnest_Swim_Update_The_Forecast_is_Changing">
                     <a href="#Rottnest_Swim_Update_The_Forecast_is_Changing" className="anchor">
@@ -7858,7 +7858,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="The_Rottnest_Swim_Forecast_Is_In">
                     <a href="#The_Rottnest_Swim_Forecast_Is_In" className="anchor">
@@ -7906,7 +7906,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Sea_Surface_Temperatures_around_Tasmania_reached_extremes_this_November_but_how_deep_did_the_heating_go">
                     <a
@@ -8001,7 +8001,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Sydney_Hobart_briefing">
                     <a href="#Sydney_Hobart_briefing" className="anchor">
@@ -8054,7 +8054,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="NSW_beaches_have_felt_the_cold_this_November">
                     <a href="#NSW_beaches_have_felt_the_cold_this_November" className="anchor">
@@ -8142,7 +8142,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="New_SST_images_with_Himawari_8_ndash_coming_soon">
                     <a href="#New_SST_images_with_Himawari_8_ndash_coming_soon" className="anchor">
@@ -8194,7 +8194,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Jason_2_begins_a_new_phase_The_king_is_dead_long_live_the_king">
                     <a href="#Jason_2_begins_a_new_phase_The_king_is_dead_long_live_the_king" className="anchor">
@@ -8275,7 +8275,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Oceanographer_seals">
                     <a href="#Oceanographer_seals" className="anchor">
@@ -8320,7 +8320,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Fish_Die_Off_Continues_Now_on_Tasmanian_Beaches">
                     <a href="#Fish_Die_Off_Continues_Now_on_Tasmanian_Beaches" className="anchor">
@@ -8396,7 +8396,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Mass_Fish_Die_Off_at_Mallacoota_Upwelling_and_the_EAC">
                     <a href="#Mass_Fish_Die_Off_at_Mallacoota_Upwelling_and_the_EAC" className="anchor">
@@ -8495,7 +8495,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Final_Port_to_Pub_Ocean_Forecast">
                     <a href="#Final_Port_to_Pub_Ocean_Forecast" className="anchor">
@@ -8540,7 +8540,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="The_Port_to_Pub_Ocean_Forecast">
                     <a href="#The_Port_to_Pub_Ocean_Forecast" className="anchor">
@@ -8583,7 +8583,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Rottnest_Swim_Forecast">
                     <a href="#Rottnest_Swim_Forecast" className="anchor">
@@ -8636,7 +8636,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Sydney_Hobart_ocean_currents">
                     <a href="#Sydney_Hobart_ocean_currents" className="anchor">
@@ -8709,7 +8709,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="SealCTDs_Temperature_and_Salinity_Profiles_from_Ocean_Mammals">
                     <a href="#SealCTDs_Temperature_and_Salinity_Profiles_from_Ocean_Mammals" className="anchor">
@@ -8788,7 +8788,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="EAC_Eddies_are_coming_to_Tasmania">
                     <a href="#EAC_Eddies_are_coming_to_Tasmania" className="anchor">
@@ -8901,7 +8901,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Is_La_Ni_ntilde_a_coming">
                     <a href="#Is_La_Ni_ntilde_a_coming" className="anchor">
@@ -8966,7 +8966,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="June_6_East_Coast_Low_Epic_Waves">
                     <a href="#June_6_East_Coast_Low_Epic_Waves" className="anchor">
@@ -9018,7 +9018,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Slocum_gliders_track_sub_surface_warming_in_the_Great_Barrier_Reef">
                     <a href="#Slocum_gliders_track_sub_surface_warming_in_the_Great_Barrier_Reef" className="anchor">
@@ -9130,7 +9130,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Tracking_EAC_warm_core_eddies">
                     <a href="#Tracking_EAC_warm_core_eddies" className="anchor">
@@ -9215,7 +9215,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="The_EAC_Array_Revealing_the_Boundary_Current">
                     <a href="#The_EAC_Array_Revealing_the_Boundary_Current" className="anchor">
@@ -9282,7 +9282,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Port_to_Pub_Swim_Ocean_Forecast">
                     <a href="#Port_to_Pub_Swim_Ocean_Forecast" className="anchor">
@@ -9332,7 +9332,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Rottnest_Channel_Swim_Forecast_Update">
                     <a href="#Rottnest_Channel_Swim_Forecast_Update" className="anchor">
@@ -9389,7 +9389,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Rottnest_Channel_Swim_The_Forecast_Is_In">
                     <a href="#Rottnest_Channel_Swim_The_Forecast_Is_In" className="anchor">
@@ -9440,7 +9440,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="The_Bonney_Coast_Upwelling_biological_hotspot_sampled_by_an_IMOS_glider">
                     <a
@@ -9526,7 +9526,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Sydney_Hobart_ocean_currents">
                     <a href="#Sydney_Hobart_ocean_currents" className="anchor">
@@ -9564,7 +9564,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="A_record_of_record_sea_surface_temperatures">
                     <a href="#A_record_of_record_sea_surface_temperatures" className="anchor">
@@ -9618,7 +9618,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="MH370_Are_they_searching_in_the_right_place">
                     <a href="#MH370_Are_they_searching_in_the_right_place" className="anchor">
@@ -9679,7 +9679,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Sea_level_in_the_western_equatorial_Pacific_drops_dramatically">
                     <a href="#Sea_level_in_the_western_equatorial_Pacific_drops_dramatically" className="anchor">
@@ -9743,7 +9743,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Extraordinary_eddies_of_the_East_Australian_Current_probed_by_RV_Investigator">
                     <a
@@ -9815,7 +9815,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Slocum_glider_missions_reveal_pools_of_dense_shelf_water_the_winter_cascade">
                     <a
@@ -9877,7 +9877,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="What_does_a_warm_North_Pacific_mean_for_us">
                     <a href="#What_does_a_warm_North_Pacific_mean_for_us" className="anchor">
@@ -9937,7 +9937,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="NSW_floodwaters_seen_from_space_and_by_an_IMOS_glider">
                     <a href="#NSW_floodwaters_seen_from_space_and_by_an_IMOS_glider" className="anchor">
@@ -10026,7 +10026,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="El_Nino_Brewing">
                     <a href="#El_Nino_Brewing" className="anchor">
@@ -10079,7 +10079,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Shelf_edge_fronts_and_boundary_currents">
                     <a href="#Shelf_edge_fronts_and_boundary_currents" className="anchor">
@@ -10144,7 +10144,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Summer_sea_surface_temperature_summary">
                     <a href="#Summer_sea_surface_temperature_summary" className="anchor">
@@ -10215,7 +10215,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Northward_Currents_predicted_and_observed_for_the_Rottnest_Channel_Swim">
                     <a
@@ -10275,7 +10275,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Northward_Currents_predicted_for_the_Rottnest_Channel_Swim">
                     <a href="#Northward_Currents_predicted_for_the_Rottnest_Channel_Swim" className="anchor">
@@ -10323,7 +10323,7 @@ export const News = () => {
               </div>
             </article>
             <article className="p-2">
-              <div className="flex items-center justify-between rounded bg-[#F1F6F9] p-4">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
                   <h3 id="Rottnest_Channel_Swim_pre_race_briefing">
                     <a href="#Rottnest_Channel_Swim_pre_race_briefing" className="anchor">
@@ -10384,7 +10384,7 @@ export const News = () => {
 
           {/* <a
             href="https://oceancurrent.aodn.org.au/news_archive.php"
-            className="flex h-[56px] w-[240px] items-center justify-center rounded bg-white text-[20px] text-[#3B6E8F] no-underline"
+            className="flex h-[56px] w-[240px] items-center justify-center rounded-sm bg-white text-[20px] text-[#3B6E8F] no-underline"
           >
             News Archive
           </a> */}

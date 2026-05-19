@@ -26,19 +26,19 @@ const Footer: React.FC = () => {
         <div className="flex flex-col gap-4 sm:gap-8">
           <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between">
             <div className="flex items-center">
-              <div className="flex flex-shrink-0 items-center">
+              <div className="flex shrink-0 items-center">
                 <img src={logo} alt="IMOS Logo" className="h-16 w-auto md:h-18" />
               </div>
-              <div className="mx-5 h-16 w-px flex-shrink-0 bg-imos-title-blue opacity-50"></div>
+              <div className="bg-imos-title-blue mx-5 h-16 w-px shrink-0 opacity-50"></div>
               <div className="flex flex-wrap items-center">
-                <p className="text-lg font-light text-imos-deep-blue sm:text-xl">{BrandingText.OC_PASCAL_CASE}</p>
-                <p className="basis-full text-sm text-imos-dark-grey">{BrandingText.OC_SUBHEADING}</p>
+                <p className="text-imos-deep-blue text-lg font-light sm:text-xl">{BrandingText.OC_PASCAL_CASE}</p>
+                <p className="text-imos-dark-grey basis-full text-sm">{BrandingText.OC_SUBHEADING}</p>
               </div>
             </div>
             <button
               type="button"
               onClick={scrollToTop}
-              className="mb-4 ml-auto flex items-center gap-2 border-none bg-transparent text-imos-nav-text transition-colors hover:opacity-80 md:mb-0 md:ml-0"
+              className="text-imos-nav-text mb-4 ml-auto flex items-center gap-2 border-none bg-transparent transition-colors hover:opacity-80 md:mb-0 md:ml-0"
             >
               <svg width="26" height="24" viewBox="0 0 25 24" fill="none" className="h-6 w-6">
                 <path
@@ -53,9 +53,9 @@ const Footer: React.FC = () => {
             </button>
           </div>
 
-          <p className="text-base leading-7 text-imos-nav-text sm:leading-8">{FOOTER_ACKNOWLEDGE_TEXT}</p>
+          <p className="text-imos-nav-text text-base leading-7 sm:leading-8">{FOOTER_ACKNOWLEDGE_TEXT}</p>
 
-          <div className="grid grid-cols-2 gap-4 border-y border-imos-deeper-blue py-4 md:flex md:h-20 md:flex-row md:items-center md:justify-between">
+          <div className="border-imos-deeper-blue grid grid-cols-2 gap-4 border-y py-4 md:flex md:h-20 md:flex-row md:items-center md:justify-between">
             {/* <div className="flex w-full justify-center md:h-12 md:w-[200px] md:justify-start">
               <Button
                 type="primary"
@@ -75,7 +75,7 @@ const Footer: React.FC = () => {
                 href={url}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-center text-base text-imos-nav-text transition-colors hover:opacity-80"
+                className="text-imos-nav-text flex items-center justify-center text-base transition-colors hover:opacity-80"
               >
                 {text}
               </a>
@@ -84,7 +84,7 @@ const Footer: React.FC = () => {
 
           <div className="flex items-center justify-between gap-1 sm:gap-4">
             <div className="flex items-center">
-              <p className="text-base text-imos-nav-text">
+              <p className="text-imos-nav-text text-base">
                 <span>{COPYRIGHT_TEXT}</span>
                 <span>. </span>
                 <span>Version: {appVersion}</span>
@@ -97,7 +97,7 @@ const Footer: React.FC = () => {
                   href={url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full transition-colors hover:bg-gray-100"
+                  className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-gray-100"
                 >
                   <img loading="lazy" alt={alt} src={src} className="h-6 w-6" />
                 </a>

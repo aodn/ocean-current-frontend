@@ -240,7 +240,7 @@ const DataVisualisationLayout: React.FC = () => {
 
   if (isKnownProduct === false) {
     return (
-      <div className="relative mx-auto mb-4 mt-4 flex w-full max-w-8xl px-4 md:mb-9 md:min-h-[800px]">
+      <div className="max-w-8xl relative mx-auto mt-4 mb-4 flex w-full px-4 md:mb-9 md:min-h-[800px]">
         <ErrorContent title="Product Not Available" description="The product you are looking for is not available." />
       </div>
     );
@@ -251,15 +251,15 @@ const DataVisualisationLayout: React.FC = () => {
   }
 
   return (
-    <div className="relative mx-auto mb-4 mt-4 w-full max-w-8xl px-4 md:mb-9">
+    <div className="max-w-8xl relative mx-auto mt-4 mb-4 w-full px-4 md:mb-9">
       <div className="flex flex-col-reverse md:flex-row">
         <button
           onClick={toggleSidebar}
-          className="-left-6 mr-1 hidden h-24 items-center justify-center rounded bg-imos-sea-blue p-2 text-white md:flex"
+          className="bg-imos-sea-blue -left-6 mr-1 hidden h-24 items-center justify-center rounded-sm p-2 text-white md:flex"
           aria-label="Toggle sidebar"
         >
           <ArrowIcon
-            className={`h-5 w-5 transition-transform duration-300 ${isSidebarVisible ? 'rotate-90' : 'h-28 rotate-[270deg]'}`}
+            className={`h-5 w-5 transition-transform duration-300 ${isSidebarVisible ? 'rotate-90' : 'h-28 rotate-270'}`}
             color="imos-white"
           />
         </button>

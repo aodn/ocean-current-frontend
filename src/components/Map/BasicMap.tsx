@@ -31,6 +31,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
   onContainerResize,
 }) => {
   const [cursor, setCursor] = useState<string>('grab');
+  const [isStyleLoaded, setIsStyleLoaded] = useState(false);
   const [cursorLngLat, setCursorLngLat] = useState<{
     lng: number;
     lat: number;
@@ -122,6 +123,10 @@ const BasicMap: React.FC<BasicMapProps> = ({
     [isArgo, isMiniMap],
   );
 
+  const handleLoad = useCallback(() => {
+    setIsStyleLoaded(true);
+  }, []);
+
   const handleRender = useCallback(() => {
     if (hasAppliedViewLimitsRef.current) return;
 
@@ -151,6 +156,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
       bearing={0}
       pitch={0}
       cursor={cursor}
+      onLoad={handleLoad}
       onRender={handleRender}
       onMoveStart={onMoveStart}
       onMove={handleMove}
@@ -176,10 +182,10 @@ const BasicMap: React.FC<BasicMapProps> = ({
       {/* Control to handle actions after map animations complete */}
       <MapAnimationCompleteHandler />
 
-      {memoizedLayers.dataImageLayer}
-      {!isArgo && memoizedLayers.regionPolygonLayer}
-      {shouldShowArgoLayer && memoizedLayers.argoAsProductLayer}
-      {isCurrentMeters && memoizedLayers.currentMetersDeploymentPlotsLayer}
+      {isStyleLoaded && memoizedLayers.dataImageLayer}
+      {isStyleLoaded && !isArgo && memoizedLayers.regionPolygonLayer}
+      {isStyleLoaded && shouldShowArgoLayer && memoizedLayers.argoAsProductLayer}
+      {isStyleLoaded && isCurrentMeters && memoizedLayers.currentMetersDeploymentPlotsLayer}
     </Map>
   );
 };

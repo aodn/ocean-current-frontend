@@ -15,7 +15,7 @@ const NavbarBurgerMenu = ({ closeMobileMenu }: NavbarBurgerMenuProps) => {
 
   return (
     <nav className="mt-20 w-full bg-transparent px-4">
-      <div className="overflow-hidden rounded-lg bg-imos-cloud-tint shadow-sm">
+      <div className="bg-imos-cloud-tint overflow-hidden rounded-lg shadow-xs">
         {linksData.map((item, index) => (
           <MenuSection
             key={item.title}

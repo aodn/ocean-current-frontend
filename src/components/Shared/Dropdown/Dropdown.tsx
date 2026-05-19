@@ -81,11 +81,11 @@ const Dropdown = <T,>({
         onClick={toggleDropdown}
         aria-hidden="true"
         className={cn(
-          'flex h-full items-center justify-between text-imos-dark-grey shadow',
+          'text-imos-dark-grey flex h-full items-center justify-between shadow-sm',
           header
-            ? 'rounded-t-lg bg-imos-deeper-blue px-3 py-2 text-lg md:px-4 md:py-3'
+            ? 'bg-imos-deeper-blue rounded-t-lg px-3 py-2 text-lg md:px-4 md:py-3'
             : 'rounded-md bg-white px-3 py-1 text-base md:px-4 md:py-2',
-          toggleBorder && !header && 'border border-imos-calypso-blue/50',
+          toggleBorder && !header && 'border-imos-calypso-blue/50 border',
           smallDropdown ? 'min-w-28' : 'min-w-56',
           processingItemId ? 'cursor-not-allowed opacity-75' : 'cursor-pointer',
         )}
@@ -124,7 +124,7 @@ const Dropdown = <T,>({
                   key={String(id)}
                   aria-hidden="true"
                   className={`${!showIcons ? 'justify-center' : ''} m-1 flex cursor-pointer items-center rounded p-3 duration-300 ${
-                    id === selectedElement?.id ? 'bg-imos-deep-blue' : 'hover:bg-imos-hover-blue hover:bg-opacity-20'
+                    id === selectedElement?.id ? 'bg-imos-deep-blue' : 'hover:bg-imos-hover-blue/20'
                   } ${disabled || isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
                   onClick={(e) => {
                     if (disabled || isLoading) {
