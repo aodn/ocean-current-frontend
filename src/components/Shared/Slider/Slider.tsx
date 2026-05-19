@@ -61,17 +61,17 @@ const Slider: React.FC<SliderProps> = ({ min, max, step, value, onChange, labelF
         data-testid="slider-base"
       >
         <div
-          className="absolute -top-4 -translate-x-1/2 border-l-[10px] border-r-[10px] border-t-[15px] border-l-transparent border-r-transparent border-t-imos-sea-blue"
+          className="border-t-imos-sea-blue absolute -top-4 -translate-x-1/2 border-t-15 border-r-10 border-l-10 border-r-transparent border-l-transparent"
           data-testid="slider-thumb"
           style={{
             left: `${((value - min) / (max - min)) * 100}%`,
           }}
         >
-          <div className="h-5 w-1 bg-imos-sea-blue"></div>
+          <div className="bg-imos-sea-blue h-5 w-1"></div>
           {showTooltip && (
-            <span className="absolute -top-16 right-1/2 w-max translate-x-1/2 select-none rounded bg-gray-800 px-2 py-1 text-center text-white">
+            <span className="absolute -top-16 right-1/2 w-max translate-x-1/2 rounded-sm bg-gray-800 px-2 py-1 text-center text-white select-none">
               {labelFormatter ? labelFormatter(value) : value}
-              <div className="absolute -bottom-2 right-1/2 translate-x-1/2 transform border-b-0 border-l-8 border-r-8 border-t-8 border-solid border-l-transparent border-r-transparent border-t-gray-800"></div>
+              <div className="absolute right-1/2 -bottom-2 translate-x-1/2 transform border-t-8 border-r-8 border-b-0 border-l-8 border-solid border-t-gray-800 border-r-transparent border-l-transparent"></div>
             </span>
           )}
         </div>

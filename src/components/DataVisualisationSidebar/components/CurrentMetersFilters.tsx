@@ -188,7 +188,7 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
   };
 
   return (
-    <div className="text-base text-imos-dark-grey [&>*:last-child]:border-b-0 [&>*]:border-b-1 [&>*]:border-imos-light-blue [&>*]:px-4 [&>*]:pb-4">
+    <div className="text-imos-dark-grey *:border-imos-light-blue text-base *:border-b-1 *:px-4 *:pb-4 [&>*:last-child]:border-b-0">
       <FilterSection title={ProductSidebarText.REGION}>
         <Dropdown
           elements={regionsOptions}
@@ -219,7 +219,7 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
       {!deploymentPlot && (
         <div>
           <h3 className="ml-3 py-2">{ProductSidebarText.PROPERTY}</h3>
-          <div className="mb-6 mt-2 flex flex-wrap justify-between gap-2">
+          <div className="mt-2 mb-6 flex flex-wrap justify-between gap-2">
             {propertyOptions.map(({ title, id }, index) => (
               <div key={id} className={index === propertyOptions.length - 1 ? 'w-auto' : 'flex-1'}>
                 <Button

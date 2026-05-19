@@ -26,7 +26,7 @@ exports[`Legend > matches snapshot 1`] = `
       </div>
     </div>
     <button
-      class="relative flex items-center justify-center whitespace-nowrap px-4 py-1 text-lg transition duration-300 ease-in-out md:px-8 w-full bg-transparent text-imos-calypso-blue shadow border border-imos-calypso-blue/50 active:opacity-80 md:hover:opacity-80 rounded-lg  "
+      class="relative flex items-center justify-center whitespace-nowrap px-4 py-1 text-lg transition duration-300 ease-in-out md:px-8 w-full bg-transparent text-imos-calypso-blue shadow-sm border border-imos-calypso-blue/50 active:opacity-80 md:hover:opacity-80 rounded-lg  "
     >
       <span
         class="text-imos-dark-grey"

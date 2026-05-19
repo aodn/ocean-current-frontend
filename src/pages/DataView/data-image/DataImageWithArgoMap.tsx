@@ -133,14 +133,14 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   }, [data, dateFormatted, handleLoad, src]);
 
   if (isDateResolving) {
-    return <LinearProgress className="absolute left-0 right-0 top-0" />;
+    return <LinearProgress className="absolute top-0 right-0 left-0" />;
   }
 
   if (imgLoadError) {
     // Date list is still loading — a valid date may be determined shortly.
     // Show LinearProgress instead of ErrorImage to avoid a misleading error state.
     if (isDateListLoading) {
-      return <LinearProgress className="absolute left-0 right-0 top-0" />;
+      return <LinearProgress className="absolute top-0 right-0 left-0" />;
     }
     return <ErrorImage productId={mainProduct!.key} date={date} />;
   }
@@ -148,7 +148,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   return (
     <div className="relative inline-block h-full w-full bg-white">
       {isProductImageLoading ? (
-        <LinearProgress className="absolute left-0 right-0 top-0" />
+        <LinearProgress className="absolute top-0 right-0 left-0" />
       ) : (
         <div className="h-1 w-full" />
       )}
@@ -158,7 +158,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
           src={src}
           alt={`${productId} data in ${regionCode} at ${dateFormatted}`}
           useMap="#argo-tag-map"
-          className="max-h-[80vh] select-none object-contain"
+          className="max-h-[80vh] object-contain select-none"
           onError={() => {
             setIsProductImageLoading(false);
             setImgErrorSrc(src);
@@ -186,7 +186,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
         {tooltip && (
           <div
             data-testid="image-map-tooltip"
-            className="pointer-events-none fixed z-50 inline-flex min-h-6 flex-col items-center justify-center gap-2 rounded bg-zinc-50 px-2.5 py-1 text-sm font-normal leading-5 shadow-[0_0_4px_0_rgba(0,0,0,0.25)]"
+            className="pointer-events-none fixed z-50 inline-flex min-h-6 flex-col items-center justify-center gap-2 rounded-sm bg-zinc-50 px-2.5 py-1 text-sm leading-5 font-normal shadow-[0_0_4px_0_rgba(0,0,0,0.25)]"
             style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
           >
             {tooltip.text}

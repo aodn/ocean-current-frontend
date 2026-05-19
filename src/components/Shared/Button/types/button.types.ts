@@ -1,6 +1,6 @@
 export enum ButtonType {
   primary = 'bg-imos-calypso-blue text-white border border-imos-calypso-blue active:opacity-80 md:hover:opacity-80',
-  secondary = 'bg-transparent text-imos-calypso-blue shadow border border-imos-calypso-blue/50 active:opacity-80 md:hover:opacity-80',
+  secondary = 'bg-transparent text-imos-calypso-blue shadow-sm border border-imos-calypso-blue/50 active:opacity-80 md:hover:opacity-80',
   tertiary = 'border-imos-dark-grey bg-transparent text-imos-dark-grey border active:bg-imos-dark-grey active:text-white md:hover:bg-imos-dark-grey md:hover:text-white',
 }
 

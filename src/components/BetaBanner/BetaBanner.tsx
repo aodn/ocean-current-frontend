@@ -7,14 +7,14 @@ const BetaBanner: React.FC = () => {
   if (!visible) return null;
 
   return (
-    <div className="relative flex min-h-11 w-full items-center bg-imos-pale-blue py-2 pl-2 pr-6 shadow md:h-11 md:py-0">
-      <p className="m-0 w-full text-left font-open-sans text-base text-imos-dark-grey md:text-center">
+    <div className="bg-imos-pale-blue relative flex min-h-11 w-full items-center py-2 pr-6 pl-2 shadow-sm md:h-11 md:py-0">
+      <p className="font-open-sans text-imos-dark-grey m-0 w-full text-left text-base md:text-center">
         We&rsquo;re giving the site a fresh new look. We&rsquo;d greatly appreciate your feedback. {''}
         <a
           href="https://forms.office.com/Pages/ResponsePage.aspx?id=VV3rFZEZvEaNp6slI03uCCQYYrnLj4dIpn1c2hJluMRUQTJIWVMzMThYMUwxR0RKMUMyM0NEQVVXUS4u"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-bold text-imos-dark-grey underline-offset-2 hover:underline"
+          className="text-imos-dark-grey font-bold underline-offset-2 hover:underline"
         >
           [click here]
         </a>{' '}
@@ -24,7 +24,7 @@ const BetaBanner: React.FC = () => {
         type="button"
         onClick={() => setVisible(false)}
         aria-label="Dismiss banner"
-        className="absolute right-2 top-1 bg-transparent md:top-1/2 md:-translate-y-1/2"
+        className="absolute top-1 right-2 bg-transparent md:top-1/2 md:-translate-y-1/2"
       >
         <CrossIcon size="sm" />
       </button>

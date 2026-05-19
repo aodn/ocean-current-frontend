@@ -5,15 +5,11 @@ import { LinkOrAnchor } from '@/components/Shared';
 const NavbarMenu = forwardRef(({ items }: { items: DetailedLink[] }, ref: ForwardedRef<HTMLDivElement>) => {
   const renderMenuItems = (items: DetailedLink[]) =>
     items.map(({ id, Icon, title, description, url }) => (
-      <LinkOrAnchor
-        key={id}
-        to={url}
-        className={'flex justify-between gap-4 px-4 py-2.5 hover:bg-imos-hover-blue hover:bg-opacity-20'}
-      >
+      <LinkOrAnchor key={id} to={url} className={'hover:bg-imos-hover-blue/20 flex justify-between gap-4 px-4 py-2.5'}>
         <Icon className="self-start" size="xxl" color="imos-black" />
         <div className="flex flex-1 flex-col">
-          <div className="whitespace-nowrap text-base font-bold leading-5">{title}</div>
-          <div className="mt-1 max-w-96 text-sm font-light leading-5 text-imos-nav-text">{description}</div>
+          <div className="text-base leading-5 font-bold whitespace-nowrap">{title}</div>
+          <div className="text-imos-nav-text mt-1 max-w-96 text-sm leading-5 font-light">{description}</div>
         </div>
       </LinkOrAnchor>
     ));

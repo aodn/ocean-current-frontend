@@ -11,7 +11,7 @@ const CarouselStaticImage: React.FC<CarouselStaticImageProps> = ({ src, alt, hre
     <img
       src={src}
       alt={alt}
-      className="h-full w-full rounded-t-xl border-x border-t border-solid border-imos-calypso-blue border-opacity-60 object-contain"
+      className="border-imos-calypso-blue/60 h-full w-full rounded-t-xl border-x border-t border-solid object-contain"
     />
   </Link>
 );

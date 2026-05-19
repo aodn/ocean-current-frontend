@@ -20,7 +20,7 @@ const COMMON_LEGEND_ITEMS = {
   argo: {
     icon: 'circle',
     label: 'Argo',
-    shape: <div className="h-3 w-3 rounded-full border-2 border-imos-bright-magenta bg-white" />,
+    shape: <div className="border-imos-bright-magenta h-3 w-3 rounded-full border-2 bg-white" />,
     description:
       'pink circle at the location of any profile made in the window t0 +/- 12hrs; click on the circle to see the Argo profiles of temperature and salinity.',
   },
@@ -32,7 +32,7 @@ const COMMON_LEGEND_ITEMS = {
   fishSoop: {
     icon: 'square',
     label: 'Fish SOOP',
-    shape: <div className="h-3 w-3 border-2 border-imos-bright-magenta bg-white" />,
+    shape: <div className="border-imos-bright-magenta h-3 w-3 border-2 bg-white" />,
     description: 'Fishing Vessel as Ships of Opportunity Program (Fish SOOP).',
   },
   mooring: {
@@ -52,7 +52,7 @@ const COMMON_LEGEND_ITEMS = {
   glider: {
     icon: 'diamond',
     label: 'Glider',
-    shape: <div className="h-3 w-3 rotate-45 bg-imos-bright-magenta" />,
+    shape: <div className="bg-imos-bright-magenta h-3 w-3 rotate-45" />,
     description:
       'Small diamonds indicate 6-hourly glider locations. Pink when the glider is in the 24hr window around t0; click on the diamonds to see the glider profiles.',
   },
@@ -61,11 +61,11 @@ const COMMON_LEGEND_ITEMS = {
     label: 'Radar',
     shape: (
       <div className="flex flex-col">
-        <div className="relative h-0.5 w-3 bg-imos-bright-magenta">
-          <div className="absolute -top-1 right-0 h-2 w-2 rotate-45 border-t-2 border-imos-bright-magenta" />
+        <div className="bg-imos-bright-magenta relative h-0.5 w-3">
+          <div className="border-imos-bright-magenta absolute -top-1 right-0 h-2 w-2 rotate-45 border-t-2" />
         </div>
-        <div className="relative mt-1 h-0.5 w-3 bg-imos-dodger-blue">
-          <div className="absolute -top-[2px] right-0 h-2 w-2 rotate-45 border-r-2 border-imos-dodger-blue" />
+        <div className="bg-imos-dodger-blue relative mt-1 h-0.5 w-3">
+          <div className="border-imos-dodger-blue absolute top-[-2px] right-0 h-2 w-2 rotate-45 border-r-2" />
         </div>
       </div>
     ),
@@ -77,7 +77,7 @@ const COMMON_LEGEND_ITEMS = {
     label: 'Drifter',
     shape: (
       <div className="flex h-3 w-3 items-center justify-center">
-        <div className="h-2.5 w-2.5 -translate-x-[2px] rotate-45 -skew-x-12 -skew-y-12 border-r-2 border-t-2 border-imos-bright-magenta" />
+        <div className="border-imos-bright-magenta h-2.5 w-2.5 translate-x-[-2px] rotate-45 -skew-x-12 -skew-y-12 border-t-2 border-r-2" />
       </div>
     ),
     description: 'Drifter buoy locations showing surface current trajectories.',
@@ -114,7 +114,7 @@ const COMMON_LEGEND_ITEMS = {
   ctdProfile: {
     icon: 'dive-point',
     label: 'Seal CTD',
-    shape: <div className="h-3 w-3 rounded-full border-2 border-imos-bright-magenta bg-white" />,
+    shape: <div className="border-imos-bright-magenta h-3 w-3 rounded-full border-2 bg-white" />,
   },
 } as const;
 

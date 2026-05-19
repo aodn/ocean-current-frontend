@@ -71,10 +71,10 @@ const HomeMapCarousel: React.FC = () => {
         {isStaticImageProduct && <SealTracksCarouselImage alt={selectedProduct.title} />}
       </div>
 
-      <div className="flex flex-col rounded-b-xl border border-solid border-imos-calypso-blue border-opacity-60 px-4 pb-3 pt-6 md:px-6">
+      <div className="border-imos-calypso-blue/60 flex flex-col rounded-b-xl border border-solid px-4 pt-6 pb-3 md:px-6">
         <div className="flex flex-col md:min-h-32">
-          <h2 className="font-poppins text-lg font-semibold text-imos-nav-text">{selectedProduct.title}</h2>
-          <p className="mt-2 font-open-sans text-base text-imos-dark-grey">{selectedProduct.description}</p>
+          <h2 className="font-poppins text-imos-nav-text text-lg font-semibold">{selectedProduct.title}</h2>
+          <p className="font-open-sans text-imos-dark-grey mt-2 text-base">{selectedProduct.description}</p>
         </div>
 
         <div className="flex justify-center gap-2">
