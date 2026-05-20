@@ -139,7 +139,6 @@ const ProductContent: React.FC = () => {
     regionData,
     useRegionCode,
     argoParams,
-
     currentMetersParams,
     hasSelectedParams,
     urlParams,
