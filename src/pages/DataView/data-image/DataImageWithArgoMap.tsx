@@ -1,5 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
+import { useQueryClient } from '@tanstack/react-query';
+import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
+import { sharedQueryConfig } from '@/configs/query';
 import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { calculateImageScales } from '@/utils/general-utils/general';
 import { ImageTagMapArea } from '@/types/argo';
@@ -50,6 +53,29 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   const { data } = useImageTags({ date, tagPath: argoTagFilePath, regionCode, dateFormat: tagDateFormat });
 
   const { isLoading: isDateListLoading } = useDateList({ productId, mode: 'list' });
+  const queryClient = useQueryClient();
+
+  const handleArgoAreaClick = useCallback(
+    async (e: React.MouseEvent, area: ImageTagMapArea) => {
+      e.preventDefault();
+      const wmoId = String(area.wmoId!);
+      const cycle = String(area.cycle!);
+      let resolvedDate = date.format('YYYYMMDD'); // fallback: current map date
+      try {
+        const cycles = await queryClient.fetchQuery({
+          queryKey: ['argoDateList', wmoId],
+          queryFn: () => fetchArgoProfileCyclesByWmoId(wmoId),
+          ...sharedQueryConfig,
+        });
+        const cycleEntry = cycles.find((c) => c.cycle === cycle);
+        if (cycleEntry) resolvedDate = cycleEntry.date;
+      } catch {
+        // use fallback date
+      }
+      window.open(`/product/argo?wmoid=${wmoId}&cycle=${cycle}&depth=0-2000m&date=${resolvedDate}`, '_blank');
+    },
+    [queryClient, date],
+  );
 
   const handleLoad = useCallback(() => {
     setIsProductImageLoading(false);
@@ -175,9 +201,10 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
               onMouseEnter={(e) => area.tooltip && setTooltip({ text: area.tooltip, x: e.clientX, y: e.clientY })}
               onMouseMove={(e) => setTooltip((prev) => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null))}
               onMouseLeave={() => setTooltip(null)}
-              href={area.href || undefined}
-              target="_blank"
-              rel="noopener noreferrer"
+              onClick={area.type === 'Argo' ? (e) => handleArgoAreaClick(e, area) : undefined}
+              href={area.type !== 'Argo' ? area.href || undefined : undefined}
+              target={area.type !== 'Argo' ? '_blank' : undefined}
+              rel={area.type !== 'Argo' ? 'noopener noreferrer' : undefined}
               aria-hidden="true"
               className="cursor-pointer"
             />

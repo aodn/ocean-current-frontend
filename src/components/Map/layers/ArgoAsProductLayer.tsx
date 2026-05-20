@@ -1,10 +1,13 @@
 import { Layer, MapMouseEvent, Source, useMap } from 'react-map-gl/mapbox';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useQueryClient } from '@tanstack/react-query';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import { mapboxLayerIds, mapboxSourceIds } from '@/constants/mapboxId';
 import { ArgoProfile } from '@/types/argo';
 import { useQueryParams, useDeviceTypes } from '@/hooks';
+import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
+import { sharedQueryConfig } from '@/configs/query';
 import {
   getBoundsFromCoordsArray,
   expandBoundsWithMercatorMargin,
@@ -41,6 +44,7 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
 
   const { current: map } = useMap();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const eventAdded = useRef(false);
 
   const { updateQueryParams } = useQueryParams();
@@ -88,11 +92,24 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
 
         await waitForMapAnimationAsync(map);
 
+        let resolvedDate = date;
+        try {
+          const cycles = await queryClient.fetchQuery({
+            queryKey: ['argoDateList', clickedWorldMeteorologicalOrgId],
+            queryFn: () => fetchArgoProfileCyclesByWmoId(clickedWorldMeteorologicalOrgId),
+            ...sharedQueryConfig,
+          });
+          const cycleEntry = cycles.find((c) => c.cycle === cycle);
+          if (cycleEntry) resolvedDate = cycleEntry.date;
+        } catch {
+          // fall back to the feature's date
+        }
+
         const query = new URLSearchParams({
           wmoid: clickedWorldMeteorologicalOrgId,
           cycle,
           depth,
-          date: date!,
+          date: resolvedDate!,
         }).toString();
         const clickedArgoPath = `/product/argo?${query}`;
         if (!isMiniMap) {
@@ -109,7 +126,7 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
         console.error(error);
       }
     },
-    [map, selectedWorldMeteorologicalOrgId, navigate, updateQueryParams, isMiniMap],
+    [map, selectedWorldMeteorologicalOrgId, navigate, updateQueryParams, isMiniMap, queryClient],
   );
 
   const handleMouseMove = useCallback(
