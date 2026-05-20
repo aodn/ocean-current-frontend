@@ -119,7 +119,7 @@ const ArgoAsProductLayer: React.FC<ArgoAsProductLayerProps> = ({ isMiniMap, isAr
             wmoid: clickedWorldMeteorologicalOrgId,
             cycle,
             depth,
-            date: date!,
+            date: resolvedDate!,
           });
         }
       } catch (error) {
