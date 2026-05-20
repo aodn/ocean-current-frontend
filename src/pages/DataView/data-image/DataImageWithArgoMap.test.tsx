@@ -116,6 +116,7 @@ describe('DataImageWithArgoMap — Argo area click', () => {
       expect(windowOpen).toHaveBeenCalledWith(
         `/product/argo?wmoid=${WMO_ID}&cycle=${CYCLE}&depth=0-2000m&date=20241231`,
         '_blank',
+        'noopener,noreferrer',
       );
     });
   });
@@ -132,6 +133,7 @@ describe('DataImageWithArgoMap — Argo area click', () => {
       expect(windowOpen).toHaveBeenCalledWith(
         `/product/argo?wmoid=${WMO_ID}&cycle=${CYCLE}&depth=0-2000m&date=${MAP_DATE}`,
         '_blank',
+        'noopener,noreferrer',
       );
     });
   });
@@ -146,6 +148,7 @@ describe('DataImageWithArgoMap — Argo area click', () => {
       expect(windowOpen).toHaveBeenCalledWith(
         `/product/argo?wmoid=${WMO_ID}&cycle=${CYCLE}&depth=0-2000m&date=${MAP_DATE}`,
         '_blank',
+        'noopener,noreferrer',
       );
     });
   });

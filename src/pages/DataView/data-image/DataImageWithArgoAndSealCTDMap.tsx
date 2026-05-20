@@ -8,6 +8,7 @@ import { MapImageAreas } from '@/types/dataImage';
 import { ProductID } from '@/types/product';
 import { getSealCtdMapTags } from '@/services/sealCtd';
 import { parseArgoAndSealLocationsTagData } from '@/utils/seal-ctd-utils/sealStdTags';
+import { ArgoDepths } from '@/constants/argo';
 import { DateFormat } from '@/types/date';
 import { useResizeObserver } from '@/hooks';
 import useProductStore, { setIsProductImageLoading } from '@/stores/product-store/productStore';
@@ -62,7 +63,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
                 5,
               ]
             : item.coords,
-        href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${formattedDate}`,
+        href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=${ArgoDepths['2000M']}&date=${formattedDate}`,
       }));
 
       if (regionCode === 'POLAR') {
@@ -149,7 +150,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
   return (
     <div className="relative inline-block h-full w-full bg-white">
       {isProductImageLoading ? (
-        <LinearProgress className="absolute left-0 right-0 top-0" />
+        <LinearProgress className="absolute top-0 right-0 left-0" />
       ) : (
         <div className="h-1 w-full" />
       )}
@@ -159,7 +160,7 @@ const DataImageWithArgoAndSealCTDMap: React.FC<DataImageWithArgoAndSealCTDMapPro
           src={src}
           alt={`Argo and Seal locations in ${regionCode}`}
           useMap="#argo-and-seal-tag-map"
-          className="max-h-[80vh] w-full select-none object-contain"
+          className="max-h-[80vh] w-full object-contain select-none"
           onError={() => {
             setIsProductImageLoading(false);
             setImgErrorSrc(src);

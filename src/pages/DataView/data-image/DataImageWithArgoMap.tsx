@@ -9,6 +9,7 @@ import { ImageTagMapArea } from '@/types/argo';
 import { convertCoordsBasedOnImageScale } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
+import { ArgoDepths } from '@/constants/argo';
 import { RegionScope } from '@/constants/region';
 import { useImageTags } from '@/services/hooks';
 import { ProductID } from '@/types/product';
@@ -56,24 +57,32 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   const queryClient = useQueryClient();
   const isFetchingCycleDate = useIsFetching({ queryKey: ['argoDateList'] }) > 0;
 
-  const handleArgoAreaClick = useCallback(
+  const handleAreaClick = useCallback(
     async (e: React.MouseEvent, area: ImageTagMapArea) => {
       e.preventDefault();
-      const wmoId = String(area.wmoId!);
-      const cycle = String(area.cycle!);
-      let resolvedDate = date.format('YYYYMMDD'); // fallback: current map date
-      try {
-        const cycles = await queryClient.fetchQuery({
-          queryKey: ['argoDateList', wmoId],
-          queryFn: () => fetchArgoProfileCyclesByWmoId(wmoId),
-          ...sharedQueryConfig,
-        });
-        const cycleEntry = cycles.find((c) => c.cycle === cycle);
-        if (cycleEntry) resolvedDate = cycleEntry.date;
-      } catch {
-        // use fallback date
+      if (area.type === 'Argo') {
+        const wmoId = String(area.wmoId!);
+        const cycle = String(area.cycle!);
+        let resolvedDate = date.format('YYYYMMDD'); // fallback: current map date
+        try {
+          const cycles = await queryClient.fetchQuery({
+            queryKey: ['argoDateList', wmoId],
+            queryFn: () => fetchArgoProfileCyclesByWmoId(wmoId),
+            ...sharedQueryConfig,
+          });
+          const cycleEntry = cycles.find((c) => c.cycle === cycle);
+          if (cycleEntry) resolvedDate = cycleEntry.date;
+        } catch {
+          // use fallback date
+        }
+        window.open(
+          `/product/argo?wmoid=${wmoId}&cycle=${cycle}&depth=${ArgoDepths['2000M']}&date=${resolvedDate}`,
+          '_blank',
+          'noopener,noreferrer',
+        );
+      } else if (area.href) {
+        window.open(area.href, '_blank', 'noopener,noreferrer');
       }
-      window.open(`/product/argo?wmoid=${wmoId}&cycle=${cycle}&depth=0-2000m&date=${resolvedDate}`, '_blank');
     },
     [queryClient, date],
   );
@@ -107,7 +116,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
             type,
             shape: 'circle',
             coords: [coordX, coordY, 10],
-            href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${dateFormatted}`,
+            href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=${ArgoDepths['2000M']}`,
             wmoId: item.wmoId,
             cycle: item.cycle,
             tooltip: item.dataSource,
@@ -202,10 +211,8 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
               onMouseEnter={(e) => area.tooltip && setTooltip({ text: area.tooltip, x: e.clientX, y: e.clientY })}
               onMouseMove={(e) => setTooltip((prev) => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null))}
               onMouseLeave={() => setTooltip(null)}
-              onClick={area.type === 'Argo' ? (e) => handleArgoAreaClick(e, area) : undefined}
-              href={area.type !== 'Argo' ? area.href || undefined : undefined}
-              target={area.type !== 'Argo' ? '_blank' : undefined}
-              rel={area.type !== 'Argo' ? 'noopener noreferrer' : undefined}
+              onClick={(e) => handleAreaClick(e, area)}
+              href={area.href || undefined}
               aria-hidden="true"
               className="cursor-pointer"
             />
