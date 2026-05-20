@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient, useIsFetching } from '@tanstack/react-query';
 import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
 import { sharedQueryConfig } from '@/configs/query';
 import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
@@ -54,6 +54,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
 
   const { isLoading: isDateListLoading } = useDateList({ productId, mode: 'list' });
   const queryClient = useQueryClient();
+  const isFetchingCycleDate = useIsFetching({ queryKey: ['argoDateList'] }) > 0;
 
   const handleArgoAreaClick = useCallback(
     async (e: React.MouseEvent, area: ImageTagMapArea) => {
@@ -173,7 +174,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
 
   return (
     <div className="relative inline-block h-full w-full bg-white">
-      {isProductImageLoading ? (
+      {isProductImageLoading || isFetchingCycleDate ? (
         <LinearProgress className="absolute top-0 right-0 left-0" />
       ) : (
         <div className="h-1 w-full" />
