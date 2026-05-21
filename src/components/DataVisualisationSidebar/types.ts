@@ -32,6 +32,7 @@ export interface SubProductOptionsProps {
   subProductKey: ProductID;
   handleSubProductChange: (key: ProductID, subProductPath: string) => void;
   disabled?: boolean;
+  disabledKeys?: ProductID[];
 }
 
 export type DataSource = {
