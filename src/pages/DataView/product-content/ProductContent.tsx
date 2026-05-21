@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useOutletContext } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
-import dayjs from 'dayjs';
 import {
   buildArgoImageUrl,
   buildCurrentMetersMapImageUrl,
@@ -80,11 +79,7 @@ const ProductContent: React.FC = () => {
   );
 
   // Fetch Argo profile cycles — shares cache with useDateList and WmoSection via the same query key
-  const {
-    data: argoProfileCyclesData,
-    isSuccess: isArgoProfileCyclesSuccess,
-    isError: isArgoProfileCyclesError,
-  } = useQuery({
+  const { data: argoProfileCyclesData } = useQuery({
     queryKey: ['argoDateList', argoParams.worldMeteorologicalOrgId],
     queryFn: () => fetchArgoProfileCyclesByWmoId(argoParams.worldMeteorologicalOrgId),
     enabled: isArgo && !!argoParams.worldMeteorologicalOrgId,
@@ -96,12 +91,8 @@ const ProductContent: React.FC = () => {
     try {
       // Video-disabled products with specialized params
       switch (true) {
-        case isArgo: {
-          // Fall back to useDate if the cycle isn't in the API data yet (scheduled task lag).
-          const found = argoProfileCyclesData?.find(({ cycle }) => cycle === argoParams.cycle);
-          const cycleDate = found ? dayjs(found.date) : useDate;
-          return buildArgoImageUrl(argoParams.worldMeteorologicalOrgId, cycleDate, argoParams.cycle, argoParams.depth);
-        }
+        case isArgo:
+          return buildArgoImageUrl(argoParams.worldMeteorologicalOrgId, useDate, argoParams.cycle, argoParams.depth);
         case isCurrentMeters:
           return buildCurrentMetersMapImageUrl(
             currentMetersParams.region,
@@ -148,7 +139,6 @@ const ProductContent: React.FC = () => {
     regionData,
     useRegionCode,
     argoParams,
-    argoProfileCyclesData,
     currentMetersParams,
     hasSelectedParams,
     urlParams,
@@ -200,10 +190,6 @@ const ProductContent: React.FC = () => {
     return <ErrorImage date={useDate} productId="argo" />;
   }
 
-  if (isArgo && !isArgoProfileCyclesSuccess) {
-    return isArgoProfileCyclesError ? <ErrorImage date={useDate} productId="argo" /> : <Loading />;
-  }
-
   if (isSurfaceWavesBuoyTimeseries && !hasSelectedParams.buoyRegion) {
     return <ErrorImage date={useDate} productId="surfaceWaves-buoyTimeseries" />;
   }
@@ -226,7 +212,7 @@ const ProductContent: React.FC = () => {
     return (
       <div className="h-full bg-white">
         <video
-          className="max-h-[80vh] w-full select-none object-contain"
+          className="max-h-[80vh] w-full object-contain select-none"
           controls
           playsInline
           preload="auto"

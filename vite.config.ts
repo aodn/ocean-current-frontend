@@ -43,6 +43,7 @@ export default ({ mode }: ConfigEnv) => {
             typescript: true,
             eslint: {
               lintCommand: 'eslint --rule "no-console: off" "./src/**/*.{ts,tsx}"',
+              useFlatConfig: false,
             },
           })
         : undefined,

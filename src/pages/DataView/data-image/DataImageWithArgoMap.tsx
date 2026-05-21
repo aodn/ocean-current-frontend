@@ -1,11 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
+import { useQueryClient, useIsFetching } from '@tanstack/react-query';
+import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
+import { sharedQueryConfig } from '@/configs/query';
 import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { calculateImageScales } from '@/utils/general-utils/general';
 import { ImageTagMapArea } from '@/types/argo';
 import { convertCoordsBasedOnImageScale } from '@/utils/argo-utils/argoTag';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
+import { ArgoDepths } from '@/constants/argo';
 import { RegionScope } from '@/constants/region';
 import { useImageTags } from '@/services/hooks';
 import { ProductID } from '@/types/product';
@@ -50,6 +54,38 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   const { data } = useImageTags({ date, tagPath: argoTagFilePath, regionCode, dateFormat: tagDateFormat });
 
   const { isLoading: isDateListLoading } = useDateList({ productId, mode: 'list' });
+  const queryClient = useQueryClient();
+  const isFetchingCycleDate = useIsFetching({ queryKey: ['argoDateList'] }) > 0;
+
+  const handleAreaClick = useCallback(
+    async (e: React.MouseEvent, area: ImageTagMapArea) => {
+      e.preventDefault();
+      if (area.type === 'Argo') {
+        const wmoId = String(area.wmoId!);
+        const cycle = String(area.cycle!);
+        let resolvedDate = date.format('YYYYMMDD'); // fallback: current map date
+        try {
+          const cycles = await queryClient.fetchQuery({
+            queryKey: ['argoDateList', wmoId],
+            queryFn: () => fetchArgoProfileCyclesByWmoId(wmoId),
+            ...sharedQueryConfig,
+          });
+          const cycleEntry = cycles.find((c) => c.cycle === cycle);
+          if (cycleEntry) resolvedDate = cycleEntry.date;
+        } catch {
+          // use fallback date
+        }
+        window.open(
+          `/product/argo?wmoid=${wmoId}&cycle=${cycle}&depth=${ArgoDepths['2000M']}&date=${resolvedDate}`,
+          '_blank',
+          'noopener,noreferrer',
+        );
+      } else if (area.href) {
+        window.open(area.href, '_blank', 'noopener,noreferrer');
+      }
+    },
+    [queryClient, date],
+  );
 
   const handleLoad = useCallback(() => {
     setIsProductImageLoading(false);
@@ -80,7 +116,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
             type,
             shape: 'circle',
             coords: [coordX, coordY, 10],
-            href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=0-2000m&date=${dateFormatted}`,
+            href: `/product/argo?wmoid=${item.wmoId}&cycle=${item.cycle}&depth=${ArgoDepths['2000M']}`,
             wmoId: item.wmoId,
             cycle: item.cycle,
             tooltip: item.dataSource,
@@ -147,7 +183,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
 
   return (
     <div className="relative inline-block h-full w-full bg-white">
-      {isProductImageLoading ? (
+      {isProductImageLoading || isFetchingCycleDate ? (
         <LinearProgress className="absolute top-0 right-0 left-0" />
       ) : (
         <div className="h-1 w-full" />
@@ -175,9 +211,8 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
               onMouseEnter={(e) => area.tooltip && setTooltip({ text: area.tooltip, x: e.clientX, y: e.clientY })}
               onMouseMove={(e) => setTooltip((prev) => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null))}
               onMouseLeave={() => setTooltip(null)}
+              onClick={(e) => handleAreaClick(e, area)}
               href={area.href || undefined}
-              target="_blank"
-              rel="noopener noreferrer"
               aria-hidden="true"
               className="cursor-pointer"
             />
