@@ -48,7 +48,7 @@ test.describe('Surface Waves — sub-product option buttons', () => {
     await page.goto('/product/surface-waves/buoy-timeseries?region=Maria_Island&date=2024010100');
     await page.waitForLoadState('networkidle');
 
-    const mapButton = page.getByRole('button', { name: 'Map' });
+    const mapButton = page.getByRole('button', { name: 'Map', exact: true });
     const buoyButton = page.getByRole('button', { name: 'Buoy Timeseries' });
     await expect(mapButton).not.toBeDisabled();
     await expect(buoyButton).not.toBeDisabled();
