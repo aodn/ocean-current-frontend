@@ -42,6 +42,16 @@ test.describe('Surface Waves — sub-product option buttons', () => {
     await expect(mapButton).not.toBeDisabled();
   });
 
+  test('Buoy Timeseries button is disabled when no region param is present', async ({ page }) => {
+    // Arriving via redirect (e.g. /product/surface-waves → /product/surface-waves/wave)
+    // does not append ?region=Au, so region is null — treated the same as Au.
+    await page.goto('/product/surface-waves/wave');
+    await page.waitForLoadState('networkidle');
+
+    const buoyButton = page.getByRole('button', { name: 'Buoy Timeseries' });
+    await expect(buoyButton).toBeDisabled();
+  });
+
   test('both buttons are enabled once a buoy region is active', async ({ page }) => {
     // Navigating here simulates what happens after a user clicks a buoy circle.
     // The region param is set to a buoy title (not 'Au'), so both buttons unlock.

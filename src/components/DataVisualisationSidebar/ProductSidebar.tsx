@@ -67,7 +67,7 @@ const ProductSideBar: React.FC = () => {
   }, [isSealCtd, isLatestDatesRegionLoading]);
 
   const subProductDisabledKeys = useMemo<ProductID[]>(() => {
-    if (isSurfaceWaves && searchParams.get('region') === 'Au') {
+    if (isSurfaceWaves && (searchParams.get('region') ?? 'Au') === 'Au') {
       return ['surfaceWaves-buoyTimeseries'];
     }
     return [];
