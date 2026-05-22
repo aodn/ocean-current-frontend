@@ -14,7 +14,10 @@ const MOCK_IMAGE_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="800" heig
   <rect width="800" height="600" fill="#1e3a5f"/>
 </svg>`;
 
-const MOCK_BUOY_TAGS = 'Maria_Island 400.0 300.0 15 TS Maria Island\n';
+const MOCK_BUOY_TAGS = JSON.stringify({
+  tagFile: 'mock',
+  tags: [{ x: 400, y: 300, sz: 15, title: 'Maria_Island', url: 'TS Maria Island' }],
+});
 
 test.describe('Surface Waves — sub-product option buttons', () => {
   test.beforeEach(async ({ page }) => {
@@ -25,7 +28,7 @@ test.describe('Surface Waves — sub-product option buttons', () => {
       route.fulfill({ status: 200, contentType: 'image/svg+xml', body: MOCK_IMAGE_SVG }),
     );
     await page.route('**/api/v1/tags/**', (route) =>
-      route.fulfill({ status: 200, contentType: 'text/plain', body: MOCK_BUOY_TAGS }),
+      route.fulfill({ status: 200, contentType: 'application/json', body: MOCK_BUOY_TAGS }),
     );
   });
 
