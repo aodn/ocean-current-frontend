@@ -21,7 +21,10 @@ test.describe('Surface Waves — sub-product option buttons', () => {
     await page.route('**/*.gif', (route) =>
       route.fulfill({ status: 200, contentType: 'image/svg+xml', body: MOCK_IMAGE_SVG }),
     );
-    await page.route('**/TAGS/**', (route) =>
+    await page.route('**/*.png', (route) =>
+      route.fulfill({ status: 200, contentType: 'image/svg+xml', body: MOCK_IMAGE_SVG }),
+    );
+    await page.route('**/api/v1/tags/**', (route) =>
       route.fulfill({ status: 200, contentType: 'text/plain', body: MOCK_BUOY_TAGS }),
     );
   });
