@@ -20,6 +20,7 @@ const useProductCheck = () => {
   const isSealCtd = mainProductId === 'sealCtd';
   const isSealCtdTags = mainProductId === 'sealCtdTags';
   const isSurfaceWaves = mainProductId === 'surfaceWaves';
+  const isSurfaceWavesWave = isSurfaceWaves && subProduct?.key === 'surfaceWaves-wave';
   const isSurfaceWavesBuoyTimeseries =
     mainProductId === 'surfaceWaves' && subProduct?.key === 'surfaceWaves-buoyTimeseries';
   const isOceanColour = mainProductId === 'oceanColour';
@@ -37,6 +38,7 @@ const useProductCheck = () => {
     isSealCtd,
     isSealCtdTags,
     isSurfaceWaves,
+    isSurfaceWavesWave,
     isSurfaceWavesBuoyTimeseries,
     isOceanColour,
     isOceanColourChlA,

@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useSearchParams } from 'react-router';
 import { Loading } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { ProductSidebarText } from '@/constants/textConstant';
@@ -39,10 +40,11 @@ import DataSources from './components/DataSources';
 import CollapsibleSection from './components/CollapsibleSection';
 
 const ProductSideBar: React.FC = () => {
+  const [searchParams] = useSearchParams();
   const { mainProduct, subProduct, subProducts } = useProductConvert();
   const { updateQueryParamsAndNavigate, getQueryParamsByKey } = useQueryParams();
   const useDate = useDateStore((state) => state.date);
-  const { isArgo, isCurrentMeters, isSealCtd } = useProductCheck();
+  const { isArgo, isCurrentMeters, isSealCtd, isSurfaceWaves } = useProductCheck();
   const shouldRenderMiniMap = useShowProductOverMap();
 
   const mooredInstrumentArrayPath = useMemo(() => {
@@ -60,11 +62,17 @@ const ProductSideBar: React.FC = () => {
   const isLatestDatesRegionLoading = latestDatesRegionQueries.some((q) => q.isLoading);
 
   const subProductOptionButtonDisable = useMemo(() => {
-    if (isSealCtd) {
-      return isLatestDatesRegionLoading;
-    }
+    if (isSealCtd) return isLatestDatesRegionLoading;
     return false;
-  }, [isLatestDatesRegionLoading, isSealCtd]);
+  }, [isSealCtd, isLatestDatesRegionLoading]);
+
+  const subProductDisabledKeys = useMemo<ProductID[]>(() => {
+    const region = searchParams.get('region');
+    if (isSurfaceWaves && (!region || region === 'Au')) {
+      return ['surfaceWaves-buoyTimeseries'];
+    }
+    return [];
+  }, [isSurfaceWaves, searchParams]);
 
   if (!mainProduct) {
     return <Loading />;
@@ -137,6 +145,7 @@ const ProductSideBar: React.FC = () => {
               subProductKey={subProduct?.key}
               handleSubProductChange={handleSubProductChange}
               disabled={subProductOptionButtonDisable}
+              disabledKeys={subProductDisabledKeys}
             />
           </CollapsibleSection>
         )}
