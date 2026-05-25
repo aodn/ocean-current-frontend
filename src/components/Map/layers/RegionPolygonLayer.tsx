@@ -24,13 +24,14 @@ import { shouldDeferToHigherPriorityLayer, hasFeatureAtPoint, shouldBlockRegionH
 
 interface RegionPolygonLayerProps {
   isMiniMap: boolean;
+  disableRegionAutoFit?: boolean;
 }
 
 const { PRODUCT_REGION_BOX_SOURCE_ID } = mapboxSourceIds;
 const { PRODUCT_REGION_BOX_LAYER_ID, PRODUCT_REGION_NAME_LABEL_LAYER_ID, PRODUCT_REGION_SELECTED_BOX_LAYER_ID } =
   mapboxLayerIds;
 
-const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) => {
+const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap, disableRegionAutoFit = false }) => {
   const baseProductPath = useProductPath();
   const { searchParams, updateQueryParamsAndNavigate } = useQueryParams();
   const { region: regionCodeFromUrl, date: dateFromUrl } = useProductSearchParam();
@@ -95,6 +96,10 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
 
   useEffect(() => {
     if (!map) return;
+    // Used by the home page carousel (#432): it shares this layer to render polygons but must keep
+    // the user's current center/zoom across product changes, so suppress all imperative fits.
+    if (disableRegionAutoFit) return;
+
     const regionCode = regionCodeFromUrl || 'Au';
     const region = getRegionByRegionCode(regionCode, productId);
 
@@ -127,7 +132,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap }) =>
     } else {
       fitToAuRegion();
     }
-  }, [map, regionCodeFromUrl, mapFitBounds, isMiniMap, baseProductPath, productId]);
+  }, [map, regionCodeFromUrl, mapFitBounds, isMiniMap, baseProductPath, productId, disableRegionAutoFit]);
 
   const handleMouseMove = useCallback(
     (e: MapMouseEvent) => {

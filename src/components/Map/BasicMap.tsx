@@ -29,6 +29,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
   mapWrapperRef,
   onMoveStart,
   onContainerResize,
+  disableRegionAutoFit = false,
 }) => {
   const [cursor, setCursor] = useState<string>('grab');
   const [isStyleLoaded, setIsStyleLoaded] = useState(false);
@@ -97,10 +98,10 @@ const BasicMap: React.FC<BasicMapProps> = ({
       currentMetersDeploymentPlotsLayer: (
         <CurrentMetersDeploymentPlotsLayer isMiniMap={isMiniMap} subProduct={subProduct} />
       ),
-      regionPolygonLayer: <RegionPolygonLayer isMiniMap={isMiniMap} />,
+      regionPolygonLayer: <RegionPolygonLayer isMiniMap={isMiniMap} disableRegionAutoFit={disableRegionAutoFit} />,
       argoAsProductLayer: <ArgoAsProductLayer isMiniMap={isMiniMap} isArgo={isArgo} />,
     }),
-    [isMiniMap, isArgo, subProduct],
+    [isMiniMap, isArgo, subProduct, disableRegionAutoFit],
   );
 
   const applyViewLimits = useCallback(
