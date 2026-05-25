@@ -18,4 +18,5 @@ export interface BasicMapProps {
   mapWrapperRef?: React.RefObject<HTMLDivElement | null>;
   onMoveStart?: () => void;
   onContainerResize?: () => void;
+  disableRegionAutoFit?: boolean;
 }

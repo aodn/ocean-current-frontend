@@ -93,14 +93,14 @@ const HomeProductCarousel: React.FC = () => {
           style={{ transform: `translateX(-${scrollPosition}px)`, width: `${carouselMetrics.totalWidth}px` }}
         >
           {productCarouselData.map(({ id, url, Icon, title }, index) => (
-            <div key={id} ref={index === 0 ? itemRef : null} className="mt-2 w-24 shrink-0 md:w-[120px]">
+            <div key={id} ref={index === 0 ? itemRef : null} className="mt-2 w-24 shrink-0 md:w-30">
               <LinkOrAnchor
                 to={url}
                 className={cn(
                   'bg-imos-light-blue flex h-24 flex-col items-center justify-center rounded-xl p-4',
                   'transition duration-300 ease-in-out',
                   'hover:border-imos-deep-blue hover:border-[3px] hover:bg-white',
-                  'md:h-[120px]',
+                  'md:h-30',
                 )}
               >
                 <Icon className="h-full w-full" color="imos-deep-blue" />

@@ -65,6 +65,7 @@ const HomeMapCarousel: React.FC = () => {
               mapWrapperRef={mapInnerRef}
               onMoveStart={isStaticImageProduct ? undefined : stopCarousel}
               onContainerResize={startCarousel}
+              disableRegionAutoFit
             />
           </ErrorBoundary>
         </div>
