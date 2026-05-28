@@ -86,7 +86,7 @@ export const linksData: LinkItem[] = [
         title: 'SWOT and GSLA',
         description:
           'Wide-swath altimetry data over gridded Adj SLA intervals with location of in situ instruments overlaid',
-        url: 'https://oceancurrent.aodn.org.au/product.php?product=swot&region=Au',
+        url: '/map/swot-gsla/ssh',
       },
     ],
   },

@@ -46,6 +46,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     isTidalCurrents,
     isSealCtd,
     isSealCtdTags,
+    isSwotGslaMdt,
   } = useProductCheck();
   const { isArgoValid } = useArgoProductValidQueryParams();
   const productId = useProductStore((state) => state.productParams.productId);
@@ -68,6 +69,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     productId === 'monthlyMeans-climatology' ||
     productId === 'fourHourSst-sstAge' ||
     productId === 'sixDaySst-timeseries' ||
+    isSwotGslaMdt ||
     showMap ||
     !shouldRenderProductContent;
 
@@ -177,40 +179,44 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
         </Button>
       </div>
       <div className="font-open-sans text-imos-dark-grey flex w-full flex-wrap items-center gap-2 font-medium md:mb-2 md:gap-3">
-        <div className="border-imos-calypso-blue/50 flex h-11 grow basis-[calc(100%-4rem)] items-center justify-between rounded-md border bg-white md:grow md:basis-auto md:border-none">
-          {isCurrentMeters ? (
-            <Dropdown
-              toggleBorder={false}
-              menuShadow
-              elements={
-                productId === CurrentMetersSubProductsKey.MOORED_INSTRUMENT_ARRAY && !deploymentPlot
-                  ? currentMeterSYearOptionsData
-                  : [currentMeterSYearOptionsData[0]]
-              }
-              selectedId={currentMetersDate as string}
-              onChange={(elem) => handleCurrentMetersDateChange(elem.id)}
-            />
-          ) : (
-            <DatePagination
-              productId={productId}
-              dateFormat={dateFormat}
-              mode={mode}
-              showVideo={showVideo}
-              isImageLoading={isImageLoading}
-            />
-          )}
-        </div>
+        {!isSwotGslaMdt && (
+          <>
+            <div className="border-imos-calypso-blue/50 flex h-11 grow basis-[calc(100%-4rem)] items-center justify-between rounded-md border bg-white md:grow md:basis-auto md:border-none">
+              {isCurrentMeters ? (
+                <Dropdown
+                  toggleBorder={false}
+                  menuShadow
+                  elements={
+                    productId === CurrentMetersSubProductsKey.MOORED_INSTRUMENT_ARRAY && !deploymentPlot
+                      ? currentMeterSYearOptionsData
+                      : [currentMeterSYearOptionsData[0]]
+                  }
+                  selectedId={currentMetersDate as string}
+                  onChange={(elem) => handleCurrentMetersDateChange(elem.id)}
+                />
+              ) : (
+                <DatePagination
+                  productId={productId}
+                  dateFormat={dateFormat}
+                  mode={mode}
+                  showVideo={showVideo}
+                  isImageLoading={isImageLoading}
+                />
+              )}
+            </div>
 
-        <Button
-          data-testid="date-reset-button"
-          onClick={handleReset}
-          className="flex-center border-imos-calypso-blue/50 h-11 w-12 shrink-0 rounded-md bg-white p-3! md:border-none md:p-4!"
-          aria-label="Reset to latest date"
-          disabled={resetBtnDisabled || showVideo || isImageLoading}
-          borderRadius="extraSmall"
-        >
-          <ResetIcon color="imos-deep-blue" size="lg" />
-        </Button>
+            <Button
+              data-testid="date-reset-button"
+              onClick={handleReset}
+              className="flex-center border-imos-calypso-blue/50 h-11 w-12 shrink-0 rounded-md bg-white p-3! md:border-none md:p-4!"
+              aria-label="Reset to latest date"
+              disabled={resetBtnDisabled || showVideo || isImageLoading}
+              borderRadius="extraSmall"
+            >
+              <ResetIcon color="imos-deep-blue" size="lg" />
+            </Button>
+          </>
+        )}
         <div className="order-1 box-border h-11 flex-1 rounded-md border-none md:order-0 md:flex-initial md:grow">
           <Button
             onClick={handleToggleVideo}

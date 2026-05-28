@@ -25,6 +25,7 @@ const useProductCheck = () => {
     mainProductId === 'surfaceWaves' && subProduct?.key === 'surfaceWaves-buoyTimeseries';
   const isOceanColour = mainProductId === 'oceanColour';
   const isOceanColourChlA = isOceanColour && subProduct?.key === 'oceanColour-chlA';
+  const isSwotGslaMdt = subProduct?.key === 'swotGsla-mdt';
 
   return {
     isRegionRequired,
@@ -42,6 +43,7 @@ const useProductCheck = () => {
     isSurfaceWavesBuoyTimeseries,
     isOceanColour,
     isOceanColourChlA,
+    isSwotGslaMdt,
   };
 };
 

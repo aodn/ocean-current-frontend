@@ -371,6 +371,11 @@ const buildStaticImageUrl = (
   },
 ): string => {
   switch (true) {
+    case productId === 'swotGsla-mdt': {
+      const baseUrl = options?.isProxyRequired ? apiConfig.ec2ProxyURL : imageUrlConfig.imageBaseUrl;
+      const mdtRegion = regionCode ?? 'Au';
+      return `${baseUrl}/DR_SWOT/MDTCMEMS/${mdtRegion}/${mdtRegion}.gif`;
+    }
     case productId === 'sixDaySst-timeseries':
       return buildSSTTimeseriesImageUrl(regionPath);
     case productId === 'EACMooringArray':

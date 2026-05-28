@@ -17,6 +17,9 @@ interface UseDateListNavigationProps {
   availableDates: DateItem[];
   initialDate?: string;
   productId?: ProductID;
+  // When true, the real date list is still loading (the navigator is operating on a
+  // synthetic fallback list). Used to defer syncing the resolved date to the URL.
+  isDateListLoading?: boolean;
 }
 
 type NavigateDate = {
@@ -114,8 +117,9 @@ const parseDateParamForList = (
     }
 
     // Legacy path: products without a search config.
-    // For hourly target format, try the first entry on the exact target day.
-    if (!isDateParamInTargetFormat && isHourlyFormat(dateFormat)) {
+    // For sub-day target formats (hourly, or second-precision like SWOT GSLA SSH),
+    // try the first entry on the exact target day.
+    if (!isDateParamInTargetFormat && (isHourlyFormat(dateFormat) || dateFormat === DateFormat.SECOND)) {
       const dayStr = date.format(DateFormat.DAY);
       const firstHourlyDate = findFirstDateTimeForSelectedDay(dates, dayStr, dateFormat);
       if (firstHourlyDate) {
@@ -192,6 +196,7 @@ export const useDateListNavigation = ({
   availableDates,
   initialDate,
   productId,
+  isDateListLoading = false,
 }: UseDateListNavigationProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   // The `availableDates` array must be sorted by the backend API to ensure correct functionality.
@@ -222,11 +227,17 @@ export const useDateListNavigation = ({
 
     const dateParam = searchParams.get('date');
 
-    // No date parameter, use first available date or today
+    // No date parameter, use latest available date or today.
     if (!dateParam || dateParam === '0000') {
+      const latest = dates.at(-1);
+      // SWOT GSLA SSH (SECOND format) can have a latest file that predates "today",
+      // so the date must be written to the URL — otherwise the global date store
+      // (which drives the rendered image) defaults to today and 404s. Defer the sync
+      // until the real list has loaded so we never persist a synthetic fallback date.
+      const shouldSyncLatestToUrl = dateFormat === DateFormat.SECOND && !isDateListLoading && !!latest;
       return {
-        currentDate: dates.length > 0 ? dayjs(dates.at(-1), dateFormat) : dayjs(),
-        resolvedDateParam: null as string | null,
+        currentDate: latest ? dayjs(latest, dateFormat) : dayjs(),
+        resolvedDateParam: (shouldSyncLatestToUrl ? latest : null) as string | null,
       };
     }
 
@@ -242,7 +253,7 @@ export const useDateListNavigation = ({
       currentDate: dates.length > 0 ? dayjs(dates[0], dateFormat) : dayjs(),
       resolvedDateParam: null as string | null,
     };
-  }, [initialDate, searchParams, dates, dateFormat, productId]);
+  }, [initialDate, searchParams, dates, dateFormat, productId, isDateListLoading]);
 
   // Sync the resolved date to the URL after render to avoid setState-during-render warnings
   const resolvedDateRef = useRef<string | null>(null);
@@ -519,12 +530,14 @@ export const useDateNavigation = ({
   initialDate,
   dateRange,
   productId,
+  isDateListLoading,
 }: UseNavigationProps) => {
   const listNav = useDateListNavigation({
     dateFormat,
     availableDates,
     initialDate,
     productId,
+    isDateListLoading,
   });
 
   const rangeNav = useDateRangeNavigation({

@@ -59,4 +59,8 @@ export const argoTagFilePaths: ArgoTagPath = {
     state: null,
     local: 'EAC_array_figures',
   },
+  'swotGsla-ssh': {
+    state: 'DR_SWOT',
+    local: 'DR_SWOT',
+  },
 };

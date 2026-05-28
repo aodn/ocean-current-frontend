@@ -106,6 +106,11 @@ const DataVisualisationLayout: React.FC = () => {
         }
 
         switch (dateFormat) {
+          case DateFormat.SECOND:
+            if (dateString.length === 14) {
+              return dayjs(dateString, 'YYYYMMDDHHmmss');
+            }
+            break;
           case DateFormat.MONTH_ONLY:
             if (dateString.length === 2) {
               const year = getFallbackYear();
