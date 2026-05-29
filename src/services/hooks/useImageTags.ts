@@ -12,9 +12,10 @@ interface UseImageTagsOptions {
   tagPath: string;
   regionCode: string;
   dateFormat: DateFormat;
+  enabled?: boolean;
 }
 
-const useImageTags = ({ date, tagPath, regionCode, dateFormat }: UseImageTagsOptions) => {
+const useImageTags = ({ date, tagPath, regionCode, dateFormat, enabled = true }: UseImageTagsOptions) => {
   // SnapshotCHL is a special case on the server side (OceanColour)
   // EAC Mooring Array has data from only one region - Brisbane
   const regionPath = (): string => {
@@ -33,6 +34,7 @@ const useImageTags = ({ date, tagPath, regionCode, dateFormat }: UseImageTagsOpt
   const { data, isLoading, error } = useQuery({
     queryKey: ['imageTags', formattedDate, tagPath, regionPath()],
     queryFn: () => fetchArgoTags(formattedDate, tagPath, regionPath()),
+    enabled,
     ...sharedQueryConfig,
   });
   const parsedData = useMemo(() => (data ? removeDuplicates(parseImageTagsFromText(data)) : []), [data]);

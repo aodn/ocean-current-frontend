@@ -51,9 +51,19 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   const isDateResolving = useProductStore((state) => state.isDateResolving);
   // Non-Tidal SLA product images use HOUR format but its tag file uses DAY format
   const tagDateFormat = productId === 'adjustedSeaLevelAnomaly-nonTidalSla' ? DateFormat.DAY : dateFormat;
-  const { data } = useImageTags({ date, tagPath: argoTagFilePath, regionCode, dateFormat: tagDateFormat });
-
-  const { isLoading: isDateListLoading } = useDateList({ productId, mode: 'list' });
+  const { isLoading: isDateListLoading, dateList } = useDateList({ productId, mode: 'list' });
+  // Only fetch tags once the date is confirmed to exist in the available dates list.
+  // This prevents a spurious 404 when the date store holds the default "yesterday" value
+  // before the real latest date (which may be weeks/months old) has been resolved from the API.
+  const tagDateStr = date.format(tagDateFormat);
+  const isTagDateAvailable = !isDateListLoading && (dateList ?? []).some((d) => d.date === tagDateStr);
+  const { data } = useImageTags({
+    date,
+    tagPath: argoTagFilePath,
+    regionCode,
+    dateFormat: tagDateFormat,
+    enabled: isTagDateAvailable,
+  });
   const queryClient = useQueryClient();
   const isFetchingCycleDate = useIsFetching({ queryKey: ['argoDateList'] }) > 0;
 

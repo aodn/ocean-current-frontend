@@ -554,9 +554,30 @@ export const OC_PRODUCTS: Product[] = [
     path: 'swot-gsla',
     latestEntry: null,
     dateFormat: null,
-    localSegment: null,
-    stateSegment: 'SWOT_GSLA',
-    children: [],
+    localSegment: 'DR_SWOT',
+    stateSegment: 'DR_SWOT',
+    children: [
+      {
+        title: 'SSH',
+        key: 'swotGsla-ssh',
+        path: 'ssh',
+        imgPath: 'SSH',
+        dateFormat: {
+          localFormat: DateFormat.SECOND,
+          stateFormat: DateFormat.SECOND,
+        },
+      },
+      {
+        title: 'MDT',
+        key: 'swotGsla-mdt',
+        path: 'mdt',
+        imgPath: 'MDTCMEMS',
+        dateFormat: {
+          localFormat: null,
+          stateFormat: null,
+        },
+      },
+    ],
   },
   {
     title: 'My Ocean Current',

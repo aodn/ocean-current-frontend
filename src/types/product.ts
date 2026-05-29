@@ -62,7 +62,10 @@ export type ChildProductID =
   | 'sealCtdTags-10days'
   // Surface Waves children
   | 'surfaceWaves-wave' // Main wave conditions view
-  | 'surfaceWaves-buoyTimeseries'; // Buoy time series data
+  | 'surfaceWaves-buoyTimeseries' // Buoy time series data
+  // SWOT GSLA children
+  | 'swotGsla-ssh'
+  | 'swotGsla-mdt';
 
 // Combined types
 export type RootProductID = StandaloneProductID | ProductGroupID;
@@ -120,6 +123,8 @@ export const childProductIDs: ChildProductID[] = [
   'sealCtdTags-10days',
   'surfaceWaves-wave',
   'surfaceWaves-buoyTimeseries',
+  'swotGsla-ssh',
+  'swotGsla-mdt',
 ];
 
 export const tidalCurrentsProductIDs = ['tidalCurrents-spd', 'tidalCurrents-sl'] as const;

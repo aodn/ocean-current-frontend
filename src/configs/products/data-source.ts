@@ -30,6 +30,7 @@ export const API_IMAGE_LIST_ENABLED_PRODUCTS: ProductID[] = [
   'sealCtdTags-temperature',
   'sealCtdTags-salinity',
   'sealCtdTags-10days',
+  'swotGsla-ssh',
   'EACMooringArray',
   'argo',
 ];
@@ -55,6 +56,7 @@ export const FIXED_IMAGE_LIST_PRODUCTS: ProductID[] = [
   'monthlyMeans-climatology',
   'sixDaySst-climatology',
   'sixDaySst-climatologyDataCount',
+  'swotGsla-mdt',
 ];
 
 export const PRODUCTS_WITH_ARGO_DATA: RootProductID[] = [
@@ -65,4 +67,5 @@ export const PRODUCTS_WITH_ARGO_DATA: RootProductID[] = [
   'argo',
   'EACMooringArray',
   'sealCtd',
+  'swotGsla',
 ];

@@ -146,6 +146,8 @@ const findMostRecentDateBefore = (dateArray: string[], targetDate: string): stri
 
 const getUnitByFormat = (format: DateFormat): DateUnit => {
   switch (format) {
+    case DateFormat.SECOND:
+      return DateUnit.Minute;
     case DateFormat.HOUR:
       return DateUnit.Hour;
     case DateFormat.DAY:
@@ -166,6 +168,7 @@ const getDateFormatFlags = (format: DateFormat) => ({
   isYearFormat: format === DateFormat.YEAR_ONLY,
   isHourFormat: format === DateFormat.HOUR,
   isMinuteFormat: format === DateFormat.MINUTE,
+  isSecondFormat: format === DateFormat.SECOND,
 });
 
 const getDateFormatByProductIdAndRegionScope = (
@@ -188,6 +191,8 @@ const getDateFormatByProductIdAndRegionScope = (
 
 const convertDateToDisplayFormattedText = (date: Dayjs, dateFormat: DateFormat) => {
   switch (dateFormat) {
+    case DateFormat.SECOND:
+      return date.format('DD MMM YYYY HH:mm');
     case DateFormat.MINUTE:
       return date.format('DD MMM YYYY HH:mm');
     case DateFormat.HOUR:
@@ -223,7 +228,8 @@ function isValidMonthlyMeanDate(dateStr: string): boolean {
     month: number,
     day = 1,
     hour = 0,
-    minute = 0;
+    minute = 0,
+    second = 0;
 
   try {
     switch (len) {
@@ -253,6 +259,15 @@ function isValidMonthlyMeanDate(dateStr: string): boolean {
         minute = Number(dateStr.slice(10, 12));
         break;
 
+      case 14: // SECOND
+        year = Number(dateStr.slice(0, 4));
+        month = Number(dateStr.slice(4, 6));
+        day = Number(dateStr.slice(6, 8));
+        hour = Number(dateStr.slice(8, 10));
+        minute = Number(dateStr.slice(10, 12));
+        second = Number(dateStr.slice(12, 14));
+        break;
+
       default:
         return false;
     }
@@ -261,6 +276,7 @@ function isValidMonthlyMeanDate(dateStr: string): boolean {
     if (day < 1 || day > new Date(year, month, 0).getDate()) return false;
     if (hour < 0 || hour > 23) return false;
     if (minute < 0 || minute > 59) return false;
+    if (second < 0 || second > 59) return false;
 
     return true;
   } catch {

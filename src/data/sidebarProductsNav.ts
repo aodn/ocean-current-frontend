@@ -10,6 +10,7 @@ import {
   CurrentMetersIcon,
   SealCTDIcon,
   EACMooringArrayIcon,
+  SwotIcon,
 } from '@/components/Shared/Icons';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import { RootProductID } from '@/types/product';
@@ -44,6 +45,11 @@ export const sidebarProductsNav: DropdownElement<RootProductID>[] = [
     id: 'monthlyMeans',
     label: 'Monthly Means',
     Icon: MonthlyMeansIcon,
+  },
+  {
+    id: 'swotGsla',
+    label: 'SWOT and GSLA',
+    Icon: SwotIcon,
   },
   {
     id: 'argo',
