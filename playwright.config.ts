@@ -25,6 +25,10 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: process.env.CI ? 'github' : 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  /* Per-test timeout — raised from the 30s default to accommodate CI's slower
+     production preview build (networkidle + expect.poll can exceed 30s there). */
+  timeout: 60000,
+
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: BASE_URL,
