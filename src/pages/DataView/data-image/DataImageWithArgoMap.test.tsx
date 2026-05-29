@@ -13,7 +13,7 @@ vi.mock('@/services/argo');
 vi.mock('@/services/hooks');
 vi.mock('@/hooks', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/hooks')>()),
-  useDateList: vi.fn().mockReturnValue({ isLoading: false }),
+  useDateList: vi.fn().mockReturnValue({ isLoading: false, dateList: [{ date: '20250115' }] }),
   useResizeObserver: vi.fn(),
 }));
 vi.mock('@/stores/product-store/hooks/useProductConvert', () => ({
