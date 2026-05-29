@@ -230,11 +230,11 @@ export const useDateListNavigation = ({
     // No date parameter, use latest available date or today.
     if (!dateParam || dateParam === '0000') {
       const latest = dates.at(-1);
-      // SWOT GSLA SSH (SECOND format) can have a latest file that predates "today",
-      // so the date must be written to the URL — otherwise the global date store
+      // Any product's latest file may predate "today" (SWOT, Non-Tidal SLA, etc.),
+      // so the resolved date must be written to the URL — otherwise the global date store
       // (which drives the rendered image) defaults to today and 404s. Defer the sync
       // until the real list has loaded so we never persist a synthetic fallback date.
-      const shouldSyncLatestToUrl = dateFormat === DateFormat.SECOND && !isDateListLoading && !!latest;
+      const shouldSyncLatestToUrl = !isDateListLoading && !!latest;
       return {
         currentDate: latest ? dayjs(latest, dateFormat) : dayjs(),
         resolvedDateParam: (shouldSyncLatestToUrl ? latest : null) as string | null,
