@@ -228,7 +228,8 @@ function isValidMonthlyMeanDate(dateStr: string): boolean {
     month: number,
     day = 1,
     hour = 0,
-    minute = 0;
+    minute = 0,
+    second = 0;
 
   try {
     switch (len) {
@@ -264,6 +265,7 @@ function isValidMonthlyMeanDate(dateStr: string): boolean {
         day = Number(dateStr.slice(6, 8));
         hour = Number(dateStr.slice(8, 10));
         minute = Number(dateStr.slice(10, 12));
+        second = Number(dateStr.slice(12, 14));
         break;
 
       default:
@@ -274,6 +276,7 @@ function isValidMonthlyMeanDate(dateStr: string): boolean {
     if (day < 1 || day > new Date(year, month, 0).getDate()) return false;
     if (hour < 0 || hour > 23) return false;
     if (minute < 0 || minute > 59) return false;
+    if (second < 0 || second > 59) return false;
 
     return true;
   } catch {

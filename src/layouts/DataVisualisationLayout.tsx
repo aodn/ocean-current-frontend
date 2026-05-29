@@ -108,7 +108,7 @@ const DataVisualisationLayout: React.FC = () => {
         switch (dateFormat) {
           case DateFormat.SECOND:
             if (dateString.length === 14) {
-              return dayjs(dateString, 'YYYYMMDDHHmmss');
+              return dayjs(dateString, DateFormat.SECOND);
             }
             break;
           case DateFormat.MONTH_ONLY:
