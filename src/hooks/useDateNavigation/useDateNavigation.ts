@@ -234,6 +234,8 @@ export const useDateListNavigation = ({
       // so the resolved date must be written to the URL — otherwise the global date store
       // (which drives the rendered image) defaults to today and 404s. Defer the sync
       // until the real list has loaded so we never persist a synthetic fallback date.
+      // Side effect: every product that loads without a ?date= param will trigger a
+      // setSearchParams call once the list resolves, making the URL canonical.
       const shouldSyncLatestToUrl = !isDateListLoading && !!latest;
       return {
         currentDate: latest ? dayjs(latest, dateFormat) : dayjs(),
