@@ -56,7 +56,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
   // This prevents a spurious 404 when the date store holds the default "yesterday" value
   // before the real latest date (which may be weeks/months old) has been resolved from the API.
   const tagDateStr = date.format(tagDateFormat);
-  const isTagDateAvailable = !isDateListLoading && (dateList ?? []).some((d) => d.date === tagDateStr);
+  const isTagDateAvailable = !isDateListLoading && (dateList ?? []).some((d) => d.date.startsWith(tagDateStr));
   const { data } = useImageTags({
     date,
     tagPath: argoTagFilePath,
