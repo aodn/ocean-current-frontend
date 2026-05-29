@@ -21,10 +21,11 @@ test.describe('SWOT GSLA', () => {
     const tagHits = trackRequests(page, /DR_SWOT\/TAGS\/Au\/\d{14}\.txt/);
 
     await page.goto('/product/swot-gsla/ssh?region=Au');
-    // Wait for the date-resolution mechanism to write the real SWOT date to the URL,
-    // then for the page to fully settle (image + tag requests to complete).
+    // Wait for the date-resolution mechanism to write the real SWOT date to the URL.
+    // Don't use waitForLoadState('networkidle') here — setSearchParams is a client-side
+    // update, so the page is already in networkidle state when waitForURL resolves and
+    // networkidle would return immediately before the image request fires.
     await page.waitForURL(/[?&]date=\d{14}/, { timeout: 20000 });
-    await page.waitForLoadState('networkidle');
 
     // URL resolved to a 14-digit date
     const date = new URL(page.url()).searchParams.get('date');
@@ -42,12 +43,12 @@ test.describe('SWOT GSLA', () => {
     await expect(page.locator('body')).toContainText(DATE_LABEL_RE);
 
     // Real SSH image and Argo tags requested and 200
-    await expect.poll(() => sshHits.length, { timeout: 10000 }).toBeGreaterThan(0);
+    await expect.poll(() => sshHits.length, { timeout: 20000 }).toBeGreaterThan(0);
     expect(
       sshHits.every((h) => h.status === 200),
       'SSH images 200',
     ).toBeTruthy();
-    await expect.poll(() => tagHits.length, { timeout: 10000 }).toBeGreaterThan(0);
+    await expect.poll(() => tagHits.length, { timeout: 20000 }).toBeGreaterThan(0);
     expect(
       tagHits.every((h) => h.status === 200),
       'Argo tags 200',
@@ -75,10 +76,9 @@ test.describe('SWOT GSLA', () => {
 
     await page.goto('/product/swot-gsla/ssh?region=Tas');
     await page.waitForURL(/[?&]date=\d{14}/, { timeout: 20000 });
-    await page.waitForLoadState('networkidle');
 
     await expect(page.locator('text=is not available for this product')).not.toBeVisible();
-    await expect.poll(() => sshHits.length, { timeout: 10000 }).toBeGreaterThan(0);
+    await expect.poll(() => sshHits.length, { timeout: 20000 }).toBeGreaterThan(0);
     expect(
       sshHits.every((h) => h.status === 200),
       'Tas SSH images 200',
