@@ -21,8 +21,9 @@ test.describe('SWOT GSLA', () => {
     const tagHits = trackRequests(page, /DR_SWOT\/TAGS\/Au\/\d{14}\.txt/);
 
     await page.goto('/product/swot-gsla/ssh?region=Au');
-    await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(4000);
+    // Wait for the date-resolution mechanism to write the real SWOT date to the URL.
+    // Without this, the page briefly shows "today is not available" while the date list loads.
+    await page.waitForURL(/[?&]date=\d{14}/, { timeout: 20000 });
 
     // URL resolved to a 14-digit date
     const date = new URL(page.url()).searchParams.get('date');
@@ -72,8 +73,7 @@ test.describe('SWOT GSLA', () => {
     const sshHits = trackRequests(page, /DR_SWOT\/SSH\/Tas\/\d{14}\.gif/);
 
     await page.goto('/product/swot-gsla/ssh?region=Tas');
-    await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(4000);
+    await page.waitForURL(/[?&]date=\d{14}/, { timeout: 20000 });
 
     await expect(page.locator('text=is not available for this product')).not.toBeVisible();
     await expect.poll(() => sshHits.length, { timeout: 10000 }).toBeGreaterThan(0);
