@@ -36,12 +36,12 @@ test.describe('Adjusted Sea Level Anomaly — Non-Tidal SLA', () => {
     await expect(page.locator('body')).toContainText('11 May 2026 06:00');
 
     // Real image and Argo tags requested and 200
-    expect(imageHits.length, 'Non-Tidal SLA image requested').toBeGreaterThan(0);
+    await expect.poll(() => imageHits.length, { timeout: 10000 }).toBeGreaterThan(0);
     expect(
       imageHits.every((h) => h.status === 200),
       'Non-Tidal SLA images 200',
     ).toBeTruthy();
-    expect(tagHits.length, 'Argo tags requested (overlay)').toBeGreaterThan(0);
+    await expect.poll(() => tagHits.length, { timeout: 10000 }).toBeGreaterThan(0);
     expect(
       tagHits.every((h) => h.status === 200),
       'Argo tags 200',
