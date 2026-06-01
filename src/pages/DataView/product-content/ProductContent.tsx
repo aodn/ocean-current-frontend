@@ -89,7 +89,7 @@ const ProductContent: React.FC = () => {
   // Build image URL
   const chooseImg = useCallback((): string | undefined => {
     try {
-      // Video-disabled products with specialized params
+      // Video-disabled products with specialised params
       switch (true) {
         case isArgo:
           return buildArgoImageUrl(argoParams.worldMeteorologicalOrgId, useDate, argoParams.cycle, argoParams.depth);

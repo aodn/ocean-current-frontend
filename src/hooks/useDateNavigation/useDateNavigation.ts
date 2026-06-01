@@ -233,10 +233,12 @@ export const useDateListNavigation = ({
       // profiles instead of falling back to "latest". This is what makes `date` optional in
       // the Argo URL (e.g. `/product/argo?wmoid=...&cycle=65`).
       const cycleParam = searchParams.get('cycle');
-      if (cycleParam) {
+      // Scope strictly to Argo: a stray `cycle` on another product's shared link must not block
+      // that product's normal latest-date canonicalization below.
+      if (productId === 'argo' && cycleParam) {
         const matched = argoProfiles.find((profile) => profile.cycle === cycleParam);
         if (matched) {
-          return { currentDate: dayjs(matched.date, dateFormat), resolvedDateParam: matched.date };
+          return { currentDate: dayjs(matched.date, dateFormat, true), resolvedDateParam: matched.date };
         }
         // Profiles not loaded yet — hold on today and DO NOT fall through to the "latest"
         // branch below, which would overwrite the user-requested cycle. This memo re-runs

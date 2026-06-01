@@ -69,12 +69,13 @@ test.describe('Argo Profile — optional date in URL', () => {
     // Navigate with the full URL — the date must be kept as-is.
     await page.goto(`/product/argo?wmoid=${WMO_ID}&cycle=1&depth=0-2000m&date=${date}`);
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(2000);
 
-    expect(new URL(page.url()).searchParams.get('date')).toBe(date);
+    // Wait on the deterministic render condition instead of a fixed sleep.
     await expect(page.locator('img[alt="product"]').first()).toHaveAttribute(
       'src',
       new RegExp(`${date}_${WMO_ID}_1\\.gif`),
     );
+    // Explicit date must be preserved (date wins over cycle).
+    expect(new URL(page.url()).searchParams.get('date')).toBe(date);
   });
 });
