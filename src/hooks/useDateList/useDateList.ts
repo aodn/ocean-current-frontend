@@ -273,7 +273,11 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
   const getLoadingState = () => {
     if (isArgo) return argoQuery.isLoading || isLatestArgoLocationsDataLoading;
     if (isTidalCurrentsPointSelected) return tidalCurrentsPointQuery.isLoading;
-    if (shouldUseApi) return standardQuery.isLoading;
+    // isPending covers both "actively fetching" and "query disabled/idle with no data yet"
+    // (e.g. when the region hasn't been set in the store yet). Using isLoading alone would
+    // return false while the query is disabled, causing the synthetic fallback date list
+    // (generateDateRange) to be incorrectly treated as resolved real data and written to the URL.
+    if (shouldUseApi) return standardQuery.isPending;
     return monthlyMeansMockQuery.isLoading;
   };
 

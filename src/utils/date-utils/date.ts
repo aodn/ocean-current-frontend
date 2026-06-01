@@ -216,7 +216,7 @@ function toYYYYMM(date: Date = new Date()): string {
 
 /**
  *
- * @param dateStr expected be following formats: YYYYMMDDHHmm, YYYYMMDDHH, YYYYMMDD, YYYYMM
+ * @param dateStr expected be following formats: YYYYMMDDHHmmss, YYYYMMDDHHmm, YYYYMMDDHH, YYYYMMDD, YYYYMM
  * @returns boolean
  */
 function isValidMonthlyMeanDate(dateStr: string): boolean {
