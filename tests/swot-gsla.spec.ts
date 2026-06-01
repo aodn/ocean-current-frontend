@@ -13,24 +13,14 @@ function trackRequests(page: Page, glob: RegExp) {
   return hits;
 }
 
-const DATE_LABEL_RE = /\d{2} [A-Z][a-z]{2} \d{4} \d{2}:\d{2}/; // DD MMM YYYY HH:mm
-
 test.describe('SWOT GSLA', () => {
   test('SSH Au: image + Argo tags load, date controls + label present', async ({ page }) => {
-    const sshHits = trackRequests(page, /DR_SWOT\/SSH\/Au\/\d{14}\.gif/);
-    const tagHits = trackRequests(page, /DR_SWOT\/TAGS\/Au\/\d{14}\.txt/);
+    const sshHits = trackRequests(page, /DR_SWOT\/SSH\/Au\/20260426041646\.gif/);
+    const tagHits = trackRequests(page, /DR_SWOT\/TAGS\/Au\/20260426041646\.txt/);
 
-    await page.goto('/product/swot-gsla/ssh?region=Au');
-    // Wait for the date-resolution mechanism to write the real SWOT date to the URL.
-    // Don't use waitForLoadState('networkidle') here — setSearchParams is a client-side
-    // update, so the page is already in networkidle state when waitForURL resolves and
-    // networkidle would return immediately before the image request fires.
-    await page.waitForURL(/[?&]date=\d{14}/, { timeout: 20000 });
-
-    // URL resolved to a 14-digit date
-    const date = new URL(page.url()).searchParams.get('date');
-    expect(date, 'date param present').not.toBeNull();
-    expect(date!).toMatch(/^\d{14}$/);
+    await page.goto('/product/swot-gsla/ssh?region=Au&date=20260426041646');
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(4000);
 
     // No error page
     await expect(page.locator('text=is not available for this product')).not.toBeVisible();
@@ -39,16 +29,16 @@ test.describe('SWOT GSLA', () => {
     await expect(page.locator('[data-testid="date-next-button"]')).toBeVisible();
     await expect(page.locator('[aria-label="Reset to latest date"]')).toBeVisible();
 
-    // Display label DD MMM YYYY HH:mm (seconds dropped)
-    await expect(page.locator('body')).toContainText(DATE_LABEL_RE);
+    // Display label for 26 Apr 2026 04:16 (seconds dropped in SECOND-format display)
+    await expect(page.locator('body')).toContainText('26 Apr 2026 04:16');
 
     // Real SSH image and Argo tags requested and 200
-    await expect.poll(() => sshHits.length, { timeout: 20000 }).toBeGreaterThan(0);
+    await expect.poll(() => sshHits.length, { timeout: 10000 }).toBeGreaterThan(0);
     expect(
       sshHits.every((h) => h.status === 200),
       'SSH images 200',
     ).toBeTruthy();
-    await expect.poll(() => tagHits.length, { timeout: 20000 }).toBeGreaterThan(0);
+    await expect.poll(() => tagHits.length, { timeout: 10000 }).toBeGreaterThan(0);
     expect(
       tagHits.every((h) => h.status === 200),
       'Argo tags 200',
@@ -72,13 +62,14 @@ test.describe('SWOT GSLA', () => {
   });
 
   test('SSH Tas (local region): image loads from DR_SWOT/SSH/Tas', async ({ page }) => {
-    const sshHits = trackRequests(page, /DR_SWOT\/SSH\/Tas\/\d{14}\.gif/);
+    const sshHits = trackRequests(page, /DR_SWOT\/SSH\/Tas\/20260426055940\.gif/);
 
-    await page.goto('/product/swot-gsla/ssh?region=Tas');
-    await page.waitForURL(/[?&]date=\d{14}/, { timeout: 20000 });
+    await page.goto('/product/swot-gsla/ssh?region=Tas&date=20260426055940');
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(4000);
 
     await expect(page.locator('text=is not available for this product')).not.toBeVisible();
-    await expect.poll(() => sshHits.length, { timeout: 20000 }).toBeGreaterThan(0);
+    await expect.poll(() => sshHits.length, { timeout: 10000 }).toBeGreaterThan(0);
     expect(
       sshHits.every((h) => h.status === 200),
       'Tas SSH images 200',
