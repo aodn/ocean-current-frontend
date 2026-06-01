@@ -81,6 +81,15 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
       } else if (id === 'currentMeters') {
         const { region, property, depth, date } = currentMetersInitialState;
         queryToUpdate = { date, region, property, depth };
+      } else if (id === 'sealCtd') {
+        queryToUpdate = {
+          region: 'POLAR',
+          date: '20240522', // TODO: hardcoded date for seal CTD tags
+          property: null,
+          depth: null,
+          deploymentPlot: null,
+          point: null,
+        };
       } else if (!isProductAvailableInRegion) {
         queryToUpdate = {
           date: convertedDate,
