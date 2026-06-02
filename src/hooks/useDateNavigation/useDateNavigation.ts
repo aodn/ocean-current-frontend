@@ -229,6 +229,23 @@ export const useDateListNavigation = ({
 
     // No date parameter, use latest available date or today.
     if (!dateParam || dateParam === '0000') {
+      // Argo: a cycle uniquely identifies a profile, so resolve its date from the fetched
+      // profiles instead of falling back to "latest". This is what makes `date` optional in
+      // the Argo URL (e.g. `/product/argo?wmoid=...&cycle=65`).
+      const cycleParam = searchParams.get('cycle');
+      // Scope strictly to Argo: a stray `cycle` on another product's shared link must not block
+      // that product's normal latest-date canonicalization below.
+      if (productId === 'argo' && cycleParam) {
+        const matched = argoProfiles.find((profile) => profile.cycle === cycleParam);
+        if (matched) {
+          return { currentDate: dayjs(matched.date, dateFormat, true), resolvedDateParam: matched.date };
+        }
+        // Profiles not loaded yet — hold on today and DO NOT fall through to the "latest"
+        // branch below, which would overwrite the user-requested cycle. This memo re-runs
+        // once argoProfiles populates and the cycle resolves above.
+        return { currentDate: dayjs(), resolvedDateParam: null as string | null };
+      }
+
       const latest = dates.at(-1);
       // Any product's latest file may predate "today" (SWOT, Non-Tidal SLA, etc.),
       // so the resolved date must be written to the URL — otherwise the global date store
@@ -255,7 +272,7 @@ export const useDateListNavigation = ({
       currentDate: dates.length > 0 ? dayjs(dates[0], dateFormat) : dayjs(),
       resolvedDateParam: null as string | null,
     };
-  }, [initialDate, searchParams, dates, dateFormat, productId, isDateListLoading]);
+  }, [initialDate, searchParams, dates, dateFormat, productId, isDateListLoading, argoProfiles]);
 
   // Sync the resolved date to the URL after render to avoid setState-during-render warnings
   const resolvedDateRef = useRef<string | null>(null);

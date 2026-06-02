@@ -16,10 +16,12 @@ export const useArgoProductValidQueryParams = () => {
   }
 
   if (mainProduct === 'argo') {
+    // `date` is optional in the Argo URL: a (wmoid, cycle) pair uniquely identifies a profile and
+    // the date is derived from the fetched profiles (see useDateListNavigation). Requiring only
+    // wmoid + cycle lets `/product/argo?wmoid=...&cycle=...` render the profile in list mode.
     const wmoid = searchParams['wmoid'];
     const cycle = searchParams['cycle'];
-    const date = searchParams['date'];
-    return { isArgoValid: !!wmoid && !!cycle && !!date };
+    return { isArgoValid: !!wmoid && !!cycle };
   }
 
   return { isArgoValid: false };
