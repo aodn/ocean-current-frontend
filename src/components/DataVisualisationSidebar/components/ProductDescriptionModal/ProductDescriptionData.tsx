@@ -484,7 +484,7 @@ const TidalCurrentsModalData = () => {
         </a>
         (see the &apos;Tidal streams&apos; button):
       </p>
-      <ol className="list-decimal pl-5 font-open-sans leading-relaxed text-gray-800">
+      <ol className="font-open-sans list-decimal pl-5 leading-relaxed text-gray-800">
         <li>
           the
           <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P34/mapst/01_Aust_M2_1.html" className="oc-link">
@@ -1208,7 +1208,7 @@ const SealCtdModalData = () => {
       <p className="mb-2">
         See more information about the Seal-CTD product and how to interpret it{' '}
         <a
-          href="https://oceancurrent.aodn.org.au/news.php#SealCTDs_Temperature_and_Salinity_Profiles_from_Ocean_Mammals"
+          href="/news?filter=older_than_2020#SealCTDs_Temperature_and_Salinity_Profiles_from_Ocean_Mammals"
           className="oc-link"
           target="_blank"
           rel="noopener noreferrer"
@@ -1217,7 +1217,7 @@ const SealCtdModalData = () => {
         </a>{' '}
         and{' '}
         <a
-          href="https://oceancurrent.aodn.org.au/news.php#Profiling_the_waters_around_the_Kerguelen_Plateau_hard_working_seals_and_drifting_Argo_floats"
+          href="/news?filter=2020-2023#Profiling_the_waters_around_the_Kerguelen_Plateau_hard_working_seals_and_drifting_Argo_floats"
           className="oc-link"
           target="_blank"
           rel="noopener noreferrer"
@@ -1245,7 +1245,7 @@ const SurfaceWaveModalData = () => {
         Wave observations from various sources centred around t0 are also displayed on the map when available. These
         observations are:
       </p>
-      <ul className="list-disc pl-5 font-open-sans leading-relaxed text-gray-800">
+      <ul className="font-open-sans list-disc pl-5 leading-relaxed text-gray-800">
         <li>
           Wave measurements from Australia&apos;s coastal wave buoy network at t0 +/- 3 hrs, extracted from AODN&apos;s
           near real time feed of the national waverider buoys observations.
@@ -1277,7 +1277,7 @@ const SurfaceWaveModalData = () => {
         twice the significant wave height can be expected about three times in 24 hours.
       </p>
 
-      <h3 className="my-2 font-open-sans text-2xl font-medium text-gray-800">Legend</h3>
+      <h3 className="font-open-sans my-2 text-2xl font-medium text-gray-800">Legend</h3>
 
       <p className="font-open-sans leading-relaxed text-gray-800">
         Wave buoy: circle near Australian coastline at location of wave buoy displaying measurement in the window t0 +/-
@@ -1302,8 +1302,8 @@ const SurfaceWaveModalData = () => {
         to the circle represents the peak wave direction.
       </p>
 
-      <h3 className="my-2 font-open-sans text-2xl font-medium text-gray-800">Data sources</h3>
-      <ol className="list-decimal pl-5 font-open-sans leading-relaxed text-gray-800">
+      <h3 className="font-open-sans my-2 text-2xl font-medium text-gray-800">Data sources</h3>
+      <ol className="font-open-sans list-decimal pl-5 leading-relaxed text-gray-800">
         <li>
           <a href="http://www.bom.gov.au/nwp/doc/auswave/data.shtml" className="text-blue-500">
             BOM&apos;s AUSWAVE analysis 0000 timestep
