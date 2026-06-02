@@ -5,9 +5,10 @@ import LegendPopupBody from './LegendPopupBody';
 
 interface LegendProps {
   legendItems?: LegendItem[] | null;
+  title?: string;
 }
 
-const Legend: React.FC<LegendProps> = ({ legendItems }) => {
+const Legend: React.FC<LegendProps> = ({ legendItems, title = 'Legend' }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handlePopup = () => {
@@ -22,7 +23,7 @@ const Legend: React.FC<LegendProps> = ({ legendItems }) => {
 
   return (
     <div className="pb-4">
-      <div className="mb-6 mt-2 grid grid-cols-2 gap-x-1 gap-y-4 px-3">
+      <div className="mt-2 mb-6 grid grid-cols-2 gap-x-1 gap-y-4 px-3">
         {sidebarItems.map((item, index) => (
           <div key={`${item.label}-${index}`} className="flex items-center">
             <div className="mr-3 flex shrink-0 items-center justify-center">{item.shape}</div>
@@ -35,7 +36,7 @@ const Legend: React.FC<LegendProps> = ({ legendItems }) => {
       </Button>
 
       <Popup
-        title="Legend"
+        title={title}
         body={() => <LegendPopupBody legendItems={legendItems} />}
         isOpen={isPopupOpen}
         onClose={handlePopup}

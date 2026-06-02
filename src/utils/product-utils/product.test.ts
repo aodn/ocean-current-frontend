@@ -8,6 +8,7 @@ import {
   checkProductHasSubProduct,
   getProductFullPathById,
   getProductPathWithSubProduct,
+  getProductLegend,
 } from './product';
 
 vi.mock('@/constants/product', () => ({
@@ -160,5 +161,60 @@ describe('getProductPathWithSubProduct', () => {
     expect(() => getProductPathWithSubProduct('nonExistentProduct' as unknown as AnyProductID)).toThrow(
       'Product with id nonExistentProduct not found',
     );
+  });
+});
+
+describe('getProductLegend', () => {
+  it('returns null for an unknown product', () => {
+    // @ts-expect-error - intentionally passing an invalid product id
+    expect(getProductLegend('notAProduct')).toBeNull();
+  });
+
+  it('returns the parent items (null) when no matching child legend is given', () => {
+    // swotGsla only defines child legends, so the parent fallback is null
+    expect(getProductLegend('swotGsla')).toBeNull();
+  });
+
+  describe('SWOT/GSLA legends', () => {
+    const expectedLabels = [
+      'Argo',
+      'Glider',
+      'Radar',
+      'Drifter',
+      'Ship',
+      'ADCP velocity',
+      'Fish SOOP',
+      'Selected isobaths',
+      'Sea Surface Height',
+    ];
+
+    it.each(['swotGsla-ssh', 'swotGsla-mdt'])('provides the SWOT legend for %s', (childKey) => {
+      const items = getProductLegend('swotGsla', childKey);
+
+      expect(items).not.toBeNull();
+      expect(items?.map((item) => item.label)).toEqual(expectedLabels);
+    });
+
+    it('uses the same legend for SSH and MDT', () => {
+      expect(getProductLegend('swotGsla', 'swotGsla-ssh')).toEqual(getProductLegend('swotGsla', 'swotGsla-mdt'));
+    });
+
+    it('includes the ADCP velocity item with a sidebar shape and description', () => {
+      const items = getProductLegend('swotGsla', 'swotGsla-ssh');
+      const adcp = items?.find((item) => item.label === 'ADCP velocity');
+
+      expect(adcp?.shape).toBeDefined();
+      expect(adcp?.description).toMatch(/Acoustic Doppler Current Profilers/);
+    });
+
+    it('includes popup-only entries (isobaths and Sea Surface Height) without a shape', () => {
+      const items = getProductLegend('swotGsla', 'swotGsla-ssh');
+      const isobaths = items?.find((item) => item.label === 'Selected isobaths');
+      const ssh = items?.find((item) => item.label === 'Sea Surface Height');
+
+      expect(isobaths?.shape).toBeUndefined();
+      expect(ssh?.shape).toBeUndefined();
+      expect(ssh?.description).toBe('contours every 5 cm.');
+    });
   });
 });
