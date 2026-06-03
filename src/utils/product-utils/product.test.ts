@@ -1,6 +1,6 @@
 import { vi, describe, it, expect } from 'vitest';
 import { OC_PRODUCTS } from '@/constants/product';
-import { AnyProductID } from '@/types/product';
+import { AnyProductID, ProductID } from '@/types/product';
 import {
   findFlatProductById,
   getProductByKey,
@@ -188,7 +188,7 @@ describe('getProductLegend', () => {
       'Sea Surface Height',
     ];
 
-    it.each(['swotGsla-ssh', 'swotGsla-mdt'])('provides the SWOT legend for %s', (childKey) => {
+    it.each(['swotGsla-ssh', 'swotGsla-mdt'] as ProductID[])('provides the SWOT legend for %s', (childKey) => {
       const items = getProductLegend('swotGsla', childKey);
 
       expect(items).not.toBeNull();

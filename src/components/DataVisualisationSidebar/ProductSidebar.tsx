@@ -171,7 +171,7 @@ const ProductSideBar: React.FC = () => {
 
         {productLegendItems && productLegendItems.length > 0 && (
           <CollapsibleSection title={ProductSidebarText.LEGEND}>
-            <Legend legendItems={productLegendItems} title={mainProduct.title} />
+            <Legend legendItems={productLegendItems} title={productInfo?.title ?? mainProduct.title} />
           </CollapsibleSection>
         )}
       </div>

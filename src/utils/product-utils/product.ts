@@ -215,9 +215,10 @@ const getTargetProductIdAfterRouting = (rootProductId: RootProductID): ProductID
  * Get legend items for a specific product and optionally a child product
  * @param productKey - The main product key
  * @param childKey - Optional child product key
- * @returns Array of legend items or null if not found
+ * @returns Array of legend items, or null when the product is not found or
+ *          its (parent or child) legend is explicitly null
  */
-const getProductLegend = (productKey: RootProductID, childKey?: string): LegendItem[] | null => {
+const getProductLegend = (productKey: RootProductID, childKey?: ProductID): LegendItem[] | null => {
   const productLegend = productLegends.find((legend) => legend.id === productKey);
 
   if (!productLegend) {
