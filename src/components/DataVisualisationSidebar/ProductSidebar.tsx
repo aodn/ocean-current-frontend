@@ -24,9 +24,8 @@ import { ProductID } from '@/types/product';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 import { useQueryParams } from '@/hooks';
-import { findLeafFlatProductById } from '@/utils/product-utils/product';
+import { findLeafFlatProductById, getProductLegend } from '@/utils/product-utils/product';
 import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
-import { getProductLegend } from '@/constants/productLegends';
 import Legend from './components/Legend';
 import MiniMap from './components/MiniMap';
 import ProductDropdown from './components/ProductDropdown';
@@ -172,7 +171,7 @@ const ProductSideBar: React.FC = () => {
 
         {productLegendItems && productLegendItems.length > 0 && (
           <CollapsibleSection title={ProductSidebarText.LEGEND}>
-            <Legend legendItems={productLegendItems} />
+            <Legend legendItems={productLegendItems} title={productInfo?.title ?? mainProduct.title} />
           </CollapsibleSection>
         )}
       </div>

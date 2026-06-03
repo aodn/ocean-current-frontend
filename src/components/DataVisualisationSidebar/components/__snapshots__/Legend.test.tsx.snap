@@ -6,7 +6,7 @@ exports[`Legend > matches snapshot 1`] = `
     class="pb-4"
   >
     <div
-      class="mb-6 mt-2 grid grid-cols-2 gap-x-1 gap-y-4 px-3"
+      class="mt-2 mb-6 grid grid-cols-2 gap-x-1 gap-y-4 px-3"
     >
       <div
         class="flex items-center"

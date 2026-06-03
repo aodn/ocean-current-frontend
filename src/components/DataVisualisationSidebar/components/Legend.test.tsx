@@ -56,6 +56,25 @@ describe('Legend', () => {
     expect(screen.getByText(/The latest ASL \(NRT00\) map/)).toBeInTheDocument();
   });
 
+  it('defaults the popup title to "Legend"', () => {
+    render(<Legend legendItems={[itemWithShape]} />);
+
+    // closed by default
+    expect(screen.queryByText('Legend')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Click for more information'));
+
+    expect(screen.getByText('Legend')).toBeInTheDocument();
+  });
+
+  it('uses the provided title for the popup', () => {
+    render(<Legend legendItems={[itemWithShape]} title="SWOT and GSLA" />);
+
+    fireEvent.click(screen.getByText('Click for more information'));
+
+    expect(screen.getByText('SWOT and GSLA')).toBeInTheDocument();
+  });
+
   it('matches snapshot', () => {
     const { container } = render(<Legend legendItems={[itemWithShape, itemWithLabelOnly, itemDescriptionOnly]} />);
     expect(container).toMatchSnapshot();
