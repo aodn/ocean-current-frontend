@@ -2008,6 +2008,194 @@ const SurfaceWaveModalData = () => {
   );
 };
 
+const SwotGslaModalData = () => {
+  return (
+    <div className="p-4 text-gray-800">
+      <p className="mb-2">The maps of Sea Surface Height (SSH) include:</p>
+
+      <p className="mb-3">
+        <strong className="text-imos-sea-blue">
+          Gridded Sea Surface Height (with respect to a &lsquo;local mean&rsquo; Mean Dynamic Topography - MDT).
+        </strong>{' '}
+        The Sea Surface Height is calculated by adding the adjusted gridded Sea Level Anomaly (SLA) from
+        IMOS-OceanCurrent (i.e., the{' '}
+        <a
+          href="https://researchdata.edu.au/imos-oceancurrent-gridded-real-time/961090"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="text-imos-sea-blue"
+        >
+          IMOS-OceanCurrent GSLA dataset
+        </a>
+        ) and the{' '}
+        <a
+          href="https://www.aviso.altimetry.fr/en/data/products/auxiliary-products/mdt/mdt-global-cnes-cls.html"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="text-imos-sea-blue"
+        >
+          CNES/CLS2022 Mean Dynamic Topography (MDT)
+        </a>
+        . We then remove the &lsquo;local mean&rsquo; MDT (i.e., the mean MDT value for the region shown on the map)
+        from the SSH value to facilitate the visualization of ocean features within the region without the local SSH
+        gradient caused by different oceanographic regimes. The value of this local mean MDT is shown in parenthesis in
+        the title of the colourbar. <strong>Maps of MDT in the region</strong> can be accessed via this product&apos;s
+        drop-down menu at the top bar. The IMOS-OceanCurrent GSLA is built using along-track altimeter data over a
+        10-day window together with tide gauge data. These two datasets are interpolated onto a ¼ degree grid using
+        optimal interpolation. The gridded product is shown as the background field. The shading of the colours
+        indicates 5 cm intervals, departing from 0 cm. The term &lsquo;adjusted&rsquo; means that sea level variations
+        due to high-frequency processes (e.g., astronomical tides and the ocean&apos;s response to atmospheric pressure)
+        have been subtracted from the observations, as previously described{' '}
+        <a
+          href="https://oceancurrent.aodn.org.au/whatsshown.php#ASLA"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="text-imos-sea-blue"
+        >
+          here
+        </a>{' '}
+        and{' '}
+        <a
+          href="https://oceancurrent.aodn.org.au/news.php#Sea_level_and_storms_the_inverted_barometer_effect"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="text-imos-sea-blue"
+        >
+          here
+        </a>
+        .
+      </p>
+
+      <p className="mb-3">
+        <strong className="text-imos-sea-blue">Sea Surface Height from tide gauges</strong> (wrt &lsquo;local
+        mean&rsquo; MDT) around Australia. This is obtained by adding the tide gauge adjusted SLA to the CNES/CLS2022
+        MDT and subtracting the local mean MDT. The tide gauge SLA data is de-tided, de-meaned, and
+        inverse-barometer-adjusted. Colour-filled circles at the locations of the tide gauges indicate SSH values. If
+        the circle has a magenta outline, the value is a 24-h mean SSH for the day of the map. If the circle has a black
+        outline and a date &amp; time next to it, it indicates the SSH measurement at that time, which is the
+        measurement closest in time to the SWOT measurement at that location. Smaller filled dots along the coast
+        indicate the linearly interpolated values between tide gauges. These values are used in the gridding process
+        when producing the IMOS-OceanCurrent GSLA dataset.
+      </p>
+
+      <p className="mb-3">
+        <strong className="text-imos-sea-blue">SWOT Sea Surface Height</strong> (wrt &lsquo;local mean&rsquo; MDT). The
+        data shown here is from the PIC2_01{' '}
+        <a
+          href="https://www.aviso.altimetry.fr/fileadmin/documents/data/tools/hdbk_duacs_SWOT_L3.pdf"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="text-imos-sea-blue"
+        >
+          Expert L3_LR_SSH version of SWOT
+        </a>
+        [1], freely{' '}
+        <a
+          href="https://www.aviso.altimetry.fr/en/data/products/sea-surface-height-products/global/swot-l3-ocean-products.html"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="text-imos-sea-blue"
+        >
+          available via AVISO/DUACS
+        </a>{' '}
+        and internally processed at CSIRO by the{' '}
+        <a
+          href="https://imos.org.au/facility/satellite-remote-sensing"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="text-imos-sea-blue"
+        >
+          IMOS Satellite Remote Sensing Facility
+        </a>
+        . Here, we plot the &lsquo;ssha_filtered&rsquo; parameter from the NetCDF files, which is the &lsquo;height of
+        the sea surface anomaly with all corrections applied and with calibration, data selection, and noise reduction (
+        <a
+          href="https://doi.org/10.3390/rs15082183"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="text-imos-sea-blue"
+        >
+          Treboutte et al., 2023
+        </a>
+        [2]) applied&rsquo; with the CNES/CLS2022 MDT added, and the local mean MDT subtracted. The corrections applied
+        to this data (by AVISO/DUACS) are the dynamic atmospheric correction, the internal tide correction (HRET14), and
+        the ocean tide deduction. The processing methodology for SWOT level 3 products is outlined in{' '}
+        <a
+          href="https://swotst.aviso.altimetry.fr/fileadmin/user_upload/SWOTST2024/20240621/ocean/Fri_AM_Dibarboure_SWOTST_level3_202406_v1.pdf"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="text-imos-sea-blue"
+        >
+          Dibarboure et al. (2024)
+        </a>
+        . The white contour within the swaths indicates 0 cm SSH, with black contours indicating 5 cm intervals,
+        departing from 0. The big difference between the SWOT data and the gridded background field is that SWOT gives a
+        series of snapshots of a (narrow) 2D fields, while the gridded background field is a complete (but interpolated)
+        field, as described above.
+      </p>
+
+      <p className="mb-3">
+        In the figure you can also see the location of Argo floats, gliders, ships, and drifters, and the 25-hour
+        full-depth averaged velocity as measured by moored instruments where and when available (blue arrows).
+      </p>
+
+      <p className="mb-2">Some things to consider when analysing the SWOT swath measurements in the figures:</p>
+      <ul className="mb-4 list-inside list-disc">
+        <li className="mb-2">
+          We are not using the quality flags provided by AVISO/DUACS when creating the figures. This might result in odd
+          values very near the coastline, or under heavy rain.
+        </li>
+        <li className="mb-2">
+          Water vapour in the troposphere delays the altimeter signal, and is corrected using measurements from the
+          satellite&apos;s onboard radiometer. However, wet tropospheric features with spatial scales &lt;80 km are not
+          resolved by the radiometer, and SWOT data in those conditions, common in the tropical regions, have large
+          errors. See{' '}
+          <a
+            href="https://doi.org/10.1029/2024GL112778"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="text-imos-sea-blue"
+          >
+            Hay et al. (2025)
+          </a>{' '}
+          [3] for the complete study.
+        </li>
+        <li className="mb-2">
+          The reduction of random noise in the data was done by applying a machine-learning algorithm, which is still
+          being validated (
+          <a
+            href="https://doi.org/10.3390/rs15082183"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="text-imos-sea-blue"
+          >
+            Treboutte et al., 2023
+          </a>{' '}
+          [2]). The algorithm was trained and tested with simulated data from the North Atlantic. Some ocean features
+          &lt; 50 km in wavelength may be affected by the de-noising algorithm.
+        </li>
+      </ul>
+
+      <p className="mb-2 text-sm">
+        [1] &quot;The SWOT_L3_LR_SSH product, derived from the L2 SWOT KaRIn low rate ocean data products (L2_LR_SSH)
+        (NASA/JPL and CNES), is produced and made freely available by AVISO and DUACS teams as part of the DESMOS
+        Science Team project&quot;. AVISO/DUACS, 2023. SWOT Level-3 SSH Expert (v2.0.1) [Data set]. CNES.
+        https://doi.org/10.24400/527896/A01-2023.018
+      </p>
+      <p className="mb-2 text-sm">
+        [2] Tréboutte, A., Carli, E., Ballarotta, M., Carpentier, B., Faugère, Y., &amp; Dibarboure, G. (2023). KaRIn
+        Noise Reduction Using a Convolutional Neural Network for the SWOT Ocean Products. Remote Sensing, 15(8), 2183.
+        https://doi.org/10.3390/rs15082183
+      </p>
+      <p className="mb-2 text-sm">
+        [3] Hay, A., Watson, C., Legresy, B., King, M., &amp; Beardsley, J. (2025). Small scale variability in the wet
+        troposphere impacts the interpretation of SWOT satellite observations. Geophysical Research Letters, 52,
+        e2024GL112778. https://doi.org/10.1029/2024GL112778
+      </p>
+    </div>
+  );
+};
+
 export {
   OceanColourModalData,
   SixDaySstModalData,
@@ -2019,4 +2207,5 @@ export {
   ArgoModalData,
   TidalCurrentsModalData,
   SealCtdModalData,
+  SwotGslaModalData,
 };

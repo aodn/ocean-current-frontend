@@ -9,6 +9,7 @@ import {
   ArgoModalData,
   TidalCurrentsModalData,
   SealCtdModalData,
+  SwotGslaModalData,
 } from '@/components/DataVisualisationSidebar/components/ProductDescriptionModal/ProductDescriptionData';
 import {
   EACMooringArrayAboutData,
@@ -45,6 +46,13 @@ export const productInfoList: ProductInfo[] = [
     summary:
       'Adjusted Sea Level (ASL) accounts for slow ocean modes by removing rapid variations due to tides and atmospheric pressure, enabling near-surface velocity and ocean heat content estimates. ASL anomalies, measured as deviations from a long-term mean, help visualise significant sea level changes. Centile rankings of daily ASL anomalies show the extremity of anomalies compared to historical data, adjusted for regional trends.',
     description: AdjustedSeaLevelAnomalyModalData,
+  },
+  {
+    id: 'swotGsla',
+    title: 'SWOT and GSLA',
+    // No summary text until the client provides one; the popup still shows their full about content.
+    summary: null,
+    description: SwotGslaModalData,
   },
   {
     id: 'surfaceWaves',
