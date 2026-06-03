@@ -147,7 +147,6 @@ const SST_MAP_LEGENDS: LegendItem[] = [
   COMMON_LEGEND_ITEMS.mooring,
 ];
 
-// SWOT legend (legacy 97_swot.php getLegend + dr_swot_legend.html legend text).
 // Sidebar shows items with a shape; the popup also shows the description-only
 // isobaths and Sea Surface Height entries.
 const SWOT_LEGENDS: LegendItem[] = [
