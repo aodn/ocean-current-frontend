@@ -11,15 +11,17 @@ Welcome to our project, aimed at redefining the user experience and accessibilit
 
 ### Prerequisites
 
-- Node.js 24 or later (you can use [nvm](https://github.com/nvm-sh/nvm) — run `nvm use` to switch to the version in `.nvmrc`).
-- Yarn 4.14.1
+- Node.js 24 or later — use a version manager (e.g. fnm, nvm) with the `.nvmrc` file.
 
 ### Installation
 
 1. **Clone the repository:**
 
 ```bash
-git clone <repository-url>
+# SSH
+git clone git@github.com:aodn/ocean-current-frontend.git
+# HTTPS
+git clone https://github.com/aodn/ocean-current-frontend.git
 ```
 
 2. **Navigate to the project directory:**
@@ -34,13 +36,19 @@ cd ocean-current-frontend
 cp .env.local.example .env.local
 ```
 
-4. **Install the project dependencies:**
+4. **Enable Yarn via [Corepack](https://nodejs.org/api/corepack.html) (bundled with Node.js):**
+
+```bash
+corepack enable
+```
+
+5. **Install the project dependencies:**
 
 ```bash
 yarn install
 ```
 
-5. **Run the app in dev mode:**
+6. **Run the app in dev mode:**
 
 ```bash
 yarn dev

@@ -263,9 +263,15 @@ export const useDateListNavigation = ({
     // Parse date parameter (pure — no side effects)
     const result = parseDateParamForList(dateParam, dateFormat, dates, productId);
 
-    // Return parsed date or fallback to first available date or today
+    // Defer syncing the resolved date to the URL until the real list loads — until then
+    // the navigator runs on a synthetic fallback list and the store's default productId
+    // (`sixDaySst-sst`, DAY format), which would rewrite an HOUR date to DAY. `currentDate`
+    // is still returned for display. Mirrors the latest-date branch above.
     if (result.date && result.date.isValid()) {
-      return { currentDate: result.date, resolvedDateParam: result.resolvedDateParam };
+      return {
+        currentDate: result.date,
+        resolvedDateParam: isDateListLoading ? null : result.resolvedDateParam,
+      };
     }
 
     return {
