@@ -15,7 +15,7 @@ describe('getProductInfoByKey', () => {
     expect(info?.summary).toBeNull();
     // The popup content (the client's about text) is still available.
     expect(typeof info?.description).toBe('function');
-    expect(info?.description()).not.toBeNull();
+    expect(info?.description?.()).not.toBeNull();
   });
 
   it.each(['swotGsla-ssh', 'swotGsla-mdt'])(
@@ -25,7 +25,7 @@ describe('getProductInfoByKey', () => {
 
       expect(info?.title).toBe('SWOT and GSLA');
       expect(info?.summary).toBeNull();
-      expect(info?.description()).not.toBeNull();
+      expect(info?.description?.()).not.toBeNull();
     },
   );
 });

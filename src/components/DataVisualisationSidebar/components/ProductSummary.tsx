@@ -14,8 +14,7 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
   const { title, summary, description, aboutButtonText, aboutDescription } = productInfo;
 
   const hasSummary = !!summary && summary.length > 0;
-  const descriptionContent = description();
-  const hasDescription = !!descriptionContent;
+  const hasDescription = !!description;
 
   if (!hasSummary && !hasDescription) return null;
 
@@ -24,7 +23,7 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
   };
 
   const PopupBody = () => {
-    return <div className="p-4">{descriptionContent}</div>;
+    return <div className="p-4">{description?.()}</div>;
   };
 
   const aboutPath = productFromUrl ? `${APP_ROUTES.ABOUT}/${productFromUrl.mainProduct}` : null;
@@ -40,14 +39,14 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
         )}
 
         {hasDescription && (
-          <div
-            aria-hidden
+          <button
+            type="button"
             onClick={handlePopup}
-            className={`flex items-center justify-end ${hasSummary ? 'mt-3' : ''}`}
+            className={`flex w-full cursor-pointer items-center justify-end ${hasSummary ? 'mt-3' : ''}`}
           >
-            <p className="text-imos-dark-grey mr-2 cursor-pointer font-semibold">{GeneralText.READ_MORE}</p>
-            <ArrowWithTailIcon className="cursor-pointer" />
-          </div>
+            <span className="text-imos-dark-grey mr-2 font-semibold">{GeneralText.READ_MORE}</span>
+            <ArrowWithTailIcon />
+          </button>
         )}
 
         {aboutButtonText && aboutDescription && aboutPath && (

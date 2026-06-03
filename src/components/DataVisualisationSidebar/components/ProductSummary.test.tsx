@@ -33,7 +33,7 @@ describe('ProductSummary', () => {
   });
 
   it('renders nothing when both summary and description are empty', () => {
-    renderWithRouter(<ProductSummary productInfo={{ ...baseProductInfo, summary: null, description: () => null }} />);
+    renderWithRouter(<ProductSummary productInfo={{ ...baseProductInfo, summary: null, description: null }} />);
     expect(screen.queryByText('Read more')).not.toBeInTheDocument();
     expect(screen.queryByText('This is a test summary for the product.')).not.toBeInTheDocument();
   });

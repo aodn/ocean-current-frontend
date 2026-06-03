@@ -50,7 +50,7 @@ export const productInfoList: ProductInfo[] = [
   {
     id: 'swotGsla',
     title: 'SWOT and GSLA',
-    // No summary text until the client provides one; the popup still shows their full about content.
+    // TODO: No summary text until the client provides one; the popup still shows their full about content.
     summary: null,
     description: SwotGslaModalData,
   },
@@ -64,7 +64,7 @@ export const productInfoList: ProductInfo[] = [
       'surfaceWaves-buoyTimeseries': {
         title: 'Buoy Timeseries',
         summary: null,
-        description: () => null,
+        description: null,
       },
     },
   },
@@ -72,7 +72,7 @@ export const productInfoList: ProductInfo[] = [
     id: 'monthlyMeans',
     title: 'Monthly Means',
     summary: null,
-    description: () => null,
+    description: null,
   },
   {
     id: 'argo',
