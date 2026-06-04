@@ -2130,7 +2130,7 @@ const SwotGslaModalData = () => {
         </a>
         . The white contour within the swaths indicates 0 cm SSH, with black contours indicating 5 cm intervals,
         departing from 0. The big difference between the SWOT data and the gridded background field is that SWOT gives a
-        series of snapshots of a (narrow) 2D fields, while the gridded background field is a complete (but interpolated)
+        series of snapshots of a (narrow) 2D field, while the gridded background field is a complete (but interpolated)
         field, as described above.
       </p>
 
