@@ -42,7 +42,7 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
           <button
             type="button"
             onClick={handlePopup}
-            className={`flex w-full cursor-pointer items-center justify-end ${hasSummary ? 'mt-3' : ''}`}
+            className={`flex w-full cursor-pointer appearance-none items-center justify-end border-none bg-transparent p-0 ${hasSummary ? 'mt-3' : ''}`}
           >
             <span className="text-imos-dark-grey mr-2 font-semibold">{GeneralText.READ_MORE}</span>
             <ArrowWithTailIcon />
