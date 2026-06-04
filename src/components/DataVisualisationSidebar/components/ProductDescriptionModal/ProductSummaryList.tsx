@@ -9,6 +9,7 @@ import {
   ArgoModalData,
   TidalCurrentsModalData,
   SealCtdModalData,
+  SwotGslaModalData,
 } from '@/components/DataVisualisationSidebar/components/ProductDescriptionModal/ProductDescriptionData';
 import {
   EACMooringArrayAboutData,
@@ -47,6 +48,13 @@ export const productInfoList: ProductInfo[] = [
     description: AdjustedSeaLevelAnomalyModalData,
   },
   {
+    id: 'swotGsla',
+    title: 'SWOT and GSLA',
+    // TODO: No summary text until the client provides one; the popup still shows their full about content.
+    summary: null,
+    description: SwotGslaModalData,
+  },
+  {
     id: 'surfaceWaves',
     title: 'Surface Waves',
     summary:
@@ -56,7 +64,7 @@ export const productInfoList: ProductInfo[] = [
       'surfaceWaves-buoyTimeseries': {
         title: 'Buoy Timeseries',
         summary: null,
-        description: () => null,
+        description: null,
       },
     },
   },
@@ -64,7 +72,7 @@ export const productInfoList: ProductInfo[] = [
     id: 'monthlyMeans',
     title: 'Monthly Means',
     summary: null,
-    description: () => null,
+    description: null,
   },
   {
     id: 'argo',
