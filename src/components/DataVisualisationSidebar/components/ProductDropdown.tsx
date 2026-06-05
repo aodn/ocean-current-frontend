@@ -154,6 +154,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
     <Dropdown
       showIcons
       header
+      widePaddingMenu
       elements={dropdownElements}
       selectedId={(mainProductKey === 'sealCtdTags' ? 'sealCtd' : mainProductKey) as RootProductID}
       onChange={handleDropdownChange}

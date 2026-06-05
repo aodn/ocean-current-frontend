@@ -32,7 +32,7 @@ const MapLayout: React.FC = () => {
 
   if (isKnownProduct === false) {
     return (
-      <div className="relative mx-auto mb-4 mt-4 flex w-full max-w-8xl px-4 md:mb-9 md:min-h-[800px]">
+      <div className="max-w-8xl relative mx-auto mt-4 mb-4 flex w-full px-4 md:mb-9 md:min-h-200">
         <ErrorContent title="Product Not Available" description="The product you are looking for is not available." />
       </div>
     );
@@ -43,7 +43,7 @@ const MapLayout: React.FC = () => {
   }
 
   return (
-    <div className="mx-auto mb-4 mt-4 w-full max-w-8xl px-4 md:mb-9">
+    <div className="max-w-8xl mx-auto mt-4 mb-4 w-full px-4 md:mb-9">
       <div className="w-full md:flex">
         <div className="mb-4 md:hidden">
           <ProductDropdown mainProductKey={mainProduct.key} />
