@@ -70,7 +70,7 @@ test.describe('Argo Map View — Date Picker', () => {
     await expect(page.getByTestId('date-pagination')).toBeVisible();
 
     // Click a non-Argo product in the map sidebar
-    const sidebar = page.getByTestId('drop-down-menu');
+    const sidebar = page.getByTestId('map-sidebar-menu');
     // Click first product that is not Argo (SST)
     await sidebar.getByText('SST').first().click();
     await page.waitForLoadState('networkidle');
