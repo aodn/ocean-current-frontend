@@ -20,14 +20,15 @@ const MenuList = <T,>({
   };
 
   return (
-    <ul className={cn('flex flex-col gap-1 bg-white', widePadding ? 'p-2' : 'p-1')} data-testid={testId}>
+    <ul role="menu" className={cn('flex flex-col gap-1 bg-white', widePadding ? 'p-2' : 'p-1')} data-testid={testId}>
       {elements.map((element) => {
         const { id, isLoading, Icon, disabled, label } = element;
         const isSelected = id === selectedId;
         return (
           <li
             key={String(id)}
-            aria-hidden="true"
+            role="menuitem"
+            tabIndex={disabled || isLoading ? -1 : 0}
             className={cn(
               'flex cursor-pointer items-center rounded p-3 duration-300',
               !showIcons && 'justify-center',
@@ -35,6 +36,11 @@ const MenuList = <T,>({
               (disabled || isLoading) && 'cursor-not-allowed opacity-50',
             )}
             onClick={(e) => handleClick(e, element)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                handleClick(e as unknown as React.MouseEvent, element);
+              }
+            }}
           >
             {showIcons && Icon && <Icon className="mr-4" size="xl" color={isSelected ? 'imos-white' : 'imos-grey'} />}
             <span
