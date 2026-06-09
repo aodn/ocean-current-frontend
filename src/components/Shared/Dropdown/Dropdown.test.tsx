@@ -41,7 +41,7 @@ describe('Dropdown Component', () => {
     // Act
     const dropdownButton = screen.getByText('Option 1');
     await userEvent.click(dropdownButton);
-    const dropdownMenu = screen.getByTestId('drop-down-menu');
+    const dropdownMenu = screen.getByTestId('dropdown-menu');
 
     // Assert
     elements.forEach((element) => {

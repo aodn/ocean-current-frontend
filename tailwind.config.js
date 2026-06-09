@@ -56,6 +56,7 @@ export default {
       boxShadow: {
         'layout-shadow': '4px 4px 10px 0 rgba(0,0,0,0.20)',
         'inset-custom': 'inset 0 0 10px rgba(0, 0, 0, 0.3)',
+        menu: '0 2px 4px 0 rgba(97,97,97,0.18), 0 4px 8px 0 rgba(97,97,97,0.18)',
       },
       height: { 18: '4.5rem' },
       borderWidth: { 1: '1px' },

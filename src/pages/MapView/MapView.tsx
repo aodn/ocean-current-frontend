@@ -8,7 +8,7 @@ const MapView: React.FC = () => {
   }, []);
 
   return (
-    <div className="h-[500px] w-full md:h-[660px]">
+    <div className="h-125 w-full overflow-hidden rounded-md md:h-165">
       <BasicMap />
     </div>
   );
