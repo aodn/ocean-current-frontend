@@ -130,8 +130,9 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
 
   const { isArgoValid } = useArgoProductValidQueryParams();
   const isArgo = productId === 'argo';
-  // Au-scope FishSOOP profiles show the daily finder map, which uses a fixed
-  // daily date range instead of an indexed image list (maps/ is not indexed).
+  // Au-scope FishSOOP profiles show the daily finder map, which navigates a
+  // fixed date range ('range' mode) instead of an indexed image list (maps/ is
+  // not indexed).
   const isFishSoopFinder = productId === 'fishSOOP-profiles' && regionScope === RegionScope.Au;
 
   // In free mode, disable all queries
@@ -225,8 +226,9 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
 
     // Special case: For Argo in range mode, use latestArgoLocationsData or fallback to yesterday
     const endDate = isArgo ? getArgoEndDate() : new Date();
+    const startDate = isFishSoopFinder ? dayjs(FISHSOOP_FINDER_START_DATE, DateFormat.DAY).toDate() : defaultStartDate;
 
-    dateRange = { startDate: defaultStartDate, endDate };
+    dateRange = { startDate, endDate };
     return { isLoading: false, dateList: [], error: null, dateRange };
   }
 
@@ -259,19 +261,6 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
         }
       }
     }
-  }
-
-  // The finder map exists ~daily, so keep it simple for now: a fixed daily
-  // range from the first map on the file server up to today, no API lookups.
-  if (isFishSoopFinder) {
-    const dailyRange: DateItem[] = [];
-    let currentDate = dayjs(FISHSOOP_FINDER_START_DATE, DateFormat.DAY);
-    const endDate = dayjs();
-    while (!currentDate.isAfter(endDate)) {
-      dailyRange.push({ date: currentDate.format(DateFormat.DAY) });
-      currentDate = currentDate.add(1, 'day');
-    }
-    dateList = dailyRange;
   }
 
   if (dateList.length === 0) {
