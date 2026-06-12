@@ -1,4 +1,9 @@
-import { allRegions, convertedEACMooringRegions, convertedSealCtdRegions } from '@/data/regionData';
+import {
+  allRegions,
+  convertedEACMooringRegions,
+  convertedFishSoopRegions,
+  convertedSealCtdRegions,
+} from '@/data/regionData';
 import useProductStore from '@/stores/product-store/productStore';
 import { Region, RegionKeyType } from '@/types/map';
 import { ProductGroupID, ProductID } from '@/types/product';
@@ -20,9 +25,13 @@ const useRegionFromProduct = () => {
 
   const getRegions = (regionCodeList: RegionKeyType[]): Region[] => {
     const sealCtd: ProductGroupID = 'sealCtd';
+    const fishSoop: ProductGroupID = 'fishSOOP';
     const eACMooring: ProductID = 'EACMooringArray';
     if (useProductId.includes(sealCtd)) {
       return convertedSealCtdRegions.filter(({ code }) => regionCodeList.includes(code));
+    }
+    if (useProductId.includes(fishSoop)) {
+      return convertedFishSoopRegions.filter(({ code }) => regionCodeList.includes(code));
     }
     if (useProductId.includes(eACMooring)) {
       return convertedEACMooringRegions.filter(({ code }) => regionCodeList.includes(code));

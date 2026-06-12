@@ -1,6 +1,6 @@
 import { DateConfig } from './date';
 
-export type StandaloneProductID = 'argo' | 'EACMooringArray' | 'gliders' | 'myOceanCurrent' | 'fishSOOP';
+export type StandaloneProductID = 'argo' | 'EACMooringArray' | 'gliders' | 'myOceanCurrent';
 
 export type ProductGroupID =
   | 'fourHourSst'
@@ -13,7 +13,8 @@ export type ProductGroupID =
   | 'sealCtd'
   | 'sealCtdTags'
   | 'surfaceWaves'
-  | 'swotGsla';
+  | 'swotGsla'
+  | 'fishSOOP';
 
 // Child products (not at root level)
 export type ChildProductID =
@@ -65,7 +66,11 @@ export type ChildProductID =
   | 'surfaceWaves-buoyTimeseries' // Buoy time series data
   // SWOT GSLA children
   | 'swotGsla-ssh'
-  | 'swotGsla-mdt';
+  | 'swotGsla-mdt'
+  // FishSOOP children
+  | 'fishSOOP-profiles'
+  | 'fishSOOP-quarterlyAnomalies'
+  | 'fishSOOP-depthAnomalies';
 
 // Combined types
 export type RootProductID = StandaloneProductID | ProductGroupID;
@@ -84,6 +89,7 @@ export const productGroupIDs: ProductGroupID[] = [
   'sealCtdTags',
   'surfaceWaves',
   'swotGsla',
+  'fishSOOP',
 ];
 
 export const childProductIDs: ChildProductID[] = [
@@ -125,6 +131,9 @@ export const childProductIDs: ChildProductID[] = [
   'surfaceWaves-buoyTimeseries',
   'swotGsla-ssh',
   'swotGsla-mdt',
+  'fishSOOP-profiles',
+  'fishSOOP-quarterlyAnomalies',
+  'fishSOOP-depthAnomalies',
 ];
 
 export const tidalCurrentsProductIDs = ['tidalCurrents-spd', 'tidalCurrents-sl'] as const;
@@ -132,13 +141,7 @@ export const tidalCurrentsProductIDs = ['tidalCurrents-spd', 'tidalCurrents-sl']
 export function isTidalCurrents(id: AnyProductID): id is (typeof tidalCurrentsProductIDs)[number] {
   return tidalCurrentsProductIDs.includes(id as (typeof tidalCurrentsProductIDs)[number]);
 }
-export const standaloneProductIDs: StandaloneProductID[] = [
-  'argo',
-  'EACMooringArray',
-  'gliders',
-  'myOceanCurrent',
-  'fishSOOP',
-];
+export const standaloneProductIDs: StandaloneProductID[] = ['argo', 'EACMooringArray', 'gliders', 'myOceanCurrent'];
 
 export function isProductGroupId(id: AnyProductID): id is ProductGroupID {
   return productGroupIDs.includes(id as ProductGroupID);

@@ -11,6 +11,7 @@ import {
   SealCTDIcon,
   EACMooringArrayIcon,
   SwotIcon,
+  FishSOOPIcon,
 } from '@/components/Shared/Icons';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import { RootProductID } from '@/types/product';
@@ -76,5 +77,10 @@ export const sidebarProductsNav: DropdownElement<RootProductID>[] = [
     id: 'EACMooringArray',
     label: 'EAC Mooring Array',
     Icon: EACMooringArrayIcon,
+  },
+  {
+    id: 'fishSOOP',
+    label: 'FishSOOP',
+    Icon: FishSOOPIcon,
   },
 ];
