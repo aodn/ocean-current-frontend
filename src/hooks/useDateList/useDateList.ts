@@ -11,6 +11,7 @@ import { DateFormat, DateItem, OceanColourDateItem } from '@/types/date';
 import useProductStore from '@/stores/product-store/productStore';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import { buildStaticImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
+import { FISHSOOP_FINDER_START_DATE } from '@/constants/fishSoop';
 import { RegionScope } from '@/constants/region';
 import { sharedQueryConfig } from '@/configs/query';
 import { useRegionLatestDates } from '@/services/hooks';
@@ -129,8 +130,8 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
 
   const { isArgoValid } = useArgoProductValidQueryParams();
   const isArgo = productId === 'argo';
-  // Au-scope FishSOOP profiles show the daily finder map, whose date range is
-  // the union of all regions' profile dates rather than one region's list.
+  // Au-scope FishSOOP profiles show the daily finder map, which uses a fixed
+  // daily date range instead of an indexed image list (maps/ is not indexed).
   const isFishSoopFinder = productId === 'fishSOOP-profiles' && regionScope === RegionScope.Au;
 
   // In free mode, disable all queries
@@ -144,7 +145,8 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
   const standardQuery = useQuery({
     queryKey: ['dateList', productId, region],
     queryFn: () => fetchImageListByProductIdAndRegion(productId, region!),
-    enabled: !isRangeMode && shouldUseApi && !isArgo && Boolean(region) && !isTidalCurrentsPointSelected,
+    enabled:
+      !isRangeMode && shouldUseApi && !isArgo && !isFishSoopFinder && Boolean(region) && !isTidalCurrentsPointSelected,
     ...sharedQueryConfig,
   });
 
@@ -156,7 +158,7 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
   });
   const { data: latestArgoLocationsData, isLoading: isLatestArgoLocationsDataLoading } = useRegionLatestDates(
     productId,
-    (isArgo && (!isArgoValid || isRangeMode)) || isFishSoopFinder,
+    isArgo && (!isArgoValid || isRangeMode),
   );
 
   let data;
@@ -259,18 +261,12 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
     }
   }
 
-  // The finder map exists ~daily regardless of the (sparse) Au profile list, so
-  // expand navigation to the full daily range: lower bound from the loaded image
-  // list, upper bound from the max latest date across all regions (latest-dates).
-  if (isFishSoopFinder && dateList.length > 0) {
-    const sortedDates = dateList.map((item) => item.date).sort((a, b) => a.localeCompare(b));
-    const latestAcrossRegions = (latestArgoLocationsData?.regionLatestDates ?? [])
-      .map((item) => item.latestDate.slice(0, 8))
-      .reduce((max, date) => (date > max ? date : max), sortedDates[sortedDates.length - 1]);
-
+  // The finder map exists ~daily, so keep it simple for now: a fixed daily
+  // range from the first map on the file server up to today, no API lookups.
+  if (isFishSoopFinder) {
     const dailyRange: DateItem[] = [];
-    let currentDate = dayjs(sortedDates[0], DateFormat.DAY);
-    const endDate = dayjs(latestAcrossRegions, DateFormat.DAY);
+    let currentDate = dayjs(FISHSOOP_FINDER_START_DATE, DateFormat.DAY);
+    const endDate = dayjs();
     while (!currentDate.isAfter(endDate)) {
       dailyRange.push({ date: currentDate.format(DateFormat.DAY) });
       currentDate = currentDate.add(1, 'day');
@@ -295,6 +291,8 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
   const getLoadingState = () => {
     if (isArgo) return argoQuery.isLoading || isLatestArgoLocationsDataLoading;
     if (isTidalCurrentsPointSelected) return tidalCurrentsPointQuery.isLoading;
+    // The finder date list is a fixed static range — nothing is fetched.
+    if (isFishSoopFinder) return false;
     // isPending covers both "actively fetching" and "query disabled/idle with no data yet"
     // (e.g. when the region hasn't been set in the store yet). Using isLoading alone would
     // return false while the query is disabled, causing the synthetic fallback date list

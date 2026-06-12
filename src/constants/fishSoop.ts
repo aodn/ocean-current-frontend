@@ -53,6 +53,9 @@ export const FISHSOOP_LAYER_DEPTHS: Record<number, string> = {
 export const FISHSOOP_AVERAGE_REGION_ID = 'avg';
 export const FISHSOOP_AVERAGE_REGION_LABEL = 'Average (whole dataset)';
 
+/** Date of the earliest finder map GIF on the file server (`fishsoop/maps/2021/20211120.gif`). */
+export const FISHSOOP_FINDER_START_DATE = '20211120';
+
 /** Natural pixel size of the finder GIFs (`fishsoop/maps/<year>/<YYYYMMDD>.gif`). */
 export const FISHSOOP_FINDER_MAP_NATURAL_SIZE = { width: 990, height: 820 };
 
