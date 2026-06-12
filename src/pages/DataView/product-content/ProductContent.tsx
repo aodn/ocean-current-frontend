@@ -21,8 +21,10 @@ import { VideoPlayerOutletContext } from '@/types/router';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import { CurrentMetersSubProductsKey } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
+import { RegionScope } from '@/constants/region';
 import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
 import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
+import DataImageWithFishSoopMap from '../data-image/DataImageWithFishSoopMap';
 import DataImageWithCurrentMetersPlots from '../data-image/DataImageWithCurrentMetersPlots';
 import DataImageWithTidalCurrentsMap from '../data-image/DataImageWithTidalCurrentsMap';
 import DataImageWithSealCtdGraphs from '../data-image/DataImageWithSealCtdGraphs';
@@ -65,6 +67,7 @@ const ProductContent: React.FC = () => {
     isSealCtdTags,
     isOceanColourChlA,
     isSurfaceWavesBuoyTimeseries,
+    isFishSoopProfiles,
   } = productChecks;
 
   // Determine if we should render with argo tags
@@ -283,6 +286,11 @@ const ProductContent: React.FC = () => {
         region={useRegionCode ?? 'POLAR'}
       />
     );
+  }
+
+  // FishSOOP regional profiles at Au scope: the clickable finder/locator map
+  if (isFishSoopProfiles && regionData.scope === RegionScope.Au) {
+    return <DataImageWithFishSoopMap src={chooseImg()!} date={useDate} />;
   }
 
   // Use the store (not the URL) as source of truth — a stale URL deploymentPlot

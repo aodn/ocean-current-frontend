@@ -34,10 +34,16 @@ export const useProductContentData = () => {
   const { urlParams, hasSelectedParams } = useUrlParams();
 
   // Region calculations
-  const region = useMemo(
-    () => getRegionByRegionCode(productChecks.isEACMooringArray ? 'Brisbane' : useRegionCode),
-    [productChecks.isEACMooringArray, useRegionCode],
-  );
+  const region = useMemo(() => {
+    if (productChecks.isEACMooringArray) {
+      return getRegionByRegionCode('Brisbane');
+    }
+    // FishSOOP has product-specific region boxes, selected by productId
+    if (productChecks.isFishSoop) {
+      return getRegionByRegionCode(useRegionCode, useProductId);
+    }
+    return getRegionByRegionCode(useRegionCode);
+  }, [productChecks.isEACMooringArray, productChecks.isFishSoop, useRegionCode, useProductId]);
 
   const regionData = useMemo(
     () => ({
