@@ -258,6 +258,12 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
           dateList = processFilesToDateList(fileList, extractDateFromTidalCurrentsPointFilename);
         } else {
           dateList = processFilesToDateList(fileList, extractDateFromFilename);
+          // FishSOOP profile responses hold one group per year folder; each group
+          // is sorted but the merged list is not, and useDateNavigation expects
+          // ascending dates.
+          if (productId === 'fishSOOP-profiles') {
+            dateList.sort((a, b) => a.date.localeCompare(b.date));
+          }
         }
       }
     }
