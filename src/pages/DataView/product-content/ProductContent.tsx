@@ -9,9 +9,11 @@ import {
   buildSealCtdMapImageUrl,
   buildSealCtdTagsDataImageUrl,
   buildSurfaceWavesBuoyTimeseriesImageUrl,
+  buildFishSoopAnomalyImageUrl,
   buildStaticImageUrl,
   buildProductVideoUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
+import { resolveFishSoopAnomaly } from '@/utils/fish-soop-utils/fishSoopAnomaly';
 import { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import { Loading } from '@/components/Shared';
 import { checkProductHasSubProduct } from '@/utils/product-utils/product';
@@ -50,6 +52,9 @@ const ProductContent: React.FC = () => {
     subProduct,
     argoParams,
     currentMetersParams,
+    fishSoopParams,
+    fishSoopAnomalyEntries,
+    isFishSoopAnomalyListLoading,
     urlParams,
     hasSelectedParams,
     regionData,
@@ -68,6 +73,7 @@ const ProductContent: React.FC = () => {
     isOceanColourChlA,
     isSurfaceWavesBuoyTimeseries,
     isFishSoopProfiles,
+    isFishSoopAnomaly,
   } = productChecks;
 
   // Determine if we should render with argo tags
@@ -80,6 +86,20 @@ const ProductContent: React.FC = () => {
     () => (isOceanColourChlA ? processOceanColourDateList(oceanColourImageData) : []),
     [isOceanColourChlA, oceanColourImageData],
   );
+
+  // Resolve the FishSOOP anomaly selection (region/quarter/layer or average page)
+  // back to the exact entry in the parsed image list
+  const fishSoopAnomalyResolved = useMemo(() => {
+    if (!isFishSoopAnomaly) return null;
+    const isQuarterly = useProductId === 'fishSOOP-quarterlyAnomalies';
+    return resolveFishSoopAnomaly(fishSoopAnomalyEntries, {
+      mode: isQuarterly && fishSoopParams.mode === 'average' ? 'average' : 'region',
+      region: fishSoopParams.region,
+      quarter: isQuarterly ? fishSoopParams.quarter : '',
+      layer: fishSoopParams.layer,
+      avgPage: fishSoopParams.avgPage,
+    });
+  }, [isFishSoopAnomaly, useProductId, fishSoopAnomalyEntries, fishSoopParams]);
 
   // Fetch Argo profile cycles — shares cache with useDateList and WmoSection via the same query key
   const { data: argoProfileCyclesData } = useQuery({
@@ -113,6 +133,10 @@ const ProductContent: React.FC = () => {
           return buildSealCtdTagsDataImageUrl(urlParams.sealCtdTag!, useDate, useProductId);
         case useProductId === 'surfaceWaves-buoyTimeseries' && hasSelectedParams.buoyRegion && !!urlParams.buoyRegion:
           return buildSurfaceWavesBuoyTimeseriesImageUrl(urlParams.buoyRegion!, useDate);
+        case isFishSoopAnomaly:
+          return fishSoopAnomalyResolved?.entry
+            ? buildFishSoopAnomalyImageUrl(fishSoopAnomalyResolved.entry)
+            : undefined;
         // All other products (video-enabled) through the shared builder
         default:
           return buildStaticImageUrl(
@@ -137,6 +161,8 @@ const ProductContent: React.FC = () => {
     isTidalCurrents,
     isSealCtd,
     isSealCtdTags,
+    isFishSoopAnomaly,
+    fishSoopAnomalyResolved,
     useProductId,
     useDate,
     regionData,
@@ -208,6 +234,16 @@ const ProductContent: React.FC = () => {
   const isHasSubProduct = checkProductHasSubProduct(mainProduct?.key);
   if (isHasSubProduct && !subProduct) {
     return <Loading />;
+  }
+
+  // FishSOOP anomalies: wait for the image list, then require a matching entry
+  if (isFishSoopAnomaly) {
+    if (isFishSoopAnomalyListLoading) {
+      return <Loading />;
+    }
+    if (!fishSoopAnomalyResolved?.entry) {
+      return <ErrorImage date={useDate} productId={useProductId} />;
+    }
   }
 
   // Video rendering

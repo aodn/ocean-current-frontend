@@ -21,6 +21,8 @@ export enum ProductSidebarText {
   DEPLOYMENT_PLOT = 'Deployment Plot',
   ARGO_PROFILES = 'Argo Profiles',
   WMO = 'WMO',
+  QUARTER = 'Quarter',
+  PAGE = 'Page',
 }
 
 export enum ProductMenubarText {

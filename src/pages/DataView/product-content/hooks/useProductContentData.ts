@@ -6,6 +6,8 @@ import useProductStore from '@/stores/product-store/productStore';
 import useDateStore from '@/stores/date-store/dateStore';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import useCurrentMetersStore from '@/stores/current-meters-store/currentMeters';
+import useFishSoopStore from '@/stores/fish-soop-store/fishSoop';
+import { useFishSoopAnomalyImageList } from '@/services/hooks';
 import { getRegionByRegionCode } from '@/utils/region-utils/region';
 import { getTargetRegionScopePath } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import { RegionScope } from '@/constants/region';
@@ -30,6 +32,7 @@ export const useProductContentData = () => {
   const { mainProduct, subProduct } = useProductConvert();
   const argoParams = useArgoStore((state) => state.selectedArgoParams);
   const currentMetersParams = useCurrentMetersStore();
+  const fishSoopParams = useFishSoopStore();
 
   const { urlParams, hasSelectedParams } = useUrlParams();
 
@@ -77,6 +80,10 @@ export const useProductContentData = () => {
     ...sharedQueryConfig,
   });
 
+  // FishSOOP anomaly products: parsed region-less image list (shared with FishSoopFilters)
+  const { entries: fishSoopAnomalyEntries, isLoading: isFishSoopAnomalyListLoading } =
+    useFishSoopAnomalyImageList(useProductId);
+
   const dateString = useDate.format('YYYYMMDDHH');
 
   return {
@@ -91,6 +98,9 @@ export const useProductContentData = () => {
     subProduct,
     argoParams,
     currentMetersParams,
+    fishSoopParams,
+    fishSoopAnomalyEntries,
+    isFishSoopAnomalyListLoading,
     // URL parameters
     urlParams,
     hasSelectedParams,

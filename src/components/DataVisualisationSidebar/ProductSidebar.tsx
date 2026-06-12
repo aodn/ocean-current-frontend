@@ -30,6 +30,7 @@ import Legend from './components/Legend';
 import MiniMap from './components/MiniMap';
 import ProductDropdown from './components/ProductDropdown';
 import CurrentMetersFilters from './components/CurrentMetersFilters';
+import FishSoopFilters from './components/FishSoopFilters';
 import { dataSources, getProductInfoByKey } from './utils';
 import WmoSection from './components/WmoSection';
 import ArgoFilters from './components/ArgoFilters';
@@ -43,7 +44,7 @@ const ProductSideBar: React.FC = () => {
   const { mainProduct, subProduct, subProducts } = useProductConvert();
   const { updateQueryParamsAndNavigate, getQueryParamsByKey } = useQueryParams();
   const useDate = useDateStore((state) => state.date);
-  const { isArgo, isCurrentMeters, isSealCtd, isSurfaceWaves } = useProductCheck();
+  const { isArgo, isCurrentMeters, isSealCtd, isSurfaceWaves, isFishSoop } = useProductCheck();
   const shouldRenderMiniMap = useShowProductOverMap();
 
   const mooredInstrumentArrayPath = useMemo(() => {
@@ -168,6 +169,8 @@ const ProductSideBar: React.FC = () => {
         )}
 
         {isCurrentMeters && <CurrentMetersFilters subProduct={subProduct} />}
+
+        {isFishSoop && <FishSoopFilters subProduct={subProduct} />}
 
         {productLegendItems && productLegendItems.length > 0 && (
           <CollapsibleSection title={ProductSidebarText.LEGEND}>

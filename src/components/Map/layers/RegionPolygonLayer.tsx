@@ -38,7 +38,8 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap, disa
   const productId = useProductStore((state) => state.productParams.productId);
   const selectedRegionTitle = getRegionTitleByRegionCode(regionCodeFromUrl, productId) || 'Au';
   const regionGeoJsonData = useRegionPolygons();
-  const { isOceanColour, isCurrentMetersMooredInstrumentArray, isSealCtd, isSealCtdTags } = useProductCheck();
+  const { isOceanColour, isCurrentMetersMooredInstrumentArray, isSealCtd, isSealCtdTags, isFishSoopAnomaly } =
+    useProductCheck();
 
   const isSealCtdRelatedProduct = isSealCtd || isSealCtdTags;
 
@@ -238,6 +239,9 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap, disa
               replaceExistingParams = true;
               queryObject = { region: 'Au', date: dateFromUrl };
               targetPath = '/product/surface-waves/wave';
+            } else if (isFishSoopAnomaly) {
+              // Region-less products with no date axis — only the region selection changes
+              queryObject = { region: regionCode, point: null };
             } else if (productId === 'monthlyMeans-30day') {
               let monthlyMeansDate = getMonthlyMeansDate();
 
@@ -308,6 +312,7 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap, disa
       getMonthlyMeansDate,
       validateImageExists,
       isSealCtdRelatedProduct,
+      isFishSoopAnomaly,
     ],
   );
 
