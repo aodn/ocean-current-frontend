@@ -83,8 +83,11 @@ const FishSoopFilters: React.FC<FishSoopFiltersProps> = ({ subProduct }) => {
       setFishSoopMode('region');
     }
     if (urlQuarter) setFishSoopQuarter(urlQuarter);
+    else setFishSoopQuarter('');
     if (urlLayer) setFishSoopLayer(urlLayer);
+    else setFishSoopLayer('');
     if (urlPage) setFishSoopAvgPage(urlPage);
+    else setFishSoopAvgPage('');
   }, [searchParams]);
 
   if (!isQuarterly && !isDepth) {
