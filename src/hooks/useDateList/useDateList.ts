@@ -216,7 +216,9 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
 
     // Special case: For Argo in range mode, use latestArgoLocationsData or fallback to yesterday
     const endDate = isArgo ? getArgoEndDate() : new Date();
-    const startDate = isFishSoopFinder ? dayjs(FISHSOOP_FINDER_START_DATE, DateFormat.DAY).toDate() : defaultStartDate;
+    const startDate = isFishSoopFinder
+      ? dayjs(FISHSOOP_FINDER_START_DATE, DateFormat.DAY, true).toDate()
+      : defaultStartDate;
 
     dateRange = { startDate, endDate };
     return { isLoading: false, dateList: [], error: null, dateRange };

@@ -19,7 +19,9 @@ export default ({ mode }: ConfigEnv) => {
     console.log(`[proxy] ${method} ${url} -> ${typeof target === 'string' ? target : JSON.stringify(target)}${url}`); // eslint-disable-line no-console
 
   const allowedHosts = process.env.VITE_DEV_SERVER_ALLOWED_HOSTS
-    ? process.env.VITE_DEV_SERVER_ALLOWED_HOSTS.split(',').map((h) => h.trim())
+    ? process.env.VITE_DEV_SERVER_ALLOWED_HOSTS.split(',')
+        .map((h) => h.trim())
+        .filter(Boolean)
     : undefined;
 
   return defineConfig({
