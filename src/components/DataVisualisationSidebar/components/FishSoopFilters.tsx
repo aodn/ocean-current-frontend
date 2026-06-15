@@ -51,7 +51,7 @@ const FishSoopFilters: React.FC<FishSoopFiltersProps> = ({ subProduct }) => {
   const isDepth = subProductKey === 'fishSOOP-depthAnomalies';
   const { region, quarter, layer, avgPage, mode } = useFishSoopStore();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { entries, isLoading } = useFishSoopAnomalyImageList(subProductKey ?? 'fishSOOP-quarterlyAnomalies');
+  const { entries, isLoading } = useFishSoopAnomalyImageList(subProductKey ?? 'fishSOOP-profiles');
 
   const isAverageMode = isQuarterly && mode === 'average';
 
@@ -79,6 +79,8 @@ const FishSoopFilters: React.FC<FishSoopFiltersProps> = ({ subProduct }) => {
     } else if (urlRegion) {
       setFishSoopMode('region');
       setFishSoopRegion(urlRegion);
+    } else {
+      setFishSoopMode('region');
     }
     if (urlQuarter) setFishSoopQuarter(urlQuarter);
     if (urlLayer) setFishSoopLayer(urlLayer);
