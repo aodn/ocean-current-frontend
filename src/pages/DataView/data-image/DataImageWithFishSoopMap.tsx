@@ -15,12 +15,6 @@ type DataImageWithFishSoopMapProps = {
   date: Dayjs;
 };
 
-/**
- * Au-scope FishSOOP view: the daily finder/locator GIF with the legacy imagemap
- * rects overlaid. Every region box is always clickable (v1 — no availability
- * lookup) and navigates to the region's daily profile preserving the selected
- * date; days without a profile fall back to the standard "no image" state.
- */
 const DataImageWithFishSoopMap: React.FC<DataImageWithFishSoopMapProps> = ({ src, date }) => {
   const [_, setSearchParams] = useSearchParams();
   const imgRef = useRef<HTMLImageElement | null>(null);

@@ -1,18 +1,9 @@
-/**
- * FishSOOP constants — regions, depth-layer labels, finder-map image areas and
- * anomaly filename parsing shared by the FishSOOP views, filters and URL builders.
- * Legacy reference: https://oceancurrent.aodn.org.au/fishsoop/
- */
-
 export interface FishSoopRegion {
-  /** Region folder name on the file server and `region` URL param (e.g. 'TasE'). */
   code: string;
-  /** Legacy `reg##` number used in anomaly filenames (e.g. 11 for TasE). */
   regNo: number;
   title: string;
 }
 
-/** The 18 FishSOOP regions in legacy `reg##` order. */
 export const FISHSOOP_REGIONS: FishSoopRegion[] = [
   { code: 'Darwin', regNo: 1, title: 'Darwin' },
   { code: 'Kimberley', regNo: 2, title: 'Kimberley' },
@@ -37,7 +28,6 @@ export const FISHSOOP_REGIONS: FishSoopRegion[] = [
 export const getFishSoopRegionByCode = (code: string | null): FishSoopRegion | undefined =>
   FISHSOOP_REGIONS.find((region) => region.code === code);
 
-/** Depth range covered by each anomaly layer number. */
 export const FISHSOOP_LAYER_DEPTHS: Record<number, string> = {
   1: '0–50 m',
   2: '25–125 m',
@@ -54,9 +44,9 @@ export const FISHSOOP_AVERAGE_REGION_ID = 'avg';
 export const FISHSOOP_AVERAGE_REGION_LABEL = 'Average (whole dataset)';
 
 /** Date of the earliest finder map GIF on the file server (`fishsoop/maps/2021/20211120.gif`). */
+// TODO: Eventually this should be replaced with an API call that lists available dates, but for now hardcode the known start date of the finder maps to avoid offering date options that have no data.
 export const FISHSOOP_FINDER_START_DATE = '20211120';
 
-/** Natural pixel size of the finder GIFs (`fishsoop/maps/<year>/<YYYYMMDD>.gif`). */
 export const FISHSOOP_FINDER_MAP_NATURAL_SIZE = { width: 990, height: 820 };
 
 export interface FishSoopFinderArea {
@@ -93,11 +83,9 @@ export const FISHSOOP_FINDER_MAP_AREAS: FishSoopFinderArea[] = [
 export interface FishSoopAnomFile {
   name: string;
   isAvg: boolean;
-  /** Page number for the `tanom_avg_p<N>.gif` overview images. */
   avgPage?: number;
   regNo?: number;
   region?: string;
-  /** Quarter id like '2025Q2' — present only for quarterly anomaly files. */
   quarter?: string;
   layer?: number;
 }

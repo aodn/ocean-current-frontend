@@ -38,13 +38,6 @@ const FilterSection: React.FC<FilterSectionProps> = ({ title, children }) => (
 
 const formatQuarterLabel = (quarter: string): string => quarter.replace(/^(\d{4})Q(\d)$/, '$1 Q$2');
 
-/**
- * Sidebar filters for the FishSOOP anomaly sub-products. The region / quarter /
- * layer options are parsed from the API filename list, so only combinations
- * that exist are offered. The Quarterly Anomalies region dropdown pins an
- * "Average (whole dataset)" entry on top which swaps the quarter + layer
- * selectors for a p1..p4 page selector (the `tanom_avg_p<N>.gif` overview).
- */
 const FishSoopFilters: React.FC<FishSoopFiltersProps> = ({ subProduct }) => {
   const subProductKey = subProduct?.key;
   const isQuarterly = subProductKey === 'fishSOOP-quarterlyAnomalies';

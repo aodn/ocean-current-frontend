@@ -579,10 +579,6 @@ export const OC_PRODUCTS: Product[] = [
       },
     ],
   },
-  /*
-    The data below is only for rendering the options button for navigation purposes.
-    The image source urls are built here - src/utils/data-image-builder-utils/dataImgBuilder.ts
-  */
   {
     title: 'FishSOOP',
     key: 'fishSOOP',
