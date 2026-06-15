@@ -240,8 +240,9 @@ const RegionPolygonLayer: React.FC<RegionPolygonLayerProps> = ({ isMiniMap, disa
               queryObject = { region: 'Au', date: dateFromUrl };
               targetPath = '/product/surface-waves/wave';
             } else if (isFishSoopAnomaly) {
-              // Region-less products with no date axis — only the region selection changes
-              queryObject = { region: regionCode, point: null };
+              // Region-less products with no date axis — only the region selection
+              // changes; clear any stale date carried over from another sub-product
+              queryObject = { region: regionCode, point: null, date: null };
             } else if (productId === 'monthlyMeans-30day') {
               let monthlyMeansDate = getMonthlyMeansDate();
 

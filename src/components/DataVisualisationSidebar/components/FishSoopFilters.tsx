@@ -67,9 +67,11 @@ const FishSoopFilters: React.FC<FishSoopFiltersProps> = ({ subProduct }) => {
     const urlLayer = searchParams.get('layer');
     const urlPage = searchParams.get('page');
 
-    if (urlRegion === FISHSOOP_AVERAGE_REGION_ID) {
+    // `region=avg` is only meaningful for Quarterly Anomalies; on Depth Anomalies
+    // it must resolve as a normal region so the store mode stays consistent.
+    if (isQuarterly && urlRegion === FISHSOOP_AVERAGE_REGION_ID) {
       setFishSoopMode('average');
-    } else if (urlRegion) {
+    } else if (urlRegion && urlRegion !== FISHSOOP_AVERAGE_REGION_ID) {
       setFishSoopMode('region');
       setFishSoopRegion(urlRegion);
     } else {
@@ -81,7 +83,7 @@ const FishSoopFilters: React.FC<FishSoopFiltersProps> = ({ subProduct }) => {
     else setFishSoopLayer('');
     if (urlPage) setFishSoopAvgPage(urlPage);
     else setFishSoopAvgPage('');
-  }, [searchParams]);
+  }, [searchParams, isQuarterly]);
 
   if (!isQuarterly && !isDepth) {
     return null;

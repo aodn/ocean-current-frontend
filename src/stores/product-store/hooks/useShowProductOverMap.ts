@@ -19,8 +19,8 @@ export const useShowProductOverMap = (): boolean => {
     return isArgoValid;
   }
 
-  // FishSOOP anomaly products are region-less; their region/quarter/layer
-  // selection lives in the sidebar filters, not the URL region param.
+  // FishSOOP anomaly image-list requests are region-less; region/quarter/layer
+  // selection is driven by the sidebar filters (which do write the URL params).
   if (isFishSoopAnomaly) {
     return true;
   }

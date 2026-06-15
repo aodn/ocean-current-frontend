@@ -28,7 +28,8 @@ const useProductCheck = () => {
   const isSwotGslaMdt = subProduct?.key === 'swotGsla-mdt';
   const isFishSoop = mainProductId === 'fishSOOP';
   const isFishSoopProfiles = subProduct?.key === 'fishSOOP-profiles';
-  // The two anomaly sub-products are region-less and date-less (no date navigator)
+  // The two anomaly sub-products have no date navigator; their image-list request
+  // is region-less (region selection is handled by the sidebar filters)
   const isFishSoopAnomaly =
     subProduct?.key === 'fishSOOP-quarterlyAnomalies' || subProduct?.key === 'fishSOOP-depthAnomalies';
 
