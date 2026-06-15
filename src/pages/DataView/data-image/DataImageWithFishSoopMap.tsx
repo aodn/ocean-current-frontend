@@ -31,10 +31,11 @@ const DataImageWithFishSoopMap: React.FC<DataImageWithFishSoopMapProps> = ({ src
   const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
 
   const handleImageLoad = useCallback(() => {
-    setIsProductImageLoading(false);
     if (!imgRef.current) return;
 
     const { naturalWidth, naturalHeight, width, height } = imgRef.current;
+    if (naturalWidth === 0 || naturalHeight === 0) return;
+
     const { scaleX, scaleY } = calculateImageScales(naturalWidth, naturalHeight, width, height);
 
     setAreas(
@@ -43,6 +44,7 @@ const DataImageWithFishSoopMap: React.FC<DataImageWithFishSoopMapProps> = ({ src
         return { ...area, coords: [x1 * scaleX, y1 * scaleY, x2 * scaleX, y2 * scaleY] };
       }),
     );
+    setIsProductImageLoading(false);
   }, []);
 
   useResizeObserver('window', handleImageLoad);

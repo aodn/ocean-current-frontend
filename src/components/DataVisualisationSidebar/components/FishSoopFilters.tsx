@@ -108,7 +108,10 @@ const FishSoopFilters: React.FC<FishSoopFiltersProps> = ({ subProduct }) => {
   const handleRegionChange = (id: string) => {
     if (id === FISHSOOP_AVERAGE_REGION_ID) {
       setFishSoopMode('average');
-      setSearchParams(omitEmptyParams({ region: FISHSOOP_AVERAGE_REGION_ID, page: avgPage }));
+      const validPage = resolved.avgPageOptions.includes(Number(avgPage))
+        ? avgPage
+        : String(resolved.avgPageOptions[0] ?? '');
+      setSearchParams(omitEmptyParams({ region: FISHSOOP_AVERAGE_REGION_ID, page: validPage }));
       return;
     }
     setFishSoopMode('region');
@@ -118,7 +121,7 @@ const FishSoopFilters: React.FC<FishSoopFiltersProps> = ({ subProduct }) => {
 
   const handleQuarterChange = (id: string) => {
     setFishSoopQuarter(id);
-    setSearchParams(omitEmptyParams({ region: resolved.region, quarter: id, layer }));
+    setSearchParams(omitEmptyParams({ region: resolved.region, quarter: id }));
   };
 
   const handleLayerChange = (id: string) => {

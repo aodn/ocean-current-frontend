@@ -128,7 +128,12 @@ const ProductSideBar: React.FC = () => {
               page: null,
               ...(currentRegion === FISHSOOP_AVERAGE_REGION_ID ? { region: null } : {}),
             }
-          : { date: null, quarter: null, page: null };
+          : {
+              date: null,
+              quarter: null,
+              page: null,
+              ...(currentRegion === FISHSOOP_AVERAGE_REGION_ID ? { region: null } : {}),
+            };
     }
 
     if (isSealCtd) {
