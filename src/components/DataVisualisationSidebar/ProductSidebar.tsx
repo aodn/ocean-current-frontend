@@ -25,11 +25,13 @@ import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 import { useQueryParams } from '@/hooks';
 import { findLeafFlatProductById, getProductLegend } from '@/utils/product-utils/product';
+import { FISHSOOP_AVERAGE_REGION_ID } from '@/constants/fishSoop';
 import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
 import Legend from './components/Legend';
 import MiniMap from './components/MiniMap';
 import ProductDropdown from './components/ProductDropdown';
 import CurrentMetersFilters from './components/CurrentMetersFilters';
+import FishSoopFilters from './components/FishSoopFilters';
 import { dataSources, getProductInfoByKey } from './utils';
 import WmoSection from './components/WmoSection';
 import ArgoFilters from './components/ArgoFilters';
@@ -43,7 +45,7 @@ const ProductSideBar: React.FC = () => {
   const { mainProduct, subProduct, subProducts } = useProductConvert();
   const { updateQueryParamsAndNavigate, getQueryParamsByKey } = useQueryParams();
   const useDate = useDateStore((state) => state.date);
-  const { isArgo, isCurrentMeters, isSealCtd, isSurfaceWaves } = useProductCheck();
+  const { isArgo, isCurrentMeters, isSealCtd, isSurfaceWaves, isFishSoop } = useProductCheck();
   const shouldRenderMiniMap = useShowProductOverMap();
 
   const mooredInstrumentArrayPath = useMemo(() => {
@@ -113,6 +115,27 @@ const ProductSideBar: React.FC = () => {
       updateParam = { deploymentPlot: null };
     }
 
+    // Drop params that don't apply to the target FishSOOP sub-product: profiles
+    // is date-driven (no quarter/layer/page and no 'avg' pseudo region), while
+    // the anomaly sub-products have no date axis.
+    if (isFishSoop) {
+      const currentRegion = getQueryParamsByKey('region');
+      updateParam =
+        key === 'fishSOOP-profiles'
+          ? {
+              quarter: null,
+              layer: null,
+              page: null,
+              ...(currentRegion === FISHSOOP_AVERAGE_REGION_ID ? { region: null } : {}),
+            }
+          : {
+              date: null,
+              quarter: null,
+              page: null,
+              ...(currentRegion === FISHSOOP_AVERAGE_REGION_ID ? { region: null } : {}),
+            };
+    }
+
     if (isSealCtd) {
       const currentRegion = getQueryParamsByKey('region');
       const targetLatestDate = latestDatesRegionData
@@ -168,6 +191,8 @@ const ProductSideBar: React.FC = () => {
         )}
 
         {isCurrentMeters && <CurrentMetersFilters subProduct={subProduct} />}
+
+        {isFishSoop && <FishSoopFilters subProduct={subProduct} />}
 
         {productLegendItems && productLegendItems.length > 0 && (
           <CollapsibleSection title={ProductSidebarText.LEGEND}>

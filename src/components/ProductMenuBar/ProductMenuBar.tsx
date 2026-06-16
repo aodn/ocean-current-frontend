@@ -47,6 +47,8 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     isSealCtd,
     isSealCtdTags,
     isSwotGslaMdt,
+    isFishSoop,
+    isFishSoopAnomaly,
   } = useProductCheck();
   const { isArgoValid } = useArgoProductValidQueryParams();
   const productId = useProductStore((state) => state.productParams.productId);
@@ -70,6 +72,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     productId === 'fourHourSst-sstAge' ||
     productId === 'sixDaySst-timeseries' ||
     isSwotGslaMdt ||
+    isFishSoop ||
     showMap ||
     !shouldRenderProductContent;
 
@@ -179,7 +182,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
         </Button>
       </div>
       <div className="font-open-sans text-imos-dark-grey flex w-full flex-wrap items-center gap-2 font-medium md:mb-2 md:gap-3">
-        {!isSwotGslaMdt && (
+        {!isSwotGslaMdt && !isFishSoopAnomaly && (
           <>
             <div className="border-imos-calypso-blue/50 flex h-11 grow basis-[calc(100%-4rem)] items-center justify-between rounded-md border bg-white md:grow md:basis-auto md:border-none">
               {isCurrentMeters ? (

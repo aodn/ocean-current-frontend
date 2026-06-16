@@ -95,6 +95,32 @@ export const fullLocalList = [
   // SealCTD specific code and regions
   'GAB',
   'NSW',
+
+  // FishSOOP specific code and regions
+  'SharkBay',
+  'BassStr',
+  'TasW',
+  'NNSW',
+] as const;
+
+const FISHSOOP_LOCAL_REGIONS = [
+  'Darwin',
+  'Kimberley',
+  'NWS',
+  'SharkBay',
+  'Perth',
+  'AlbEsp',
+  'RechEyre',
+  'SAgulfs',
+  'BassStr',
+  'TasW',
+  'TasE',
+  'SNSW',
+  'NNSW',
+  'SGBR',
+  'CGBR',
+  'NGBR',
+  'GOC',
 ] as const;
 
 export const productRegionMap: ProductRegionMap = {
@@ -730,6 +756,18 @@ export const productRegionMap: ProductRegionMap = {
       'SNSW',
       'Tas',
     ],
+  },
+  'fishSOOP-profiles': {
+    state: ['Au'],
+    local: [...FISHSOOP_LOCAL_REGIONS],
+  },
+  'fishSOOP-quarterlyAnomalies': {
+    state: ['Au'],
+    local: [...FISHSOOP_LOCAL_REGIONS],
+  },
+  'fishSOOP-depthAnomalies': {
+    state: ['Au'],
+    local: [...FISHSOOP_LOCAL_REGIONS],
   },
   'swotGsla-mdt': {
     state: ['Au'],

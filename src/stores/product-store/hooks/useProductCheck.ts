@@ -26,6 +26,12 @@ const useProductCheck = () => {
   const isOceanColour = mainProductId === 'oceanColour';
   const isOceanColourChlA = isOceanColour && subProduct?.key === 'oceanColour-chlA';
   const isSwotGslaMdt = subProduct?.key === 'swotGsla-mdt';
+  const isFishSoop = mainProductId === 'fishSOOP';
+  const isFishSoopProfiles = subProduct?.key === 'fishSOOP-profiles';
+  // The two anomaly sub-products have no date navigator; their image-list request
+  // is region-less (region selection is handled by the sidebar filters)
+  const isFishSoopAnomaly =
+    subProduct?.key === 'fishSOOP-quarterlyAnomalies' || subProduct?.key === 'fishSOOP-depthAnomalies';
 
   return {
     isRegionRequired,
@@ -44,6 +50,9 @@ const useProductCheck = () => {
     isOceanColour,
     isOceanColourChlA,
     isSwotGslaMdt,
+    isFishSoop,
+    isFishSoopProfiles,
+    isFishSoopAnomaly,
   };
 };
 

@@ -15,4 +15,7 @@ export type QueryParams = {
   wmoid?: string | null; // Argo
   cycle?: string | null; // Argo
   point?: string | null; // Tidal Currents
+  quarter?: string | null; // FishSOOP
+  layer?: string | null; // FishSOOP
+  page?: string | null; // FishSOOP
 };

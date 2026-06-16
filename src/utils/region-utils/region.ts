@@ -1,18 +1,27 @@
 import { RegionScope } from '@/constants/region';
 import { Region } from '@/types/map';
-import { allRegions, convertedEACMooringRegions, convertedSealCtdRegions } from '@/data/regionData';
+import {
+  allRegions,
+  convertedEACMooringRegions,
+  convertedFishSoopRegions,
+  convertedSealCtdRegions,
+} from '@/data/regionData';
 import { productRegionMap } from '@/data/regionList';
 import { RegionCategories } from '@/types/region';
 import { ProductGroupID, ProductID } from '@/types/product';
 
 const getRegionByRegionCode = (regionCode: string | null, productId?: ProductID): Region | undefined => {
   const sealCtd: ProductGroupID = 'sealCtd';
+  const fishSoop: ProductGroupID = 'fishSOOP';
   const eACMooring: ProductID = 'EACMooringArray';
   if (productId?.includes(eACMooring)) {
     return convertedEACMooringRegions.find((region) => region.code === regionCode);
   }
   if (productId?.includes(sealCtd)) {
     return convertedSealCtdRegions.find((region) => region.code === regionCode);
+  }
+  if (productId?.includes(fishSoop)) {
+    return convertedFishSoopRegions.find((region) => region.code === regionCode);
   }
   return allRegions.find((region) => region.code === regionCode);
 };

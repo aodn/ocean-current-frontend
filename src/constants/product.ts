@@ -580,6 +580,47 @@ export const OC_PRODUCTS: Product[] = [
     ],
   },
   {
+    title: 'FishSOOP',
+    key: 'fishSOOP',
+    path: 'fish-soop',
+    latestEntry: null,
+    dateFormat: null,
+    localSegment: 'fishsoop',
+    stateSegment: 'fishsoop',
+    children: [
+      {
+        title: 'Regional Profiles',
+        key: 'fishSOOP-profiles',
+        path: 'regional-profiles',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.DAY,
+          stateFormat: DateFormat.DAY,
+        },
+      },
+      {
+        title: 'Quarterly Anomalies',
+        key: 'fishSOOP-quarterlyAnomalies',
+        path: 'quarterly-anomalies',
+        imgPath: null,
+        dateFormat: {
+          localFormat: null,
+          stateFormat: null,
+        },
+      },
+      {
+        title: 'Depth Anomalies',
+        key: 'fishSOOP-depthAnomalies',
+        path: 'depth-anomalies',
+        imgPath: null,
+        dateFormat: {
+          localFormat: null,
+          stateFormat: null,
+        },
+      },
+    ],
+  },
+  {
     title: 'My Ocean Current',
     key: 'myOceanCurrent',
     path: 'my-ocean-current',
