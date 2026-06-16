@@ -2196,6 +2196,46 @@ const SwotGslaModalData = () => {
   );
 };
 
+const FishSoopModalData = () => {
+  return (
+    <div className="p-4 text-gray-800">
+      <p className="mb-2">
+        Explore FishSOOP temperature observations via a daily data finder showing temperature vs depth, time and
+        location, 3-month average anomalies compared with a historical climatology, and depth-layer anomaly maps.
+      </p>
+    </div>
+  );
+};
+
+const FishSoopProfilesModalData = () => {
+  return (
+    <div className="p-4 text-gray-800">
+      <p className="mb-2">The daily data finder maps help you find plots of temperature vs depth, time and location.</p>
+    </div>
+  );
+};
+
+const FishSoopQuarterlyAnomaliesModalData = () => {
+  return (
+    <div className="p-4 text-gray-800">
+      <p className="mb-2">
+        3-month averages of the whole FishSOOP dataset compared with a historical climatology reveal how the ocean has
+        changed. Click for more depth layers. The plots also show the data coverage history.
+      </p>
+    </div>
+  );
+};
+
+const FishSoopDepthAnomaliesModalData = () => {
+  return (
+    <div className="p-4 text-gray-800">
+      <p className="mb-2">
+        Step through regions and depth layers to explore the spatial-, temporal- and depth-dependence of the anomalies.
+      </p>
+    </div>
+  );
+};
+
 export {
   OceanColourModalData,
   SixDaySstModalData,
@@ -2208,4 +2248,8 @@ export {
   TidalCurrentsModalData,
   SealCtdModalData,
   SwotGslaModalData,
+  FishSoopModalData,
+  FishSoopProfilesModalData,
+  FishSoopQuarterlyAnomaliesModalData,
+  FishSoopDepthAnomaliesModalData,
 };
