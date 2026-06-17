@@ -14,10 +14,6 @@ import {
   FishSoopProfilesModalData,
   FishSoopQuarterlyAnomaliesModalData,
   FishSoopDepthAnomaliesModalData,
-  FishSoopModalData,
-  FishSoopProfilesModalData,
-  FishSoopQuarterlyAnomaliesModalData,
-  FishSoopDepthAnomaliesModalData,
 } from '@/components/DataVisualisationSidebar/components/ProductDescriptionModal/ProductDescriptionData';
 import {
   EACMooringArrayAboutData,
