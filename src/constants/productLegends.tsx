@@ -5,7 +5,7 @@ export type LegendItem = {
   icon?: string;
   label?: string;
   shape?: React.ReactNode;
-  description?: string;
+  description?: React.ReactNode;
 };
 
 export type ProductLegend = {
@@ -28,6 +28,7 @@ const COMMON_LEGEND_ITEMS = {
     icon: 'circle',
     label: 'Argo',
     shape: <div className="h-3 w-3 rounded-full border-2 border-[#04FFEA] bg-white" />,
+    description: 'Location of any profile measured by an Argo float on the day of analysis',
   },
   fishSoop: {
     icon: 'square',
@@ -132,8 +133,15 @@ const COMMON_LEGEND_ITEMS = {
   // Seal CTD
   ctdProfile: {
     icon: 'dive-point',
-    label: 'Seal CTD',
+    label: 'Animal-borne CTD',
     shape: <div className="border-imos-bright-magenta h-3 w-3 rounded-full border-2 bg-white" />,
+    description: (
+      <>
+        Location of any profile measured by an animal-borne CTD (instrument that measures <strong>C</strong>onductivity,{' '}
+        <strong>T</strong>emperature, and <strong>D</strong>epth) on the day of analysis. The trailing white line
+        indicates presence of more than one profile measured by the instrument on the same day.
+      </>
+    ),
   },
 } as const;
 
