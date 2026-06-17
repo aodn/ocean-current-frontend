@@ -140,7 +140,7 @@ export const productInfoList: ProductInfo[] = [
       'Explore FishSOOP temperature observations via a daily data finder showing temperature vs depth, time and location, 3-month average anomalies compared with a historical climatology, and depth-layer anomaly maps.',
     description: FishSoopModalData,
     aboutButtonText: 'About FishSOOP',
-    aboutTitle: 'FishSOOP - Newcomer? read this first',
+    aboutTitle: 'FishSOOP - Newcomer? Read this first',
     aboutDescription: FishSoopAboutData,
     childrenInfo: {
       'fishSOOP-profiles': {
