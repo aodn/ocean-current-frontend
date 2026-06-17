@@ -10,6 +10,10 @@ import {
   TidalCurrentsModalData,
   SealCtdModalData,
   SwotGslaModalData,
+  FishSoopModalData,
+  FishSoopProfilesModalData,
+  FishSoopQuarterlyAnomaliesModalData,
+  FishSoopDepthAnomaliesModalData,
 } from '@/components/DataVisualisationSidebar/components/ProductDescriptionModal/ProductDescriptionData';
 import {
   EACMooringArrayAboutData,
@@ -127,5 +131,31 @@ export const productInfoList: ProductInfo[] = [
     aboutButtonText: 'About EAC mooring array dataset',
     aboutTitle: 'EAC Mooring Array (2012-2022)',
     aboutDescription: EACMooringArrayAboutData,
+  },
+  {
+    id: 'fishSOOP',
+    title: 'FishSOOP',
+    summary:
+      'Explore FishSOOP temperature observations via a daily data finder showing temperature vs depth, time and location, 3-month average anomalies compared with a historical climatology, and depth-layer anomaly maps.',
+    description: FishSoopModalData,
+    childrenInfo: {
+      'fishSOOP-profiles': {
+        title: 'Regional Profiles',
+        summary: 'The daily data finder maps help you find plots of temperature vs depth, time and location.',
+        description: FishSoopProfilesModalData,
+      },
+      'fishSOOP-quarterlyAnomalies': {
+        title: 'Quarterly Anomalies',
+        summary:
+          '3-month averages of the whole FishSOOP dataset compared with a historical climatology reveal how the ocean has changed. Click for more depth layers. The plots also show the data coverage history.',
+        description: FishSoopQuarterlyAnomaliesModalData,
+      },
+      'fishSOOP-depthAnomalies': {
+        title: 'Depth Anomalies',
+        summary:
+          'Step through regions and depth layers to explore the spatial-, temporal- and depth-dependence of the anomalies.',
+        description: FishSoopDepthAnomaliesModalData,
+      },
+    },
   },
 ];
