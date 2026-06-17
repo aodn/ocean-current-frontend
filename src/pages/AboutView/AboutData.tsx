@@ -1324,7 +1324,7 @@ const FishSoopAboutData = () => {
         <p>
           All data are quality-controlled and made available open source through the{' '}
           <a
-            href="http://thredds.aodn.org.au/thredds/catalog/IMOS/SOOP/SOOP-FishSOOP/REALTIME/catalog.html"
+            href="https://thredds.aodn.org.au/thredds/catalog/IMOS/SOOP/SOOP-FishSOOP/REALTIME/catalog.html"
             target="_blank"
             rel="noreferrer noopener"
             className="text-imos-sea-blue"
@@ -1333,7 +1333,7 @@ const FishSoopAboutData = () => {
           </a>
           , where you will find data from 2021 to nearly real time. FishSOOP provides unique insights into ocean
           conditions where it matters most to the fishing industry (where fishing occurs), and bridges the gap between
-          fisheries and science. FFI:{' '}
+          fisheries and science. For further information:{' '}
           <a
             href="https://imos.org.au/facility/ships-of-opportunity/fishing-vessels-as-ships-of-opportunity"
             target="_blank"
@@ -1363,13 +1363,13 @@ const FishSoopAboutData = () => {
       <div className="space-y-4">
         <h2 className="text-2xl font-semibold">Daily, regional plots</h2>
         <a
-          href="https://oceancurrent.aodn.org.au/fishsoop/SNSW/2026/latest.html"
+          href="/product/fish-soop/regional-profiles?region=SNSW"
           target="_blank"
           rel="noreferrer noopener"
           className="mx-auto block max-w-xl"
         >
           <img
-            src="/resource/fishsoop/SNSW/2026/latest.gif"
+            src="https://oceancurrent.aodn.org.au/fishsoop/SNSW/2026/latest.gif"
             alt="Example daily regional FishSOOP plot for Southern NSW"
             loading="lazy"
             decoding="async"
@@ -1411,13 +1411,13 @@ const FishSoopAboutData = () => {
 
         <h3 className="text-base font-semibold">Finding the plot covering your region and time of interest</h3>
         <a
-          href="https://oceancurrent.aodn.org.au/fishsoop/maps/2026/latest.html"
+          href="/product/fish-soop/regional-profiles?region=Au"
           target="_blank"
           rel="noreferrer noopener"
           className="mx-auto block max-w-xl"
         >
           <img
-            src="/resource/fishsoop/maps/2026/latest.gif"
+            src="https://oceancurrent.aodn.org.au/fishsoop/maps/2026/latest.gif"
             alt="FishSOOP data finder map"
             loading="lazy"
             decoding="async"
@@ -1453,13 +1453,13 @@ const FishSoopAboutData = () => {
 
         <h3 className="text-base font-semibold">Three-monthly, regional, layer-averages of the differences</h3>
         <a
-          href="https://oceancurrent.aodn.org.au/fishsoop/anom2/tanom_avg_p1.html"
+          href="/product/fish-soop/quarterly-anomalies?region=avg&page=1"
           target="_blank"
           rel="noreferrer noopener"
           className="mx-auto block max-w-xl"
         >
           <img
-            src="/resource/fishsoop/anom2/tanom_avg_p1.gif"
+            src="https://oceancurrent.aodn.org.au/fishsoop/anom2/tanom_avg_p1.gif"
             alt="3-month, regional, layer-averaged FishSOOP temperature anomalies"
             loading="lazy"
             decoding="async"
@@ -1476,13 +1476,13 @@ const FishSoopAboutData = () => {
 
         <h3 className="text-base font-semibold">All-time and annual-mean differences</h3>
         <a
-          href="https://oceancurrent.aodn.org.au/fishsoop/anom/tanom_reg18_Au_layer8.html"
+          href="/product/fish-soop/depth-anomalies?region=Au&layer=8"
           target="_blank"
           rel="noreferrer noopener"
           className="mx-auto block max-w-xl"
         >
           <img
-            src="/resource/fishsoop/anom/tanom_reg18_Au_layer8.gif"
+            src="https://oceancurrent.aodn.org.au/fishsoop/anom/tanom_reg18_Au_layer8.gif"
             alt="All-time and annual-mean FishSOOP temperature anomalies, Australia-wide, whole water column"
             loading="lazy"
             decoding="async"
