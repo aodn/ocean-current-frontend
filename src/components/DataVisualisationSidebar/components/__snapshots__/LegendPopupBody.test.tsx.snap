@@ -14,7 +14,7 @@ exports[`LegendPopupBody > matches snapshot 1`] = `
       class="mt-2 flex items-start"
     >
       <div
-        class="mr-2 mt-1 flex shrink-0 items-center justify-center"
+        class="mt-1 mr-2 flex shrink-0 items-center justify-center"
       >
         <div
           data-testid="argo-shape"
@@ -22,7 +22,7 @@ exports[`LegendPopupBody > matches snapshot 1`] = `
       </div>
       <div>
         <span
-          class="mr-1 font-bold text-imos-dark-grey"
+          class="text-imos-dark-grey mr-1 font-bold"
         >
           Argo
           : 
@@ -39,7 +39,7 @@ exports[`LegendPopupBody > matches snapshot 1`] = `
     >
       <div>
         <span
-          class="mr-1 font-bold text-imos-dark-grey"
+          class="text-imos-dark-grey mr-1 font-bold"
         >
           Selected isobaths
           : 
