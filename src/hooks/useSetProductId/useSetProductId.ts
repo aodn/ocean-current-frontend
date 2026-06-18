@@ -3,7 +3,7 @@ import { getProductByPath } from '@/utils/product-utils/product';
 import { UrlType } from '@/types/router';
 import useProductStore from '@/stores/product-store/productStore';
 import { ProductID } from '@/types/product';
-import useProductPathFromUrl from '../useGetProductFromUrl/useProductPathFromUrl';
+import useProductPathFromUrl from '../useProductPathFromUrl/useProductPathFromUrl';
 
 const useSetProductId = (type: UrlType, setProductId: (id: ProductID) => void): void => {
   const product = useProductPathFromUrl(type);

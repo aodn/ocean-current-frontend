@@ -2,10 +2,10 @@ import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
-import { useProductIdFromUrl } from '../useGetProductFromUrl/useProductIdFromUrl';
+import { useProductIdFromUrl } from '../useProductIdFromUrl/useProductIdFromUrl';
 import { useArgoProductValidQueryParams } from './useArgoProductValidQueryParams';
 
-vi.mock('../useGetProductFromUrl/useProductIdFromUrl', () => ({
+vi.mock('../useProductIdFromUrl/useProductIdFromUrl', () => ({
   useProductIdFromUrl: vi.fn(),
 }));
 
