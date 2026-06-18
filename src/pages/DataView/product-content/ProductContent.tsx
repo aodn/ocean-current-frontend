@@ -74,6 +74,7 @@ const ProductContent: React.FC = () => {
     isSurfaceWavesBuoyTimeseries,
     isFishSoopProfiles,
     isFishSoopAnomaly,
+    isFishSoopAverageAnomalies,
   } = productChecks;
 
   // Determine if we should render with argo tags
@@ -90,16 +91,16 @@ const ProductContent: React.FC = () => {
   // Resolve the FishSOOP anomaly selection (region/quarter/layer or average page)
   // back to the exact entry in the parsed image list
   const fishSoopAnomalyResolved = useMemo(() => {
-    if (!isFishSoopAnomaly) return null;
+    if (!isFishSoopAnomaly && !isFishSoopAverageAnomalies) return null;
     const isQuarterly = useProductId === 'fishSOOP-quarterlyAnomalies';
     return resolveFishSoopAnomaly(fishSoopAnomalyEntries, {
-      mode: isQuarterly && fishSoopParams.mode === 'average' ? 'average' : 'region',
+      mode: isFishSoopAverageAnomalies ? 'average' : 'region',
       region: fishSoopParams.region,
       quarter: isQuarterly ? fishSoopParams.quarter : '',
       layer: fishSoopParams.layer,
       avgPage: fishSoopParams.avgPage,
     });
-  }, [isFishSoopAnomaly, useProductId, fishSoopAnomalyEntries, fishSoopParams]);
+  }, [isFishSoopAnomaly, isFishSoopAverageAnomalies, useProductId, fishSoopAnomalyEntries, fishSoopParams]);
 
   // Fetch Argo profile cycles — shares cache with useDateList and WmoSection via the same query key
   const { data: argoProfileCyclesData } = useQuery({
@@ -133,7 +134,7 @@ const ProductContent: React.FC = () => {
           return buildSealCtdTagsDataImageUrl(urlParams.sealCtdTag!, useDate, useProductId);
         case useProductId === 'surfaceWaves-buoyTimeseries' && hasSelectedParams.buoyRegion && !!urlParams.buoyRegion:
           return buildSurfaceWavesBuoyTimeseriesImageUrl(urlParams.buoyRegion!, useDate);
-        case isFishSoopAnomaly:
+        case isFishSoopAnomaly || isFishSoopAverageAnomalies:
           return fishSoopAnomalyResolved?.entry
             ? buildFishSoopAnomalyImageUrl(fishSoopAnomalyResolved.entry)
             : undefined;
@@ -162,6 +163,7 @@ const ProductContent: React.FC = () => {
     isSealCtd,
     isSealCtdTags,
     isFishSoopAnomaly,
+    isFishSoopAverageAnomalies,
     fishSoopAnomalyResolved,
     useProductId,
     useDate,
@@ -237,7 +239,7 @@ const ProductContent: React.FC = () => {
   }
 
   // FishSOOP anomalies: wait for the image list, then require a matching entry
-  if (isFishSoopAnomaly) {
+  if (isFishSoopAnomaly || isFishSoopAverageAnomalies) {
     if (isFishSoopAnomalyListLoading) {
       return <Loading />;
     }

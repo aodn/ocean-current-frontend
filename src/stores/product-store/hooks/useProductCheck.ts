@@ -32,6 +32,9 @@ const useProductCheck = () => {
   // is region-less (region selection is handled by the sidebar filters)
   const isFishSoopAnomaly =
     subProduct?.key === 'fishSOOP-quarterlyAnomalies' || subProduct?.key === 'fishSOOP-depthAnomalies';
+  // Standalone whole-dataset average overview: region-less list, no date axis, no
+  // region map (unlike the region-based anomaly products above).
+  const isFishSoopAverageAnomalies = subProduct?.key === 'fishSOOP-averageAnomalies';
 
   return {
     isRegionRequired,
@@ -53,6 +56,7 @@ const useProductCheck = () => {
     isFishSoop,
     isFishSoopProfiles,
     isFishSoopAnomaly,
+    isFishSoopAverageAnomalies,
   };
 };
 

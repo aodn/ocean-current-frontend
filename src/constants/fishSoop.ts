@@ -39,9 +39,13 @@ export const FISHSOOP_LAYER_DEPTHS: Record<number, string> = {
   8: '0–1000 m',
 };
 
-/** Pseudo region id for the "Average (whole dataset)" entry in the Quarterly Anomalies region dropdown. */
-export const FISHSOOP_AVERAGE_REGION_ID = 'avg';
-export const FISHSOOP_AVERAGE_REGION_LABEL = 'Average (whole dataset)';
+/**
+ * Each average-overview page (`tanom_avg_p<N>.gif`) stacks two depth layers:
+ * page N shows layer 2N-1 (top) and layer 2N (bottom). Derives a readable depth-range
+ * label from the shared layer bands so the page selector reads like the depth-layer one.
+ */
+export const getFishSoopAvgPageLabel = (page: number): string =>
+  [FISHSOOP_LAYER_DEPTHS[page * 2 - 1], FISHSOOP_LAYER_DEPTHS[page * 2]].filter(Boolean).join(', ');
 
 /** Date of the earliest finder map GIF on the file server (`fishsoop/maps/2021/20211120.gif`). */
 // TODO: Eventually this should be replaced with an API call that lists available dates, but for now hardcode the known start date of the finder maps to avoid offering date options that have no data.

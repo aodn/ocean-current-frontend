@@ -25,7 +25,6 @@ import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 import { useQueryParams } from '@/hooks';
 import { findLeafFlatProductById, getProductLegend } from '@/utils/product-utils/product';
-import { FISHSOOP_AVERAGE_REGION_ID } from '@/constants/fishSoop';
 import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
 import Legend from './components/Legend';
 import MiniMap from './components/MiniMap';
@@ -116,24 +115,16 @@ const ProductSideBar: React.FC = () => {
     }
 
     // Drop params that don't apply to the target FishSOOP sub-product: profiles
-    // is date-driven (no quarter/layer/page and no 'avg' pseudo region), while
-    // the anomaly sub-products have no date axis.
+    // is date-driven; the region-based anomaly products have no date axis; the
+    // average overview has neither date nor region/quarter/layer (page only).
     if (isFishSoop) {
-      const currentRegion = getQueryParamsByKey('region');
-      updateParam =
-        key === 'fishSOOP-profiles'
-          ? {
-              quarter: null,
-              layer: null,
-              page: null,
-              ...(currentRegion === FISHSOOP_AVERAGE_REGION_ID ? { region: null } : {}),
-            }
-          : {
-              date: null,
-              quarter: null,
-              page: null,
-              ...(currentRegion === FISHSOOP_AVERAGE_REGION_ID ? { region: null } : {}),
-            };
+      if (key === 'fishSOOP-profiles') {
+        updateParam = { quarter: null, layer: null, page: null };
+      } else if (key === 'fishSOOP-averageAnomalies') {
+        updateParam = { date: null, quarter: null, layer: null, region: null };
+      } else {
+        updateParam = { date: null, page: null };
+      }
     }
 
     if (isSealCtd) {

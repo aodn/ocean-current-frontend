@@ -1,21 +1,15 @@
 import React, { useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router';
-import { Button, Dropdown } from '@/components/Shared';
+import { Dropdown } from '@/components/Shared';
 import { ProductSidebarText } from '@/constants/textConstant';
 import useFishSoopStore, {
   setFishSoopRegion,
   setFishSoopQuarter,
   setFishSoopLayer,
   setFishSoopAvgPage,
-  setFishSoopMode,
 } from '@/stores/fish-soop-store/fishSoop';
 import { useFishSoopAnomalyImageList } from '@/services/hooks';
-import {
-  FISHSOOP_AVERAGE_REGION_ID,
-  FISHSOOP_AVERAGE_REGION_LABEL,
-  FISHSOOP_LAYER_DEPTHS,
-  getFishSoopRegionByCode,
-} from '@/constants/fishSoop';
+import { FISHSOOP_LAYER_DEPTHS, getFishSoopAvgPageLabel, getFishSoopRegionByCode } from '@/constants/fishSoop';
 import { resolveFishSoopAnomaly } from '@/utils/fish-soop-utils/fishSoopAnomaly';
 import { SubProduct } from '@/types/product';
 import omitEmptyParams from '@/hooks/useQueryParams/omitEmptyParams';
@@ -42,50 +36,43 @@ const FishSoopFilters: React.FC<FishSoopFiltersProps> = ({ subProduct }) => {
   const subProductKey = subProduct?.key;
   const isQuarterly = subProductKey === 'fishSOOP-quarterlyAnomalies';
   const isDepth = subProductKey === 'fishSOOP-depthAnomalies';
-  const { region, quarter, layer, avgPage, mode } = useFishSoopStore();
+  const isAverageAnomalies = subProductKey === 'fishSOOP-averageAnomalies';
+  const { region, quarter, layer, avgPage } = useFishSoopStore();
   const [searchParams, setSearchParams] = useSearchParams();
   const { entries, isLoading } = useFishSoopAnomalyImageList(subProductKey ?? 'fishSOOP-profiles');
-
-  const isAverageMode = isQuarterly && mode === 'average';
 
   const resolved = useMemo(
     () =>
       resolveFishSoopAnomaly(entries, {
-        mode: isAverageMode ? 'average' : 'region',
+        mode: isAverageAnomalies ? 'average' : 'region',
         region,
         quarter: isQuarterly ? quarter : '',
         layer,
         avgPage,
       }),
-    [entries, isAverageMode, isQuarterly, region, quarter, layer, avgPage],
+    [entries, isAverageAnomalies, isQuarterly, region, quarter, layer, avgPage],
   );
 
   // update store based on params
   useEffect(() => {
+    if (isAverageAnomalies) {
+      const urlPage = searchParams.get('page');
+      setFishSoopAvgPage(urlPage ?? '');
+      return;
+    }
+
     const urlRegion = searchParams.get('region');
     const urlQuarter = searchParams.get('quarter');
     const urlLayer = searchParams.get('layer');
-    const urlPage = searchParams.get('page');
 
-    // `region=avg` is only meaningful for Quarterly Anomalies; on Depth Anomalies
-    // it must resolve as a normal region so the store mode stays consistent.
-    if (isQuarterly && urlRegion === FISHSOOP_AVERAGE_REGION_ID) {
-      setFishSoopMode('average');
-    } else if (urlRegion && urlRegion !== FISHSOOP_AVERAGE_REGION_ID) {
-      setFishSoopMode('region');
-      setFishSoopRegion(urlRegion);
-    } else {
-      setFishSoopMode('region');
-    }
+    if (urlRegion) setFishSoopRegion(urlRegion);
     if (urlQuarter) setFishSoopQuarter(urlQuarter);
     else setFishSoopQuarter('');
     if (urlLayer) setFishSoopLayer(urlLayer);
     else setFishSoopLayer('');
-    if (urlPage) setFishSoopAvgPage(urlPage);
-    else setFishSoopAvgPage('');
-  }, [searchParams, isQuarterly]);
+  }, [searchParams, isAverageAnomalies]);
 
-  if (!isQuarterly && !isDepth) {
+  if (!isQuarterly && !isDepth && !isAverageAnomalies) {
     return null;
   }
 
@@ -93,10 +80,10 @@ const FishSoopFilters: React.FC<FishSoopFiltersProps> = ({ subProduct }) => {
     return null;
   }
 
-  const regionElements = [
-    ...(isQuarterly ? [{ label: FISHSOOP_AVERAGE_REGION_LABEL, id: FISHSOOP_AVERAGE_REGION_ID }] : []),
-    ...resolved.regionOptions.map((code) => ({ label: getFishSoopRegionByCode(code)?.title ?? code, id: code })),
-  ];
+  const regionElements = resolved.regionOptions.map((code) => ({
+    label: getFishSoopRegionByCode(code)?.title ?? code,
+    id: code,
+  }));
 
   const quarterElements = resolved.quarterOptions.map((id) => ({ label: formatQuarterLabel(id), id }));
 
@@ -105,16 +92,12 @@ const FishSoopFilters: React.FC<FishSoopFiltersProps> = ({ subProduct }) => {
     id: String(layerNo),
   }));
 
+  const pageElements = resolved.avgPageOptions.map((page) => ({
+    label: getFishSoopAvgPageLabel(page),
+    id: String(page),
+  }));
+
   const handleRegionChange = (id: string) => {
-    if (id === FISHSOOP_AVERAGE_REGION_ID) {
-      setFishSoopMode('average');
-      const validPage = resolved.avgPageOptions.includes(Number(avgPage))
-        ? avgPage
-        : String(resolved.avgPageOptions[0] ?? '');
-      setSearchParams(omitEmptyParams({ region: FISHSOOP_AVERAGE_REGION_ID, page: validPage }));
-      return;
-    }
-    setFishSoopMode('region');
     setFishSoopRegion(id);
     setSearchParams(omitEmptyParams({ region: id }));
   };
@@ -129,23 +112,38 @@ const FishSoopFilters: React.FC<FishSoopFiltersProps> = ({ subProduct }) => {
     setSearchParams(omitEmptyParams({ region: resolved.region, quarter: resolved.quarter, layer: id }));
   };
 
-  const handleAvgPageChange = (page: number) => {
-    setFishSoopAvgPage(String(page));
-    setSearchParams(omitEmptyParams({ region: FISHSOOP_AVERAGE_REGION_ID, page: String(page) }));
+  const handleAvgPageChange = (id: string) => {
+    setFishSoopAvgPage(id);
+    setSearchParams(omitEmptyParams({ page: id }));
   };
+
+  if (isAverageAnomalies) {
+    return (
+      <div className="text-imos-dark-grey *:border-imos-light-blue text-base *:border-b-1 *:px-4 *:pb-4 [&>*:last-child]:border-b-0">
+        <FilterSection title={ProductSidebarText.PAGE}>
+          <Dropdown
+            elements={pageElements}
+            selectedId={String(resolved.avgPage ?? '')}
+            onChange={(elem) => handleAvgPageChange(elem.id)}
+            smallDropdown
+          />
+        </FilterSection>
+      </div>
+    );
+  }
 
   return (
     <div className="text-imos-dark-grey *:border-imos-light-blue text-base *:border-b-1 *:px-4 *:pb-4 [&>*:last-child]:border-b-0">
       <FilterSection title={ProductSidebarText.REGION}>
         <Dropdown
           elements={regionElements}
-          selectedId={isAverageMode ? FISHSOOP_AVERAGE_REGION_ID : resolved.region}
+          selectedId={resolved.region}
           onChange={(elem) => handleRegionChange(elem.id)}
           smallDropdown
         />
       </FilterSection>
 
-      {isQuarterly && !isAverageMode && (
+      {isQuarterly && (
         <FilterSection title={ProductSidebarText.QUARTER}>
           <Dropdown
             elements={quarterElements}
@@ -156,36 +154,14 @@ const FishSoopFilters: React.FC<FishSoopFiltersProps> = ({ subProduct }) => {
         </FilterSection>
       )}
 
-      {!isAverageMode && (
-        <FilterSection title={ProductSidebarText.DEPTH_LAYER}>
-          <Dropdown
-            elements={layerElements}
-            selectedId={String(resolved.layer ?? '')}
-            onChange={(elem) => handleLayerChange(elem.id)}
-            smallDropdown
-          />
-        </FilterSection>
-      )}
-
-      {isAverageMode && (
-        <div>
-          <h3 className="ml-3 py-2">{ProductSidebarText.PAGE}</h3>
-          <div className="mt-2 mb-6 flex flex-wrap justify-between gap-2">
-            {resolved.avgPageOptions.map((page) => (
-              <div key={page} className="flex-1">
-                <Button
-                  size="full"
-                  borderRadius="small"
-                  type={resolved.avgPage === page ? 'primary' : 'secondary'}
-                  onClick={() => handleAvgPageChange(page)}
-                >
-                  {`p${page}`}
-                </Button>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <FilterSection title={ProductSidebarText.DEPTH_LAYER}>
+        <Dropdown
+          elements={layerElements}
+          selectedId={String(resolved.layer ?? '')}
+          onChange={(elem) => handleLayerChange(elem.id)}
+          smallDropdown
+        />
+      </FilterSection>
     </div>
   );
 };

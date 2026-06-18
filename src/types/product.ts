@@ -70,6 +70,7 @@ export type ChildProductID =
   // FishSOOP children
   | 'fishSOOP-profiles'
   | 'fishSOOP-quarterlyAnomalies'
+  | 'fishSOOP-averageAnomalies'
   | 'fishSOOP-depthAnomalies';
 
 // Combined types
@@ -133,6 +134,7 @@ export const childProductIDs: ChildProductID[] = [
   'swotGsla-mdt',
   'fishSOOP-profiles',
   'fishSOOP-quarterlyAnomalies',
+  'fishSOOP-averageAnomalies',
   'fishSOOP-depthAnomalies',
 ];
 

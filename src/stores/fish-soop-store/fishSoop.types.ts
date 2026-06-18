@@ -1,5 +1,3 @@
-export type FishSoopMode = 'region' | 'average';
-
 export type FishSoopStoreState = {
   /** FishSOOP region code (e.g. 'TasE'); applies to the anomaly products. */
   region: string;
@@ -9,8 +7,6 @@ export type FishSoopStoreState = {
   layer: string;
   /** Page of the `tanom_avg_p<N>` whole-dataset overview ('1'–'4'). */
   avgPage: string;
-  /** 'average' shows the whole-dataset overview pager instead of quarter/layer. */
-  mode: FishSoopMode;
 };
 
 export type FishSoopStoreActions = {
@@ -19,7 +15,6 @@ export type FishSoopStoreActions = {
     setQuarter: (quarter: string) => void;
     setLayer: (layer: string) => void;
     setAvgPage: (avgPage: string) => void;
-    setMode: (mode: FishSoopMode) => void;
     reset: () => void;
   };
 };

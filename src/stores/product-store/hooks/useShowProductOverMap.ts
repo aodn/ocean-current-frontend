@@ -4,7 +4,8 @@ import useProductStore from '../productStore';
 import useProductCheck from './useProductCheck';
 
 export const useShowProductOverMap = (): boolean => {
-  const { isArgo, isSurfaceWavesBuoyTimeseries, isFishSoopProfiles, isFishSoopAnomaly } = useProductCheck();
+  const { isArgo, isSurfaceWavesBuoyTimeseries, isFishSoopProfiles, isFishSoopAnomaly, isFishSoopAverageAnomalies } =
+    useProductCheck();
   const { isArgoValid } = useArgoProductValidQueryParams();
 
   const { getQueryParamsByKey } = useQueryParams();
@@ -21,7 +22,8 @@ export const useShowProductOverMap = (): boolean => {
 
   // FishSOOP anomaly image-list requests are region-less; region/quarter/layer
   // selection is driven by the sidebar filters (which do write the URL params).
-  if (isFishSoopAnomaly) {
+  // The average overview is likewise region-less and renders the resolved image.
+  if (isFishSoopAnomaly || isFishSoopAverageAnomalies) {
     return true;
   }
 
