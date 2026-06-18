@@ -27,7 +27,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
 tmp/
+.notes/
 
 .pnp.*
 .yarn/*
