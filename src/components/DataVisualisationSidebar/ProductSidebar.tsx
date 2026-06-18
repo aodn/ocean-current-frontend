@@ -44,8 +44,9 @@ const ProductSideBar: React.FC = () => {
   const { mainProduct, subProduct, subProducts } = useProductConvert();
   const { updateQueryParamsAndNavigate, getQueryParamsByKey } = useQueryParams();
   const useDate = useDateStore((state) => state.date);
-  const { isArgo, isCurrentMeters, isSealCtd, isSurfaceWaves, isFishSoop } = useProductCheck();
-  const shouldRenderMiniMap = useShowProductOverMap();
+  const { isArgo, isCurrentMeters, isSealCtd, isSurfaceWaves, isFishSoop, isFishSoopAverageAnomalies } =
+    useProductCheck();
+  const shouldRenderMiniMap = useShowProductOverMap() && !isFishSoopAverageAnomalies;
 
   const mooredInstrumentArrayPath = useMemo(() => {
     return (

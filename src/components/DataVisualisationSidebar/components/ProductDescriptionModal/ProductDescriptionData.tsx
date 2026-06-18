@@ -2255,7 +2255,7 @@ const FishSoopAverageAnomaliesModalData = () => {
       <p className="mb-2">
         We say &apos;potentially&apos; because there are several possible reasons why no coherent pattern might emerge:
         1) insufficient numbers of observations (relative to the real changes that have occurred), 2) artefacts in CARS
-        (due to sparsity of the data base used and/or interpolation artefacts), and 3) measurement errors (undetected by
+        (due to sparsity of the database used and/or interpolation artefacts), and 3) measurement errors (undetected by
         quality control procedures).
       </p>
       <p className="mb-2">Three-monthly, regional, layer-averages of the differences.</p>

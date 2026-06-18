@@ -169,7 +169,9 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
 
   return (
     <div className="mb-2 w-full bg-white p-2 md:rounded-md md:bg-transparent md:p-0">
-      <div className="my-2 flex h-11 items-center justify-center md:hidden">
+      <div
+        className={`my-2 h-11 items-center justify-center md:hidden ${isFishSoopAverageAnomalies ? 'hidden' : 'flex'}`}
+      >
         <Button
           onClick={handleToggleMap}
           borderRadius="extraSmall"
