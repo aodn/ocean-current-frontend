@@ -11,7 +11,7 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
   const urlType = useUrlType();
   const productFromUrl = useProductFromUrl(urlType);
 
-  const { title, summary, description, aboutButtonText, aboutDescription } = productInfo;
+  const { title, summary, description, aboutButtonText } = productInfo;
 
   const hasSummary = !!summary && summary.length > 0;
   const hasDescription = !!description;
@@ -49,7 +49,7 @@ const ProductSummary: React.FC<ProductSummaryProp> = ({ productInfo }) => {
           </button>
         )}
 
-        {aboutButtonText && aboutDescription && aboutPath && (
+        {aboutButtonText && aboutPath && (
           <Button
             onClick={() => window.open(aboutPath, '_blank', 'noopener,noreferrer')}
             size="full"

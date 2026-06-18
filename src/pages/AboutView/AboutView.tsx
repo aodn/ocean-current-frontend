@@ -1,12 +1,12 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { getProductByPath } from '@/utils/product-utils/product';
-import { getProductInfoByKey } from '@/components/DataVisualisationSidebar/utils';
 import { useRegionLatestDates } from '@/services/hooks/useRegionLatestDates';
-import { ProductID, standaloneProductIDs, StandaloneProductID } from '@/types/product';
+import { ProductID, standaloneProductIDs, StandaloneProductID, RootProductID, ChildProductID } from '@/types/product';
 import { Button } from '@/components/Shared';
 import ErrorContent from '@/errors/error-content/ErrorContent';
 import { GeneralText } from '@/constants/textConstant';
+import { aboutContentByProductId } from './AboutData';
 
 const AboutView: React.FC = () => {
   const { product: productPath, subProduct: subProductPath } = useParams<{
@@ -15,8 +15,8 @@ const AboutView: React.FC = () => {
   }>();
   const navigate = useNavigate();
 
-  let mainProductKey: string | undefined;
-  let subProductKey: string | undefined;
+  let mainProductKey: RootProductID | undefined;
+  let subProductKey: ChildProductID | undefined;
   try {
     if (productPath) {
       const mainProduct = getProductByPath(productPath);
@@ -30,7 +30,7 @@ const AboutView: React.FC = () => {
     // Invalid product path — fall through to error state
   }
 
-  const productInfo = mainProductKey ? getProductInfoByKey(mainProductKey, subProductKey) : null;
+  const aboutContent = mainProductKey ? aboutContentByProductId[mainProductKey] : null;
   const isStandaloneMain = mainProductKey
     ? standaloneProductIDs.includes(mainProductKey as StandaloneProductID)
     : false;
@@ -43,9 +43,9 @@ const AboutView: React.FC = () => {
     ? `${basePath}?region=${latestRegion.region}&date=${latestRegion.latestDate}`
     : basePath;
 
-  if (!productInfo?.aboutDescription) {
+  if (!aboutContent) {
     return (
-      <div className="flex md:min-h-[800px]">
+      <div className="flex md:min-h-200">
         <ErrorContent
           title="About Content Not Available"
           description="The about content for this product is not available."
@@ -57,9 +57,7 @@ const AboutView: React.FC = () => {
   return (
     <div className="rounded-lg bg-white">
       <div className="bg-imos-cloud-tint/70 flex items-center justify-center rounded-t-lg px-12 py-4">
-        <h1 className="font-poppins text-imos-deep-blue text-center text-xl font-medium">
-          {productInfo.aboutTitle || productInfo.title}
-        </h1>
+        <h1 className="font-poppins text-imos-deep-blue text-center text-xl font-medium">{aboutContent.title}</h1>
       </div>
       <div className="px-6 pt-6 pb-6 md:px-10">
         <div className="mb-4">
@@ -67,7 +65,7 @@ const AboutView: React.FC = () => {
             <span className="text-imos-deep-blue text-lg">{GeneralText.EXPLORE_DATASET}</span>
           </Button>
         </div>
-        {productInfo.aboutDescription()}
+        {aboutContent.description()}
       </div>
     </div>
   );
