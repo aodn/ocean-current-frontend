@@ -7,7 +7,6 @@ const initialState: FishSoopStoreState = {
   quarter: '',
   layer: '',
   avgPage: '1',
-  mode: 'region',
 };
 
 const useFishSoopStore = create<FishSoopStoreState & FishSoopStoreActions>()(
@@ -19,7 +18,6 @@ const useFishSoopStore = create<FishSoopStoreState & FishSoopStoreActions>()(
         setQuarter: (quarter) => set({ quarter }, false, 'setQuarter'),
         setLayer: (layer) => set({ layer }, false, 'setLayer'),
         setAvgPage: (avgPage) => set({ avgPage }, false, 'setAvgPage'),
-        setMode: (mode) => set({ mode }, false, 'setMode'),
         reset: () => set(initialState, false, 'resetFishSoopStore'),
       },
     }),
@@ -32,7 +30,6 @@ export const {
   setQuarter: setFishSoopQuarter,
   setLayer: setFishSoopLayer,
   setAvgPage: setFishSoopAvgPage,
-  setMode: setFishSoopMode,
   reset: resetFishSoopStore,
 } = useFishSoopStore.getState().actions;
 

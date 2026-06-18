@@ -2236,6 +2236,33 @@ const FishSoopDepthAnomaliesModalData = () => {
   );
 };
 
+const FishSoopAverageAnomaliesModalData = () => {
+  return (
+    <div className="p-4 text-gray-800">
+      <h3 className="mb-2 font-semibold">FishSOOP temperatures compared to historical observations</h3>
+      <p className="mb-2">
+        In this section we compare the FishSOOP data set with the CARS2009 climatology in order to see if the FishSOOP
+        observations differ from CARS2009 in any systematic way(s). Is there a pattern or does profile-to-profile
+        variability look like random noise, suggesting the ocean is so under-sampled that no patterns are yet to emerge?
+      </p>
+      <p className="mb-2">
+        But first: why look at the differences from CARS? Because we know that the temperature of the ocean varies
+        strongly with depth, time and location and that the CARS seasonal climatology accounts for much of this. The
+        FishSOOP observations, which are very unevenly distributed in depth-time-location space, are therefore
+        inevitably aliased. Subtracting the CARS counterparts of the observations removes much of this aliased signal,
+        potentially allowing coherent patterns of change to emerge.
+      </p>
+      <p className="mb-2">
+        We say &apos;potentially&apos; because there are several possible reasons why no coherent pattern might emerge:
+        1) insufficient numbers of observations (relative to the real changes that have occurred), 2) artefacts in CARS
+        (due to sparsity of the database used and/or interpolation artefacts), and 3) measurement errors (undetected by
+        quality control procedures).
+      </p>
+      <p className="mb-2">Three-monthly, regional, layer-averages of the differences.</p>
+    </div>
+  );
+};
+
 export {
   OceanColourModalData,
   SixDaySstModalData,
@@ -2251,5 +2278,6 @@ export {
   FishSoopModalData,
   FishSoopProfilesModalData,
   FishSoopQuarterlyAnomaliesModalData,
+  FishSoopAverageAnomaliesModalData,
   FishSoopDepthAnomaliesModalData,
 };

@@ -609,6 +609,16 @@ export const OC_PRODUCTS: Product[] = [
         },
       },
       {
+        title: 'Average Anomalies',
+        key: 'fishSOOP-averageAnomalies',
+        path: 'average-anomalies',
+        imgPath: null,
+        dateFormat: {
+          localFormat: null,
+          stateFormat: null,
+        },
+      },
+      {
         title: 'Depth Anomalies',
         key: 'fishSOOP-depthAnomalies',
         path: 'depth-anomalies',

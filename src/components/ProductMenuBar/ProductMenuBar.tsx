@@ -49,6 +49,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     isSwotGslaMdt,
     isFishSoop,
     isFishSoopAnomaly,
+    isFishSoopAverageAnomalies,
   } = useProductCheck();
   const { isArgoValid } = useArgoProductValidQueryParams();
   const productId = useProductStore((state) => state.productParams.productId);
@@ -168,7 +169,9 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
 
   return (
     <div className="mb-2 w-full bg-white p-2 md:rounded-md md:bg-transparent md:p-0">
-      <div className="my-2 flex h-11 items-center justify-center md:hidden">
+      <div
+        className={`my-2 h-11 items-center justify-center md:hidden ${isFishSoopAverageAnomalies ? 'hidden' : 'flex'}`}
+      >
         <Button
           onClick={handleToggleMap}
           borderRadius="extraSmall"
@@ -182,7 +185,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
         </Button>
       </div>
       <div className="font-open-sans text-imos-dark-grey flex w-full flex-wrap items-center gap-2 font-medium md:mb-2 md:gap-3">
-        {!isSwotGslaMdt && !isFishSoopAnomaly && (
+        {!isSwotGslaMdt && !isFishSoopAnomaly && !isFishSoopAverageAnomalies && (
           <>
             <div className="border-imos-calypso-blue/50 flex h-11 grow basis-[calc(100%-4rem)] items-center justify-between rounded-md border bg-white md:grow md:basis-auto md:border-none">
               {isCurrentMeters ? (

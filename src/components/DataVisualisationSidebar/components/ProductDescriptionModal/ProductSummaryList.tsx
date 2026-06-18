@@ -13,6 +13,7 @@ import {
   FishSoopModalData,
   FishSoopProfilesModalData,
   FishSoopQuarterlyAnomaliesModalData,
+  FishSoopAverageAnomaliesModalData,
   FishSoopDepthAnomaliesModalData,
 } from '@/components/DataVisualisationSidebar/components/ProductDescriptionModal/ProductDescriptionData';
 import {
@@ -153,6 +154,12 @@ export const productInfoList: ProductInfo[] = [
         summary:
           '3-month averages of the whole FishSOOP dataset compared with a historical climatology reveal how the ocean has changed. Click for more depth layers. The plots also show the data coverage history.',
         description: FishSoopQuarterlyAnomaliesModalData,
+      },
+      'fishSOOP-averageAnomalies': {
+        title: 'Average Anomalies',
+        summary:
+          'Whole-dataset, three-monthly regional layer-averages of FishSOOP temperatures compared with the CARS2009 climatology, to reveal whether the observations differ systematically from the historical record.',
+        description: FishSoopAverageAnomaliesModalData,
       },
       'fishSOOP-depthAnomalies': {
         title: 'Depth Anomalies',

@@ -1453,7 +1453,7 @@ const FishSoopAboutData = () => {
 
         <h3 className="text-base font-semibold">Three-monthly, regional, layer-averages of the differences</h3>
         <a
-          href="/product/fish-soop/quarterly-anomalies?region=avg&page=1"
+          href="/product/fish-soop/average-anomalies?page=1"
           target="_blank"
           rel="noreferrer noopener"
           className="mx-auto block max-w-xl"
