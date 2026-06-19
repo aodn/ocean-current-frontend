@@ -149,7 +149,7 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Coriolis force',
     definition: () => (
       <p>
-        the `pseudo-force&apos; on an object moving with respect to a rotating frame of reference. A cannon shell
+        the &lsquo;pseudo-force&rsquo; on an object moving with respect to a rotating frame of reference. A cannon shell
         appears to veer left in the southern hemisphere, and right in the northern hemisphere.
       </p>
     ),
@@ -284,7 +284,7 @@ const glossaryTerms: GlossaryTerm[] = [
     term: 'Sea Level Anomaly',
     definition: () => (
       <p>
-        This is the commonly used, abbreviated name for the quantity from which the time-varing component (ie, the
+        This is the commonly used, abbreviated name for the quantity from which the time-varying component (ie, the
         &apos;anomaly&apos; or difference from the time-mean) of the <TermLink id="geostrophic">geostrophic</TermLink>{' '}
         current velocity can be computed. Sometimes the terms &apos;subtidal&apos; and &apos;adjusted&apos; are also
         pre-pended to make it unambiguous that the variations of sea level due, respectively, to the high frequency

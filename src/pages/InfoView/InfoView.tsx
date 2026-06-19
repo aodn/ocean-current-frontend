@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router';
 import { ArticleCard } from '@/components/Shared';
 import ErrorContent from '@/errors/error-content/ErrorContent';
+import { useScrollToHash } from '@/hooks/useScrollToHash/useScrollToHash';
 import { infoContentBySlug } from './InfoData';
 
 // Renders a product-unrelated info page (e.g. glossary, references), looking up
@@ -10,6 +11,7 @@ import { infoContentBySlug } from './InfoData';
 // the same lookup for product-keyed about content.
 const InfoView: React.FC = () => {
   const { slug } = useParams<{ slug?: string }>();
+  useScrollToHash();
   const content = slug ? infoContentBySlug[slug] : undefined;
 
   if (!content) {
