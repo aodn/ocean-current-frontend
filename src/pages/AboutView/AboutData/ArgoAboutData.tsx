@@ -11,7 +11,7 @@ export const ArgoAboutData = () => {
         years. The [DATE INDEX] goes back to 2004.
       </p>
       <a
-        href="https://oceancurrent.aodn.org.au/profiles/map.php?link=map/20110920.html"
+        href="/product/argo?date=20110920"
         target="_blank"
         rel="noreferrer noopener"
         className="mx-auto block max-w-xl"
@@ -38,7 +38,7 @@ export const ArgoAboutData = () => {
         .
       </p>
       <a
-        href="https://oceancurrent.aodn.org.au/profiles/profile.php?link=5903622/20110915_5903622_44.html"
+        href="/product/argo?wmoid=5903622&cycle=44"
         target="_blank"
         rel="noreferrer noopener"
         className="mx-auto block max-w-xl"
@@ -74,12 +74,7 @@ export const ArgoAboutData = () => {
         </li>
         <li>
           The daily-updated{' '}
-          <a
-            href="https://oceancurrent.aodn.org.au/glossary.php#synTS"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="text-imos-sea-blue"
-          >
+          <a href="/info/glossary#synTS" target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue">
             &apos;synTS&apos;
           </a>{' '}
           estimate of subsurface properties to which the Argo data is compared is valid for 17/09/2011, which is a day
@@ -87,12 +82,7 @@ export const ArgoAboutData = () => {
           because the estimates are the result of using satellite observations of the sea surface height and temperature
           (shown at right) to adjust the climatological profile, according to historically-observed relationships
           between anomalies of surface dynamic height and temperature with sub-surface properties (see{' '}
-          <a
-            href="https://oceancurrent.aodn.org.au/misc/references.php"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="text-imos-sea-blue"
-          >
+          <a href="/info/references" target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue">
             Ridgway and Dunn, 2010
           </a>
           ).
@@ -142,7 +132,7 @@ export const ArgoAboutData = () => {
         centre of anti-cyclones (Baird and Ridgway, 2012).
       </p>
       <a
-        href="https://oceancurrent.aodn.org.au/profiles/profile.php?link=5903677/20110725_5903677_12.html"
+        href="/product/argo?wmoid=5903677&cycle=12"
         target="_blank"
         rel="noreferrer noopener"
         className="mx-auto block max-w-xl"
@@ -164,7 +154,7 @@ export const ArgoAboutData = () => {
         that the apparent over-estimation is persistent, and more a property of the eddy (or location) than float number
         590658. E.g., see{' '}
         <a
-          href="https://oceancurrent.aodn.org.au/profiles/profile.php?link=5903653/20110823_5903653_21.html"
+          href="/product/argo?wmoid=5903653&cycle=21"
           target="_blank"
           rel="noreferrer noopener"
           className="text-imos-sea-blue"
@@ -174,7 +164,7 @@ export const ArgoAboutData = () => {
         . Confirmation that the sea level anomaly is usually correct in mid September at this location is provided by
         agreement of the surface geostrophic velocity with the trajectory and speed of surface drifters, e.g.{' '}
         <a
-          href="https://oceancurrent.aodn.org.au/sst.php?link=LordHoweS/2011/2011091903.html"
+          href="/resource/LordHoweS/2011/2011091903.gif"
           target="_blank"
           rel="noreferrer noopener"
           className="text-imos-sea-blue"
@@ -184,7 +174,7 @@ export const ArgoAboutData = () => {
         .
       </p>
       <a
-        href="https://oceancurrent.aodn.org.au/profiles/map/profile.php?link=5901658/20110919_5901658_126.html"
+        href="/product/argo?wmoid=5901658&cycle=126"
         target="_blank"
         rel="noreferrer noopener"
         className="mx-auto block max-w-xl"

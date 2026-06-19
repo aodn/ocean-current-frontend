@@ -3,6 +3,7 @@ import MapView from './MapView/MapView';
 import DataView from './DataView/DataView';
 import ErrorPage from './ErrorPage/ErrorPage';
 import AboutView from './AboutView/AboutView';
+import InfoView from './InfoView/InfoView';
 import News from './News/News';
 
-export { Home, MapView, DataView, ErrorPage, AboutView, News };
+export { Home, MapView, DataView, ErrorPage, AboutView, InfoView, News };

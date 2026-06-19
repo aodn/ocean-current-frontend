@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 import { getProductByPath } from '@/utils/product-utils/product';
 import { useRegionLatestDates } from '@/services/hooks/useRegionLatestDates';
 import { ProductID, standaloneProductIDs, StandaloneProductID, RootProductID, ChildProductID } from '@/types/product';
-import { Button } from '@/components/Shared';
+import { Button, ArticleCard } from '@/components/Shared';
 import ErrorContent from '@/errors/error-content/ErrorContent';
 import { GeneralText } from '@/constants/textConstant';
 import { aboutContentByProductId } from './AboutData';
@@ -55,19 +55,14 @@ const AboutView: React.FC = () => {
   }
 
   return (
-    <div className="rounded-lg bg-white">
-      <div className="bg-imos-cloud-tint/70 flex items-center justify-center rounded-t-lg px-12 py-4">
-        <h1 className="font-poppins text-imos-deep-blue text-center text-xl font-medium">{aboutContent.title}</h1>
+    <ArticleCard title={aboutContent.title}>
+      <div className="mb-4">
+        <Button onClick={() => navigate(explorePath)} borderRadius="small" type="secondary" className="md:px-4!">
+          <span className="text-imos-deep-blue text-lg">{GeneralText.EXPLORE_DATASET}</span>
+        </Button>
       </div>
-      <div className="px-6 pt-6 pb-6 md:px-10">
-        <div className="mb-4">
-          <Button onClick={() => navigate(explorePath)} borderRadius="small" type="secondary" className="md:px-4!">
-            <span className="text-imos-deep-blue text-lg">{GeneralText.EXPLORE_DATASET}</span>
-          </Button>
-        </div>
-        {aboutContent.description()}
-      </div>
-    </div>
+      {aboutContent.description()}
+    </ArticleCard>
   );
 };
 
