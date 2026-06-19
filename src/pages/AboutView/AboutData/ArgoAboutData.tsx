@@ -132,7 +132,7 @@ export const ArgoAboutData = () => {
         centre of anti-cyclones (Baird and Ridgway, 2012).
       </p>
       <a
-        href="https://oceancurrent.aodn.org.au/profiles/profile.php?link=5903677/20110725_5903677_12.html"
+        href="/product/argo?wmoid=5903677&cycle=12"
         target="_blank"
         rel="noreferrer noopener"
         className="mx-auto block max-w-xl"
@@ -154,7 +154,7 @@ export const ArgoAboutData = () => {
         that the apparent over-estimation is persistent, and more a property of the eddy (or location) than float number
         590658. E.g., see{' '}
         <a
-          href="https://oceancurrent.aodn.org.au/profiles/profile.php?link=5903653/20110823_5903653_21.html"
+          href="/product/argo?wmoid=5903653&cycle=21"
           target="_blank"
           rel="noreferrer noopener"
           className="text-imos-sea-blue"
@@ -174,7 +174,7 @@ export const ArgoAboutData = () => {
         .
       </p>
       <a
-        href="https://oceancurrent.aodn.org.au/profiles/map/profile.php?link=5901658/20110919_5901658_126.html"
+        href="/product/argo?wmoid=5901658&cycle=126"
         target="_blank"
         rel="noreferrer noopener"
         className="mx-auto block max-w-xl"
