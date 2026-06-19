@@ -11,13 +11,13 @@ export const ArgoAboutData = () => {
         years. The [DATE INDEX] goes back to 2004.
       </p>
       <a
-        href="https://oceancurrent.aodn.org.au/profiles/map.php?link=map/20110920.html"
+        href="/product/argo?date=20110920"
         target="_blank"
         rel="noreferrer noopener"
         className="mx-auto block max-w-xl"
       >
         <img
-          src="/resource/profiles/map/20110920.gif"
+          src="https://oceancurrent.aodn.org.au/profiles/map/20110920.gif"
           alt="Example Argo position map for 20 September 2011"
           loading="lazy"
           decoding="async"
@@ -38,7 +38,7 @@ export const ArgoAboutData = () => {
         .
       </p>
       <a
-        href="https://oceancurrent.aodn.org.au/profiles/profile.php?link=5903622/20110915_5903622_44.html"
+        href="/product/argo?wmoid=5903622&cycle=44"
         target="_blank"
         rel="noreferrer noopener"
         className="mx-auto block max-w-xl"
@@ -74,12 +74,7 @@ export const ArgoAboutData = () => {
         </li>
         <li>
           The daily-updated{' '}
-          <a
-            href="https://oceancurrent.aodn.org.au/glossary.php#synTS"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="text-imos-sea-blue"
-          >
+          <a href="/about/glossary#synTS" target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue">
             &apos;synTS&apos;
           </a>{' '}
           estimate of subsurface properties to which the Argo data is compared is valid for 17/09/2011, which is a day

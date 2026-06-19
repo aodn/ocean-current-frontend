@@ -93,7 +93,7 @@ export const TidalCurrentsAboutData = () => {
         with actual observations reveals how Australia&apos;s ocean currents range from tidally-dominated (e.g. in Bass
         Strait as shown at right), to mixed (e.g.{' '}
         <a
-          href=" https://oceancurrent.aodn.org.au/tides/monthplots/IMOS_GBRPPS_201207.gif"
+          href="https://oceancurrent.aodn.org.au/tides/monthplots/IMOS_GBRPPS_201207.gif"
           target="_blank"
           rel="noreferrer noopener"
           className="text-imos-sea-blue"
