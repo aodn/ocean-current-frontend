@@ -1,6 +1,6 @@
 import { Navigate, type RouteObject } from 'react-router';
-import { Home, MapView, DataView, ErrorPage, AboutView, GlossaryView, News } from '@/pages';
-import { MainLayout, MapLayout, DataVisualisationLayout, AboutLayout, NewsLayout } from '@/layouts';
+import { Home, MapView, DataView, ErrorPage, AboutView, InfoView, News } from '@/pages';
+import { MainLayout, MapLayout, DataVisualisationLayout, ArticleLayout, NewsLayout } from '@/layouts';
 import { createProductRedirects, NewsPhpRedirect } from './utils';
 import { APP_ROUTES } from './appRoutes';
 
@@ -56,15 +56,11 @@ const routes: RouteObject[] = [
       },
       {
         path: APP_ROUTES.ABOUT,
-        element: <AboutLayout />,
+        element: <ArticleLayout />,
         children: [
           {
             index: true,
             element: <Navigate to={APP_ROUTES.NOT_FOUND} replace />,
-          },
-          {
-            path: 'glossary',
-            element: <GlossaryView />,
           },
           {
             path: ':product/:subProduct',
@@ -73,6 +69,20 @@ const routes: RouteObject[] = [
           {
             path: ':product',
             element: <AboutView />,
+          },
+        ],
+      },
+      {
+        path: APP_ROUTES.INFO,
+        element: <ArticleLayout />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to={APP_ROUTES.NOT_FOUND} replace />,
+          },
+          {
+            path: ':slug',
+            element: <InfoView />,
           },
         ],
       },

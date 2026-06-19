@@ -3,11 +3,10 @@ import { useNavigate, useParams } from 'react-router';
 import { getProductByPath } from '@/utils/product-utils/product';
 import { useRegionLatestDates } from '@/services/hooks/useRegionLatestDates';
 import { ProductID, standaloneProductIDs, StandaloneProductID, RootProductID, ChildProductID } from '@/types/product';
-import { Button } from '@/components/Shared';
+import { Button, ArticleCard } from '@/components/Shared';
 import ErrorContent from '@/errors/error-content/ErrorContent';
 import { GeneralText } from '@/constants/textConstant';
-import { aboutContentByProductId } from './AboutData/product';
-import AboutCard from './components/AboutCard';
+import { aboutContentByProductId } from './AboutData';
 
 const AboutView: React.FC = () => {
   const { product: productPath, subProduct: subProductPath } = useParams<{
@@ -56,14 +55,14 @@ const AboutView: React.FC = () => {
   }
 
   return (
-    <AboutCard title={aboutContent.title}>
+    <ArticleCard title={aboutContent.title}>
       <div className="mb-4">
         <Button onClick={() => navigate(explorePath)} borderRadius="small" type="secondary" className="md:px-4!">
           <span className="text-imos-deep-blue text-lg">{GeneralText.EXPLORE_DATASET}</span>
         </Button>
       </div>
       {aboutContent.description()}
-    </AboutCard>
+    </ArticleCard>
   );
 };
 

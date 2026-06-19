@@ -1,7 +1,7 @@
 import MainLayout from './MainLayout';
 import MapLayout from './MapLayout';
 import DataVisualisationLayout from './DataVisualisationLayout';
-import AboutLayout from './AboutLayout';
+import ArticleLayout from './ArticleLayout';
 import NewsLayout from './NewsLayout';
 
-export { MainLayout, MapLayout, DataVisualisationLayout, AboutLayout, NewsLayout };
+export { MainLayout, MapLayout, DataVisualisationLayout, ArticleLayout, NewsLayout };

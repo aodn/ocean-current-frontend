@@ -11,7 +11,7 @@ import React from 'react';
 const LEGACY_BASE = 'https://oceancurrent.aodn.org.au';
 
 interface GlossaryTerm {
-  // Anchor id used for deep-linking, e.g. /about/glossary#synTS
+  // Anchor id used for deep-linking, e.g. /info/glossary#synTS
   id: string;
   term: string;
   definition: () => JSX.Element;
@@ -336,7 +336,10 @@ const glossaryTerms: GlossaryTerm[] = [
           [what&apos;s shown]
         </a>
         . The synTS method is described by{' '}
-        <ExternalLink href={`${LEGACY_BASE}/misc/references.htm`}>Ridgway and Dunn (2010)</ExternalLink>.
+        <a href="/info/references" className="text-imos-sea-blue underline">
+          Ridgway and Dunn (2010)
+        </a>
+        .
       </p>
     ),
   },
@@ -380,7 +383,7 @@ const glossaryTerms: GlossaryTerm[] = [
   },
 ];
 
-export const GlossaryAboutData = () => (
+export const GlossaryData = () => (
   <dl className="flex flex-col gap-6">
     {glossaryTerms.map(({ id, term, definition }) => (
       <div key={id} id={id} className="scroll-mt-24">

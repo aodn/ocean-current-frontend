@@ -74,7 +74,7 @@ export const ArgoAboutData = () => {
         </li>
         <li>
           The daily-updated{' '}
-          <a href="/about/glossary#synTS" target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue">
+          <a href="/info/glossary#synTS" target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue">
             &apos;synTS&apos;
           </a>{' '}
           estimate of subsurface properties to which the Argo data is compared is valid for 17/09/2011, which is a day
@@ -82,12 +82,7 @@ export const ArgoAboutData = () => {
           because the estimates are the result of using satellite observations of the sea surface height and temperature
           (shown at right) to adjust the climatological profile, according to historically-observed relationships
           between anomalies of surface dynamic height and temperature with sub-surface properties (see{' '}
-          <a
-            href="https://oceancurrent.aodn.org.au/misc/references.php"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="text-imos-sea-blue"
-          >
+          <a href="/info/references" target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue">
             Ridgway and Dunn, 2010
           </a>
           ).

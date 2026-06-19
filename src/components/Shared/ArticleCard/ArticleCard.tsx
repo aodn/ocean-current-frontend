@@ -1,14 +1,14 @@
 import React from 'react';
 
-interface AboutCardProps {
+interface ArticleCardProps {
   title: string;
   children: React.ReactNode;
 }
 
-// Shared card chrome for About-section pages: a white rounded card with a
-// tinted title header. Used by AboutView (product about pages) and other
-// standalone about pages such as the glossary.
-const AboutCard: React.FC<AboutCardProps> = ({ title, children }) => {
+// Shared card chrome for long-form text pages: a white rounded card with a
+// tinted title header. Used by AboutView (product about pages) and InfoView
+// (product-unrelated info pages such as the glossary and references).
+const ArticleCard: React.FC<ArticleCardProps> = ({ title, children }) => {
   return (
     <div className="rounded-lg bg-white">
       <div className="bg-imos-cloud-tint/70 flex items-center justify-center rounded-t-lg px-12 py-4">
@@ -19,4 +19,4 @@ const AboutCard: React.FC<AboutCardProps> = ({ title, children }) => {
   );
 };
 
-export default AboutCard;
+export default ArticleCard;

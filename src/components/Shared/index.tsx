@@ -9,6 +9,7 @@ import ToggleButton from './ToggleButton/ToggleButton';
 import TruncateText from './TruncateText/TruncateText';
 import LinkOrAnchor from './LinkOrAnchor/LinkOrAnchor';
 import ShareButton from './ShareButton/ShareButton';
+import ArticleCard from './ArticleCard/ArticleCard';
 
 export * from './Collapsible';
 
@@ -24,5 +25,6 @@ export {
   TruncateText,
   LinkOrAnchor,
   ShareButton,
+  ArticleCard,
 };
 export * from './Overlay/Overlay';
