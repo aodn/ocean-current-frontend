@@ -1,11 +1,5 @@
-// References cited across the Ocean Current about pages.
-// Ported from the legacy misc/references.php page. Each entry is one citation,
-// with the author/year prefix emphasised.
-
 interface Reference {
-  // Author/year prefix, rendered bold-italic (also used as the React key).
   authors: string;
-  // Remaining citation text, including its leading punctuation.
   citation: string;
 }
 
