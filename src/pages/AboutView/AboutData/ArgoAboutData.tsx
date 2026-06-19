@@ -17,7 +17,7 @@ export const ArgoAboutData = () => {
         className="mx-auto block max-w-xl"
       >
         <img
-          src="https://oceancurrent.aodn.org.au/profiles/map/20110920.gif"
+          src="/resource/profiles/map/20110920.gif"
           alt="Example Argo position map for 20 September 2011"
           loading="lazy"
           decoding="async"
@@ -164,7 +164,7 @@ export const ArgoAboutData = () => {
         . Confirmation that the sea level anomaly is usually correct in mid September at this location is provided by
         agreement of the surface geostrophic velocity with the trajectory and speed of surface drifters, e.g.{' '}
         <a
-          href="https://oceancurrent.aodn.org.au/sst.php?link=LordHoweS/2011/2011091903.html"
+          href="/resource/LordHoweS/2011/2011091903.gif"
           target="_blank"
           rel="noreferrer noopener"
           className="text-imos-sea-blue"
