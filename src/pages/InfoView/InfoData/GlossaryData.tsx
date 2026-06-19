@@ -1,31 +1,14 @@
-// Glossary of oceanographic terminology, techniques and principles.
-// Ported from the legacy glossary.php page. Each term is anchored by `id` so
-// other pages can deep-link to a definition (e.g. ArgoAboutData links to
-// #synTS). Cross-references between terms use in-page `#id` anchors; links to
-// legacy resources/pages are pointed at the new app or the legacy file server.
-
 import React from 'react';
-
-// Legacy file server, source for static assets (images, movies, references)
-// that have not been migrated into the new app.
-const LEGACY_BASE = 'https://oceancurrent.aodn.org.au';
+import { NewTabLink } from '@/components/Shared';
 
 interface GlossaryTerm {
-  // Anchor id used for deep-linking, e.g. /info/glossary#synTS
   id: string;
   term: string;
   definition: () => JSX.Element;
 }
 
-const ExternalLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
-  <a href={href} target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue underline">
-    {children}
-  </a>
-);
-
-// In-page jump to another glossary term.
 const TermLink: React.FC<{ id: string; children: React.ReactNode }> = ({ id, children }) => (
-  <a href={`#${id}`} className="text-imos-sea-blue underline">
+  <a href={`#${id}`} className="text-imos-sea-blue">
     {children}
   </a>
 );
@@ -37,7 +20,7 @@ const glossaryTerms: GlossaryTerm[] = [
     definition: () => (
       <>
         <img
-          src={`${LEGACY_BASE}/misc/orbit720.gif`}
+          src="/resource/misc/orbit720.gif"
           alt="Satellite orbit diagram"
           loading="lazy"
           decoding="async"
@@ -54,27 +37,25 @@ const glossaryTerms: GlossaryTerm[] = [
           and the instrumental bias. The Topex/Poseidon and Jason missions are in orbits that take 10 days to finish
           re-sampling a criss-crossing pattern of ascending (/) and descending (\) passes sampling ground tracks which
           are about 250km apart at mid-latitudes.{' '}
-          <ExternalLink href={`${LEGACY_BASE}/misc/orbit.fli`}>
-            [play orbit movie; shows half a 10-d cycle]
-          </ExternalLink>
-          . The ERS and Envisat ground tracks are about 160km apart at mid-latitudes, but are re-sampled only every 35
-          days. The GFO mission is intermediate, with a 17-d repeat cycle.{' '}
-          <ExternalLink href={`${LEGACY_BASE}/misc/tr1996.fli`}>
+          <NewTabLink href="/resource/misc/orbit.fli">[play orbit movie; shows half a 10-d cycle]</NewTabLink>. The ERS
+          and Envisat ground tracks are about 160km apart at mid-latitudes, but are re-sampled only every 35 days. The
+          GFO mission is intermediate, with a 17-d repeat cycle.{' '}
+          <NewTabLink href="/resource/misc/tr1996.fli">
             [play movie of Topex/Poseidon and ERS along-track sea level measurements off WA]
-          </ExternalLink>
+          </NewTabLink>
           . More information:
           <br />
-          <ExternalLink href="https://sealevel.jpl.nasa.gov/">Sea Level at NASA JPL</ExternalLink>
+          <NewTabLink href="https://sealevel.jpl.nasa.gov/">Sea Level at NASA JPL</NewTabLink>
           <br />
-          <ExternalLink href="https://www.aviso.altimetry.fr/en/home.html">AVISO</ExternalLink>
+          <NewTabLink href="https://www.aviso.altimetry.fr/en/home.html">AVISO</NewTabLink>
           <br />
-          <ExternalLink href="https://www.star.nesdis.noaa.gov/socd/lsa/">NOAA</ExternalLink>
+          <NewTabLink href="https://www.star.nesdis.noaa.gov/socd/lsa/">NOAA</NewTabLink>
           <br />
-          <ExternalLink href="https://www.eumetsat.int/">EuMetSat</ExternalLink>
+          <NewTabLink href="https://www.eumetsat.int/">EuMetSat</NewTabLink>
           <br />
-          <ExternalLink href="https://www.esa.int/">ESA</ExternalLink>
+          <NewTabLink href="https://www.esa.int/">ESA</NewTabLink>
           <br />
-          <ExternalLink href="https://www.altimetry.info/">ESA/CNES altimetry tutorial</ExternalLink>
+          <NewTabLink href="https://www.altimetry.info/">ESA/CNES altimetry tutorial</NewTabLink>
         </p>
       </>
     ),
@@ -85,7 +66,7 @@ const glossaryTerms: GlossaryTerm[] = [
     definition: () => (
       <p>
         Advanced Very High Resolution Radiometer. A sensor carried by the{' '}
-        <ExternalLink href="https://www.noaa.gov/">US National Ocean and Atmosphere Administration (NOAA)</ExternalLink>{' '}
+        <NewTabLink href="https://www.noaa.gov/">US National Ocean and Atmosphere Administration (NOAA)</NewTabLink>{' '}
         satellites which oceanographers use to measure Sea Surface Temperature (SST). The pixel size is about 1km and
         accuracy about +/-0.6&#176;C. The NOAA satellites broadcast the data continuously, so any groundstation that can
         see the satellite can receive the data. Several satellite passes per day are tracked, received, processed and
@@ -113,12 +94,9 @@ const glossaryTerms: GlossaryTerm[] = [
         covers the entire globe. It is produced by interpolating all available in-situ observations of hydrographic
         properties onto a regular three-dimensional grid. The result is a set of harmonic constants for the yearly and
         semi-annual components of the variability as well as the all-time mean. The sudden increase in the amount of
-        data provided by the{' '}
-        <a href="/about/argo" target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue underline">
-          Argo
-        </a>{' '}
-        programme means that the atlas is not really a long-term average so it is best to interpret it as simply an
-        average of all available data, binned by time-of-year, but not year itself.
+        data provided by the <NewTabLink href="/about/argo">Argo</NewTabLink> programme means that the atlas is not
+        really a long-term average so it is best to interpret it as simply an average of all available data, binned by
+        time-of-year, but not year itself.
       </p>
     ),
   },
@@ -332,14 +310,8 @@ const glossaryTerms: GlossaryTerm[] = [
       <p>
         short for &apos;synthetic temperature and salinity&apos;. This data product is also described on this website as
         &apos;Satellite adjusted climatology&apos; as explained at{' '}
-        <a href="/about/argo" target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue underline">
-          [what&apos;s shown]
-        </a>
-        . The synTS method is described by{' '}
-        <a href="/info/references" target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue underline">
-          Ridgway and Dunn (2010)
-        </a>
-        .
+        <NewTabLink href="/about/argo">[what&apos;s shown]</NewTabLink>. The synTS method is described by{' '}
+        <NewTabLink href="/info/references">Ridgway and Dunn (2010)</NewTabLink>.
       </p>
     ),
   },
@@ -350,10 +322,10 @@ const glossaryTerms: GlossaryTerm[] = [
       <p>
         The principle method for validating our altimetric surface velocity estimates is by comparing them to the
         velocity of Surface Drifters, or{' '}
-        <ExternalLink href="https://www.aoml.noaa.gov/phod/gdp/">Global Lagrangian Drifters</ExternalLink>. These buoys
-        are tracked by the Argos positioning system (not to be confused with the Argo floats) and have a 10m long
-        sea-anchor at the end of a 10m wire, to minimise their down-wind velocity, thus reducing their sensitivity to
-        those components of the surface current velocity to which the altimeters are blind.
+        <NewTabLink href="https://www.aoml.noaa.gov/phod/gdp/">Global Lagrangian Drifters</NewTabLink>. These buoys are
+        tracked by the Argos positioning system (not to be confused with the Argo floats) and have a 10m long sea-anchor
+        at the end of a 10m wire, to minimise their down-wind velocity, thus reducing their sensitivity to those
+        components of the surface current velocity to which the altimeters are blind.
       </p>
     ),
   },
