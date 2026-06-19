@@ -1,3 +1,5 @@
+import { NewTabLink } from '@/components/Shared';
+
 export const TidalCurrentsAboutData = () => {
   return (
     <div className="text-imos-nav-text space-y-4 text-base leading-relaxed">
@@ -11,7 +13,7 @@ export const TidalCurrentsAboutData = () => {
           className="block"
         >
           <img
-            src="https://oceancurrent.aodn.org.au/tides/Darwin_spd.gif"
+            src="/resource/tides/Darwin_spd.gif"
             alt="Darwin tidal current speed map"
             loading="lazy"
             decoding="async"
@@ -25,7 +27,7 @@ export const TidalCurrentsAboutData = () => {
           className="block"
         >
           <img
-            src="https://oceancurrent.aodn.org.au/tides/HydrogPass_spd.gif"
+            src="/resource/tides/HydrogPass_spd.gif"
             alt="Hydrographer's Passage tidal current speed map"
             loading="lazy"
             decoding="async"
@@ -67,7 +69,7 @@ export const TidalCurrentsAboutData = () => {
           className="block"
         >
           <img
-            src="https://oceancurrent.aodn.org.au/tides/monthplots/UTas_ARENA_CW4_201804.gif"
+            src="/resource/tides/monthplots/UTas_ARENA_CW4_201804.gif"
             alt="Month-per-page graph comparing observation-based and model-based tidal predictions, UTas ARENA CW4, April 2018"
             loading="lazy"
             decoding="async"
@@ -160,7 +162,7 @@ export const TidalCurrentsAboutData = () => {
           className="block"
         >
           <img
-            src="https://oceancurrent.aodn.org.au/tides/hodographs/TernI.gif"
+            src="/resource/tides/hodographs/TernI.gif"
             alt="Hodograph showing tidal current at Tern Island"
             loading="lazy"
             decoding="async"
@@ -228,15 +230,7 @@ export const TidalCurrentsAboutData = () => {
           flow directions. The situation with the Tern Island meter is slightly different. Here, the observed flood tide
           is to the SSW, but the ebb was more likely to be either to the ENE or NW instead of NNE, as shown in the
           hodograph at right (click to enlarge). Neither the tidal self-prediction nor the model represent this. The
-          impeller of the{' '}
-          <a
-            href="https://oceancurrent.aodn.org.au/tides/monthplots/UNSW_Creal_Rf_198412.gif"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="text-imos-sea-blue"
-          >
-            Creal Reef
-          </a>{' '}
+          impeller of the <NewTabLink href="/resource/tides/monthplots/UNSW_Creal_Rf_198412.gif">Creal Reef</NewTabLink>{' '}
           meter appears to be intermittently obstructed, so the tidal prediction there is probably not accurate,
           explaining the large discrepancy from the model
         </li>
@@ -356,23 +350,13 @@ export const TidalCurrentsAboutData = () => {
       <ul className="list-disc space-y-2 pl-6">
         <li>
           the{' '}
-          <a
-            href="https://oceancurrent-beta.aodn.org.au/product/current-meters/moored-instrument-array?depth=1&property=M2&region=01_Aust&date=0000&deploymentPlot="
-            target="_blank"
-            rel="noreferrer noopener"
-            className="text-imos-sea-blue"
-          >
+          <NewTabLink href="/product/current-meters/moored-instrument-array?depth=1&property=M2&region=01_Aust&date=0000&deploymentPlot=">
             tidal component
-          </a>{' '}
+          </NewTabLink>{' '}
           of the current is weaker than (or comparable to) the{' '}
-          <a
-            href="https://oceancurrent-beta.aodn.org.au/product/current-meters/moored-instrument-array?depth=1&property=vrms&region=01_Aust&date=0000&deploymentPlot="
-            target="_blank"
-            rel="noreferrer noopener"
-            className="text-imos-sea-blue"
-          >
+          <NewTabLink href="/product/current-meters/moored-instrument-array?depth=1&property=vrms&region=01_Aust&date=0000&deploymentPlot=">
             non-tidal components
-          </a>{' '}
+          </NewTabLink>{' '}
           of the current for much of Australia&apos;s marine estate (i.e. nearly everywhere south of 25°S). Our index
           map shows the locations of 100 available current meters, colour-coded by whether tidal currents are dominant
           (48), comparable (20), or weaker (32) than non-tidal currents. For sea level, in contrast, there are few
@@ -453,23 +437,13 @@ export const TidalCurrentsAboutData = () => {
         <strong>diurnal and semi-diurnal</strong> Diurnal tidal constituents (e.g. O1, K1) have periods near 24-25h.
         They are smaller than the semi-diurnal (near 12h) constituents in most places, the SA Gulfs being a notable
         exception, where the{' '}
-        <a
-          href="https://oceancurrent-beta.aodn.org.au/product/current-meters/moored-instrument-array?depth=1&property=K1&region=08_SA&date=0000&deploymentPlot="
-          target="_blank"
-          rel="noreferrer noopener"
-          className="text-imos-sea-blue"
-        >
+        <NewTabLink href="/product/current-meters/moored-instrument-array?depth=1&property=K1&region=08_SA&date=0000&deploymentPlot=">
           K1 currents
-        </a>{' '}
+        </NewTabLink>{' '}
         are stronger than the{' '}
-        <a
-          href="https://oceancurrent-beta.aodn.org.au/product/current-meters/moored-instrument-array?depth=1&property=M2&region=08_SA&date=0000&deploymentPlot="
-          target="_blank"
-          rel="noreferrer noopener"
-          className="text-imos-sea-blue"
-        >
+        <NewTabLink href="/product/current-meters/moored-instrument-array?depth=1&property=M2&region=08_SA&date=0000&deploymentPlot=">
           M2 currents
-        </a>
+        </NewTabLink>
         . They are caused by the asymmetry of the sea level perturbations on the near and far sides of the Earth.
       </p>
       <p>
@@ -493,12 +467,7 @@ export const TidalCurrentsAboutData = () => {
         <strong>slack tide</strong> (a.k.a. &ldquo;slack water&rdquo;) is the time when the tidal current turns from
         ebbing to flooding, or vice versa, i.e., it is the time when the speed of the tidal current is at a local
         minimum. The timing of slack tide relative to high and low water depends on location, as mentioned in our{' '}
-        <a
-          href="https://oceancurrent.aodn.org.au/news.php#20230902"
-          target="_blank"
-          rel="noreferrer noopener"
-          className="text-imos-sea-blue"
-        >
+        <a href="/news#When_is_slack_tide" target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue">
           September 2023 news item
         </a>
         .

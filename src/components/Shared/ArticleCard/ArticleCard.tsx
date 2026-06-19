@@ -5,9 +5,6 @@ interface ArticleCardProps {
   children: React.ReactNode;
 }
 
-// Shared card chrome for long-form text pages: a white rounded card with a
-// tinted title header. Used by AboutView (product about pages) and InfoView
-// (product-unrelated info pages such as the glossary and references).
 const ArticleCard: React.FC<ArticleCardProps> = ({ title, children }) => {
   return (
     <div className="rounded-lg bg-white">

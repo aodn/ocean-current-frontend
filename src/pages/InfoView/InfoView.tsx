@@ -5,10 +5,6 @@ import ErrorContent from '@/errors/error-content/ErrorContent';
 import { useScrollToHash } from '@/hooks/useScrollToHash/useScrollToHash';
 import { infoContentBySlug } from './InfoData';
 
-// Renders a product-unrelated info page (e.g. glossary, references), looking up
-// its content in the info registry by the :slug url segment. Adding a new page
-// is registry-only — no routing changes needed. Mirrors AboutView, which does
-// the same lookup for product-keyed about content.
 const InfoView: React.FC = () => {
   const { slug } = useParams<{ slug?: string }>();
   useScrollToHash();
