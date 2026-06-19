@@ -16,13 +16,6 @@ import {
   FishSoopAverageAnomaliesModalData,
   FishSoopDepthAnomaliesModalData,
 } from '@/components/DataVisualisationSidebar/components/ProductDescriptionModal/ProductDescriptionData';
-import {
-  EACMooringArrayAboutData,
-  ArgoAboutData,
-  CurrentMetersAboutData,
-  TidalCurrentsAboutData,
-  FishSoopAboutData,
-} from '@/pages/AboutView/AboutData';
 import { ProductInfo } from '../../types';
 
 export const productInfoList: ProductInfo[] = [
@@ -87,8 +80,6 @@ export const productInfoList: ProductInfo[] = [
       'Temperature and salinity data from the selected float compared with satellite-adjusted climatology, down to 2000m in the Australian region.',
     description: ArgoModalData,
     aboutButtonText: 'About Argo profiles',
-    aboutTitle: "Argo temperature and salinity down to 2000m - what's shown",
-    aboutDescription: ArgoAboutData,
   },
   {
     id: 'tidalCurrents',
@@ -97,8 +88,6 @@ export const productInfoList: ProductInfo[] = [
       'Predictions of tidal sea level and depth-average tidal current from tide gauge and current meter observations as well as from the CSIRO tidal model.',
     description: TidalCurrentsModalData,
     aboutButtonText: 'About Tidal Currents',
-    aboutTitle: 'Tidal current and sea level predictions',
-    aboutDescription: TidalCurrentsAboutData,
   },
   {
     id: 'currentMeters',
@@ -107,8 +96,6 @@ export const productInfoList: ProductInfo[] = [
       "The overview map is your entry point to a series of maps showing a few properties of Australia's ocean currents: mean (all-time, annual and seasonal), standard deviation for various layers and time-windows, and tidal harmonics for the depth-average flow.",
     description: CurrentMetersModalData,
     aboutButtonText: 'Definitions and revisions',
-    aboutTitle: 'Definitions and revisions',
-    aboutDescription: CurrentMetersAboutData,
   },
   {
     id: 'sealCtd',
@@ -131,8 +118,6 @@ export const productInfoList: ProductInfo[] = [
       'Daily estimates of East Australian Current (EAC) properties calculated from the CSIRO EAC gridded mooring product.',
     description: EACMooringArrayModalData,
     aboutButtonText: 'About EAC mooring array dataset',
-    aboutTitle: 'EAC Mooring Array (2012-2022)',
-    aboutDescription: EACMooringArrayAboutData,
   },
   {
     id: 'fishSOOP',
@@ -141,8 +126,6 @@ export const productInfoList: ProductInfo[] = [
       'Explore FishSOOP temperature observations via a daily data finder showing temperature vs depth, time and location, 3-month average anomalies compared with a historical climatology, and depth-layer anomaly maps.',
     description: FishSoopModalData,
     aboutButtonText: 'About FishSOOP',
-    aboutTitle: 'FishSOOP - Newcomer? Read this first',
-    aboutDescription: FishSoopAboutData,
     childrenInfo: {
       'fishSOOP-profiles': {
         title: 'Regional Profiles',

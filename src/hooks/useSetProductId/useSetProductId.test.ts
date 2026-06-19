@@ -2,10 +2,10 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { getProductByPath } from '@/utils/product-utils/product';
 import { UrlType } from '@/types/router';
-import useProductPathFromUrl from '../useGetProductFromUrl/useProductPathFromUrl';
+import useProductPathFromUrl from '../useProductPathFromUrl/useProductPathFromUrl';
 import useSetProductId from './useSetProductId';
 
-vi.mock('../useGetProductFromUrl/useProductPathFromUrl', () => ({
+vi.mock('../useProductPathFromUrl/useProductPathFromUrl', () => ({
   default: vi.fn(),
 }));
 

@@ -19,8 +19,6 @@ const baseProductInfo: ProductInfo = {
 const productInfoWithAbout: ProductInfo = {
   ...baseProductInfo,
   aboutButtonText: 'About this dataset',
-  aboutTitle: 'Test Product (2012-2022)',
-  aboutDescription: () => <p>About content</p>,
 };
 
 describe('ProductSummary', () => {
@@ -64,7 +62,7 @@ describe('ProductSummary', () => {
     expect(screen.queryByText('About this dataset')).not.toBeInTheDocument();
   });
 
-  it('renders about button when aboutButtonText and aboutDescription are provided', () => {
+  it('renders about button when aboutButtonText is provided', () => {
     renderWithRouter(<ProductSummary productInfo={productInfoWithAbout} />);
     expect(screen.getByText('About this dataset')).toBeInTheDocument();
   });

@@ -1,5 +1,5 @@
 import { AnyProductID, isChildProductId, isProductGroupId, isStandaloneProductId } from '@/types/product';
-import { useProductIdFromUrl } from '../useGetProductFromUrl/useProductIdFromUrl';
+import { useProductIdFromUrl } from '../useProductIdFromUrl/useProductIdFromUrl';
 import useQueryParams from '../useQueryParams/useQueryParams';
 
 export const useArgoProductValidQueryParams = () => {
