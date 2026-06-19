@@ -114,7 +114,7 @@ const glossaryTerms: GlossaryTerm[] = [
         properties onto a regular three-dimensional grid. The result is a set of harmonic constants for the yearly and
         semi-annual components of the variability as well as the all-time mean. The sudden increase in the amount of
         data provided by the{' '}
-        <a href="/product/argo" className="text-imos-sea-blue underline">
+        <a href="/about/argo" target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue underline">
           Argo
         </a>{' '}
         programme means that the atlas is not really a long-term average so it is best to interpret it as simply an
@@ -332,11 +332,11 @@ const glossaryTerms: GlossaryTerm[] = [
       <p>
         short for &apos;synthetic temperature and salinity&apos;. This data product is also described on this website as
         &apos;Satellite adjusted climatology&apos; as explained at{' '}
-        <a href="/about/argo" className="text-imos-sea-blue underline">
+        <a href="/about/argo" target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue underline">
           [what&apos;s shown]
         </a>
         . The synTS method is described by{' '}
-        <a href="/info/references" className="text-imos-sea-blue underline">
+        <a href="/info/references" target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue underline">
           Ridgway and Dunn (2010)
         </a>
         .
