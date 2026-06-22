@@ -1,4 +1,9 @@
+import { useState } from 'react';
+import WmoListPopup from '@/components/DataVisualisationSidebar/components/WmoListPopup';
+
 export const ArgoAboutData = () => {
+  const [isWmoPopupOpen, setIsWmoPopupOpen] = useState(false);
+
   return (
     <div className="text-imos-nav-text space-y-4 text-base leading-relaxed">
       <p>
@@ -27,14 +32,12 @@ export const ArgoAboutData = () => {
       <p>
         Click on one of the floats to see a plot like the one below (the example is from the float coded yellow, above,
         off NSW). You can also reach plots like the one below via the list of{' '}
-        <a
-          href="https://oceancurrent.aodn.org.au/profiles/profile_index.php"
-          target="_blank"
-          rel="noreferrer noopener"
-          className="text-imos-sea-blue"
+        <button
+          onClick={() => setIsWmoPopupOpen(true)}
+          className="text-imos-sea-blue cursor-pointer border-none bg-transparent p-0 hover:underline"
         >
           [WMO numbers]
-        </a>
+        </button>
         .
       </p>
       <a
@@ -187,6 +190,7 @@ export const ArgoAboutData = () => {
           className="w-full rounded-sm"
         />
       </a>
+      <WmoListPopup isOpen={isWmoPopupOpen} onClose={() => setIsWmoPopupOpen(false)} />
     </div>
   );
 };
