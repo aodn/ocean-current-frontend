@@ -32,10 +32,7 @@ export const ArgoAboutData = () => {
       <p>
         Click on one of the floats to see a plot like the one below (the example is from the float coded yellow, above,
         off NSW). You can also reach plots like the one below via the list of{' '}
-        <button
-          onClick={() => setIsWmoPopupOpen(true)}
-          className="text-imos-sea-blue cursor-pointer border-none bg-transparent p-0 hover:underline"
-        >
+        <button onClick={() => setIsWmoPopupOpen(true)} className="text-imos-sea-blue hover:underline">
           [WMO numbers]
         </button>
         .
