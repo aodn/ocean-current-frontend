@@ -1,3 +1,5 @@
+// TODO: merge into Button as a 'text' variant once tailwind-merge is available to handle className overrides reliably.
+// Button's hardcoded layout styles (flex, padding) in the base className will also need to become conditional per type.
 import React from 'react';
 
 interface TextButtonProps {
