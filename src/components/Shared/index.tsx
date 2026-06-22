@@ -1,4 +1,4 @@
-import Button from './Button/Button';
+import { Button, TextButton } from './Button';
 import Dropdown from './Dropdown/Dropdown';
 import Slider from './Slider/Slider';
 import Loading from './Loading/Loading';
@@ -16,6 +16,7 @@ export * from './Collapsible';
 
 export {
   Button,
+  TextButton,
   Dropdown,
   Slider,
   WidePopup,

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { TextButton } from '@/components/Shared';
 import WmoListPopup from '@/components/DataVisualisationSidebar/components/WmoListPopup';
 
 export const ArgoAboutData = () => {
@@ -32,9 +33,9 @@ export const ArgoAboutData = () => {
       <p>
         Click on one of the floats to see a plot like the one below (the example is from the float coded yellow, above,
         off NSW). You can also reach plots like the one below via the list of{' '}
-        <button onClick={() => setIsWmoPopupOpen(true)} className="text-imos-sea-blue hover:underline">
+        <TextButton className="text-imos-sea-blue" onClick={() => setIsWmoPopupOpen(true)}>
           [WMO numbers]
-        </button>
+        </TextButton>
         .
       </p>
       <a

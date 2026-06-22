@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
-import { LinearProgress, WidePopup } from '@/components/Shared';
+import { LinearProgress, TextButton, WidePopup } from '@/components/Shared';
 import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
 import { sharedQueryConfig } from '@/configs/query';
 import { ArgoDepths } from '@/constants/argo';
@@ -27,17 +27,14 @@ interface WmoPopupBodyProps {
 const WmoPopupBody: React.FC<WmoPopupBodyProps> = ({ loadingId, onSelect }) => {
   const renderIds = (ids: string[]) =>
     ids.map((id) => (
-      <Link
+      <TextButton
         key={id}
-        to={`/product/argo?wmoid=${id}`}
-        className={`text-imos-deep-blue text-base hover:underline ${loadingId === id ? 'pointer-events-none opacity-50' : ''}`}
-        onClick={(e) => {
-          e.preventDefault();
-          onSelect(id);
-        }}
+        disabled={loadingId === id}
+        className="text-imos-deep-blue text-base"
+        onClick={() => onSelect(id)}
       >
         [{id}]
-      </Link>
+      </TextButton>
     ));
 
   return (
