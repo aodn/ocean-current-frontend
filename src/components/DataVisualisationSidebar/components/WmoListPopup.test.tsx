@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import WmoListPopup from './WmoListPopup';
@@ -60,15 +59,14 @@ describe('WmoListPopup', () => {
   });
 
   it('opens in a new tab after selecting an ID when openInNewTab is true', async () => {
+    const mockTab = { location: { href: '' }, close: vi.fn() };
+    vi.spyOn(window, 'open').mockReturnValue(mockTab as unknown as Window);
     render(<WmoListPopup isOpen={true} onClose={vi.fn()} openInNewTab />);
     fireEvent.click(screen.getByText('[1234567]'));
     await waitFor(() => {
-      expect(window.open).toHaveBeenCalledWith(
-        '/product/argo?wmoid=1234567&cycle=44&depth=0-2000m&date=20240601',
-        '_blank',
-        'noopener,noreferrer',
-      );
+      expect(mockTab.location.href).toBe('/product/argo?wmoid=1234567&cycle=44&depth=0-2000m&date=20240601');
     });
+    expect(window.open).toHaveBeenCalledWith('', '_blank');
     expect(mockNavigate).not.toHaveBeenCalled();
   });
 

@@ -29,7 +29,7 @@ const WmoPopupBody: React.FC<WmoPopupBodyProps> = ({ loadingId, onSelect }) => {
     ids.map((id) => (
       <TextButton
         key={id}
-        disabled={loadingId === id}
+        disabled={loadingId !== null}
         className="text-imos-deep-blue text-base"
         onClick={() => onSelect(id)}
       >
@@ -66,6 +66,7 @@ const WmoListPopup: React.FC<WmoListPopupProps> = ({ isOpen, onClose, openInNewT
   const handleSelect = async (id: string) => {
     if (loadingId) return;
     setLoadingId(id);
+    const newTab = openInNewTab ? window.open('', '_blank') : null;
     try {
       const cycles = await queryClient.fetchQuery({
         queryKey: ['argoDateList', id],
@@ -75,12 +76,13 @@ const WmoListPopup: React.FC<WmoListPopupProps> = ({ isOpen, onClose, openInNewT
       const latest = cycles[cycles.length - 1];
       if (!latest) {
         console.error(`No cycles found for WMO ID: ${id}`);
+        newTab?.close();
         return;
       }
       const url = `/product/argo?wmoid=${id}&cycle=${latest.cycle}&depth=${ArgoDepths['2000M']}&date=${latest.date}`;
       onClose();
-      if (openInNewTab) {
-        window.open(url, '_blank', 'noopener,noreferrer');
+      if (newTab) {
+        newTab.location.href = url;
       } else {
         navigate(url);
       }
