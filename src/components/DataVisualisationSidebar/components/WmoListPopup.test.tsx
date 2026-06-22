@@ -66,7 +66,7 @@ describe('WmoListPopup', () => {
       expect(window.open).toHaveBeenCalledWith(
         '/product/argo?wmoid=1234567&cycle=44&depth=0-2000m&date=20240601',
         '_blank',
-        'noreferrer',
+        'noopener,noreferrer',
       );
     });
     expect(mockNavigate).not.toHaveBeenCalled();

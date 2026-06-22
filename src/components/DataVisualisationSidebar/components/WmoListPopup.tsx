@@ -80,7 +80,7 @@ const WmoListPopup: React.FC<WmoListPopupProps> = ({ isOpen, onClose, openInNewT
       const url = `/product/argo?wmoid=${id}&cycle=${latest.cycle}&depth=${ArgoDepths['2000M']}&date=${latest.date}`;
       onClose();
       if (openInNewTab) {
-        window.open(url, '_blank', 'noreferrer');
+        window.open(url, '_blank', 'noopener,noreferrer');
       } else {
         navigate(url);
       }
