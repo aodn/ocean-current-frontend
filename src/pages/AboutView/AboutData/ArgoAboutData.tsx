@@ -187,7 +187,7 @@ export const ArgoAboutData = () => {
           className="w-full rounded-sm"
         />
       </a>
-      <WmoListPopup isOpen={isWmoPopupOpen} onClose={() => setIsWmoPopupOpen(false)} />
+      <WmoListPopup isOpen={isWmoPopupOpen} onClose={() => setIsWmoPopupOpen(false)} openInNewTab />
     </div>
   );
 };

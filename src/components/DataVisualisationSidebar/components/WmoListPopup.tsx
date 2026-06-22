@@ -16,6 +16,7 @@ import {
 interface WmoListPopupProps {
   isOpen: boolean;
   onClose: () => void;
+  openInNewTab?: boolean;
 }
 
 interface WmoPopupBodyProps {
@@ -29,7 +30,7 @@ const WmoPopupBody: React.FC<WmoPopupBodyProps> = ({ loadingId, onSelect }) => {
       <Link
         key={id}
         to={`/product/argo?wmoid=${id}`}
-        className={`text-base text-imos-deep-blue hover:underline ${loadingId === id ? 'pointer-events-none opacity-50' : ''}`}
+        className={`text-imos-deep-blue text-base hover:underline ${loadingId === id ? 'pointer-events-none opacity-50' : ''}`}
         onClick={(e) => {
           e.preventDefault();
           onSelect(id);
@@ -44,13 +45,13 @@ const WmoPopupBody: React.FC<WmoPopupBodyProps> = ({ loadingId, onSelect }) => {
       {loadingId && <LinearProgress />}
       <div className="p-6">
         <div>
-          <p className="mb-3 text-base font-medium text-imos-dark-grey">{REPORTED_FLOATS_HEADER}</p>
+          <p className="text-imos-dark-grey mb-3 text-base font-medium">{REPORTED_FLOATS_HEADER}</p>
           <div className="grid grid-cols-[repeat(auto-fill,minmax(6rem,1fr))] gap-x-4 gap-y-1">
             {renderIds(REPORTED_FLOAT_IDS)}
           </div>
         </div>
         <div className="mt-8">
-          <p className="mb-3 text-base font-medium text-imos-dark-grey">{NOT_REPORTED_FLOATS_HEADER}</p>
+          <p className="text-imos-dark-grey mb-3 text-base font-medium">{NOT_REPORTED_FLOATS_HEADER}</p>
           <div className="grid grid-cols-[repeat(auto-fill,minmax(6rem,1fr))] gap-x-4 gap-y-1">
             {renderIds(NOT_REPORTED_FLOAT_IDS)}
           </div>
@@ -60,7 +61,7 @@ const WmoPopupBody: React.FC<WmoPopupBodyProps> = ({ loadingId, onSelect }) => {
   );
 };
 
-const WmoListPopup: React.FC<WmoListPopupProps> = ({ isOpen, onClose }) => {
+const WmoListPopup: React.FC<WmoListPopupProps> = ({ isOpen, onClose, openInNewTab }) => {
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -79,8 +80,13 @@ const WmoListPopup: React.FC<WmoListPopupProps> = ({ isOpen, onClose }) => {
         console.error(`No cycles found for WMO ID: ${id}`);
         return;
       }
+      const url = `/product/argo?wmoid=${id}&cycle=${latest.cycle}&depth=${ArgoDepths['2000M']}&date=${latest.date}`;
       onClose();
-      navigate(`/product/argo?wmoid=${id}&cycle=${latest.cycle}&depth=${ArgoDepths['2000M']}&date=${latest.date}`);
+      if (openInNewTab) {
+        window.open(url, '_blank', 'noreferrer');
+      } else {
+        navigate(url);
+      }
     } finally {
       setLoadingId(null);
     }
