@@ -144,7 +144,7 @@ export const linksData: LinkItem[] = [
         Icon: FishSOOPIcon,
         title: 'FishSOOP',
         description: 'Near-coast temperature profiles',
-        url: '/product/fish-soop/regional-profiles',
+        url: '/map/fish-soop/regional-profiles',
       },
     ],
   },
