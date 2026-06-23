@@ -19,8 +19,6 @@ const baseProductInfo: ProductInfo = {
 const productInfoWithAbout: ProductInfo = {
   ...baseProductInfo,
   aboutButtonText: 'About this dataset',
-  aboutTitle: 'Test Product (2012-2022)',
-  aboutDescription: () => <p>About content</p>,
 };
 
 describe('ProductSummary', () => {
@@ -32,14 +30,18 @@ describe('ProductSummary', () => {
     vi.restoreAllMocks();
   });
 
-  it('renders nothing when summary is null', () => {
-    renderWithRouter(<ProductSummary productInfo={{ ...baseProductInfo, summary: null }} />);
+  it('renders nothing when both summary and description are empty', () => {
+    renderWithRouter(<ProductSummary productInfo={{ ...baseProductInfo, summary: null, description: null }} />);
     expect(screen.queryByText('Read more')).not.toBeInTheDocument();
+    expect(screen.queryByText('This is a test summary for the product.')).not.toBeInTheDocument();
   });
 
-  it('renders nothing when summary is empty', () => {
-    renderWithRouter(<ProductSummary productInfo={{ ...baseProductInfo, summary: '' }} />);
-    expect(screen.queryByText('Read more')).not.toBeInTheDocument();
+  it('renders Read more and the popup but no summary text when only a description is present', () => {
+    renderWithRouter(<ProductSummary productInfo={{ ...baseProductInfo, summary: null }} />);
+    expect(screen.queryByText('This is a test summary for the product.')).not.toBeInTheDocument();
+    expect(screen.getByText('Read more')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Read more'));
+    expect(screen.getByText('Description content')).toBeInTheDocument();
   });
 
   it('renders summary text and Read more link', () => {
@@ -60,7 +62,7 @@ describe('ProductSummary', () => {
     expect(screen.queryByText('About this dataset')).not.toBeInTheDocument();
   });
 
-  it('renders about button when aboutButtonText and aboutDescription are provided', () => {
+  it('renders about button when aboutButtonText is provided', () => {
     renderWithRouter(<ProductSummary productInfo={productInfoWithAbout} />);
     expect(screen.getByText('About this dataset')).toBeInTheDocument();
   });

@@ -19,6 +19,6 @@ export class MapPage extends BasePage {
     this.selectedDate = page.getByTestId('selected-date');
     this.dateNextButton = page.getByTestId('date-next-button');
     this.resetDateButton = page.getByTestId('date-reset-button');
-    this.sidebar = page.getByTestId('drop-down-menu');
+    this.sidebar = page.getByTestId('map-sidebar-menu');
   }
 }

@@ -17,6 +17,17 @@ const fetchImageListByProductIdAndRegion = async (productId: ProductID, region: 
   return response.data;
 };
 
+/**
+ * Image list for region-less products (e.g. the FishSOOP anomaly products,
+ * declared `regionRequired: false` in the API — it rejects a region param).
+ */
+const fetchImageListByProductId = async (productId: ProductID) => {
+  const apiProductId = getApiProductId(productId);
+
+  const response = await apiClient.get<ImageListResponse[]>(`/metadata/image-list/${apiProductId}`);
+  return response.data;
+};
+
 const fetchCurrentMetersPlotsList = async (plotName: CurrentMetersDeploymentPlotNames) => {
   const response = await apiClient.get<CurrentMetersPlotsResponse>(`/metadata/image-list/current-meters/${plotName}`);
   return response.data;
@@ -36,6 +47,7 @@ const fetchTidalCurrentsMonthPlotsByPoint = async (pointId: string) => {
 
 export {
   fetchImageListByProductIdAndRegion,
+  fetchImageListByProductId,
   fetchCurrentMetersPlotsList,
   fetchRegionLatestDatesByProductId,
   fetchTidalCurrentsMonthPlotsByPoint,

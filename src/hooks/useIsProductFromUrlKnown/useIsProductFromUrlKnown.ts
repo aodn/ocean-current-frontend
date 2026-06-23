@@ -1,6 +1,6 @@
 import { UrlType } from '@/types/router';
 import { getProductByPath } from '@/utils/product-utils/product';
-import useProductPathFromUrl from '../useGetProductFromUrl/useProductPathFromUrl';
+import useProductPathFromUrl from '../useProductPathFromUrl/useProductPathFromUrl';
 
 /**
  * Returns whether the product path in the current URL maps to a known product.

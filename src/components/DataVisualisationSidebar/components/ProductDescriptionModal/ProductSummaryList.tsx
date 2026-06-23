@@ -9,13 +9,13 @@ import {
   ArgoModalData,
   TidalCurrentsModalData,
   SealCtdModalData,
+  SwotGslaModalData,
+  FishSoopModalData,
+  FishSoopProfilesModalData,
+  FishSoopQuarterlyAnomaliesModalData,
+  FishSoopAverageAnomaliesModalData,
+  FishSoopDepthAnomaliesModalData,
 } from '@/components/DataVisualisationSidebar/components/ProductDescriptionModal/ProductDescriptionData';
-import {
-  EACMooringArrayAboutData,
-  ArgoAboutData,
-  CurrentMetersAboutData,
-  TidalCurrentsAboutData,
-} from '@/pages/AboutView/AboutData';
 import { ProductInfo } from '../../types';
 
 export const productInfoList: ProductInfo[] = [
@@ -47,6 +47,13 @@ export const productInfoList: ProductInfo[] = [
     description: AdjustedSeaLevelAnomalyModalData,
   },
   {
+    id: 'swotGsla',
+    title: 'SWOT and GSLA',
+    // TODO: No summary text until the client provides one; the popup still shows their full about content.
+    summary: null,
+    description: SwotGslaModalData,
+  },
+  {
     id: 'surfaceWaves',
     title: 'Surface Waves',
     summary:
@@ -56,7 +63,7 @@ export const productInfoList: ProductInfo[] = [
       'surfaceWaves-buoyTimeseries': {
         title: 'Buoy Timeseries',
         summary: null,
-        description: () => null,
+        description: null,
       },
     },
   },
@@ -64,7 +71,7 @@ export const productInfoList: ProductInfo[] = [
     id: 'monthlyMeans',
     title: 'Monthly Means',
     summary: null,
-    description: () => null,
+    description: null,
   },
   {
     id: 'argo',
@@ -73,8 +80,6 @@ export const productInfoList: ProductInfo[] = [
       'Temperature and salinity data from the selected float compared with satellite-adjusted climatology, down to 2000m in the Australian region.',
     description: ArgoModalData,
     aboutButtonText: 'About Argo profiles',
-    aboutTitle: "Argo temperature and salinity down to 2000m - what's shown",
-    aboutDescription: ArgoAboutData,
   },
   {
     id: 'tidalCurrents',
@@ -83,8 +88,6 @@ export const productInfoList: ProductInfo[] = [
       'Predictions of tidal sea level and depth-average tidal current from tide gauge and current meter observations as well as from the CSIRO tidal model.',
     description: TidalCurrentsModalData,
     aboutButtonText: 'About Tidal Currents',
-    aboutTitle: 'Tidal current and sea level predictions',
-    aboutDescription: TidalCurrentsAboutData,
   },
   {
     id: 'currentMeters',
@@ -93,8 +96,6 @@ export const productInfoList: ProductInfo[] = [
       "The overview map is your entry point to a series of maps showing a few properties of Australia's ocean currents: mean (all-time, annual and seasonal), standard deviation for various layers and time-windows, and tidal harmonics for the depth-average flow.",
     description: CurrentMetersModalData,
     aboutButtonText: 'Definitions and revisions',
-    aboutTitle: 'Definitions and revisions',
-    aboutDescription: CurrentMetersAboutData,
   },
   {
     id: 'sealCtd',
@@ -117,7 +118,38 @@ export const productInfoList: ProductInfo[] = [
       'Daily estimates of East Australian Current (EAC) properties calculated from the CSIRO EAC gridded mooring product.',
     description: EACMooringArrayModalData,
     aboutButtonText: 'About EAC mooring array dataset',
-    aboutTitle: 'EAC Mooring Array (2012-2022)',
-    aboutDescription: EACMooringArrayAboutData,
+  },
+  {
+    id: 'fishSOOP',
+    title: 'FishSOOP',
+    summary:
+      'Explore FishSOOP temperature observations via a daily data finder showing temperature vs depth, time and location, 3-month average anomalies compared with a historical climatology, and depth-layer anomaly maps.',
+    description: FishSoopModalData,
+    aboutButtonText: 'About FishSOOP',
+    childrenInfo: {
+      'fishSOOP-profiles': {
+        title: 'Regional Profiles',
+        summary: 'The daily data finder maps help you find plots of temperature vs depth, time and location.',
+        description: FishSoopProfilesModalData,
+      },
+      'fishSOOP-quarterlyAnomalies': {
+        title: 'Quarterly Anomalies',
+        summary:
+          '3-month averages of the whole FishSOOP dataset compared with a historical climatology reveal how the ocean has changed. Click for more depth layers. The plots also show the data coverage history.',
+        description: FishSoopQuarterlyAnomaliesModalData,
+      },
+      'fishSOOP-averageAnomalies': {
+        title: 'Average Anomalies',
+        summary:
+          'Whole-dataset, three-monthly regional layer-averages of FishSOOP temperatures compared with the CARS2009 climatology, to reveal whether the observations differ systematically from the historical record.',
+        description: FishSoopAverageAnomaliesModalData,
+      },
+      'fishSOOP-depthAnomalies': {
+        title: 'Depth Anomalies',
+        summary:
+          'Step through regions and depth layers to explore the spatial-, temporal- and depth-dependence of the anomalies.',
+        description: FishSoopDepthAnomaliesModalData,
+      },
+    },
   },
 ];

@@ -30,6 +30,7 @@ import Legend from './components/Legend';
 import MiniMap from './components/MiniMap';
 import ProductDropdown from './components/ProductDropdown';
 import CurrentMetersFilters from './components/CurrentMetersFilters';
+import FishSoopFilters from './components/FishSoopFilters';
 import { dataSources, getProductInfoByKey } from './utils';
 import WmoSection from './components/WmoSection';
 import ArgoFilters from './components/ArgoFilters';
@@ -43,8 +44,9 @@ const ProductSideBar: React.FC = () => {
   const { mainProduct, subProduct, subProducts } = useProductConvert();
   const { updateQueryParamsAndNavigate, getQueryParamsByKey } = useQueryParams();
   const useDate = useDateStore((state) => state.date);
-  const { isArgo, isCurrentMeters, isSealCtd, isSurfaceWaves } = useProductCheck();
-  const shouldRenderMiniMap = useShowProductOverMap();
+  const { isArgo, isCurrentMeters, isSealCtd, isSurfaceWaves, isFishSoop, isFishSoopAverageAnomalies } =
+    useProductCheck();
+  const shouldRenderMiniMap = useShowProductOverMap() && !isFishSoopAverageAnomalies;
 
   const mooredInstrumentArrayPath = useMemo(() => {
     return (
@@ -113,6 +115,19 @@ const ProductSideBar: React.FC = () => {
       updateParam = { deploymentPlot: null };
     }
 
+    // Drop params that don't apply to the target FishSOOP sub-product: profiles
+    // is date-driven; the region-based anomaly products have no date axis; the
+    // average overview has neither date nor region/quarter/layer (page only).
+    if (isFishSoop) {
+      if (key === 'fishSOOP-profiles') {
+        updateParam = { quarter: null, layer: null, page: null };
+      } else if (key === 'fishSOOP-averageAnomalies') {
+        updateParam = { date: null, quarter: null, layer: null, region: null };
+      } else {
+        updateParam = { date: null, page: null };
+      }
+    }
+
     if (isSealCtd) {
       const currentRegion = getQueryParamsByKey('region');
       const targetLatestDate = latestDatesRegionData
@@ -168,6 +183,8 @@ const ProductSideBar: React.FC = () => {
         )}
 
         {isCurrentMeters && <CurrentMetersFilters subProduct={subProduct} />}
+
+        {isFishSoop && <FishSoopFilters subProduct={subProduct} />}
 
         {productLegendItems && productLegendItems.length > 0 && (
           <CollapsibleSection title={ProductSidebarText.LEGEND}>

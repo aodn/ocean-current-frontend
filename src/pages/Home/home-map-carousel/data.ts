@@ -33,12 +33,4 @@ export const productsData: HomeProductData[] = [
     description:
       'Maps of modelled surface wave fields and wave measurements from coastal wave buoys and remote sensing.',
   },
-  {
-    title: 'SealCTD',
-    id: 'sealCtd-sealTracks',
-    mainProduct: 'sealCtd',
-    subProduct: 'sealCtd-sealTracks',
-    description:
-      'Maps of SST and ice coverage combined with locations of temperature and salinity profiles measured by Argo floats and animal-borne sensors.',
-  },
 ];

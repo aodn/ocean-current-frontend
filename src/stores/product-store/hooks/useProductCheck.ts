@@ -26,6 +26,15 @@ const useProductCheck = () => {
   const isOceanColour = mainProductId === 'oceanColour';
   const isOceanColourChlA = isOceanColour && subProduct?.key === 'oceanColour-chlA';
   const isSwotGslaMdt = subProduct?.key === 'swotGsla-mdt';
+  const isFishSoop = mainProductId === 'fishSOOP';
+  const isFishSoopProfiles = subProduct?.key === 'fishSOOP-profiles';
+  // The two anomaly sub-products have no date navigator; their image-list request
+  // is region-less (region selection is handled by the sidebar filters)
+  const isFishSoopAnomaly =
+    subProduct?.key === 'fishSOOP-quarterlyAnomalies' || subProduct?.key === 'fishSOOP-depthAnomalies';
+  // Standalone whole-dataset average overview: region-less list, no date axis, no
+  // region map (unlike the region-based anomaly products above).
+  const isFishSoopAverageAnomalies = subProduct?.key === 'fishSOOP-averageAnomalies';
 
   return {
     isRegionRequired,
@@ -44,6 +53,10 @@ const useProductCheck = () => {
     isOceanColour,
     isOceanColourChlA,
     isSwotGslaMdt,
+    isFishSoop,
+    isFishSoopProfiles,
+    isFishSoopAnomaly,
+    isFishSoopAverageAnomalies,
   };
 };
 

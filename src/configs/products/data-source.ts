@@ -33,6 +33,10 @@ export const API_IMAGE_LIST_ENABLED_PRODUCTS: ProductID[] = [
   'swotGsla-ssh',
   'EACMooringArray',
   'argo',
+  'fishSOOP-profiles',
+  'fishSOOP-quarterlyAnomalies',
+  'fishSOOP-averageAnomalies',
+  'fishSOOP-depthAnomalies',
 ];
 
 export const API_LATEST_DATES_DISABLED_PRODUCTS: ProductID[] = [
@@ -45,6 +49,9 @@ export const API_LATEST_DATES_DISABLED_PRODUCTS: ProductID[] = [
   'monthlyMeans-climatology',
   'sixDaySst-climatology',
   'sixDaySst-climatologyDataCount',
+  'fishSOOP-quarterlyAnomalies',
+  'fishSOOP-averageAnomalies',
+  'fishSOOP-depthAnomalies',
 ];
 
 /**
@@ -57,6 +64,11 @@ export const FIXED_IMAGE_LIST_PRODUCTS: ProductID[] = [
   'sixDaySst-climatology',
   'sixDaySst-climatologyDataCount',
   'swotGsla-mdt',
+  // Region-less FishSOOP anomaly products: their image lists are fetched without a
+  // region param via useFishSoopAnomalyImageList, not the generic date-list query.
+  'fishSOOP-quarterlyAnomalies',
+  'fishSOOP-averageAnomalies',
+  'fishSOOP-depthAnomalies',
 ];
 
 export const PRODUCTS_WITH_ARGO_DATA: RootProductID[] = [

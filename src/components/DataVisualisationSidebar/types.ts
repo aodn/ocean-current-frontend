@@ -4,15 +4,13 @@ import { ProductID, RootProductID, SubProduct } from '@/types/product';
 export type ProductInfo = {
   id: string;
   summary: string | null;
-  description: () => JSX.Element | null;
+  description: (() => JSX.Element) | null;
   title: string;
   aboutButtonText?: string;
-  aboutTitle?: string;
-  aboutDescription?: () => JSX.Element | null;
   childrenInfo?: {
     [childId: string]: {
       summary: string | null;
-      description: () => JSX.Element | null;
+      description: (() => JSX.Element) | null;
       title?: string;
     };
   };

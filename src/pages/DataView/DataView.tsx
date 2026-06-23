@@ -10,7 +10,7 @@ const DataView: React.FC = () => {
 
   if (!shouldRenderProductContent) {
     return (
-      <div className="h-[500px] w-full md:h-[660px]">
+      <div className="h-125 w-full overflow-hidden rounded-b-md md:h-165">
         <BasicMap />
       </div>
     );
@@ -19,7 +19,7 @@ const DataView: React.FC = () => {
   return (
     <div className="relative h-full w-full">
       {showMap && (
-        <div className="h-[500px] w-full md:hidden">
+        <div className="h-125 w-full overflow-hidden rounded-b-md md:hidden">
           <BasicMap />
         </div>
       )}

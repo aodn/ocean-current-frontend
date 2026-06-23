@@ -182,6 +182,39 @@ const sealCtdRegions: (LocalRegion | StateRegion)[] = [
   { code: 'NSW', title: 'NSW', coords: [148.5, 156.5, -38.4, -31.2], scope: RegionScope.Local } as LocalRegion,
 ];
 
+/*
+  FishSOOP has its own region boxes (the rectangles drawn on the finder GIF).
+  Several codes clash with same-named regions of other products but cover
+  different bounds, so they live in a dedicated list, selected by productId in
+  getRegionByRegionCode/useRegionFromProduct (same approach as SealCTD).
+  Geo bounds are derived from the legacy imagemap pixel rects mapped through
+  the finder GIF axes (lon 108–160 / lat -46–-7.1 over the 990x820 image).
+*/
+const fishSoopRegions: (LocalRegion | NationRegion)[] = [
+  { code: 'Au', title: 'Australia', coords: [108, 160, -46, -7.1], scope: RegionScope.Au } as NationRegion,
+  ...(
+    [
+      { code: 'Darwin', title: 'Darwin', coords: [126.7, 134.0, -16.6, -8.1] },
+      { code: 'Kimberley', title: 'Kimberley', coords: [120.0, 126.7, -18.6, -11.1] },
+      { code: 'NWS', title: 'NW Shelf', coords: [112.0, 121.5, -22.6, -16.1] },
+      { code: 'SharkBay', title: 'Shark Bay', coords: [109.0, 114.5, -29.0, -22.0] },
+      { code: 'Perth', title: 'Perth', coords: [109.0, 116.0, -37.0, -29.0] },
+      { code: 'AlbEsp', title: 'Albany-Esperance', coords: [115.5, 124.0, -38.5, -33.0] },
+      { code: 'RechEyre', title: 'Esperance-Eyre Pen.', coords: [124.0, 134.0, -38.1, -31.3] },
+      { code: 'SAgulfs', title: 'SA gulfs', coords: [133.5, 141.5, -41.0, -32.0] },
+      { code: 'BassStr', title: 'Bass Strait', coords: [144.0, 148.6, -41.3, -37.5] },
+      { code: 'TasW', title: 'Tasmania-west', coords: [141.1, 146.6, -44.6, -38.0] },
+      { code: 'TasE', title: 'Tasmania-east', coords: [146.6, 153.1, -44.6, -37.5] },
+      { code: 'SNSW', title: 'Southern NSW', coords: [149.8, 156.1, -37.5, -31.5] },
+      { code: 'NNSW', title: 'Northern NSW', coords: [152.0, 158.1, -32.0, -26.5] },
+      { code: 'SGBR', title: 'Southern GBR', coords: [149.0, 157.1, -26.6, -20.1] },
+      { code: 'CGBR', title: 'Central GBR', coords: [145.1, 153.1, -21.2, -14.5] },
+      { code: 'NGBR', title: 'Northern GBR', coords: [141.1, 151.6, -15.1, -8.6] },
+      { code: 'GOC', title: 'Gulf of Carpentaria', coords: [133.0, 142.0, -18.1, -8.1] },
+    ] as const
+  ).map((region) => ({ ...region, scope: RegionScope.Local }) as LocalRegion),
+];
+
 const eACMooringRegions: LocalRegion[] = [
   {
     code: 'Brisbane',
@@ -212,6 +245,11 @@ const convertedEACMooringRegions = eACMooringRegions.map((region) => ({
   coords: convertOldOceanCurrentCoordsToBBox(region.coords),
 }));
 
+const convertedFishSoopRegions: (LocalRegion | NationRegion)[] = fishSoopRegions.map((region) => ({
+  ...region,
+  coords: convertOldOceanCurrentCoordsToBBox(region.coords),
+}));
+
 export {
   nationRegions,
   stateRegions,
@@ -222,4 +260,6 @@ export {
   convertedSealCtdRegions,
   eACMooringRegions,
   convertedEACMooringRegions,
+  fishSoopRegions,
+  convertedFishSoopRegions,
 };

@@ -46,7 +46,7 @@ type ParseeDateWithFormat = {
 
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const { isArgo, isSurfaceWavesBuoyTimeseries } = useProductCheck();
+  const { isArgo, isSurfaceWavesBuoyTimeseries, isFishSoopProfiles } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const product = useProductFromUrl('product');
   const { mainProduct } = useProductConvert();
@@ -59,6 +59,9 @@ const DataVisualisationLayout: React.FC = () => {
   const interactiveLayerClickTimestamp = useMapStore((state) => state.interactiveLayerClickTimestamp);
   const toggleSidebar = () => setSidebarVisible((prev) => !prev);
   const { hasSelectedParams } = useUrlParams();
+  // The Au-scope FishSOOP finder map exists daily but is not indexed, so it
+  // navigates a plain date range instead of an availability list.
+  const isFishSoopFinder = isFishSoopProfiles && regionScope === RegionScope.Au;
   const urlType = useUrlType();
   const isKnownProduct = useIsProductFromUrlKnown(urlType);
   useSetProductId(urlType, setProductId);
@@ -280,7 +283,7 @@ const DataVisualisationLayout: React.FC = () => {
             setShowVideo={setShowVideo}
             showMap={showMap}
             setShowMap={setShowMap}
-            mode={shouldShowProductOverMap ? 'list' : 'range'}
+            mode={shouldShowProductOverMap && !isFishSoopFinder ? 'list' : 'range'}
           />
           <ErrorBoundary key={product?.mainProduct}>
             <Outlet context={{ showVideo, showMap, loading: true }} />

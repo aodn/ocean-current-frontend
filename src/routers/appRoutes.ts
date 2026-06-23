@@ -3,6 +3,7 @@ export const APP_ROUTES = {
   PRODUCT: '/product',
   MAP: '/map',
   ABOUT: '/about',
+  INFO: '/info',
   NEWS: '/news',
   NOT_FOUND: '/404',
 } as const;

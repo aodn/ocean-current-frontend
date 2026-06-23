@@ -1,4 +1,4 @@
-import useProductPathFromUrl from './useGetProductFromUrl/useProductPathFromUrl';
+import useProductPathFromUrl from './useProductPathFromUrl/useProductPathFromUrl';
 import useProductSearchParam from './useProductSearchParam/useProductSearchParam';
 import useQueryParams from './useQueryParams/useQueryParams';
 import useOutsideClick from './useOutSideClick/useOutsideClick';

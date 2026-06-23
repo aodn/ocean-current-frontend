@@ -113,14 +113,11 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
           acc.push({ type, shape: 'circle', coords: [coordX, coordY, 10], href: '', tooltip: item.shipName });
           break;
         case 'FishSOOP':
-          //fishsoop image url expected to be https://oceancurrent.aodn.org.au/fishsoop/{region}/{year}/{date}.gif
-          //temp fix, point to the page. expected to be https://oceancurrent.aodn.org.au/fishsoop_php/fsa.php?region={region}&date={date} like https://oceancurrent.aodn.org.au/fishsoop_php/fsa.php?region=TasE&date=20260302
           acc.push({
             type,
             shape: 'circle',
             coords: [coordX, coordY, 10],
-            //region and date should come from txt file through api, not regionCode.
-            href: `https://oceancurrent.aodn.org.au/fishsoop_php/fsa.php?region=${encodeURIComponent(item.region)}&date=${encodeURIComponent(item.date)}`,
+            href: `/product/fish-soop/regional-profiles?region=${encodeURIComponent(item.region)}&date=${encodeURIComponent(item.date)}`,
             tooltip: type + item.region + item.date,
           });
           break;
