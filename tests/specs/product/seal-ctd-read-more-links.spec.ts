@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../../fixtures/base-test';
 
 /**
  * The Seal-CTD product description modal has two "here" links that deep-link
@@ -28,18 +28,17 @@ const READ_MORE_LINKS = [
 ] as const;
 
 test.describe('Seal-CTD modal "read more" links', () => {
-  test('links open the description modal and point at the current origin', async ({ page }) => {
-    await page.goto(SEAL_CTD_PRODUCT_URL);
+  test('links open the description modal and point at the current origin', async ({ productPage }) => {
+    await productPage.goto(SEAL_CTD_PRODUCT_URL);
 
     // Open the product description modal from the sidebar summary.
-    const readMore = page.getByText('Read more', { exact: true });
-    await expect(readMore).toBeVisible();
-    await readMore.click();
+    await expect(productPage.readMoreButton).toBeVisible();
+    await productPage.readMoreButton.click();
 
-    const origin = new URL(page.url()).origin;
+    const origin = new URL(productPage.url()).origin;
 
     for (const { label, filter, anchor } of READ_MORE_LINKS) {
-      const link = page.locator(`a[href*="${anchor}"]`);
+      const link = productPage.page.locator(`a[href*="${anchor}"]`);
       await expect(link, `${label}: link is rendered in the modal`).toBeVisible();
 
       // Raw attribute must stay root-relative (no hardcoded domain).
@@ -58,12 +57,12 @@ test.describe('Seal-CTD modal "read more" links', () => {
   });
 
   for (const { label, filter, anchor } of READ_MORE_LINKS) {
-    test(`news deep link resolves to a visible anchor — ${label}`, async ({ page }) => {
-      await page.goto(`/news?filter=${filter}#${anchor}`);
+    test(`news deep link resolves to a visible anchor — ${label}`, async ({ newsPage }) => {
+      await newsPage.goto(`/news?filter=${filter}#${anchor}`);
 
       // The target section anchor must still exist (catches title/id changes)
       // and the matching filter must reveal it, scrolled into view.
-      const target = page.locator(`#${anchor}`);
+      const target = newsPage.page.locator(`#${anchor}`);
       await expect(target, `anchor #${anchor} exists on the news page`).toBeAttached();
       await expect(target, `anchor #${anchor} is shown by filter "${filter}"`).toBeInViewport();
     });

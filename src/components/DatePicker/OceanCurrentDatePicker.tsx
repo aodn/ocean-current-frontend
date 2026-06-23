@@ -91,7 +91,9 @@ const OceanCurrentDatePicker: React.FC<OceanCurrentDatePickerProps> = ({
           </div>
         )}
 
-        <div className="text-l">{formattedSelectedDate}</div>
+        <div className="text-l" data-testid="selected-date" data-timestamp={selectedDate.getTime()}>
+          {formattedSelectedDate}
+        </div>
       </div>
 
       {!isSealCtdTagsAndYearFormat && (

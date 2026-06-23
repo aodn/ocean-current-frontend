@@ -93,7 +93,12 @@ const HomeProductCarousel: React.FC = () => {
           style={{ transform: `translateX(-${scrollPosition}px)`, width: `${carouselMetrics.totalWidth}px` }}
         >
           {productCarouselData.map(({ id, url, Icon, title }, index) => (
-            <div key={id} ref={index === 0 ? itemRef : null} className="mt-2 w-24 shrink-0 md:w-30">
+            <div
+              key={id}
+              ref={index === 0 ? itemRef : null}
+              className="mt-2 w-24 shrink-0 md:w-30"
+              data-testid={`carousel-item-${title}`}
+            >
               <LinkOrAnchor
                 to={url}
                 className={cn(

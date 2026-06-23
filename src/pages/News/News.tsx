@@ -63,7 +63,9 @@ export const News = () => {
     <div ref={containerRef} className="newsComponent [&_img]:max-w-full">
       <div>
         <div className="flex flex-col items-center justify-between gap-y-4 lg:flex-row">
-          <h2 className="pl-2">OceanCurrent News</h2>
+          <h2 className="pl-2" data-testid="news-page-heading">
+            OceanCurrent News
+          </h2>
           <div className="flex gap-2">
             {DATE_SORT_IDS.map((d) => (
               <button

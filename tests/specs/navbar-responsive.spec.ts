@@ -1,21 +1,14 @@
-import { test, expect } from '@playwright/test';
-
-const viewports = [
-  { name: 'tablet', width: 900, height: 800 },
-  { name: 'lg', width: 1024, height: 800 },
-  { name: 'xl', width: 1280, height: 800 },
-];
+import { test, expect } from '../fixtures/base-test';
+import { NAVBAR_VIEWPORTS } from '../utils/constants/viewport-configs';
 
 test.describe('Navbar Responsive Layout', () => {
-  for (const { name, width, height } of viewports) {
-    test(`Branding section does not overlap nav items at ${name} (${width}px)`, async ({ page }) => {
-      await page.setViewportSize({ width, height });
-      await page.goto('/');
-      await page.waitForLoadState('networkidle');
+  for (const { name, width, height } of NAVBAR_VIEWPORTS) {
+    test(`Branding section does not overlap nav items at ${name} (${width}px)`, async ({ homePage }) => {
+      await homePage.page.setViewportSize({ width, height });
+      await homePage.load();
 
-      const navbar = page.getByTestId('main-navbar');
-      const brandingSection = navbar.getByTestId('navbar-branding');
-      const mapsItem = navbar.getByText('Maps', { exact: true });
+      const brandingSection = homePage.navbar.brandingSection;
+      const mapsItem = homePage.navbar.mapsMenu;
 
       const brandingBox = await brandingSection.boundingBox();
       const mapsBox = await mapsItem.boundingBox();
