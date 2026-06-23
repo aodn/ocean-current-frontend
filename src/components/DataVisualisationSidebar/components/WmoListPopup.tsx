@@ -64,9 +64,10 @@ const WmoListPopup: React.FC<WmoListPopupProps> = ({ isOpen, onClose, openInNewT
   const navigate = useNavigate();
 
   const handleSelect = async (id: string) => {
-    if (loadingId) return;
+    if (loadingId !== null) return;
     setLoadingId(id);
     const newTab = openInNewTab ? window.open('', '_blank') : null;
+    let navigated = false;
     try {
       const cycles = await queryClient.fetchQuery({
         queryKey: ['argoDateList', id],
@@ -83,10 +84,12 @@ const WmoListPopup: React.FC<WmoListPopupProps> = ({ isOpen, onClose, openInNewT
       onClose();
       if (newTab) {
         newTab.location.href = url;
+        navigated = true;
       } else {
         navigate(url);
       }
     } finally {
+      if (!navigated) newTab?.close();
       setLoadingId(null);
     }
   };

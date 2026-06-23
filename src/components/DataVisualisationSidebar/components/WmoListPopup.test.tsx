@@ -70,6 +70,28 @@ describe('WmoListPopup', () => {
     expect(mockNavigate).not.toHaveBeenCalled();
   });
 
+  it('disables all buttons while any ID is loading', async () => {
+    let resolveFetch!: (val: typeof mockCycles) => void;
+    mockFetchQuery.mockReturnValue(
+      new Promise((res) => {
+        resolveFetch = res;
+      }),
+    );
+
+    render(<WmoListPopup isOpen={true} onClose={vi.fn()} />);
+    fireEvent.click(screen.getByText('[1234567]'));
+
+    await waitFor(() => {
+      expect(screen.getByText('[9876543]').closest('button')).toBeDisabled();
+    });
+
+    resolveFetch(mockCycles);
+
+    await waitFor(() => {
+      expect(screen.getByText('[9876543]').closest('button')).not.toBeDisabled();
+    });
+  });
+
   it('does not navigate when no cycles are returned', async () => {
     mockFetchQuery.mockResolvedValue([]);
     render(<WmoListPopup isOpen={true} onClose={vi.fn()} />);
