@@ -92,6 +92,32 @@ describe('WmoListPopup', () => {
     });
   });
 
+  it('closes the blank tab when the fetch fails', async () => {
+    const mockTab = { location: { href: '' }, close: vi.fn() };
+    vi.spyOn(window, 'open').mockReturnValue(mockTab as unknown as Window);
+    mockFetchQuery.mockRejectedValue(new Error('network'));
+    render(<WmoListPopup isOpen={true} onClose={vi.fn()} openInNewTab />);
+    fireEvent.click(screen.getByText('[1234567]'));
+    await waitFor(() => {
+      expect(mockTab.close).toHaveBeenCalled();
+    });
+    expect(mockTab.location.href).toBe('');
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
+
+  it('closes the blank tab when no cycles are returned', async () => {
+    const mockTab = { location: { href: '' }, close: vi.fn() };
+    vi.spyOn(window, 'open').mockReturnValue(mockTab as unknown as Window);
+    mockFetchQuery.mockResolvedValue([]);
+    render(<WmoListPopup isOpen={true} onClose={vi.fn()} openInNewTab />);
+    fireEvent.click(screen.getByText('[1234567]'));
+    await waitFor(() => {
+      expect(mockTab.close).toHaveBeenCalled();
+    });
+    expect(mockTab.location.href).toBe('');
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
+
   it('does not navigate when no cycles are returned', async () => {
     mockFetchQuery.mockResolvedValue([]);
     render(<WmoListPopup isOpen={true} onClose={vi.fn()} />);

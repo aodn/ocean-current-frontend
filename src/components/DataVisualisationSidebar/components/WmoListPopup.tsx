@@ -38,8 +38,8 @@ const WmoPopupBody: React.FC<WmoPopupBodyProps> = ({ loadingId, onSelect }) => {
     ));
 
   return (
-    <div className="font-normal">
-      {loadingId && <LinearProgress />}
+    <div className="font-normal" aria-busy={loadingId !== null}>
+      {loadingId && <LinearProgress aria-label="Loading float profiles" />}
       <div className="p-6">
         <div>
           <p className="text-imos-dark-grey mb-3 text-base font-medium">{REPORTED_FLOATS_HEADER}</p>
@@ -67,6 +67,7 @@ const WmoListPopup: React.FC<WmoListPopupProps> = ({ isOpen, onClose, openInNewT
     if (loadingId !== null) return;
     setLoadingId(id);
     const newTab = openInNewTab ? window.open('', '_blank') : null;
+    if (newTab) newTab.opener = null;
     let navigated = false;
     try {
       const cycles = await queryClient.fetchQuery({
@@ -77,7 +78,6 @@ const WmoListPopup: React.FC<WmoListPopupProps> = ({ isOpen, onClose, openInNewT
       const latest = cycles[cycles.length - 1];
       if (!latest) {
         console.error(`No cycles found for WMO ID: ${id}`);
-        newTab?.close();
         return;
       }
       const url = `/product/argo?wmoid=${id}&cycle=${latest.cycle}&depth=${ArgoDepths['2000M']}&date=${latest.date}`;
@@ -88,6 +88,8 @@ const WmoListPopup: React.FC<WmoListPopupProps> = ({ isOpen, onClose, openInNewT
       } else {
         navigate(url);
       }
+    } catch (error) {
+      console.error(`Failed to load profiles for WMO ID: ${id}`, error);
     } finally {
       if (!navigated) newTab?.close();
       setLoadingId(null);
