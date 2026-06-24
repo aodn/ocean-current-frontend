@@ -127,6 +127,7 @@ jobs:
           key: playwright-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: yarn playwright install chromium
 
       - name: Install Playwright OS dependencies
