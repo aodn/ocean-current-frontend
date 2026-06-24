@@ -141,7 +141,7 @@ jobs:
         uses: actions/upload-artifact@v6
         if: failure()
         with:
-          name: test-results
+          name: test-report
           path: |
             playwright-report/
             test-results/
