@@ -9,8 +9,4 @@ export class AboutPage extends BasePage {
 
     this.exploreDatasetButton = this.page.getByText('Explore dataset');
   }
-
-  async gotoEacMooringArray(): Promise<void> {
-    await this.goto('/about/eac-mooring-array');
-  }
 }

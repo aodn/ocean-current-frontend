@@ -1,5 +1,7 @@
 import { test, expect } from '../../fixtures/base-test';
 
+const EAC_MOORING_ARRAY_URL = '/about/eac-mooring-array';
+
 test.describe('About Page', () => {
   test('about button on product page is visible and opens about page in a new tab', async ({
     productPage,
@@ -13,11 +15,11 @@ test.describe('About Page', () => {
     const [newTab] = await Promise.all([context.waitForEvent('page'), aboutButton.click()]);
 
     await newTab.waitForLoadState('load');
-    expect(newTab.url()).toContain('/about/eac-mooring-array');
+    expect(newTab.url()).toContain(EAC_MOORING_ARRAY_URL);
   });
 
   test('about page renders heading and content', async ({ aboutPage }) => {
-    await aboutPage.gotoEacMooringArray();
+    await aboutPage.goto(EAC_MOORING_ARRAY_URL);
 
     // Heading should be visible
     await expect(aboutPage.getByText('EAC Mooring Array (2012-2022)')).toBeVisible();
@@ -30,7 +32,7 @@ test.describe('About Page', () => {
   });
 
   test('about page has navbar and footer', async ({ aboutPage }) => {
-    await aboutPage.gotoEacMooringArray();
+    await aboutPage.goto(EAC_MOORING_ARRAY_URL);
 
     // At least one navbar (mobile or desktop) should be present
     await expect(aboutPage.navbar.root).toBeAttached();
@@ -40,23 +42,22 @@ test.describe('About Page', () => {
   });
 
   test('about page has no sidebar or menu bar', async ({ aboutPage }) => {
-    await aboutPage.gotoEacMooringArray();
+    await aboutPage.goto(EAC_MOORING_ARRAY_URL);
 
     // Product sidebar should not be present
     await expect(aboutPage.page.locator('[data-testid="product-sidebar"]')).not.toBeVisible();
   });
 
-  test('"Explore dataset" button navigates to product page with latest date', async ({ aboutPage }) => {
-    await aboutPage.gotoEacMooringArray();
+  test('"Explore dataset" button navigates to product page with latest date', async ({ aboutPage, productPage }) => {
+    await aboutPage.page.goto(EAC_MOORING_ARRAY_URL, { waitUntil: 'networkidle' });
 
     await expect(aboutPage.exploreDatasetButton).toBeVisible();
     await aboutPage.exploreDatasetButton.click();
-    await aboutPage.page.waitForLoadState('load');
+    await expect(productPage.datePicker).toBeVisible({ timeout: 30000 });
 
-    expect(aboutPage.url()).toContain('/product/eac-mooring-array');
+    expect(productPage.url()).toContain('/product/eac-mooring-array');
     // URL should include region and date from latest-dates API
-    await aboutPage.page.waitForURL(/region=.+&date=\d+/, { timeout: 10000 });
-    expect(aboutPage.url()).toMatch(/region=.+&date=\d+/);
+    expect(productPage.url()).toMatch(/region=.+&date=\d+/);
   });
 
   test('about page shows error for product without about content', async ({ aboutPage }) => {
@@ -73,7 +74,7 @@ test.describe('About Page', () => {
 
   test('about page is directly accessible via URL (shareable)', async ({ aboutPage }) => {
     // Simulate landing on about page directly (no prior navigation)
-    await aboutPage.gotoEacMooringArray();
+    await aboutPage.goto(EAC_MOORING_ARRAY_URL);
 
     // Content should render without needing to come from product page
     await expect(aboutPage.getByText('EAC Mooring Array (2012-2022)')).toBeVisible();
