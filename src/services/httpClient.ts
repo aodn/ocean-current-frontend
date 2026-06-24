@@ -3,12 +3,12 @@ import { apiConfig } from '@/configs/api';
 
 const apiClient = axios.create({
   baseURL: apiConfig.backendURL,
-  timeout: 5000,
+  timeout: 30000,
 });
 
 const ec2ProxyClient = axios.create({
   baseURL: apiConfig.ec2ProxyURL,
-  timeout: 5000,
+  timeout: 30000,
 });
 
 const applyInterceptors = (client: AxiosInstance) => {
