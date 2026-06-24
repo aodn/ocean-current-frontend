@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 // Set E2E_SMOKE=true (via test:e2e:production script) to run against real upstream APIs instead of mocks.
 const USE_REAL_API = process.env.E2E_SMOKE === 'true';

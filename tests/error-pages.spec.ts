@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('Error Pages', () => {
   test('shows "This page is missing" when navigating to an unknown path', async ({ page }) => {

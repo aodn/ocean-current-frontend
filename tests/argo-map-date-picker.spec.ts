@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('Argo Map View — Date Picker', () => {
   test.beforeEach(async ({ page }) => {

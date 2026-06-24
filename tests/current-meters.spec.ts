@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('Current Meters Tests', () => {
   test('back button returns to map view after region polygon click', async ({ page }) => {

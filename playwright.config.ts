@@ -54,8 +54,10 @@ export default defineConfig({
           command: `yarn build && yarn preview --port ${PREVIEW_PORT}`,
           url: `http://localhost:${PREVIEW_PORT}`,
           timeout: 120 * 1000,
+          stdout: 'pipe',
           env: {
             VITE_MAPBOX_ACCESS_TOKEN: MAPBOX_ACCESS_TOKEN,
+            VITE_PROXY_LOG: 'true',
           },
         }
       : {
@@ -63,9 +65,11 @@ export default defineConfig({
           url: `http://localhost:${PORT}`,
           reuseExistingServer: true,
           timeout: 120 * 1000,
+          stdout: 'pipe',
           env: {
             VITE_PORT: PORT,
             VITE_MAPBOX_ACCESS_TOKEN: MAPBOX_ACCESS_TOKEN,
+            VITE_PROXY_LOG: 'true',
           },
         },
 });

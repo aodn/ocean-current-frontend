@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('Detail Page Tests', () => {
   test('TC-767: Open Category Details Page from Home Page', async ({ page }) => {

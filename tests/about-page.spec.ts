@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('About Page', () => {
   test('about button on product page is visible and opens about page in a new tab', async ({ page, context }) => {

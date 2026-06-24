@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 /**
  * Argo profile URLs accept an optional `date` param. When only `wmoid` + `cycle` are present, the

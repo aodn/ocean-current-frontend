@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('Home Page Tests', () => {
   test('TC001: Ocean Current Page Loads Successfully', async ({ page }) => {
