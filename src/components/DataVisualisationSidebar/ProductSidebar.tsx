@@ -25,6 +25,7 @@ import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 import { useQueryParams } from '@/hooks';
 import { findLeafFlatProductById, getProductLegend } from '@/utils/product-utils/product';
+import { isProductAvailableInRegion } from '@/utils/region-utils/region';
 import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
 import Legend from './components/Legend';
 import MiniMap from './components/MiniMap';
@@ -38,6 +39,11 @@ import ProductSummary from './components/ProductSummary';
 import SubProductOptions from './components/SubProductOptions';
 import DataSources from './components/DataSources';
 import CollapsibleSection from './components/CollapsibleSection';
+
+// Sub-products that must be disabled in the sidebar when the currently selected
+// region is not in their region-availability list. Add more ChildProductIDs here
+// to extend region-gating to other sub-products.
+const REGION_GATED_SUB_PRODUCTS: ProductID[] = ['sixDaySst-timeseries'];
 
 const ProductSideBar: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -69,11 +75,22 @@ const ProductSideBar: React.FC = () => {
 
   const subProductDisabledKeys = useMemo<ProductID[]>(() => {
     const region = searchParams.get('region');
+    const disabledKeys: ProductID[] = [];
+
     if (isSurfaceWaves && (!region || region === 'Au')) {
-      return ['surfaceWaves-buoyTimeseries'];
+      disabledKeys.push('surfaceWaves-buoyTimeseries');
     }
-    return [];
-  }, [isSurfaceWaves, searchParams]);
+
+    if (region) {
+      REGION_GATED_SUB_PRODUCTS.forEach((key) => {
+        if (subProducts.some((s) => s.key === key) && !isProductAvailableInRegion(key, region)) {
+          disabledKeys.push(key);
+        }
+      });
+    }
+
+    return disabledKeys;
+  }, [isSurfaceWaves, searchParams, subProducts]);
 
   if (!mainProduct) {
     return <Loading />;

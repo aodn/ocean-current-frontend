@@ -11,7 +11,6 @@ import { getRegionListByProductId } from '@/utils/region-utils/region';
 
 const useRegionFromProduct = () => {
   const useProductId = useProductStore((state) => state.productParams.productId);
-
   const getRegionCodeList = (productId: ProductID): RegionKeyType[] => {
     const regionFromProduct = getRegionListByProductId(productId) || {
       local: [],
@@ -39,9 +38,8 @@ const useRegionFromProduct = () => {
     return allRegions.filter(({ code }) => regionCodeList.includes(code));
   };
 
-  const newRegions = getRegions(mixedRegionCodeList);
-
-  return { regions: newRegions };
+  const regions = getRegions(mixedRegionCodeList);
+  return { regions };
 };
 
 export default useRegionFromProduct;
