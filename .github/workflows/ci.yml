@@ -119,15 +119,11 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Cache Playwright browsers
-        id: playwright-cache
-        uses: actions/cache@v5
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-
       - name: Install Playwright Browsers
-        run: yarn playwright install chromium --verbose
+        timeout-minutes: 5
+        env:
+          DEBUG: pw:install
+        run: yarn playwright install chromium
 
       - name: Install Playwright OS dependencies
         run: yarn playwright install-deps chromium
