@@ -1,4 +1,4 @@
-import { test, expect, type Request, type Page } from '@playwright/test';
+import { test, expect, type Request, type Page } from './fixtures';
 
 type Hit = { url: string; status: number | null };
 

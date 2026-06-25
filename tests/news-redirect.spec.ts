@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('News PHP redirect', () => {
   test('redirects /news.php to /news', async ({ page }) => {

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 // The disable detection in ProductSidebar reads `searchParams.get('region')` and
 // disables the Buoy Timeseries button when the value is exactly 'Au'.
