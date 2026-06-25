@@ -1,8 +1,8 @@
 import { test, expect } from '../../fixtures/base-test';
 
-const EAC_MOORING_ARRAY_URL = '/about/eac-mooring-array';
-
 test.describe('About Page', () => {
+  const EAC_MOORING_ARRAY_URL = '/about/eac-mooring-array';
+
   test('about button on product page is visible and opens about page in a new tab', async ({
     productPage,
     context,
