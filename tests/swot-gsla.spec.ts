@@ -1,4 +1,5 @@
 import { test, expect, type Request, type Page } from '@playwright/test';
+import { skipIfBackendUnreachable } from './helpers/backend';
 
 type Hit = { url: string; status: number | null };
 
@@ -14,6 +15,8 @@ function trackRequests(page: Page, glob: RegExp) {
 }
 
 test.describe('SWOT GSLA', () => {
+  test.beforeEach(async ({ baseURL }) => skipIfBackendUnreachable(baseURL));
+
   test('SSH Au: image + Argo tags load, date controls + label present', async ({ page }) => {
     const sshHits = trackRequests(page, /DR_SWOT\/SSH\/Au\/20260426041646\.gif/);
     const tagHits = trackRequests(page, /DR_SWOT\/TAGS\/Au\/20260426041646\.txt/);

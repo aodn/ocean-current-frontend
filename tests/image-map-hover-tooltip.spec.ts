@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { skipIfBackendUnreachable } from './helpers/backend';
 
 // Set E2E_SMOKE=true (via test:e2e:production script) to run against real upstream APIs instead of mocks.
 const USE_REAL_API = process.env.E2E_SMOKE === 'true';
@@ -20,6 +21,8 @@ const MOCK_IMAGE_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="800" heig
 </svg>`;
 
 test.describe('Data Image Map — Hover Tooltip (Issue #317)', () => {
+  test.beforeEach(async ({ baseURL }) => skipIfBackendUnreachable(baseURL));
+
   test.beforeEach(async ({ page }) => {
     if (!USE_REAL_API) {
       // Must come before page.goto()

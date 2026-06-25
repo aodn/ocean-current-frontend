@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { skipIfBackendUnreachable } from './helpers/backend';
 
 test.describe('Current Meters Tests', () => {
+  test.beforeEach(async ({ baseURL }) => skipIfBackendUnreachable(baseURL));
+
   test('back button returns to map view after region polygon click', async ({ page }) => {
     // Issue #8441: clicking a region polygon from /map/current-meters/...
     // used to push extra history entries via setSearchParams during the

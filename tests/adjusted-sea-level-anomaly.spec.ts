@@ -1,4 +1,5 @@
 import { test, expect, type Request, type Page } from '@playwright/test';
+import { skipIfBackendUnreachable } from './helpers/backend';
 
 type Hit = { url: string; status: number | null };
 
@@ -14,6 +15,8 @@ function trackRequests(page: Page, glob: RegExp) {
 }
 
 test.describe('Adjusted Sea Level Anomaly — Non-Tidal SLA', () => {
+  test.beforeEach(async ({ baseURL }) => skipIfBackendUnreachable(baseURL));
+
   test('Au: image + Argo tags load, date controls + label present', async ({ page }) => {
     // Image uses HOUR format (10-digit); tag file uses DAY format (8-digit).
     // This test guards against the regression where exact-equality date matching

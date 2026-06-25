@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { skipIfBackendUnreachable } from './helpers/backend';
 
 test.describe('About Page', () => {
+  test.beforeEach(async ({ baseURL }) => skipIfBackendUnreachable(baseURL));
+
   test('about button on product page is visible and opens about page in a new tab', async ({ page, context }) => {
     await page.goto('/product/eac-mooring-array?region=Brisbane');
     await page.waitForLoadState('networkidle');

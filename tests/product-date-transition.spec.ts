@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { skipIfBackendUnreachable } from './helpers/backend';
 
 test.describe('Product Date Transition — Nearest Date Search (#318)', () => {
+  test.beforeEach(async ({ baseURL }) => skipIfBackendUnreachable(baseURL));
+
   /**
    * Helper: wait for the page to fully load and the date param to stabilise.
    * Returns the final `date` search param value, or null if not present.

@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { skipIfBackendUnreachable } from './helpers/backend';
 
 test.describe('Argo Map View — Date Picker', () => {
+  test.beforeEach(async ({ baseURL }) => skipIfBackendUnreachable(baseURL));
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/map/argo');
     await page.waitForLoadState('networkidle');

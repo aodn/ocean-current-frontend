@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { skipIfBackendUnreachable } from './helpers/backend';
 
 /**
  * Argo profile URLs accept an optional `date` param. When only `wmoid` + `cycle` are present, the
@@ -9,6 +10,8 @@ import { test, expect } from '@playwright/test';
  * float; cycles 1 and 2 are its earliest profiles and are stable over time.
  */
 test.describe('Argo Profile — optional date in URL', () => {
+  test.beforeEach(async ({ baseURL }) => skipIfBackendUnreachable(baseURL));
+
   const WMO_ID = '5905578';
 
   /** Wait for the resolved `date` param to land in the URL and return it. */
