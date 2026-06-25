@@ -29,7 +29,7 @@ const WmoPopupBody: React.FC<WmoPopupBodyProps> = ({ loadingId, onSelect }) => {
     ids.map((id) => (
       <TextButton
         key={id}
-        disabled={loadingId === id}
+        disabled={loadingId !== null}
         className="text-imos-deep-blue text-base"
         onClick={() => onSelect(id)}
       >
@@ -38,8 +38,8 @@ const WmoPopupBody: React.FC<WmoPopupBodyProps> = ({ loadingId, onSelect }) => {
     ));
 
   return (
-    <div className="font-normal">
-      {loadingId && <LinearProgress />}
+    <div className="font-normal" aria-busy={loadingId !== null}>
+      {loadingId && <LinearProgress aria-label="Loading float profiles" />}
       <div className="p-6">
         <div>
           <p className="text-imos-dark-grey mb-3 text-base font-medium">{REPORTED_FLOATS_HEADER}</p>
@@ -64,8 +64,11 @@ const WmoListPopup: React.FC<WmoListPopupProps> = ({ isOpen, onClose, openInNewT
   const navigate = useNavigate();
 
   const handleSelect = async (id: string) => {
-    if (loadingId) return;
+    if (loadingId !== null) return;
     setLoadingId(id);
+    const newTab = openInNewTab ? window.open('', '_blank') : null;
+    if (newTab) newTab.opener = null;
+    let navigated = false;
     try {
       const cycles = await queryClient.fetchQuery({
         queryKey: ['argoDateList', id],
@@ -79,12 +82,16 @@ const WmoListPopup: React.FC<WmoListPopupProps> = ({ isOpen, onClose, openInNewT
       }
       const url = `/product/argo?wmoid=${id}&cycle=${latest.cycle}&depth=${ArgoDepths['2000M']}&date=${latest.date}`;
       onClose();
-      if (openInNewTab) {
-        window.open(url, '_blank', 'noopener,noreferrer');
+      if (newTab) {
+        newTab.location.href = url;
+        navigated = true;
       } else {
         navigate(url);
       }
+    } catch (error) {
+      console.error(`Failed to load profiles for WMO ID: ${id}`, error);
     } finally {
+      if (!navigated) newTab?.close();
       setLoadingId(null);
     }
   };
