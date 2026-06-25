@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import WmoListPopup from './WmoListPopup';
@@ -60,15 +59,62 @@ describe('WmoListPopup', () => {
   });
 
   it('opens in a new tab after selecting an ID when openInNewTab is true', async () => {
+    const mockTab = { location: { href: '' }, close: vi.fn() };
+    vi.spyOn(window, 'open').mockReturnValue(mockTab as unknown as Window);
     render(<WmoListPopup isOpen={true} onClose={vi.fn()} openInNewTab />);
     fireEvent.click(screen.getByText('[1234567]'));
     await waitFor(() => {
-      expect(window.open).toHaveBeenCalledWith(
-        '/product/argo?wmoid=1234567&cycle=44&depth=0-2000m&date=20240601',
-        '_blank',
-        'noopener,noreferrer',
-      );
+      expect(mockTab.location.href).toBe('/product/argo?wmoid=1234567&cycle=44&depth=0-2000m&date=20240601');
     });
+    expect(window.open).toHaveBeenCalledWith('', '_blank');
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
+
+  it('disables all buttons while any ID is loading', async () => {
+    let resolveFetch!: (val: typeof mockCycles) => void;
+    mockFetchQuery.mockReturnValue(
+      new Promise((res) => {
+        resolveFetch = res;
+      }),
+    );
+
+    render(<WmoListPopup isOpen={true} onClose={vi.fn()} />);
+    fireEvent.click(screen.getByText('[1234567]'));
+
+    await waitFor(() => {
+      expect(screen.getByText('[9876543]').closest('button')).toBeDisabled();
+    });
+
+    resolveFetch(mockCycles);
+
+    await waitFor(() => {
+      expect(screen.getByText('[9876543]').closest('button')).not.toBeDisabled();
+    });
+  });
+
+  it('closes the blank tab when the fetch fails', async () => {
+    const mockTab = { location: { href: '' }, close: vi.fn() };
+    vi.spyOn(window, 'open').mockReturnValue(mockTab as unknown as Window);
+    mockFetchQuery.mockRejectedValue(new Error('network'));
+    render(<WmoListPopup isOpen={true} onClose={vi.fn()} openInNewTab />);
+    fireEvent.click(screen.getByText('[1234567]'));
+    await waitFor(() => {
+      expect(mockTab.close).toHaveBeenCalled();
+    });
+    expect(mockTab.location.href).toBe('');
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
+
+  it('closes the blank tab when no cycles are returned', async () => {
+    const mockTab = { location: { href: '' }, close: vi.fn() };
+    vi.spyOn(window, 'open').mockReturnValue(mockTab as unknown as Window);
+    mockFetchQuery.mockResolvedValue([]);
+    render(<WmoListPopup isOpen={true} onClose={vi.fn()} openInNewTab />);
+    fireEvent.click(screen.getByText('[1234567]'));
+    await waitFor(() => {
+      expect(mockTab.close).toHaveBeenCalled();
+    });
+    expect(mockTab.location.href).toBe('');
     expect(mockNavigate).not.toHaveBeenCalled();
   });
 
