@@ -103,7 +103,7 @@ Tests use robust selectors with `data-testid` attributes where possible:
 
 ### 1. Custom Fixtures (`fixtures/`)
 
-Instead of instantiating Page Objects manually in every spec file, we extend Playwright's base test block in [base-test.ts](https://github.com/aodn/ocean-current-frontend/blob/test/517-refactor-playwright-framework/tests/fixtures/base-test.ts) to inject Page Object instances automatically:
+Instead of instantiating Page Objects manually in every spec file, we extend Playwright's base test block in [base-test.ts](./fixtures/base-test.ts) to inject Page Object instances automatically:
 
 ```typescript
 import { test } from '../../fixtures/base-test';
@@ -119,8 +119,8 @@ test('example test', async ({ homePage, productPage }) => {
 
 Page objects encapsulate page structures, selectors, and user actions.
 
-- **[BasePage.ts](https://github.com/aodn/ocean-current-frontend/blob/test/517-refactor-playwright-framework/tests/pages/BasePage.ts):** The base class for all Page Objects. It exposes common utilities like navigating (`goto`), reading search parameters, waiting on states, and tracking requests. It also maps global elements like the `Navbar` and `Footer`.
-- **Components (`pages/components/`):** Reusable layout sections (such as [Navbar.ts](https://github.com/aodn/ocean-current-frontend/blob/test/517-refactor-playwright-framework/tests/pages/components/Navbar.ts) or [Map.ts](https://github.com/aodn/ocean-current-frontend/blob/test/517-refactor-playwright-framework/tests/pages/components/Map.ts)) are extracted into independent component classes and instantiated inside their parent Page Objects.
+- **[BasePage.ts](./pages/BasePage.ts):** The base class for all Page Objects. It exposes common utilities like navigating (`goto`), reading search parameters, waiting on states, and tracking requests. It also maps global elements like the `Navbar` and `Footer`.
+- **Components (`pages/components/`):** Reusable layout sections (such as [Navbar.ts](./pages/components/Navbar.ts) or [Map.ts](./pages/components/Map.ts)) are extracted into independent component classes and instantiated inside their parent Page Objects.
 
 ### 3. API Mocking (`mocks/`)
 
