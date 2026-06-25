@@ -57,7 +57,7 @@ export default defineConfig({
           stdout: 'pipe',
           env: {
             VITE_MAPBOX_ACCESS_TOKEN: MAPBOX_ACCESS_TOKEN,
-            VITE_PROXY_LOG: 'true',
+            ...(process.env.VITE_PROXY_LOG && { VITE_PROXY_LOG: process.env.VITE_PROXY_LOG }),
           },
         }
       : {
@@ -69,7 +69,6 @@ export default defineConfig({
           env: {
             VITE_PORT: PORT,
             VITE_MAPBOX_ACCESS_TOKEN: MAPBOX_ACCESS_TOKEN,
-            VITE_PROXY_LOG: 'true',
           },
         },
 });
