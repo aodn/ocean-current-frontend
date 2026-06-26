@@ -71,7 +71,12 @@ const HomeMapCarousel: React.FC = () => {
 
       <div className="border-imos-calypso-blue/60 flex flex-col rounded-b-xl border border-solid px-4 pt-6 pb-3 md:px-6">
         <div className="flex flex-col md:min-h-32">
-          <h2 className="font-poppins text-imos-nav-text text-lg font-semibold">{selectedProduct.title}</h2>
+          <h2
+            className="font-poppins text-imos-nav-text text-lg font-semibold"
+            data-testid="map-carousel-product-title"
+          >
+            {selectedProduct.title}
+          </h2>
           <p className="font-open-sans text-imos-dark-grey mt-2 text-base">{selectedProduct.description}</p>
         </div>
 
