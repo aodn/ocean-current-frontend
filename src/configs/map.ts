@@ -22,6 +22,9 @@ export const MAP_LIMIT_BOUNDS: LngLatBoundsLike = [
   [-140, 20], // east, north
 ];
 
+export const MAP_MAX_ZOOM = 6;
+export const MAP_MINIMAP_MAX_ZOOM = 5;
+
 export const initialMapViewState = {
   mapViewState: {
     latitude: -28.5,

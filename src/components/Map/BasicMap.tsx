@@ -1,7 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Map, { MapMouseEvent, MapRef, ViewStateChangeEvent, StyleSpecification } from 'react-map-gl/mapbox';
 import type { Map as MapboxMap } from 'mapbox-gl';
-import { initialMobileMapViewState, mapConfig, MAP_LIMIT_BOUNDS } from '@/configs/map';
+import {
+  initialMobileMapViewState,
+  mapConfig,
+  MAP_LIMIT_BOUNDS,
+  MAP_MAX_ZOOM,
+  MAP_MINIMAP_MAX_ZOOM,
+} from '@/configs/map';
 import useMapStore, { setMapViewState, patchMapViewState, updateZoom } from '@/stores/map-store/mapStore';
 import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
@@ -173,6 +179,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
       dragRotate={false}
       touchPitch={false}
       pitchWithRotate={false}
+      maxZoom={isMiniMap ? MAP_MINIMAP_MAX_ZOOM : MAP_MAX_ZOOM}
       cooperativeGestures={isMobile && !isMiniMap}
     >
       {children}
