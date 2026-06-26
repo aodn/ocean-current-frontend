@@ -1,3 +1,5 @@
+import { breakpoints } from '../../../src/styles/screens.ts';
+
 export interface Viewport {
   name: string;
   width: number;
@@ -5,7 +7,7 @@ export interface Viewport {
 }
 
 export const NAVBAR_VIEWPORTS: Viewport[] = [
-  { name: 'tablet', width: 900, height: 800 },
-  { name: 'lg', width: 1024, height: 800 },
-  { name: 'xl', width: 1280, height: 800 },
+  { name: 'tablet', width: breakpoints.md, height: 800 },
+  { name: 'lg', width: breakpoints.lg, height: 800 },
+  { name: 'xl', width: breakpoints.xl, height: 800 },
 ];
