@@ -43,4 +43,19 @@ test.describe('Surface Waves — sub-product option buttons', () => {
     await expect(productPage.mapButton).not.toBeDisabled();
     await expect(productPage.buoyTimeseriesButton).not.toBeDisabled();
   });
+
+  test('disabled button opacity does not change on hover', async ({ productPage }) => {
+    await productPage.goto('/product/surface-waves/wave?region=Au');
+
+    const button = productPage.buoyTimeseriesButton;
+    await expect(button).toBeDisabled();
+
+    const opacityBefore = await button.evaluate((el) => parseFloat(window.getComputedStyle(el).opacity));
+
+    await button.hover({ force: true });
+
+    const opacityAfter = await button.evaluate((el) => parseFloat(window.getComputedStyle(el).opacity));
+
+    expect(opacityAfter).toBe(opacityBefore);
+  });
 });
