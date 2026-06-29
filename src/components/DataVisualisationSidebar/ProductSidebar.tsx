@@ -43,7 +43,13 @@ import CollapsibleSection from './components/CollapsibleSection';
 // Sub-products that must be disabled in the sidebar when the currently selected
 // region is not in their region-availability list. Add more ChildProductIDs here
 // to extend region-gating to other sub-products.
-const REGION_GATED_SUB_PRODUCTS: ProductID[] = ['sixDaySst-timeseries'];
+const REGION_GATED_SUB_PRODUCTS: ProductID[] = [
+  'sixDaySst-timeseries',
+  'adjustedSeaLevelAnomaly-sla',
+  'adjustedSeaLevelAnomaly-centiles',
+  'adjustedSeaLevelAnomaly-sst',
+  'adjustedSeaLevelAnomaly-nonTidalSla',
+];
 
 const ProductSideBar: React.FC = () => {
   const [searchParams] = useSearchParams();
