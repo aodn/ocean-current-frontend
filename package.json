@@ -23,7 +23,7 @@
     "prettier:fix": "prettier . --write",
     "preview": "vite preview",
     "preview:build": "tsc && vite build && vite preview",
-    "postinstall": "husky && scripts/setup-worktree.sh"
+    "postinstall": "husky && sh scripts/setup-worktree.sh"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.100.11",

@@ -57,7 +57,7 @@ for item in ".claude" "CLAUDE.md"; do
     echo "  skip: $item (not in main worktree)" >&2
   elif [ -e "$dst" ] || [ -L "$dst" ]; then
     if [ "$FORCE" = true ]; then
-      rm -f "$dst" && ln -s "$src" "$dst"
+      rm -rf "$dst" && ln -s "$src" "$dst"
       echo "  force linked: $item -> $src" >&2
     else
       echo "  skip: $item (already exists)" >&2
