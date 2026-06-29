@@ -81,42 +81,6 @@ In development, all API requests go through the Vite dev server proxy:
 
 In production, all paths are resolved relative to the deployment host — no environment variables are needed.
 
-### Branch naming convention
-
-In this project, the branch naming convention is as follow: `<branch prefix>/<github issue number>-<brief description of the issue>`.
-
-We use the following branch prefixes to categorise the work for each branch:
-
-- `hotfix/`: for quickly fixing critical issues
-- `fix/`: for fixing non-critical issues and bugs
-- `feature/`: for adding, removing or modifying a feature
-- `test/`: for experimentation, such as coming up with a working POC or testing an impplementation
-- `chore/`: literally a chore, such as code clean up, documentation updates, etc.
-
-Example branch name: `feature/5348-navbar-date-picker`.
-
-### Making a commit
-
-A pre-commit hook has been set up using Husky which will run the following on every commit:
-
-- linting on all staged files
-- all tests
-- checks that the commit message is prefixed with [gitmoji](https://gitmoji.dev/)
-
-#### gitmoji
-
-`gitmoji` is used in this project to categorise the context or intention of each commit for easy identification.
-
-Every commit message must be prefixed with `gitmoji` either by using markdown directly in the commit message or `gitmoji's` interactive cli, [gitmoji-cli](https://github.com/carloscuesta/gitmoji-cli).
-
-The full list of available emojis and their interpretations are available on [gitmoji.dev](https://gitmoji.dev/), with the most commonly used ones in this project listed below:
-
-- 🐛 :bug: - fix a bug
-- 🔥 :fire: - remove code or files
-- ✨ :sparkles: - introduce new features
-- 💄 :lipstick: - add or update the UI and style files
-- ✅ :white_check_mark: - add, update, or pass tests
-
 ### Configuration
 
 - .eslintrc.js for linting rules
@@ -124,6 +88,11 @@ The full list of available emojis and their interpretations are available on [gi
 - vite.config.ts for Vite build tool configuration.
   - vite-plugin-checker for output warning on browser and terminal. [Check this link for detail configuration.](https://vite-plugin-checker.netlify.app/)
 - tsconfig.json for TypeScript configuration
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for branch naming, commit conventions, and the
+git worktree workflow used in this project.
 
 ## More information
 
