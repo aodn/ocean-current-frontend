@@ -1,25 +1,8 @@
-import { useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router';
 import { cn } from '@/utils/classname-util/cn';
 import { useScrollToHash } from '@/hooks/useScrollToHash/useScrollToHash';
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react/no-unescaped-entities */
-
-const BASE_URL = 'https://oceancurrent.aodn.org.au/';
-
-const isAbsoluteUrl = (value: string) => /^(?:[a-zA-Z][a-zA-Z\d+\-.]*:|\/\/|#)/.test(value);
-
-const normalizeUrl = (value: string) => {
-  if (!value || isAbsoluteUrl(value)) {
-    return value;
-  }
-
-  try {
-    return new URL(value, BASE_URL).href;
-  } catch {
-    return `${BASE_URL}${value}`;
-  }
-};
 
 type DateId = '2023-now' | '2020-2023' | 'older_than_2020';
 
@@ -28,39 +11,10 @@ const DATE_SORT_IDS: DateId[] = ['2023-now', '2020-2023', 'older_than_2020'];
 export const News = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedFilter = (searchParams.get('filter') as DateId | null) ?? null;
-  const containerRef = useRef<HTMLDivElement | null>(null);
   useScrollToHash();
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const elements = container.querySelectorAll<HTMLElement>('[href], [src]');
-    elements.forEach((element) => {
-      if (element.hasAttribute('href')) {
-        const href = element.getAttribute('href');
-        if (href) {
-          const normalizedHref = normalizeUrl(href);
-          if (normalizedHref !== href) {
-            element.setAttribute('href', normalizedHref);
-          }
-        }
-      }
-
-      if (element.hasAttribute('src')) {
-        const src = element.getAttribute('src');
-        if (src) {
-          const normalizedSrc = normalizeUrl(src);
-          if (normalizedSrc !== src) {
-            element.setAttribute('src', normalizedSrc);
-          }
-        }
-      }
-    });
-  }, []);
-
   return (
-    <div ref={containerRef} className="newsComponent [&_img]:max-w-full">
+    <div className="newsComponent [&_img]:max-w-full">
       <div>
         <div className="flex flex-col items-center justify-between gap-y-4 lg:flex-row">
           <h2 className="pl-2" data-testid="news-page-heading">
@@ -97,6 +51,134 @@ export const News = () => {
               selectedFilter !== null && selectedFilter !== '2023-now' && 'hidden',
             )}
           >
+            <article className="p-2">
+              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
+                <div>
+                  <h3 id="_ShowYourStripes">
+                    <a href="#_ShowYourStripes" className="anchor">
+                      #ShowYourStripes
+                    </a>
+                  </h3>
+                  <em>
+                    <h5>Gabriela S. Pilo</h5>
+                  </em>
+                </div>
+                <div>
+                  <p className="font-bold">19 June, 2026</p>
+                </div>
+              </div>
+              <div className="rounded-b bg-white p-4">
+                <p>
+                  debug
+                  <img src="/resource/news/20260619/stripes1_3.png" />
+                  <br />
+                  <br />
+                  <img src="/resource/news/20260619/Stripes2.png" />
+                  <br />
+                  Figures 1 and 2 are our participation in this year's{' '}
+                  <a href="https://showyourstripes.info" target="_blank" rel="noreferrer">
+                    <em>Show your Stripes</em> Day
+                  </a>{' '}
+                  (
+                  <a
+                    href="https://www.reading.ac.uk/planet/events/show-your-stripes-day"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    20 June 2026
+                  </a>
+                  ). This movement, initiated by Professor Ed Hawkins from the University of Reading, aims to start a
+                  conversation about the climate crisis and our warming planet by providing a simple but impactful
+                  visual representation of temperature change.
+                  <br />
+                  <br />
+                  As we are focused on the ocean, our stripes show temperature in the ocean interior over the past 20
+                  years in two different depth ranges.
+                  <br />
+                  <br />
+                  Figure 1 shows, from 2007 to the present, the integrated ocean temperature between depths of 700 and
+                  2000 m in the ocean around Australia (regional boundaries show in Figure 3). The stripes show a
+                  consistent warming of these sub-surface waters, with rapid warming in the later period.
+                  <br />
+                  <br />
+                  Figure 2 is the same as in Figure 1, but integrated between the surface and 2000 m depth. The
+                  inclusion of the upper 700 m makes the seasonal cycle of ocean temperature evident, with blue and red
+                  stripes alternating as winters and summers come and go. The red stripes becoming thicker and more
+                  intense over time – indicating longer and stronger warm conditions in the ocean.
+                  <br />
+                  <br />
+                  Changes in ocean temperature vary not only in depth but also across the region, as shown in Figure 3,
+                  adapted from the{' '}
+                  <a
+                    href="https://www.csiro.au/en/research/environmental-impacts/climate-change/State-of-the-Climate/Oceans"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <em>State of the Climate 2024 Report</em>
+                  </a>
+                  . This figure shows the decadal trend in ocean heat content in the upper 2000 m of the ocean from 2007
+                  to 2024. The greatest heat uptake happening at the southern part of the domain, i.e., the Tasman Sea
+                  and in the Southern Ocean, south of Australia.
+                  <br />
+                  <br />
+                  This warming trend is also seen in the Sea Surface Temperature (SST) in regional maps of OceanCurrent.
+                  For example, in{' '}
+                  <a
+                    href="https://oceancurrent.aodn.org.au/product.php?product=ssta&region=Tas&date=20260619015301&rtype=DR"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Tasmania
+                  </a>{' '}
+                  (Figure 4), SST anomalies have been consistently positive since the winter of 2020. Similar patterns
+                  are seen in the{' '}
+                  <a
+                    href="https://oceancurrent.aodn.org.au/product.php?product=ssta&region=SGBR&date=20260619063840&rtype=DR"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Great Barrier Reef
+                  </a>
+                  ,{' '}
+                  <a
+                    href="https://oceancurrent.aodn.org.au/product.php?product=ssta&region=SNSW&date=20260619064048&rtype=DR"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Southern New South Wales
+                  </a>
+                  , and the{' '}
+                  <a
+                    href="https://oceancurrent.aodn.org.au/product.php?product=ssta&region=NWS&date=20260619063949&rtype=DR"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Northwest Shelf
+                  </a>
+                  .
+                  <br />
+                  <br />
+                  If you look at these figures and feel{' '}
+                  <a href="https://en.wikipedia.org/wiki/Solastalgia" target="_blank" rel="noreferrer">
+                    solastalgia
+                  </a>
+                  , you are not alone.
+                  <br />
+                  <br />
+                  If you too want to #ShowYourStripes, visit the official website and see how atmospheric temperature is
+                  changing in your region:{' '}
+                  <a href="https://showyourstripes.info/" target="_blank" rel="noreferrer">
+                    https://showyourstripes.info
+                  </a>
+                  <br />
+                  <br />
+                  <img src="/resource/news/20260619/stripes3.png" />
+                  <br />
+                  <br />
+                  <img src="/resource/news/20260619/stripes4_1.png" />
+                </p>
+              </div>
+            </article>
             <article className="p-2">
               <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
@@ -144,7 +226,7 @@ export const News = () => {
                   also some locations where the geostrophic currents have no usable skill on a daily basis, but
                   statistics like the average magnitude, ratio of alongshore:across-shelf current variance,
                   auto-correlation time-scale etc, are about right. FFI see
-                  <a href="../timeseries/DM03_ANMN/" target="_blank">
+                  <a href="https://oceancurrent.aodn.org.au/timeseries/DM03_ANMN/" target="_blank" rel="noreferrer">
                     {' '}
                     more information{' '}
                   </a>
@@ -158,8 +240,16 @@ export const News = () => {
                   ocean model. You might need a long record of estimates in order to calculate some sort of probability
                   (of high or low speeds, north or south direction, for example).
                 </p>
-                <img alt="" src="news/20260319/map_03_4_08_2015-2020.gif" style={{ height: '460px', width: '500px' }} />
-                <img alt="" src="news/20260319/map_03_4_01_2009-2014.gif" style={{ height: '424px', width: '500px' }} />
+                <img
+                  alt=""
+                  src="/resource/news/20260319/map_03_4_08_2015-2020.gif"
+                  style={{ height: '460px', width: '500px' }}
+                />
+                <img
+                  alt=""
+                  src="/resource/news/20260319/map_03_4_01_2009-2014.gif"
+                  style={{ height: '424px', width: '500px' }}
+                />
               </div>
             </article>
             <article className="p-2">
@@ -187,7 +277,7 @@ export const News = () => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <img src="news/20251222/2025122311.gif" />
+                    <img src="/resource/news/20251222/2025122311.gif" />
                   </a>
                   The positioning of ocean eddies this year is quite similar to last year. More specifically,
                   <br />
@@ -229,7 +319,7 @@ export const News = () => {
                   &nbsp;&nbsp;5. There is potential for adverse coastal currents off southern Tasmania.
                   <br />
                   <br />
-                  <img src="news/20251222/2024122602.gif" />
+                  <img src="/resource/news/20251222/2024122602.gif" />
                   <br />
                 </p>
               </div>
@@ -270,7 +360,7 @@ export const News = () => {
                   >
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20251217/FishSOOP_fig1.gif"
+                      src="/resource/news/20251217/FishSOOP_fig1.gif"
                       style={{ height: '462px', width: '350px' }}
                     />
                   </a>
@@ -352,7 +442,7 @@ export const News = () => {
                   >
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20251217/FishSOOP_fig3_4_combined.png"
+                      src="/resource/news/20251217/FishSOOP_fig3_4_combined.png"
                       style={{ height: '1019px', width: '900px' }}
                     />
                   </a>
@@ -364,7 +454,7 @@ export const News = () => {
                   >
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20251217/FishSOOP_fig2.png"
+                      src="/resource/news/20251217/FishSOOP_fig2.png"
                       style={{ height: '500px', width: '700px' }}
                     />
                   </a>
@@ -398,7 +488,7 @@ export const News = () => {
                   >
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20251003/Picture1swot.png"
+                      src="/resource/news/20251003/Picture1swot.png"
                       style={{ height: '457px', width: '350px' }}
                     />
                   </a>
@@ -475,7 +565,7 @@ export const News = () => {
                   >
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20251003/Picture2swot.png"
+                      src="/resource/news/20251003/Picture2swot.png"
                       style={{ height: '420px', width: '350px' }}
                     />
                   </a>
@@ -539,7 +629,7 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20251003/Picture3swot.png"
+                    src="/resource/news/20251003/Picture3swot.png"
                     style={{ height: '493px', width: '600px' }}
                   />
                   <a
@@ -648,11 +738,7 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20250901/Picture1.png"
-                    style={{ height: '711px', width: '500px' }}
-                  />
+                  <img alt="" src="/resource/news/20250901/Picture1.png" style={{ height: '711px', width: '500px' }} />
                   <br />
                   An Argo float (WMO ID&nbsp;<strong>3902460</strong>) has been trapped in an anticyclonic eddy
                   propagating through the Great Australian Bight for over one year to date (Figure 1). The float was
@@ -751,15 +837,11 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20250901/Picture2_2.png"
+                    src="/resource/news/20250901/Picture2_2.png"
                     style={{ height: '507px', width: '800px' }}
                   />
                   <br />
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20250901/Picture3.png"
-                    style={{ height: '468px', width: '600px' }}
-                  />
+                  <img alt="" src="/resource/news/20250901/Picture3.png" style={{ height: '468px', width: '600px' }} />
                 </p>
               </div>
             </article>
@@ -788,11 +870,7 @@ export const News = () => {
                   has successfully retrieved the data from the&nbsp;instruments in the mooring array off Western
                   Australia (WA).&nbsp;
                   <br />
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20250531/fig1.png"
-                    style={{ height: '379px', width: '600px' }}
-                  />
+                  <img alt="" src="/resource/news/20250531/fig1.png" style={{ height: '379px', width: '600px' }} />
                   <br />
                   An exceptional subsurface cooling event that occurred from early January to late March 2024, at 40-160
                   m depths (Figure 1, red box) was recorded by the instruments at the WATR20 mooring (200 m depth;
@@ -810,11 +888,7 @@ export const News = () => {
                   &nbsp;and the weak 2018-19 El Niño.&nbsp;
                   <br />
                   <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P51/mapst/06_Perth_vmean_1.html">
-                    <img
-                      alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20250531/fig2.png"
-                      style={{ height: '394px', width: '400px' }}
-                    />
+                    <img alt="" src="/resource/news/20250531/fig2.png" style={{ height: '394px', width: '400px' }} />
                   </a>
                   <br />
                   The 2024 subsurface cooling event was also sampled during a glider survey a bit farther north, off Two
@@ -852,7 +926,7 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20250531/fig3.png"
+                    src="/resource/news/20250531/fig3.png"
                     style={{ borderStyle: 'solid', borderWidth: '0px', height: '413px', width: '450px' }}
                   />
                   For now, we are unsure what caused this cold event at the mooring site.
@@ -906,7 +980,7 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20250331/Fig1_TCAlfred_1.png"
+                    src="/resource/news/20250331/Fig1_TCAlfred_1.png"
                     style={{ height: '599px', width: '350px' }}
                   />
                   <br />
@@ -945,14 +1019,14 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20250331/Fig2_TCAlfred_2.png"
+                    src="/resource/news/20250331/Fig2_TCAlfred_2.png"
                     style={{ height: '577px', width: '850px' }}
                   />
                   <strong>Surface&nbsp;waves</strong>
                   <br />
                   Cyclones also leave an imprint in the ocean by transferring energy to the ocean through wind friction,
                   forming waves. Surface waves below TC Alfred were over 8 m high, as shown in our&nbsp;
-                  <a href="https://oceancurrent-beta.aodn.org.au/product/surface-waves/wave?region=Au&date=2025030112">
+                  <a href="/product/surface-waves/wave?region=Au&date=2025030112">
                     surface wave maps from 1st&nbsp;March
                   </a>
                   &nbsp;– read more about TC Alfred and surface waves at the&nbsp;
@@ -966,9 +1040,7 @@ export const News = () => {
                   TC Alfred drew heat from the ocean as it moved and intensified, cooling the sea surface temperature on
                   its wake. There was a ~2°C drop in waters of the Coral Sea between&nbsp;22 February&nbsp;and&nbsp;2
                   March&nbsp;(Figure 3). The cooler patch of water after the TC passing is even clearer in maps of&nbsp;
-                  <a href="https://oceancurrent-beta.aodn.org.au/product/six-day-sst/sst-anomaly?region=NE&date=20250302">
-                    SST anomalies
-                  </a>
+                  <a href="/product/six-day-sst/sst-anomaly?region=NE&date=20250302">SST anomalies</a>
                   .&nbsp;
                   <br />
                   &nbsp;
@@ -981,11 +1053,11 @@ export const News = () => {
                   <strong>Sub-surface temperature and salinity</strong>
                   <br />
                   An&nbsp;
-                  <a href="https://oceancurrent-beta.aodn.org.au/product/argo?wmoid=5905569&cycle=26&depth=0-2000m&date=20250304">
+                  <a href="/product/argo?wmoid=5905569&cycle=26&depth=0-2000m&date=20250304">
                     Argo float surfaced right below the cyclone on the 4th&nbsp;of March
                   </a>
                   &nbsp;(red box in Figure 2). We can compare its measurements to the measurements taken by a&nbsp;
-                  <a href="https://oceancurrent-beta.aodn.org.au/product/argo?wmoid=5905663&cycle=235&depth=0-2000m&date=20250303">
+                  <a href="/product/argo?wmoid=5905663&cycle=235&depth=0-2000m&date=20250303">
                     nearby float at the same location, but before the cyclone passed
                   </a>
                   &nbsp;(blue box in Figure 2).
@@ -1018,13 +1090,13 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20250331/Fig3_TCAlfred.png"
+                    src="/resource/news/20250331/Fig3_TCAlfred.png"
                     style={{ height: '523px', width: '875px' }}
                   />
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20250331/Fig4_TCAlfred_1.png"
+                    src="/resource/news/20250331/Fig4_TCAlfred_1.png"
                     style={{ height: '586px', width: '400px' }}
                   />
                   <br />
@@ -1052,11 +1124,7 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <a href="https://oceancurrent.aodn.org.au/product.php?product=daily&amp;region=NingLeeu&amp;date=20250122093814&amp;rtype=DR">
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20250130/fig1_2.png"
-                    style={{ height: '584px', width: '300px' }}
-                  />
+                  <img alt="" src="/resource/news/20250130/fig1_2.png" style={{ height: '584px', width: '300px' }} />
                 </a>
                 <p>
                   The ocean off Western Australia is extremely hot right now (Figure 1). The monthly sea surface
@@ -1135,18 +1203,10 @@ export const News = () => {
                   &nbsp;off WA for better visualization.
                   <br />
                   <a href="https://oceancurrent.aodn.org.au/product.php?product=ssta&amp;region=NWS&amp;date=20250131011809&amp;rtype=DR">
-                    <img
-                      alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20250130/Fig2_1.png"
-                      style={{ height: '606px', width: '700px' }}
-                    />
+                    <img alt="" src="/resource/news/20250130/Fig2_1.png" style={{ height: '606px', width: '700px' }} />
                   </a>
                   <br />
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20250130/Fig3.png"
-                    style={{ height: '443px', width: '700px' }}
-                  />
+                  <img alt="" src="/resource/news/20250130/Fig3.png" style={{ height: '443px', width: '700px' }} />
                 </p>
               </div>
             </article>
@@ -1172,7 +1232,7 @@ export const News = () => {
                 <p>
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20241220/2024121605.gif"
+                    src="/resource/news/20241220/2024121605.gif"
                     style={{ height: '342px', width: '300px' }}
                   />
                   It is an upside-down year, with unusually strong currents off Tasmania&nbsp;and unusually weak
@@ -1194,7 +1254,7 @@ export const News = () => {
                 <p>
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20241220/2024121414.gif"
+                    src="/resource/news/20241220/2024121414.gif"
                     style={{ height: '276px', width: '300px' }}
                   />
                 </p>
@@ -1213,16 +1273,16 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20241220/20241211_5905513_93.gif"
+                    src="/resource/news/20241220/20241211_5905513_93.gif"
                     style={{ height: '193px', width: '300px' }}
                   />
                 </p>
                 <p>
                   Click to expand:
-                  <a href="SNSW_chl/2024121605.gif" target="blank">
+                  <a href="/resource/SNSW_chl/2024121605.gif" target="blank">
                     Fig 1,{' '}
                   </a>
-                  <a href="TasE/2024121414.gif" target="blank">
+                  <a href="/resource/TasE/2024121414.gif" target="blank">
                     Fig 2
                   </a>
                 </p>
@@ -1236,7 +1296,7 @@ export const News = () => {
                     <br />
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20241220/2024122322.gif"
+                      src="/resource/news/20241220/2024122322.gif"
                       style={{ height: '445px', width: '390px' }}
                     />
                   </li>
@@ -1247,7 +1307,7 @@ export const News = () => {
                     on 12 Dec.
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20241220/2024121203.gif"
+                      src="/resource/news/20241220/2024121203.gif"
                       style={{ height: '445px', width: '390px' }}
                     />
                     <br />
@@ -1329,7 +1389,7 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20240917/rogue_waves.png"
+                    src="/resource/news/20240917/rogue_waves.png"
                     style={{ height: '431px', width: '600px' }}
                   />
                   Clicking on the Cape Sorell buoy symbol on the map shows a remarkable&nbsp;
@@ -1362,7 +1422,7 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20240917/rogue_waves2.png"
+                    src="/resource/news/20240917/rogue_waves2.png"
                     style={{ height: '403px', width: '500px' }}
                   />
                   The user can flick through the time series of wave buoy data, navigate forward or backward in 2-houly
@@ -1398,7 +1458,7 @@ export const News = () => {
                 <p>
                   For people interested in using the new, experimental wide-swath altimeter SWOT for coastal
                   applications: we've expanded on our
-                  <a href="./#20240301" target="blank" className="anchor">
+                  <a href="https://oceancurrent.aodn.org.au/./#20240301" target="blank" className="anchor">
                     1 March 2024
                   </a>
                   assessment of this new instrument, bringing in Australia's tide gauge network and the IMOS array of
@@ -1406,12 +1466,15 @@ export const News = () => {
                   SWOT dataset.
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20240828/2024030508.gif"
+                    src="/resource/news/20240828/2024030508.gif"
                     style={{ height: '450px', width: '380px' }}
                   />
                 </p>
                 <p>
-                  <a href="/SWOT/L3/PIC0_10/SSP/sla3/Bris-Syd/2024030508.html" target="blank">
+                  <a
+                    href="https://oceancurrent.aodn.org.au/SWOT/L3/PIC0_10/SSP/sla3/Bris-Syd/2024030508.html"
+                    target="blank"
+                  >
                     Fig 1
                   </a>
                   (caption at end of text) shows a comparison of SWOT with tide gauges from Sydney to Tweed Heads on 5
@@ -1428,16 +1491,22 @@ export const News = () => {
                   two closest gauges.
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20240828/2024020210.gif"
+                    src="/resource/news/20240828/2024020210.gif"
                     style={{ height: '450px', width: '475px' }}
                   />
                 </p>
                 <p>
-                  <a href="/SWOT/L3/PIC0_10/SSP/slaQQ/sla_timeseries_p1.html" target="blank">
+                  <a
+                    href="https://oceancurrent.aodn.org.au/SWOT/L3/PIC0_10/SSP/slaQQ/sla_timeseries_p1.html"
+                    target="blank"
+                  >
                     Fig. 2a
                   </a>
                   and
-                  <a href="/SWOT/L3/PIC0_10/SSP/slaQQ/sla_timeseries_p2.html" target="blank">
+                  <a
+                    href="https://oceancurrent.aodn.org.au/SWOT/L3/PIC0_10/SSP/slaQQ/sla_timeseries_p2.html"
+                    target="blank"
+                  >
                     b
                   </a>
                   also compare SWOT and tide gauges, but takes a tide gauge perspective, showing time-series of the tide
@@ -1459,7 +1528,10 @@ export const News = () => {
                   alongshore current velocities.
                 </p>
                 <p>
-                  <a href="/SWOT/L3/PIC0_10/SSP/sst6/Sydney/2024020210.html" target="blank">
+                  <a
+                    href="https://oceancurrent.aodn.org.au/SWOT/L3/PIC0_10/SSP/sst6/Sydney/2024020210.html"
+                    target="blank"
+                  >
                     Fig. 3
                   </a>
                   &nbsp;shows an example of a day when the warm (26C) East Australian current flowed strongly (about
@@ -1473,7 +1545,10 @@ export const News = () => {
                 <p>
                   The northern three ADCPs off Bondi, Sydney are called ORS065, SYD100 and SYD140, while the one 20km
                   south off Port Hacking is called PH100. These 4 are often well correlated, as you can see in
-                  <a href="/SWOT/L3/PIC0_10/SSP/slaQQ/ADCP_timeseries_p3_25h_11km_50pc.html" target="blank">
+                  <a
+                    href="https://oceancurrent.aodn.org.au/SWOT/L3/PIC0_10/SSP/slaQQ/ADCP_timeseries_p3_25h_11km_50pc.html"
+                    target="blank"
+                  >
                     Fig. 4c
                   </a>
                   . But looking at the first few days of Feb 2024, we see the big difference between the inner moorings
@@ -1495,20 +1570,26 @@ export const News = () => {
                   averaging stencil is less than for open-water sites. If this number is less than half the potential
                   (open water) maximum, we code the data point red and exclude it from the statistics. For example, the
                   large error on
-                  <a href="/SWOT/L3/PIC0_10/SSP/sp2/Sydney/2023073006.html" target="blank">
+                  <a
+                    href="https://oceancurrent.aodn.org.au/SWOT/L3/PIC0_10/SSP/sp2/Sydney/2023073006.html"
+                    target="blank"
+                  >
                     30 July is seen
                   </a>
                   to be because there were very few postings in the stencil for that overpass.
                 </p>
                 <p>
                   A large error is also seen at CH100 (the site with the highest average speed) on
-                  <a href="/SWOT/L3/PIC0_10/SSP/sp2/Coffs/2024010106.html" target="blank">
+                  <a
+                    href="https://oceancurrent.aodn.org.au/SWOT/L3/PIC0_10/SSP/sp2/Coffs/2024010106.html"
+                    target="blank"
+                  >
                     1 January 2024
                   </a>
                   , when SWOT measured about 1.5m/s but the ADCP reported only 0.9m/s. We cannot explain this large
                   error - the SWOT coverage is good and there is nothing suspicious about the ADCP data (see
                   <a
-                    href="/timeseries/ANMN_P48/CH100/zt/CH100-2309-Sentinel-or-Monitor-Workhorse-ADCP-94p9_zt.html"
+                    href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P48/CH100/zt/CH100-2309-Sentinel-or-Monitor-Workhorse-ADCP-94p9_zt.html"
                     target="blank"
                   >
                     full profile
@@ -1517,7 +1598,10 @@ export const News = () => {
                 </p>
                 <p>
                   Moving to NE Australia (
-                  <a href="/SWOT/L3/PIC0_10/SSP/slaQQ/ADCP_timeseries_p3_25h_11km_50pc.html" target="blank">
+                  <a
+                    href="https://oceancurrent.aodn.org.au/SWOT/L3/PIC0_10/SSP/slaQQ/ADCP_timeseries_p3_25h_11km_50pc.html"
+                    target="blank"
+                  >
                     Fig 4d
                   </a>
                   ) we see that the MAE at GBRCCH (just 100km SE of Broad Sound where tides reach 5m) is just 4cm/s,
@@ -1527,7 +1611,10 @@ export const News = () => {
                   of tidal velocities (up to 50cm/s) from the ADCP observations. The result is that SWOT is able (after
                   some spatial averaging of the 2km postings) to consistently measure weak (non-tidal) currents as well
                   as strong ones (
-                  <a href="/SWOT/L3/PIC0_10/SSP/sp2/SGBR/2023080806.html" target="blank">
+                  <a
+                    href="https://oceancurrent.aodn.org.au/SWOT/L3/PIC0_10/SSP/sp2/SGBR/2023080806.html"
+                    target="blank"
+                  >
                     here at 22.4S, 152E, at least
                   </a>
                   ) with some usable skill. That said, it remains true that the 14cm/s combined MAE of non-tidal
@@ -1618,7 +1705,7 @@ export const News = () => {
                 <p>
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20240715/n18_2024-07-14_12_35z_-_SST.png"
+                    src="/resource/news/20240715/n18_2024-07-14_12_35z_-_SST.png"
                     style={{ height: '616px', width: '596px' }}
                   />
                   On Saturday 13 July, Byron Bay swimmer Rick Shearman was rescued by helicopter 1km offshore Tallow
@@ -1648,11 +1735,7 @@ export const News = () => {
                   (see the patch of blue in Figure 2 centred at 30S), diverting the EAC away from the
                   shelf.&nbsp;Whatever the reason,&nbsp;Rick might have been about 20km east of Ballina on Sunday if he
                   hadn't been rescued on Saturday. So good thing he had that watch.&nbsp;
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20240715/20240713.gif"
-                    style={{ height: '400px', width: '625px' }}
-                  />
+                  <img alt="" src="/resource/news/20240715/20240713.gif" style={{ height: '400px', width: '625px' }} />
                 </p>
               </div>
             </article>
@@ -1686,7 +1769,7 @@ export const News = () => {
                   influencing sea level.&nbsp;
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20240708/2024070512.gif"
+                    src="/resource/news/20240708/2024070512.gif"
                     style={{ height: '400px', width: '625px' }}
                   />
                   <br />
@@ -1716,7 +1799,7 @@ export const News = () => {
                   20 years it has risen 0.06m - offsetting 20% of this nearly-record-breaking high pressure event.
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20240708/Battery_Point.png"
+                    src="/resource/news/20240708/Battery_Point.png"
                     style={{ height: '300px', width: '600px' }}
                   />
                   <br />
@@ -1784,7 +1867,7 @@ export const News = () => {
                   <a href="https://oceancurrent.aodn.org.au/sourcedata/RADS_last10/20240514.html">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20240529/fig1_aurora_1.png"
+                      src="/resource/news/20240529/fig1_aurora_1.png"
                       style={{ height: '515px', width: '700px' }}
                     />
                   </a>
@@ -1814,7 +1897,7 @@ export const News = () => {
                   <a href="https://oceancurrent.aodn.org.au/sst.php?link=ht/20240513.html">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20240529/fig2_aurora.png"
+                      src="/resource/news/20240529/fig2_aurora.png"
                       style={{ height: '461px', width: '700px' }}
                     />
                   </a>
@@ -1882,17 +1965,17 @@ export const News = () => {
                     enough to give, for the first time ever, a snapshot view of sea level as a 2-D field. Let's look at
                     some ocean data near Sydney, where the flows are often strong, the skies are often clear and there
                     are 3 IMOS Acoustic Doppler Current Meters.
-                    <a href="news/20240301/2023111112.gif">
+                    <a href="/resource/news/20240301/2023111112.gif">
                       <img
                         alt=""
-                        src="https://oceancurrent.aodn.org.au/news/20240301/2023111112.gif"
+                        src="/resource/news/20240301/2023111112.gif"
                         style={{ height: '450px', width: '475px' }}
                       />
                     </a>
-                    <a href="news/20240301/2023093015.gif">
+                    <a href="/resource/news/20240301/2023093015.gif">
                       <img
                         alt=""
-                        src="https://oceancurrent.aodn.org.au/news/20240301/2023093015.gif"
+                        src="/resource/news/20240301/2023093015.gif"
                         style={{ height: '450px', width: '475px' }}
                       />
                     </a>
@@ -1927,10 +2010,10 @@ export const News = () => {
                       SWOT at JPL
                     </a>
                     .
-                    <a href="news/20240301/2023102022.gif">
+                    <a href="/resource/news/20240301/2023102022.gif">
                       <img
                         alt=""
-                        src="https://oceancurrent.aodn.org.au/news/20240301/2023102022.gif"
+                        src="/resource/news/20240301/2023102022.gif"
                         style={{ height: '300px', width: '440px' }}
                       />
                     </a>
@@ -1988,18 +2071,10 @@ export const News = () => {
                   </span>
                   <br />
                   <br />
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20240202/Bonney1.png"
-                    style={{ height: '454px', width: '480px' }}
-                  />
+                  <img alt="" src="/resource/news/20240202/Bonney1.png" style={{ height: '454px', width: '480px' }} />
                 </p>
                 <div>
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20240202/Bonney3.png"
-                    style={{ height: '368px', width: '570px' }}
-                  />
+                  <img alt="" src="/resource/news/20240202/Bonney3.png" style={{ height: '368px', width: '570px' }} />
                 </div>
                 <div>&nbsp;</div>
               </div>
@@ -2031,7 +2106,7 @@ export const News = () => {
                   choosing a course.&nbsp;
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20231222/2023122111.gif"
+                    src="/resource/news/20231222/2023122111.gif"
                     style={{ height: '400px', width: '285px' }}
                   />
                 </p>
@@ -2047,10 +2122,10 @@ export const News = () => {
                   breaking records for December southward current speed) as far as 40S. This is because of the warm core
                   eddy centered near 39.5S 152.5E that is actually record-breaking in terms of surface height anomaly
                   (even when 12cm is subtracted to account for sea level rise, and ranked against any month).
-                  <a href="news/20231222/ASLA_top_16_detrended.gif">
+                  <a href="/resource/news/20231222/ASLA_top_16_detrended.gif">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20231222/ASLA_top_16_detrended.gif"
+                      src="/resource/news/20231222/ASLA_top_16_detrended.gif"
                       style={{ height: '450px', width: '325px' }}
                     />
                   </a>
@@ -2091,7 +2166,7 @@ export const News = () => {
                 <p>
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20231211/20231202_sst.gif"
+                    src="/resource/news/20231211/20231202_sst.gif"
                     style={{ height: '350px', width: '396px' }}
                   />
                   Intense south-easterly storms have recently hit South Australia's coast, causing strong upwelling
@@ -2129,7 +2204,7 @@ export const News = () => {
                 <p>
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20231211/2023120205_chl.gif"
+                    src="/resource/news/20231211/2023120205_chl.gif"
                     style={{ height: '360px', width: '400px' }}
                   />
                   We'll keep our eyes out for the beautiful ocean colour satellite imagery we'll see as a result.
@@ -2160,11 +2235,7 @@ export const News = () => {
                   The East Australian Current (EAC) is Australia's most influential ocean feature. But do we know its
                   vital statistics?
                   <br />
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20231013/Fig1_EAC.png"
-                    style={{ height: '619px', width: '700px' }}
-                  />
+                  <img alt="" src="/resource/news/20231013/Fig1_EAC.png" style={{ height: '619px', width: '700px' }} />
                   <br />
                   Actually, not until now (other than from a handful of brief field campaigns or modelling exercises).
                   In recognition of this knowledge gap, IMOS and CSIRO launched a flagship effort between 2012-2022 to
@@ -2187,7 +2258,7 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20231013/Fig2_EAC_3.png"
+                    src="/resource/news/20231013/Fig2_EAC_3.png"
                     style={{ height: '659px', width: '700px' }}
                   />
                   Looking at a particular day,
@@ -2238,7 +2309,7 @@ export const News = () => {
                 <p>
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20230902/202309012000_1.gif"
+                    src="/resource/news/20230902/202309012000_1.gif"
                     style={{ height: '698px', width: '900px' }}
                   />
                   Slack tide is when the tidal current turns from flooding to ebbing, or vice versa. If you need to
@@ -2249,7 +2320,7 @@ export const News = () => {
                   within the bay. In many places, however, it is far less clear, and slack tide occurs at different
                   times in nearby places. In Clarence Strait (between Darwin and Melville Island), for example, slack
                   tide&nbsp;is half way between high and low tide at Darwin. Stepping through
-                  <a href="tides" target="blank">
+                  <a href="https://oceancurrent.aodn.org.au/tides" target="blank">
                     our maps of tidal current speed{' '}
                   </a>{' '}
                   is one way to find the approximate time of slack tide at an arbitrary location. We are working on a
@@ -2284,7 +2355,7 @@ export const News = () => {
                 <p>
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20230630/2023062922.gif"
+                    src="/resource/news/20230630/2023062922.gif"
                     style={{ height: '638px', width: '494px' }}
                   />
                   Next week is the Australian Marine Science Association conference at the Gold Coast (at 28ºS). Since
@@ -2334,7 +2405,7 @@ export const News = () => {
                 <p>
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20230429/2023041906_chl.gif"
+                    src="/resource/news/20230429/2023041906_chl.gif"
                     style={{ height: '690px', width: '550px' }}
                   />
                   Our chlorophyll-a images are back! (Sorry about the outage.) To celebrate, let's contemplate one of
@@ -2364,7 +2435,7 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20230429/2023041605_chl.gif"
+                    src="/resource/news/20230429/2023041605_chl.gif"
                     style={{ height: '660px', width: '500px' }}
                   />
                 </p>
@@ -2424,17 +2495,17 @@ export const News = () => {
                   at this year's AMSA session on the EAC.
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20230402/2023033010_1.gif"
+                    src="/resource/news/20230402/2023033010_1.gif"
                     style={{ height: '888px', width: '748px' }}
                   />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20230402/2023030505_1.gif"
+                    src="/resource/news/20230402/2023030505_1.gif"
                     style={{ height: '600px', width: '507px' }}
                   />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20230402/2023010910_1.gif"
+                    src="/resource/news/20230402/2023010910_1.gif"
                     style={{ height: '600px', width: '428px' }}
                   />
                 </p>
@@ -2482,11 +2553,7 @@ export const News = () => {
                   as green-ish hues in the northern section of the bay, while the phytoplankton bloom is seen as
                   blue-ish hues farther offshore, contrasting with the darker deep waters.&nbsp;
                   <br />
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20230228/Murray1.png"
-                    style={{ height: '466px', width: '690px' }}
-                  />
+                  <img alt="" src="/resource/news/20230228/Murray1.png" style={{ height: '466px', width: '690px' }} />
                   <br />
                   This large Murray's plume results from the late-2022 to early-2023 heavy rainfall recorded in the
                   Murray-Darling catchments. Riverine floods typically lead to high discharge levels of water rich in
@@ -2547,17 +2614,9 @@ export const News = () => {
                   crucial to interpret the results we see.
                   <br />
                   <br />
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20230228/Murray2_1.png"
-                    style={{ height: '431px', width: '670px' }}
-                  />
+                  <img alt="" src="/resource/news/20230228/Murray2_1.png" style={{ height: '431px', width: '670px' }} />
                   &nbsp; &nbsp; &nbsp;
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20230228/Murray3_4.png"
-                    style={{ height: '402px', width: '400px' }}
-                  />
+                  <img alt="" src="/resource/news/20230228/Murray3_4.png" style={{ height: '402px', width: '400px' }} />
                 </p>
               </div>
             </article>
@@ -2583,7 +2642,7 @@ export const News = () => {
                 <p>
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20221223/2022122003.gif"
+                    src="/resource/news/20221223/2022122003.gif"
                     style={{ height: '400px', width: '285px' }}
                   />
                   There looks to be only one region between Sydney and Hobart this year where it is clear that
@@ -2653,7 +2712,7 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20221220/SWOT_fast_sampling_orbit_with_legend.png"
+                    src="/resource/news/20221220/SWOT_fast_sampling_orbit_with_legend.png"
                     style={{ height: '372px', width: '590px' }}
                   />
                   <br />
@@ -2697,7 +2756,7 @@ export const News = () => {
                     <img
                       className="img-responsive"
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20221102/n19_2022-10-30_09_49z_-_SST1024_2.jpg"
+                      src="/resource/news/20221102/n19_2022-10-30_09_49z_-_SST1024_2.jpg"
                     />
                     When looking at our maps of SST, do you ever wish you could zoom in or out to show whatever region
                     you like, or adjust the temperature scale to enhance a particular feature? Well, now you can. We
@@ -2783,29 +2842,20 @@ export const News = () => {
                   </div>
 
                   <div className="col-md-4">
-                    <a href="30d_MEAN/SLA30d/20220915.gif" target="blank">
-                      <img
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/30d_MEAN/SLA30d/20220915.gif"
-                      />
+                    <a href="/resource/30d_MEAN/SLA30d/20220915.gif" target="blank">
+                      <img className="img-responsive" src="/resource/30d_MEAN/SLA30d/20220915.gif" />
                     </a>
                   </div>
 
                   <div className="col-md-6">
-                    <a href="news/20221005/SLA_cent_20221006.gif" target="blank">
-                      <img
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20221005/SLA_cent_20221006.gif"
-                      />
+                    <a href="/resource/news/20221005/SLA_cent_20221006.gif" target="blank">
+                      <img className="img-responsive" src="/resource/news/20221005/SLA_cent_20221006.gif" />
                     </a>
                   </div>
 
                   <div className="col-md-6">
-                    <a href="30d_MEAN/SST30d/20220915.gif" target="blank">
-                      <img
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/30d_MEAN/SST30d/20220915.gif"
-                      />
+                    <a href="/resource/30d_MEAN/SST30d/20220915.gif" target="blank">
+                      <img className="img-responsive" src="/resource/30d_MEAN/SST30d/20220915.gif" />
                     </a>
                   </div>
                 </div>
@@ -2848,11 +2898,7 @@ export const News = () => {
                   What we aim to achieve with Argo floats with a lot of planning and effort, elephant seals seem to
                   achieve effortlessly. As we carefully monitored those Argo floats, hoping they wouldn't drift away too
                   quickly, the seals patiently foraged nearby.
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20220608/male_seal.gif"
-                    style={{ height: '445px', width: '700px' }}
-                  />
+                  <img alt="" src="/resource/news/20220608/male_seal.gif" style={{ height: '445px', width: '700px' }} />
                   <br />
                   <br />
                   In 2022, several of the elephant seals equipped with CTDs remained close to the KP for most of the
@@ -2933,22 +2979,14 @@ export const News = () => {
                 </div>
                 <div className="row">
                   <div className="col-md-6">
-                    <a href="news/20220412/MMA_Figure_1.png" target="_blank">
-                      <img
-                        alt=""
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20220412/MMA_Figure_1.png"
-                      />
+                    <a href="/resource/news/20220412/MMA_Figure_1.png" target="_blank">
+                      <img alt="" className="img-responsive" src="/resource/news/20220412/MMA_Figure_1.png" />
                     </a>
                   </div>
 
                   <div className="col-md-6">
-                    <a href="news/20220412/MMA_Figure_2.png" target="_blank">
-                      <img
-                        alt=""
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20220412/MMA_Figure_2.png"
-                      />
+                    <a href="/resource/news/20220412/MMA_Figure_2.png" target="_blank">
+                      <img alt="" className="img-responsive" src="/resource/news/20220412/MMA_Figure_2.png" />
                     </a>
                   </div>
                 </div>
@@ -2962,22 +3000,14 @@ export const News = () => {
                 </div>
                 <div className="row">
                   <div className="col-md-6">
-                    <a href="news/20220412/MMA_Figure_3.png">
-                      <img
-                        alt=""
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20220412/MMA_Figure_3.png"
-                      />
+                    <a href="/resource/news/20220412/MMA_Figure_3.png">
+                      <img alt="" className="img-responsive" src="/resource/news/20220412/MMA_Figure_3.png" />
                     </a>
                   </div>
 
                   <div className="col-md-6">
-                    <a href="news/20220412/MMA_Figure_4.png">
-                      <img
-                        alt=""
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20220412/MMA_Figure_4.png"
-                      />
+                    <a href="/resource/news/20220412/MMA_Figure_4.png">
+                      <img alt="" className="img-responsive" src="/resource/news/20220412/MMA_Figure_4.png" />
                     </a>
                   </div>
                 </div>
@@ -3014,11 +3044,7 @@ export const News = () => {
                   operator's buoy data page can be accessed by clicking on the buoy location on the maps.&nbsp;&nbsp;
                   <br />
                   <a href="http://oceancurrent.imos.org.au/waves/waves3.php?date=20220308200000">
-                    <img
-                      alt=""
-                      className="img-responsive"
-                      src="https://oceancurrent.aodn.org.au/news/20220321/fig1_wave_2.png"
-                    />
+                    <img alt="" className="img-responsive" src="/resource/news/20220321/fig1_wave_2.png" />
                   </a>
                   <br />
                   <br />
@@ -3042,7 +3068,7 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20220321/fig2_wave_3.png"
+                    src="/resource/news/20220321/fig2_wave_3.png"
                     style={{ height: '338px', width: '500px' }}
                   />
                   <br />
@@ -3101,11 +3127,7 @@ export const News = () => {
               <div className="rounded-b bg-white p-4">
                 <p>
                   <a href="http://oceancurrent.imos.org.au/product.php?product=snapshot&amp;region=Syd-Hob&amp;date=20211215014745&amp;rtype=DR">
-                    <img
-                      alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20211215/fig1_1.gif"
-                      style={{ height: '491px', width: '350px' }}
-                    />
+                    <img alt="" src="/resource/news/20211215/fig1_1.gif" style={{ height: '491px', width: '350px' }} />
                   </a>
                   After a one-year hiatus, the Sydney to Hobart Yacht Race resumes this year. This year's key ocean
                   features are a large anticyclonic eddy off Sydney and an intense cyclonic eddy off Batemans Bay. This
@@ -3167,19 +3189,11 @@ export const News = () => {
                   <br />
                   &nbsp; &nbsp;
                   <a href="http://oceancurrent.imos.org.au/product.php?product=daily.SST_ANOM&amp;region=Syd-Hob&amp;date=20211215014745&amp;rtype=DR">
-                    <img
-                      alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20211215/fig2_2.gif"
-                      style={{ height: '479px', width: '350px' }}
-                    />
+                    <img alt="" src="/resource/news/20211215/fig2_2.gif" style={{ height: '479px', width: '350px' }} />
                   </a>
                   &nbsp; &nbsp;
                   <a href="http://oceancurrent.imos.org.au/profiles/cycle.php?wmoid=5905128&amp;cycle=162&amp;depth=0">
-                    <img
-                      alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20211215/fig3_1.gif"
-                      style={{ height: '387px', width: '600px' }}
-                    />
+                    <img alt="" src="/resource/news/20211215/fig3_1.gif" style={{ height: '387px', width: '600px' }} />
                   </a>
                 </p>
                 <p>&nbsp;</p>
@@ -3205,11 +3219,7 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20211124/20211012.gif"
-                    style={{ height: '400px', width: '625px' }}
-                  />
+                  <img alt="" src="/resource/news/20211124/20211012.gif" style={{ height: '400px', width: '625px' }} />
                   This is the question that springs to mind whenever you see that the temperature, sea level, or other
                   quantity is different from its 'normal' value. For some time now, we have made it easy for you to see
                   how anomalous SST values are, by showing the anomalies in centile form. As of today, we are doing the
@@ -3264,7 +3274,7 @@ export const News = () => {
                   >
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20210907/2021072418_1.gif"
+                      src="/resource/news/20210907/2021072418_1.gif"
                       style={{ height: '400px', width: '625px' }}
                     />
                   </a>
@@ -3320,7 +3330,7 @@ export const News = () => {
                 <p>
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20210727/Picture_1_3.png"
+                    src="/resource/news/20210727/Picture_1_3.png"
                     style={{ height: '462px', width: '500px' }}
                   />
                 </p>
@@ -3467,12 +3477,12 @@ export const News = () => {
                 <div style={{ fontStyle: 'italic' }}>
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20210727/Picture_3_1.png"
+                    src="/resource/news/20210727/Picture_3_1.png"
                     style={{ height: '410px', width: '550px' }}
                   />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20210727/Picture_2_2.png"
+                    src="/resource/news/20210727/Picture_2_2.png"
                     style={{ height: '373px', width: '500px' }}
                   />
                 </div>
@@ -3520,16 +3530,10 @@ export const News = () => {
 
                   <div>
                     <div className="col-md-6">
-                      <img
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20210528/2021050114.gif"
-                      />
+                      <img className="img-responsive" src="/resource/news/20210528/2021050114.gif" />
                     </div>
                     <div className="col-md-6">
-                      <img
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20210528/2021051106.gif"
-                      />
+                      <img className="img-responsive" src="/resource/news/20210528/2021051106.gif" />
                     </div>
                   </div>
                   <div>
@@ -3547,10 +3551,7 @@ export const News = () => {
 
                   <div>
                     <div className="col-md-12">
-                      <img
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20210528/Triaxus.png"
-                      />
+                      <img className="img-responsive" src="/resource/news/20210528/Triaxus.png" />
                     </div>
                     <div className="col-md-12">
                       <p>
@@ -3582,22 +3583,16 @@ export const News = () => {
 
                   <div>
                     <div className="col-md-4">
-                      <img
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20210528/2021051706.gif"
-                      />
+                      <img className="img-responsive" src="/resource/news/20210528/2021051706.gif" />
                     </div>
                     <div className="col-md-4">
-                      <img
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20210528/2021051914.gif"
-                      />
+                      <img className="img-responsive" src="/resource/news/20210528/2021051914.gif" />
                     </div>
                     <div className="col-md-4">
                       <img
                         className="img-responsive"
                         data-main-image="true"
-                        src="https://oceancurrent.aodn.org.au/news/20210528/2021052610.gif"
+                        src="/resource/news/20210528/2021052610.gif"
                       />
                     </div>
                   </div>
@@ -3640,7 +3635,7 @@ export const News = () => {
                 </p>
                 <img
                   alt="SST percentiles on the 17 May 2021 in the Joseph Bonaparte Gulf and Tiwi Islands, one of the new regions added to OceanCurrent 6-d SST product"
-                  src="https://oceancurrent.aodn.org.au/news/20210517/JBGulf.gif"
+                  src="/resource/news/20210517/JBGulf.gif"
                   style={{
                     caretColor: 'rgb(0, 0, 0)',
                     color: 'rgb(0, 0, 0)',
@@ -3797,16 +3792,13 @@ export const News = () => {
                 </p>
                 <p>&nbsp;</p>
                 <div className="col-md-4">
-                  <img
-                    className="img-responsive"
-                    src="https://oceancurrent.aodn.org.au/news/20210419/2021030406_BS1.gif"
-                  />
+                  <img className="img-responsive" src="/resource/news/20210419/2021030406_BS1.gif" />
                 </div>
                 <div className="col-md-4">
-                  <img className="img-responsive" src="https://oceancurrent.aodn.org.au/news/20210419/2021032502.gif" />
+                  <img className="img-responsive" src="/resource/news/20210419/2021032502.gif" />
                 </div>
                 <div className="col-md-4">
-                  <img className="img-responsive" src="https://oceancurrent.aodn.org.au/news/20210419/2021041314.gif" />
+                  <img className="img-responsive" src="/resource/news/20210419/2021041314.gif" />
                 </div>
               </div>
             </article>
@@ -3837,7 +3829,7 @@ export const News = () => {
                   >
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20210314/Figure_1.png"
+                      src="/resource/news/20210314/Figure_1.png"
                       style={{ height: '335px', width: '400px' }}
                     />
                   </a>
@@ -4010,19 +4002,13 @@ export const News = () => {
                   </div>
 
                   <div className="col-md-3">
-                    <a href="news/20210222/photo_news_Physalito.jpg" target="_blank">
-                      <img
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20210222/photo_news_Physalito.jpg"
-                      />
+                    <a href="/resource/news/20210222/photo_news_Physalito.jpg" target="_blank">
+                      <img className="img-responsive" src="/resource/news/20210222/photo_news_Physalito.jpg" />
                     </a>
 
                     <p>Figure 1: Beaching of the drifter Physalito in Jervis Bay</p>
-                    <a href="news/20210222/plot_SVPs_Carthe_Dec16_news.png" target="_blank">
-                      <img
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20210222/plot_SVPs_Carthe_Dec16_news.png"
-                      />
+                    <a href="/resource/news/20210222/plot_SVPs_Carthe_Dec16_news.png" target="_blank">
+                      <img className="img-responsive" src="/resource/news/20210222/plot_SVPs_Carthe_Dec16_news.png" />
                     </a>
 
                     <p>
@@ -4120,10 +4106,7 @@ export const News = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      <img
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20210203/2021011010.gif"
-                      />
+                      <img className="img-responsive" src="/resource/news/20210203/2021011010.gif" />
                     </a>
 
                     <p>
@@ -4135,10 +4118,7 @@ export const News = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      <img
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20210203/2021012122.gif"
-                      />
+                      <img className="img-responsive" src="/resource/news/20210203/2021012122.gif" />
                     </a>
 
                     <p>
@@ -4251,10 +4231,7 @@ export const News = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      <img
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20201224/Fig1_2020122714.gif"
-                      />
+                      <img className="img-responsive" src="/resource/news/20201224/Fig1_2020122714.gif" />
                     </a>
 
                     <p>
@@ -4262,10 +4239,7 @@ export const News = () => {
                       northeastern tip of Tasmania.
                     </p>
                     <a href="http://oceancurrent.imos.org.au/TasE/2020122308.html" target="_blank" rel="noreferrer">
-                      <img
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20201224/Fig2_2020122308.gif"
-                      />
+                      <img className="img-responsive" src="/resource/news/20201224/Fig2_2020122308.gif" />
                     </a>
 
                     <p>
@@ -4396,10 +4370,7 @@ export const News = () => {
 
                   <div className="col-md-3">
                     <a href="http://oceancurrent.imos.org.au/Syd-Hob/2020121508.html" target="_blank" rel="noreferrer">
-                      <img
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20201218/Fig_1_2020121508.gif"
-                      />
+                      <img className="img-responsive" src="/resource/news/20201218/Fig_1_2020121508.gif" />
                     </a>
 
                     <p>
@@ -4408,10 +4379,7 @@ export const News = () => {
                       white dashed line represents the rhumb line.
                     </p>
                     <a href="http://oceancurrent.imos.org.au/TasE/2020121414.html" target="_blank" rel="noreferrer">
-                      <img
-                        className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20201218/Fig_2_2020121414.gif"
-                      />
+                      <img className="img-responsive" src="/resource/news/20201218/Fig_2_2020121414.gif" />
                     </a>
 
                     <p>Figure 2: Snapshot SST for Tasmania on the 14th of December 2020.</p>
@@ -4439,11 +4407,7 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/Tas_chl/2020103004.gif"
-                    style={{ height: '525px', width: '600px' }}
-                  />
+                  <img alt="" src="/resource/Tas_chl/2020103004.gif" style={{ height: '525px', width: '600px' }} />
                   <br />
                   The processing of MODIS has resumed, in time to see&nbsp;a strong signal&nbsp;in Tasmanian waters. Is
                   this a spring bloom, possibly explaining why&nbsp;lots of humpback whales (chasing the zooplankton
@@ -4476,10 +4440,10 @@ export const News = () => {
               <div className="rounded-b bg-white p-4">
                 <p>
                   <span>
-                    <a href="news/20200901/GBR2020_Fig1.png" target="_blank">
+                    <a href="/resource/news/20200901/GBR2020_Fig1.png" target="_blank">
                       <img
                         alt=""
-                        src="https://oceancurrent.aodn.org.au/news/20200901/GBR2020_Fig1.png"
+                        src="/resource/news/20200901/GBR2020_Fig1.png"
                         style={{ height: '458px', width: '600px' }}
                       />
                     </a>
@@ -4524,10 +4488,10 @@ export const News = () => {
                 </p>
                 <p>
                   <span>
-                    <a href="news/20200901/MHWdays_NE_2020.png" target="_blank">
+                    <a href="/resource/news/20200901/MHWdays_NE_2020.png" target="_blank">
                       <img
                         alt=""
-                        src="https://oceancurrent.aodn.org.au/news/20200901/MHWdays_NE_2020.png"
+                        src="/resource/news/20200901/MHWdays_NE_2020.png"
                         style={{ height: '494px', width: '400px' }}
                       />
                     </a>
@@ -4599,11 +4563,7 @@ export const News = () => {
               <div className="rounded-b bg-white p-4">
                 <p>
                   <span>
-                    <img
-                      alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20200826/Figure1.png"
-                      style={{ height: '504px', width: '300px' }}
-                    />
+                    <img alt="" src="/resource/news/20200826/Figure1.png" style={{ height: '504px', width: '300px' }} />
                     There has been no MODIS Aqua Ocean Colour data since August 16. Communication with the satellite is
                     the issue, otherwise the satellite and sensor seem to be operating as normal. NASA are still
                     investigating the situation and will be attempting a reboot over the coming days. It's hopeful
@@ -4638,11 +4598,7 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20200528/JayDee2.png"
-                    style={{ height: '220px', width: '300px' }}
-                  />
+                  <img alt="" src="/resource/news/20200528/JayDee2.png" style={{ height: '220px', width: '300px' }} />
                   Late on New Year's Eve 1995 Mark Beveridge's prawn trawler, the&nbsp;<em>Jay Dee,</em>&nbsp;was hit by
                   a large ship 16 miles or so out from Southport on the Gold Coast. Mark was the only person on board.
                   His boat sank quickly. He had no food, no water and was dressed in singlet and shorts. He spent the
@@ -4653,7 +4609,8 @@ export const News = () => {
                   <em>Jay Dee</em>. George has now re-examined the question of how Mark was so fortunate to survive.
                   Anyone with an interest in survival at sea will find Mark's account of his tribulation, and George's
                   contextualization of it, something to ponder deeply.
-                  <a href="news/20200528/JAYDEE_FINAL_200525.pdf">Where's Mark? He's in the EAC with Nemo</a>&nbsp;
+                  <a href="/resource/news/20200528/JAYDEE_FINAL_200525.pdf">Where's Mark? He's in the EAC with Nemo</a>
+                  &nbsp;
                 </p>
               </div>
             </article>
@@ -4677,10 +4634,10 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <a href="news/20200416/Figure1a.png" target="_blank">
+                  <a href="/resource/news/20200416/Figure1a.png" target="_blank">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20200416/Figure1a.png"
+                      src="/resource/news/20200416/Figure1a.png"
                       style={{ height: '440px', width: '400px' }}
                     />
                   </a>
@@ -4710,12 +4667,8 @@ export const News = () => {
                   to drop below an anomaly of 1.5°C.
                   <br />
                   <br />
-                  <a href="news/20200416/Figs23a.png" target="_blank">
-                    <img
-                      alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20200416/Figs23a.png"
-                      style={{ height: '479px', width: '600px' }}
-                    />
+                  <a href="/resource/news/20200416/Figs23a.png" target="_blank">
+                    <img alt="" src="/resource/news/20200416/Figs23a.png" style={{ height: '479px', width: '600px' }} />
                   </a>
                   <br />
                   <span>
@@ -4798,10 +4751,10 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <a href="news/20200328/Figure_1.png" target="_blank">
+                  <a href="/resource/news/20200328/Figure_1.png" target="_blank">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20200328/Figure_1.png"
+                      src="/resource/news/20200328/Figure_1.png"
                       style={{ height: '375px', width: '400px' }}
                     />
                   </a>
@@ -4835,10 +4788,10 @@ export const News = () => {
                   . The two less reliable upwelling regions, off western Kangaroo Island and western Eyre Peninsula,
                   also show significant cold water plumes.
                   <br />
-                  <a href="news/20200328/Figure_2.png" target="_blank">
+                  <a href="/resource/news/20200328/Figure_2.png" target="_blank">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20200328/Figure_2.png"
+                      src="/resource/news/20200328/Figure_2.png"
                       style={{ height: '364px', width: '400px' }}
                     />
                   </a>
@@ -4913,7 +4866,7 @@ export const News = () => {
                   <a href="https://rs-data3-mel.csiro.au/porttopub-swim-live/" target="_blank" rel="noreferrer">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20200312/Figure_1.png"
+                      src="/resource/news/20200312/Figure_1.png"
                       style={{ height: '211px', width: '400px' }}
                     />
                   </a>
@@ -4977,10 +4930,10 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <a href="news/20200303/Figure_1_final.png" target="_blank">
+                  <a href="/resource/news/20200303/Figure_1_final.png" target="_blank">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20200303/Figure_1_final.png"
+                      src="/resource/news/20200303/Figure_1_final.png"
                       style={{ height: '295px', width: '500px' }}
                     />
                   </a>
@@ -5006,10 +4959,10 @@ export const News = () => {
                   exception is Square Rocks in the south (near the Keppel Islands) which is still in the 'at risk of
                   bleaching' range.
                   <br />
-                  <a href="news/20200303/MHW_NW_Feb2020_v2.mp4" target="_blank">
+                  <a href="/resource/news/20200303/MHW_NW_Feb2020_v2.mp4" target="_blank">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20200303/Figure_2_v2.png"
+                      src="/resource/news/20200303/Figure_2_v2.png"
                       style={{ height: '474px', width: '400px' }}
                     />
                   </a>
@@ -5044,10 +4997,10 @@ export const News = () => {
                       offshore waters appear to remain almost 1°C warmer
                     </a>
                     than shelf waters.
-                    <a href="news/20200303/Figure_3.png" target="_blank">
+                    <a href="/resource/news/20200303/Figure_3.png" target="_blank">
                       <img
                         alt=""
-                        src="https://oceancurrent.aodn.org.au/news/20200303/Figure_3.png"
+                        src="/resource/news/20200303/Figure_3.png"
                         style={{ height: '239px', width: '500px' }}
                       />
                     </a>
@@ -5082,11 +5035,7 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20200224/Figure_1.png"
-                    style={{ height: '296px', width: '350px' }}
-                  />
+                  <img alt="" src="/resource/news/20200224/Figure_1.png" style={{ height: '296px', width: '350px' }} />
                   Observations of water temperature from the AIMS Davies Reef station, 18.8°S 147.6°E (Figure 1), show
                   temperatures have dropped by well over 1°C since Friday. This cooling represents a significant relief
                   from the previous 10 days of heatwave conditions and appears to be widespread with similar cooling at
@@ -5095,11 +5044,7 @@ export const News = () => {
                   Queensland coast, covering much of the GBR (Figure 2).
                   <br />
                   <br />
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20200224/Figure_2.png"
-                    style={{ height: '274px', width: '350px' }}
-                  />
+                  <img alt="" src="/resource/news/20200224/Figure_2.png" style={{ height: '274px', width: '350px' }} />
                   How long can this cooling last? The onshore winds responsible for bringing the moist air from the
                   Coral Sea to feed the clouds are driven by the pressure gradient between the low trough in the north
                   (including TC Esther in the Gulf) and the high pressure system in the Tasman Sea. The forecast is for
@@ -5152,7 +5097,7 @@ export const News = () => {
                   >
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20200221/NE_pctiles_20200217.gif"
+                      src="/resource/news/20200221/NE_pctiles_20200217.gif"
                       style={{ height: '388px', width: '350px' }}
                     />
                   </a>
@@ -5182,10 +5127,10 @@ export const News = () => {
                   </a>
                   is not looking good with anomalies &gt;1ºC expected over most of the reef, particularly in the south.
                   <br />
-                  <a href="news/20200221/Figure_2.png" target="_blank">
+                  <a href="/resource/news/20200221/Figure_2.png" target="_blank">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20200221/Figure_2.png"
+                      src="/resource/news/20200221/Figure_2.png"
                       style={{ height: '281px', width: '500px' }}
                     />
                   </a>
@@ -5217,7 +5162,7 @@ export const News = () => {
                 <p>
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20200219/NW_pctiles_20200212.gif"
+                    src="/resource/news/20200219/NW_pctiles_20200212.gif"
                     style={{ height: '266px', width: '400px' }}
                   />
                   <span style={{ fontSize: '11pt' }}>
@@ -5327,7 +5272,7 @@ export const News = () => {
                   <a href="http://oceancurrent.imos.org.au/product.php?product=daily.SST_ANOM&amp;region=NZ&amp;date=20200108143359&amp;rtype=SR">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20200117/Figure_1.png"
+                      src="/resource/news/20200117/Figure_1.png"
                       style={{ height: '417px', width: '400px' }}
                     />
                   </a>
@@ -5353,18 +5298,18 @@ export const News = () => {
                   west coast winds have been upwelling favourable since early December with a recent strong and
                   sustained period in the first week of January 2020 (Figure 3).
                   <br />
-                  <a href="news/20200117/Figure_2_1.png">
+                  <a href="/resource/news/20200117/Figure_2_1.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20200117/Figure_2_1.png"
+                      src="/resource/news/20200117/Figure_2_1.png"
                       style={{ height: '247px', width: '900px' }}
                     />
                   </a>
                   <br />
-                  <a href="news/20200117/Figure_3.png">
+                  <a href="/resource/news/20200117/Figure_3.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20200117/Figure_3.png"
+                      src="/resource/news/20200117/Figure_3.png"
                       style={{ height: '256px', width: '600px' }}
                     />
                   </a>
@@ -5423,7 +5368,7 @@ export const News = () => {
                   <a href="http://oceancurrent.imos.org.au/product.php?product=fourhour&amp;region=Syd-Hob&amp;date=20191223180000&amp;rtype=DR">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20191224/Figure_1a.png"
+                      src="/resource/news/20191224/Figure_1a.png"
                       style={{ height: '567px', width: '400px' }}
                     />
                   </a>
@@ -5474,7 +5419,7 @@ export const News = () => {
                   <a href="http://oceancurrent.imos.org.au/product.php?product=daily.pctiles&amp;region=Au&amp;date=20191218144926&amp;rtype=SR">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20191223/Figure_1.png"
+                      src="/resource/news/20191223/Figure_1.png"
                       style={{ height: '459px', width: '400px' }}
                     />
                   </a>
@@ -5512,10 +5457,10 @@ export const News = () => {
                   temperature on the shelf was &lt; 21°C with a vertically mixed water column.&nbsp; After 2 weeks the
                   surface water in the same region was &gt; 22°C (Figure 2).&nbsp; The temperature/salinity diagram and
                   the vertical profiles also indicated warmer and less saline water compared to climatology.
-                  <a href="news/20191223/Figure_2.png">
+                  <a href="/resource/news/20191223/Figure_2.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20191223/Figure_2.png"
+                      src="/resource/news/20191223/Figure_2.png"
                       style={{ height: '389px', width: '400px' }}
                     />
                   </a>
@@ -5532,7 +5477,7 @@ export const News = () => {
                   <a href="http://oceancurrent.imos.org.au/product.php?product=daily.pctiles&amp;region=Ningaloo&amp;date=20191220150858&amp;rtype=DR">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20191223/Figure_3.png"
+                      src="/resource/news/20191223/Figure_3.png"
                       style={{ height: '460px', width: '400px' }}
                     />
                   </a>
@@ -5565,7 +5510,7 @@ export const News = () => {
                   <a href="http://oceancurrent.imos.org.au/product.php?product=snapshot&amp;region=Syd-Hob&amp;date=20191218220000&amp;rtype=DR">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20191220/Figure_1.png"
+                      src="/resource/news/20191220/Figure_1.png"
                       style={{ height: '592px', width: '400px' }}
                     />
                   </a>
@@ -5588,10 +5533,10 @@ export const News = () => {
                   side.
                 </p>
                 <p>
-                  <a href="news/20191220/Figure_2.png">
+                  <a href="/resource/news/20191220/Figure_2.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20191220/Figure_2.png"
+                      src="/resource/news/20191220/Figure_2.png"
                       style={{ height: '336px', width: '400px' }}
                     />
                   </a>
@@ -5600,7 +5545,7 @@ export const News = () => {
                   <a href="http://oceancurrent.imos.org.au/product.php?product=daily&amp;region=TasSE&amp;date=20191215135051&amp;rtype=DR">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20191220/Figure_3.png"
+                      src="/resource/news/20191220/Figure_3.png"
                       style={{ height: '415px', width: '400px' }}
                     />
                   </a>
@@ -5664,10 +5609,10 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <a href="news/20191215/Figure_1.png">
+                  <a href="/resource/news/20191215/Figure_1.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20191215/Figure_1.png"
+                      src="/resource/news/20191215/Figure_1.png"
                       style={{ height: '231px', width: '350px' }}
                     />
                   </a>
@@ -5681,10 +5626,10 @@ export const News = () => {
                   temperatures.
                   <br />
                   <br />
-                  <a href="news/20191215/Figure_2.png">
+                  <a href="/resource/news/20191215/Figure_2.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20191215/Figure_2.png"
+                      src="/resource/news/20191215/Figure_2.png"
                       style={{ height: '250px', width: '350px' }}
                     />
                   </a>
@@ -5778,11 +5723,7 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20191122/Figure_1.png"
-                    style={{ height: '359px', width: '400px' }}
-                  />
+                  <img alt="" src="/resource/news/20191122/Figure_1.png" style={{ height: '359px', width: '400px' }} />
                   <br />
                   As we head into summer and solar radiation nears its annual maximum, sea surface temperatures around
                   Tasmania are not heating up as much as we might expect and the percentiles indicate they are well
@@ -5817,11 +5758,7 @@ export const News = () => {
                   shelf or water from the west coast is difficult to tell from the SST but on the east coast the cool
                   water has displaced the warm EAC water that was present on the outer shelf in mid-October.
                   <br />
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20191122/Figure_2.png"
-                    style={{ height: '367px', width: '800px' }}
-                  />
+                  <img alt="" src="/resource/news/20191122/Figure_2.png" style={{ height: '367px', width: '800px' }} />
                   <br />
                   &nbsp;
                   <br />
@@ -5855,12 +5792,8 @@ export const News = () => {
               <div className="rounded-b bg-white p-4">
                 <p>
                   <br />
-                  <a href="news/20191028/Figure1.png">
-                    <img
-                      alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20191028/Figure1.png"
-                      style={{ height: '363px', width: '400px' }}
-                    />
+                  <a href="/resource/news/20191028/Figure1.png">
+                    <img alt="" src="/resource/news/20191028/Figure1.png" style={{ height: '363px', width: '400px' }} />
                   </a>
                   Oceanographic data has become an invaluable resource for understanding and predicting when and where
                   marine species are likely to be found. This is because, much like goldilocks, mobile marine animals
@@ -5881,12 +5814,8 @@ export const News = () => {
                 </p>
                 <p>
                   <br />
-                  <a href="news/20191028/Figure2.png">
-                    <img
-                      alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20191028/Figure2.png"
-                      style={{ height: '470px', width: '400px' }}
-                    />
+                  <a href="/resource/news/20191028/Figure2.png">
+                    <img alt="" src="/resource/news/20191028/Figure2.png" style={{ height: '470px', width: '400px' }} />
                   </a>
                   Between 2016 and 2019, we compared oceanographic habitat suitability for the iconic yellowtail
                   kingfish with body condition measurements taken using a novel electrical impedance method on kingfish
@@ -5933,12 +5862,8 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <a href="news/20190924/Figure1.png">
-                    <img
-                      alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190924/Figure1.png"
-                      style={{ height: '571px', width: '400px' }}
-                    />
+                  <a href="/resource/news/20190924/Figure1.png">
+                    <img alt="" src="/resource/news/20190924/Figure1.png" style={{ height: '571px', width: '400px' }} />
                   </a>
                   Frontal eddies (affectionately known as “freddies”) are small eddies that form from instabilities on
                   fronts between two different water masses. These eddies behave very differently from the large East
@@ -5953,12 +5878,8 @@ export const News = () => {
                   cyclonic eddies are upwelling favourable, they can sustain the shelf plankton for the first few
                   crucial weeks of larval life.&nbsp;
                   <br />
-                  <a href="news/20190924/Figure2.png">
-                    <img
-                      alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190924/Figure2.png"
-                      style={{ height: '442px', width: '600px' }}
-                    />
+                  <a href="/resource/news/20190924/Figure2.png">
+                    <img alt="" src="/resource/news/20190924/Figure2.png" style={{ height: '442px', width: '600px' }} />
                   </a>
                 </p>
                 <p>
@@ -6003,10 +5924,10 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <a href="news/20190919/Figure1_cold_core_percentiles.png">
+                  <a href="/resource/news/20190919/Figure1_cold_core_percentiles.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190919/Figure1_cold_core_percentiles.png"
+                      src="/resource/news/20190919/Figure1_cold_core_percentiles.png"
                       style={{ height: '272px', width: '400px' }}
                     />
                   </a>
@@ -6043,10 +5964,10 @@ export const News = () => {
                   however, it appears the cool water is being advected from the east and south, possibly as far south as
                   the cold core eddy at 158E, 32.5S (Figure 2).
                   <br />
-                  <a href="news/20190919/Figure_2_source_of_cold_water.png">
+                  <a href="/resource/news/20190919/Figure_2_source_of_cold_water.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190919/Figure_2_source_of_cold_water.png"
+                      src="/resource/news/20190919/Figure_2_source_of_cold_water.png"
                       style={{ height: '277px', width: '400px' }}
                     />
                   </a>
@@ -6080,7 +6001,7 @@ export const News = () => {
               <div className="rounded-b bg-white p-4">
                 <img
                   alt=""
-                  src="https://oceancurrent.aodn.org.au/news/20190911/202309012000.gif"
+                  src="/resource/news/20190911/202309012000.gif"
                   style={{ height: '698px', width: '900px' }}
                 />
                 <p>&nbsp;</p>
@@ -6179,12 +6100,8 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <a href="news/20190813/Figure1_1.png">
-                    <img
-                      alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190813/Figure1.png"
-                      style={{ height: '324px', width: '400px' }}
-                    />
+                  <a href="/resource/news/20190813/Figure1_1.png">
+                    <img alt="" src="/resource/news/20190813/Figure1.png" style={{ height: '324px', width: '400px' }} />
                   </a>
                   The cold core eddy generated by Tropical Cyclone Oma near Vanuatu back in February is causing a
                   <a href="http://oceancurrent.imos.org.au/product.php?product=climatology&amp;region=CGBR&amp;date=20190813024229&amp;rtype=DR">
@@ -6217,10 +6134,10 @@ export const News = () => {
                   between Bowen and Cooktown have been reversed at the surface and at 205m, but by 610 m depth the TC
                   Oma eddy is no longer affecting and the current patterns are very similar.
                   <br />
-                  <a href="news/20190813/Figures2-3.png">
+                  <a href="/resource/news/20190813/Figures2-3.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190813/Figures2-3.png"
+                      src="/resource/news/20190813/Figures2-3.png"
                       style={{ height: '470px', width: '700px' }}
                     />
                   </a>
@@ -6269,10 +6186,10 @@ export const News = () => {
                   habitat for much of the ocean life, and it is these regions where the marine heatwaves are expected to
                   have the most impact.
                   <br />
-                  <a href="news/20190801/TasEastCoast20190213_temp.mp4">
+                  <a href="/resource/news/20190801/TasEastCoast20190213_temp.mp4">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190801/Figure_1.png"
+                      src="/resource/news/20190801/Figure_1.png"
                       style={{ height: '278px', width: '400px' }}
                     />
                   </a>
@@ -6297,9 +6214,9 @@ export const News = () => {
                   glider off &nbsp;eastern Tasmania. The February 2019 deployment demonstrates the interplay between
                   coastal dynamics and the offshore influence of the East Australia Current (EAC). When the February
                   glider (Figure 1,
-                  <a href="news/20190801/TasEastCoast20190213_temp.mp4">movie</a>) was deployed off St Helens, in the
-                  northeast of Tasmania, the first transect indicated relatively cool temperatures consistent with the
-                  northward coastal current and the localised upwelling seen in the
+                  <a href="/resource/news/20190801/TasEastCoast20190213_temp.mp4">movie</a>) was deployed off St Helens,
+                  in the northeast of Tasmania, the first transect indicated relatively cool temperatures consistent
+                  with the northward coastal current and the localised upwelling seen in the
                   <a href="http://oceancurrent.imos.org.au/product.php?product=fourhour.SST&amp;region=Tas&amp;date=20190213060000&amp;rtype=DR">
                     Four-hour SST on that day
                   </a>
@@ -6310,12 +6227,8 @@ export const News = () => {
                     EAC water that had been transported onto the continental shelf
                   </a>
                   .
-                  <a href="news/20190801/Figure2.png">
-                    <img
-                      alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190801/Figure2.png"
-                      style={{ height: '278px', width: '400px' }}
-                    />
+                  <a href="/resource/news/20190801/Figure2.png">
+                    <img alt="" src="/resource/news/20190801/Figure2.png" style={{ height: '278px', width: '400px' }} />
                   </a>
                 </p>
                 <p>
@@ -6380,7 +6293,7 @@ export const News = () => {
                   <a href="http://oceancurrent.imos.org.au/product.php?product=gsla&amp;region=Au&amp;date=20190217123554&amp;rtype=SR">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190729/Figure_1.png"
+                      src="/resource/news/20190729/Figure_1.png"
                       style={{ height: '337px', width: '500px' }}
                     />
                   </a>
@@ -6399,10 +6312,10 @@ export const News = () => {
                   </a>
                   .<br />
                   <br />
-                  <a href="news/20190729/Figure_2a.png">
+                  <a href="/resource/news/20190729/Figure_2a.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190729/Figure_2a.png"
+                      src="/resource/news/20190729/Figure_2a.png"
                       style={{ height: '386px', width: '800px' }}
                     />
                   </a>
@@ -6429,10 +6342,10 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <a href="news/20190527/Figure_1.png">
+                  <a href="/resource/news/20190527/Figure_1.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190527/Figure_1.png"
+                      src="/resource/news/20190527/Figure_1.png"
                       style={{ height: '520px', width: '275px' }}
                     />
                   </a>
@@ -6451,10 +6364,10 @@ export const News = () => {
                   because the convective cooling spreads the heat loss throughout the water column, so the same heat
                   loss will result in colder temperatures in shallower water.
                   <br />
-                  <a href="news/20190527/Figure_2a.png">
+                  <a href="/resource/news/20190527/Figure_2a.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190527/Figure_2a.png"
+                      src="/resource/news/20190527/Figure_2a.png"
                       style={{ height: '246px', width: '850px' }}
                     />
                   </a>
@@ -6520,10 +6433,10 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <a href="news/20190521/Figure_1.png">
+                  <a href="/resource/news/20190521/Figure_1.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190521/Figure_1.png"
+                      src="/resource/news/20190521/Figure_1.png"
                       style={{ height: '281px', width: '400px' }}
                     />
                   </a>
@@ -6557,10 +6470,10 @@ export const News = () => {
                   filtered for HPLC analysis of pigments by the team of Prof David Antoine of Curtin University for
                   ground truthing of satellite ocean colour imagery.
                   <br />
-                  <a href="news/20190521/Figure_1.png">
+                  <a href="/resource/news/20190521/Figure_1.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190521/Figure_2.png"
+                      src="/resource/news/20190521/Figure_2.png"
                       style={{ height: '318px', width: '400px' }}
                     />
                   </a>
@@ -6602,12 +6515,8 @@ export const News = () => {
               </div>
 
               <div className="rounded-b bg-white p-4">
-                <a href="news/20190409/GBR_Fig1.png">
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20190409/GBR_Fig1.png"
-                    style={{ height: '269px', width: '400px' }}
-                  />
+                <a href="/resource/news/20190409/GBR_Fig1.png">
+                  <img alt="" src="/resource/news/20190409/GBR_Fig1.png" style={{ height: '269px', width: '400px' }} />
                 </a>
                 <p>
                   An ocean glider was deployed offshore from Hinchinbrook Island on the Great Barrier Reef just a few
@@ -6623,10 +6532,10 @@ export const News = () => {
                   &nbsp;
                 </p>
                 <p>
-                  <a href="news/20190409/GBR_Fig2.png">
+                  <a href="/resource/news/20190409/GBR_Fig2.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190409/GBR_Fig2.png"
+                      src="/resource/news/20190409/GBR_Fig2.png"
                       style={{ height: '378px', width: '400px' }}
                     />
                   </a>
@@ -6647,10 +6556,10 @@ export const News = () => {
                   &nbsp;
                 </p>
                 <p>
-                  <a href="news/20190409/GBR_Fig3.png">
+                  <a href="/resource/news/20190409/GBR_Fig3.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190409/GBR_Fig3.png"
+                      src="/resource/news/20190409/GBR_Fig3.png"
                       style={{ height: '278px', width: '400px' }}
                     />
                   </a>
@@ -6703,7 +6612,7 @@ export const News = () => {
                   <a href="http://oceancurrent.imos.org.au/product.php?product=daily.pctiles&amp;region=NE&amp;date=20190217120000&amp;rtype=SR">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190327/NGBR_percentiles_20190217.gif"
+                      src="/resource/news/20190327/NGBR_percentiles_20190217.gif"
                       style={{ height: '554px', width: '499px' }}
                     />
                   </a>
@@ -6726,12 +6635,8 @@ export const News = () => {
                   cyclones and the monsoon both provide heavy cloud cover that blocks solar heating and the strong winds
                   cool the surface by vertically mixing cool water from below the thermocline. &nbsp;
                   <br />
-                  <a href="news/20190327/Fig2_1.png">
-                    <img
-                      alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190327/Fig2_1.png"
-                      style={{ height: '330px', width: '400px' }}
-                    />
+                  <a href="/resource/news/20190327/Fig2_1.png">
+                    <img alt="" src="/resource/news/20190327/Fig2_1.png" style={{ height: '330px', width: '400px' }} />
                   </a>
                   <br />
                   Of course, monsoons and cyclones also bring rain and this season the
@@ -6781,7 +6686,7 @@ export const News = () => {
                   <a href="http://rs-data3-mel.csiro.au/porttopub-swim-live/">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190313/PorttoPub6am.png"
+                      src="/resource/news/20190313/PorttoPub6am.png"
                       style={{ height: '209px', width: '400px' }}
                     />
                   </a>
@@ -6823,10 +6728,10 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <a href="news/20190228/Figure_1.png">
+                  <a href="/resource/news/20190228/Figure_1.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190228/Figure_1.png"
+                      src="/resource/news/20190228/Figure_1.png"
                       style={{ height: '253px', width: '400px' }}
                     />
                   </a>
@@ -6862,10 +6767,10 @@ export const News = () => {
                   Zealand (e.g. Figure 3, right). The upwelling induced by the south-westerly winds was quite strong for
                   this time of year as the SST percentiles indicate temperatures in the lowest 20% for much of the west
                   coast.
-                  <a href="news/20190228/Figure_2.png">
+                  <a href="/resource/news/20190228/Figure_2.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190228/Figure_2.png"
+                      src="/resource/news/20190228/Figure_2.png"
                       style={{ height: '361px', width: '400px' }}
                     />
                   </a>
@@ -6882,10 +6787,10 @@ export const News = () => {
                   cooling effect is also important. With the prospect of more blocking highs in the Tasman, a
                   predominance of one type of block over the other could make a difference to temperatures and
                   productivity in the coastal waters of New Zealand.
-                  <a href="news/20190228/Figure_3.png">
+                  <a href="/resource/news/20190228/Figure_3.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190228/Figure_3.png"
+                      src="/resource/news/20190228/Figure_3.png"
                       style={{ height: '202px', width: '400px' }}
                     />
                   </a>
@@ -6921,7 +6826,7 @@ export const News = () => {
                   <a href="http://rs-data3-mel.csiro.au/rottnest-swim-live/">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190220/Rottnest_race_day.png"
+                      src="/resource/news/20190220/Rottnest_race_day.png"
                       style={{ height: '263px', width: '400px' }}
                     />
                   </a>
@@ -6946,7 +6851,7 @@ export const News = () => {
                   <a href="http://oceancurrent.imos.org.au/product.php?product=fourhour&amp;region=DonPer&amp;date=20190216080000&amp;rtype=DR">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190220/FourHour_SST_2019021608.gif"
+                      src="/resource/news/20190220/FourHour_SST_2019021608.gif"
                       style={{ height: '320px', width: '400px' }}
                     />
                   </a>
@@ -6990,7 +6895,7 @@ export const News = () => {
                   <a href="http://rs-data3-mel.csiro.au/rottnest-swim-live/">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190215/Rottnest_optimiser.png"
+                      src="/resource/news/20190215/Rottnest_optimiser.png"
                       style={{ height: '273px', width: '400px' }}
                     />
                   </a>
@@ -7009,7 +6914,7 @@ export const News = () => {
                   <a href="http://oceancurrent.imos.org.au/product.php?product=daily.SST&amp;region=Perth&amp;date=20190214134933&amp;rtype=DR">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190215/SST_20190214.png"
+                      src="/resource/news/20190215/SST_20190214.png"
                       style={{ height: '485px', width: '400px' }}
                     />
                   </a>
@@ -7052,10 +6957,10 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <a href="news/20190111/BlockingHigh_v4.png">
+                  <a href="/resource/news/20190111/BlockingHigh_v4.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190111/BlockingHigh_v4.png"
+                      src="/resource/news/20190111/BlockingHigh_v4.png"
                       style={{ height: '387px', width: '300px' }}
                     />
                   </a>
@@ -7084,10 +6989,10 @@ export const News = () => {
                   <a href="http://oceancurrent.imos.org.au/product.php?product=daily.pctiles&amp;region=Bris-Syd&amp;date=20190103220000&amp;rtype=DR">
                     coldest decile SST for this time of year.
                   </a>
-                  <a href="news/20190111/Filled_SST_4hr_with_text.png">
+                  <a href="/resource/news/20190111/Filled_SST_4hr_with_text.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20190111/Filled_SST_4hr_with_text.png"
+                      src="/resource/news/20190111/Filled_SST_4hr_with_text.png"
                       style={{ height: '383px', width: '300px' }}
                     />
                   </a>
@@ -7129,11 +7034,7 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/Syd-Hob/2018/2018122517.gif"
-                    style={{ height: '800px', width: '570px' }}
-                  />
+                  <img alt="" src="/resource/Syd-Hob/2018/2018122517.gif" style={{ height: '800px', width: '570px' }} />
                   <br />
                   Sailors in the Sydney-Hobart yacht race almost always benefit from&nbsp;a few knots of favourable
                   current at some point in the race. But where this happens is different every year, and the amount of
@@ -7156,7 +7057,7 @@ export const News = () => {
                   <br />
                   There does not appear to be any strong features off
                   <strong>Tasmania</strong> this year, but this could change, so keep an eye on the{' '}
-                  <a href="Syd-Hob/latest.html">imagery</a>.<br />
+                  <a href="https://oceancurrent.aodn.org.au/Syd-Hob/latest.html">imagery</a>.<br />
                   <br />
                   We wish competitors a safe but exciting race, and urge all to monitor the imagery that will appear on
                   our website, including our new '4 hour&nbsp;SST' products derived from Japan's geostationary satellite
@@ -7184,10 +7085,10 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <a href="news/20181023/OM_af00_AuFiji_tp3l1p2.mp4">
+                  <a href="/resource/news/20181023/OM_af00_AuFiji_tp3l1p2.mp4">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20181023/tracks_20170922.gif"
+                      src="/resource/news/20181023/tracks_20170922.gif"
                       style={{ height: '366px', width: '400px' }}
                     />
                   </a>
@@ -7291,10 +7192,10 @@ export const News = () => {
                   . The 8cm rise in the last 25 years happened twice as fast as the 17cm rise that occurred over the 110
                   years beforehand.
                   <br />
-                  <a href="news/20181012/GMSL_Figure_1a.png">
+                  <a href="/resource/news/20181012/GMSL_Figure_1a.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20181012/GMSL_Figure_1a.png"
+                      src="/resource/news/20181012/GMSL_Figure_1a.png"
                       style={{ height: '342px', width: '400px' }}
                     />
                   </a>
@@ -7387,7 +7288,7 @@ export const News = () => {
                 <p>
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20180906/BSW-news-Fig1.png"
+                    src="/resource/news/20180906/BSW-news-Fig1.png"
                     style={{ height: '281px', width: '400px' }}
                   />
                   An Argo float (WMO # 5902378; deployed in 2014) that drifted near the continental shelf off central
@@ -7428,7 +7329,7 @@ export const News = () => {
                 </p>
                 <img
                   alt=""
-                  src="https://oceancurrent.aodn.org.au/news/20180906/BSW-news-Fig2.png"
+                  src="/resource/news/20180906/BSW-news-Fig2.png"
                   style={{ height: '311px', width: '400px' }}
                 />
                 <p>
@@ -7479,10 +7380,10 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <a href="news/20180904/Navigator_SST_2018082808.png">
+                  <a href="/resource/news/20180904/Navigator_SST_2018082808.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20180904/Navigator_SST_2018082808.png"
+                      src="/resource/news/20180904/Navigator_SST_2018082808.png"
                       style={{ height: '304px', width: '400px' }}
                     />
                   </a>
@@ -7554,7 +7455,7 @@ export const News = () => {
                 <p>
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20180612/20180529_Chla.png"
+                    src="/resource/news/20180612/20180529_Chla.png"
                     style={{ height: '259px', width: '400px' }}
                   />
                   Ocean fronts, defined as regions of large horizontal gradients in water properties (temperature,
@@ -7576,7 +7477,7 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20180612/OceanCurrent20180529.png"
+                    src="/resource/news/20180612/OceanCurrent20180529.png"
                     style={{ height: '478px', width: '300px' }}
                   />
                 </p>
@@ -7630,13 +7531,7 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <a href="http://oceancurrent.imos.org.au/oceancolour.php?link=MODIScomp/2018032504.html">
-                    <img
-                      alt=""
-                      src="https://oceancurrent.aodn.org.au/http://oceancurrent.imos.org.au/MODIScomp/2018032504.gif"
-                      style={{ height: '400px', width: '588px' }}
-                    />
-                  </a>
+                  <img alt="" src="/resource/MODIScomp/2018032504.gif" style={{ height: '400px', width: '588px' }} />
                   STC Marcus was the strongest tropical cyclone anywhere within the Australian region since STC Monica
                   in April 2006 according to the
                   <a href="http://www.bom.gov.au/announcements/sevwx/nt/nttc20180316.shtml">BoM</a>. It struck Darwin at
@@ -7671,10 +7566,10 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <a href="news/20180315/BassStraitMC_1.png">
+                  <a href="/resource/news/20180315/BassStraitMC_1.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20180315/BassStraitMC_1.png"
+                      src="/resource/news/20180315/BassStraitMC_1.png"
                       style={{ height: '255px', width: '400px' }}
                     />
                   </a>
@@ -7696,10 +7591,10 @@ export const News = () => {
                   . Nowadays the deepest part of Bass Strait is 80 m deep with the deepest outlet to the north at 70 m.
                   Thus the ancient lake continues to act as a place where water can collect – in this case, dense Bass
                   Strait water.
-                  <a href="news/20180315/Glider_Profiles_ANFOG_1.png">
+                  <a href="/resource/news/20180315/Glider_Profiles_ANFOG_1.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20180315/Glider_Profiles_ANFOG_1.png"
+                      src="/resource/news/20180315/Glider_Profiles_ANFOG_1.png"
                       style={{ height: '602px', width: '400px' }}
                     />
                   </a>
@@ -7753,7 +7648,7 @@ export const News = () => {
                   <a href="http://rs-data3-mel.csiro.au/porttopub-swim-live/">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20180314/PorttoPub.png"
+                      src="/resource/news/20180314/PorttoPub.png"
                       style={{ height: '229px', width: '400px' }}
                     />
                   </a>
@@ -7802,11 +7697,7 @@ export const News = () => {
               <div className="rounded-b bg-white p-4">
                 <p>
                   <a href="http://oceancurrent.imos.org.au/SNSW/2018/2018030304.html">
-                    <img
-                      alt=""
-                      src="https://oceancurrent.aodn.org.au/http://oceancurrent.imos.org.au/SNSW/2018/2018030304.gif"
-                      style={{ height: '342px', width: '300px' }}
-                    />
+                    <img alt="" src="/resource/SNSW/2018/2018030304.gif" style={{ height: '342px', width: '300px' }} />
                   </a>
                   The HF RADAR system installed&nbsp;off Newcastle late last year is now working well, as demonstrated
                   by this map for 3 March 2018, in which&nbsp;the radar currents are overlain on a Sea Surface
@@ -7840,7 +7731,7 @@ export const News = () => {
                   <a href="http://rs-data3-mel.csiro.au/rottnest-swim-live/">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20180222/Rottnest_6am2pm2.png"
+                      src="/resource/news/20180222/Rottnest_6am2pm2.png"
                       style={{ height: '357px', width: '400px' }}
                     />
                   </a>
@@ -7882,7 +7773,7 @@ export const News = () => {
                   <a href="http://rs-data3-mel.csiro.au/rottnest-swim-live/">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20180221/Rottnest_6am2pm.png"
+                      src="/resource/news/20180221/Rottnest_6am2pm.png"
                       style={{ height: '383px', width: '400px' }}
                     />
                   </a>
@@ -7931,11 +7822,7 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20171220/20171124.gif"
-                    style={{ height: '342px', width: '400px' }}
-                  />
+                  <img alt="" src="/resource/news/20171220/20171124.gif" style={{ height: '342px', width: '400px' }} />
                   Sea surface temperatures around Tasmania were
                   <a href="http://oceancurrent.imos.org.au/daily.php?link=DR_SST_daily/pctiles/Tas/20171124.gif">
                     above the 90th percentile
@@ -7961,11 +7848,7 @@ export const News = () => {
                   temperatures only affect animals and plants near the surface but also that the temperatures will be
                   short-lived and quickly reversed with the next windy day.
                   <br />
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20171220/img_7720.JPG"
-                    style={{ height: '300px', width: '400px' }}
-                  />
+                  <img alt="" src="/resource/news/20171220/img_7720.JPG" style={{ height: '300px', width: '400px' }} />
                   <br />
                   Argo floats can provide a window to what is happening beneath the surface and there happened to be one
                   off the west coast shelf (pink circle on SST image) that profiled the water column every 10 days
@@ -7980,7 +7863,7 @@ export const News = () => {
                 <p>
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20171220/Argo_profiles_SST_200_1.gif"
+                    src="/resource/news/20171220/Argo_profiles_SST_200_1.gif"
                     style={{ height: '367px', width: '600px' }}
                   />
                   <br />
@@ -8078,7 +7961,7 @@ export const News = () => {
                   <a href="http://oceancurrent.imos.org.au/sst.php?link=SNSW/2017/2017112317.html">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20171204/2017112317_SST.gif"
+                      src="/resource/news/20171204/2017112317_SST.gif"
                       style={{ height: '456px', width: '400px' }}
                     />
                   </a>
@@ -8116,7 +7999,7 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20171204/2017120220_4hr.gif"
+                    src="/resource/news/20171204/2017120220_4hr.gif"
                     style={{ height: '457px', width: '400px' }}
                   />
                 </p>
@@ -8163,10 +8046,10 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <a href="news/20170907/SST_Filled_DonPer_2017082308_v2.gif">
+                  <a href="/resource/news/20170907/SST_Filled_DonPer_2017082308_v2.gif">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20170907/SST_Filled_DonPer_2017082308_v2.gif"
+                      src="/resource/news/20170907/SST_Filled_DonPer_2017082308_v2.gif"
                       style={{ height: '360px', width: '450px' }}
                     />
                   </a>
@@ -8215,10 +8098,10 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <a href="news/20170728/SLA_20170723.png">
+                  <a href="/resource/news/20170728/SLA_20170723.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20170728/SLA_20170723.png"
+                      src="/resource/news/20170728/SLA_20170723.png"
                       style={{ height: '639px', width: '400px' }}
                     />
                   </a>
@@ -8237,10 +8120,10 @@ export const News = () => {
                   &nbsp;
                 </p>
                 <p>
-                  <a href="news/20170728/alt_gmsl_seas_rem.jpeg">
+                  <a href="/resource/news/20170728/alt_gmsl_seas_rem.jpeg">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20170728/alt_gmsl_seas_rem.jpeg"
+                      src="/resource/news/20170728/alt_gmsl_seas_rem.jpeg"
                       style={{ height: '286px', width: '400px' }}
                     />
                   </a>
@@ -8343,7 +8226,7 @@ export const News = () => {
                 <p>
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20170427/Leatherjacket_AnnaGeorge.jpg"
+                    src="/resource/news/20170427/Leatherjacket_AnnaGeorge.jpg"
                     style={{ height: '735px', width: '400px' }}
                   />
                   It has been over a month since the tropical leatherjacket species started washing up on the beaches of
@@ -8417,11 +8300,7 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20170404/Deadfish2.PNG"
-                    style={{ height: '225px', width: '400px' }}
-                  />
+                  <img alt="" src="/resource/news/20170404/Deadfish2.PNG" style={{ height: '225px', width: '400px' }} />
                   Thousands of dead fish have been washing up on the shores of far eastern Victoria and southern NSW.
                   They started appearing on the beach in small numbers around March 11 but came in en masse in the last
                   few weeks of March. Although most of the fish appear to be leatherjackets, there are also whiting,
@@ -8520,7 +8399,7 @@ export const News = () => {
                   <a href="http://rs-data3-mel.csiro.au/porttopub-swim-live/">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20170324/Final_10hrs.png"
+                      src="/resource/news/20170324/Final_10hrs.png"
                       style={{ height: '186px', width: '400px' }}
                     />
                   </a>
@@ -8577,7 +8456,7 @@ export const News = () => {
                   <a href="http://rs-data3-mel.csiro.au/porttopub-swim-live/">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20170321/Swim_Optimizer.png"
+                      src="/resource/news/20170321/Swim_Optimizer.png"
                       style={{ height: '227px', width: '400px' }}
                     />
                   </a>
@@ -8628,7 +8507,7 @@ export const News = () => {
                         <img
                           alt=""
                           className="img-responsive"
-                          src="https://oceancurrent.aodn.org.au/news/20170222/ScreenShot.png"
+                          src="/resource/news/20170222/ScreenShot.png"
                           style={{ height: '197px', width: '400px' }}
                         />
                       </a>
@@ -8739,10 +8618,10 @@ export const News = () => {
                 </p>
                 <p>
                   <br />
-                  <a href="news/20161207/SealCTD_graphic.png">
+                  <a href="/resource/news/20161207/SealCTD_graphic.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20161207/SealCTD_graphic_2.png"
+                      src="/resource/news/20161207/SealCTD_graphic_2.png"
                       style={{ height: '259px', width: '400px' }}
                     />
                   </a>
@@ -8771,10 +8650,10 @@ export const News = () => {
                   shelf along the bottom and also the development of a deep water salinity maximum (right).
                   <br />
                   <br />
-                  <a href="news/20161207/GAB_10d_20160301.gif">
+                  <a href="/resource/news/20161207/GAB_10d_20160301.gif">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20161207/GAB_10d_20160301.gif"
+                      src="/resource/news/20161207/GAB_10d_20160301.gif"
                       style={{ height: '255px', width: '400px' }}
                     />
                   </a>
@@ -8827,7 +8706,7 @@ export const News = () => {
                   <a href="http://oceancurrent.imos.org.au/sst.php?link=TasE/2016/2016071323.html">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20160825/Eddy_13072016.png"
+                      src="/resource/news/20160825/Eddy_13072016.png"
                       style={{ height: '381px', width: '400px' }}
                     />
                   </a>
@@ -8845,10 +8724,10 @@ export const News = () => {
                     increase in the strength of the EAC.
                   </a>
                   <br />
-                  <a href="news/20160825/EKE_fig_final.png">
+                  <a href="/resource/news/20160825/EKE_fig_final.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20160825/EKE_fig_final.png"
+                      src="/resource/news/20160825/EKE_fig_final.png"
                       style={{ height: '205px', width: '400px' }}
                     />
                   </a>
@@ -8863,7 +8742,7 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20160825/Argo_vs_CARS_p2.gif"
+                    src="/resource/news/20160825/Argo_vs_CARS_p2.gif"
                     style={{ height: '600px', width: '400px' }}
                   />
                 </p>
@@ -8933,7 +8812,7 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20160704/SLA_WEqPac.png"
+                    src="/resource/news/20160704/SLA_WEqPac.png"
                     style={{ height: '188px', width: '400px' }}
                   />
                   <br />
@@ -9079,7 +8958,7 @@ export const News = () => {
                     <img
                       alt=""
                       className="img-responsive"
-                      src="https://oceancurrent.aodn.org.au/news/20160524/Screen_Shot_2016-05-23_at_5.22.12_pm_1.png"
+                      src="/resource/news/20160524/Screen_Shot_2016-05-23_at_5.22.12_pm_1.png"
                     />
                   </div>
                 </div>
@@ -9125,7 +9004,7 @@ export const News = () => {
                     <img
                       alt=""
                       className="img-responsive"
-                      src="https://oceancurrent.aodn.org.au/news/20160524/Screen_Shot_2016-05-24_at_12.44.32_pm.png"
+                      src="/resource/news/20160524/Screen_Shot_2016-05-24_at_12.44.32_pm.png"
                     />
                   </div>
                 </div>
@@ -9168,7 +9047,7 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20160428/EAC_retroflex.png"
+                    src="/resource/news/20160428/EAC_retroflex.png"
                     style={{ height: '229px', width: '400px' }}
                   />
                 </p>
@@ -9182,7 +9061,7 @@ export const News = () => {
                   <img
                     alt=""
                     data-main-image="true"
-                    src="https://oceancurrent.aodn.org.au/news/20160428/eddies_altimetry.png"
+                    src="/resource/news/20160428/eddies_altimetry.png"
                     style={{ height: '215px', width: '400px' }}
                   />
                   <br />
@@ -9204,7 +9083,7 @@ export const News = () => {
                   <br />
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20160428/IMOS_2016041920_eddy_tassie.gif"
+                    src="/resource/news/20160428/IMOS_2016041920_eddy_tassie.gif"
                     style={{ height: '350px', width: '400px' }}
                   />
                   <br />
@@ -9235,7 +9114,7 @@ export const News = () => {
                 <p>
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20160331/EAC_Array_SS_1.png"
+                    src="/resource/news/20160331/EAC_Array_SS_1.png"
                     style={{ height: '276px', width: '400px' }}
                   />
                   Ocean western boundary currents redistribute heat around the world and have a profound effect on the
@@ -9256,7 +9135,7 @@ export const News = () => {
                   <a href="http://oceancurrent.imos.org.au/sst.php?link=SE/2012R00/20120525.html">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20160331/EAC_Array_20120525_v1.png"
+                      src="/resource/news/20160331/EAC_Array_20120525_v1.png"
                       style={{ height: '285px', width: '180px' }}
                     />
                   </a>
@@ -9271,14 +9150,8 @@ export const News = () => {
                   <a href="http://journals.ametsoc.org/doi/pdf/10.1175/JPO-D-15-0052.1">Sloyan et al, 2016</a>
                 </p>
                 <video width="320px">
-                  <source
-                    src="https://oceancurrent.aodn.org.au/news/20160331/EAC_array_transport.mp4"
-                    type="video/mp4"
-                  />
-                  <source
-                    src="https://oceancurrent.aodn.org.au/news/20160331/EAC_array_transport.ogg"
-                    type="video/ogg"
-                  />
+                  <source src="/resource/news/20160331/EAC_array_transport.mp4" type="video/mp4" />
+                  <source src="/resource/news/20160331/EAC_array_transport.ogg" type="video/ogg" />
                   <track kind="captions" />
                 </video>
               </div>
@@ -9320,7 +9193,7 @@ export const News = () => {
                 <a href="http://rs-data3-mel.csiro.au/porttopub-swim/" target="SwimOptimizer">
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20160317/SwimOptimizer_1.png"
+                    src="/resource/news/20160317/SwimOptimizer_1.png"
                     style={{ height: '275px', width: '400px' }}
                   />
                 </a>
@@ -9381,7 +9254,7 @@ export const News = () => {
                         <img
                           alt=""
                           className="img-responsive"
-                          src="https://oceancurrent.aodn.org.au/news/20160226/ScreenShot.png"
+                          src="/resource/news/20160226/ScreenShot.png"
                           style={{ height: '197px', width: '400px' }}
                         />
                       </a>
@@ -9430,7 +9303,7 @@ export const News = () => {
                       <img
                         alt=""
                         className="img-responsive"
-                        src="https://oceancurrent.aodn.org.au/news/20160225/ScreenShot.png"
+                        src="/resource/news/20160225/ScreenShot.png"
                         style={{ height: '197px', width: '400px' }}
                       />
                     </a>
@@ -9462,10 +9335,7 @@ export const News = () => {
               <div className="rounded-b bg-white p-4">
                 <div className="row">
                   <a href="https://oceancurrent.aodn.org.au/gliders/Portland20160128_nrt_12d/2016021312.html">
-                    <img
-                      src="https://oceancurrent.aodn.org.au/gliders/Portland20160128_nrt_12d/2016021312.gif"
-                      style={{ width: '350px' }}
-                    />
+                    <img src="/resource/gliders/Portland20160128_nrt_12d/2016021312.gif" style={{ width: '350px' }} />
                   </a>
                   <p>
                     &nbsp;An IMOS Slocum glider is presently making the most detailed survey ever conducted of the
@@ -9499,10 +9369,7 @@ export const News = () => {
                 </div>
                 <div className="row">
                   <a href="http://oceancurrent.imos.org.au/oceancolour.php?link=SAgulfs_chl/2016/2016020904.html">
-                    <img
-                      src="https://oceancurrent.aodn.org.au/SAgulfs_chl/2016/2016020904.gif"
-                      style={{ width: '350px' }}
-                    />
+                    <img src="/resource/SAgulfs_chl/2016/2016020904.gif" style={{ width: '350px' }} />
                   </a>
 
                   <p>
@@ -9557,11 +9424,7 @@ export const News = () => {
                   systems are several smaller cold-core features which should also be watched. We wish all competitors a
                   safe but challenging race.
                   <br />
-                  <img
-                    alt=""
-                    src="https://oceancurrent.aodn.org.au/SNSW/2015/2015121815.gif"
-                    style={{ height: '342px', width: '300px' }}
-                  />
+                  <img alt="" src="/resource/SNSW/2015/2015121815.gif" style={{ height: '342px', width: '300px' }} />
                 </p>
               </div>
             </article>
@@ -9594,7 +9457,7 @@ export const News = () => {
                     <br />
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20151221/SSTrecordsglobal.png"
+                      src="/resource/news/20151221/SSTrecordsglobal.png"
                       style={{ height: '286px', width: '450px' }}
                     />
                   </div>
@@ -9611,7 +9474,7 @@ export const News = () => {
                     <a href="https://oceancurrent.aodn.org.au/news/20151221/percent_record.png">
                       <img
                         alt=""
-                        src="https://oceancurrent.aodn.org.au/news/20151221/percent_record.png"
+                        src="/resource/news/20151221/percent_record.png"
                         style={{ height: '247px', width: '378px' }}
                       />
                     </a>
@@ -9638,7 +9501,7 @@ export const News = () => {
                 <p>
                   <img
                     alt=""
-                    src="https://oceancurrent.aodn.org.au/news/20151113/MH370_39-32S_undrog_drifters_500d.gif"
+                    src="/resource/news/20151113/MH370_39-32S_undrog_drifters_500d.gif"
                     style={{ height: '326px', width: '500px' }}
                   />
                   There has been speculation in the media that the on-going sea-floor search for MH370 is being
@@ -9701,7 +9564,7 @@ export const News = () => {
                   <a href="https://oceancurrent.aodn.org.au/news/20150715/latest_meanSLA_1.gif">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20150715/latest_meanSLA_1.gif"
+                      src="/resource/news/20150715/latest_meanSLA_1.gif"
                       style={{ height: '180px', width: '300px' }}
                     />
                   </a>
@@ -9726,7 +9589,7 @@ export const News = () => {
                   <a href="https://oceancurrent.aodn.org.au/news/20150715/SLA_WeqPac.png">
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/news/20150715/SLA_WeqPac.png"
+                      src="/resource/news/20150715/SLA_WeqPac.png"
                       style={{ height: '150px', width: '300px' }}
                     />
                   </a>
@@ -9772,10 +9635,14 @@ export const News = () => {
                   <br />
                   ('freddies') are small, short-lived, rapidly-rotating cyclonic (clockwise) eddies that form inshore of
                   the main flow of the East Australian&nbsp;
-                  <a href="Bris3_/2015/2015060507.html" target="_blank">
+                  <a
+                    href="https://oceancurrent.aodn.org.au/Bris3_/2015/2015060507.html"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <img
                       alt=""
-                      src="https://oceancurrent.aodn.org.au/Bris3_/2015/2015060507.gif"
+                      src="/resource/Bris3_/2015/2015060507.gif"
                       style={{ height: '200px', width: '197px' }}
                     />
                   </a>
@@ -9838,11 +9705,7 @@ export const News = () => {
                 <div className="row">
                   <div className="col-md-3">
                     <a href="https://oceancurrent.aodn.org.au/news/20150605/SpencerGulfFinal.png">
-                      <img
-                        className="img-responsive"
-                        width="100%"
-                        src="https://oceancurrent.aodn.org.au/news/20150605/SpencerGulfFinal.png"
-                      />
+                      <img className="img-responsive" width="100%" src="/resource/news/20150605/SpencerGulfFinal.png" />
                     </a>
                   </div>
 
@@ -9901,11 +9764,7 @@ export const News = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      <img
-                        alt=""
-                        src="https://oceancurrent.aodn.org.au/news/20150507/SST.jpg"
-                        style={{ width: '100%' }}
-                      />
+                      <img alt="" src="/resource/news/20150507/SST.jpg" style={{ width: '100%' }} />
                     </a>
                     Figure from http://www.oceannetworks.ca/warm-northeast-pacific-ocean-conditions-continue-2015
                   </div>
@@ -9955,19 +9814,13 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <a href="https://oceancurrent.aodn.org.au/sst.php?link=SNSW_chl/2015/2015042504.html" target="blank">
-                  <img
-                    src="https://oceancurrent.aodn.org.au/SNSW_chl/2015/2015042504.gif"
-                    style={{ height: '200px' }}
-                  />
+                  <img src="/resource/SNSW_chl/2015/2015042504.gif" style={{ height: '200px' }} />
                 </a>
                 <a
                   href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=Yamba20150416_4d/2015050100.html"
                   target="blank"
                 >
-                  <img
-                    src="https://oceancurrent.aodn.org.au/gliders/Yamba20150416_4d/2015050100.gif"
-                    style={{ height: '200px' }}
-                  />
+                  <img src="/resource/gliders/Yamba20150416_4d/2015050100.gif" style={{ height: '200px' }} />
                 </a>
                 <p>
                   The storms that hit the Hunter Valley region of NSW on 21-22 April 2015 caused much flooding as well
@@ -9989,10 +9842,7 @@ export const News = () => {
                 <p>
                   The satellite is not our only way of investigating this significant event.
                   <a href="https://oceancurrent.aodn.org.au/misc/Derwent25805Ditylum.jpg" target="blank">
-                    <img
-                      src="https://oceancurrent.aodn.org.au/misc/Derwent25805Ditylum.jpg"
-                      style={{ height: '200px' }}
-                    />
+                    <img src="/resource/misc/Derwent25805Ditylum.jpg" style={{ height: '200px' }} />
                   </a>
                   An IMOS Slocum glider was also on the job. Its track is shown in magenta overlain on the MODIS images.
                   Its sensors very clearly distinguish the floodwaters from the ocean waters, especially through the
@@ -10044,10 +9894,7 @@ export const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <a href="https://oceancurrent.aodn.org.au/news/20150424/fig1.html" target="blank">
-                  <img
-                    src="https://oceancurrent.aodn.org.au/news/20150424/elnino2015_fig1.png"
-                    style={{ height: '200px' }}
-                  />
+                  <img src="/resource/news/20150424/elnino2015_fig1.png" style={{ height: '200px' }} />
                 </a>
                 <p>
                   In the March-April-May period it is difficult to reliably predict the upcoming ENSO phase (known as
@@ -10062,11 +9909,8 @@ export const News = () => {
                   Pacific creating a downwelling equatorial Kelvin wave, and giving the already deepened thermocline an
                   extra push.
                 </p>
-                <a href="news/20150424/fig2.html" target="blank">
-                  <img
-                    src="https://oceancurrent.aodn.org.au/news/20150424/elnino2015_fig2.png"
-                    style={{ height: '200px' }}
-                  />
+                <a href="https://oceancurrent.aodn.org.au/news/20150424/fig2.html" target="blank">
+                  <img src="/resource/news/20150424/elnino2015_fig2.png" style={{ height: '200px' }} />
                 </a>
                 <p>
                   Warm Sea Surface Temperature anomalies are also appearing, but only in the central Pacific. Typical El
@@ -10096,21 +9940,15 @@ export const News = () => {
               </div>
 
               <div className="rounded-b bg-white p-4">
-                <a href="sst.php?link=SNSW_chl/2013/2013121804.html" target="blank">
-                  <img
-                    src="https://oceancurrent.aodn.org.au/SNSW_chl/2013/2013121804.gif"
-                    style={{ height: '200px' }}
-                  />
+                <a href="https://oceancurrent.aodn.org.au/sst.php?link=SNSW_chl/2013/2013121804.html" target="blank">
+                  <img src="/resource/SNSW_chl/2013/2013121804.gif" style={{ height: '200px' }} />
                 </a>
-                <a href="sst.php?link=DonPer_chl/2009/2009032704.html" target="blank">
-                  <img
-                    src="https://oceancurrent.aodn.org.au/DonPer_chl/2009/2009032704.gif"
-                    style={{ height: '200px' }}
-                  />
+                <a href="https://oceancurrent.aodn.org.au/sst.php?link=DonPer_chl/2009/2009032704.html" target="blank">
+                  <img src="/resource/DonPer_chl/2009/2009032704.gif" style={{ height: '200px' }} />
                 </a>
                 <p>
                   We have just finished updating all our high-resolution imagery
-                  <a href="tech#20150416" className="anchor">
+                  <a href="https://oceancurrent.aodn.org.au/tech#20150416" className="anchor">
                     [technical news item]
                   </a>
                   . Two ocean colour images caught our eye. Both show very sharp colour changes between the clear
@@ -10161,7 +9999,7 @@ export const News = () => {
               </div>
 
               <div className="rounded-b bg-white p-4">
-                <img src="https://oceancurrent.aodn.org.au/sst_anom/2015/20150219.png" style={{ height: '200px' }} />
+                <img src="/resource/sst_anom/2015/20150219.png" style={{ height: '200px' }} />
                 <p>
                   Summer is often the time when unusual ocean temperatures have the widest range of impacts, from
                   recreational to life-threatening. Tropical Cyclones Marcia and Lam have just left trails of
@@ -10195,7 +10033,7 @@ export const News = () => {
                   the previous winter, when average sea surface temperature (SST) of the ocean off Eastern Tasmania
                   remained over 1 degree above average. The result of this sustained anomaly was a change in marine life
                   with more tuna and unusual species such as jellyfish appearing on Tasmanian beaches.
-                  <img src="https://oceancurrent.aodn.org.au/misc/SST_TasE_2014.png" style={{ height: '200px' }} />
+                  <img src="/resource/misc/SST_TasE_2014.png" style={{ height: '200px' }} />
                 </p>
                 <p>
                   <a href="https://oceancurrent.aodn.org.au/sst.php?link=SAgulfs/2015/2015020619.html">
@@ -10205,7 +10043,7 @@ export const News = () => {
                   upwelling is a usual summer occurence, but this year it was particularly strong.
                 </p>
                 <video width="320px">
-                  <source src="https://oceancurrent.aodn.org.au/SAgulfs/2015/SAgulfs201503.mp4" type="video/mp4" />
+                  <source src="/resource/SAgulfs/2015/SAgulfs201503.mp4" type="video/mp4" />
                   <track kind="captions" />
                 </video>
                 <p>
@@ -10252,26 +10090,17 @@ export const News = () => {
                 </p>
                 <div className="col-md-4">
                   <a href="https://oceancurrent.aodn.org.au/misc/Rottnest_swim_2015/bg_roms_radar_09hr_21feb.png">
-                    <img
-                      src="https://oceancurrent.aodn.org.au/misc/Rottnest_swim_2015/bg_roms_radar_09hr_21feb.png"
-                      width="300"
-                    />
+                    <img src="/resource/misc/Rottnest_swim_2015/bg_roms_radar_09hr_21feb.png" width="300" />
                   </a>
                 </div>
                 <div className="col-md-4">
                   <a href="https://oceancurrent.aodn.org.au/misc/Rottnest_swim_2015/bg_roms_radar_12hr_21feb.png">
-                    <img
-                      src="https://oceancurrent.aodn.org.au/misc/Rottnest_swim_2015/bg_roms_radar_12hr_21feb.png"
-                      width="300"
-                    />
+                    <img src="/resource/misc/Rottnest_swim_2015/bg_roms_radar_12hr_21feb.png" width="300" />
                   </a>
                 </div>
                 <div className="col-md-4">
                   <a href="https://oceancurrent.aodn.org.au/misc/Rottnest_swim_2015/bg_roms_radar_15hr_21feb.png">
-                    <img
-                      src="https://oceancurrent.aodn.org.au/misc/Rottnest_swim_2015/bg_roms_radar_15hr_21feb.png"
-                      width="300"
-                    />
+                    <img src="/resource/misc/Rottnest_swim_2015/bg_roms_radar_15hr_21feb.png" width="300" />
                   </a>
                 </div>
               </div>
@@ -10309,17 +10138,17 @@ export const News = () => {
                 <p>Click on the images below to see them enlarged.</p>
                 <div className="col-md-4">
                   <a href="https://oceancurrent.aodn.org.au/misc/fct0900WST_21Feb.png">
-                    <img src="https://oceancurrent.aodn.org.au/misc/fct0900WST_21Feb.png" width="300" />
+                    <img src="/resource/misc/fct0900WST_21Feb.png" width="300" />
                   </a>
                 </div>
                 <div className="col-md-4">
                   <a href="https://oceancurrent.aodn.org.au/misc/fct1200WST_21Feb.png">
-                    <img src="https://oceancurrent.aodn.org.au/misc/fct1200WST_21Feb.png" width="300" />
+                    <img src="/resource/misc/fct1200WST_21Feb.png" width="300" />
                   </a>
                 </div>
                 <div className="col-md-4">
                   <a href="https://oceancurrent.aodn.org.au/misc/fct1500WST_21Feb.png">
-                    <img src="https://oceancurrent.aodn.org.au/misc/fct1500WST_21Feb.png" width="300" />
+                    <img src="/resource/misc/fct1500WST_21Feb.png" width="300" />
                   </a>
                 </div>
               </div>
@@ -10340,8 +10169,8 @@ export const News = () => {
               </div>
 
               <div className="rounded-b bg-white p-4">
-                <a href="misc/CP_Rottnest_fig1.gif">
-                  <img src="https://oceancurrent.aodn.org.au/misc/CP_Rottnest_fig1.gif" height="150" />
+                <a href="/resource/misc/CP_Rottnest_fig1.gif">
+                  <img src="/resource/misc/CP_Rottnest_fig1.gif" height="150" />
                 </a>
                 <p>
                   On Friday 20 February we will show the
@@ -10360,8 +10189,8 @@ export const News = () => {
                   lasting over the ocean than over the land. All of these factors mean that the prevailing currents are
                   usually northward, particularly after several days of sea breezes. This dominant pattern is
                   illustrated above right.
-                  <a href="https://oceancurrent.aodn.org.au/misc/CP_Rottnest_fig2.gif">
-                    <img src="https://oceancurrent.aodn.org.au/misc/CP_Rottnest_fig2.gif" height="150" />
+                  <a href="/resource/misc/CP_Rottnest_fig2.gif">
+                    <img src="/resource/misc/CP_Rottnest_fig2.gif" height="150" />
                   </a>
                 </p>
                 <p>
