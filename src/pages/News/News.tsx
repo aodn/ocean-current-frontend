@@ -51,12 +51,12 @@ export const News = () => {
               selectedFilter !== null && selectedFilter !== '2023-now' && 'hidden',
             )}
           >
-            <article className="p-2">
+            <article id="20260619" className="p-2">
               <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
                 <div>
-                  <h3 id="_ShowYourStripes">
-                    <a href="#_ShowYourStripes" className="anchor">
-                      #ShowYourStripes
+                  <h3 id="ShowYourStripes">
+                    <a href="#ShowYourStripes" className="anchor">
+                      ShowYourStripes
                     </a>
                   </h3>
                   <em>
@@ -67,14 +67,18 @@ export const News = () => {
                   <p className="font-bold">19 June, 2026</p>
                 </div>
               </div>
-              <div className="rounded-b bg-white p-4">
+              <div className="overflow-auto rounded-b bg-white p-4">
                 <p>
-                  debug
-                  <img src="/resource/news/20260619/stripes1_3.png" />
-                  <br />
-                  <br />
-                  <img src="/resource/news/20260619/Stripes2.png" />
-                  <br />
+                  <img
+                    alt=""
+                    src="/resource/news/20260619/stripes1_3.png"
+                    style={{ float: 'right', height: '281px', width: '700px', margin: '10px' }}
+                  />
+                  <img
+                    alt=""
+                    src="/resource/news/20260619/Stripes2.png"
+                    style={{ float: 'right', height: '270px', width: '700px', margin: '10px' }}
+                  />
                   Figures 1 and 2 are our participation in this year's{' '}
                   <a href="https://showyourstripes.info" target="_blank" rel="noreferrer">
                     <em>Show your Stripes</em> Day
@@ -132,27 +136,15 @@ export const News = () => {
                   </a>{' '}
                   (Figure 4), SST anomalies have been consistently positive since the winter of 2020. Similar patterns
                   are seen in the{' '}
-                  <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=ssta&region=SGBR&date=20260619063840&rtype=DR"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href="/product/six-day-sst/timeseries?region=SGBR" target="_blank" rel="noreferrer">
                     Great Barrier Reef
                   </a>
                   ,{' '}
-                  <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=ssta&region=SNSW&date=20260619064048&rtype=DR"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href="/product/six-day-sst/timeseries?region=SNSW" target="_blank" rel="noreferrer">
                     Southern New South Wales
                   </a>
                   , and the{' '}
-                  <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=ssta&region=NWS&date=20260619063949&rtype=DR"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href="/product/six-day-sst/timeseries?region=NWS" target="_blank" rel="noreferrer">
                     Northwest Shelf
                   </a>
                   .
@@ -172,10 +164,16 @@ export const News = () => {
                   </a>
                   <br />
                   <br />
-                  <img src="/resource/news/20260619/stripes3.png" />
-                  <br />
-                  <br />
-                  <img src="/resource/news/20260619/stripes4_1.png" />
+                  <img
+                    alt=""
+                    src="/resource/news/20260619/stripes3.png"
+                    style={{ float: 'left', height: '368px', width: '500px', margin: '10px' }}
+                  />
+                  <img
+                    alt=""
+                    src="/resource/news/20260619/stripes4_1.png"
+                    style={{ float: 'left', height: '452px', width: '600px', margin: '10px' }}
+                  />
                 </p>
               </div>
             </article>
