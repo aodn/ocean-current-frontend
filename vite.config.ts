@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 import path from 'path';
 import { defineConfig, loadEnv, type ConfigEnv } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -56,11 +55,6 @@ export default ({ mode }: ConfigEnv) => {
       alias: {
         '@': path.resolve(__dirname, './src'),
       },
-    },
-    test: {
-      globals: true,
-      environment: 'jsdom',
-      setupFiles: './src/test/setup.ts',
     },
     server: {
       port: Number(process.env.VITE_PORT),
