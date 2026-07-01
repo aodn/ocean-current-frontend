@@ -88,7 +88,7 @@
     "vitest-canvas-mock": "^1.1.4"
   },
   "resolutions": {
-    "vite": "^7.3.6"
+    "vite": "7.3.6"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
