@@ -27,4 +27,11 @@ export class Navbar {
     await this.root.locator('a[href*="news"]').first().click();
     await this.page.waitForLoadState('load');
   }
+
+  /** Hovers the given top-level menu (opens its dropdown) and clicks an item by its title. */
+  async clickMenuItem(menu: 'maps' | 'inWater', itemTitle: string): Promise<void> {
+    const trigger = menu === 'maps' ? this.mapsMenu : this.inWaterMenu;
+    await trigger.hover();
+    await this.page.getByText(itemTitle, { exact: true }).click();
+  }
 }

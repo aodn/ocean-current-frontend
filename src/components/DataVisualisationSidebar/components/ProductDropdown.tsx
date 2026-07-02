@@ -178,6 +178,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
       elements={dropdownElements}
       selectedId={(mainProductKey === 'sealCtdTags' ? 'sealCtd' : mainProductKey) as RootProductID}
       onChange={handleDropdownChange}
+      toggleTestId="product-dropdown-toggle"
     />
   );
 };

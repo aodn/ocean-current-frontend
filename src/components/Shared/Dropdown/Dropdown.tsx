@@ -17,6 +17,7 @@ const Dropdown = <T,>({
   menuBorder = false,
   menuShadow = true,
   widePaddingMenu = false,
+  toggleTestId,
 }: DropdownProps<T>): JSX.Element => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [selectedElement, setSelectedElement] = useState<DropdownElement<T> | null>(null);
@@ -82,6 +83,7 @@ const Dropdown = <T,>({
       <div
         onClick={toggleDropdown}
         aria-hidden="true"
+        data-testid={toggleTestId}
         className={cn(
           'text-imos-dark-grey flex h-full items-center justify-between shadow-sm',
           header

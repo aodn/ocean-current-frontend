@@ -19,6 +19,7 @@ export class ProductPage extends BasePage {
   readonly buoyTimeseriesButton: Locator;
   readonly mapButton: Locator;
   readonly mooredInstrumentArrayButton: Locator;
+  readonly productDropdownToggle: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -36,6 +37,15 @@ export class ProductPage extends BasePage {
     this.buoyTimeseriesButton = this.getButton('Buoy Timeseries');
     this.mapButton = this.getButton('Map');
     this.mooredInstrumentArrayButton = this.getButton('Moored Instrument Array');
+    // ProductDropdown renders twice (desktop + mobile, toggled via CSS breakpoints), so both
+    // instances exist in the DOM at once — scope to the one actually visible at the current viewport.
+    this.productDropdownToggle = page.locator('[data-testid="product-dropdown-toggle"]:visible');
+  }
+
+  /** Opens the LHS product switcher and picks a product by its visible label. Stays under /product. */
+  async switchProductViaDropdown(productLabel: string): Promise<void> {
+    await this.productDropdownToggle.click();
+    await this.page.locator('[data-testid="dropdown-menu"]:visible').getByText(productLabel, { exact: true }).click();
   }
 
   getAboutDatasetButton(datasetName: string): Locator {

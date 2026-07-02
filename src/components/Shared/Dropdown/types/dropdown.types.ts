@@ -21,4 +21,6 @@ export interface DropdownProps<T> {
   menuShadow?: boolean;
   /** Wider menu item inset, for the product list (forwarded to MenuList's `widePadding`). */
   widePaddingMenu?: boolean;
+  /** data-testid for the toggle button, e.g. for E2E tests to open the dropdown. */
+  toggleTestId?: string;
 }
