@@ -42,6 +42,7 @@ export const getProductInfoByKey = (productKey: string, childKey?: string): Prod
       summary: childInfo.summary,
       description: childInfo.description,
       childrenInfo: parentProduct.childrenInfo,
+      aboutButtonText: parentProduct.aboutButtonText,
     };
   }
 

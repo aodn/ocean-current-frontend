@@ -64,12 +64,12 @@ const OceanCurrentDatePicker: React.FC<OceanCurrentDatePickerProps> = ({
   return (
     <div className="flex h-full w-full items-center justify-between" data-testid="date-pagination">
       {!isSealCtdTagsAndYearFormat && (
-        <div className="flex-center h-full w-12 border-r-2 text-lg text-imos-title-blue">
+        <div className="flex-center text-imos-title-blue h-full w-12 border-r-2 text-lg">
           <button
             data-testid="date-previous-button"
             onClick={goToPrevious}
-            disabled={!canGoPrevious}
-            className="cursor-pointer rounded bg-transparent p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={!canGoPrevious || isDatePickerDisabled}
+            className="cursor-pointer rounded-sm bg-transparent p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
           >
             <img className="h-4 w-4 rotate-90" src={arrowIcon} alt="left arrow icon" />
           </button>
@@ -91,16 +91,18 @@ const OceanCurrentDatePicker: React.FC<OceanCurrentDatePickerProps> = ({
           </div>
         )}
 
-        <div className="text-l">{formattedSelectedDate}</div>
+        <div className="text-l" data-testid="selected-date" data-timestamp={selectedDate.getTime()}>
+          {formattedSelectedDate}
+        </div>
       </div>
 
       {!isSealCtdTagsAndYearFormat && (
-        <div className="flex-center h-full w-12 border-l-2 text-lg text-imos-title-blue">
+        <div className="flex-center text-imos-title-blue h-full w-12 border-l-2 text-lg">
           <button
             data-testid="date-next-button"
             onClick={goToNext}
-            disabled={!canGoNext}
-            className="cursor-pointer rounded bg-transparent p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={!canGoNext || isDatePickerDisabled}
+            className="cursor-pointer rounded-sm bg-transparent p-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
           >
             <img className="h-4 w-4 -rotate-90" src={arrowIcon} alt="right arrow icon" />
           </button>

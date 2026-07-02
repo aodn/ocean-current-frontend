@@ -8,6 +8,7 @@ import { isHourlyFormat, findFirstDateTimeForSelectedDay } from '@/utils/date-ut
 import { findClosestDateIndex, findNearestDateWithinWindow } from '@/utils/date-utils/date';
 import { NEAREST_DATE_SEARCH_CONFIG } from '@/constants/product';
 import { isCurrentYearOptionId } from '@/data/current-meter/sidebarOptions';
+import { setIsDateResolving, setIsProductImageLoading } from '@/stores/product-store/productStore';
 
 type NavigationMode = 'dateList' | 'dateRange';
 
@@ -16,6 +17,9 @@ interface UseDateListNavigationProps {
   availableDates: DateItem[];
   initialDate?: string;
   productId?: ProductID;
+  // When true, the real date list is still loading (the navigator is operating on a
+  // synthetic fallback list). Used to defer syncing the resolved date to the URL.
+  isDateListLoading?: boolean;
 }
 
 type NavigateDate = {
@@ -113,8 +117,9 @@ const parseDateParamForList = (
     }
 
     // Legacy path: products without a search config.
-    // For hourly target format, try the first entry on the exact target day.
-    if (!isDateParamInTargetFormat && isHourlyFormat(dateFormat)) {
+    // For sub-day target formats (hourly, or second-precision like SWOT GSLA SSH),
+    // try the first entry on the exact target day.
+    if (!isDateParamInTargetFormat && (isHourlyFormat(dateFormat) || dateFormat === DateFormat.SECOND)) {
       const dayStr = date.format(DateFormat.DAY);
       const firstHourlyDate = findFirstDateTimeForSelectedDay(dates, dayStr, dateFormat);
       if (firstHourlyDate) {
@@ -191,6 +196,7 @@ export const useDateListNavigation = ({
   availableDates,
   initialDate,
   productId,
+  isDateListLoading = false,
 }: UseDateListNavigationProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   // The `availableDates` array must be sorted by the backend API to ensure correct functionality.
@@ -221,33 +227,65 @@ export const useDateListNavigation = ({
 
     const dateParam = searchParams.get('date');
 
-    // No date parameter, use first available date or today
+    // No date parameter, use latest available date or today.
     if (!dateParam || dateParam === '0000') {
+      // Argo: a cycle uniquely identifies a profile, so resolve its date from the fetched
+      // profiles instead of falling back to "latest". This is what makes `date` optional in
+      // the Argo URL (e.g. `/product/argo?wmoid=...&cycle=65`).
+      const cycleParam = searchParams.get('cycle');
+      // Scope strictly to Argo: a stray `cycle` on another product's shared link must not block
+      // that product's normal latest-date canonicalization below.
+      if (productId === 'argo' && cycleParam) {
+        const matched = argoProfiles.find((profile) => profile.cycle === cycleParam);
+        if (matched) {
+          return { currentDate: dayjs(matched.date, dateFormat, true), resolvedDateParam: matched.date };
+        }
+        // Profiles not loaded yet — hold on today and DO NOT fall through to the "latest"
+        // branch below, which would overwrite the user-requested cycle. This memo re-runs
+        // once argoProfiles populates and the cycle resolves above.
+        return { currentDate: dayjs(), resolvedDateParam: null as string | null };
+      }
+
+      const latest = dates.at(-1);
+      // Any product's latest file may predate "today" (SWOT, Non-Tidal SLA, etc.),
+      // so the resolved date must be written to the URL — otherwise the global date store
+      // (which drives the rendered image) defaults to today and 404s. Defer the sync
+      // until the real list has loaded so we never persist a synthetic fallback date.
+      // Side effect: every product that loads without a ?date= param will trigger a
+      // setSearchParams call once the list resolves, making the URL canonical.
+      const shouldSyncLatestToUrl = !isDateListLoading && !!latest;
       return {
-        currentDate: dates.length > 0 ? dayjs(dates.at(-1), dateFormat) : dayjs(),
-        resolvedDateParam: null as string | null,
+        currentDate: latest ? dayjs(latest, dateFormat) : dayjs(),
+        resolvedDateParam: (shouldSyncLatestToUrl ? latest : null) as string | null,
       };
     }
 
     // Parse date parameter (pure — no side effects)
     const result = parseDateParamForList(dateParam, dateFormat, dates, productId);
 
-    // Return parsed date or fallback to first available date or today
+    // Defer syncing the resolved date to the URL until the real list loads — until then
+    // the navigator runs on a synthetic fallback list and the store's default productId
+    // (`sixDaySst-sst`, DAY format), which would rewrite an HOUR date to DAY. `currentDate`
+    // is still returned for display. Mirrors the latest-date branch above.
     if (result.date && result.date.isValid()) {
-      return { currentDate: result.date, resolvedDateParam: result.resolvedDateParam };
+      return {
+        currentDate: result.date,
+        resolvedDateParam: isDateListLoading ? null : result.resolvedDateParam,
+      };
     }
 
     return {
       currentDate: dates.length > 0 ? dayjs(dates[0], dateFormat) : dayjs(),
       resolvedDateParam: null as string | null,
     };
-  }, [initialDate, searchParams, dates, dateFormat, productId]);
+  }, [initialDate, searchParams, dates, dateFormat, productId, isDateListLoading, argoProfiles]);
 
   // Sync the resolved date to the URL after render to avoid setState-during-render warnings
   const resolvedDateRef = useRef<string | null>(null);
   useEffect(() => {
     if (resolvedDateParam && resolvedDateParam !== resolvedDateRef.current) {
       resolvedDateRef.current = resolvedDateParam;
+      setIsDateResolving(true);
       setSearchParams(
         (prev) => {
           const newParams = new URLSearchParams(prev);
@@ -256,6 +294,8 @@ export const useDateListNavigation = ({
         },
         { replace: true },
       );
+    } else if (!resolvedDateParam) {
+      setIsDateResolving(false);
     }
   }, [resolvedDateParam, setSearchParams]);
 
@@ -277,6 +317,7 @@ export const useDateListNavigation = ({
           },
           { replace },
         );
+        setIsProductImageLoading(true);
       }
     },
     [formatDate, dates, setSearchParams, argoProfiles],
@@ -388,6 +429,7 @@ export const useDateRangeNavigation = ({ dateFormat, dateRange }: UseDateRangeNa
         },
         { replace },
       );
+      setIsProductImageLoading(true);
     },
     [formatDate, dateRange, setSearchParams, argoProfiles],
   );
@@ -513,12 +555,14 @@ export const useDateNavigation = ({
   initialDate,
   dateRange,
   productId,
+  isDateListLoading,
 }: UseNavigationProps) => {
   const listNav = useDateListNavigation({
     dateFormat,
     availableDates,
     initialDate,
     productId,
+    isDateListLoading,
   });
 
   const rangeNav = useDateRangeNavigation({

@@ -10,43 +10,63 @@ const initialState: State = {
     regionScope: RegionScope.State,
     regionTitle: 'Au',
   },
+  isProductImageLoading: true,
+  isDateResolving: false,
 };
 
 const useProductStore = create<State & Actions>()(
-  devtools((set) => ({
-    ...initialState,
-    actions: {
-      setProductData: (product) => set({ productParams: product }, false, 'setProductData'),
-      setProductId: (productId) =>
-        set((state) => ({ productParams: { ...state.productParams, productId } }), false, 'setProductId'),
-      setRegionCode: (regionCode) =>
-        set(
-          (state) => ({
-            productParams: { ...state.productParams, regionCode },
-          }),
-          false,
-          'setRegionCode',
-        ),
-      setRegionScope: (regionScope) =>
-        set(
-          (state) => ({
-            productParams: { ...state.productParams, regionScope },
-          }),
-          false,
-          'setRegionScope',
-        ),
-      setRegionTitle: (regionTitle) =>
-        set(
-          (state) => ({
-            productParams: { ...state.productParams, regionTitle },
-          }),
-          false,
-          'setRegionTitle',
-        ),
-    },
-  })),
+  devtools(
+    (set) => ({
+      ...initialState,
+      actions: {
+        setProductData: (product) => set({ productParams: product }, false, 'setProductData'),
+        setProductId: (productId) =>
+          set(
+            (state) => ({ productParams: { ...state.productParams, productId }, isProductImageLoading: true }),
+            false,
+            'setProductId',
+          ),
+        setRegionCode: (regionCode) =>
+          set(
+            (state) => ({
+              productParams: { ...state.productParams, regionCode },
+            }),
+            false,
+            'setRegionCode',
+          ),
+        setRegionScope: (regionScope) =>
+          set(
+            (state) => ({
+              productParams: { ...state.productParams, regionScope },
+            }),
+            false,
+            'setRegionScope',
+          ),
+        setRegionTitle: (regionTitle) =>
+          set(
+            (state) => ({
+              productParams: { ...state.productParams, regionTitle },
+            }),
+            false,
+            'setRegionTitle',
+          ),
+        setIsProductImageLoading: (isLoading: boolean) =>
+          set({ isProductImageLoading: isLoading }, false, 'setIsProductImageLoading'),
+        setIsDateResolving: (isResolving: boolean) =>
+          set({ isDateResolving: isResolving }, false, 'setIsDateResolving'),
+      },
+    }),
+    { name: 'Product Store' },
+  ),
 );
 
-export const { setProductId, setRegionScope, setRegionTitle, setRegionCode } = useProductStore.getState().actions;
+export const {
+  setProductId,
+  setRegionScope,
+  setRegionTitle,
+  setRegionCode,
+  setIsProductImageLoading,
+  setIsDateResolving,
+} = useProductStore.getState().actions;
 
 export default useProductStore;

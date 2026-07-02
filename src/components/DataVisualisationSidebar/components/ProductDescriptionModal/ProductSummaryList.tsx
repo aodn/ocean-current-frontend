@@ -1,16 +1,20 @@
 import {
   AdjustedSeaLevelAnomalyModalData,
-  ClimatologyModalData,
   FourHourSstModalData,
   OceanColourModalData,
   SixDaySstModalData,
-  SixDaySstTimeseriesModalData,
   SurfaceWaveModalData,
   EACMooringArrayModalData,
   CurrentMetersModalData,
   ArgoModalData,
   TidalCurrentsModalData,
   SealCtdModalData,
+  SwotGslaModalData,
+  FishSoopModalData,
+  FishSoopProfilesModalData,
+  FishSoopQuarterlyAnomaliesModalData,
+  FishSoopAverageAnomaliesModalData,
+  FishSoopDepthAnomaliesModalData,
 } from '@/components/DataVisualisationSidebar/components/ProductDescriptionModal/ProductDescriptionData';
 import { ProductInfo } from '../../types';
 
@@ -24,16 +28,9 @@ export const productInfoList: ProductInfo[] = [
   },
   {
     id: 'sixDaySst',
-    title: 'Six Day Sst',
+    title: 'Daily SST (6-day composite)',
     summary: 'Sea Surface Temperature (°C) 6-day composite of night-only SST',
     description: SixDaySstModalData,
-    childrenInfo: {
-      'sixDaySst-timeseries': {
-        title: 'Monthly Mean SST Anomalies (SST Anom vs Time)',
-        summary: 'Time series analysis of SST anomalies over time, showing trends and patterns.',
-        description: SixDaySstTimeseriesModalData,
-      },
-    },
   },
   {
     id: 'oceanColour',
@@ -50,6 +47,13 @@ export const productInfoList: ProductInfo[] = [
     description: AdjustedSeaLevelAnomalyModalData,
   },
   {
+    id: 'swotGsla',
+    title: 'SWOT and GSLA',
+    // TODO: No summary text until the client provides one; the popup still shows their full about content.
+    summary: null,
+    description: SwotGslaModalData,
+  },
+  {
     id: 'surfaceWaves',
     title: 'Surface Waves',
     summary:
@@ -59,7 +63,7 @@ export const productInfoList: ProductInfo[] = [
       'surfaceWaves-buoyTimeseries': {
         title: 'Buoy Timeseries',
         summary: null,
-        description: () => null,
+        description: null,
       },
     },
   },
@@ -67,14 +71,7 @@ export const productInfoList: ProductInfo[] = [
     id: 'monthlyMeans',
     title: 'Monthly Means',
     summary: null,
-    description: () => null,
-  },
-  {
-    id: 'climatology',
-    title: 'Climatology',
-    summary:
-      'SSTAARS is a climatology of Australian regional seas, using 25 years of daily night-only SST data. It provides seasonal SST patterns, cloud-free data counts, sea level height, geostrophic velocity, and bathymetry contours, available from AODN.',
-    description: ClimatologyModalData,
+    description: null,
   },
   {
     id: 'argo',
@@ -82,6 +79,7 @@ export const productInfoList: ProductInfo[] = [
     summary:
       'Temperature and salinity data from the selected float compared with satellite-adjusted climatology, down to 2000m in the Australian region.',
     description: ArgoModalData,
+    aboutButtonText: 'About Argo profiles',
   },
   {
     id: 'tidalCurrents',
@@ -89,6 +87,7 @@ export const productInfoList: ProductInfo[] = [
     summary:
       'Predictions of tidal sea level and depth-average tidal current from tide gauge and current meter observations as well as from the CSIRO tidal model.',
     description: TidalCurrentsModalData,
+    aboutButtonText: 'About Tidal Currents',
   },
   {
     id: 'currentMeters',
@@ -96,19 +95,20 @@ export const productInfoList: ProductInfo[] = [
     summary:
       "The overview map is your entry point to a series of maps showing a few properties of Australia's ocean currents: mean (all-time, annual and seasonal), standard deviation for various layers and time-windows, and tidal harmonics for the depth-average flow.",
     description: CurrentMetersModalData,
+    aboutButtonText: 'Definitions and revisions',
   },
   {
     id: 'sealCtd',
-    title: 'SealCTDs: Temperature and Salinity Profiles from Ocean Mammals',
+    title: 'Temperature and Salinity profiles measured by animal-borne CTDs',
     summary:
-      'The IMOS Animal Tracking Facility has deployed over 250 SealCTDs (miniaturized CTD sensors with an ARGOS antenna) on Elephant Seals, Sea Lions, Fur Seals and Weddell Seals since 2009.',
+      'The SealCTD product shows near real time location of seals equipped with CTD instruments, overlaid on SST maps and ice coverage.',
     description: SealCtdModalData,
   },
   {
     id: 'sealCtdTags',
-    title: 'SealCTDs: Temperature and Salinity Profiles from Ocean Mammals',
+    title: 'Temperature and Salinity profiles measured by animal-borne CTDs',
     summary:
-      'The IMOS Animal Tracking Facility has deployed over 250 SealCTDs (miniaturized CTD sensors with an ARGOS antenna) on Elephant Seals, Sea Lions, Fur Seals and Weddell Seals since 2009.',
+      'The SealCTD product shows near real time location of seals equipped with CTD instruments, overlaid on SST maps and ice coverage.',
     description: SealCtdModalData,
   },
   {
@@ -117,5 +117,39 @@ export const productInfoList: ProductInfo[] = [
     summary:
       'Daily estimates of East Australian Current (EAC) properties calculated from the CSIRO EAC gridded mooring product.',
     description: EACMooringArrayModalData,
+    aboutButtonText: 'About EAC mooring array dataset',
+  },
+  {
+    id: 'fishSOOP',
+    title: 'FishSOOP',
+    summary:
+      'Explore FishSOOP temperature observations via a daily data finder showing temperature vs depth, time and location, 3-month average anomalies compared with a historical climatology, and depth-layer anomaly maps.',
+    description: FishSoopModalData,
+    aboutButtonText: 'About FishSOOP',
+    childrenInfo: {
+      'fishSOOP-profiles': {
+        title: 'Regional Profiles',
+        summary: 'The daily data finder maps help you find plots of temperature vs depth, time and location.',
+        description: FishSoopProfilesModalData,
+      },
+      'fishSOOP-quarterlyAnomalies': {
+        title: 'Quarterly Anomalies',
+        summary:
+          '3-month averages of the whole FishSOOP dataset compared with a historical climatology reveal how the ocean has changed. Click for more depth layers. The plots also show the data coverage history.',
+        description: FishSoopQuarterlyAnomaliesModalData,
+      },
+      'fishSOOP-averageAnomalies': {
+        title: 'Average Anomalies',
+        summary:
+          'Whole-dataset, three-monthly regional layer-averages of FishSOOP temperatures compared with the CARS2009 climatology, to reveal whether the observations differ systematically from the historical record.',
+        description: FishSoopAverageAnomaliesModalData,
+      },
+      'fishSOOP-depthAnomalies': {
+        title: 'Depth Anomalies',
+        summary:
+          'Step through regions and depth layers to explore the spatial-, temporal- and depth-dependence of the anomalies.',
+        description: FishSoopDepthAnomaliesModalData,
+      },
+    },
   },
 ];

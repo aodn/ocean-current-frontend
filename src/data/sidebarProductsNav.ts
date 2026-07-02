@@ -9,8 +9,9 @@ import {
   TidalCurrentsIcon,
   CurrentMetersIcon,
   SealCTDIcon,
-  ClimatologyIcon,
   EACMooringArrayIcon,
+  SwotIcon,
+  FishSOOPIcon,
 } from '@/components/Shared/Icons';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import { RootProductID } from '@/types/product';
@@ -47,9 +48,9 @@ export const sidebarProductsNav: DropdownElement<RootProductID>[] = [
     Icon: MonthlyMeansIcon,
   },
   {
-    id: 'climatology',
-    label: 'Climatology SST',
-    Icon: ClimatologyIcon,
+    id: 'swotGsla',
+    label: 'SWOT and GSLA',
+    Icon: SwotIcon,
   },
   {
     id: 'argo',
@@ -76,5 +77,10 @@ export const sidebarProductsNav: DropdownElement<RootProductID>[] = [
     id: 'EACMooringArray',
     label: 'EAC Mooring Array',
     Icon: EACMooringArrayIcon,
+  },
+  {
+    id: 'fishSOOP',
+    label: 'FishSOOP',
+    Icon: FishSOOPIcon,
   },
 ];

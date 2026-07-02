@@ -1,9 +1,41 @@
-@layer components {
-  .flex-center {
-    @apply flex items-center justify-center;
+@utility flex-center {
+  @apply flex items-center justify-center;
+}
+
+@utility oc-link {
+  @apply text-imos-sea-blue mx-1;
+}
+
+@utility newsComponent {
+  @apply text-[#090C02];
+
+  & h2 {
+    @apply text-4xl font-semibold text-[#090C02];
   }
 
-  .oc-link {
-    @apply mx-1 text-imos-sea-blue;
+  & h3 {
+    @apply text-2xl font-semibold text-[#090C02];
+  }
+
+  & h5 {
+    @apply text-base font-medium text-[#090C02];
+  }
+
+  & p {
+    @apply text-base leading-8;
+  }
+
+  & a {
+    @apply text-imos-sea-blue hover:text-imos-hover-blue underline underline-offset-2;
+  }
+
+  & a.anchor {
+    @apply text-[#090C02] no-underline;
+  }
+}
+
+@utility anchor {
+  .newsComponent &a {
+    @apply text-[#090C02] no-underline;
   }
 }

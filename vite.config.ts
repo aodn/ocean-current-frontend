@@ -1,12 +1,12 @@
-/// <reference types="vitest" />
 import path from 'path';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig, loadEnv, type ConfigEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import checker from 'vite-plugin-checker';
 import svgr from 'vite-plugin-svgr';
+import tailwindcss from '@tailwindcss/vite';
 
 // https://vitejs.dev/config/
-export default ({ mode }) => {
+export default ({ mode }: ConfigEnv) => {
   process.env = {
     ...process.env,
     ...loadEnv(mode, process.cwd()),
@@ -42,21 +42,19 @@ export default ({ mode }) => {
             typescript: true,
             eslint: {
               lintCommand: 'eslint --rule "no-console: off" "./src/**/*.{ts,tsx}"',
+              useFlatConfig: false,
             },
           })
         : undefined,
+      titlePlugin(mode),
       googleAnalyticsPlugin(),
       newRelicPlugin(),
+      tailwindcss(),
     ],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
       },
-    },
-    test: {
-      globals: true,
-      environment: 'jsdom',
-      setupFiles: './src/test/setup.ts',
     },
     server: {
       port: Number(process.env.VITE_PORT),
@@ -67,7 +65,9 @@ export default ({ mode }) => {
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api\/v1/, ''),
           configure: (proxy, options) => {
-            proxy.on('proxyReq', (_, req) => logProxy(req.method ?? 'UNKNOWN', req.url ?? 'UNKNOWN', options.target));
+            proxy.on('proxyReq', (_, req) =>
+              logProxy(req.method ?? 'UNKNOWN', req.url ?? 'UNKNOWN', options.target ?? 'UNKNOWN'),
+            );
           },
         },
         '/resource': {
@@ -75,7 +75,9 @@ export default ({ mode }) => {
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/resource/, ''),
           configure: (proxy, options) => {
-            proxy.on('proxyReq', (_, req) => logProxy(req.method ?? 'UNKNOWN', req.url ?? 'UNKNOWN', options.target));
+            proxy.on('proxyReq', (_, req) =>
+              logProxy(req.method ?? 'UNKNOWN', req.url ?? 'UNKNOWN', options.target ?? 'UNKNOWN'),
+            );
           },
         },
         '/storage': {
@@ -83,7 +85,9 @@ export default ({ mode }) => {
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/storage/, ''),
           configure: (proxy, options) => {
-            proxy.on('proxyReq', (_, req) => logProxy(req.method ?? 'UNKNOWN', req.url ?? 'UNKNOWN', options.target));
+            proxy.on('proxyReq', (_, req) =>
+              logProxy(req.method ?? 'UNKNOWN', req.url ?? 'UNKNOWN', options.target ?? 'UNKNOWN'),
+            );
           },
         },
       },
@@ -91,10 +95,25 @@ export default ({ mode }) => {
   });
 };
 
+const titlePlugin = (mode: string) => {
+  const modeTitle: Record<string, string> = {
+    development: '[DEV] IMOS-OceanCurrent',
+    edge: '[EDGE] IMOS-OceanCurrent',
+  };
+  const title = process.env.VITE_APP_TITLE ?? modeTitle[mode] ?? null;
+  return {
+    name: 'vite-plugin-title',
+    transformIndexHtml(html: string) {
+      if (!title) return html;
+      return html.replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`);
+    },
+  };
+};
+
 const googleAnalyticsPlugin = () => {
   return {
     name: 'vite-plugin-google-analytics',
-    transformIndexHtml(html) {
+    transformIndexHtml(html: string) {
       const gaId = process.env.VITE_GA_MEASUREMENT_ID;
       if (!gaId) return html;
       const gaScript = `
@@ -115,7 +134,7 @@ const newRelicPlugin = () => {
   const isEnabled = Boolean(process.env.NEWRELIC_ENABLED);
   return {
     name: 'inject-prod-script',
-    transformIndexHtml(html) {
+    transformIndexHtml(html: string) {
       if (!isEnabled) return html;
       const script = '<script async src="/monitoring.js"></script>';
       return html.replace('<!-- new-relic-js -->', `${script}`);

@@ -13,6 +13,10 @@ import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOption
 import { MapImageAreas } from '@/types/dataImage';
 import { getRegionTitleByRegionCode } from '@/utils/region-utils/region';
 import { useResizeObserver } from '@/hooks';
+import useProductStore, { setIsProductImageLoading } from '@/stores/product-store/productStore';
+import { LinearProgress } from '@/components/Shared';
+import { cn } from '@/utils/classname-util/cn';
+import omitEmptyParams from '@/hooks/useQueryParams/omitEmptyParams';
 
 type DataImageWithCurrentMetersMapProps = {
   mainProduct: Product | null;
@@ -30,14 +34,13 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
   const regionArr = currentMetersRegionAreasMap[regionCode];
   const [_, setSearchParams] = useSearchParams();
   const imgRef = useRef<HTMLImageElement | null>(null);
-  const [imgLoadError, setImgLoadError] = useState<string | null>(null);
+  const [imgErrorSrc, setImgErrorSrc] = useState<string | null>(null);
+  const imgLoadError = imgErrorSrc === src;
   const [areas, setAreas] = useState<MapImageAreas[]>(regionArr);
-
-  useEffect(() => {
-    if (!src) setImgLoadError('Missing Image');
-  }, [src]);
+  const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
 
   const handleImageLoad = useCallback(() => {
+    setIsProductImageLoading(false);
     if (!imgRef.current) return;
 
     const { naturalWidth: originalWidth, naturalHeight: originalHeight, width, height } = imgRef.current;
@@ -65,7 +68,7 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
     };
   }, [src, date, handleImageLoad]);
 
-  if (imgLoadError) {
+  if (!src || imgLoadError) {
     return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
   }
 
@@ -76,24 +79,27 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
 
     if (type === 'region' && code) {
       setRegion(code);
-      setSearchParams({
-        property: CurrentMetersProperty.vrms,
-        depth: CurrentMetersDepth.ONE,
-        region: code,
-        date: date,
-        deploymentPlot: '',
-      });
+      setSearchParams(
+        omitEmptyParams({
+          property: CurrentMetersProperty.vrms,
+          depth: CurrentMetersDepth.ONE,
+          region: code,
+          date: date,
+        }),
+      );
     }
 
     if (type === 'plot' || type === 'text') {
       setDeploymentPlot(name as CurrentMetersDeploymentPlotNames);
-      setSearchParams({
-        property: CurrentMetersProperty.vrms,
-        depth: CurrentMetersDepth.ONE,
-        region: getRegion,
-        date: currentMeterSYearOptionsData[0].id, // all time
-        deploymentPlot: name,
-      });
+      setSearchParams(
+        omitEmptyParams({
+          property: CurrentMetersProperty.vrms,
+          depth: CurrentMetersDepth.ONE,
+          region: getRegion,
+          date: currentMeterSYearOptionsData[0].id, // all time
+          deploymentPlot: name,
+        }),
+      );
     }
   };
 
@@ -101,38 +107,46 @@ const DataImageWithCurrentMetersMap: React.FC<DataImageWithCurrentMetersMapProps
 
   return (
     <div className="relative inline-block h-full w-full bg-white">
-      <img
-        ref={imgRef}
-        src={src}
-        alt={`Current Meters ${regionTitle} map`}
-        useMap="#current-meters-map"
-        className="max-h-[80vh] select-none object-contain"
-        onError={() => {
-          setImgLoadError('Image not available');
-        }}
-      />
-      <map name="current-meters-map">
-        {areas &&
-          areas.map((area, index) => (
-            <area
-              key={index}
-              className="cursor-pointer"
-              shape={area.shape}
-              coords={area.coords.join(',')}
-              alt={`${area.type === 'region' ? 'Region' : 'Plot'} ${area.name}`}
-              onClick={() => handleAreaClick(area)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleAreaClick(area);
-                }
-              }}
-              tabIndex={0}
-              title={area.name}
-              role="link"
-            />
-          ))}
-      </map>
+      {isProductImageLoading ? (
+        <LinearProgress className="absolute left-0 right-0 top-0" />
+      ) : (
+        <div className="h-1 w-full" />
+      )}
+      <div className={cn('relative inline-block h-full w-full')}>
+        <img
+          ref={imgRef}
+          src={src}
+          alt={`Current Meters ${regionTitle} map`}
+          useMap="#current-meters-map"
+          className="max-h-[80vh] select-none object-contain"
+          onError={() => {
+            setIsProductImageLoading(false);
+            setImgErrorSrc(src);
+          }}
+        />
+        <map name="current-meters-map">
+          {areas &&
+            areas.map((area, index) => (
+              <area
+                key={index}
+                className="cursor-pointer"
+                shape={area.shape}
+                coords={area.coords.join(',')}
+                alt={`${area.type === 'region' ? 'Region' : 'Plot'} ${area.name}`}
+                onClick={() => handleAreaClick(area)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleAreaClick(area);
+                  }
+                }}
+                tabIndex={0}
+                title={area.name}
+                role="link"
+              />
+            ))}
+        </map>
+      </div>
     </div>
   );
 };

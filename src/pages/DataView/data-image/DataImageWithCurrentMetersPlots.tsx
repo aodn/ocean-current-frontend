@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Dropdown, Loading } from '@/components/Shared';
+import { setIsProductImageLoading } from '@/stores/product-store/productStore';
 import { buildCurrentMetersDataImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import { CurrentMetersPlotPath, CurrentMetersPlotTitle } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
@@ -25,6 +26,8 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [selectedVelocityId, setSelectedVelocityId] = useState<string | null>(null);
   const [selectedDepthTimeId, setSelectedDepthTimeId] = useState<string | null>(null);
+  const [velocityImageLoaded, setVelocityImageLoaded] = useState(false);
+  const [depthTimeImageLoaded, setDepthTimeImageLoaded] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['current-meters-plots', deploymentPlot],
@@ -47,6 +50,31 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
     }
   }, [depthTimeElements, velocityElements]);
 
+  useEffect(() => {
+    setVelocityImageLoaded(false);
+  }, [selectedVelocityId]);
+
+  useEffect(() => {
+    setDepthTimeImageLoaded(false);
+  }, [selectedDepthTimeId]);
+
+  useEffect(() => {
+    if (isLoading) return;
+    const velocityDone = !selectedVelocityId || !velocityList || velocityImageLoaded;
+    const depthTimeDone = !selectedDepthTimeId || !depthTimeList || depthTimeImageLoaded;
+    if (velocityDone && depthTimeDone) {
+      setIsProductImageLoading(false);
+    }
+  }, [
+    isLoading,
+    velocityImageLoaded,
+    depthTimeImageLoaded,
+    selectedVelocityId,
+    selectedDepthTimeId,
+    velocityList,
+    depthTimeList,
+  ]);
+
   return (
     <div className="h-full bg-white px-4 py-2">
       <div className="relative mb-4 inline-block w-full">
@@ -67,6 +95,8 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
             src={buildCurrentMetersDataImageUrl(velocityList.path, selectedVelocityId)}
             alt={`Layer-average velocity vector scatter plots for deployment plot ${deploymentPlot}`}
             className="mt-2 max-h-[80vh] select-none object-contain"
+            onLoad={() => setVelocityImageLoaded(true)}
+            onError={() => setVelocityImageLoaded(true)}
           />
         )}
       </div>
@@ -88,6 +118,8 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
             src={buildCurrentMetersDataImageUrl(depthTimeList.path, selectedDepthTimeId)}
             alt={`Depth-time plots for deployment plot ${deploymentPlot}`}
             className="mt-2 max-h-[80vh] select-none object-contain"
+            onLoad={() => setDepthTimeImageLoaded(true)}
+            onError={() => setDepthTimeImageLoaded(true)}
           />
         )}
       </div>

@@ -108,6 +108,28 @@ export const OC_PRODUCTS: Product[] = [
           stateFormat: null,
         },
       },
+      {
+        title: 'Climatology',
+        key: 'sixDaySst-climatology',
+        path: 'climatology',
+        imgPath: 'SST',
+        localSegment: 'DR_SST_CLIM',
+        dateFormat: {
+          localFormat: DateFormat.MONTH_ONLY,
+          stateFormat: null,
+        },
+      },
+      {
+        title: 'SSTAARS Data Count',
+        key: 'sixDaySst-climatologyDataCount',
+        path: 'data-count',
+        imgPath: 'NMON',
+        localSegment: 'DR_SST_CLIM',
+        dateFormat: {
+          localFormat: DateFormat.MONTH_ONLY,
+          stateFormat: null,
+        },
+      },
     ],
   },
   {
@@ -265,37 +287,6 @@ export const OC_PRODUCTS: Product[] = [
         },
       },
       */
-    ],
-  },
-  {
-    title: 'Climatology',
-    key: 'climatology',
-    path: 'climatology',
-    latestEntry: null,
-    dateFormat: null,
-    localSegment: 'DR_SST_CLIM',
-    stateSegment: 'STATE_CLIM',
-    children: [
-      {
-        title: 'SST',
-        key: 'climatology-sst',
-        path: 'sst',
-        imgPath: 'SST',
-        dateFormat: {
-          localFormat: DateFormat.MONTH_ONLY,
-          stateFormat: DateFormat.MONTH_ONLY,
-        },
-      },
-      {
-        title: 'Data Count',
-        key: 'climatology-dataCount',
-        path: 'data-count',
-        imgPath: 'NMON',
-        dateFormat: {
-          localFormat: DateFormat.MONTH_ONLY,
-          stateFormat: DateFormat.MONTH_ONLY,
-        },
-      },
     ],
   },
   {
@@ -563,9 +554,81 @@ export const OC_PRODUCTS: Product[] = [
     path: 'swot-gsla',
     latestEntry: null,
     dateFormat: null,
-    localSegment: null,
-    stateSegment: 'SWOT_GSLA',
-    children: [],
+    localSegment: 'DR_SWOT',
+    stateSegment: 'DR_SWOT',
+    children: [
+      {
+        title: 'SSH',
+        key: 'swotGsla-ssh',
+        path: 'ssh',
+        imgPath: 'SSH',
+        dateFormat: {
+          localFormat: DateFormat.SECOND,
+          stateFormat: DateFormat.SECOND,
+        },
+      },
+      {
+        title: 'MDT',
+        key: 'swotGsla-mdt',
+        path: 'mdt',
+        imgPath: 'MDTCMEMS',
+        dateFormat: {
+          localFormat: null,
+          stateFormat: null,
+        },
+      },
+    ],
+  },
+  {
+    title: 'FishSOOP',
+    key: 'fishSOOP',
+    path: 'fish-soop',
+    latestEntry: null,
+    dateFormat: null,
+    localSegment: 'fishsoop',
+    stateSegment: 'fishsoop',
+    children: [
+      {
+        title: 'Regional Profiles',
+        key: 'fishSOOP-profiles',
+        path: 'regional-profiles',
+        imgPath: null,
+        dateFormat: {
+          localFormat: DateFormat.DAY,
+          stateFormat: DateFormat.DAY,
+        },
+      },
+      {
+        title: 'Quarterly Anomalies',
+        key: 'fishSOOP-quarterlyAnomalies',
+        path: 'quarterly-anomalies',
+        imgPath: null,
+        dateFormat: {
+          localFormat: null,
+          stateFormat: null,
+        },
+      },
+      {
+        title: 'Average Anomalies',
+        key: 'fishSOOP-averageAnomalies',
+        path: 'average-anomalies',
+        imgPath: null,
+        dateFormat: {
+          localFormat: null,
+          stateFormat: null,
+        },
+      },
+      {
+        title: 'Depth Anomalies',
+        key: 'fishSOOP-depthAnomalies',
+        path: 'depth-anomalies',
+        imgPath: null,
+        dateFormat: {
+          localFormat: null,
+          stateFormat: null,
+        },
+      },
+    ],
   },
   {
     title: 'My Ocean Current',

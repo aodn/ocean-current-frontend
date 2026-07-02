@@ -10,9 +10,17 @@ import useProductStore, {
   setRegionCode,
 } from '@/stores/product-store/productStore';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { useProductFromUrl, useProductSearchParam, useSetProductId, useUrlType, useIsTabletOrDesktop } from '@/hooks';
+import {
+  useProductFromUrl,
+  useProductSearchParam,
+  useSetProductId,
+  useUrlType,
+  useIsTabletOrDesktop,
+  useIsProductFromUrlKnown,
+} from '@/hooks';
 import { getRegionByRegionCode } from '@/utils/region-utils/region';
 import ErrorBoundary from '@/errors/error-boundary/ErrorBoundary';
+import ErrorContent from '@/errors/error-content/ErrorContent';
 import { ArrowIcon } from '@/components/Shared/Icons';
 import { RegionScope } from '@/constants/region';
 import { Loading } from '@/components/Shared';
@@ -38,7 +46,7 @@ type ParseeDateWithFormat = {
 
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const { isArgo, isSurfaceWavesBuoyTimeseries } = useProductCheck();
+  const { isArgo, isSurfaceWavesBuoyTimeseries, isFishSoopProfiles } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const product = useProductFromUrl('product');
   const { mainProduct } = useProductConvert();
@@ -51,7 +59,11 @@ const DataVisualisationLayout: React.FC = () => {
   const interactiveLayerClickTimestamp = useMapStore((state) => state.interactiveLayerClickTimestamp);
   const toggleSidebar = () => setSidebarVisible((prev) => !prev);
   const { hasSelectedParams } = useUrlParams();
+  // The Au-scope FishSOOP finder map exists daily but is not indexed, so it
+  // navigates a plain date range instead of an availability list.
+  const isFishSoopFinder = isFishSoopProfiles && regionScope === RegionScope.Au;
   const urlType = useUrlType();
+  const isKnownProduct = useIsProductFromUrlKnown(urlType);
   useSetProductId(urlType, setProductId);
 
   const dateFromUrl = searchParams.get('date') || dayjs().format('YYYYMMDD');
@@ -85,9 +97,9 @@ const DataVisualisationLayout: React.FC = () => {
       try {
         const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope, hasSelectedParams.point);
 
-        const getFallbackYear = () => (date ? date.year() : dayjs().year());
-        const getFallbackMonth = () => (date ? date.month() + 1 : dayjs().month() + 1);
-        const getFallbackDay = () => (date ? date.date() : dayjs().date());
+        const getFallbackYear = () => (date && date.isValid() ? date.year() : dayjs().year());
+        const getFallbackMonth = () => (date && date.isValid() ? date.month() + 1 : dayjs().month() + 1);
+        const getFallbackDay = () => (date && date.isValid() ? date.date() : dayjs().date());
 
         if (dateString.length === 2) {
           if (dateFormat === DateFormat.MONTH_ONLY) {
@@ -97,6 +109,11 @@ const DataVisualisationLayout: React.FC = () => {
         }
 
         switch (dateFormat) {
+          case DateFormat.SECOND:
+            if (dateString.length === 14) {
+              return dayjs(dateString, DateFormat.SECOND);
+            }
+            break;
           case DateFormat.MONTH_ONLY:
             if (dateString.length === 2) {
               const year = getFallbackYear();
@@ -229,20 +246,28 @@ const DataVisualisationLayout: React.FC = () => {
     }
   }, [interactiveLayerClickTimestamp, isDesktopOrTablet, showMap]);
 
+  if (isKnownProduct === false) {
+    return (
+      <div className="max-w-8xl relative mx-auto mt-4 mb-4 flex w-full px-4 md:mb-9 md:min-h-[800px]">
+        <ErrorContent title="Product Not Available" description="The product you are looking for is not available." />
+      </div>
+    );
+  }
+
   if (!productId) {
     return <Loading />;
   }
 
   return (
-    <div className="relative mx-auto mb-4 mt-4 w-full max-w-8xl px-4 md:mb-9">
+    <div className="max-w-8xl relative mx-auto mt-4 mb-4 w-full px-4 md:mb-9">
       <div className="flex flex-col-reverse md:flex-row">
         <button
           onClick={toggleSidebar}
-          className="-left-6 mr-1 hidden h-24 items-center justify-center rounded bg-imos-sea-blue p-2 text-white md:flex"
+          className="bg-imos-sea-blue -left-6 mr-1 hidden h-24 items-center justify-center rounded-sm p-2 text-white md:flex"
           aria-label="Toggle sidebar"
         >
           <ArrowIcon
-            className={`h-5 w-5 transition-transform duration-300 ${isSidebarVisible ? 'rotate-90' : 'h-28 rotate-[270deg]'}`}
+            className={`h-5 w-5 transition-transform duration-300 ${isSidebarVisible ? 'rotate-90' : 'h-28 rotate-270'}`}
             color="imos-white"
           />
         </button>
@@ -258,7 +283,7 @@ const DataVisualisationLayout: React.FC = () => {
             setShowVideo={setShowVideo}
             showMap={showMap}
             setShowMap={setShowMap}
-            mode={shouldShowProductOverMap ? 'list' : 'range'}
+            mode={shouldShowProductOverMap && !isFishSoopFinder ? 'list' : 'range'}
           />
           <ErrorBoundary key={product?.mainProduct}>
             <Outlet context={{ showVideo, showMap, loading: true }} />

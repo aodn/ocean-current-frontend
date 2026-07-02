@@ -4,12 +4,13 @@ import { ProductID, RootProductID, SubProduct } from '@/types/product';
 export type ProductInfo = {
   id: string;
   summary: string | null;
-  description: () => JSX.Element | null;
+  description: (() => JSX.Element) | null;
   title: string;
+  aboutButtonText?: string;
   childrenInfo?: {
     [childId: string]: {
       summary: string | null;
-      description: () => JSX.Element | null;
+      description: (() => JSX.Element) | null;
       title?: string;
     };
   };
@@ -29,6 +30,7 @@ export interface SubProductOptionsProps {
   subProductKey: ProductID;
   handleSubProductChange: (key: ProductID, subProductPath: string) => void;
   disabled?: boolean;
+  disabledKeys?: ProductID[];
 }
 
 export type DataSource = {

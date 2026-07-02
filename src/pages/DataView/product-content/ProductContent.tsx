@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useOutletContext } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
 import {
   buildArgoImageUrl,
   buildCurrentMetersMapImageUrl,
@@ -8,19 +9,24 @@ import {
   buildSealCtdMapImageUrl,
   buildSealCtdTagsDataImageUrl,
   buildSurfaceWavesBuoyTimeseriesImageUrl,
+  buildFishSoopAnomalyImageUrl,
   buildStaticImageUrl,
   buildProductVideoUrl,
 } from '@/utils/data-image-builder-utils/dataImgBuilder';
+import { resolveFishSoopAnomaly } from '@/utils/fish-soop-utils/fishSoopAnomaly';
 import { setArgoProfileCycles } from '@/stores/argo-store/argoStore';
 import { Loading } from '@/components/Shared';
 import { checkProductHasSubProduct } from '@/utils/product-utils/product';
 import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
+import { sharedQueryConfig } from '@/configs/query';
 import { VideoPlayerOutletContext } from '@/types/router';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import { CurrentMetersSubProductsKey } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
+import { RegionScope } from '@/constants/region';
 import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
 import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
+import DataImageWithFishSoopMap from '../data-image/DataImageWithFishSoopMap';
 import DataImageWithCurrentMetersPlots from '../data-image/DataImageWithCurrentMetersPlots';
 import DataImageWithTidalCurrentsMap from '../data-image/DataImageWithTidalCurrentsMap';
 import DataImageWithSealCtdGraphs from '../data-image/DataImageWithSealCtdGraphs';
@@ -46,6 +52,9 @@ const ProductContent: React.FC = () => {
     subProduct,
     argoParams,
     currentMetersParams,
+    fishSoopParams,
+    fishSoopAnomalyEntries,
+    isFishSoopAnomalyListLoading,
     urlParams,
     hasSelectedParams,
     regionData,
@@ -54,23 +63,57 @@ const ProductContent: React.FC = () => {
     tidalCurrentsImageData,
     dateString,
   } = useProductContentData();
+
+  const {
+    isArgo,
+    isCurrentMeters,
+    isTidalCurrents,
+    isSealCtd,
+    isSealCtdTags,
+    isOceanColourChlA,
+    isSurfaceWavesBuoyTimeseries,
+    isFishSoopProfiles,
+    isFishSoopAnomaly,
+    isFishSoopAverageAnomalies,
+  } = productChecks;
+
   // Determine if we should render with argo tags
   const shouldRenderDataImageWithArgoTags = useMemo(
-    () => !productChecks.isArgo && checkArgoTagsAvailability(useProductId, regionData.scope),
-    [productChecks.isArgo, useProductId, regionData.scope],
+    () => !isArgo && checkArgoTagsAvailability(useProductId, regionData.scope),
+    [isArgo, useProductId, regionData.scope],
   );
   // Process ocean colour date list
   const oceanColourDateList = useMemo(
-    () => (productChecks.isOceanColourChlA ? processOceanColourDateList(oceanColourImageData) : []),
-    [productChecks.isOceanColourChlA, oceanColourImageData],
+    () => (isOceanColourChlA ? processOceanColourDateList(oceanColourImageData) : []),
+    [isOceanColourChlA, oceanColourImageData],
   );
+
+  // Resolve the FishSOOP anomaly selection (region/quarter/layer or average page)
+  // back to the exact entry in the parsed image list
+  const fishSoopAnomalyResolved = useMemo(() => {
+    if (!isFishSoopAnomaly && !isFishSoopAverageAnomalies) return null;
+    const isQuarterly = useProductId === 'fishSOOP-quarterlyAnomalies';
+    return resolveFishSoopAnomaly(fishSoopAnomalyEntries, {
+      mode: isFishSoopAverageAnomalies ? 'average' : 'region',
+      region: fishSoopParams.region,
+      quarter: isQuarterly ? fishSoopParams.quarter : '',
+      layer: fishSoopParams.layer,
+      avgPage: fishSoopParams.avgPage,
+    });
+  }, [isFishSoopAnomaly, isFishSoopAverageAnomalies, useProductId, fishSoopAnomalyEntries, fishSoopParams]);
+
+  // Fetch Argo profile cycles — shares cache with useDateList and WmoSection via the same query key
+  const { data: argoProfileCyclesData } = useQuery({
+    queryKey: ['argoDateList', argoParams.worldMeteorologicalOrgId],
+    queryFn: () => fetchArgoProfileCyclesByWmoId(argoParams.worldMeteorologicalOrgId),
+    enabled: isArgo && !!argoParams.worldMeteorologicalOrgId,
+    ...sharedQueryConfig,
+  });
 
   // Build image URL
   const chooseImg = useCallback((): string | undefined => {
     try {
-      const { isArgo, isCurrentMeters, isTidalCurrents, isSealCtd, isSealCtdTags } = productChecks;
-
-      // Video-disabled products with specialized params
+      // Video-disabled products with specialised params
       switch (true) {
         case isArgo:
           return buildArgoImageUrl(argoParams.worldMeteorologicalOrgId, useDate, argoParams.cycle, argoParams.depth);
@@ -91,6 +134,10 @@ const ProductContent: React.FC = () => {
           return buildSealCtdTagsDataImageUrl(urlParams.sealCtdTag!, useDate, useProductId);
         case useProductId === 'surfaceWaves-buoyTimeseries' && hasSelectedParams.buoyRegion && !!urlParams.buoyRegion:
           return buildSurfaceWavesBuoyTimeseriesImageUrl(urlParams.buoyRegion!, useDate);
+        case isFishSoopAnomaly || isFishSoopAverageAnomalies:
+          return fishSoopAnomalyResolved?.entry
+            ? buildFishSoopAnomalyImageUrl(fishSoopAnomalyResolved.entry)
+            : undefined;
         // All other products (video-enabled) through the shared builder
         default:
           return buildStaticImageUrl(
@@ -110,7 +157,14 @@ const ProductContent: React.FC = () => {
       }
     }
   }, [
-    productChecks,
+    isArgo,
+    isCurrentMeters,
+    isTidalCurrents,
+    isSealCtd,
+    isSealCtdTags,
+    isFishSoopAnomaly,
+    isFishSoopAverageAnomalies,
+    fishSoopAnomalyResolved,
     useProductId,
     useDate,
     regionData,
@@ -156,23 +210,18 @@ const ProductContent: React.FC = () => {
     useArgoProfileCycles,
   ]);
 
-  // Fetch Argo profile cycles
   useEffect(() => {
-    const getArgoProfileCycles = async (wmoId: string) => {
-      const data = await fetchArgoProfileCyclesByWmoId(wmoId);
-      setArgoProfileCycles(data);
-    };
-    if (productChecks.isArgo && argoParams.worldMeteorologicalOrgId) {
-      getArgoProfileCycles(argoParams.worldMeteorologicalOrgId);
+    if (argoProfileCyclesData) {
+      setArgoProfileCycles(argoProfileCyclesData);
     }
-  }, [productChecks.isArgo, argoParams.worldMeteorologicalOrgId]);
+  }, [argoProfileCyclesData]);
 
   // Early returns for error/loading states
-  if (productChecks.isArgo && !argoParams.worldMeteorologicalOrgId) {
+  if (isArgo && !argoParams.worldMeteorologicalOrgId) {
     return <ErrorImage date={useDate} productId="argo" />;
   }
 
-  if (productChecks.isSurfaceWavesBuoyTimeseries && !hasSelectedParams.buoyRegion) {
+  if (isSurfaceWavesBuoyTimeseries && !hasSelectedParams.buoyRegion) {
     return <ErrorImage date={useDate} productId="surfaceWaves-buoyTimeseries" />;
   }
 
@@ -189,12 +238,22 @@ const ProductContent: React.FC = () => {
     return <Loading />;
   }
 
+  // FishSOOP anomalies: wait for the image list, then require a matching entry
+  if (isFishSoopAnomaly || isFishSoopAverageAnomalies) {
+    if (isFishSoopAnomalyListLoading) {
+      return <Loading />;
+    }
+    if (!fishSoopAnomalyResolved?.entry) {
+      return <ErrorImage date={useDate} productId={useProductId} />;
+    }
+  }
+
   // Video rendering
   if (showVideo) {
     return (
       <div className="h-full bg-white">
         <video
-          className="max-h-[80vh] w-full select-none object-contain"
+          className="max-h-[80vh] w-full object-contain select-none"
           controls
           playsInline
           preload="auto"
@@ -208,7 +267,7 @@ const ProductContent: React.FC = () => {
     );
   }
 
-  // Render with Argo tags
+  // Render with Argo tags: eac-mooring-array, four-hour-sst, six-hour-sst, and ocean-colour-chl-a, adjusted-sea-level-anomaly
   if (shouldRenderDataImageWithArgoTags) {
     return (
       <DataImageWithArgoMap
@@ -223,7 +282,7 @@ const ProductContent: React.FC = () => {
   }
 
   // Tidal currents
-  if (productChecks.isTidalCurrents) {
+  if (isTidalCurrents) {
     return (
       <DataImageWithTidalCurrentsMap
         mainProduct={mainProduct}
@@ -267,12 +326,17 @@ const ProductContent: React.FC = () => {
     );
   }
 
-  // Current meters
-  if (productChecks.isCurrentMeters) {
+  // FishSOOP regional profiles at Au scope: the clickable finder/locator map
+  if (isFishSoopProfiles && regionData.scope === RegionScope.Au) {
+    return <DataImageWithFishSoopMap src={chooseImg()!} date={useDate} />;
+  }
+
+  // Use the store (not the URL) as source of truth — a stale URL deploymentPlot
+  // would otherwise route to the plot view with an empty store value.
+  if (isCurrentMeters) {
     if (
       subProduct?.key === CurrentMetersSubProductsKey.MOORED_INSTRUMENT_ARRAY &&
-      currentMetersParams.deploymentPlot === '' &&
-      !hasSelectedParams.deploymentPlot
+      currentMetersParams.deploymentPlot === ''
     ) {
       return (
         <DataImageWithCurrentMetersMap
@@ -289,7 +353,6 @@ const ProductContent: React.FC = () => {
       />
     );
   }
-
   // Default data image
   return <DataImage src={chooseImg()!} onError={handleError} />;
 };

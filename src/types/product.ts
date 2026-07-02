@@ -8,13 +8,13 @@ export type ProductGroupID =
   | 'oceanColour'
   | 'adjustedSeaLevelAnomaly'
   | 'monthlyMeans'
-  | 'climatology'
   | 'tidalCurrents'
   | 'currentMeters'
   | 'sealCtd'
   | 'sealCtdTags'
   | 'surfaceWaves'
-  | 'swotGsla';
+  | 'swotGsla'
+  | 'fishSOOP';
 
 // Child products (not at root level)
 export type ChildProductID =
@@ -28,6 +28,8 @@ export type ChildProductID =
   | 'sixDaySst-sstAnomaly'
   | 'sixDaySst-centiles'
   | 'sixDaySst-timeseries'
+  | 'sixDaySst-climatology'
+  | 'sixDaySst-climatologyDataCount'
   // Ocean Colour children
   | 'oceanColour-chlA'
   | 'oceanColour-chlAAge'
@@ -40,9 +42,6 @@ export type ChildProductID =
   | 'monthlyMeans-30day'
   | 'monthlyMeans-climatology'
   // | 'monthlyMeans-CLIM_CNESCARS' // This product was removed from the original site
-  // Climatology children
-  | 'climatology-sst'
-  | 'climatology-dataCount'
   // Tidal Currents children
   | 'tidalCurrents-spd'
   | 'tidalCurrents-sl'
@@ -64,7 +63,15 @@ export type ChildProductID =
   | 'sealCtdTags-10days'
   // Surface Waves children
   | 'surfaceWaves-wave' // Main wave conditions view
-  | 'surfaceWaves-buoyTimeseries'; // Buoy time series data
+  | 'surfaceWaves-buoyTimeseries' // Buoy time series data
+  // SWOT GSLA children
+  | 'swotGsla-ssh'
+  | 'swotGsla-mdt'
+  // FishSOOP children
+  | 'fishSOOP-profiles'
+  | 'fishSOOP-quarterlyAnomalies'
+  | 'fishSOOP-averageAnomalies'
+  | 'fishSOOP-depthAnomalies';
 
 // Combined types
 export type RootProductID = StandaloneProductID | ProductGroupID;
@@ -77,13 +84,13 @@ export const productGroupIDs: ProductGroupID[] = [
   'oceanColour',
   'adjustedSeaLevelAnomaly',
   'monthlyMeans',
-  'climatology',
   'tidalCurrents',
   'currentMeters',
   'sealCtd',
   'sealCtdTags',
   'surfaceWaves',
   'swotGsla',
+  'fishSOOP',
 ];
 
 export const childProductIDs: ChildProductID[] = [
@@ -95,6 +102,8 @@ export const childProductIDs: ChildProductID[] = [
   'sixDaySst-sstAnomaly',
   'sixDaySst-centiles',
   'sixDaySst-timeseries',
+  'sixDaySst-climatology',
+  'sixDaySst-climatologyDataCount',
   'oceanColour-chlA',
   'oceanColour-chlAAge',
   'adjustedSeaLevelAnomaly-sla',
@@ -104,8 +113,6 @@ export const childProductIDs: ChildProductID[] = [
   'monthlyMeans-30day',
   'monthlyMeans-climatology',
   // 'monthlyMeans-CLIM_CNESCARS', // This product was removed from the original site
-  'climatology-sst',
-  'climatology-dataCount',
   'tidalCurrents-spd',
   'tidalCurrents-sl',
   'currentMeters-mooredInstrumentArray',
@@ -123,6 +130,12 @@ export const childProductIDs: ChildProductID[] = [
   'sealCtdTags-10days',
   'surfaceWaves-wave',
   'surfaceWaves-buoyTimeseries',
+  'swotGsla-ssh',
+  'swotGsla-mdt',
+  'fishSOOP-profiles',
+  'fishSOOP-quarterlyAnomalies',
+  'fishSOOP-averageAnomalies',
+  'fishSOOP-depthAnomalies',
 ];
 
 export const tidalCurrentsProductIDs = ['tidalCurrents-spd', 'tidalCurrents-sl'] as const;

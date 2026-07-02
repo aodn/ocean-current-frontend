@@ -139,6 +139,64 @@ describe('parseImageTagsFromText', () => {
     expect(result).toEqual(expected);
   });
 
+  it('should parse valid FishSOOP entries', () => {
+    const input = `
+      FishSOOP  100.5  200.3  TasE/2026/20260302
+      FishSOOP  110.0  210.0  NSW/2025/20250101
+    `;
+
+    const expected: ImageTag[] = [
+      { type: 'FishSOOP', coordX: 100.5, coordY: 200.3, region: 'TasE', year: '2026', date: '20260302' },
+      { type: 'FishSOOP', coordX: 110.0, coordY: 210.0, region: 'NSW', year: '2025', date: '20250101' },
+    ];
+
+    const result = parseImageTagsFromText(input);
+    expect(result).toEqual(expected);
+  });
+
+  it('should ignore FishSOOP lines with missing or incomplete region/year/date', () => {
+    const input = `
+      FishSOOP  100.5  200.3
+      FishSOOP  100.5  200.3  TasE
+      FishSOOP  100.5  200.3  TasE/2026
+      FishSOOP  110.0  210.0  NSW/2025/20250101
+    `;
+
+    const expected: ImageTag[] = [
+      { type: 'FishSOOP', coordX: 110.0, coordY: 210.0, region: 'NSW', year: '2025', date: '20250101' },
+    ];
+
+    const result = parseImageTagsFromText(input);
+    expect(result).toEqual(expected);
+  });
+
+  it('should parse valid ANMN entries', () => {
+    const input = `
+      ANMN  300.0  400.0  IMOS-ANMN-NRS
+      ANMN  301.5  401.5  IMOS-ANMN-NSW
+    `;
+
+    const expected: ImageTag[] = [
+      { type: 'ANMN', coordX: 300.0, coordY: 400.0, shipName: 'IMOS-ANMN-NRS' },
+      { type: 'ANMN', coordX: 301.5, coordY: 401.5, shipName: 'IMOS-ANMN-NSW' },
+    ];
+
+    const result = parseImageTagsFromText(input);
+    expect(result).toEqual(expected);
+  });
+
+  it('should ignore ANMN lines with fewer than 4 parts', () => {
+    const input = `
+      ANMN  300.0  400.0
+      ANMN  301.5  401.5  IMOS-ANMN-NSW
+    `;
+
+    const expected: ImageTag[] = [{ type: 'ANMN', coordX: 301.5, coordY: 401.5, shipName: 'IMOS-ANMN-NSW' }];
+
+    const result = parseImageTagsFromText(input);
+    expect(result).toEqual(expected);
+  });
+
   it('should parse mixed Argo and SOOP lines', () => {
     const input = `
       SOOP    477.26928    430.93647   RVInvestigator              NRT

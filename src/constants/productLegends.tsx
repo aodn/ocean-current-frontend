@@ -2,10 +2,10 @@ import React from 'react';
 import { RootProductID } from '@/types/product';
 
 export type LegendItem = {
-  icon: string;
-  label: string;
-  shape: React.ReactNode;
-  description?: string;
+  icon?: string;
+  label?: string;
+  shape?: React.ReactNode;
+  description?: React.ReactNode;
 };
 
 export type ProductLegend = {
@@ -20,7 +20,7 @@ const COMMON_LEGEND_ITEMS = {
   argo: {
     icon: 'circle',
     label: 'Argo',
-    shape: <div className="h-3 w-3 rounded-full border-2 border-imos-bright-magenta bg-white" />,
+    shape: <div className="border-imos-bright-magenta h-3 w-3 rounded-full border-2 bg-white" />,
     description:
       'pink circle at the location of any profile made in the window t0 +/- 12hrs; click on the circle to see the Argo profiles of temperature and salinity.',
   },
@@ -28,11 +28,12 @@ const COMMON_LEGEND_ITEMS = {
     icon: 'circle',
     label: 'Argo',
     shape: <div className="h-3 w-3 rounded-full border-2 border-[#04FFEA] bg-white" />,
+    description: 'Location of any profile measured by an Argo float on the day of analysis',
   },
   fishSoop: {
     icon: 'square',
     label: 'Fish SOOP',
-    shape: <div className="h-3 w-3 border-2 border-imos-bright-magenta bg-white" />,
+    shape: <div className="border-imos-bright-magenta h-3 w-3 border-2 bg-white" />,
     description: 'Fishing Vessel as Ships of Opportunity Program (Fish SOOP).',
   },
   mooring: {
@@ -52,7 +53,7 @@ const COMMON_LEGEND_ITEMS = {
   glider: {
     icon: 'diamond',
     label: 'Glider',
-    shape: <div className="h-3 w-3 rotate-45 bg-imos-bright-magenta" />,
+    shape: <div className="bg-imos-bright-magenta h-3 w-3 rotate-45" />,
     description:
       'Small diamonds indicate 6-hourly glider locations. Pink when the glider is in the 24hr window around t0; click on the diamonds to see the glider profiles.',
   },
@@ -61,11 +62,11 @@ const COMMON_LEGEND_ITEMS = {
     label: 'Radar',
     shape: (
       <div className="flex flex-col">
-        <div className="relative h-0.5 w-3 bg-imos-bright-magenta">
-          <div className="absolute -top-1 right-0 h-2 w-2 rotate-45 border-t-2 border-imos-bright-magenta" />
+        <div className="bg-imos-bright-magenta relative h-0.5 w-3">
+          <div className="border-imos-bright-magenta absolute -top-1 right-0 h-2 w-2 rotate-45 border-t-2" />
         </div>
-        <div className="relative mt-1 h-0.5 w-3 bg-imos-dodger-blue">
-          <div className="absolute -top-[2px] right-0 h-2 w-2 rotate-45 border-r-2 border-imos-dodger-blue" />
+        <div className="bg-imos-dodger-blue relative mt-1 h-0.5 w-3">
+          <div className="border-imos-dodger-blue absolute top-[-2px] right-0 h-2 w-2 rotate-45 border-r-2" />
         </div>
       </div>
     ),
@@ -77,10 +78,23 @@ const COMMON_LEGEND_ITEMS = {
     label: 'Drifter',
     shape: (
       <div className="flex h-3 w-3 items-center justify-center">
-        <div className="h-2.5 w-2.5 -translate-x-[2px] rotate-45 -skew-x-12 -skew-y-12 border-r-2 border-t-2 border-imos-bright-magenta" />
+        <div className="border-imos-bright-magenta h-2.5 w-2.5 translate-x-[-2px] rotate-45 -skew-x-12 -skew-y-12 border-t-2 border-r-2" />
       </div>
     ),
     description: 'Drifter buoy locations showing surface current trajectories.',
+  },
+  adcp: {
+    icon: 'arrow-up',
+    label: 'ADCP velocity',
+    shape: (
+      <div className="flex h-3 w-3 items-center">
+        <div className="bg-imos-dodger-blue relative h-0.5 w-3">
+          <div className="border-imos-dodger-blue absolute -top-[3px] right-0 h-2 w-2 rotate-45 border-t-2 border-r-2" />
+        </div>
+      </div>
+    ),
+    description:
+      'Velocity of the current as measured by moored ADCPs (Acoustic Doppler Current Profilers). The velocity shown is the averaged velocity from the surface to the bottom, and averaged over 25 hours (centred at t0), to remove the effect of tides. Location and velocity are indicated with a blue arrow head.',
   },
 
   // EAC Mooring Array
@@ -92,11 +106,42 @@ const COMMON_LEGEND_ITEMS = {
       'daily cumulative EAC transport from North Stradbroke to the outer EAC mooring, summed from the sea surface to 1500 m depth.',
   },
 
+  // EAC Mooring Array - description only (popup only, no sidebar shape)
+  eacIsobaths: {
+    label: 'Selected isobaths',
+    description: 'grey and cyan contours, in metres.',
+  },
+  eacAdjustedSeaLevel: {
+    label: 'Adjusted Sea Level (ASL=ASLA plus Mean Dynamic Topography)',
+    description: 'white contours every 0.1 m.',
+  },
+  eacGeostrophicVelocity: {
+    label: 'Geostrophic velocity',
+    description:
+      'black arrows, where length indicates both speed and distance something would travel over a 12hr or 24hr period (as indicated) at this velocity. Derived from ASL.',
+  },
+  eacAslLatency: {
+    description: 'The latest ASL (NRT00) map is usually dated 4 days behind real time, as indicated.',
+  },
+
+  // SWOT - description only (popup only, no sidebar shape)
+  swotSeaSurfaceHeight: {
+    label: 'Sea Surface Height',
+    description: 'contours every 5 cm.',
+  },
+
   // Seal CTD
   ctdProfile: {
     icon: 'dive-point',
-    label: 'Seal CTD',
-    shape: <div className="h-3 w-3 rounded-full border-2 border-imos-bright-magenta bg-white" />,
+    label: 'Animal-borne CTD',
+    shape: <div className="border-imos-bright-magenta h-3 w-3 rounded-full border-2 bg-white" />,
+    description: (
+      <>
+        Location of any profile measured by an animal-borne CTD (instrument that measures <strong>C</strong>onductivity,{' '}
+        <strong>T</strong>emperature, and <strong>D</strong>epth) on the day of analysis. The trailing white line
+        indicates presence of more than one profile measured by the instrument on the same day.
+      </>
+    ),
   },
 } as const;
 
@@ -108,6 +153,32 @@ const SST_MAP_LEGENDS: LegendItem[] = [
   COMMON_LEGEND_ITEMS.ship,
   COMMON_LEGEND_ITEMS.fishSoop,
   COMMON_LEGEND_ITEMS.mooring,
+];
+
+// Sidebar shows items with a shape; the popup also shows the description-only
+// isobaths and Sea Surface Height entries.
+const SWOT_LEGENDS: LegendItem[] = [
+  COMMON_LEGEND_ITEMS.argo,
+  COMMON_LEGEND_ITEMS.glider,
+  {
+    ...COMMON_LEGEND_ITEMS.radar,
+    description:
+      'The average velocity using all available hourly radar velocities from the IMOS radar facility within a specified time window around t0. Eg (3-12h avg) indicates a minimum of 3 hourly radar velocity estimates are required within a 12 hour window. Blue (red) vectors are plotted over waters warmer (cooler) than the mean value in the color bar axis.',
+  },
+  {
+    ...COMMON_LEGEND_ITEMS.drifter,
+    description:
+      '6 hourly Global Drifter Program surface drifter (drogued at 15m on deployment) within a window of -2 to +1 day around t0. Location and velocity are indicated with pink arrow heads.',
+  },
+  {
+    ...COMMON_LEGEND_ITEMS.ship,
+    description:
+      'Underway water temperature, plotted hourly, from ships with hull-mounted intake. These include the RV Investigator (MNF), RV Solander and RV Cape Ferguson (AIMS), and the Spirit of Tasmania 2, Sea Flyte and Stadacona from (IMOS Ships of Opportunity Facility). Data within t0 +/- 1day is indicated with a small black dot at the ship location and a black circle indicates the measurement occurred within 12 hours of t0.',
+  },
+  COMMON_LEGEND_ITEMS.adcp,
+  COMMON_LEGEND_ITEMS.fishSoop,
+  COMMON_LEGEND_ITEMS.eacIsobaths,
+  COMMON_LEGEND_ITEMS.swotSeaSurfaceHeight,
 ];
 
 export const productLegends: ProductLegend[] = [
@@ -135,15 +206,19 @@ export const productLegends: ProductLegend[] = [
     },
   },
   {
+    id: 'swotGsla',
+    items: null,
+    childrenLegends: {
+      'swotGsla-ssh': [...SWOT_LEGENDS],
+      'swotGsla-mdt': [...SWOT_LEGENDS],
+    },
+  },
+  {
     id: 'surfaceWaves',
     items: null,
   },
   {
     id: 'monthlyMeans',
-    items: null,
-  },
-  {
-    id: 'climatology',
     items: null,
   },
   {
@@ -175,28 +250,10 @@ export const productLegends: ProductLegend[] = [
       COMMON_LEGEND_ITEMS.ship,
       COMMON_LEGEND_ITEMS.mooring,
       COMMON_LEGEND_ITEMS.eacCumulativeTransport,
+      COMMON_LEGEND_ITEMS.eacIsobaths,
+      COMMON_LEGEND_ITEMS.eacAdjustedSeaLevel,
+      COMMON_LEGEND_ITEMS.eacGeostrophicVelocity,
+      COMMON_LEGEND_ITEMS.eacAslLatency,
     ],
   },
 ];
-
-/**
- * Get legend items for a specific product and optionally a child product
- * @param productKey - The main product key
- * @param childKey - Optional child product key
- * @returns Array of legend items or null if not found
- */
-export const getProductLegend = (productKey: RootProductID, childKey?: string): LegendItem[] | null => {
-  const productLegend = productLegends.find((legend) => legend.id === productKey);
-
-  if (!productLegend) {
-    return null;
-  }
-
-  // If child key is provided and has special legend, return that
-  if (childKey && productLegend.childrenLegends && childKey in productLegend.childrenLegends) {
-    return productLegend.childrenLegends[childKey];
-  }
-
-  // Otherwise return parent product's legend items
-  return productLegend.items;
-};

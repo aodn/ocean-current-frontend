@@ -11,6 +11,9 @@ import { DateFormat } from '@/types/date';
 import { getTidalCurrentsTagsData } from '@/services/tidalCurrents';
 import { useResizeObserver } from '@/hooks';
 import { sharedQueryConfig } from '@/configs/query';
+import useProductStore, { setIsProductImageLoading } from '@/stores/product-store/productStore';
+import { LinearProgress } from '@/components/Shared';
+import { cn } from '@/utils/classname-util/cn';
 import { useTidalCurrentPoint } from '../product-content/hooks/useTidalCurrentPoint';
 
 type DataImageWithTidalCurrentsMapProps = {
@@ -30,9 +33,12 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
 }) => {
   const [_, setSearchParams] = useSearchParams();
   const imgRef = useRef<HTMLImageElement | null>(null);
-  const [imgLoadError, setImgLoadError] = useState<string | null>(null);
+  const [imgErrorSrc, setImgErrorSrc] = useState<string | null>(null);
+  const imgLoadError = imgErrorSrc === src;
   const [areas, setAreas] = useState<MapImageAreas[]>();
   const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId);
+  const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
+  const renderedSrc = useRef('');
 
   const { data: apiTagData = [] } = useQuery({
     queryKey: ['tidalCurrentsTags', date.format(DateFormat.MINUTE), productId, region],
@@ -44,10 +50,6 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   });
 
   const tagData = region === 'Aust' ? regionArr : apiTagData;
-
-  useEffect(() => {
-    setImgLoadError(null);
-  }, [src]);
 
   const handleImageLoad = useCallback(async (tagData: MapImageAreas[] | Record<string, string | number[]>[]) => {
     if (!imgRef.current) return;
@@ -94,45 +96,64 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
     }
   };
 
+  // Ensure product image loading state is false, when date update but src remains the same. As the cached image will not trigger onLoad again.
+  useEffect(() => {
+    if (renderedSrc.current === src) {
+      setIsProductImageLoading(false);
+    }
+  }, [src, date]);
+
   if (!src || imgLoadError) {
     return <ErrorImage productId={mainProduct!.key} date={dayjs(date)} />;
   }
 
   return (
     <div className="relative inline-block h-full w-full bg-white">
-      <img
-        ref={imgRef}
-        src={src}
-        alt={`${productId} data`}
-        useMap="#tidal-currents-map"
-        className="max-h-[80vh] select-none object-contain"
-        onLoad={() => !isTidalCurrentsPointSelected && handleImageLoad(tagData)}
-        onError={() => {
-          setImgLoadError('Image not available');
-        }}
-      />
-      <map name="tidal-currents-map">
-        {!isTidalCurrentsPointSelected &&
-          areas?.map((area, index) => (
-            <area
-              key={index}
-              className="cursor-pointer"
-              shape={area.shape}
-              coords={area.coords.join(',')}
-              alt={area.alt}
-              onClick={() => handleAreaClick(area)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleAreaClick(area);
-                }
-              }}
-              tabIndex={0}
-              title={area.name}
-              role="link"
-            />
-          ))}
-      </map>
+      {isProductImageLoading ? (
+        <LinearProgress className="absolute left-0 right-0 top-0" />
+      ) : (
+        <div className="h-1 w-full" />
+      )}
+      <div className={cn('relative inline-block h-full w-full bg-white')}>
+        <img
+          ref={imgRef}
+          src={src}
+          alt={`${productId} data`}
+          useMap="#tidal-currents-map"
+          className="max-h-[80vh] select-none object-contain"
+          onLoad={() => {
+            if (!isTidalCurrentsPointSelected) handleImageLoad(tagData);
+            renderedSrc.current = src;
+            setIsProductImageLoading(false);
+          }}
+          onError={() => {
+            setImgErrorSrc(src);
+            setIsProductImageLoading(false);
+          }}
+        />
+        <map name="tidal-currents-map">
+          {!isTidalCurrentsPointSelected &&
+            areas?.map((area, index) => (
+              <area
+                key={index}
+                className="cursor-pointer"
+                shape={area.shape}
+                coords={area.coords.join(',')}
+                alt={area.alt}
+                onClick={() => handleAreaClick(area)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleAreaClick(area);
+                  }
+                }}
+                tabIndex={0}
+                title={area.name}
+                role="link"
+              />
+            ))}
+        </map>
+      </div>
     </div>
   );
 };

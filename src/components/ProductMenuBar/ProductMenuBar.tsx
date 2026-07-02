@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import dayjs from 'dayjs';
 import { useSearchParams } from 'react-router';
 import { useDateList, useQueryParams, useArgoProductValidQueryParams } from '@/hooks';
 import { Dropdown, Button, ShareButton } from '@/components/Shared';
@@ -10,8 +11,9 @@ import useCurrentMetersStore, {
   resetCurrentMetersStore,
   setCurrentMetersDate,
 } from '@/stores/current-meters-store/currentMeters';
-import useProductStore from '@/stores/product-store/productStore';
+import useProductStore, { setIsProductImageLoading } from '@/stores/product-store/productStore';
 import useProductDateFormat from '@/stores/product-store/hooks/useProductDateFormat';
+import { DateFormat } from '@/types/date';
 import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { CurrentMetersSubProductsKey } from '@/constants/currentMeters';
 import useArgoStore from '@/stores/argo-store/argoStore';
@@ -35,7 +37,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
   const argoProfileCycles = useArgoStore((state) => state.argoProfileCycles);
 
   const { date: currentMetersDate, property, depth, region, deploymentPlot } = useCurrentMetersStore();
-  const [_, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const {
     isArgo,
     isCurrentMeters,
@@ -44,6 +46,10 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     isTidalCurrents,
     isSealCtd,
     isSealCtdTags,
+    isSwotGslaMdt,
+    isFishSoop,
+    isFishSoopAnomaly,
+    isFishSoopAverageAnomalies,
   } = useProductCheck();
   const { isArgoValid } = useArgoProductValidQueryParams();
   const productId = useProductStore((state) => state.productParams.productId);
@@ -66,6 +72,8 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
     productId === 'monthlyMeans-climatology' ||
     productId === 'fourHourSst-sstAge' ||
     productId === 'sixDaySst-timeseries' ||
+    isSwotGslaMdt ||
+    isFishSoop ||
     showMap ||
     !shouldRenderProductContent;
 
@@ -73,13 +81,11 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
 
   const { isLoading: isProductDateListLoading, dateList } = useDateList({ productId, mode });
   const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId);
+  const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
+  const isImageLoading = isProductImageLoading && shouldRenderProductContent;
 
   const handleToggleVideo = () => {
     setShowVideo(!showVideo);
-  };
-
-  const exitVideo = () => {
-    setShowVideo(false);
   };
 
   const handleToggleMap = () => {
@@ -90,43 +96,58 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
   };
 
   const handleReset = () => {
-    exitVideo();
     if (isCurrentMeters) {
       resetCurrentMetersStore();
       return updateQueryParamsAndNavigate(`current-meters/${defaultCurrentMetersSubProduct}`, initialState);
     }
 
     const latestDate = dateList?.[dateList.length - 1]?.date;
-
     if (isClimatology) {
-      const currentMonth = new Date().getMonth() + 1;
+      const currentMonth = dayjs().month() + 1;
       const climatologyDate =
         dateList.find((dateItem) => {
-          const dateMonth = new Date(dateItem.date).getMonth() + 1;
+          const parsedMonth = dayjs(dateItem.date, DateFormat.MONTH_ONLY, true);
+          if (!parsedMonth.isValid()) return false;
+          const dateMonth = parsedMonth.month() + 1;
           return dateMonth === currentMonth;
         })?.date || latestDate;
 
+      if (climatologyDate && climatologyDate !== searchParams.get('date')) setIsProductImageLoading(true);
       return updateQueryParams({ date: climatologyDate });
     }
 
     if (isArgo) {
       if (isArgoValid) {
         const latestArgoProfileCycle = argoProfileCycles.find((cycle) => cycle.date === latestDate)?.cycle;
-        if (latestArgoProfileCycle !== undefined)
+        if (latestArgoProfileCycle !== undefined) {
+          if (latestDate !== searchParams.get('date')) setIsProductImageLoading(true);
           updateQueryParams({ cycle: latestArgoProfileCycle, date: latestDate });
+        }
         return;
       }
 
-      return updateQueryParams({ date: latestArgoLocationsData?.regionLatestDates[0].latestDate });
+      const latestArgoDate = latestArgoLocationsData?.regionLatestDates[0].latestDate;
+      if (latestArgoDate && latestArgoDate !== searchParams.get('date')) setIsProductImageLoading(true);
+      return updateQueryParams({ date: latestArgoDate });
     }
 
     if (isTidalCurrentsPointSelected) {
-      return updateQueryParams({ date: dateList.at(-1)?.date ?? toYYYYMM(new Date()) });
+      const tidalCurrentsDate = dateList.at(-1)?.date ?? toYYYYMM(new Date());
+      if (tidalCurrentsDate && tidalCurrentsDate !== searchParams.get('date')) {
+        setIsProductImageLoading(true);
+      }
+      return updateQueryParams({ date: tidalCurrentsDate });
+    }
+    if (latestDate && latestDate !== searchParams.get('date')) {
+      setIsProductImageLoading(true);
     }
     updateQueryParams({ date: latestDate });
   };
 
   const handleCurrentMetersDateChange = (id: string) => {
+    if (id !== currentMetersDate) {
+      setIsProductImageLoading(true);
+    }
     setCurrentMetersDate(id as string);
     setSearchParams({ property, depth, region, deploymentPlot, date: id });
   };
@@ -148,57 +169,69 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
 
   return (
     <div className="mb-2 w-full bg-white p-2 md:rounded-md md:bg-transparent md:p-0">
-      <div className="my-2 flex h-11 items-center justify-center md:hidden">
+      <div
+        className={`my-2 h-11 items-center justify-center md:hidden ${isFishSoopAverageAnomalies ? 'hidden' : 'flex'}`}
+      >
         <Button
           onClick={handleToggleMap}
           borderRadius="extraSmall"
-          className={`flex-center h-full w-full border-imos-calypso-blue/50 !px-2 ${showMap ? '' : 'bg-white'}`}
+          className={`flex-center border-imos-calypso-blue/50 h-full w-full px-2! ${showMap ? '' : 'bg-white'}`}
           aria-label="Toggle region selection"
         >
-          <MapIcon color="imos-deep-blue" size="sm" className="flex-shrink-0" />
+          <MapIcon color="imos-deep-blue" size="sm" className="shrink-0" />
           <p className={`ml-2 text-base font-medium ${showMap ? 'text-imos-blue' : 'text-imos-dark-grey'}`}>
             {ProductMenubarText.SELECT_REGION}
           </p>
         </Button>
       </div>
-      <div className="flex w-full flex-wrap items-center gap-2 font-sans font-medium text-imos-dark-grey md:mb-2 md:gap-3">
-        <div className="flex h-11 grow basis-[calc(100%-4rem)] items-center justify-between rounded-md border border-imos-calypso-blue/50 bg-white md:grow md:basis-auto md:border-none">
-          {isCurrentMeters ? (
-            <Dropdown
-              toggleBorder={false}
-              menuShadow
-              elements={
-                productId === CurrentMetersSubProductsKey.MOORED_INSTRUMENT_ARRAY && !deploymentPlot
-                  ? currentMeterSYearOptionsData
-                  : [currentMeterSYearOptionsData[0]]
-              }
-              selectedId={currentMetersDate as string}
-              onChange={(elem) => handleCurrentMetersDateChange(elem.id)}
-            />
-          ) : (
-            <DatePagination productId={productId} dateFormat={dateFormat} mode={mode} />
-          )}
-        </div>
+      <div className="font-open-sans text-imos-dark-grey flex w-full flex-wrap items-center gap-2 font-medium md:mb-2 md:gap-3">
+        {!isSwotGslaMdt && !isFishSoopAnomaly && !isFishSoopAverageAnomalies && (
+          <>
+            <div className="border-imos-calypso-blue/50 flex h-11 grow basis-[calc(100%-4rem)] items-center justify-between rounded-md border bg-white md:grow md:basis-auto md:border-none">
+              {isCurrentMeters ? (
+                <Dropdown
+                  toggleBorder={false}
+                  menuShadow
+                  elements={
+                    productId === CurrentMetersSubProductsKey.MOORED_INSTRUMENT_ARRAY && !deploymentPlot
+                      ? currentMeterSYearOptionsData
+                      : [currentMeterSYearOptionsData[0]]
+                  }
+                  selectedId={currentMetersDate as string}
+                  onChange={(elem) => handleCurrentMetersDateChange(elem.id)}
+                />
+              ) : (
+                <DatePagination
+                  productId={productId}
+                  dateFormat={dateFormat}
+                  mode={mode}
+                  showVideo={showVideo}
+                  isImageLoading={isImageLoading}
+                />
+              )}
+            </div>
 
-        <Button
-          data-testid="date-reset-button"
-          onClick={handleReset}
-          className="flex-center h-11 w-12 shrink-0 rounded-md border-imos-calypso-blue/50 bg-white !p-3 md:border-none md:!p-4"
-          aria-label="Reset to latest date"
-          disabled={resetBtnDisabled}
-          borderRadius="extraSmall"
-        >
-          <ResetIcon color="imos-deep-blue" size="lg" />
-        </Button>
-        <div className="order-1 box-border h-11 flex-1 rounded-md border-none md:order-none md:flex-initial md:grow">
+            <Button
+              dataTestId="date-reset-button"
+              onClick={handleReset}
+              className="flex-center border-imos-calypso-blue/50 h-11 w-12 shrink-0 rounded-md bg-white p-3! md:border-none md:p-4!"
+              aria-label="Reset to latest date"
+              disabled={resetBtnDisabled || showVideo || isImageLoading}
+              borderRadius="extraSmall"
+            >
+              <ResetIcon color="imos-deep-blue" size="lg" />
+            </Button>
+          </>
+        )}
+        <div className="order-1 box-border h-11 flex-1 rounded-md border-none md:order-0 md:flex-initial md:grow">
           <Button
             onClick={handleToggleVideo}
             disabled={shouldDisableOption}
             borderRadius="extraSmall"
-            className={`flex-center h-full w-full border-none !px-2 md:p-3 md:px-5 ${showVideo ? '' : 'bg-white'}`}
+            className={`flex-center h-full w-full border-none px-2! md:p-3 md:px-5 ${showVideo ? '' : 'bg-white'}`}
             aria-label="Toggle video"
           >
-            <VideoIcon color="imos-deep-blue" size="xl" className="flex-shrink-0" />
+            <VideoIcon color="imos-deep-blue" size="xl" className="shrink-0" />
             <p
               className={`ml-2 text-sm md:ml-3 md:w-20 md:text-base ${showVideo ? 'text-imos-blue' : 'text-imos-deep-blue md:text-imos-dark-grey'}`}
             >
@@ -210,11 +243,11 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
           </Button>
         </div>
 
-        <div className="order-2 box-border h-11 flex-1 rounded-md border-none px-1 md:order-none md:flex-initial md:grow">
+        <div className="order-2 box-border h-11 flex-1 rounded-md border-none px-1 md:order-0 md:flex-initial md:grow">
           <VideoCreation disabled={shouldDisableOption} />
         </div>
 
-        <div className="order-3 box-border h-11 flex-1 rounded-md border-none md:order-none md:flex-initial md:grow">
+        <div className="order-3 box-border h-11 flex-1 rounded-md border-none md:order-0 md:flex-initial md:grow">
           <ShareButton />
         </div>
       </div>

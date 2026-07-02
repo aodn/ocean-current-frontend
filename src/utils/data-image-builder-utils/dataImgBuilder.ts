@@ -85,7 +85,6 @@ const formatDateByProductId = (productId: ProductID, date: string, regionScope: 
       ? product.dateFormat.localFormat
       : product.dateFormat.stateFormat
     : DateFormat.DAY;
-
   return dayjs(date).format(dateFormat || DateFormat.DAY);
 };
 
@@ -97,7 +96,6 @@ const buildDefaultFallbackImageUrl = (
   isProxyRequired: boolean = false,
 ): string => {
   const product = findLeafFlatProductById(productId);
-
   if (!product) {
     throw new Error(`Product with id ${productId} not found`);
   }
@@ -336,6 +334,31 @@ const buildSealCtdTagsDataImageUrl = (sealTagId: string, date: Dayjs, productId:
   return `${imageUrlConfig.imageBaseUrl}/AATAMS/SATTAGS/${sealTagId}/${filename()}.gif`;
 };
 
+/**
+ * FishSOOP Au-scope finder/locator map. Built directly because the `maps/`
+ * folder is deliberately not indexed (navigation aid, not data).
+ */
+const buildFishSoopFinderImageUrl = (date: Dayjs): string => {
+  const year = date.format(DateFormat.YEAR_ONLY);
+  return `${imageUrlConfig.imageBaseUrl}/fishsoop/maps/${year}/${date.format(DateFormat.DAY)}.gif`;
+};
+
+/** FishSOOP daily regional profile plot (all 18 region folders, including `Au`). */
+const buildFishSoopProfileImageUrl = (regionCode: string, date: Dayjs): string => {
+  const year = date.format(DateFormat.YEAR_ONLY);
+  return `${imageUrlConfig.imageBaseUrl}/fishsoop/${regionCode}/${year}/${date.format(DateFormat.DAY)}.gif`;
+};
+
+/**
+ * FishSOOP anomaly image, resolved from the API image list: the frontend parses
+ * the raw `tanom_…` filenames and maps the sidebar selection back to the exact
+ * list entry (same approach as tidalCurrents/oceanColour).
+ */
+const buildFishSoopAnomalyImageUrl = (entry: { path: string; name: string }): string => {
+  const path = entry.path.startsWith('/') ? entry.path : `/${entry.path}`;
+  return `${imageUrlConfig.imageBaseUrl}${path}/${entry.name}`;
+};
+
 const buildOceanColourImageUrl = (
   regionCode: string,
   formattedDate: string,
@@ -373,6 +396,15 @@ const buildStaticImageUrl = (
   },
 ): string => {
   switch (true) {
+    case productId === 'swotGsla-mdt': {
+      const baseUrl = options?.isProxyRequired ? apiConfig.ec2ProxyURL : imageUrlConfig.imageBaseUrl;
+      const mdtRegion = regionCode ?? 'Au';
+      return `${baseUrl}/DR_SWOT/MDTCMEMS/${mdtRegion}/${mdtRegion}.gif`;
+    }
+    case productId === 'fishSOOP-profiles':
+      return regionScope === RegionScope.Au
+        ? buildFishSoopFinderImageUrl(date)
+        : buildFishSoopProfileImageUrl(regionCode ?? 'Au', date);
     case productId === 'sixDaySst-timeseries':
       return buildSSTTimeseriesImageUrl(regionPath);
     case productId === 'EACMooringArray':
@@ -417,5 +449,8 @@ export {
   buildSealCtdGraphImageUrl,
   buildSealCtdTagsDataImageUrl,
   buildSurfaceWavesBuoyTimeseriesImageUrl,
+  buildFishSoopFinderImageUrl,
+  buildFishSoopProfileImageUrl,
+  buildFishSoopAnomalyImageUrl,
   buildStaticImageUrl,
 };

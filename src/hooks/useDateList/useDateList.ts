@@ -7,10 +7,11 @@ import { fetchImageListByProductIdAndRegion, fetchTidalCurrentsMonthPlotsByPoint
 import { ImageFile, ImageListResponse } from '@/types/imageList';
 import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
 import { ArgoProfileCycle } from '@/types/argo';
-import { DateItem, OceanColourDateItem } from '@/types/date';
+import { DateFormat, DateItem } from '@/types/date';
 import useProductStore from '@/stores/product-store/productStore';
 import useArgoStore from '@/stores/argo-store/argoStore';
 import { buildStaticImageUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
+import { FISHSOOP_FINDER_START_DATE } from '@/constants/fishSoop';
 import { RegionScope } from '@/constants/region';
 import { sharedQueryConfig } from '@/configs/query';
 import { useRegionLatestDates } from '@/services/hooks';
@@ -77,30 +78,20 @@ const processFilesToDateList = (files: ImageFile[], cb: (filename: string) => st
   return files.map((file) => ({ date: cb(file.name) })).filter(({ date }) => /^\d+$/.test(date));
 };
 
-const processOceanColourFilesToDateList = (imageGroups: ImageListResponse[]): OceanColourDateItem[] => {
+// Some products (ocean colour, FishSOOP profiles) group their files into year
+// folders, so the response holds multiple pre-sorted groups whose merged order
+// is not chronological. Flatten them into one ascending, de-duplicated list.
+const processGroupedFilesToDateList = (imageGroups: ImageListResponse[]): DateItem[] => {
   if (!imageGroups || imageGroups.length === 0) {
     return [];
   }
 
-  const dateList: OceanColourDateItem[] = [];
-
-  // Process all groups (both with and without year folders)
-  imageGroups.forEach((group) => {
-    if (group.files && group.files.length > 0) {
-      group.files.forEach((file) => {
-        const date = extractDateFromFilename(file.name);
-        if (/^\d+$/.test(date)) {
-          dateList.push({ date, path: group.path });
-        }
-      });
-    }
-  });
-
-  const uniqueDateList = dateList
+  return imageGroups
+    .flatMap((group) => group.files ?? [])
+    .map((file) => ({ date: extractDateFromFilename(file.name) }))
+    .filter(({ date }) => /^\d+$/.test(date))
     .sort((a, b) => a.date.localeCompare(b.date))
     .filter((item, index, array) => index === 0 || item.date !== array[index - 1].date);
-
-  return uniqueDateList;
 };
 
 const shouldUseSealCtdProcessor = (productId: ProductID, files: ImageFile[]): boolean => {
@@ -129,6 +120,10 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
 
   const { isArgoValid } = useArgoProductValidQueryParams();
   const isArgo = productId === 'argo';
+  // Au-scope FishSOOP profiles show the daily finder map, which navigates a
+  // fixed date range ('range' mode) instead of an indexed image list (maps/ is
+  // not indexed).
+  const isFishSoopFinder = productId === 'fishSOOP-profiles' && regionScope === RegionScope.Au;
 
   // In free mode, disable all queries
   const argoQuery = useQuery({
@@ -141,7 +136,8 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
   const standardQuery = useQuery({
     queryKey: ['dateList', productId, region],
     queryFn: () => fetchImageListByProductIdAndRegion(productId, region!),
-    enabled: !isRangeMode && shouldUseApi && !isArgo && Boolean(region) && !isTidalCurrentsPointSelected,
+    enabled:
+      !isRangeMode && shouldUseApi && !isArgo && !isFishSoopFinder && Boolean(region) && !isTidalCurrentsPointSelected,
     ...sharedQueryConfig,
   });
 
@@ -220,8 +216,11 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
 
     // Special case: For Argo in range mode, use latestArgoLocationsData or fallback to yesterday
     const endDate = isArgo ? getArgoEndDate() : new Date();
+    const startDate = isFishSoopFinder
+      ? dayjs(FISHSOOP_FINDER_START_DATE, DateFormat.DAY, true).toDate()
+      : defaultStartDate;
 
-    dateRange = { startDate: defaultStartDate, endDate };
+    dateRange = { startDate, endDate };
     return { isLoading: false, dateList: [], error: null, dateRange };
   }
 
@@ -229,10 +228,10 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
     if (isArgo) {
       dateList = processArgoDateList(data as ArgoProfileCycle[]);
     } else {
-      // Special case for ocean colour products that may have year folders
-      if (productId === 'oceanColour-chlA') {
-        // Process all groups to capture both regular and year-based files
-        dateList = processOceanColourFilesToDateList(data as ImageListResponse[]);
+      // Products whose files sit in year folders arrive as multiple groups and
+      // need flattening and re-sorting across groups
+      if (productId === 'oceanColour-chlA' || productId === 'fishSOOP-profiles') {
+        dateList = processGroupedFilesToDateList(data as ImageListResponse[]);
       } else {
         /**
          * products comes here:
@@ -273,7 +272,13 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
   const getLoadingState = () => {
     if (isArgo) return argoQuery.isLoading || isLatestArgoLocationsDataLoading;
     if (isTidalCurrentsPointSelected) return tidalCurrentsPointQuery.isLoading;
-    if (shouldUseApi) return standardQuery.isLoading;
+    // The finder date list is a fixed static range — nothing is fetched.
+    if (isFishSoopFinder) return false;
+    // isPending covers both "actively fetching" and "query disabled/idle with no data yet"
+    // (e.g. when the region hasn't been set in the store yet). Using isLoading alone would
+    // return false while the query is disabled, causing the synthetic fallback date list
+    // (generateDateRange) to be incorrectly treated as resolved real data and written to the URL.
+    if (shouldUseApi) return standardQuery.isPending;
     return monthlyMeansMockQuery.isLoading;
   };
 

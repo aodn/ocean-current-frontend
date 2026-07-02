@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { Button, Dropdown } from '@/components/Shared';
 import useCurrentMetersStore, {
@@ -26,6 +26,7 @@ import {
 import { SubProduct } from '@/types/product';
 import { getDeploymentPlotsBySubProduct } from '@/components/Map/utils/mapUtils';
 import { currentMetersMapDataPointsFlat } from '@/data/current-meter/mapDataPoints';
+import omitEmptyParams from '@/hooks/useQueryParams/omitEmptyParams';
 
 interface CurrentMetersFiltersProp {
   subProduct: SubProduct | null;
@@ -52,16 +53,7 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
   const subProductKey = subProduct?.key;
   const isMooredInstrumentArraySubProduct = subProductKey === CurrentMetersSubProductsKey.MOORED_INSTRUMENT_ARRAY;
   const allTimeOption = currentMeterSYearOptionsData[0].id;
-
-  const stdParams = useMemo(() => {
-    return {
-      depth,
-      property,
-      region,
-      date,
-      deploymentPlot,
-    };
-  }, [date, deploymentPlot, depth, property, region]);
+  const prevSubProductKeyRef = useRef(subProductKey);
 
   // update deployment plots list and default option when switching sub products
   useEffect(() => {
@@ -70,16 +62,47 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
     const plotsList = getDeploymentPlotsBySubProduct(subProductKey);
     setDeploymentPlotOptions(plotsList);
 
-    if (!plotsList.some((plot) => plot.id === deploymentPlot)) {
-      if (!isMooredInstrumentArraySubProduct) {
-        setDeploymentPlot(plotsList[0].id);
-        setSearchParams({ ...stdParams, deploymentPlot: plotsList[0].id });
-      } else {
-        setDeploymentPlot('');
-        setSearchParams({ ...stdParams, deploymentPlot: '' });
-      }
+    // MIA's plot list aggregates every sub-product's plots, so a Shelf plot
+    // carried over in the URL still passes `plotsList.some(...)`. Detect the
+    // sub-product transition explicitly and force the overview state. Skip on
+    // the first run where prev is undefined to preserve MIA deeplinks.
+    const justSwitchedToMooredInstrumentArray =
+      isMooredInstrumentArraySubProduct &&
+      prevSubProductKeyRef.current !== undefined &&
+      prevSubProductKeyRef.current !== subProductKey;
+    prevSubProductKeyRef.current = subProductKey;
+
+    if (justSwitchedToMooredInstrumentArray) {
+      setDeploymentPlot('');
+      setSearchParams(omitEmptyParams({ depth, property, region, date }), { replace: true });
+      return;
     }
-  }, [deploymentPlot, isMooredInstrumentArraySubProduct, setSearchParams, stdParams, subProductKey]);
+
+    const isPlotValid = isMooredInstrumentArraySubProduct
+      ? deploymentPlot === '' || plotsList.some((plot) => plot.id === deploymentPlot)
+      : plotsList.some((plot) => plot.id === deploymentPlot);
+
+    if (isPlotValid) return;
+
+    if (!isMooredInstrumentArraySubProduct) {
+      setDeploymentPlot(plotsList[0].id);
+      setSearchParams(omitEmptyParams({ depth, property, region, date, deploymentPlot: plotsList[0].id }), {
+        replace: true,
+      });
+    } else {
+      setDeploymentPlot('');
+      setSearchParams(omitEmptyParams({ depth, property, region, date }), { replace: true });
+    }
+  }, [
+    deploymentPlot,
+    isMooredInstrumentArraySubProduct,
+    setSearchParams,
+    depth,
+    property,
+    region,
+    date,
+    subProductKey,
+  ]);
 
   // update store based on params
   useEffect(() => {
@@ -120,7 +143,7 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
   const handleRegionChange = (id: string) => {
     setRegion(id as CurrentMetersRegion);
     setDeploymentPlot('');
-    setSearchParams({ ...stdParams, region: id, deploymentPlot: '' });
+    setSearchParams(omitEmptyParams({ depth, property, region: id, date }));
   };
 
   const handleDeploymentPlotChange = (id: string) => {
@@ -143,27 +166,29 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
     }
 
     setDeploymentPlot(id as CurrentMetersDeploymentPlotNames);
-    setSearchParams({
-      region: correctRegion,
-      deploymentPlot: id,
-      date: allTimeOption,
-      property: CurrentMetersProperty.vrms,
-      depth: CurrentMetersDepth.ONE,
-    });
+    setSearchParams(
+      omitEmptyParams({
+        region: correctRegion,
+        deploymentPlot: id,
+        date: allTimeOption,
+        property: CurrentMetersProperty.vrms,
+        depth: CurrentMetersDepth.ONE,
+      }),
+    );
   };
 
   const handleDepthChange = (id: string) => {
     setDepth(id as CurrentMetersDepth);
-    setSearchParams({ ...stdParams, depth: id });
+    setSearchParams(omitEmptyParams({ depth: id, property, region, date, deploymentPlot }));
   };
 
   const handlePropertyChange = (id: string) => {
     setProperty(id as CurrentMetersProperty);
-    setSearchParams({ ...stdParams, property: id });
+    setSearchParams(omitEmptyParams({ depth, property: id, region, date, deploymentPlot }));
   };
 
   return (
-    <div className="text-base text-imos-dark-grey [&>*:last-child]:border-b-0 [&>*]:border-b-1 [&>*]:border-imos-light-blue [&>*]:px-4 [&>*]:pb-4">
+    <div className="text-imos-dark-grey *:border-imos-light-blue text-base *:border-b-1 *:px-4 *:pb-4 [&>*:last-child]:border-b-0">
       <FilterSection title={ProductSidebarText.REGION}>
         <Dropdown
           elements={regionsOptions}
@@ -194,7 +219,7 @@ const CurrentMetersFilters: React.FC<CurrentMetersFiltersProp> = ({ subProduct }
       {!deploymentPlot && (
         <div>
           <h3 className="ml-3 py-2">{ProductSidebarText.PROPERTY}</h3>
-          <div className="mb-6 mt-2 flex flex-wrap justify-between gap-2">
+          <div className="mt-2 mb-6 flex flex-wrap justify-between gap-2">
             {propertyOptions.map(({ title, id }, index) => (
               <div key={id} className={index === propertyOptions.length - 1 ? 'w-auto' : 'flex-1'}>
                 <Button

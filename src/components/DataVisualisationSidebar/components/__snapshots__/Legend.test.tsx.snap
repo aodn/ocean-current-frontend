@@ -1,0 +1,39 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Legend > matches snapshot 1`] = `
+<div>
+  <div
+    class="pb-4"
+  >
+    <div
+      class="mt-2 mb-6 grid grid-cols-2 gap-x-1 gap-y-4 px-3"
+    >
+      <div
+        class="flex items-center"
+      >
+        <div
+          class="mr-3 flex shrink-0 items-center justify-center"
+        >
+          <div
+            data-testid="argo-shape"
+          />
+        </div>
+        <span
+          class="text-imos-dark-grey"
+        >
+          Argo
+        </span>
+      </div>
+    </div>
+    <button
+      class="relative flex items-center justify-center px-4 py-1 text-lg whitespace-nowrap md:px-8 w-full bg-transparent text-imos-calypso-blue shadow-sm border border-imos-calypso-blue/50 enabled:active:opacity-80 md:enabled:hover:opacity-80 rounded-lg transition duration-300 ease-in-out "
+    >
+      <span
+        class="text-imos-dark-grey"
+      >
+        Click for more information
+      </span>
+    </button>
+  </div>
+</div>
+`;

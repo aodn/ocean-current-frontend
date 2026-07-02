@@ -54,7 +54,7 @@ const VideoCreation: React.FC<VideoCreationUIProps> = ({
   } = videoCreationProps;
 
   const customInput = (date: Date): JSX.Element => (
-    <div className="flex w-48 cursor-pointer items-center justify-between rounded border-2 border-imos-calypso-blue/50 bg-white p-2 px-3">
+    <div className="border-imos-calypso-blue/50 flex w-48 cursor-pointer items-center justify-between rounded-sm border-2 bg-white p-2 px-3">
       <p>{dayjs(date).format('MMM DD, YYYY')}</p>
       <CalendarIcon color="imos-deep-blue" size="sm" />
     </div>
@@ -80,7 +80,7 @@ const VideoCreation: React.FC<VideoCreationUIProps> = ({
         className={`flex h-full items-center justify-between rounded-md bg-white md:p-3 ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
       >
         <DownloadIcon color="imos-deep-blue" size="lg" />
-        <p className="ml-1 text-sm font-medium text-imos-deep-blue md:ml-2 md:text-base md:text-imos-dark-grey">
+        <p className="text-imos-deep-blue md:text-imos-dark-grey ml-1 text-sm font-medium md:ml-2 md:text-base">
           {ProductMenubarText.DOWNLOAD}
         </p>
         <ArrowIcon
@@ -88,7 +88,7 @@ const VideoCreation: React.FC<VideoCreationUIProps> = ({
         />
       </div>
       {showGifOptions && (
-        <div className="absolute right-0 z-50 mr-4 mt-5 w-11/12 rounded-md bg-white p-4 md:mt-3 md:w-[27%]">
+        <div className="absolute right-0 z-50 mt-5 mr-4 w-11/12 rounded-md bg-white p-4 md:mt-3 md:w-[27%]">
           <div className="mb-4 flex items-center justify-between">
             <div></div>
             <p className="font-semibold">{ProductMenubarText.CUSTOMISE_GIF}</p>
@@ -102,7 +102,7 @@ const VideoCreation: React.FC<VideoCreationUIProps> = ({
             />
           </div>
 
-          <div className="rounded bg-[#E5EEF5] p-2">
+          <div className="rounded-sm bg-[#E5EEF5] p-2">
             <div className="mb-2 flex items-center justify-between">
               <p className="text-imos-calypso-blue">{GeneralText.START_DATE}</p>
               <ReactDatePicker
@@ -134,7 +134,7 @@ const VideoCreation: React.FC<VideoCreationUIProps> = ({
                 type="number"
                 value={gifWidth}
                 onChange={(e) => handleDimensionChange(e, 'width')}
-                className="w-48 rounded border-2 border-imos-calypso-blue/50 bg-white p-2 px-3"
+                className="border-imos-calypso-blue/50 w-48 rounded-sm border-2 bg-white p-2 px-3"
                 min="1"
                 max={2000}
               />
@@ -146,7 +146,7 @@ const VideoCreation: React.FC<VideoCreationUIProps> = ({
                 type="number"
                 value={gifHeight}
                 onChange={(e) => handleDimensionChange(e, 'height')}
-                className="w-48 rounded border-2 border-imos-calypso-blue/50 bg-white p-2 px-3"
+                className="border-imos-calypso-blue/50 w-48 rounded-sm border-2 bg-white p-2 px-3"
                 min="1"
                 max={2000}
               />
@@ -156,7 +156,7 @@ const VideoCreation: React.FC<VideoCreationUIProps> = ({
           {isLoading && (
             <div data-testid="progressbar" className="my-4 h-2 w-full rounded-full bg-gray-200">
               <div
-                className="h-full rounded-full bg-imos-sea-blue transition-all duration-300 ease-in-out"
+                className="bg-imos-sea-blue h-full rounded-full transition-all duration-300 ease-in-out"
                 style={{ width: `${progress}%` }}
               ></div>
             </div>

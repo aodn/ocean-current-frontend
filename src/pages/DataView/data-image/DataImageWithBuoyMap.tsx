@@ -7,6 +7,9 @@ import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import useBuoyTags from '@/services/hooks/useBuoyTags';
 import { useResizeObserver } from '@/hooks';
+import useProductStore, { setIsProductImageLoading } from '@/stores/product-store/productStore';
+import { LinearProgress } from '@/components/Shared';
+import { cn } from '@/utils/classname-util/cn';
 
 const buildBuoyTimeseriesImagePath = (buoyLocation: string, date: Dayjs): string => {
   const formattedDate = date.format('YYYYMMDDHH');
@@ -24,14 +27,17 @@ const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, produc
   const dateFormatted = dayjs(date).format('YYYYMMDD');
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [coords, setCoords] = useState<BuoyTagMapArea[]>([]);
-  const [imgLoadError, setImgLoadError] = useState<string | null>(null);
+  const [imgErrorSrc, setImgErrorSrc] = useState<string | null>(null);
+  const imgLoadError = imgErrorSrc === src;
   const { mainProduct } = useProductConvert();
   const { data } = useBuoyTags(date);
   const navigate = useNavigate();
+  const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
 
   const alt = `${productId} data at ${dateFormatted}`;
 
   const handleLoad = useCallback(() => {
+    setIsProductImageLoading(false);
     if (!imgRef.current || !data) return;
 
     const { naturalWidth, naturalHeight, width, height } = imgRef.current;
@@ -59,10 +65,6 @@ const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, produc
   }, [data, date]);
 
   useResizeObserver('window', handleLoad);
-
-  useEffect(() => {
-    setImgLoadError(null);
-  }, [src]);
 
   useEffect(() => {
     const imageElement = imgRef.current;
@@ -98,29 +100,37 @@ const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, produc
 
   return (
     <div className="relative inline-block h-full w-full bg-white">
-      <img
-        ref={imgRef}
-        src={src}
-        alt={alt}
-        useMap="#buoy-tag-map"
-        className="max-h-[80vh] select-none object-contain"
-        onError={() => {
-          setImgLoadError('Image not available');
-        }}
-      />
-      <map name="buoy-tag-map">
-        {coords.map((area) => (
-          <area
-            key={`${area.title}-${area.href}`}
-            shape={area.shape}
-            coords={area.coords.join(',')}
-            alt={area.alt || `${area.title} buoy`}
-            onClick={(e) => handleCircleClick(e, area)}
-            href={area.href}
-            className="cursor-pointer"
-          />
-        ))}
-      </map>
+      {isProductImageLoading ? (
+        <LinearProgress className="absolute left-0 right-0 top-0" />
+      ) : (
+        <div className="h-1 w-full" />
+      )}
+      <div className={cn('relative inline-block h-full w-full')}>
+        <img
+          ref={imgRef}
+          src={src}
+          alt={alt}
+          useMap="#buoy-tag-map"
+          className="max-h-[80vh] select-none object-contain"
+          onError={() => {
+            setIsProductImageLoading(false);
+            setImgErrorSrc(src);
+          }}
+        />
+        <map name="buoy-tag-map">
+          {coords.map((area) => (
+            <area
+              key={`${area.title}-${area.href}`}
+              shape={area.shape}
+              coords={area.coords.join(',')}
+              alt={area.alt || `${area.title} buoy`}
+              onClick={(e) => handleCircleClick(e, area)}
+              href={area.href}
+              className="cursor-pointer"
+            />
+          ))}
+        </map>
+      </div>
     </div>
   );
 };

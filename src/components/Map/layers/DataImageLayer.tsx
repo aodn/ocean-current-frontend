@@ -8,7 +8,7 @@ import { ProductID } from '@/types/product';
 const productsWithNoImage: ProductID[] = [
   'argo',
   'monthlyMeans-30day',
-  'climatology-sst',
+  'sixDaySst-climatology',
   'EACMooringArray',
   'currentMeters-mooredInstrumentArray',
   'tidalCurrents-spd',

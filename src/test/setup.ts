@@ -3,6 +3,8 @@ import { cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import 'vitest-canvas-mock';
 
+window.scrollTo = vi.fn();
+
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: vi.fn((query: string) => ({

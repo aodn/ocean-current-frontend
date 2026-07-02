@@ -19,4 +19,6 @@ export interface DropdownProps<T> {
   toggleBorder?: boolean;
   menuBorder?: boolean;
   menuShadow?: boolean;
+  /** Wider menu item inset, for the product list (forwarded to MenuList's `widePadding`). */
+  widePaddingMenu?: boolean;
 }

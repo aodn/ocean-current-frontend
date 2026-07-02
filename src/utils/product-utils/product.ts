@@ -1,5 +1,6 @@
 import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
 import { OC_PRODUCTS } from '@/constants/product';
+import { productLegends, LegendItem } from '@/constants/productLegends';
 import { flattenedProducts, flattenedLeafProducts } from '@/data/productData';
 import {
   AnyProductID,
@@ -210,6 +211,27 @@ const getTargetProductIdAfterRouting = (rootProductId: RootProductID): ProductID
   return mainProduct.key as ProductID;
 };
 
+/**
+ * Get legend items for a specific product and optionally a child product
+ * @param productKey - The main product key
+ * @param childKey - Optional child product key
+ * @returns Array of legend items, or null when the product is not found or
+ *          its (parent or child) legend is explicitly null
+ */
+const getProductLegend = (productKey: RootProductID, childKey?: ProductID): LegendItem[] | null => {
+  const productLegend = productLegends.find((legend) => legend.id === productKey);
+
+  if (!productLegend) {
+    return null;
+  }
+
+  if (childKey && productLegend.childrenLegends && childKey in productLegend.childrenLegends) {
+    return productLegend.childrenLegends[childKey];
+  }
+
+  return productLegend.items;
+};
+
 export {
   combineProducts,
   combinedProducts,
@@ -225,4 +247,5 @@ export {
   getProductFullPathById,
   getProductPathWithSubProduct,
   getTargetProductIdAfterRouting,
+  getProductLegend,
 };

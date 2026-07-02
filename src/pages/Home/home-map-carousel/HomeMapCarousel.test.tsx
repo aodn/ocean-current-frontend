@@ -3,6 +3,7 @@ import { vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { setProductId } from '@/stores/product-store/productStore';
 import useMapStore from '@/stores/map-store/mapStore';
+import BasicMap from '@/components/Map/BasicMap';
 import HomeMapCarousel from './HomeMapCarousel';
 import { productsData } from './data';
 
@@ -137,5 +138,14 @@ describe('HomeMapCarousel', () => {
 
     const mapComponent = screen.getByText('BasicMap');
     expect(mapComponent).toBeInTheDocument();
+  });
+
+  it('passes disableRegionAutoFit to BasicMap to preserve map view across product changes', () => {
+    render(<HomeMapCarousel />);
+
+    expect(vi.mocked(BasicMap)).toHaveBeenCalledWith(
+      expect.objectContaining({ disableRegionAutoFit: true }),
+      expect.anything(),
+    );
   });
 });

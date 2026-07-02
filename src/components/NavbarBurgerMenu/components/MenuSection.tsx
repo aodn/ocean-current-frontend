@@ -42,7 +42,7 @@ export const MenuSection = ({ item, isLastItem, isOpen, onToggle, onLinkClick, i
         )}
       >
         {hasLinks && item.links && (
-          <div className="my-[1px]">
+          <div className="my-px">
             {item.links.map((link) => (
               <MenuItem key={link.id} link={link} isActive={isLinkActive(link.url)} onClick={onLinkClick} />
             ))}

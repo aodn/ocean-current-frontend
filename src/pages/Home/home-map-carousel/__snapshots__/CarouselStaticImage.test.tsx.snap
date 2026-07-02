@@ -9,7 +9,7 @@ exports[`CarouselStaticImage > matches snapshot 1`] = `
   >
     <img
       alt="SealCTD"
-      class="h-full w-full rounded-t-xl border-x border-t border-solid border-imos-calypso-blue border-opacity-60 object-contain"
+      class="border-imos-calypso-blue/60 h-full w-full rounded-t-xl border-x border-t border-solid object-contain"
       src="https://example.com/image.gif"
     />
   </a>

@@ -71,7 +71,8 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
 
       if (id === 'EACMooringArray') {
         queryToUpdate = {
-          date: convertedDate,
+          region: 'Brisbane',
+          date: '20220725', // TODO: hardcoded data for EAC Mooring Array
           property: null,
           depth: null,
           point: null,
@@ -80,6 +81,15 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
       } else if (id === 'currentMeters') {
         const { region, property, depth, date } = currentMetersInitialState;
         queryToUpdate = { date, region, property, depth };
+      } else if (id === 'sealCtd') {
+        queryToUpdate = {
+          region: 'POLAR',
+          date: '20240522', // TODO: hardcoded date for seal CTD tags
+          property: null,
+          depth: null,
+          deploymentPlot: null,
+          point: null,
+        };
       } else if (!isProductAvailableInRegion) {
         queryToUpdate = {
           date: convertedDate,
@@ -144,6 +154,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
     <Dropdown
       showIcons
       header
+      widePaddingMenu
       elements={dropdownElements}
       selectedId={(mainProductKey === 'sealCtdTags' ? 'sealCtd' : mainProductKey) as RootProductID}
       onChange={handleDropdownChange}

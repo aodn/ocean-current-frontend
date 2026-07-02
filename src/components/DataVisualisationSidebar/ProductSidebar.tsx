@@ -1,11 +1,18 @@
 import React, { useMemo } from 'react';
+import { useSearchParams } from 'react-router';
 import { Loading } from '@/components/Shared';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { ProductSidebarText } from '@/constants/textConstant';
 import useDateStore from '@/stores/date-store/dateStore';
 import { useMultipleRegionLatestDates } from '@/services/hooks';
 import { setProductId } from '@/stores/product-store/productStore';
-import { setCurrentMetersDate, setDepth, setProperty, setRegion } from '@/stores/current-meters-store/currentMeters';
+import {
+  setCurrentMetersDate,
+  setDepth,
+  setDeploymentPlot,
+  setProperty,
+  setRegion,
+} from '@/stores/current-meters-store/currentMeters';
 import {
   CurrentMetersDepth,
   CurrentMetersProperty,
@@ -17,26 +24,41 @@ import { ProductID } from '@/types/product';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
 import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 import { useQueryParams } from '@/hooks';
-import { findLeafFlatProductById } from '@/utils/product-utils/product';
+import { findLeafFlatProductById, getProductLegend } from '@/utils/product-utils/product';
+import { isProductAvailableInRegion } from '@/utils/region-utils/region';
 import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
-import { getProductLegend } from '@/constants/productLegends';
 import Legend from './components/Legend';
 import MiniMap from './components/MiniMap';
 import ProductDropdown from './components/ProductDropdown';
 import CurrentMetersFilters from './components/CurrentMetersFilters';
+import FishSoopFilters from './components/FishSoopFilters';
 import { dataSources, getProductInfoByKey } from './utils';
+import WmoSection from './components/WmoSection';
 import ArgoFilters from './components/ArgoFilters';
 import ProductSummary from './components/ProductSummary';
 import SubProductOptions from './components/SubProductOptions';
 import DataSources from './components/DataSources';
 import CollapsibleSection from './components/CollapsibleSection';
 
+// Sub-products that must be disabled in the sidebar when the currently selected
+// region is not in their region-availability list. Add more ChildProductIDs here
+// to extend region-gating to other sub-products.
+const REGION_GATED_SUB_PRODUCTS: ProductID[] = [
+  'sixDaySst-timeseries',
+  'adjustedSeaLevelAnomaly-sla',
+  'adjustedSeaLevelAnomaly-centiles',
+  'adjustedSeaLevelAnomaly-sst',
+  'adjustedSeaLevelAnomaly-nonTidalSla',
+];
+
 const ProductSideBar: React.FC = () => {
+  const [searchParams] = useSearchParams();
   const { mainProduct, subProduct, subProducts } = useProductConvert();
   const { updateQueryParamsAndNavigate, getQueryParamsByKey } = useQueryParams();
   const useDate = useDateStore((state) => state.date);
-  const { isArgo, isCurrentMeters, isSealCtd } = useProductCheck();
-  const shouldRenderMiniMap = useShowProductOverMap();
+  const { isArgo, isCurrentMeters, isSealCtd, isSurfaceWaves, isFishSoop, isFishSoopAverageAnomalies } =
+    useProductCheck();
+  const shouldRenderMiniMap = useShowProductOverMap() && !isFishSoopAverageAnomalies;
 
   const mooredInstrumentArrayPath = useMemo(() => {
     return (
@@ -53,11 +75,28 @@ const ProductSideBar: React.FC = () => {
   const isLatestDatesRegionLoading = latestDatesRegionQueries.some((q) => q.isLoading);
 
   const subProductOptionButtonDisable = useMemo(() => {
-    if (isSealCtd) {
-      return isLatestDatesRegionLoading;
-    }
+    if (isSealCtd) return isLatestDatesRegionLoading;
     return false;
-  }, [isLatestDatesRegionLoading, isSealCtd]);
+  }, [isSealCtd, isLatestDatesRegionLoading]);
+
+  const subProductDisabledKeys = useMemo<ProductID[]>(() => {
+    const region = searchParams.get('region');
+    const disabledKeys: ProductID[] = [];
+
+    if (isSurfaceWaves && (!region || region === 'Au')) {
+      disabledKeys.push('surfaceWaves-buoyTimeseries');
+    }
+
+    if (region) {
+      REGION_GATED_SUB_PRODUCTS.forEach((key) => {
+        if (subProducts.some((s) => s.key === key) && !isProductAvailableInRegion(key, region)) {
+          disabledKeys.push(key);
+        }
+      });
+    }
+
+    return disabledKeys;
+  }, [isSurfaceWaves, searchParams, subProducts]);
 
   if (!mainProduct) {
     return <Loading />;
@@ -91,6 +130,27 @@ const ProductSideBar: React.FC = () => {
       };
     }
 
+    // Switching to moored-instrument-array means returning to the region
+    // overview, so any plot carried over from another sub-product would
+    // point at a deployment that does not exist here and would fail to load.
+    if (isCurrentMeters && subProductPath === mooredInstrumentArrayPath) {
+      setDeploymentPlot('');
+      updateParam = { deploymentPlot: null };
+    }
+
+    // Drop params that don't apply to the target FishSOOP sub-product: profiles
+    // is date-driven; the region-based anomaly products have no date axis; the
+    // average overview has neither date nor region/quarter/layer (page only).
+    if (isFishSoop) {
+      if (key === 'fishSOOP-profiles') {
+        updateParam = { quarter: null, layer: null, page: null };
+      } else if (key === 'fishSOOP-averageAnomalies') {
+        updateParam = { date: null, quarter: null, layer: null, region: null };
+      } else {
+        updateParam = { date: null, page: null };
+      }
+    }
+
     if (isSealCtd) {
       const currentRegion = getQueryParamsByKey('region');
       const targetLatestDate = latestDatesRegionData
@@ -112,7 +172,7 @@ const ProductSideBar: React.FC = () => {
       </div>
       <div className="hidden md:block">{shouldRenderMiniMap && <MiniMap />}</div>
 
-      <div className="[&>*:last-child]:border-b-0 [&>*]:border-b-1 [&>*]:border-imos-light-blue">
+      <div className="*:border-imos-light-blue *:border-b-1 [&>*:last-child]:border-b-0">
         {productInfo && <ProductSummary productInfo={productInfo} />}
 
         {subProduct && subProducts.length > 0 && (
@@ -122,6 +182,7 @@ const ProductSideBar: React.FC = () => {
               subProductKey={subProduct?.key}
               handleSubProductChange={handleSubProductChange}
               disabled={subProductOptionButtonDisable}
+              disabledKeys={subProductDisabledKeys}
             />
           </CollapsibleSection>
         )}
@@ -133,6 +194,12 @@ const ProductSideBar: React.FC = () => {
         )}
 
         {isArgo && (
+          <CollapsibleSection title={ProductSidebarText.WMO}>
+            <WmoSection />
+          </CollapsibleSection>
+        )}
+
+        {isArgo && (
           <CollapsibleSection title={ProductSidebarText.ARGO_PROFILES}>
             <ArgoFilters />
           </CollapsibleSection>
@@ -140,9 +207,11 @@ const ProductSideBar: React.FC = () => {
 
         {isCurrentMeters && <CurrentMetersFilters subProduct={subProduct} />}
 
+        {isFishSoop && <FishSoopFilters subProduct={subProduct} />}
+
         {productLegendItems && productLegendItems.length > 0 && (
           <CollapsibleSection title={ProductSidebarText.LEGEND}>
-            <Legend legendItems={productLegendItems} />
+            <Legend legendItems={productLegendItems} title={productInfo?.title ?? mainProduct.title} />
           </CollapsibleSection>
         )}
       </div>

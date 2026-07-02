@@ -4,7 +4,9 @@ import { UrlType } from '@/types/router';
 const useUrlType = (): UrlType => {
   const location = useLocation();
   const firstSegment = location.pathname.split('/').filter(Boolean)[0];
-  return firstSegment === 'map' ? 'map' : 'product';
+  if (firstSegment === 'map') return 'map';
+  if (firstSegment === 'about') return 'about';
+  return 'product';
 };
 
 export default useUrlType;

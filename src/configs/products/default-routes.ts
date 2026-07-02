@@ -12,11 +12,11 @@ export const DEFAULT_SUB_PRODUCT_ROUTES: Record<ProductGroupID, string> = {
   oceanColour: 'chl-a',
   adjustedSeaLevelAnomaly: 'sla',
   monthlyMeans: '30-day',
-  climatology: 'sst',
   tidalCurrents: 'speed',
   currentMeters: 'moored-instrument-array',
   sealCtd: 'tracks',
   sealCtdTags: 'timeseries',
   surfaceWaves: 'wave',
   swotGsla: 'ssh',
+  fishSOOP: 'regional-profiles',
 };

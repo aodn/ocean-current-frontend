@@ -19,11 +19,8 @@ const Navbar = ({ className }: { className?: string }) => {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
   const handleScroll = () => {
-    if (window.scrollY > 0) {
-      setIsScrolled(true);
-    } else {
-      setIsScrolled(false);
-    }
+    if (document.body.style.position === 'fixed') return;
+    setIsScrolled(window.scrollY > 0);
   };
 
   useEffect(() => {
@@ -63,14 +60,14 @@ const Navbar = ({ className }: { className?: string }) => {
             />
           </LinkOrAnchor>
           <div className="mx-3 h-10 w-0.5 bg-imos-title-blue opacity-50 lg:mx-7 lg:h-12" aria-hidden="true"></div>
-          <div className="flex flex-col justify-center text-base font-light text-imos-title-blue lg:text-xl">
+          <div className="flex flex-col justify-center font-poppins text-base font-light text-imos-title-blue lg:text-xl">
             <Link className="mr-auto" to={'/'}>
               {BrandingText.OC_PASCAL_CASE}
             </Link>
           </div>
         </div>
 
-        <div className="flex items-center justify-center capitalize text-black max-md:flex-wrap">
+        <div className="flex items-center justify-center text-black max-md:flex-wrap">
           <div
             onMouseLeave={() => closeNavbarMenu()}
             className="relative flex justify-between gap-3 self-start text-base font-semibold leading-snug text-imos-nav-text max-md:max-w-full max-md:flex-wrap md:gap-8 lg:gap-12 xl:gap-20"

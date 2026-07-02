@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+# Only run on branch checkouts (not file checkouts)
+[ "$3" = "1" ] || exit 0
+
+SCRIPT="$(dirname "$0")/../scripts/setup-worktree.sh"
+MAIN_REPO="$(git rev-parse --show-toplevel)"
+
+git worktree list --porcelain | awk '/^worktree /{print $2}' | while read -r wt; do
+  [ "$wt" = "$MAIN_REPO" ] && continue
+  sh "$SCRIPT" "$wt"
+done

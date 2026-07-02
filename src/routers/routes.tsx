@@ -1,18 +1,11 @@
 import { Navigate, type RouteObject } from 'react-router';
-import { Home, MapView, DataView, NotFound } from '@/pages';
-import MainLayout from '@/layouts/MainLayout';
-import MapLayout from '@/layouts/MapLayout';
-import DataVisualisationLayout from '@/layouts/DataVisualisationLayout';
-import { createProductRedirects } from './utils';
+import { Home, MapView, DataView, ErrorPage, AboutView, InfoView, News } from '@/pages';
+import { MainLayout, MapLayout, DataVisualisationLayout, ArticleLayout, NewsLayout } from '@/layouts';
+import { createProductRedirects, NewsPhpRedirect } from './utils';
+import { APP_ROUTES } from './appRoutes';
 
-export const APP_ROUTES = {
-  HOME: '/',
-  PRODUCT: '/product',
-  MAP: '/map',
-  NOT_FOUND: '/404',
-} as const;
-
-export type AppRoute = (typeof APP_ROUTES)[keyof typeof APP_ROUTES];
+export { APP_ROUTES };
+export type { AppRoute } from './appRoutes';
 
 const routes: RouteObject[] = [
   {
@@ -61,16 +54,61 @@ const routes: RouteObject[] = [
           },
         ],
       },
+      {
+        path: APP_ROUTES.ABOUT,
+        element: <ArticleLayout />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to={APP_ROUTES.NOT_FOUND} replace />,
+          },
+          {
+            path: ':product/:subProduct',
+            element: <AboutView />,
+          },
+          {
+            path: ':product',
+            element: <AboutView />,
+          },
+        ],
+      },
+      {
+        path: APP_ROUTES.INFO,
+        element: <ArticleLayout />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to={APP_ROUTES.NOT_FOUND} replace />,
+          },
+          {
+            path: ':slug',
+            element: <InfoView />,
+          },
+        ],
+      },
+      {
+        path: APP_ROUTES.NEWS,
+        element: <NewsLayout />,
+        children: [
+          {
+            index: true,
+            element: <News />,
+          },
+        ],
+      },
     ],
   },
-
+  {
+    path: '/news.php',
+    element: <NewsPhpRedirect />,
+  },
   {
     path: APP_ROUTES.NOT_FOUND,
-    element: <NotFound />,
+    element: <ErrorPage />,
   },
   {
     path: '*',
-    element: <NotFound />,
+    element: <ErrorPage />,
   },
 ];
 

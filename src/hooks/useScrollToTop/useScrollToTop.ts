@@ -2,9 +2,11 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router';
 
 const useScrollToTop = () => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
+    if (hash) return;
+
     try {
       window.scroll({
         top: 0,
@@ -14,7 +16,7 @@ const useScrollToTop = () => {
     } catch {
       window.scrollTo(0, 0);
     }
-  }, [pathname]);
+  }, [pathname, hash]);
 };
 
 export default useScrollToTop;

@@ -1,4 +1,4 @@
-import useProductPathFromUrl from './useGetProductFromUrl/useProductPathFromUrl';
+import useProductPathFromUrl from './useProductPathFromUrl/useProductPathFromUrl';
 import useProductSearchParam from './useProductSearchParam/useProductSearchParam';
 import useQueryParams from './useQueryParams/useQueryParams';
 import useOutsideClick from './useOutSideClick/useOutsideClick';
@@ -6,6 +6,7 @@ import useScrollToTop from './useScrollToTop/useScrollToTop';
 import useVideoCreation from './useVideoCreation/useVideoCreation';
 import useUrlType from './useUrlType/useUrlType';
 import useSetProductId from './useSetProductId/useSetProductId';
+import useIsProductFromUrlKnown from './useIsProductFromUrlKnown/useIsProductFromUrlKnown';
 import useDateList from './useDateList/useDateList';
 import { useResizeObserver } from './useResizeObserver/useResizeObserver';
 import { useCurrentPage } from './useCurrentPage/useCurrentPage';
@@ -25,6 +26,7 @@ export {
   useVideoCreation,
   useUrlType,
   useSetProductId,
+  useIsProductFromUrlKnown,
   useDateList,
   useArgoProductValidQueryParams,
   useResizeObserver,

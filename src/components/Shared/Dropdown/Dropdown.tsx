@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useOutsideClick } from '@/hooks';
 import { ArrowIcon } from '@/components/Shared/Icons';
 import { cn } from '@/utils/classname-util/cn';
+import MenuList from '../MenuList/MenuList';
 import { DropdownElement, DropdownProps } from './types/dropdown.types';
 
 const Dropdown = <T,>({
@@ -15,6 +16,7 @@ const Dropdown = <T,>({
   toggleBorder = true,
   menuBorder = false,
   menuShadow = true,
+  widePaddingMenu = false,
 }: DropdownProps<T>): JSX.Element => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [selectedElement, setSelectedElement] = useState<DropdownElement<T> | null>(null);
@@ -81,11 +83,11 @@ const Dropdown = <T,>({
         onClick={toggleDropdown}
         aria-hidden="true"
         className={cn(
-          'flex h-full items-center justify-between text-imos-dark-grey shadow',
+          'text-imos-dark-grey flex h-full items-center justify-between shadow-sm',
           header
-            ? 'rounded-t-lg bg-imos-deeper-blue px-3 py-2 text-lg md:px-4 md:py-3'
+            ? 'bg-imos-deeper-blue rounded-t-lg px-3 py-2 text-lg md:px-4 md:py-3'
             : 'rounded-md bg-white px-3 py-1 text-base md:px-4 md:py-2',
-          toggleBorder && !header && 'border border-imos-calypso-blue/50',
+          toggleBorder && !header && 'border-imos-calypso-blue/50 border',
           smallDropdown ? 'min-w-28' : 'min-w-56',
           processingItemId ? 'cursor-not-allowed opacity-75' : 'cursor-pointer',
         )}
@@ -109,65 +111,21 @@ const Dropdown = <T,>({
       {isDropdownOpen && elementsWithLoading.length > 0 && (
         <div
           className={cn(
-            'absolute z-40 w-full overflow-hidden bg-white',
-            menuShadow ? 'shadow-[0_2px_4px_0_rgba(97,97,97,0.25)]' : '',
+            'absolute z-40 w-full overflow-hidden',
+            menuShadow ? 'shadow-menu' : '',
             header ? 'rounded-b-lg border border-gray-600 md:border-none' : 'mt-1 rounded-lg',
             menuBorder ? 'border border-gray-600' : '',
           )}
-          data-testid="drop-down-menu"
         >
           <div className={cn(!header && 'max-h-60 overflow-y-auto')}>
-            {elementsWithLoading.map((element) => {
-              const { id, isLoading, Icon, disabled, label } = element;
-              return (
-                <div
-                  key={String(id)}
-                  aria-hidden="true"
-                  className={`${!showIcons ? 'justify-center' : ''} m-1 flex cursor-pointer items-center rounded p-3 duration-300 ${
-                    id === selectedElement?.id ? 'bg-imos-deep-blue' : 'hover:bg-imos-hover-blue hover:bg-opacity-20'
-                  } ${disabled || isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
-                  onClick={(e) => {
-                    if (disabled || isLoading) {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      return;
-                    }
-                    handleOnClick(element);
-                  }}
-                >
-                  {showIcons && Icon && (
-                    <Icon className="mr-4" size="xl" color={id === selectedElement?.id ? 'imos-white' : 'imos-grey'} />
-                  )}
-                  <span
-                    className={`flex items-center text-left text-base ${id === selectedElement?.id ? 'text-white' : 'text-imos-dark-grey'}`}
-                  >
-                    {label}
-                    {isLoading && (
-                      <svg
-                        className="ml-2 h-4 w-4 animate-spin text-blue-500"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                      </svg>
-                    )}
-                  </span>
-                </div>
-              );
-            })}
+            <MenuList
+              elements={elementsWithLoading}
+              selectedId={selectedElement?.id}
+              showIcons={showIcons}
+              onItemClick={handleOnClick}
+              testId="dropdown-menu"
+              widePadding={widePaddingMenu}
+            />
           </div>
         </div>
       )}

@@ -1,7 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Map, { MapMouseEvent, MapRef, ViewStateChangeEvent, StyleSpecification } from 'react-map-gl/mapbox';
 import type { Map as MapboxMap } from 'mapbox-gl';
-import { initialMobileMapViewState, mapConfig, MAP_LIMIT_BOUNDS } from '@/configs/map';
+import {
+  initialMobileMapViewState,
+  mapConfig,
+  MAP_LIMIT_BOUNDS,
+  MAP_MAX_ZOOM,
+  MAP_MINIMAP_MAX_ZOOM,
+} from '@/configs/map';
 import useMapStore, { setMapViewState, patchMapViewState, updateZoom } from '@/stores/map-store/mapStore';
 import { mapboxInstanceIds, mapboxLayerIds } from '@/constants/mapboxId';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
@@ -29,8 +35,10 @@ const BasicMap: React.FC<BasicMapProps> = ({
   mapWrapperRef,
   onMoveStart,
   onContainerResize,
+  disableRegionAutoFit = false,
 }) => {
   const [cursor, setCursor] = useState<string>('grab');
+  const [isStyleLoaded, setIsStyleLoaded] = useState(false);
   const [cursorLngLat, setCursorLngLat] = useState<{
     lng: number;
     lat: number;
@@ -64,7 +72,11 @@ const BasicMap: React.FC<BasicMapProps> = ({
   useResizeObserver((mapWrapperRef as React.RefObject<HTMLDivElement>) || null, handleMapResize);
 
   useEffect(() => {
+    if (isMiniMap) return;
     resetCurrentMetersStore();
+  }, [isMiniMap]);
+
+  useEffect(() => {
     if (isMobile) {
       patchMapViewState(initialMobileMapViewState.mapViewState);
     }
@@ -92,10 +104,10 @@ const BasicMap: React.FC<BasicMapProps> = ({
       currentMetersDeploymentPlotsLayer: (
         <CurrentMetersDeploymentPlotsLayer isMiniMap={isMiniMap} subProduct={subProduct} />
       ),
-      regionPolygonLayer: <RegionPolygonLayer isMiniMap={isMiniMap} />,
+      regionPolygonLayer: <RegionPolygonLayer isMiniMap={isMiniMap} disableRegionAutoFit={disableRegionAutoFit} />,
       argoAsProductLayer: <ArgoAsProductLayer isMiniMap={isMiniMap} isArgo={isArgo} />,
     }),
-    [isMiniMap, isArgo, subProduct],
+    [isMiniMap, isArgo, subProduct, disableRegionAutoFit],
   );
 
   const applyViewLimits = useCallback(
@@ -117,6 +129,10 @@ const BasicMap: React.FC<BasicMapProps> = ({
     },
     [isArgo, isMiniMap],
   );
+
+  const handleLoad = useCallback(() => {
+    setIsStyleLoaded(true);
+  }, []);
 
   const handleRender = useCallback(() => {
     if (hasAppliedViewLimitsRef.current) return;
@@ -147,6 +163,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
       bearing={0}
       pitch={0}
       cursor={cursor}
+      onLoad={handleLoad}
       onRender={handleRender}
       onMoveStart={onMoveStart}
       onMove={handleMove}
@@ -162,6 +179,8 @@ const BasicMap: React.FC<BasicMapProps> = ({
       dragRotate={false}
       touchPitch={false}
       pitchWithRotate={false}
+      maxZoom={isMiniMap ? MAP_MINIMAP_MAX_ZOOM : MAP_MAX_ZOOM}
+      cooperativeGestures={isMobile && !isMiniMap}
     >
       {children}
       {navigationControl && <CustomNavigationControl position="top-right" />}
@@ -171,10 +190,10 @@ const BasicMap: React.FC<BasicMapProps> = ({
       {/* Control to handle actions after map animations complete */}
       <MapAnimationCompleteHandler />
 
-      {memoizedLayers.dataImageLayer}
-      {!isArgo && memoizedLayers.regionPolygonLayer}
-      {shouldShowArgoLayer && memoizedLayers.argoAsProductLayer}
-      {isCurrentMeters && memoizedLayers.currentMetersDeploymentPlotsLayer}
+      {isStyleLoaded && memoizedLayers.dataImageLayer}
+      {isStyleLoaded && !isArgo && memoizedLayers.regionPolygonLayer}
+      {isStyleLoaded && shouldShowArgoLayer && memoizedLayers.argoAsProductLayer}
+      {isStyleLoaded && isCurrentMeters && memoizedLayers.currentMetersDeploymentPlotsLayer}
     </Map>
   );
 };

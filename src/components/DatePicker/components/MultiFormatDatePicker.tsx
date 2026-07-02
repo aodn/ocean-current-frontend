@@ -22,7 +22,7 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
   startDate,
   endDate,
 }) => {
-  const { isMonthFormat, isMonthOnlyFormat, isYearFormat, isHourFormat, isMinuteFormat } =
+  const { isMonthFormat, isMonthOnlyFormat, isYearFormat, isHourFormat, isMinuteFormat, isSecondFormat } =
     getDateFormatFlags(dateFormat);
 
   const { availableDatesSet, firstDate, lastDate } = useMemo(() => {
@@ -61,7 +61,7 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
     (date: Date | null) => {
       if (isDisabled) return;
 
-      if (date && (isHourFormat || isMinuteFormat)) {
+      if (date && (isHourFormat || isMinuteFormat || isSecondFormat)) {
         const selectedDay = dayjs(date).format(DateFormat.DAY);
 
         const firstDateTime = findFirstDateTimeForSelectedDay(
@@ -76,7 +76,7 @@ const MultiFormatDatePicker: React.FC<MultiFormatDatePickerProps> = ({
       }
       onChange(date);
     },
-    [isDisabled, isHourFormat, isMinuteFormat, dateList, dateFormat, onChange],
+    [isDisabled, isHourFormat, isMinuteFormat, isSecondFormat, dateList, dateFormat, onChange],
   );
 
   const datePickerProps = useMemo(() => {

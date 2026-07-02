@@ -2,10 +2,10 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { getProductByPath } from '@/utils/product-utils/product';
 import { UrlType } from '@/types/router';
-import useProductPathFromUrl from '../useGetProductFromUrl/useProductPathFromUrl';
+import useProductPathFromUrl from '../useProductPathFromUrl/useProductPathFromUrl';
 import useSetProductId from './useSetProductId';
 
-vi.mock('../useGetProductFromUrl/useProductPathFromUrl', () => ({
+vi.mock('../useProductPathFromUrl/useProductPathFromUrl', () => ({
   default: vi.fn(),
 }));
 
@@ -60,6 +60,20 @@ describe('useSetProductId', () => {
 
     expect(getProductByPath).toHaveBeenCalledWith('four-hour-sst', 'sst-filled');
     expect(setProductId).toHaveBeenCalledWith('fourHourSst-sstFilled');
+  });
+
+  it('should not call setProductId and not throw when getProductByPath throws', () => {
+    vi.mocked(useProductPathFromUrl).mockReturnValue({
+      mainProduct: 'invalid-path',
+      subProduct: null as never,
+    });
+
+    vi.mocked(getProductByPath).mockImplementation(() => {
+      throw new Error('Product not found');
+    });
+
+    expect(() => renderHook(() => useSetProductId('product', setProductId))).not.toThrow();
+    expect(setProductId).not.toHaveBeenCalled();
   });
 
   it('should update product ID when dependencies change', () => {

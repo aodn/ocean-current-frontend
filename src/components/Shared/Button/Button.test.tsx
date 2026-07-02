@@ -60,4 +60,35 @@ describe('Button Component', () => {
     // Assert
     expect(onClickMock).toHaveBeenCalled();
   });
+
+  it('does not call onClick when disabled', () => {
+    const onClickMock = vi.fn();
+    render(
+      <Button type="primary" borderRadius="medium" disabled onClick={onClickMock}>
+        Click me
+      </Button>,
+    );
+
+    fireEvent.click(screen.getByText('Click me'));
+
+    expect(onClickMock).not.toHaveBeenCalled();
+  });
+
+  it('applies transition classes when enabled', () => {
+    const { container } = render(<Button type="primary">Click me</Button>);
+
+    expect(container.firstChild).toHaveClass('transition', 'duration-300', 'ease-in-out');
+    expect(container.firstChild).not.toHaveClass('cursor-not-allowed', 'opacity-50');
+  });
+
+  it('applies disabled classes and removes transition when disabled', () => {
+    const { container } = render(
+      <Button type="primary" disabled>
+        Click me
+      </Button>,
+    );
+
+    expect(container.firstChild).toHaveClass('cursor-not-allowed', 'opacity-50');
+    expect(container.firstChild).not.toHaveClass('transition', 'duration-300', 'ease-in-out');
+  });
 });

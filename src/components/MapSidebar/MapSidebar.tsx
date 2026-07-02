@@ -2,8 +2,8 @@ import useProductStore from '@/stores/product-store/productStore';
 import { getProductPathWithSubProduct } from '@/utils/product-utils/product';
 import { sidebarProductsNav } from '@/data/sidebarProductsNav';
 import { useQueryParams } from '@/hooks';
-import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { RootProductID } from '@/types/product';
+import MenuList from '@/components/Shared/MenuList/MenuList';
 
 const MapSidebar: React.FC = () => {
   const { updateQueryParamsAndNavigate } = useQueryParams();
@@ -23,7 +23,7 @@ const MapSidebar: React.FC = () => {
     }
 
     if (id === 'currentMeters') {
-      queryToUpdate = { date: currentMeterSYearOptionsData[0].id, region: null };
+      queryToUpdate = { region: null };
     }
 
     const targetPath = getProductPathWithSubProduct(id);
@@ -31,24 +31,15 @@ const MapSidebar: React.FC = () => {
   };
 
   return (
-    <div className="w-full overflow-hidden rounded bg-[#fff] p-4 shadow" data-testid="drop-down-menu">
-      {sidebarProductsNav.map(({ id, label, Icon }) => (
-        <div
-          key={id}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              handleProductChange(id);
-            }
-          }}
-          className={`mb-4 flex cursor-pointer items-center rounded-md border border-imos-calypso-blue p-3 duration-300 hover:border-imos-sea-blue hover:bg-imos-hover-blue hover:bg-opacity-20 ${id === productIdWithoutSubProduct ? 'border-imos-sea-blue bg-imos-sea-blue/50' : 'bg-white'}`}
-          onClick={() => handleProductChange(id)}
-        >
-          {Icon && <Icon className="mr-4 h-9 w-9" color="imos-grey" aria-label={label} />}
-          <span className="text-left text-base text-imos-dark-grey">{label}</span>
-        </div>
-      ))}
+    <div className="shadow-menu w-full overflow-hidden rounded-md">
+      <MenuList
+        showIcons
+        widePadding
+        elements={sidebarProductsNav}
+        selectedId={productIdWithoutSubProduct as RootProductID}
+        onItemClick={({ id }) => handleProductChange(id)}
+        testId="map-sidebar-menu"
+      />
     </div>
   );
 };

@@ -12,17 +12,29 @@ const useProductCheck = () => {
   const isCurrentMeters = mainProductId === 'currentMeters';
   const isCurrentMetersMooredInstrumentArray =
     mainProductId === 'currentMeters' && subProduct?.key === 'currentMeters-mooredInstrumentArray';
-  const isClimatology = mainProductId === 'climatology';
+  const isClimatology =
+    subProduct?.key === 'sixDaySst-climatology' || subProduct?.key === 'sixDaySst-climatologyDataCount';
   const isMonthlyMeans = mainProductId === 'monthlyMeans';
   const isEACMooringArray = mainProductId === 'EACMooringArray';
   const isTidalCurrents = mainProductId === 'tidalCurrents';
   const isSealCtd = mainProductId === 'sealCtd';
   const isSealCtdTags = mainProductId === 'sealCtdTags';
   const isSurfaceWaves = mainProductId === 'surfaceWaves';
+  const isSurfaceWavesWave = isSurfaceWaves && subProduct?.key === 'surfaceWaves-wave';
   const isSurfaceWavesBuoyTimeseries =
     mainProductId === 'surfaceWaves' && subProduct?.key === 'surfaceWaves-buoyTimeseries';
   const isOceanColour = mainProductId === 'oceanColour';
   const isOceanColourChlA = isOceanColour && subProduct?.key === 'oceanColour-chlA';
+  const isSwotGslaMdt = subProduct?.key === 'swotGsla-mdt';
+  const isFishSoop = mainProductId === 'fishSOOP';
+  const isFishSoopProfiles = subProduct?.key === 'fishSOOP-profiles';
+  // The two anomaly sub-products have no date navigator; their image-list request
+  // is region-less (region selection is handled by the sidebar filters)
+  const isFishSoopAnomaly =
+    subProduct?.key === 'fishSOOP-quarterlyAnomalies' || subProduct?.key === 'fishSOOP-depthAnomalies';
+  // Standalone whole-dataset average overview: region-less list, no date axis, no
+  // region map (unlike the region-based anomaly products above).
+  const isFishSoopAverageAnomalies = subProduct?.key === 'fishSOOP-averageAnomalies';
 
   return {
     isRegionRequired,
@@ -36,9 +48,15 @@ const useProductCheck = () => {
     isSealCtd,
     isSealCtdTags,
     isSurfaceWaves,
+    isSurfaceWavesWave,
     isSurfaceWavesBuoyTimeseries,
     isOceanColour,
     isOceanColourChlA,
+    isSwotGslaMdt,
+    isFishSoop,
+    isFishSoopProfiles,
+    isFishSoopAnomaly,
+    isFishSoopAverageAnomalies,
   };
 };
 

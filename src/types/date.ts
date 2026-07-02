@@ -1,4 +1,5 @@
 export enum DateFormat {
+  SECOND = 'YYYYMMDDHHmmss',
   MINUTE = 'YYYYMMDDHHmm',
   HOUR = 'YYYYMMDDHH',
   DAY = 'YYYYMMDD',

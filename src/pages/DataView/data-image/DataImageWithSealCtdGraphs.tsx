@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import dayjs, { Dayjs } from 'dayjs';
 import { useNavigate } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
+import { setIsProductImageLoading } from '@/stores/product-store/productStore';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import { scaleImageMapAreas } from '@/utils/general-utils/general';
 import { ProductID, Product } from '@/types/product';
@@ -133,6 +134,7 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
   const handleImageLoad = useCallback(() => {
     if (!firstImgRef.current) return;
     scaleImageCoordinates();
+    setIsProductImageLoading(false);
   }, [scaleImageCoordinates]);
 
   useEffect(() => {
@@ -202,8 +204,11 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
               alt={`${altText} graph ${pageNum}`}
               useMap={`#seal-ctd-graph-${pageNum}`}
               className="max-h-[80vh] select-none object-contain"
-              onError={() => setImageRenderError('Image not available')}
-              onLoad={isFirstImage ? scaleImageCoordinates : undefined}
+              onError={() => {
+                setIsProductImageLoading(false);
+                setImageRenderError('Image not available');
+              }}
+              onLoad={isFirstImage ? handleImageLoad : undefined}
             />
 
             {hasImagesLoaded && (

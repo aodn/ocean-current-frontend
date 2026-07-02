@@ -1,6 +1,9 @@
 import Home from './Home/Home';
 import MapView from './MapView/MapView';
 import DataView from './DataView/DataView';
-import NotFound from './NotFound/NotFound';
+import ErrorPage from './ErrorPage/ErrorPage';
+import AboutView from './AboutView/AboutView';
+import InfoView from './InfoView/InfoView';
+import News from './News/News';
 
-export { Home, MapView, DataView, NotFound };
+export { Home, MapView, DataView, ErrorPage, AboutView, InfoView, News };

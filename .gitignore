@@ -27,7 +27,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
 tmp/
+.notes/
 
 .pnp.*
 .yarn/*
@@ -46,6 +48,7 @@ playwright.local.config.ts
 tests/screenshots/
 
 .eslintcache
+*.tsbuildinfo
 
 # AI
 .claude

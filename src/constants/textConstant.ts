@@ -8,6 +8,7 @@ export enum GeneralText {
   START_DATE = 'Start Date',
   END_DATE = 'End Date',
   LEGACY_SITE = 'Legacy Site',
+  EXPLORE_DATASET = 'Explore dataset',
 }
 
 export enum ProductSidebarText {
@@ -19,6 +20,9 @@ export enum ProductSidebarText {
   PROPERTY = 'Property',
   DEPLOYMENT_PLOT = 'Deployment Plot',
   ARGO_PROFILES = 'Argo Profiles',
+  WMO = 'WMO',
+  QUARTER = 'Quarter',
+  PAGE = 'Page',
 }
 
 export enum ProductMenubarText {
@@ -32,11 +36,12 @@ export enum ProductMenubarText {
   ANIMATION_SPEED = 'Animation Speed',
   SIX_DAY_SST_TIMESERIES_DATE = '1993 - latest',
   SELECT_REGION = 'Select Region',
+  WMO_NUMBER = 'WMO number',
 }
 
 export enum News {
-  NEWS = 'News',
   ALL_NEWS = 'All news',
+  NEWS = "Read what's new",
 }
 
 export enum FooterText {
@@ -47,5 +52,6 @@ export enum FooterText {
 
 export enum ExternalUrls {
   IMOS = 'https://imos.org.au/',
+  OCEAN_CURRENT_NEWS = 'https://imos.org.au/news/category/imos-oceancurrent-facility-news',
   OCEAN_CURRENT_LEGACY = 'https://oceancurrent.aodn.org.au/',
 }
