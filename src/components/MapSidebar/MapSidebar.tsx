@@ -26,6 +26,9 @@ const MapSidebar: React.FC = () => {
       queryToUpdate = { region: null };
     }
 
+    // Relative path — MapSidebar only ever renders under /map/*, so switching products here
+    // always stays in the interactive map view (see #522). The "land directly on a figure"
+    // landing config only applies to the navbar and the /product page's own dropdown.
     const targetPath = getProductPathWithSubProduct(id);
     updateQueryParamsAndNavigate(targetPath, queryToUpdate);
   };

@@ -18,6 +18,7 @@ import {
   FishSOOPIcon,
 } from '@/components/Shared/Icons';
 import { APP_ROUTES } from '@/routers/appRoutes';
+import { buildLandingUrl } from '@/configs/products/landing';
 
 export const linksData: LinkItem[] = [
   {
@@ -28,21 +29,21 @@ export const linksData: LinkItem[] = [
         Icon: FourHourSSTIcon,
         title: 'Four-hour SST',
         description: 'SST at 4-hour intervals with location of in situ instruments overlaid',
-        url: '/map/four-hour-sst/sst',
+        url: buildLandingUrl('fourHourSst'),
       },
       {
         id: 'sixDaySst-sst',
         Icon: SixHourSSTIcon,
         title: 'Daily SST (6-day composite)',
         description: 'SST, anomalies, and percentiles at 1-day intervals with location of in situ instruments overlaid',
-        url: '/map/six-day-sst/sst',
+        url: buildLandingUrl('sixDaySst'),
       },
       {
         id: 'oceanColour',
         Icon: OceanColourIcon,
         title: 'Chlorophyll-a Concentration',
         description: 'Chl-a estimated from satellite observations of the colour of the ocean',
-        url: '/map/ocean-colour/chl-a',
+        url: buildLandingUrl('oceanColour'),
       },
       {
         id: 'adjustedSeaLevelAnomaly',
@@ -50,27 +51,28 @@ export const linksData: LinkItem[] = [
         title: 'Adjusted Sea Level Anomaly',
         description:
           'Adj SLA, percentiles, and non-tidal SLA, with atmospheric pressure and in situ instruments overlaid',
-        url: '/map/adjusted-sea-level-anomaly/sla',
+        url: buildLandingUrl('adjustedSeaLevelAnomaly'),
       },
       {
         id: 'surfaceWaves',
         Icon: SurfaceWavesIcon,
         title: 'Surface Waves',
         description: 'Height, direction, and period from modelled and observed surface waves',
-        url: '/product/surface-waves/wave?region=Au',
+        url: buildLandingUrl('surfaceWaves'),
       },
       {
         id: 'monthlyMeans',
         Icon: MonthlyMeansIcon,
         title: 'Monthly Means',
         description: 'Maps of SST and Adj SLA monthly means',
-        url: '/map/monthly-means/30-day',
+        url: buildLandingUrl('monthlyMeans'),
       },
       {
         id: 'sixDaySst-climatology',
         Icon: ClimatologyIcon,
         title: 'Climatology',
         description: 'Maps of SST and Adj SLA climatological values',
+        // Climatology is a child product entry — no matching root product in PRODUCT_LANDING
         url: '/product/six-day-sst/climatology',
       },
       {
@@ -86,7 +88,7 @@ export const linksData: LinkItem[] = [
         title: 'SWOT and GSLA',
         description:
           'Wide-swath altimetry data over gridded Adj SLA intervals with location of in situ instruments overlaid',
-        url: '/map/swot-gsla/ssh',
+        url: buildLandingUrl('swotGsla'),
       },
     ],
   },
@@ -98,13 +100,14 @@ export const linksData: LinkItem[] = [
         Icon: ArgoIcon,
         title: 'Argo',
         description: 'Temperature and salinity down to 2000 m',
-        url: '/map/argo',
+        url: buildLandingUrl('argo'),
       },
       {
         id: 'gliders',
         Icon: GlidersIcon,
         title: 'Gliders',
         description: 'Near-coast ocean properties at sub-surface',
+        // TODO(#522): gliders landing TBD — will likely point to a yearmaps.php-style page
         url: 'https://oceancurrent.aodn.org.au/gliders',
       },
       {
@@ -112,21 +115,21 @@ export const linksData: LinkItem[] = [
         Icon: TidalCurrentsIcon,
         title: 'Tidal Currents',
         description: 'Predictions of tidal currents and tidal sea level',
-        url: '/map/tidal-currents/speed',
+        url: buildLandingUrl('tidalCurrents'),
       },
       {
         id: 'currentMeters',
         Icon: CurrentMetersIcon,
         title: 'Current Meters',
         description: 'Current properties measured by moored instruments around Australia',
-        url: '/map/current-meters/moored-instrument-array',
+        url: buildLandingUrl('currentMeters'),
       },
       {
         id: 'sealCtd',
         Icon: SealCTDIcon,
         title: 'SealCTD',
         description: 'Temperature and salinity down to ~800 m',
-        url: '/product/seal-ctd/tracks?region=POLAR&date=20240522', // falls back to this date if API call fails
+        url: buildLandingUrl('sealCtd'),
       },
       /*
         EAC Mooring Array has data from only one region
@@ -137,14 +140,14 @@ export const linksData: LinkItem[] = [
         Icon: EACMooringArrayIcon,
         title: 'EAC Mooring Array',
         description: 'Temperature, salinity, velocities, and their anomalies of the East Australian Current at 27.5°S',
-        url: '/product/eac-mooring-array?region=Brisbane&date=20220725',
+        url: buildLandingUrl('EACMooringArray'),
       },
       {
         id: 'fishSOOP',
         Icon: FishSOOPIcon,
         title: 'FishSOOP',
         description: 'Near-coast temperature profiles',
-        url: '/map/fish-soop/regional-profiles',
+        url: buildLandingUrl('fishSOOP'),
       },
     ],
   },
