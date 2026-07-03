@@ -1,22 +1,12 @@
 import { describe, it, expect } from 'vitest';
+import { sidebarProductsNav } from '@/data/sidebarProductsNav';
 import { PRODUCT_LANDING, buildLandingUrl } from './landing';
 
 describe('PRODUCT_LANDING', () => {
-  it('has an entry for every sidebar-navigable product', () => {
-    const ids = Object.keys(PRODUCT_LANDING);
-    expect(ids).toContain('fourHourSst');
-    expect(ids).toContain('sixDaySst');
-    expect(ids).toContain('oceanColour');
-    expect(ids).toContain('adjustedSeaLevelAnomaly');
-    expect(ids).toContain('surfaceWaves');
-    expect(ids).toContain('monthlyMeans');
-    expect(ids).toContain('swotGsla');
-    expect(ids).toContain('argo');
-    expect(ids).toContain('tidalCurrents');
-    expect(ids).toContain('currentMeters');
-    expect(ids).toContain('sealCtd');
-    expect(ids).toContain('EACMooringArray');
-    expect(ids).toContain('fishSOOP');
+  it('has exactly one entry per sidebar-navigable product', () => {
+    const sidebarIds = sidebarProductsNav.map((element) => element.id).sort();
+    const landingIds = Object.keys(PRODUCT_LANDING).sort();
+    expect(landingIds).toEqual(sidebarIds);
   });
 
   it('every entry has an absolute path', () => {

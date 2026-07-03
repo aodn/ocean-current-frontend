@@ -20,7 +20,7 @@ test.describe('Surface Waves Landing — no stale-date error on transition (#522
   test('Navbar: switching from Tidal Currents to Surface Waves resolves its own latest date, no stale error', async ({
     productPage,
   }) => {
-    await productPage.goto('/product/tidal-currents/speed?region=CGBR&date=202610020030');
+    await productPage.goto('/product/tidal-currents/speed?region=Aust&date=20260603');
 
     await productPage.navbar.clickMenuItem('maps', 'Surface Waves');
 
@@ -36,7 +36,7 @@ test.describe('Surface Waves Landing — no stale-date error on transition (#522
   test('LHS dropdown: switching from Tidal Currents to Surface Waves resolves its own latest date, stays under /product, no stale error', async ({
     productPage,
   }) => {
-    await productPage.goto('/product/tidal-currents/speed?region=CGBR&date=202610020030');
+    await productPage.goto('/product/tidal-currents/speed?region=Aust&date=20260603');
 
     await productPage.switchProductViaDropdown('Surface Waves');
 

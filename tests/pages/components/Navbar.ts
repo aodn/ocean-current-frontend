@@ -32,6 +32,6 @@ export class Navbar {
   async clickMenuItem(menu: 'maps' | 'inWater', itemTitle: string): Promise<void> {
     const trigger = menu === 'maps' ? this.mapsMenu : this.inWaterMenu;
     await trigger.hover();
-    await this.page.getByText(itemTitle, { exact: true }).click();
+    await this.root.getByText(itemTitle, { exact: true }).click();
   }
 }

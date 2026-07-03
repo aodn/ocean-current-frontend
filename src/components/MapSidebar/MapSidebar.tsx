@@ -3,6 +3,7 @@ import { getProductPathWithSubProduct } from '@/utils/product-utils/product';
 import { sidebarProductsNav } from '@/data/sidebarProductsNav';
 import { useQueryParams } from '@/hooks';
 import { RootProductID } from '@/types/product';
+import { SidebarProductID } from '@/configs/products/landing';
 import MenuList from '@/components/Shared/MenuList/MenuList';
 
 const MapSidebar: React.FC = () => {
@@ -39,7 +40,7 @@ const MapSidebar: React.FC = () => {
         showIcons
         widePadding
         elements={sidebarProductsNav}
-        selectedId={productIdWithoutSubProduct as RootProductID}
+        selectedId={productIdWithoutSubProduct as SidebarProductID}
         onItemClick={({ id }) => handleProductChange(id)}
         testId="map-sidebar-menu"
       />

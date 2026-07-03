@@ -50,7 +50,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
     [isLoading, loadingProductId],
   );
 
-  const handleDropdownChange = async ({ id }: DropdownElement<RootProductID>) => {
+  const handleDropdownChange = async ({ id }: DropdownElement<SidebarProductID>) => {
     if (mainProductKey.includes(id) || isLoading) {
       return;
     }
@@ -62,7 +62,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
       // path must stay relative (unlike PRODUCT_LANDING.path, which may point to /map for
       // other entry points such as the navbar or the /map sidebar).
       const targetPath = getProductPathWithSubProduct(id);
-      const { query: landingQuery, resetDate } = PRODUCT_LANDING[id as SidebarProductID];
+      const { query: landingQuery, resetDate } = PRODUCT_LANDING[id];
 
       // If the landing config has a hardcoded date, use it directly and skip date-carry logic
       if (landingQuery?.date) {
@@ -176,7 +176,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
       header
       widePaddingMenu
       elements={dropdownElements}
-      selectedId={(mainProductKey === 'sealCtdTags' ? 'sealCtd' : mainProductKey) as RootProductID}
+      selectedId={(mainProductKey === 'sealCtdTags' ? 'sealCtd' : mainProductKey) as SidebarProductID}
       onChange={handleDropdownChange}
       toggleTestId="product-dropdown-toggle"
     />

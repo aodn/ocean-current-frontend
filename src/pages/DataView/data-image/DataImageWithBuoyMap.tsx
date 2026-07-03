@@ -20,7 +20,7 @@ const buildBuoyTimeseriesImagePath = (buoyLocation: string, date: Dayjs): string
 
 interface DataImageWithBuoyMapProps {
   src: string;
-  productId: string;
+  productId: ProductID;
   date: Dayjs;
 }
 
@@ -38,7 +38,7 @@ const DataImageWithBuoyMap: React.FC<DataImageWithBuoyMapProps> = ({ src, produc
   // Mirrors the loading gate used by DataImageWithArgoMap: while the date list is still
   // loading, `date` may still be a stale/default value (e.g. we landed here without a `date`
   // param), so a resulting image 404 shouldn't yet be treated as a genuine "not available" error.
-  const { isLoading: isProductDateListLoading } = useDateList({ productId: productId as ProductID, mode: 'list' });
+  const { isLoading: isProductDateListLoading } = useDateList({ productId, mode: 'list' });
 
   const alt = `${productId} data at ${dateFormatted}`;
 
