@@ -52,13 +52,11 @@ const BasicMap: React.FC<BasicMapProps> = ({
 
   const shouldShowArgoLayer = useMemo(() => {
     if (!mainProduct?.key) return false;
-
-    if (isMiniMap) {
-      return isArgo;
-    }
+    if (isMobile && !isArgo) return false;
+    if (isMiniMap) return isArgo;
 
     return PRODUCTS_WITH_ARGO_DATA.includes(mainProduct.key);
-  }, [isMiniMap, isArgo, mainProduct?.key]);
+  }, [isMiniMap, isArgo, mainProduct?.key, isMobile]);
 
   const shouldShowCursorLocationPanel = showCursorLocationPanel && !isMobile && cursorLngLat?.lng && cursorLngLat?.lat;
 
