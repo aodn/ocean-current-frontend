@@ -32,7 +32,7 @@ export const News = () => {
                   }
                 }}
                 className={cn(
-                  'flex w-auto cursor-pointer items-center justify-center rounded-lg border px-3 py-2 text-sm whitespace-nowrap hover:opacity-75 md:w-[156px] md:text-lg',
+                  'flex w-auto cursor-pointer items-center justify-center rounded-lg border px-3 py-2 text-sm whitespace-nowrap hover:opacity-75 md:w-39 md:text-lg',
                   selectedFilter === d
                     ? 'border-imos-calypso-blue bg-imos-calypso-blue text-white'
                     : 'border-imos-light-grey text-imos-dark-grey bg-white',
@@ -127,11 +127,7 @@ export const News = () => {
                   <br />
                   This warming trend is also seen in the Sea Surface Temperature (SST) in regional maps of OceanCurrent.
                   For example, in{' '}
-                  <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=ssta&region=Tas&date=20260619015301&rtype=DR"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href="/product/six-day-sst/timeseries?region=Tas" target="_blank" rel="noreferrer">
                     Tasmania
                   </a>{' '}
                   (Figure 4), SST anomalies have been consistently positive since the winter of 2020. Similar patterns
@@ -284,7 +280,7 @@ export const News = () => {
                   adverse current. This was the situation last year - see the still below or re-live December 2024 by
                   viewing this
                   <a
-                    href="https://oceancurrent-beta.aodn.org.au/product/four-hour-sst/sst-filled?region=SNSW&date=2024123102"
+                    href="/product/four-hour-sst/sst-filled?region=SNSW&date=2024123102"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -299,7 +295,7 @@ export const News = () => {
                   that is presently off Jervis Bay but slipping to the south. It is very likely to give a boost to
                   yachts in deep enough water to be in the current, the edge of which can be seen in a recent
                   <a
-                    href="https://oceancurrent-beta.aodn.org.au/product/four-hour-sst/sst-filled?region=SNSW&date=2025122318"
+                    href="/product/four-hour-sst/sst-filled?region=SNSW&date=2025122318"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -407,7 +403,7 @@ export const News = () => {
                   : cold water is normally submerged (because it is dense) and is high in nutrient (long story). If
                   something brings it up to the sun-lit waters, the phytoplankton can grow (see the&nbsp;
                   <a
-                    href="https://oceancurrent-beta.aodn.org.au/product/ocean-colour/chl-a?region=Brisbane2&date=2025121004"
+                    href="/product/ocean-colour/chl-a?region=Brisbane2&date=2025121004"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -741,9 +737,7 @@ export const News = () => {
                   An Argo float (WMO ID&nbsp;<strong>3902460</strong>) has been trapped in an anticyclonic eddy
                   propagating through the Great Australian Bight for over one year to date (Figure 1). The float was
                   first entrained by the eddy in 7 August 2024 (
-                  <a href="https://oceancurrent-beta.aodn.org.au/product/argo?wmoid=3902460&cycle=60&depth=0-2000m&date=20240807">
-                    cycle 60
-                  </a>
+                  <a href="/product/argo?wmoid=3902460&cycle=60&depth=0-2000m&date=20240807">cycle 60</a>
                   , Fig 2a) and did three full loops at the eddy periphery before settling into the eddy core (Fig 2a,
                   float track in red). Since entraining the float, the eddy moved westwards, from 130.8°E, 36.2°S to
                   120.2°E, 37.2°S, at a speed of ~3 km per day.
@@ -752,24 +746,18 @@ export const News = () => {
                   <br />
                   Over the past year, the float measured 37 profiles (one every 10 days) of temperature (T) and salinity
                   (S), with some of these profiles having an interesting pattern. On&nbsp;
-                  <a href="https://oceancurrent-beta.aodn.org.au/product/argo?wmoid=3902460&cycle=65&depth=0-2000m&date=20240927">
-                    27 Sep 2024
-                  </a>
+                  <a href="/product/argo?wmoid=3902460&cycle=65&depth=0-2000m&date=20240927">27 Sep 2024</a>
                   &nbsp;(cycle 65, Fig 2d), for example, the float measured a mid-depth T anomaly maximum at ~900 m,
                   with waters 1°C warmer than the satellite-adjusted climatology. Mid-depth anomalies become more
                   evident as the eddy propagates, and some of the T and S profiles have a 'staircase' pattern, evident
                   in&nbsp;
-                  <a href="https://oceancurrent-beta.aodn.org.au/product/argo?wmoid=3902460&cycle=83&depth=0-2000m&date=20250330">
-                    cycle 83
-                  </a>
+                  <a href="/product/argo?wmoid=3902460&cycle=83&depth=0-2000m&date=20250330">cycle 83</a>
                   &nbsp;(Fig 2b), with large anomalies at 350 and 700-950 m. This and later cycles also show high values
                   of T and S&nbsp;&nbsp;well mixed in the top 60 m (top-400 m zoomed in&nbsp;
-                  <a href="https://oceancurrent-beta.aodn.org.au/product/argo?wmoid=3902460&cycle=83&depth=0-400m&date=20250330">
-                    here
-                  </a>
+                  <a href="/product/argo?wmoid=3902460&cycle=83&depth=0-400m&date=20250330">here</a>
                   ). This warm and salty mixed layer indicates the entrainment of coastal waters in the near-surface of
                   the eddy. Maps of&nbsp;
-                  <a href="https://oceancurrent-beta.aodn.org.au/product/six-day-sst/sst?wmoid=3902460&cycle=82&date=20250313&region=AlbEsp">
+                  <a href="/product/six-day-sst/sst?wmoid=3902460&cycle=82&date=20250313&region=AlbEsp">
                     SST from March
                   </a>
                   , 2 weeks before cycle 83, show a filament of warm water extending from the coast to the open ocean in
@@ -811,13 +799,9 @@ export const News = () => {
                   </a>
                   (Fig 3a), and IMOS-OceanCurrent adj. SLA maps show us the merge happening over 3 days (Fig 3b-d).
                   There wasn't a distinct change in the T and S profiles measured&nbsp;
-                  <a href="https://oceancurrent-beta.aodn.org.au/product/argo?wmoid=3902460&cycle=83&depth=0-2000m&date=20250330">
-                    before
-                  </a>
+                  <a href="/product/argo?wmoid=3902460&cycle=83&depth=0-2000m&date=20250330">before</a>
                   &nbsp;and&nbsp;
-                  <a href="https://oceancurrent-beta.aodn.org.au/product/argo?wmoid=3902460&cycle=84&depth=0-2000m&date=20250409">
-                    after
-                  </a>
+                  <a href="/product/argo?wmoid=3902460&cycle=84&depth=0-2000m&date=20250409">after</a>
                   &nbsp;the merge.
                   <br />
                   &nbsp;
@@ -825,7 +809,7 @@ export const News = () => {
                   Where did this eddy come from?&nbsp;&nbsp;Clicking backwards in time in our adj. SLA maps will give
                   you the answer.&nbsp;&nbsp;Our guess is that it came from the Tasman Sea, like the other eddies that
                   follow the&nbsp;
-                  <a href="https://oceancurrent-beta.aodn.org.au/news#Tracking_EAC_warm_core_eddies">'Eddy Avenue'</a>
+                  <a href="/news#Tracking_EAC_warm_core_eddies">'Eddy Avenue'</a>
                   &nbsp;from the EAC separation region, take a&nbsp;
                   <a href="https://oceancurrent.aodn.org.au/#Tracking_EAC_warm_core_eddies" className="anchor">
                     turn westwards south of Tasmania, and keep going
@@ -906,7 +890,7 @@ export const News = () => {
                   Despite the mooring measurements showing cold temperatures on the shelf for around three months,
                   negative sea surface temperature anomalies off the southern WA coast were only seen in satellite data
                   from 20/Jan to 18/Feb,&nbsp;
-                  <a href="https://oceancurrent-beta.aodn.org.au/product/six-day-sst/sst?wmoid=3902460&cycle=84&date=20240206&region=Perth">
+                  <a href="/product/six-day-sst/sst?wmoid=3902460&cycle=84&date=20240206&region=Perth">
                     peaking on 6/Feb
                   </a>
                   . These conditions characterise a&nbsp;
@@ -1001,7 +985,7 @@ export const News = () => {
                   You can see the closed contours isobars&nbsp;(lines of same atmospheric pressure)&nbsp;&nbsp;forming a
                   coherent feature centred at 153.5°E, 13.5°S on the&nbsp;23 Feb, that then moves southward over the
                   following week (click forward on the maps,
-                  <a href="https://oceancurrent-beta.aodn.org.au/product/adjusted-sea-level-anomaly/sla?wmoid=3902460&cycle=84&date=20250223&region=NE">
+                  <a href="/product/adjusted-sea-level-anomaly/sla?wmoid=3902460&cycle=84&date=20250223&region=NE">
                     from 23 Feb
                   </a>
                   ).
