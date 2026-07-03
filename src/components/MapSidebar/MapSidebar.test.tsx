@@ -29,7 +29,7 @@ describe('MapSidebar', () => {
     sidebarProductsNav.forEach(({ label }) => expect(screen.getByText(label)).toBeInTheDocument());
   });
 
-  it('navigates to the clicked product', () => {
+  it('navigates to a relative path, staying under /map, even for products with a dedicated /product landing', () => {
     render(<MapSidebar />);
 
     fireEvent.click(screen.getByText('Surface Waves'));
@@ -51,6 +51,16 @@ describe('MapSidebar', () => {
 
     fireEvent.click(screen.getByText('EAC Mooring Array'));
 
-    expect(mockNavigate).toHaveBeenCalledWith(getProductPathWithSubProduct('EACMooringArray'), { region: 'Brisbane' });
+    expect(mockNavigate).toHaveBeenCalledWith(getProductPathWithSubProduct('EACMooringArray'), {
+      region: 'Brisbane',
+    });
+  });
+
+  it('clears region for Current Meters', () => {
+    render(<MapSidebar />);
+
+    fireEvent.click(screen.getByText('Current Meters'));
+
+    expect(mockNavigate).toHaveBeenCalledWith(getProductPathWithSubProduct('currentMeters'), { region: null });
   });
 });

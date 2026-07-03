@@ -14,9 +14,9 @@ import {
   FishSOOPIcon,
 } from '@/components/Shared/Icons';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
-import { RootProductID } from '@/types/product';
+import { SidebarProductID } from '@/configs/products/landing';
 
-export const sidebarProductsNav: DropdownElement<RootProductID>[] = [
+export const sidebarProductsNav: DropdownElement<SidebarProductID>[] = [
   {
     id: 'fourHourSst',
     label: 'Four-hour SST',
