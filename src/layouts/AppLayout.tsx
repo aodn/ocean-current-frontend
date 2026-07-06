@@ -4,7 +4,7 @@ import BetaBanner from '@/components/BetaBanner/BetaBanner';
 
 const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div className="flex min-h-screen w-full flex-col bg-imos-light-blue font-open-sans md:px-0">
+    <div className="bg-imos-light-blue font-open-sans flex min-h-screen w-full flex-col md:px-0">
       <div id="app-header" className="sticky top-0 z-50">
         <BetaBanner />
         <NavbarMobile className="md:hidden" />

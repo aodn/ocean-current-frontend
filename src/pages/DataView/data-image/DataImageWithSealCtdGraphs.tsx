@@ -203,7 +203,7 @@ const DataImageWithSealCtdGraphs: React.FC<DataImageWithSealCtdGraphsProps> = ({
               src={`${imageBaseUrl}${url}`}
               alt={`${altText} graph ${pageNum}`}
               useMap={`#seal-ctd-graph-${pageNum}`}
-              className="max-h-[80vh] select-none object-contain"
+              className="max-h-[80vh] object-contain select-none"
               onError={() => {
                 setIsProductImageLoading(false);
                 setImageRenderError('Image not available');

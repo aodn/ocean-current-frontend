@@ -10,7 +10,7 @@ const CustomInput = forwardRef<HTMLDivElement, CustomInputProps>(({ onClick, dis
   <div
     ref={ref}
     onClick={disabled ? undefined : onClick}
-    className={`mr-5 mt-1 flex w-full items-center justify-center ${!disabled && 'cursor-pointer'}`}
+    className={`mt-1 mr-5 flex w-full items-center justify-center ${!disabled && 'cursor-pointer'}`}
     aria-hidden="true"
   >
     <CalendarIcon color="imos-deep-blue" size="lg" className="mr-4" aria-label="calendar icon" />

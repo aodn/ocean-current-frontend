@@ -78,7 +78,7 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
   return (
     <div className="h-full bg-white px-4 py-2">
       <div className="relative mb-4 inline-block w-full">
-        <h3 className="py-2 text-lg font-medium text-imos-grey">{CurrentMetersPlotTitle.VELOCITY_VECTOR_PLOTS}</h3>
+        <h3 className="text-imos-grey py-2 text-lg font-medium">{CurrentMetersPlotTitle.VELOCITY_VECTOR_PLOTS}</h3>
         <Dropdown
           elements={velocityElements}
           selectedId={selectedVelocityId}
@@ -94,14 +94,14 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
             ref={imgRef}
             src={buildCurrentMetersDataImageUrl(velocityList.path, selectedVelocityId)}
             alt={`Layer-average velocity vector scatter plots for deployment plot ${deploymentPlot}`}
-            className="mt-2 max-h-[80vh] select-none object-contain"
+            className="mt-2 max-h-[80vh] object-contain select-none"
             onLoad={() => setVelocityImageLoaded(true)}
             onError={() => setVelocityImageLoaded(true)}
           />
         )}
       </div>
       <div className="relative inline-block w-full">
-        <h3 className="py-2 text-lg font-medium text-imos-grey">{CurrentMetersPlotTitle.DEPTH_TIME_PLOTS}</h3>
+        <h3 className="text-imos-grey py-2 text-lg font-medium">{CurrentMetersPlotTitle.DEPTH_TIME_PLOTS}</h3>
         <Dropdown
           elements={depthTimeElements}
           selectedId={selectedDepthTimeId}
@@ -117,7 +117,7 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
             ref={imgRef}
             src={buildCurrentMetersDataImageUrl(depthTimeList.path, selectedDepthTimeId)}
             alt={`Depth-time plots for deployment plot ${deploymentPlot}`}
-            className="mt-2 max-h-[80vh] select-none object-contain"
+            className="mt-2 max-h-[80vh] object-contain select-none"
             onLoad={() => setDepthTimeImageLoaded(true)}
             onError={() => setDepthTimeImageLoaded(true)}
           />

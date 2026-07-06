@@ -8,7 +8,7 @@ const ErrorPage: React.FC = () => {
 
   return (
     <AppLayout>
-      <div className="relative mx-auto mb-4 mt-4 flex w-full max-w-8xl px-4 md:mb-9 md:min-h-[800px]">
+      <div className="max-w-8xl relative mx-auto mt-4 mb-4 flex w-full px-4 md:mb-9 md:min-h-[800px]">
         {error ? (
           <ErrorContent
             title="Something went wrong"

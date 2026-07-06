@@ -12,7 +12,7 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({ title, children
         onClick={() => setIsSectionCollapsed(!isSectionCollapsed)}
         aria-hidden
       >
-        <h3 className="text-lg font-medium text-imos-dark-grey">{title}</h3>
+        <h3 className="text-imos-dark-grey text-lg font-medium">{title}</h3>
         <img
           src={ArrowIcon}
           alt="arrow icon"
@@ -20,7 +20,7 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({ title, children
         />
       </div>
       <div className={`overflow-hidden transition-all duration-300 ${isSectionCollapsed ? 'max-h-0' : 'max-h-screen'}`}>
-        <div className="mb-6 mt-2 flex flex-wrap gap-2">{children}</div>
+        <div className="mt-2 mb-6 flex flex-wrap gap-2">{children}</div>
       </div>
     </div>
   );
