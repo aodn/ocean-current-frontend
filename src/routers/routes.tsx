@@ -1,8 +1,13 @@
+import { lazy, Suspense } from 'react';
 import { Navigate, type RouteObject } from 'react-router';
-import { Home, MapView, DataView, ErrorPage, AboutView, InfoView, News } from '@/pages';
-import { MainLayout, MapLayout, DataVisualisationLayout, ArticleLayout, NewsLayout } from '@/layouts';
+import { Home, MapView, DataView, ErrorPage, AboutView, InfoView } from '@/pages';
+import { MainLayout, MapLayout, DataVisualisationLayout, ArticleLayout } from '@/layouts';
+import Loading from '@/components/Shared/Loading/Loading';
 import { createProductRedirects, NewsPhpRedirect } from './utils';
 import { APP_ROUTES } from './appRoutes';
+
+const NewsLayout = lazy(() => import('@/layouts/NewsLayout'));
+const News = lazy(() => import('@/pages/News/News'));
 
 export { APP_ROUTES };
 export type { AppRoute } from './appRoutes';
@@ -88,7 +93,11 @@ const routes: RouteObject[] = [
       },
       {
         path: APP_ROUTES.NEWS,
-        element: <NewsLayout />,
+        element: (
+          <Suspense fallback={<Loading fullPage />}>
+            <NewsLayout />
+          </Suspense>
+        ),
         children: [
           {
             index: true,

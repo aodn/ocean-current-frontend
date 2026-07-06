@@ -8,7 +8,7 @@ type DateId = '2023-now' | '2020-2023' | 'older_than_2020';
 
 const DATE_SORT_IDS: DateId[] = ['2023-now', '2020-2023', 'older_than_2020'];
 
-export const News = () => {
+const News = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedFilter = (searchParams.get('filter') as DateId | null) ?? null;
   useScrollToHash();
@@ -52,11 +52,11 @@ export const News = () => {
             )}
           >
             <article id="20260619" className="p-2">
-              <div className="flex items-center justify-between rounded-sm bg-[#F1F6F9] p-4">
+              <div className="bg-imos-cloud-tint flex items-center justify-between rounded-sm p-4">
                 <div>
                   <h3 id="ShowYourStripes">
                     <a href="#ShowYourStripes" className="anchor">
-                      ShowYourStripes
+                      Show Your Stripes
                     </a>
                   </h3>
                   <em>
