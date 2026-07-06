@@ -24,6 +24,8 @@ import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
 import { CurrentMetersSubProductsKey } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 import { RegionScope } from '@/constants/region';
+import useProductStore from '@/stores/product-store/productStore';
+import { useDateList } from '@/hooks';
 import DataImageWithArgoMap from '../data-image/DataImageWithArgoMap';
 import DataImageWithCurrentMetersMap from '../data-image/DataImageWithCurrentMetersMap';
 import DataImageWithFishSoopMap from '../data-image/DataImageWithFishSoopMap';
@@ -76,6 +78,13 @@ const ProductContent: React.FC = () => {
     isFishSoopAnomaly,
     isFishSoopAverageAnomalies,
   } = productChecks;
+
+  const isDateResolving = useProductStore((state) => state.isDateResolving);
+  // Mirrors the loading gate already used by DataImageWithArgoMap: while the date list for
+  // the current product is still loading, `useDate` may still hold a stale/default date
+  // (e.g. the previous product's, if we landed here without a `date` param), so a resulting
+  // image 404 shouldn't yet be treated as a genuine "not available" error.
+  const { isLoading: isProductDateListLoading } = useDateList({ productId: useProductId, mode: 'list' });
 
   // Determine if we should render with argo tags
   const shouldRenderDataImageWithArgoTags = useMemo(
@@ -225,12 +234,18 @@ const ProductContent: React.FC = () => {
     return <ErrorImage date={useDate} productId="surfaceWaves-buoyTimeseries" />;
   }
 
-  if (imgLoadError) {
-    return <ErrorImage date={useDate} productId={mainProduct!.key} />;
-  }
-
   if (!mainProduct || !useProductId) {
     return <Loading />;
+  }
+
+  if (imgLoadError) {
+    // The date list may still be resolving the actual latest date for this product (e.g. we
+    // landed here without a `date` param and `useDate` still holds a stale value) — a 404
+    // caused by that isn't a genuine error, so show a loading state instead until it settles.
+    if (isDateResolving || isProductDateListLoading) {
+      return <Loading />;
+    }
+    return <ErrorImage date={useDate} productId={mainProduct.key} />;
   }
 
   const isHasSubProduct = checkProductHasSubProduct(mainProduct?.key);

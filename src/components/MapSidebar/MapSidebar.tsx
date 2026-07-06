@@ -3,6 +3,7 @@ import { getProductPathWithSubProduct } from '@/utils/product-utils/product';
 import { sidebarProductsNav } from '@/data/sidebarProductsNav';
 import { useQueryParams } from '@/hooks';
 import { RootProductID } from '@/types/product';
+import { SidebarProductID } from '@/configs/products/landing';
 import MenuList from '@/components/Shared/MenuList/MenuList';
 
 const MapSidebar: React.FC = () => {
@@ -26,6 +27,9 @@ const MapSidebar: React.FC = () => {
       queryToUpdate = { region: null };
     }
 
+    // Relative path — MapSidebar only ever renders under /map/*, so switching products here
+    // always stays in the interactive map view (see #522). The "land directly on a figure"
+    // landing config only applies to the navbar and the /product page's own dropdown.
     const targetPath = getProductPathWithSubProduct(id);
     updateQueryParamsAndNavigate(targetPath, queryToUpdate);
   };
@@ -36,7 +40,7 @@ const MapSidebar: React.FC = () => {
         showIcons
         widePadding
         elements={sidebarProductsNav}
-        selectedId={productIdWithoutSubProduct as RootProductID}
+        selectedId={productIdWithoutSubProduct as SidebarProductID}
         onItemClick={({ id }) => handleProductChange(id)}
         testId="map-sidebar-menu"
       />

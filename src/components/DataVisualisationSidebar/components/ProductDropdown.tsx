@@ -7,7 +7,6 @@ import { getProductPathWithSubProduct, getTargetProductIdAfterRouting } from '@/
 import { useQueryParams } from '@/hooks';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import useProductAvailableInRegion from '@/stores/product-store/hooks/useProductAvailableInRegion';
-import { initialState as currentMetersInitialState } from '@/stores/current-meters-store/currentMeters';
 import { QueryParams } from '@/hooks/useQueryParams/types/userQueryParams.types';
 import { RootProductID } from '@/types/product';
 import useProductStore from '@/stores/product-store/productStore';
@@ -17,6 +16,7 @@ import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date'
 import { RegionScope } from '@/constants/region';
 import useDateStore from '@/stores/date-store/dateStore';
 import { DateFormat } from '@/types/date';
+import { PRODUCT_LANDING, SidebarProductID } from '@/configs/products/landing';
 import { ProductDropdownProps } from '../types';
 
 const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => {
@@ -50,7 +50,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
     [isLoading, loadingProductId],
   );
 
-  const handleDropdownChange = async ({ id }: DropdownElement<RootProductID>) => {
+  const handleDropdownChange = async ({ id }: DropdownElement<SidebarProductID>) => {
     if (mainProductKey.includes(id) || isLoading) {
       return;
     }
@@ -58,7 +58,60 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
     setLoadingProductId(id);
 
     try {
-      // Convert current date to target product format
+      // This dropdown only switches products within the current /product page, so the
+      // path must stay relative (unlike PRODUCT_LANDING.path, which may point to /map for
+      // other entry points such as the navbar or the /map sidebar).
+      const targetPath = getProductPathWithSubProduct(id);
+      const { query: landingQuery, resetDate } = PRODUCT_LANDING[id];
+
+      // If the landing config has a hardcoded date, use it directly and skip date-carry logic
+      if (landingQuery?.date) {
+        const queryToUpdate: QueryParams = {
+          region: landingQuery.region ?? null,
+          date: landingQuery.date,
+          property: landingQuery.property ?? null,
+          depth: landingQuery.depth ?? null,
+          deploymentPlot: null,
+          point: null,
+        };
+        updateQueryParamsAndNavigate(targetPath, queryToUpdate);
+        return;
+      }
+
+      // No date correspondence to the previous product (e.g. Surface Waves) — resolve its
+      // own latest date for the landing region up front, rather than landing without one.
+      // Leaving `date` unset races with the date store: the picker resolves the latest
+      // date locally, but the store (which drives the rendered image) only updates once
+      // that resolved date round-trips back into the URL, and can be left stale (see #522).
+      if (resetDate) {
+        const targetProductId = getTargetProductIdAfterRouting(id);
+        const region = landingQuery?.region;
+        let resolvedDate: string | null = null;
+        try {
+          const queryOptions = regionLatestDatesOptions(targetProductId);
+          const latestDatesData =
+            queryClient.getQueryData<LatestRegionDatesResponse>(queryOptions.queryKey) ??
+            (await queryClient.fetchQuery<LatestRegionDatesResponse>(queryOptions));
+          resolvedDate =
+            latestDatesData?.regionLatestDates?.find((item: RegionLatestDate) => item.region === region)?.latestDate ??
+            null;
+        } catch (error) {
+          console.error('Failed to fetch latest date for product:', id, error);
+        }
+
+        const queryToUpdate: QueryParams = {
+          region: region ?? null,
+          date: resolvedDate,
+          property: landingQuery?.property ?? null,
+          depth: landingQuery?.depth ?? null,
+          deploymentPlot: null,
+          point: null,
+        };
+        updateQueryParamsAndNavigate(targetPath, queryToUpdate);
+        return;
+      }
+
+      // No hardcoded date — carry/convert the current date (SST family, etc.)
       const convertedDate = convertDateToTargetFormat(id);
 
       let queryToUpdate: QueryParams = {
@@ -69,35 +122,13 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
         point: null,
       };
 
-      if (id === 'EACMooringArray') {
-        queryToUpdate = {
-          region: 'Brisbane',
-          date: '20220725', // TODO: hardcoded data for EAC Mooring Array
-          property: null,
-          depth: null,
-          point: null,
-          deploymentPlot: null,
-        };
-      } else if (id === 'currentMeters') {
-        const { region, property, depth, date } = currentMetersInitialState;
-        queryToUpdate = { date, region, property, depth };
-      } else if (id === 'sealCtd') {
-        queryToUpdate = {
-          region: 'POLAR',
-          date: '20240522', // TODO: hardcoded date for seal CTD tags
-          property: null,
-          depth: null,
-          deploymentPlot: null,
-          point: null,
-        };
+      // Apply any region prescribed by the landing config (e.g. surfaceWaves → 'Au')
+      if (landingQuery?.region) {
+        queryToUpdate.region = landingQuery.region;
       } else if (!isProductAvailableInRegion) {
         queryToUpdate = {
-          date: convertedDate,
+          ...queryToUpdate,
           region: null,
-          property: null,
-          depth: null,
-          deploymentPlot: null,
-          point: null,
         };
       } else {
         try {
@@ -123,26 +154,15 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
           const dateToUse = isDateInPast ? regionLatestDate : convertedDate;
 
           queryToUpdate = {
+            ...queryToUpdate,
             date: dateToUse,
-            property: null,
-            depth: null,
-            deploymentPlot: null,
-            point: null,
           };
         } catch (error) {
           console.error('Failed to fetch latest dates for product:', id, error);
           // Fallback to using the converted date if the API fails
-          queryToUpdate = {
-            date: convertedDate,
-            property: null,
-            depth: null,
-            deploymentPlot: null,
-            point: null,
-          };
         }
       }
 
-      const targetPath = getProductPathWithSubProduct(id);
       updateQueryParamsAndNavigate(targetPath, queryToUpdate);
     } finally {
       setIsLoading(false);
@@ -156,8 +176,9 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
       header
       widePaddingMenu
       elements={dropdownElements}
-      selectedId={(mainProductKey === 'sealCtdTags' ? 'sealCtd' : mainProductKey) as RootProductID}
+      selectedId={(mainProductKey === 'sealCtdTags' ? 'sealCtd' : mainProductKey) as SidebarProductID}
       onChange={handleDropdownChange}
+      toggleTestId="product-dropdown-toggle"
     />
   );
 };
