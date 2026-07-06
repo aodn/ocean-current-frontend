@@ -110,7 +110,7 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   return (
     <div className="relative inline-block h-full w-full bg-white">
       {isProductImageLoading ? (
-        <LinearProgress className="absolute left-0 right-0 top-0" />
+        <LinearProgress className="absolute top-0 right-0 left-0" />
       ) : (
         <div className="h-1 w-full" />
       )}
@@ -120,7 +120,7 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
           src={src}
           alt={`${productId} data`}
           useMap="#tidal-currents-map"
-          className="max-h-[80vh] select-none object-contain"
+          className="max-h-[80vh] object-contain select-none"
           onLoad={() => {
             if (!isTidalCurrentsPointSelected) handleImageLoad(tagData);
             renderedSrc.current = src;

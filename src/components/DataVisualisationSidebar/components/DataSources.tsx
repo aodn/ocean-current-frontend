@@ -9,7 +9,7 @@ const DataSources: React.FC<DataSourcesProps> = ({ filteredDataSources }) => {
         <div key={title} className={index === filteredDataSources.length - 1 ? 'w-auto' : 'flex-1'}>
           <a target="_blank" href={link} rel="noreferrer">
             <Button size="full" borderRadius="small" type="secondary">
-              <span className="text-base text-imos-text-grey">{title}</span>
+              <span className="text-imos-text-grey text-base">{title}</span>
             </Button>
           </a>
         </div>

@@ -12,7 +12,7 @@ export const CollapsibleTrigger = ({
 
   return (
     <button
-      className="w-full border-b bg-imos-pale-blue px-6 py-3"
+      className="bg-imos-pale-blue w-full border-b px-6 py-3"
       onClick={toggle}
       aria-expanded={open}
       aria-label={`${open ? 'Collapse' : 'Expand'} content`}
