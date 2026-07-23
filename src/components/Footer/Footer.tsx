@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from '@/assets/images/imos-logo.png';
+import ncrisLogo from '@/assets/images/ncris-logo.png';
 import { BrandingText, FooterText } from '@/constants/textConstant.ts';
 import { appVersion } from '@/configs/version.ts';
 import {
@@ -7,6 +8,7 @@ import {
   /* FEEDBACK_LINK, */ FOOTER_ACKNOWLEDGE_TEXT,
   FOOTER_LINKS,
   FOOTER_SOCIALS,
+  NCRIS_STATEMENT_TEXT,
 } from './consts.ts';
 import { FooterIcon } from './footer.types';
 
@@ -52,9 +54,11 @@ const Footer: React.FC = () => {
               <p className="text-base">{FooterText.BACK_TO_TOP}</p>
             </button>
           </div>
-
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-8">
+            <img src={ncrisLogo} alt="NCRIS Logo" className="h-20 w-auto shrink-0 md:h-24" />
+            <p className="text-imos-nav-text text-base leading-7 sm:leading-8">{NCRIS_STATEMENT_TEXT}</p>
+          </div>
           <p className="text-imos-nav-text text-base leading-7 sm:leading-8">{FOOTER_ACKNOWLEDGE_TEXT}</p>
-
           <div className="border-imos-deeper-blue grid grid-cols-2 gap-4 border-y py-4 md:flex md:h-20 md:flex-row md:items-center md:justify-between">
             {/* <div className="flex w-full justify-center md:h-12 md:w-[200px] md:justify-start">
               <Button
@@ -81,7 +85,6 @@ const Footer: React.FC = () => {
               </a>
             ))}
           </div>
-
           <div className="flex items-center justify-between gap-1 sm:gap-4">
             <div className="flex items-center">
               <p className="text-imos-nav-text text-base">
