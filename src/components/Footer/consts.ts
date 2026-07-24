@@ -43,6 +43,10 @@ export const FOOTER_SOCIALS: FooterIcon[] = [
   },
 ];
 
+export const NCRIS_STATEMENT_TEXT: string =
+  'Australia\u2019s Integrated Marine Observing System (IMOS) is enabled by the National Collaborative Research ' +
+  'Infrastructure Strategy (NCRIS).';
+
 export const FOOTER_ACKNOWLEDGE_TEXT: string =
   'IMOS acknowledges the Traditional Custodians and Elders of the land and sea on which we work and observe and ' +
   'recognise their unique connection to land and sea. We pay our respects to Aboriginal and Torres Strait Islander ' +
