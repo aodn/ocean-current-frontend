@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 # Sets up shared config files from the main worktree into the current worktree.
 # .env.local is copied (so each worktree can have its own env vars).
-# .claude and CLAUDE.md are symlinked (shared project settings).
+# .claude, .agents, CLAUDE.md, and AGENTS.md are symlinked (shared project settings).
 # Safe to run multiple times (idempotent).
 #
 # Usage: setup-worktree.sh [worktree-path] [--force|-f]
@@ -49,8 +49,8 @@ else
   echo "  copied: .env.local" >&2
 fi
 
-# Symlink .claude and CLAUDE.md so project settings stay in sync across worktrees
-for item in ".claude" "CLAUDE.md"; do
+# Symlink agent configuration so project settings stay in sync across worktrees
+for item in ".claude" ".agents" "CLAUDE.md" "AGENTS.md"; do
   src="$MAIN_REPO/$item"
   dst="$CURRENT_DIR/$item"
   if [ ! -e "$src" ] && [ ! -L "$src" ]; then
