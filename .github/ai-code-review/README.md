@@ -7,11 +7,11 @@ This repository only holds its configuration.
 
 ## Files
 
-| File                                     | Role                                                                                        |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------- |
-| `.github/workflows/ai-code-review.yml`   | Caller: triggers, skip rules (forks, drafts, `skip-ai-review` label), engine and credential |
-| `.github/ai-code-review/prompt.md`       | Repository-specific review direction added to the shared baseline                           |
-| `.github/ai-code-review/instructions.md` | Repository context and conventions                                                          |
+| File                                     | Role                                                                                |
+| ---------------------------------------- | ----------------------------------------------------------------------------------- |
+| `.github/workflows/ai-code-review.yml`   | Caller: triggers, skip rules (forks, `skip-ai-review` label), engine and credential |
+| `.github/ai-code-review/prompt.md`       | Repository-specific review direction added to the shared baseline                   |
+| `.github/ai-code-review/instructions.md` | Repository context and conventions                                                  |
 
 Both files are read from the PR head, so a PR that edits them is reviewed
 with its own version. The shared workflow adds the sandbox description, the
@@ -20,7 +20,7 @@ duplicate-implementation check) and the output format around them.
 
 ## Behaviour
 
-- Runs on PRs to `main` when opened, pushed, reopened or marked ready. Drafts,
+- Runs on PRs to `main`, including drafts, when opened, pushed or reopened.
   PRs labelled `skip-ai-review` and **PRs from forks** are skipped. A new push
   cancels the in-flight review.
 - **No credential** (Dependabot, or secret not set): a "skipped" comment.
