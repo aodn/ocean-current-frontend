@@ -35,6 +35,21 @@ Pay particular attention to:
   colocated `*.test.ts(x)` file. UI flow changes may need Playwright specs or
   page objects under `tests/` updated.
 
+Reusable code, for the duplicate-implementation check:
+
+- Utilities: `src/utils/`, by topic (date formatting, URL building, ...).
+- Hooks: `src/hooks/`.
+- Shared UI: `src/components/Shared/`, with feature components elsewhere
+  under `src/components/`.
+- Constants: `src/constants/`, including product and region definitions.
+- API clients and TanStack Query hooks: `src/services/`.
+- Zustand stores: product, region and date state.
+
+Only report it when the behaviour really matches, not when the two only look
+alike (e.g. two date formatters for different, product-specific formats are
+not duplicates). Name the existing code the PR should reuse, with its file
+and line, and say whether it can be used as is or needs a small change.
+
 Conventions: single quotes, `@/` import alias for `src/`, PascalCase component
 files, `use`-prefixed hooks, gitmoji commit messages. Do not report issues that
 ESLint, Prettier or the TypeScript compiler would catch.
