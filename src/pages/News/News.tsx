@@ -97,7 +97,7 @@ const News = () => {
                   <img
                     alt=""
                     src="/resource/news/20260910/Fig1.png"
-                    style={{ float: 'right', height: '642px', width: '700px', margin: '10px' }}
+                    style={{ float: 'right', height: 'auto', width: '700px', margin: '10px' }}
                   />
                   We'll then proceed to the Fraser Seamount (155.5E, 24.5S, Figure 1, clear star), rising from 4000 m to
                   400 m depths, and being part of the Coral Sea Marine Park. The{' '}
@@ -199,13 +199,13 @@ const News = () => {
                   <img
                     alt=""
                     src="/resource/news/20260910/Fig2.png"
-                    style={{ float: 'right', height: '438px', width: '650px', margin: '10px' }}
+                    style={{ float: 'right', height: 'auto', width: '650px', margin: '10px' }}
                   />
                 </p>
                 <img
                   alt=""
                   src="/resource/news/20260910/Fig3.png"
-                  style={{ float: 'right', height: '470px', width: '700px', margin: '10px' }}
+                  style={{ float: 'right', height: 'auto', width: '700px', margin: '10px' }}
                 />
               </div>
             </article>
@@ -291,7 +291,7 @@ const News = () => {
                   <img
                     alt=""
                     src="/resource/news/20260724/Fig1_1.png"
-                    style={{ float: 'left', height: '418px', width: '800px', margin: '10px' }}
+                    style={{ float: 'left', height: 'auto', width: '800px', margin: '10px' }}
                   />
                 </p>
               </div>
