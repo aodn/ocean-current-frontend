@@ -1,0 +1,92 @@
+{
+  "missions": [
+    {
+      "mission_name": "TwoRocks20261028_nrt",
+      "latitude": -31.86,
+      "longitude": 115.61,
+      "glider_id": "SL1292",
+      "is_nrt": true
+    },
+    {
+      "mission_name": "Groote_Eylandt20261027_nrt",
+      "latitude": -13.75,
+      "longitude": 137.09,
+      "glider_id": "SL1227",
+      "is_nrt": true
+    },
+    {
+      "mission_name": "MissionBeach20261022_nrt",
+      "latitude": -17.72,
+      "longitude": 146.47,
+      "glider_id": "SL209",
+      "is_nrt": true
+    },
+    {
+      "mission_name": "Ceduna20260924_nrt",
+      "latitude": -32.81,
+      "longitude": 132.3,
+      "glider_id": "SL248",
+      "is_nrt": true
+    },
+    {
+      "mission_name": "TasEastCoast20260922_nrt",
+      "latitude": -42.13,
+      "longitude": 148.28,
+      "glider_id": "SL287",
+      "is_nrt": true
+    },
+    {
+      "mission_name": "TwoRocksA20260910_nrt",
+      "latitude": -31.73,
+      "longitude": 115.49,
+      "glider_id": "SL1227",
+      "is_nrt": true
+    },
+    {
+      "mission_name": "Forster20260909_nrt",
+      "latitude": -32.22,
+      "longitude": 152.66,
+      "glider_id": "SL1212",
+      "is_nrt": true
+    },
+    {
+      "mission_name": "ForsterA20260909_nrt",
+      "latitude": -33.08,
+      "longitude": 152.01,
+      "glider_id": "SL1212",
+      "is_nrt": true
+    },
+    {
+      "mission_name": "TasEastCoast20260811_nrt",
+      "latitude": -41.92,
+      "longitude": 148.34,
+      "glider_id": "SL287",
+      "is_nrt": true
+    },
+    {
+      "mission_name": "TwoRocks20260730_nrt",
+      "latitude": -31.7,
+      "longitude": 115.4,
+      "glider_id": "SL248",
+      "is_nrt": true
+    },
+    {
+      "mission_name": "CapricornChannel20260723_nrt",
+      "latitude": -22.9,
+      "longitude": 152.29,
+      "glider_id": "SL1212",
+      "is_nrt": true
+    },
+    {
+      "mission_name": "Esperance20260526_nrt",
+      "latitude": -34.24,
+      "longitude": 122.11,
+      "glider_id": "SL248",
+      "is_nrt": true
+    }
+  ],
+  "total": 12,
+  "page": 0,
+  "size": 100,
+  "order": "deployment_date"
+}
