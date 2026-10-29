@@ -3,7 +3,7 @@ import { CurrentMetersRegion, CurrentMetersProperty, CurrentMetersDepth } from '
 
 // Products that don't appear in the sidebar nav and have no internal landing page.
 // Excluded from PRODUCT_LANDING to keep the config exhaustive for the sidebar products.
-type NonSidebarProductID = 'gliders' | 'myOceanCurrent' | 'sealCtdTags';
+type NonSidebarProductID = 'myOceanCurrent' | 'sealCtdTags';
 
 /** A root product that appears in the sidebar and has an internal landing page. */
 export type SidebarProductID = Exclude<RootProductID, NonSidebarProductID>;
@@ -77,6 +77,7 @@ export const PRODUCT_LANDING: Record<SidebarProductID, ProductLanding> = {
   },
 
   // ── In-Water ─────────────────────────────────────────────────────────────
+  gliders: { path: '/map/gliders' },
   argo: {
     // TODO: OceanCurrent team will provide a figure; bathymetry only for now
     path: '/map/argo',

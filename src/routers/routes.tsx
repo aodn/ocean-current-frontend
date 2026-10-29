@@ -6,6 +6,8 @@ import Loading from '@/components/Shared/Loading/Loading';
 import { createProductRedirects, NewsPhpRedirect } from './utils';
 import { APP_ROUTES } from './appRoutes';
 
+const GlidersMap = lazy(() => import('@/pages/GlidersMap/GlidersMap'));
+
 const NewsLayout = lazy(() => import('@/layouts/NewsLayout'));
 const News = lazy(() => import('@/pages/News/News'));
 
@@ -44,6 +46,14 @@ const routes: RouteObject[] = [
         path: APP_ROUTES.MAP,
         element: <MapLayout />,
         children: [
+          {
+            path: 'gliders',
+            element: (
+              <Suspense fallback={<Loading />}>
+                <GlidersMap />
+              </Suspense>
+            ),
+          },
           {
             index: true,
             element: <Navigate to="four-hour-sst/sst" replace />,

@@ -107,8 +107,7 @@ export const linksData: LinkItem[] = [
         Icon: GlidersIcon,
         title: 'Gliders',
         description: 'Near-coast ocean properties at sub-surface',
-        // TODO(#522): gliders landing TBD — will likely point to a yearmaps.php-style page
-        url: 'https://oceancurrent.aodn.org.au/gliders',
+        url: buildLandingUrl('gliders'),
       },
       {
         id: 'tidalCurrents',

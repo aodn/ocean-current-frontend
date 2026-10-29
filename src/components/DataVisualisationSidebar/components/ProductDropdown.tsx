@@ -54,6 +54,10 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
     if (mainProductKey.includes(id) || isLoading) {
       return;
     }
+    if (id === 'gliders') {
+      updateQueryParamsAndNavigate('/map/gliders', {}, true);
+      return;
+    }
     setIsLoading(true);
     setLoadingProductId(id);
 

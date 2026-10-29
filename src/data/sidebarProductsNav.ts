@@ -6,6 +6,7 @@ import {
   FourHourSSTIcon,
   SixHourSSTIcon,
   ArgoIcon,
+  GlidersIcon,
   TidalCurrentsIcon,
   CurrentMetersIcon,
   SealCTDIcon,
@@ -52,6 +53,7 @@ export const sidebarProductsNav: DropdownElement<SidebarProductID>[] = [
     label: 'SWOT and GSLA',
     Icon: SwotIcon,
   },
+  { id: 'gliders', label: 'Gliders', Icon: GlidersIcon },
   {
     id: 'argo',
     label: 'Argo',

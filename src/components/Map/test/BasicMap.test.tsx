@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import { useMap } from 'react-map-gl/mapbox';
 import { mapConfig } from '@/configs/map';
 import { renderWithQueryClient } from '@/test/queryClientUtils';
@@ -82,6 +82,20 @@ describe('BasicMap Component', () => {
 
     // Assert
     expect(screen.getByTestId('test-map')).toBeInTheDocument();
+  });
+
+  it('allows dedicated product layers without mounting unrelated product overlays', () => {
+    mapConfig.accessToken = 'test-api-key';
+    renderWithQueryClient(
+      <BasicMap showProductLayers={false}>
+        <div>Gliders layer</div>
+      </BasicMap>,
+    );
+    act(() => (lastMapProps.onLoad as () => void)());
+    expect(lastMapProps.interactiveLayerIds).toEqual([]);
+    expect(screen.getByText('Gliders layer')).toBeInTheDocument();
+    expect(screen.queryByText('RegionPolygonLayer')).not.toBeInTheDocument();
+    expect(screen.queryByText('ArgoAsProductLayer')).not.toBeInTheDocument();
   });
 
   it('displays error message when API key is missing', () => {
