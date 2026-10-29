@@ -51,6 +51,251 @@ const News = () => {
               selectedFilter !== null && selectedFilter !== '2023-now' && 'hidden',
             )}
           >
+            <article id="20260910" className="p-2">
+              <div className="bg-imos-cloud-tint flex items-center justify-between rounded-sm p-4">
+                <div>
+                  <h3 id="CAPSTAN_06_voyage_from_Bundaberg_to_Fraser_Seamount_what_to_expect">
+                    <a href="#CAPSTAN_06_voyage_from_Bundaberg_to_Fraser_Seamount_what_to_expect" className="anchor">
+                      CAPSTAN 06 voyage, from Bundaberg to Fraser Seamount – what to expect.
+                    </a>
+                  </h3>
+                  <em>
+                    <h5>Gabriela S. Pilo</h5>
+                  </em>
+                </div>
+                <div>
+                  <p className="font-bold">10 September, 2026</p>
+                </div>
+              </div>
+              <div className="overflow-auto rounded-b bg-white p-4">
+                <p>
+                  <a href="#IMOS_OceanCurrent_is_going_to_sea">IMOS OceanCurrent is going to sea</a> on the upcoming
+                  CAPSTAN 06 voyage, where we'll use the information available on the website to contextualise the
+                  observations taken during the voyage. We are boarding CSIRO research vessel (RV) <em>Investigator</em>{' '}
+                  today!
+                  <br />
+                  <br />
+                  Following departure from Brisbane and initial activities in coastal waters, the first open ocean part
+                  of the CAPSTAN 06 voyage to Fiji onboard the RV&nbsp;<em>Investigator</em> will depart from waters
+                  near Bundaberg and head towards the Fraser Seamount, a seamount located ~200 km east of Australia.
+                  There, we plan to take targeted measurements of the circulation and water properties around the
+                  seamount.
+                  <br />
+                  <br />
+                  As we depart from waters near Bundaberg (Figure 1a, orange star), we'll find Sea Surface Temperatures
+                  (SST) of ~20degC (~1degC warmer than climatological values; Figure 1a, b) before meeting the East
+                  Australian Current (EAC) at the continental shelf break. At the moment, the EAC is narrow and
+                  coherent, flowing southward at 0.7 m/s, with 23.5degC SST surface-signature, contrasting with the
+                  22degC surrounding waters. Two weeks ago,{' '}
+                  <a href="/product/swot-gsla/ssh?region=SGBR&date=20260827233654" target="_blank" rel="noreferrer">
+                    the SWOT satellite altimeter
+                  </a>{' '}
+                  measured a 0.2 m SSH slope just off K'gari (former Fraser Island; Figure 1c), with low values to the
+                  west, balancing the EAC southward geostrophic flow at that location.
+                  <br />
+                  <br />
+                  <img
+                    alt=""
+                    src="/resource/news/20260910/Fig1.png"
+                    style={{ float: 'right', height: '642px', width: '700px', margin: '10px' }}
+                  />
+                  We'll then proceed to the Fraser Seamount (155.5E, 24.5S, Figure 1, clear star), rising from 4000 m to
+                  400 m depths, and being part of the Coral Sea Marine Park. The{' '}
+                  <a href="https://doi.org/10.1016/S0967-0637(99)00007-2" target="_blank" rel="noreferrer">
+                    interaction between deep ocean seamounts and surrounding flow
+                  </a>{' '}
+                  may result in the upwelling of cold, nutrient-rich waters to the euphotic zone. This upwelling, often
+                  seen downstream of the dominant flow, may induce a biological response, observed by high values phyto-
+                  and zooplankton. We plan to adapt our sampling strategy to the direction of the currents interacting
+                  with the Fraser Seamount as we approach the region.
+                  <br />
+                  <br />
+                  Currently, the circulation around this seamount is dominated by a weak cyclonic eddy that has moved
+                  westwards since{' '}
+                  <a href="/product/swot-gsla/ssh?region=SGBR&date=20260829103006" target="_blank" rel="noreferrer">
+                    seen in SWOT and Gridded SSH
+                  </a>{' '}
+                  (Figure 1d). The latest SST 4h composite shows 21oC filaments and associated submesoscale eddies near
+                  the seamount (Figure 1a).
+                  <br />
+                  <br />
+                  As we move to the southward part of the Coral Sea, we shift scales to focus on the sea-wide
+                  circulation. Now, we have{' '}
+                  <a
+                    href="https://oceancurrent.aodn.org.au/product.php?product=daily.SST_ANOM&region=CoralWest&date=20260910023410&rtype=SR"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    a very quiet Coral Sea
+                  </a>
+                  , with no strong eddies and no extreme SST anomalies (Figure 2). According to the{' '}
+                  <a
+                    href="https://www.bom.gov.au/climate/ocean/long-range-forecasts/?variable=mh_cat&region=AUS"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Bureau of Meteorology's ocean temperature long-range forecast
+                  </a>
+                  , there are no marine heatwaves forecasted for the Coral Sea for September to November. The{' '}
+                  <a href="/product/monthly-means/30-day?region=SST30d&date=202608" target="_blank" rel="noreferrer">
+                    monthly mean SSTA maps
+                  </a>{' '}
+                  show us that the mild SST conditions we are seeing have been present in the Coral Sea for the past
+                  months.
+                  <br />
+                  <br />
+                  Currently, the surface waves reaching the southern part of the Coral Sea have 1-2 m significant wave
+                  height (SWH,{' '}
+                  <a href="/product/surface-waves/wave?region=Au&date=2026091002" target="_blank" rel="noreferrer">
+                    Figure 3
+                  </a>
+                  ), coming from the south, with northeasterly waves of ~0.6 m SWH{' '}
+                  <a
+                    href="/product/surface-waves/buoy-timeseries?region=Bundaberg&date=2026091000"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    arriving in Bundaberg
+                  </a>
+                  . Surface waves are{' '}
+                  <a
+                    href="https://www.bom.gov.au/australia/charts/viewer/index.shtml?domain=combinedW&type=sigWaveHgt"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    forecasted by the BOM
+                  </a>{' '}
+                  to keep same direction and increase in intensity to 3 m in the next days in the southern part of the
+                  Coral Sea.
+                  <br />
+                  <br />
+                  You can follow the RV&nbsp;<em>Investigator</em> and see the voyage livestream{' '}
+                  <a
+                    href="https://www.csiro.au/en/about/facilities-collections/MNF/Voyages-schedules/Voyages/2026/September/IN2026_T04"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    here
+                  </a>
+                  .
+                  <br />
+                  <br />
+                  <em>The </em>
+                  <a href="https://www.csiro.au/capstan" target="_blank" rel="noreferrer">
+                    <em>CAPSTAN program</em>
+                  </a>
+                  <em>
+                    {' '}
+                    is a maritime education and training initiative of Australia's national science agency, CSIRO, the
+                    University of Tasmania's Institute for Marine and Antarctic Studies (IMAS), and the Australian and
+                    New Zealand International Scientific Drilling Consortium (ANZIC). CAPSTAN is supported by grants of
+                    sea time on RV Investigator from the CSIRO Marine National Facility (MNF).
+                  </em>{' '}
+                  <em>
+                    IMOS, MNF, and ANZIC receive funding from the National Collaborative Research Infrastructure
+                    Strategy (NCRIS).
+                  </em>
+                  <br />
+                  <img
+                    alt=""
+                    src="/resource/news/20260910/Fig2.png"
+                    style={{ float: 'right', height: '438px', width: '650px', margin: '10px' }}
+                  />
+                </p>
+                <img
+                  alt=""
+                  src="/resource/news/20260910/Fig3.png"
+                  style={{ float: 'right', height: '470px', width: '700px', margin: '10px' }}
+                />
+              </div>
+            </article>
+            <article id="20260724" className="p-2">
+              <div className="bg-imos-cloud-tint flex items-center justify-between rounded-sm p-4">
+                <div>
+                  <h3 id="IMOS_OceanCurrent_is_going_to_sea">
+                    <a href="#IMOS_OceanCurrent_is_going_to_sea" className="anchor">
+                      IMOS OceanCurrent is going to sea!
+                    </a>
+                  </h3>
+                  <em>
+                    <h5>Gabriela S. Pilo, Pier van der Merwe, Ben Arthur, and David Griffin</h5>
+                  </em>
+                </div>
+                <div>
+                  <p className="font-bold">24 July, 2026</p>
+                </div>
+              </div>
+              <div className="overflow-auto rounded-b bg-white p-4">
+                <p>
+                  IMOS OceanCurrent has provided support from shore to several oceanographic voyages onboard CSIRO
+                  Research Vessel (RV)&nbsp;<em>Investigator</em>, Australia's dedicated ocean research vessel. This
+                  year, IMOS OceanCurrent is going to sea! And we'll use the information available on the website to
+                  contextualise the observations made during the voyage.
+                  <br />
+                  <br />
+                  In September 2026, we will join CSIRO technical staff, ship crew, and scientific team aboard the
+                  RV&nbsp;<em>Investigator</em> for <strong>CAPSTAN 06</strong>, a 13-day transit voyage from Brisbane
+                  to Fiji.{' '}
+                  <a
+                    href="https://www.csiro.au/en/about/facilities-collections/mnf/education-training/capstan"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    CAPSTAN
+                  </a>{' '}
+                  (the Collaborative Australian Postgraduate Sea Training Alliance Network) is a tertiary sea-training
+                  program designed to develop Australia's next generation of marine experts. The voyage team will
+                  include 20 university students and six trainers with expertise in education and outreach,
+                  biogeochemistry, physical oceanography, geology and volcanology, marine ecology, and genomics.
+                  <br />
+                  <br />
+                  The planned voyage track (red line in Figure 1) will take us through several scientifically
+                  interesting sites, including shipwreck locations for surveying, the <strong>Fraser Seamount</strong>,
+                  where upstream and downstream ocean conditions will be investigated, and the{' '}
+                  <strong>Loyalty Ridge</strong>, an Eocene island arc targeted for sediment sampling.
+                  <br />
+                  <br />
+                  As we navigate, we'll take underway measurements of several ocean properties and collect samples of
+                  microplastic and plankton. We'll also deploy Argo floats and surface drifters, as the national
+                  contribution to these global programs.
+                  <br />
+                  <br />
+                  You'll be able to follow the RV&nbsp;<em>Investigator</em> via a dedicated voyage page (with 24/7
+                  livestream video) and through the IMOS OceanCurrent website using our regular Sea Surface Temperature
+                  (SST) and Adj. Sea Level Anomaly (SLA) maps. These products will help inform decisions on sampling
+                  patterns near the Fraser Seamount, and provide broader oceanographic context for net tows, plankton
+                  sampling, and observations of marine megafauna.
+                  <br />
+                  <br />
+                  Next month, we'll provide an overview of what ocean conditions to expect on the voyage, and in
+                  September we'll be reporting insights from the voyage along the way.
+                  <br />
+                  <br />
+                  <em>The </em>
+                  <a href="https://www.csiro.au/capstan" target="_blank" rel="noreferrer">
+                    <em>CAPSTAN program</em>
+                  </a>
+                  <em>
+                    {' '}
+                    is a maritime education and training initiative of Australia's national science agency, CSIRO, the
+                    University of Tasmania's Institute for Marine and Antarctic Studies (IMAS), and the Australian and
+                    New Zealand International Scientific Drilling Consortium (ANZIC). CAPSTAN is supported by grants of
+                    sea time on RV Investigator from the CSIRO Marine National Facility (MNF).
+                  </em>{' '}
+                  <em>
+                    IMOS, MNF, and ANZIC receive funding from the National Collaborative Research Infrastructure
+                    Strategy (NCRIS).
+                  </em>
+                  <br />
+                  <br />
+                  <img
+                    alt=""
+                    src="/resource/news/20260724/Fig1_1.png"
+                    style={{ float: 'left', height: '418px', width: '800px', margin: '10px' }}
+                  />
+                </p>
+              </div>
+            </article>
             <article id="20260619" className="p-2">
               <div className="bg-imos-cloud-tint flex items-center justify-between rounded-sm p-4">
                 <div>
