@@ -246,12 +246,7 @@ const EACMooringArrayModalData = () => {
         </p>
         <p className="mb-2">
           For more information on this product see
-          <a
-            href="https://oceancurrent.aodn.org.au/eac_about.php"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="text-imos-sea-blue"
-          >
+          <a href="/about/eac-mooring-array" target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue">
             {' '}
             here
           </a>{' '}
@@ -331,11 +326,11 @@ const TidalCurrentsModalData = () => {
         yet), or back to when actual observations can be included on the graph (1983 in some cases). Browsing the graphs
         with actual observations reveals how Australia&apos;s ocean currents range from tidally-dominated (e.g. in Bass
         Strait as shown at right), to mixed (e.g.
-        <a href="https://oceancurrent.aodn.org.au/tides/monthplots/IMOS_GBRPPS_201207.html" className="oc-link">
+        <a href="/product/tidal-currents/speed?region=CGBR&date=201207&point=IMOS_GBRPPS" className="oc-link">
           Palm Passage
         </a>
         ) to non-tidal, such as off
-        <a href="https://oceancurrent.aodn.org.au/tides/monthplots/IMOS_BMP070_201704.html" className="oc-link">
+        <a href="/product/tidal-currents/speed?region=Aust&date=201704&point=IMOS_BMP070" className="oc-link">
           Bateman&apos;s Bay
         </a>
         .
@@ -357,7 +352,7 @@ const TidalCurrentsModalData = () => {
         <li className="mb-2">
           <strong className="text-imos-sea-blue">60 IMOS ADCPs;</strong> these Acoustic Doppler Current Profilers were
           deployed by or have been contributed to
-          <a href="https://oceancurrent.aodn.org.au/timeseries" className="oc-link">
+          <a href="/about/current-meters" className="oc-link">
             IMOS
           </a>
           . These observations can be assumed to be quite accurate. Here, we use the depth-average of the observations,
@@ -386,7 +381,7 @@ const TidalCurrentsModalData = () => {
           to reproduce due to its imperfect representation of topography. Flood-ebb asymmetries may not be well
           represented by a sum of harmonic tidal constituents, either. The instrument deployed west of Bugatti Reef, for
           example, has one of the highest rms vector differences from the model. This can be
-          <a href="https://oceancurrent.aodn.org.au/tides/monthplots/UNSW_W_Bugatti_Rf_198411.html" className="oc-link">
+          <a href="/product/tidal-currents/speed?region=SGBR&date=198411&point=UNSW_W_Bugatti_Rf" className="oc-link">
             seen
           </a>
           to be mostly due to persistent offsets between the observed flow direction and both the modelled and tidal-fit
@@ -394,7 +389,7 @@ const TidalCurrentsModalData = () => {
           is to the SSW, but the ebb was more likely to be either to the ENE or NW instead of NNE, as shown in the
           hodograph at right (click to enlarge). Neither the tidal self-prediction nor the model represent this. The
           impeller of the
-          <a href="https://oceancurrent.aodn.org.au/tides/monthplots/UNSW_Creal_Rf_198412.html" className="oc-link">
+          <a href="/product/tidal-currents/speed?region=SGBR&date=198412&point=UNSW_Creal_Rf" className="oc-link">
             Creal Reef
           </a>
           meter appears to be intermittently obstructed, so the tidal prediction there is probably not accurate,
@@ -487,11 +482,17 @@ const TidalCurrentsModalData = () => {
       <ol className="font-open-sans list-decimal pl-5 leading-relaxed text-gray-800">
         <li>
           the
-          <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P34/mapst/01_Aust_M2_1.html" className="oc-link">
+          <a
+            href="/product/current-meters/moored-instrument-array?depth=1&property=M2&region=01_Aust&date=0000&deploymentPlot="
+            className="oc-link"
+          >
             tidal component
           </a>
           of the current is weaker than (or comparable to) the
-          <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P34/mapst/01_Aust_vrms_1.html" className="oc-link">
+          <a
+            href="/product/current-meters/moored-instrument-array?depth=1&property=vrms&region=01_Aust&date=0000&deploymentPlot="
+            className="oc-link"
+          >
             non-tidal components
           </a>
           of the current for much of Australia&apos;s marine estate (i.e. nearly everywhere south of 25°S). Our index
@@ -571,11 +572,17 @@ const TidalCurrentsModalData = () => {
         <strong className="text-imos-sea-blue">diurnal and semi-diurnal</strong> Diurnal tidal constituents (e.g. O1,
         K1) have periods near 24-25h. They are smaller than the semi-diurnal (near 12h) constituents in most places, the
         SA Gulfs being a notable exception, where the
-        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P34/mapst/08_SA_K1_1.html" className="oc-link">
+        <a
+          href="/product/current-meters/moored-instrument-array?depth=1&property=K1&region=08_SA&date=0000&deploymentPlot="
+          className="oc-link"
+        >
           K1 currents
         </a>
         are stronger than the
-        <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P34/mapst/08_SA_M2_1.html" className="oc-link">
+        <a
+          href="/product/current-meters/moored-instrument-array?depth=1&property=M2&region=08_SA&date=0000&deploymentPlot="
+          className="oc-link"
+        >
           M2 currents
         </a>
         . They are caused by the asymmetry of the sea level perturbations on the near and far sides of the Earth.
@@ -602,7 +609,7 @@ const TidalCurrentsModalData = () => {
         the tidal current turns from ebbing to flooding, or vice versa, i.e., it is the time when the speed of the tidal
         current is at a local minimum. The timing of slack tide relative to high and low water depends on location, as
         mentioned in our
-        <a href="https://oceancurrent.aodn.org.au/news.php#20230902" className="oc-link">
+        <a href="/news#When_is_slack_tide" className="oc-link">
           September 2023 news item
         </a>
         .
@@ -2056,7 +2063,7 @@ const SwotGslaModalData = () => {
         </a>{' '}
         and{' '}
         <a
-          href="https://oceancurrent.aodn.org.au/news.php#Sea_level_and_storms_the_inverted_barometer_effect"
+          href="/news#Sea_level_and_storms_the_inverted_barometer_effect"
           target="_blank"
           rel="noreferrer noopener"
           className="text-imos-sea-blue"
