@@ -6,6 +6,7 @@ export const APP_ROUTES = {
   INFO: '/info',
   NEWS: '/news',
   NOT_FOUND: '/404',
+  COMING_SOON: '/coming-soon',
 } as const;
 
 export type AppRoute = (typeof APP_ROUTES)[keyof typeof APP_ROUTES];
