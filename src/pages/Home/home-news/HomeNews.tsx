@@ -1,7 +1,7 @@
 import { News } from '@/constants/textConstant';
-import CostalImage from '@/assets/images/Coastal_currents_estimated_from_tide_gauges.gif';
 import CapstanVoyageImage from '@/assets/images/CAPSTAN_06_voyage_what_to_expect.webp';
 import GoingToSeaImage from '@/assets/images/IMOS_OceanCurrent_is_going_to_sea.webp';
+import ShowYourStripesImage from '@/assets/images/Show_Your_Stripes.webp';
 import { ArrowWithTailIcon } from '@/components/Shared/Icons';
 import { LinkOrAnchor } from '@/components/Shared';
 import { APP_ROUTES } from '@/routers/routes';
@@ -22,11 +22,11 @@ const NEWS_DATA = [
     link: '/news#IMOS_OceanCurrent_is_going_to_sea',
   },
   {
-    title: 'Coastal currents estimated from tide gauges',
-    authors: 'David Griffin, Madeleine Cahill, and Gabriela S. Pilo',
-    date: '19.03.2026',
-    image: CostalImage,
-    link: '/news#Coastal_currents_estimated_from_tide_gauges',
+    title: 'Show Your Stripes',
+    authors: 'Gabriela S. Pilo',
+    date: '19.06.2026',
+    image: ShowYourStripesImage,
+    link: '/news#ShowYourStripes',
   },
 ];
 
