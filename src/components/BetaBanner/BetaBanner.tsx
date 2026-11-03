@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CrossIcon } from '@/components/Shared/Icons';
+import { ExternalUrls } from '@/constants/textConstant';
 
 const BetaBanner: React.FC = () => {
   const [visible, setVisible] = useState(true);
@@ -11,7 +12,7 @@ const BetaBanner: React.FC = () => {
       <p className="font-open-sans text-imos-dark-grey m-0 w-full text-left text-base md:text-center">
         We&rsquo;re giving the site a fresh new look. We&rsquo;d greatly appreciate your feedback. {''}
         <a
-          href="https://forms.office.com/Pages/ResponsePage.aspx?id=VV3rFZEZvEaNp6slI03uCCQYYrnLj4dIpn1c2hJluMRUQTJIWVMzMThYMUwxR0RKMUMyM0NEQVVXUS4u"
+          href={ExternalUrls.FEEDBACK_FORM}
           target="_blank"
           rel="noopener noreferrer"
           className="text-imos-dark-grey font-bold underline-offset-2 hover:underline"

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { resetArgoStore } from '@/stores/argo-store/argoStore';
 import { resetMapStore } from '@/stores/map-store/mapStore';
-import { BrandingText } from '@/constants/textConstant';
+import { BrandingText, ExternalUrls, GeneralText } from '@/constants/textConstant';
 import HomeMapCarousel from './home-map-carousel/HomeMapCarousel';
 import HomeProductCarousel from './home-product-carousel/HomeProductCarousel';
 import { HomeNews } from './home-news/HomeNews';
@@ -22,9 +22,17 @@ const Home: React.FC = () => {
           <h2 className="font-open-sans text-imos-text-grey mt-2 px-4 text-center text-xs font-normal sm:text-sm md:mt-4 lg:text-lg xl:px-0 xl:text-xl">
             {BrandingText.OC_SUBHEADING}
           </h2>
+          <a
+            href={ExternalUrls.FEEDBACK_FORM}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-open-sans mt-6 max-w-xs rounded-lg border border-emerald-500 bg-emerald-100 px-6 py-3 text-center text-base font-semibold text-emerald-900 shadow-sm transition-colors hover:bg-emerald-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 md:mt-10 lg:text-lg"
+          >
+            {GeneralText.PROVIDE_FEEDBACK}
+          </a>
         </div>
 
-        <div className="flex h-[650px] w-full flex-col self-center rounded-xl">
+        <div className="flex h-162.5 w-full flex-col self-center rounded-xl">
           <HomeMapCarousel />
         </div>
       </section>
