@@ -1,32 +1,32 @@
 import { News } from '@/constants/textConstant';
 import CostalImage from '@/assets/images/Coastal_currents_estimated_from_tide_gauges.gif';
-import SydneyImage from '@/assets/images/Sydney_to_Hobart_outlook.gif';
-import FishSOOPImage from '@/assets/images/FishSOOP_taking_the_temperature.gif';
+import CapstanVoyageImage from '@/assets/images/CAPSTAN_06_voyage_what_to_expect.jpg';
+import GoingToSeaImage from '@/assets/images/IMOS_OceanCurrent_is_going_to_sea.jpg';
 import { ArrowWithTailIcon } from '@/components/Shared/Icons';
 import { LinkOrAnchor } from '@/components/Shared';
 import { APP_ROUTES } from '@/routers/routes';
 
 const NEWS_DATA = [
   {
+    title: 'CAPSTAN 06 voyage, from Bundaberg to Fraser Seamount – what to expect.',
+    authors: 'Gabriela S. Pilo',
+    date: '10.09.2026',
+    image: CapstanVoyageImage,
+    link: '/news#CAPSTAN_06_voyage_from_Bundaberg_to_Fraser_Seamount_what_to_expect',
+  },
+  {
+    title: 'IMOS OceanCurrent is going to sea!',
+    authors: 'Gabriela S. Pilo, Pier van der Merwe, Ben Arthur, and David Griffin',
+    date: '24.07.2026',
+    image: GoingToSeaImage,
+    link: '/news#IMOS_OceanCurrent_is_going_to_sea',
+  },
+  {
     title: 'Coastal currents estimated from tide gauges',
     authors: 'David Griffin, Madeleine Cahill, and Gabriela S. Pilo',
     date: '19.03.2026',
     image: CostalImage,
     link: '/news#Coastal_currents_estimated_from_tide_gauges',
-  },
-  {
-    title: 'Sydney to Hobart outlook',
-    authors: 'David Griffin',
-    date: '22.12.2025',
-    image: SydneyImage,
-    link: '/news#Sydney_to_Hobart_outlook',
-  },
-  {
-    title: 'FishSOOP: taking the temperature of the coastal ocean from fishing vessels',
-    authors: 'David Griffin and Gabriela S. Pilo',
-    date: '17.12.2025',
-    image: FishSOOPImage,
-    link: '/news#FishSOOP_taking_the_temperature_of_the_coastal_ocean_from_fishing_vessels',
   },
 ];
 
@@ -57,7 +57,11 @@ export const HomeNews = () => {
                 {news.date}{' '}
               </LinkOrAnchor>
             </div>
-            <h3 className="font-open-sans text-imos-dark-grey mt-3 text-lg font-bold">{news.title}</h3>
+            <h3 className="font-open-sans text-imos-dark-grey mt-3 text-lg font-bold">
+              <LinkOrAnchor to={news.link} className="hover:underline">
+                {news.title}
+              </LinkOrAnchor>
+            </h3>
             <LinkOrAnchor to={news.link} className="mt-4 inline-block hover:underline lg:mt-6">
               <span className="text-imos-dark-grey text-[16px]">Read more </span>
               <ArrowWithTailIcon size="xs" className="inline" />
