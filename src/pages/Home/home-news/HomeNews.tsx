@@ -1,7 +1,7 @@
 import { News } from '@/constants/textConstant';
 import CostalImage from '@/assets/images/Coastal_currents_estimated_from_tide_gauges.gif';
-import CapstanVoyageImage from '@/assets/images/CAPSTAN_06_voyage_what_to_expect.jpg';
-import GoingToSeaImage from '@/assets/images/IMOS_OceanCurrent_is_going_to_sea.jpg';
+import CapstanVoyageImage from '@/assets/images/CAPSTAN_06_voyage_what_to_expect.webp';
+import GoingToSeaImage from '@/assets/images/IMOS_OceanCurrent_is_going_to_sea.webp';
 import { ArrowWithTailIcon } from '@/components/Shared/Icons';
 import { LinkOrAnchor } from '@/components/Shared';
 import { APP_ROUTES } from '@/routers/routes';
@@ -50,7 +50,12 @@ export const HomeNews = () => {
             key={news.title + news.authors + news.date}
             className="text-imos-dark-grey col-span-12 flex flex-col object-cover p-2 md:col-span-6 lg:col-span-4"
           >
-            <img src={news.image} alt={news.title} className="aspect-16/10 w-full rounded-md object-cover object-top" />
+            <img
+              src={news.image}
+              alt={news.title}
+              loading="lazy"
+              className="aspect-16/10 w-full rounded-md object-cover object-top"
+            />
             <div className="text-body mt-3 flex justify-between gap-x-2 md:mt-6">
               <p className="truncate" title={news.authors}>
                 {news.authors}
