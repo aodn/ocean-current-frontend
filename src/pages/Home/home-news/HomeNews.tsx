@@ -32,13 +32,13 @@ const NEWS_DATA = [
 
 export const HomeNews = () => {
   return (
-    <div className="max-w-8xl m-auto w-full">
+    <div className="max-w-8xl m-auto w-full px-2 md:px-6">
       <div className="mb-4 flex flex-col justify-between gap-y-3 px-2 md:flex-row md:items-center">
         <h2 className="font-open-sans text-imos-dark-grey text-3xl font-medium md:text-4xl">{News.NEWS}</h2>
 
         <LinkOrAnchor
           to={APP_ROUTES.NEWS}
-          className="border-imos-dark-grey text-imos-dark-grey flex w-full items-center justify-center rounded-lg border bg-white p-2 text-lg hover:opacity-75 md:w-[156px]"
+          className="border-imos-dark-grey text-imos-dark-grey flex w-full items-center justify-center rounded-lg border bg-white p-2 text-lg hover:opacity-75 md:w-39"
         >
           {News.ALL_NEWS}
         </LinkOrAnchor>
@@ -50,10 +50,12 @@ export const HomeNews = () => {
             key={news.title + news.authors + news.date}
             className="text-imos-dark-grey col-span-12 flex flex-col object-cover p-2 md:col-span-6 lg:col-span-4"
           >
-            <img src={news.image} alt={news.title} className="h-80 self-center rounded-md object-contain" />
+            <img src={news.image} alt={news.title} className="aspect-16/10 w-full rounded-md object-cover object-top" />
             <div className="text-body mt-3 flex justify-between gap-x-2 md:mt-6">
-              <p>{news.authors}</p>
-              <LinkOrAnchor to={news.link} className="inline-block hover:underline">
+              <p className="truncate" title={news.authors}>
+                {news.authors}
+              </p>
+              <LinkOrAnchor to={news.link} className="inline-block shrink-0 hover:underline">
                 {news.date}{' '}
               </LinkOrAnchor>
             </div>
