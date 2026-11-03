@@ -9,6 +9,7 @@ export enum GeneralText {
   END_DATE = 'End Date',
   LEGACY_SITE = 'Legacy Site',
   EXPLORE_DATASET = 'Explore dataset',
+  PROVIDE_FEEDBACK = 'Provide feedback on this version of the website [here]',
 }
 
 export enum ProductSidebarText {
@@ -54,4 +55,5 @@ export enum ExternalUrls {
   IMOS = 'https://imos.org.au/',
   OCEAN_CURRENT_NEWS = 'https://imos.org.au/news/category/imos-oceancurrent-facility-news',
   OCEAN_CURRENT_LEGACY = 'https://oceancurrent.aodn.org.au/',
+  FEEDBACK_FORM = 'https://forms.office.com/Pages/ResponsePage.aspx?id=VV3rFZEZvEaNp6slI03uCCQYYrnLj4dIpn1c2hJluMRUQTJIWVMzMThYMUwxR0RKMUMyM0NEQVVXUS4u',
 }

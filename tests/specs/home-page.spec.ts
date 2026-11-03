@@ -113,4 +113,10 @@ test.describe('Home Page Tests', () => {
     // Verify map is still visible on the detail page
     await mapPage.map.expectVisible();
   });
+
+  test('TC012: Feedback Button Links to Feedback Form in New Tab', async ({ homePage }) => {
+    await expect(homePage.feedbackButton).toBeVisible();
+    await expect(homePage.feedbackButton).toHaveAttribute('href', /forms\.office\.com/);
+    await expect(homePage.feedbackButton).toHaveAttribute('target', '_blank');
+  });
 });
