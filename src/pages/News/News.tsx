@@ -1081,13 +1081,8 @@ const News = () => {
                   <br />
                   The 2024 subsurface cooling event was also sampled during a glider survey a bit farther north, off Two
                   Rocks, from 26 to 30 January 2024 (fast forward from&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=TwoRocks20240115_4d/2024012800.html">
-                    here
-                  </a>
-                  , or click&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=TwoRocks20240115_30d/latest.html">
-                    here for the entire glider track
-                  </a>
+                  <a href="/coming-soon?product=gliders">here</a>, or click&nbsp;
+                  <a href="/coming-soon?product=gliders">here for the entire glider track</a>
                   ). The glider measurements from 27-29 January (Figure 3) show bottom waters cooler than 18oC
                   encroaching upon the shelf, but not reaching the surface, and high values of chlorophyll-<em>a</em>
                   &nbsp;concentration.
@@ -1330,9 +1325,7 @@ const News = () => {
                   exceeded 2°C above the seasonal mean (i.e., the average temperature for that time of the year, at that
                   location). In that region, by December, the temperature was 3°C over the seasonal mean at the sea
                   surface (Figure 3b), and 26°C waters were observed down to 100 metres by&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=Onslow20241119_12d/2024120400.html">
-                    a glider off Onslow
-                  </a>
+                  <a href="/coming-soon?product=gliders">a glider off Onslow</a>
                   . An intense Leeuwin Current, acompannied by&nbsp;strong winds from&nbsp;tropical cyclone Sean,
                   carried that hot water southward along the WA shelf break&nbsp;(Figure 3b, c).
                   <br />
@@ -1352,13 +1345,9 @@ const News = () => {
                   <a href="https://imos.org.au/facility/ocean-gliders/event-based-sampling">Event-based</a>
                   &nbsp;facilities have deployed three gliders to monitor this MHW. One glider is currently off Perth
                   doing a routine on-off shelf transect, and two other were&nbsp;deployed off Onslow,
-                  <a href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=Onslow20250129_nrt_4d/latest.html">
-                    one
-                  </a>
+                  <a href="/coming-soon?product=gliders">one</a>
                   doing on-off shelf transects, and
-                  <a href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=Ningaloo20250129_nrt_4d/latest.html">
-                    the other
-                  </a>
+                  <a href="/coming-soon?product=gliders">the other</a>
                   sampling southward along the Ningaloo Coast to be collected in Shark Bay.
                   <br />
                   <br />
@@ -3925,9 +3914,7 @@ const News = () => {
                   3&nbsp;weeks were&nbsp;extraordinary. By 13 April (image 3) we see an elongated body of cold water had
                   extended&nbsp;north from 34S off Sydney&nbsp;to 32S where the frontal eddy had been. The black dots on
                   the image show the trajectory of an
-                  <a href="http://oceancurrent.imos.org.au/gliders/4day.php?link=ForsterA20210329_nrt_30d/2021041400.html">
-                    IMOS glider
-                  </a>
+                  <a href="/coming-soon?product=gliders">IMOS glider</a>
                   that was swept north in this flow (after having a very interesting time sampling the record-breaking
                   floodwaters in the inner shelf - but that's another story). An Argo float also made some observations,
                   a few times&nbsp;
@@ -5220,11 +5207,7 @@ const News = () => {
                   While cloud cover provides great protection for the reef, particularly during this time when reef
                   waters are already at their hottest, it clearly blocks observations using satellite AVHRR SST.
                   In-water observations, however, are ongoing and
-                  <a
-                    href="http://oceancurrent.imos.org.au/gliders/4day.php?link=GBR20200123_nrt_4d/latest.html"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href="/coming-soon?product=gliders" target="_blank" rel="noreferrer">
                     the latest glider observations
                   </a>
                   from the central GBR offshore from Hinchinbrook Island indicate that surface waters have certainly
@@ -7741,10 +7724,7 @@ const News = () => {
                   The
                   <a href="http://anfog.ecm.uwa.edu.au/index.php">IMOS Ocean Glider Facility</a>
                   has launched the
-                  <a href="http://oceancurrent.imos.org.au/gliders/yearmaps.php?link=2018_sl_temp_30d_nrt.html">
-                    third annual glider across Bass Strait
-                  </a>
-                  . It has just
+                  <a href="/coming-soon?product=gliders">third annual glider across Bass Strait</a>. It has just
                   <a href="http://oceancurrent.imos.org.au/daily.php?link=DR_SST_daily/SST/Adelaide/20180309.gif">
                     completed the transect,
                   </a>
@@ -9112,10 +9092,7 @@ const News = () => {
                         glider observations
                       </a>
                       indicated water throughout the water column on the inner shelf was still warmer than
-                      <a href="http://oceancurrent.imos.org.au/gliders/missionts.php?link=sl_Cooktown20160322_nrt.html">
-                        historical observations
-                      </a>
-                      .
+                      <a href="/coming-soon?product=gliders">historical observations</a>.
                     </p>
                   </div>
 
@@ -9133,12 +9110,10 @@ const News = () => {
                       <br />
                       While revealing where the warming occurs, the gliders can also show where cooling occurs. A glider
                       transect in Palm Passage, on the outer Central GBR,&nbsp;
-                      <a href="http://oceancurrent.imos.org.au/gliders/GBR20151103_nrt_12d/latest.html">
-                        detected upwelling
-                      </a>
-                      , in which cooler water lifts up onto the shelf from offshore. This cool water may provide relief
-                      to marine ecosystems sensitive to the marine heatwave. SST from 27 March (below) indicate the
-                      outer reef of the Northern GBR, 2-3 degrees cooler, than the inner reef, may be buffered by a
+                      <a href="/coming-soon?product=gliders">detected upwelling</a>, in which cooler water lifts up onto
+                      the shelf from offshore. This cool water may provide relief to marine ecosystems sensitive to the
+                      marine heatwave. SST from 27 March (below) indicate the outer reef of the Northern GBR, 2-3
+                      degrees cooler, than the inner reef, may be buffered by a
                       <a href="http://www.gbrmpa.gov.au/__data/assets/pdf_file/0016/4444/chpt-3-Steinberg-2007.pdf">
                         combination of upwelling and tidal mixing
                       </a>
@@ -9153,13 +9128,9 @@ const News = () => {
                       for the first time in the Central and Northern GBR. These cascades can occur when heat loss during
                       autumn causes waters to cool and become more dense near the coast. Both cascades occurred nearly
                       at the same time off&nbsp;
-                      <a href="http://oceancurrent.imos.org.au/gliders/Cooktown20160503_nrt_12d/latest.html">
-                        Port Douglas
-                      </a>
+                      <a href="/coming-soon?product=gliders">Port Douglas</a>
                       and the other off
-                      <a href="http://oceancurrent.imos.org.au/gliders/Cooktown20160503_nrt_12d/latest.html">
-                        Mission Beach
-                      </a>
+                      <a href="/coming-soon?product=gliders">Mission Beach</a>
                       south of Cairns. These cascades flow offshore and can cool the communities living near the sea
                       bed. Ongoing glider deployments into winter will inform how long the warming lasts.
                     </p>
@@ -9499,7 +9470,7 @@ const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <div className="row">
-                  <a href="https://oceancurrent.aodn.org.au/gliders/Portland20160128_nrt_12d/2016021312.html">
+                  <a href="/coming-soon?product=gliders">
                     <img src="/resource/gliders/Portland20160128_nrt_12d/2016021312.gif" style={{ width: '350px' }} />
                   </a>
                   <p>
@@ -9508,17 +9479,11 @@ const News = () => {
                     perhaps the most exciting: percent saturation values exceeded 150 within the upwelled water on 3
                     Feb, confirming that the phytoplankton were very actively photo-synthesizing, producing much more
                     oxygen than was lost to the atmosphere. You can step through the mission seeing either
-                    <a
-                      href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=Portland20160128_nrt_4d/latest.html"
-                      target="blank"
-                    >
+                    <a href="/coming-soon?product=gliders" target="blank">
                       4 days
                     </a>
                     or
-                    <a
-                      href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=Portland20160128_nrt_12d/latest.html"
-                      target="blank"
-                    >
+                    <a href="/coming-soon?product=gliders" target="blank">
                       12 days
                     </a>
                     of the mission track at a time.
@@ -9981,10 +9946,7 @@ const News = () => {
                 <a href="https://oceancurrent.aodn.org.au/sst.php?link=SNSW_chl/2015/2015042504.html" target="blank">
                   <img src="/resource/SNSW_chl/2015/2015042504.gif" style={{ height: '200px' }} />
                 </a>
-                <a
-                  href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=Yamba20150416_4d/2015050100.html"
-                  target="blank"
-                >
+                <a href="/coming-soon?product=gliders" target="blank">
                   <img src="/resource/gliders/Yamba20150416_4d/2015050100.gif" style={{ height: '200px' }} />
                 </a>
                 <p>
@@ -10012,18 +9974,12 @@ const News = () => {
                   An IMOS Slocum glider was also on the job. Its track is shown in magenta overlain on the MODIS images.
                   Its sensors very clearly distinguish the floodwaters from the ocean waters, especially through the
                   impact on the water's salinity and fluorescence. Click forward from
-                  <a
-                    href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=Yamba20150416_4d/2015042612.html"
-                    target="blank"
-                  >
+                  <a href="/coming-soon?product=gliders" target="blank">
                     26 April
                   </a>
                   to see the glider encounter, then depart from, the buoyant pool of floodwaters. The observations
                   during the latter half of
-                  <a
-                    href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=Yamba20150416_4d/2015050100.html"
-                    target="blank"
-                  >
+                  <a href="/coming-soon?product=gliders" target="blank">
                     30 April
                   </a>
                   show how the seaward edge of the plume is over-ridden by the EAC water because the temperature effect
@@ -10124,16 +10080,10 @@ const News = () => {
                 <p>
                   Off Perth, the coastal waters were being drawn into a large anticyclonic Leewin Current eddy on 27 Mar
                   2009. Two IMOS Slocum gliders
-                  <a
-                    href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=TwoRocks20090313_4d/2009032700.html"
-                    target="blank"
-                  >
+                  <a href="/coming-soon?product=gliders" target="blank">
                     [1]
                   </a>
-                  <a
-                    href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=TwoRocks20090327_4d/2009033100.html"
-                    target="blank"
-                  >
+                  <a href="/coming-soon?product=gliders" target="blank">
                     [2]
                   </a>
                   sampled the water over the continental shelf out to the front, confirming that what we see from the
