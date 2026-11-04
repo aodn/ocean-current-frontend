@@ -3,7 +3,7 @@ import { MapImageAreas } from '@/types/dataImage';
 const regionArr: MapImageAreas[] = [
   {
     shape: 'rect',
-    coords: [427, 213, 436, 223],
+    coords: [428, 213, 436, 223],
     href: '../SYD100/index.html',
     alt: 'SYD100',
     name: 'SYD100',
@@ -11,7 +11,7 @@ const regionArr: MapImageAreas[] = [
   },
   {
     shape: 'rect',
-    coords: [483, 265, 491, 275],
+    coords: [484, 261, 492, 271],
     href: '../SYD140/index.html',
     alt: 'SYD140',
     name: 'SYD140',
@@ -19,7 +19,7 @@ const regionArr: MapImageAreas[] = [
   },
   {
     shape: 'rect',
-    coords: [300, 389, 309, 399],
+    coords: [300, 389, 308, 399],
     href: '../PH100/index.html',
     alt: 'PH100',
     name: 'PH100',

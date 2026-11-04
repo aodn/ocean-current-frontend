@@ -11,7 +11,7 @@ const regionArr: MapImageAreas[] = [
   },
   {
     shape: 'rect',
-    coords: [440, 238, 449, 248],
+    coords: [441, 239, 450, 249],
     href: '../GBRMYR/index.html',
     alt: 'GBRMYR',
     name: 'GBRMYR',

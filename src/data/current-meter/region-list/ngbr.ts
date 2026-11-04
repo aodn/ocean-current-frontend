@@ -3,7 +3,7 @@ import { MapImageAreas } from '@/types/dataImage';
 const regionArr: MapImageAreas[] = [
   {
     shape: 'rect',
-    coords: [427, 238, 437, 248],
+    coords: [428, 238, 437, 248],
     href: '../GBRLSL/index.html',
     alt: 'GBRLSL',
     name: 'GBRLSL',

@@ -3,7 +3,7 @@ import { MapImageAreas } from '@/types/dataImage';
 const regionArr: MapImageAreas[] = [
   {
     shape: 'rect',
-    coords: [207, 267, 216, 277],
+    coords: [207, 266, 215, 276],
     href: '../WATR50/index.html',
     alt: 'WATR50',
     name: 'WATR50',
@@ -51,7 +51,7 @@ const regionArr: MapImageAreas[] = [
   },
   {
     shape: 'rect',
-    coords: [503, 446, 512, 456],
+    coords: [503, 446, 511, 456],
     href: '../NRSROT/index.html',
     alt: 'NRSROT',
     name: 'NRSROT',

@@ -482,7 +482,7 @@ describe('buildCurrentMetersMapImageUrl', () => {
     const imageUrl = buildCurrentMetersMapImageUrl(region, date, property, depth);
 
     // Assert
-    expect(imageUrl).toBe(`${imageBaseUrl}/timeseries/ANMN_P49/mapst/01_Aust_vmean_1_2024.gif`);
+    expect(imageUrl).toBe(`${imageBaseUrl}/timeseries/ANMN_P54/mapst/01_Aust_vmean_1_2024.gif`);
   });
 });
 

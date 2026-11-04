@@ -237,7 +237,7 @@ const buildCurrentMetersMapImageUrl = (
 ): string => {
   const formattedYear = date === '0000' ? '' : `_${date}`;
 
-  return `${imageUrlConfig.imageBaseUrl}/timeseries/ANMN_P49/mapst/${region}_${property}_${depth}${formattedYear}.gif`;
+  return `${imageUrlConfig.imageBaseUrl}/timeseries/ANMN_P54/mapst/${region}_${property}_${depth}${formattedYear}.gif`;
 };
 
 const buildCurrentMetersDataImageUrl = (deploymentPlotPath: string, plotId: string) => {
