@@ -12,11 +12,8 @@ test.use({
 const fixtureRoot = 'src/pages/GlidersMap/fixtures/';
 
 test.beforeEach(async ({ page }) => {
-  await page.route('**/api/v1/gliders/missions?**', async (route) => {
-    const query = new URL(route.request().url()).searchParams;
-    const mode = query.get('nrt') === 'true' ? 'nrt' : 'delayed';
-    const name = `missions-${query.get('q')}-${mode}.json`;
-    await route.fulfill({ body: readFileSync(`${fixtureRoot}${name}`), contentType: 'application/json' });
+  await page.route('**/resource/api/gliders-yearmaps.json', async (route) => {
+    await route.fulfill({ body: readFileSync(`${fixtureRoot}yearmaps.json`), contentType: 'application/json' });
   });
   // A deterministic, empty basemap still exercises the real Mapbox/WebGL GeoJSON layer.
   // Tests verify map rendering without depending on Mapbox tile availability.
@@ -49,7 +46,9 @@ test.beforeEach(async ({ page }) => {
 test('shows only the map beside product navigation', async ({ page }) => {
   const legacyRequests: string[] = [];
   page.on('request', (request) => {
-    if (new URL(request.url()).pathname.startsWith('/resource/gliders/')) legacyRequests.push(request.url());
+    const path = new URL(request.url()).pathname;
+    if (path.startsWith('/resource/gliders/') || path.startsWith('/api/v1/gliders/'))
+      legacyRequests.push(request.url());
   });
   await page.goto('/map/gliders');
   const map = page.getByRole('region', { name: 'Interactive Australia deployment map' });
@@ -61,9 +60,22 @@ test('shows only the map beside product navigation', async ({ page }) => {
   await expect(page.getByRole('region', { name: 'Deployment calendar chart' })).toHaveCount(0);
   await expect(page.getByRole('combobox', { name: 'Deployment', exact: true })).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Zoom in', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Zoom in', exact: true }).click();
+  const canvas = await map.locator('canvas').boundingBox();
+  expect(canvas).not.toBeNull();
+  if (canvas) {
+    const x = canvas.x + canvas.width / 2;
+    const y = canvas.y + canvas.height / 2;
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    await page.mouse.move(x + 80, y + 40, { steps: 10 });
+    await page.mouse.up();
+  }
+  await expect(map).toHaveAccessibleDescription(/12 highlighted deployment areas/);
+  expect(legacyRequests).toEqual([]);
 });
 
-test('keeps the MVP map usable on mobile', async ({ page }) => {
+test('keeps the deployment map usable on mobile', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/map/gliders');
   const map = page.getByRole('region', { name: 'Interactive Australia deployment map' });

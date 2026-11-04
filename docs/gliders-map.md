@@ -1,15 +1,22 @@
-# Gliders map MVP
+# Gliders deployment map
 
-`/map/gliders` displays the shared Mapbox map with blue deployment markers beside the existing product-navigation sidebar. There are no Gliders options, calendar, deployment selectors or rectangle interactions.
+`/map/gliders` shows glider deployment rectangles on the shared Mapbox map beside the product-navigation sidebar.
 
-The MVP is fixed to the twelve known Slocum NRT missions on the checked 2026 source map. Mission centre coordinates are fetched from `/api/v1/gliders/missions?q=2026&nrt=true&page=0&size=100` using the shared Axios client and TanStack Query. Positions are paginated within this partition if needed.
+## Data source
 
-The existing `convertAreaCoordsToGeoJsonCoordinates` helper builds the rectangle polygons. Mission and marker types live in `src/types/gliders.ts`, and the API function is `fetchGliderMissions`.
+Geometry comes from the published `/resource/api/gliders-yearmaps.json` (`schema_version: 1`), fetched once with
+`ec2ProxyClient` and cached with TanStack Query (`sharedQueryConfig`). Each entry in `maps` is one yearmap
+(`id`, `year`, `platform`, `variable`, `window`, `is_nrt`) with its `deployments`
+(`mission_name`, `pixel_rect`, `bbox`, `url`). No mission-endpoint or legacy HTML/image requests are made for geometry.
 
-Rectangle width and height, in degrees, are hardcoded per mission in `src/configs/products/gliders-map-mvp.ts`. They were derived once from the verified original source rectangles and the independently validated 2026 calibration. `src/utils/gliders-map-utils/mvp-deployments.ts` centres those fixed-size markers on the API's current mission coordinates.
+## Map selection
 
-There is no HTML download, GIF download, hidden image, image-size measurement or runtime calibration. The production implementation contains no HTML parser or calibration utilities. Fixtures and the prior calibration investigation are outside the staged MVP.
+The page uses the most recent year that has at least one deployment with bounds, prefers NRT
+maps for that year, then prefers the default variable and window in `src/configs/products/gliders-map.ts`
+(`temp`, `04d`).
 
-The rectangles are display markers, not scientific trajectory bounds. This MVP does not add new missions or extend its hardcoded dimensions to other years/platforms automatically. Missing API positions are omitted, and empty/error states do not substitute an old image.
+## Polygons and interaction
 
-Tests were adjusted for the simplified MVP but were not run, as requested.
+Each deployment `bbox` (`[west, south, east, north]`) becomes a polygon via `convertAreaCoordsToGeoJsonCoordinates`.
+Deployments with `bbox: null` are skipped. Deployment polygons are display-only; clicking them does not navigate or open a new tab.
+A map with no bounds shows an empty state; a failed request shows an error with a retry button.
