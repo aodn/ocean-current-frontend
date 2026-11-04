@@ -31,3 +31,12 @@ export interface GliderDeploymentProperties {
   id: string;
   label: string;
 }
+
+/** Fields used by the mission page; IDs retain the published processing version. */
+export interface GliderMission {
+  id: string;
+  mission_name: string;
+  visualisations: {
+    latest_images?: Partial<Record<string, string | null>> | null;
+  };
+}

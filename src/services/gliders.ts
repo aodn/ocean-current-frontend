@@ -1,5 +1,5 @@
-import type { GliderYearmap, GliderYearmapsResponse } from '@/types/gliders';
-import { ec2ProxyClient } from './httpClient';
+import type { GliderMission, GliderYearmap, GliderYearmapsResponse } from '@/types/gliders';
+import { apiClient, ec2ProxyClient } from './httpClient';
 
 export async function fetchGliderYearmaps(signal?: AbortSignal): Promise<GliderYearmap[]> {
   const { data } = await ec2ProxyClient.get<GliderYearmapsResponse>('/api/gliders-yearmaps.json', { signal });
@@ -7,4 +7,27 @@ export async function fetchGliderYearmaps(signal?: AbortSignal): Promise<GliderY
     throw new Error('Unsupported Gliders yearmaps response');
   }
   return data.maps;
+}
+
+/** Match the exact published name; the API's search is a paginated substring search. */
+export async function fetchGliderMission(missionName: string, signal?: AbortSignal): Promise<GliderMission> {
+  const matches: GliderMission[] = [];
+  let page = 0;
+  let total: number;
+  do {
+    const { data } = await apiClient.get<{ missions: GliderMission[]; total: number }>('/gliders/missions', {
+      params: { q: missionName, size: 100, page },
+      signal,
+    });
+    matches.push(...data.missions.filter(({ mission_name }) => mission_name === missionName));
+    total = data.total;
+    page += 1;
+  } while (page * 100 < total);
+  if (matches.length !== 1) throw new Error(`Expected one mission for ${missionName}; found ${matches.length}`);
+  return matches[0];
+}
+
+export async function fetchGliderMissionById(id: string, signal?: AbortSignal): Promise<GliderMission> {
+  const { data } = await apiClient.get<GliderMission>(`/gliders/missions/${encodeURIComponent(id)}`, { signal });
+  return data;
 }
