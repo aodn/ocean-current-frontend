@@ -56,3 +56,57 @@ it('supports retry after the request fails', async () => {
   await userEvent.click(await screen.findByRole('button', { name: 'Try again' }));
   await screen.findByTestId('interactive-map');
 });
+
+it('switches types locally and selects an available type when changing years', async () => {
+  const seaglider = maps.find(({ platform }) => platform === 'sg')!;
+  vi.mocked(source.fetchGliderYearmaps).mockResolvedValueOnce([
+    ...maps,
+    { ...seaglider, id: '2026_sg_temp_04d', year: 2026 },
+    { ...seaglider, id: '2030_sg_temp_04d', year: 2030, deployments: [] },
+    {
+      ...seaglider,
+      id: '2008_sg_temp_04d',
+      year: 2008,
+      deployments: seaglider.deployments.map((deployment) => ({ ...deployment, bbox: null })),
+    },
+  ]);
+  setup();
+  const year = await screen.findByRole('combobox', { name: 'Year' });
+  const type = screen.getByRole('button', { name: 'Glider type' });
+  expect(year).toHaveValue('2026');
+  expect(type).toHaveTextContent('Slocum');
+  expect([...year.querySelectorAll('option')].map((option) => option.value)).toEqual(['2026', '2011', '2008']);
+  await userEvent.click(type);
+  await userEvent.click(screen.getByRole('menuitemradio', { name: 'Seaglider' }));
+  expect(screen.getByTestId('deployment-layer')).toHaveAttribute('data-ids', 'Bicheno20100813');
+  await userEvent.selectOptions(year, '2011');
+  expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Seaglider');
+  await userEvent.selectOptions(year, '2008');
+  expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Slocum');
+  expect(screen.getByRole('button', { name: 'Glider type' })).toBeDisabled();
+  expect(screen.getByTestId('deployment-layer')).toHaveAttribute(
+    'data-ids',
+    'PortStephens20081125,SpencerGulf20080716,TwoRocks20080621',
+  );
+  expect(source.fetchGliderYearmaps).toHaveBeenCalledTimes(1);
+});
+
+it('navigates available years with arrows and resets to the current or latest available year', async () => {
+  setup();
+  const year = await screen.findByRole('combobox', { name: 'Year' });
+  const previous = screen.getByRole('button', { name: 'Previous year' });
+  const next = screen.getByRole('button', { name: 'Next year' });
+  expect(next).toBeDisabled();
+  await userEvent.click(previous);
+  expect(year).toHaveValue('2011');
+  expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Seaglider');
+  await userEvent.click(previous);
+  expect(year).toHaveValue('2008');
+  expect(previous).toBeDisabled();
+  await userEvent.click(next);
+  expect(year).toHaveValue('2011');
+  await userEvent.click(screen.getByRole('button', { name: 'Reset to current year' }));
+  expect(year).toHaveValue('2026');
+  expect(next).toBeDisabled();
+  expect(source.fetchGliderYearmaps).toHaveBeenCalledTimes(1);
+});

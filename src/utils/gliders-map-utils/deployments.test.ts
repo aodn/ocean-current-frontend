@@ -18,6 +18,14 @@ describe('selectGliderYearmap', () => {
     expect(selectGliderYearmap([...maps, unverified2030])?.id).toBe('2026_sl_temp_04d_nrt');
   });
 
+  it('restricts selection to the requested year and type, preserving map preferences', () => {
+    expect(selectGliderYearmap(maps, 2011, 'sg')?.id).toBe('2011_sg_temp_04d');
+    expect(selectGliderYearmap(maps, 2011, 'sl')).toBeUndefined();
+    expect(selectGliderYearmap(maps, 2026, 'sl')?.id).toBe('2026_sl_temp_04d_nrt');
+    const fallback = { ...byId('2008_sl_temp_04d'), variable: 'salt', window: '01d' };
+    expect(selectGliderYearmap([fallback], 2008, 'sl')).toBe(fallback);
+  });
+
   it('returns undefined when no yearmap has bounds', () => {
     expect(selectGliderYearmap([])).toBeUndefined();
   });

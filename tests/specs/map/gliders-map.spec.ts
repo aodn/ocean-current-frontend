@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import type { GliderYearmapsResponse } from '../../../src/types/gliders';
 import { test, expect } from '../../fixtures/base-test';
 
 // A stale DISPLAY can make headless Chromium initialise Vulkan through an unavailable X server.
@@ -94,3 +95,80 @@ test('preserves product switching in the sidebar', async ({ page }) => {
   await expect(page).toHaveURL(/\/map\/gliders/);
   await expect(page.getByRole('region', { name: 'Interactive Australia deployment map' })).toBeVisible();
 });
+
+for (const width of [1280, 390]) {
+  test(`switches year and type without refetching at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 844 });
+    let requests = 0;
+    await page.route('**/resource/api/gliders-yearmaps.json', async (route) => {
+      requests++;
+      const data = JSON.parse(readFileSync(`${fixtureRoot}yearmaps.json`, 'utf8')) as GliderYearmapsResponse;
+      const seaglider = data.maps.find(({ platform }) => platform === 'sg')!;
+      data.maps.push({ ...seaglider, id: '2026_sg_temp_04d', year: 2026 });
+      await route.fulfill({ json: data });
+    });
+    await page.goto('/map/gliders');
+    const year = page.getByRole('combobox', { name: 'Year', exact: true });
+    const type = page.getByRole('button', { name: 'Glider type', exact: true });
+    const map = page.getByRole('region', { name: 'Interactive Australia deployment map' });
+    await expect(year).toHaveValue('2026');
+    await expect(type).toHaveText('Slocum');
+    await type.click();
+    await page.getByRole('menuitemradio', { name: 'Seaglider' }).getByText('Seaglider').click();
+    await expect(type).toHaveText('Seaglider');
+    await expect(map).toHaveAccessibleDescription(/1 highlighted deployment areas on map 2026_sg_temp_04d/);
+    await type.click();
+    await page.getByRole('menuitemradio', { name: 'Slocum' }).click({ position: { x: 24, y: 24 } });
+    await expect(type).toHaveText('Slocum');
+    await year.focus();
+    await year.press('ArrowDown');
+    await year.press('Tab');
+    await expect(year).toHaveValue('2011');
+    await type.focus();
+    await year.focus();
+    await year.press('Home');
+    await year.press('Tab');
+    await expect(year).toHaveValue('2026');
+    await type.focus();
+    await type.press('Enter');
+    await expect(page.getByRole('menuitemradio', { name: 'Seaglider' })).toBeFocused();
+    await page.screenshot({ path: `/tmp/gliders-type-menu-${width}.png`, fullPage: true });
+    await page.getByRole('menuitemradio', { name: 'Seaglider' }).press('Escape');
+    await expect(type).toBeFocused();
+    await expect(page.getByRole('menuitemradio', { name: 'Slocum', exact: true })).toHaveCount(0);
+    await type.press('Enter');
+    await page.getByRole('menuitemradio', { name: 'Seaglider' }).press('Home');
+    await page.getByRole('menuitemradio', { name: 'Slocum' }).press('Enter');
+    await expect(type).toHaveText('Slocum');
+    await type.press('Enter');
+    await page.getByRole('menuitemradio', { name: 'Slocum' }).press('End');
+    await page.getByRole('menuitemradio', { name: 'Seaglider' }).press('Enter');
+    await expect(type).toHaveText('Seaglider');
+    await expect(map).toHaveAccessibleDescription(/1 highlighted deployment areas on map 2026_sg_temp_04d/);
+    await year.selectOption('2008');
+    await expect(type).toHaveText('Slocum');
+    await expect(type).toBeDisabled();
+    await expect(type.locator('svg')).toHaveCount(1);
+    await expect(map).toHaveAccessibleDescription(/3 highlighted deployment areas on map 2008_sl_temp_04d/);
+    for (const control of [year, type]) {
+      const bounds = await control.boundingBox();
+      expect(bounds).not.toBeNull();
+      expect((await (control === year ? control.locator('../..') : control.locator('..')).boundingBox())!.height).toBe(
+        44,
+      );
+      expect(bounds!.x).toBeGreaterThanOrEqual(0);
+      expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+      expect(bounds!.y + bounds!.height).toBeLessThanOrEqual((await map.boundingBox())!.y);
+    }
+    await expect(page.getByRole('button', { name: 'Previous year', exact: true })).toBeDisabled();
+    await page.getByRole('button', { name: 'Next year', exact: true }).click();
+    await expect(year).toHaveValue('2011');
+    await page.getByRole('button', { name: 'Previous year', exact: true }).click();
+    await expect(year).toHaveValue('2008');
+    await page.getByRole('button', { name: 'Reset to current year', exact: true }).click();
+    await expect(year).toHaveValue('2026');
+    await expect(page.getByRole('button', { name: 'Next year', exact: true })).toBeDisabled();
+    await page.screenshot({ path: `/tmp/gliders-toolbar-${width}.png`, fullPage: true });
+    expect(requests).toBe(1);
+  });
+}
