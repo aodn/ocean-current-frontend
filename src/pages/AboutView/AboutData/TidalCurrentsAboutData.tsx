@@ -7,7 +7,7 @@ export const TidalCurrentsAboutData = () => {
       <h3 className="text-base font-semibold">1) Half-hourly, regional maps</h3>
       <div className="mx-auto max-w-xl">
         <a
-          href="https://oceancurrent.aodn.org.au/tides/Darwin_spd/2026/index.html"
+          href="/product/tidal-currents/speed?region=Darwin"
           target="_blank"
           rel="noreferrer noopener"
           className="block"
@@ -21,7 +21,7 @@ export const TidalCurrentsAboutData = () => {
           />
         </a>
         <a
-          href="https://oceancurrent.aodn.org.au/tides/HydrogPass_spd/2026/index.html"
+          href="/product/tidal-currents/speed?region=HydrogPass"
           target="_blank"
           rel="noreferrer noopener"
           className="block"
@@ -63,7 +63,7 @@ export const TidalCurrentsAboutData = () => {
       <h3 className="text-base font-semibold">2) Month-per-page graphs</h3>
       <div className="mx-auto max-w-xl">
         <a
-          href="https://oceancurrent.aodn.org.au/tides/monthplots/UTas_ARENA_CW4_201804.html"
+          href="/product/tidal-currents/speed?region=Darwin&date=201804&point=UTas_ARENA_CW4"
           target="_blank"
           rel="noreferrer noopener"
           className="block"
@@ -95,7 +95,7 @@ export const TidalCurrentsAboutData = () => {
         with actual observations reveals how Australia&apos;s ocean currents range from tidally-dominated (e.g. in Bass
         Strait as shown at right), to mixed (e.g.{' '}
         <a
-          href="https://oceancurrent.aodn.org.au/tides/monthplots/IMOS_GBRPPS_201207.gif"
+          href="/resource/tides/monthplots/IMOS_GBRPPS_201207.gif"
           target="_blank"
           rel="noreferrer noopener"
           className="text-imos-sea-blue"
@@ -104,7 +104,7 @@ export const TidalCurrentsAboutData = () => {
         </a>
         ) to non-tidal, such as off{' '}
         <a
-          href="https://oceancurrent.aodn.org.au/tides/monthplots/IMOS_BMP070_201704.gif"
+          href="/resource/tides/monthplots/IMOS_BMP070_201704.gif"
           target="_blank"
           rel="noreferrer noopener"
           className="text-imos-sea-blue"
@@ -117,7 +117,7 @@ export const TidalCurrentsAboutData = () => {
       <ul className="list-disc space-y-2 pl-6">
         <li>
           <a
-            href="https://oceancurrent.aodn.org.au/news.php#20190911"
+            href="/news#Tidal_current_predictions_go_ahead_and_use_them_conditions_apply"
             target="_blank"
             rel="noreferrer noopener"
             className="text-imos-sea-blue"
@@ -127,12 +127,7 @@ export const TidalCurrentsAboutData = () => {
           Opening announcement.
         </li>
         <li>
-          <a
-            href="https://oceancurrent.aodn.org.au/news.php#20230902"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="text-imos-sea-blue"
-          >
+          <a href="/news#When_is_slack_tide" target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue">
             <strong>Sept. 2023</strong>
           </a>{' '}
           Focus on slack tides.
@@ -155,12 +150,7 @@ export const TidalCurrentsAboutData = () => {
         ). The observation-based predictions of tidal current are made at 100 locations around Australia, using
       </p>
       <div className="mx-auto max-w-xl">
-        <a
-          href="https://oceancurrent.aodn.org.au/tides/hodographs/TernI.html"
-          target="_blank"
-          rel="noreferrer noopener"
-          className="block"
-        >
+        <a href="/resource/tides/hodographs/TernI.gif" target="_blank" rel="noreferrer noopener" className="block">
           <img
             src="/resource/tides/hodographs/TernI.gif"
             alt="Hodograph showing tidal current at Tern Island"
@@ -174,12 +164,7 @@ export const TidalCurrentsAboutData = () => {
         <li>
           <strong>60 IMOS ADCPs;</strong> these Acoustic Doppler Current Profilers were deployed by or have been
           contributed to{' '}
-          <a
-            href="https://oceancurrent.aodn.org.au/about/current-meters"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="text-imos-sea-blue"
-          >
+          <a href="/about/current-meters" target="_blank" rel="noreferrer noopener" className="text-imos-sea-blue">
             IMOS
           </a>
           . These observations can be assumed to be quite accurate. Here, we use the depth-average of the observations,
@@ -219,7 +204,7 @@ export const TidalCurrentsAboutData = () => {
           tidal constituents, either. The instrument deployed west of Bugatti Reef, for example, has one of the highest
           rms vector differences from the model. This can be{' '}
           <a
-            href="https://oceancurrent.aodn.org.au/tides/monthplots/UNSW_W_Bugatti_Rf_198411.html"
+            href="/product/tidal-currents/speed?region=SGBR&date=198411&point=UNSW_W_Bugatti_Rf"
             target="_blank"
             rel="noreferrer noopener"
             className="text-imos-sea-blue"

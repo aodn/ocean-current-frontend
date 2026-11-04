@@ -1,44 +1,44 @@
 import { News } from '@/constants/textConstant';
-import CostalImage from '@/assets/images/Coastal_currents_estimated_from_tide_gauges.gif';
-import SydneyImage from '@/assets/images/Sydney_to_Hobart_outlook.gif';
-import FishSOOPImage from '@/assets/images/FishSOOP_taking_the_temperature.gif';
+import CapstanVoyageImage from '@/assets/images/CAPSTAN_06_voyage_what_to_expect.webp';
+import GoingToSeaImage from '@/assets/images/IMOS_OceanCurrent_is_going_to_sea.webp';
+import ShowYourStripesImage from '@/assets/images/Show_Your_Stripes.webp';
 import { ArrowWithTailIcon } from '@/components/Shared/Icons';
 import { LinkOrAnchor } from '@/components/Shared';
 import { APP_ROUTES } from '@/routers/routes';
 
 const NEWS_DATA = [
   {
-    title: 'Coastal currents estimated from tide gauges',
-    authors: 'David Griffin, Madeleine Cahill, and Gabriela S. Pilo',
-    date: '19.03.2026',
-    image: CostalImage,
-    link: '/news#Coastal_currents_estimated_from_tide_gauges',
+    title: 'CAPSTAN 06 voyage, from Bundaberg to Fraser Seamount – what to expect.',
+    authors: 'Gabriela S. Pilo',
+    date: '10.09.2026',
+    image: CapstanVoyageImage,
+    link: '/news#CAPSTAN_06_voyage_from_Bundaberg_to_Fraser_Seamount_what_to_expect',
   },
   {
-    title: 'Sydney to Hobart outlook',
-    authors: 'David Griffin',
-    date: '22.12.2025',
-    image: SydneyImage,
-    link: '/news#Sydney_to_Hobart_outlook',
+    title: 'IMOS OceanCurrent is going to sea!',
+    authors: 'Gabriela S. Pilo, Pier van der Merwe, Ben Arthur, and David Griffin',
+    date: '24.07.2026',
+    image: GoingToSeaImage,
+    link: '/news#IMOS_OceanCurrent_is_going_to_sea',
   },
   {
-    title: 'FishSOOP: taking the temperature of the coastal ocean from fishing vessels',
-    authors: 'David Griffin and Gabriela S. Pilo',
-    date: '17.12.2025',
-    image: FishSOOPImage,
-    link: '/news#FishSOOP_taking_the_temperature_of_the_coastal_ocean_from_fishing_vessels',
+    title: 'Show Your Stripes',
+    authors: 'Gabriela S. Pilo',
+    date: '19.06.2026',
+    image: ShowYourStripesImage,
+    link: '/news#ShowYourStripes',
   },
 ];
 
 export const HomeNews = () => {
   return (
-    <div className="max-w-8xl m-auto w-full">
+    <div className="max-w-8xl m-auto w-full px-2 md:px-6">
       <div className="mb-4 flex flex-col justify-between gap-y-3 px-2 md:flex-row md:items-center">
         <h2 className="font-open-sans text-imos-dark-grey text-3xl font-medium md:text-4xl">{News.NEWS}</h2>
 
         <LinkOrAnchor
           to={APP_ROUTES.NEWS}
-          className="border-imos-dark-grey text-imos-dark-grey flex w-full items-center justify-center rounded-lg border bg-white p-2 text-lg hover:opacity-75 md:w-[156px]"
+          className="border-imos-dark-grey text-imos-dark-grey flex w-full items-center justify-center rounded-lg border bg-white p-2 text-lg hover:opacity-75 md:w-39"
         >
           {News.ALL_NEWS}
         </LinkOrAnchor>
@@ -50,14 +50,25 @@ export const HomeNews = () => {
             key={news.title + news.authors + news.date}
             className="text-imos-dark-grey col-span-12 flex flex-col object-cover p-2 md:col-span-6 lg:col-span-4"
           >
-            <img src={news.image} alt={news.title} className="h-80 self-center rounded-md object-contain" />
+            <img
+              src={news.image}
+              alt={news.title}
+              loading="lazy"
+              className="aspect-16/10 w-full rounded-md object-cover object-top"
+            />
             <div className="text-body mt-3 flex justify-between gap-x-2 md:mt-6">
-              <p>{news.authors}</p>
-              <LinkOrAnchor to={news.link} className="inline-block hover:underline">
+              <p className="truncate" title={news.authors}>
+                {news.authors}
+              </p>
+              <LinkOrAnchor to={news.link} className="inline-block shrink-0 hover:underline">
                 {news.date}{' '}
               </LinkOrAnchor>
             </div>
-            <h3 className="font-open-sans text-imos-dark-grey mt-3 text-lg font-bold">{news.title}</h3>
+            <h3 className="font-open-sans text-imos-dark-grey mt-3 text-lg font-bold">
+              <LinkOrAnchor to={news.link} className="hover:underline">
+                {news.title}
+              </LinkOrAnchor>
+            </h3>
             <LinkOrAnchor to={news.link} className="mt-4 inline-block hover:underline lg:mt-6">
               <span className="text-imos-dark-grey text-[16px]">Read more </span>
               <ArrowWithTailIcon size="xs" className="inline" />

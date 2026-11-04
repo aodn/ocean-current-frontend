@@ -51,6 +51,251 @@ const News = () => {
               selectedFilter !== null && selectedFilter !== '2023-now' && 'hidden',
             )}
           >
+            <article id="20260910" className="p-2">
+              <div className="bg-imos-cloud-tint flex items-center justify-between rounded-sm p-4">
+                <div>
+                  <h3 id="CAPSTAN_06_voyage_from_Bundaberg_to_Fraser_Seamount_what_to_expect">
+                    <a href="#CAPSTAN_06_voyage_from_Bundaberg_to_Fraser_Seamount_what_to_expect" className="anchor">
+                      CAPSTAN 06 voyage, from Bundaberg to Fraser Seamount – what to expect.
+                    </a>
+                  </h3>
+                  <em>
+                    <h5>Gabriela S. Pilo</h5>
+                  </em>
+                </div>
+                <div>
+                  <p className="font-bold">10 September, 2026</p>
+                </div>
+              </div>
+              <div className="overflow-auto rounded-b bg-white p-4">
+                <p>
+                  <a href="#IMOS_OceanCurrent_is_going_to_sea">IMOS OceanCurrent is going to sea</a> on the upcoming
+                  CAPSTAN 06 voyage, where we'll use the information available on the website to contextualise the
+                  observations taken during the voyage. We are boarding CSIRO research vessel (RV) <em>Investigator</em>{' '}
+                  today!
+                  <br />
+                  <br />
+                  Following departure from Brisbane and initial activities in coastal waters, the first open ocean part
+                  of the CAPSTAN 06 voyage to Fiji onboard the RV&nbsp;<em>Investigator</em> will depart from waters
+                  near Bundaberg and head towards the Fraser Seamount, a seamount located ~200 km east of Australia.
+                  There, we plan to take targeted measurements of the circulation and water properties around the
+                  seamount.
+                  <br />
+                  <br />
+                  As we depart from waters near Bundaberg (Figure 1a, orange star), we'll find Sea Surface Temperatures
+                  (SST) of ~20degC (~1degC warmer than climatological values; Figure 1a, b) before meeting the East
+                  Australian Current (EAC) at the continental shelf break. At the moment, the EAC is narrow and
+                  coherent, flowing southward at 0.7 m/s, with 23.5degC SST surface-signature, contrasting with the
+                  22degC surrounding waters. Two weeks ago,{' '}
+                  <a href="/product/swot-gsla/ssh?region=SGBR&date=20260827233654" target="_blank" rel="noreferrer">
+                    the SWOT satellite altimeter
+                  </a>{' '}
+                  measured a 0.2 m SSH slope just off K'gari (former Fraser Island; Figure 1c), with low values to the
+                  west, balancing the EAC southward geostrophic flow at that location.
+                  <br />
+                  <br />
+                  <img
+                    alt=""
+                    src="/resource/news/20260910/Fig1.png"
+                    style={{ float: 'right', height: 'auto', width: '700px', margin: '10px' }}
+                  />
+                  We'll then proceed to the Fraser Seamount (155.5E, 24.5S, Figure 1, clear star), rising from 4000 m to
+                  400 m depths, and being part of the Coral Sea Marine Park. The{' '}
+                  <a href="https://doi.org/10.1016/S0967-0637(99)00007-2" target="_blank" rel="noreferrer">
+                    interaction between deep ocean seamounts and surrounding flow
+                  </a>{' '}
+                  may result in the upwelling of cold, nutrient-rich waters to the euphotic zone. This upwelling, often
+                  seen downstream of the dominant flow, may induce a biological response, observed by high values phyto-
+                  and zooplankton. We plan to adapt our sampling strategy to the direction of the currents interacting
+                  with the Fraser Seamount as we approach the region.
+                  <br />
+                  <br />
+                  Currently, the circulation around this seamount is dominated by a weak cyclonic eddy that has moved
+                  westwards since{' '}
+                  <a href="/product/swot-gsla/ssh?region=SGBR&date=20260829103006" target="_blank" rel="noreferrer">
+                    seen in SWOT and Gridded SSH
+                  </a>{' '}
+                  (Figure 1d). The latest SST 4h composite shows 21oC filaments and associated submesoscale eddies near
+                  the seamount (Figure 1a).
+                  <br />
+                  <br />
+                  As we move to the southward part of the Coral Sea, we shift scales to focus on the sea-wide
+                  circulation. Now, we have{' '}
+                  <a
+                    href="https://oceancurrent.aodn.org.au/product.php?product=daily.SST_ANOM&region=CoralWest&date=20260910023410&rtype=SR"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    a very quiet Coral Sea
+                  </a>
+                  , with no strong eddies and no extreme SST anomalies (Figure 2). According to the{' '}
+                  <a
+                    href="https://www.bom.gov.au/climate/ocean/long-range-forecasts/?variable=mh_cat&region=AUS"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Bureau of Meteorology's ocean temperature long-range forecast
+                  </a>
+                  , there are no marine heatwaves forecasted for the Coral Sea for September to November. The{' '}
+                  <a href="/product/monthly-means/30-day?region=SST30d&date=202608" target="_blank" rel="noreferrer">
+                    monthly mean SSTA maps
+                  </a>{' '}
+                  show us that the mild SST conditions we are seeing have been present in the Coral Sea for the past
+                  months.
+                  <br />
+                  <br />
+                  Currently, the surface waves reaching the southern part of the Coral Sea have 1-2 m significant wave
+                  height (SWH,{' '}
+                  <a href="/product/surface-waves/wave?region=Au&date=2026091002" target="_blank" rel="noreferrer">
+                    Figure 3
+                  </a>
+                  ), coming from the south, with northeasterly waves of ~0.6 m SWH{' '}
+                  <a
+                    href="/product/surface-waves/buoy-timeseries?region=Bundaberg&date=2026091000"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    arriving in Bundaberg
+                  </a>
+                  . Surface waves are{' '}
+                  <a
+                    href="https://www.bom.gov.au/australia/charts/viewer/index.shtml?domain=combinedW&type=sigWaveHgt"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    forecasted by the BOM
+                  </a>{' '}
+                  to keep same direction and increase in intensity to 3 m in the next days in the southern part of the
+                  Coral Sea.
+                  <br />
+                  <br />
+                  You can follow the RV&nbsp;<em>Investigator</em> and see the voyage livestream{' '}
+                  <a
+                    href="https://www.csiro.au/en/about/facilities-collections/MNF/Voyages-schedules/Voyages/2026/September/IN2026_T04"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    here
+                  </a>
+                  .
+                  <br />
+                  <br />
+                  <em>The </em>
+                  <a href="https://www.csiro.au/capstan" target="_blank" rel="noreferrer">
+                    <em>CAPSTAN program</em>
+                  </a>
+                  <em>
+                    {' '}
+                    is a maritime education and training initiative of Australia's national science agency, CSIRO, the
+                    University of Tasmania's Institute for Marine and Antarctic Studies (IMAS), and the Australian and
+                    New Zealand International Scientific Drilling Consortium (ANZIC). CAPSTAN is supported by grants of
+                    sea time on RV Investigator from the CSIRO Marine National Facility (MNF).
+                  </em>{' '}
+                  <em>
+                    IMOS, MNF, and ANZIC receive funding from the National Collaborative Research Infrastructure
+                    Strategy (NCRIS).
+                  </em>
+                  <br />
+                  <img
+                    alt=""
+                    src="/resource/news/20260910/Fig2.png"
+                    style={{ float: 'right', height: 'auto', width: '650px', margin: '10px' }}
+                  />
+                </p>
+                <img
+                  alt=""
+                  src="/resource/news/20260910/Fig3.png"
+                  style={{ float: 'right', height: 'auto', width: '700px', margin: '10px' }}
+                />
+              </div>
+            </article>
+            <article id="20260724" className="p-2">
+              <div className="bg-imos-cloud-tint flex items-center justify-between rounded-sm p-4">
+                <div>
+                  <h3 id="IMOS_OceanCurrent_is_going_to_sea">
+                    <a href="#IMOS_OceanCurrent_is_going_to_sea" className="anchor">
+                      IMOS OceanCurrent is going to sea!
+                    </a>
+                  </h3>
+                  <em>
+                    <h5>Gabriela S. Pilo, Pier van der Merwe, Ben Arthur, and David Griffin</h5>
+                  </em>
+                </div>
+                <div>
+                  <p className="font-bold">24 July, 2026</p>
+                </div>
+              </div>
+              <div className="overflow-auto rounded-b bg-white p-4">
+                <p>
+                  IMOS OceanCurrent has provided support from shore to several oceanographic voyages onboard CSIRO
+                  Research Vessel (RV)&nbsp;<em>Investigator</em>, Australia's dedicated ocean research vessel. This
+                  year, IMOS OceanCurrent is going to sea! And we'll use the information available on the website to
+                  contextualise the observations made during the voyage.
+                  <br />
+                  <br />
+                  In September 2026, we will join CSIRO technical staff, ship crew, and scientific team aboard the
+                  RV&nbsp;<em>Investigator</em> for <strong>CAPSTAN 06</strong>, a 13-day transit voyage from Brisbane
+                  to Fiji.{' '}
+                  <a
+                    href="https://www.csiro.au/en/about/facilities-collections/mnf/education-training/capstan"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    CAPSTAN
+                  </a>{' '}
+                  (the Collaborative Australian Postgraduate Sea Training Alliance Network) is a tertiary sea-training
+                  program designed to develop Australia's next generation of marine experts. The voyage team will
+                  include 20 university students and six trainers with expertise in education and outreach,
+                  biogeochemistry, physical oceanography, geology and volcanology, marine ecology, and genomics.
+                  <br />
+                  <br />
+                  The planned voyage track (red line in Figure 1) will take us through several scientifically
+                  interesting sites, including shipwreck locations for surveying, the <strong>Fraser Seamount</strong>,
+                  where upstream and downstream ocean conditions will be investigated, and the{' '}
+                  <strong>Loyalty Ridge</strong>, an Eocene island arc targeted for sediment sampling.
+                  <br />
+                  <br />
+                  As we navigate, we'll take underway measurements of several ocean properties and collect samples of
+                  microplastic and plankton. We'll also deploy Argo floats and surface drifters, as the national
+                  contribution to these global programs.
+                  <br />
+                  <br />
+                  You'll be able to follow the RV&nbsp;<em>Investigator</em> via a dedicated voyage page (with 24/7
+                  livestream video) and through the IMOS OceanCurrent website using our regular Sea Surface Temperature
+                  (SST) and Adj. Sea Level Anomaly (SLA) maps. These products will help inform decisions on sampling
+                  patterns near the Fraser Seamount, and provide broader oceanographic context for net tows, plankton
+                  sampling, and observations of marine megafauna.
+                  <br />
+                  <br />
+                  Next month, we'll provide an overview of what ocean conditions to expect on the voyage, and in
+                  September we'll be reporting insights from the voyage along the way.
+                  <br />
+                  <br />
+                  <em>The </em>
+                  <a href="https://www.csiro.au/capstan" target="_blank" rel="noreferrer">
+                    <em>CAPSTAN program</em>
+                  </a>
+                  <em>
+                    {' '}
+                    is a maritime education and training initiative of Australia's national science agency, CSIRO, the
+                    University of Tasmania's Institute for Marine and Antarctic Studies (IMAS), and the Australian and
+                    New Zealand International Scientific Drilling Consortium (ANZIC). CAPSTAN is supported by grants of
+                    sea time on RV Investigator from the CSIRO Marine National Facility (MNF).
+                  </em>{' '}
+                  <em>
+                    IMOS, MNF, and ANZIC receive funding from the National Collaborative Research Infrastructure
+                    Strategy (NCRIS).
+                  </em>
+                  <br />
+                  <br />
+                  <img
+                    alt=""
+                    src="/resource/news/20260724/Fig1_1.png"
+                    style={{ float: 'left', height: 'auto', width: '800px', margin: '10px' }}
+                  />
+                </p>
+              </div>
+            </article>
             <article id="20260619" className="p-2">
               <div className="bg-imos-cloud-tint flex items-center justify-between rounded-sm p-4">
                 <div>
@@ -267,7 +512,7 @@ const News = () => {
               <div className="rounded-b bg-white p-4">
                 <p>
                   <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=snapshot&region=SNSW&date=20251223110000&rtype=DR"
+                    href="/product/adjusted-sea-level-anomaly/sst?region=SNSW&date=2025122311"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -348,7 +593,7 @@ const News = () => {
                   observations are mostly (but not exclusively) in waters less than about 200 m deep, so they complement
                   the Argo array perfectly.
                   <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=snapshot&amp;region=Brisbane2&amp;date=20251207040000&amp;rtype=DR"
+                    href="/product/adjusted-sea-level-anomaly/sst?region=Brisbane2&date=2025120704"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -363,7 +608,7 @@ const News = () => {
                   <br />
                   The FishSOOP program nets very many observations, but they aren't everywhere. You have four ways of
                   seeing if there are any in your region of interest. Initially, you should browse our&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/fishsoop/index.html" target="_blank" rel="noreferrer">
+                  <a href="/product/fish-soop/regional-profiles" target="_blank" rel="noreferrer">
                     FishSOOP&nbsp;landing page
                   </a>
                   &nbsp;(linked from our home page), where there is a Data Finder, explanatory material, and some use
@@ -378,7 +623,7 @@ const News = () => {
                   astonished to see large numbers of sharks and dolphins feasting on 'bait balls' in waters normally
                   full of surfers. Satellite imagery showed where cold water was coming to the surface at the coast (
                   <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=snapshot&amp;region=Brisbane2&amp;date=20251207040000&amp;rtype=DR"
+                    href="/product/adjusted-sea-level-anomaly/sst?region=Brisbane2&date=2025120704"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -386,7 +631,7 @@ const News = () => {
                   </a>
                   ), while some FishSOOP data showed that on&nbsp;
                   <a
-                    href="https://oceancurrent.aodn.org.au/fishsoop_php/fsa.php?region=NNSW&amp;date=20251207"
+                    href="/product/fish-soop/regional-profiles?region=NNSW&date=20251207"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -415,7 +660,7 @@ const News = () => {
                   Australian Current, proximity to a cold-core eddy east of the current, and north-easterly winds (which
                   reduce sea level at the coast - see the&nbsp;
                   <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=swot&amp;region=Brisbane2&amp;date=20251210161338&amp;rtype=DR"
+                    href="/product/swot-gsla/ssh?region=Brisbane2&date=20251210161338"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -430,7 +675,7 @@ const News = () => {
                   <br />
                   <br />
                   <a
-                    href="https://oceancurrent.aodn.org.au/fishsoop_php/fsa.php?region=NNSW&amp;date=20251207"
+                    href="/product/fish-soop/regional-profiles?region=NNSW&date=20251207"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -442,7 +687,7 @@ const News = () => {
                   </a>
                   <br />
                   <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=swot&amp;region=Brisbane2&amp;date=20251210161338&amp;rtype=DR"
+                    href="/product/swot-gsla/ssh?region=Brisbane2&date=20251210161338"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -475,11 +720,7 @@ const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <p>
-                  <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=swot.SSH&amp;region=CLeeu&amp;date=20240501012721&amp;rtype=DR"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href="/product/swot-gsla/ssh?region=CLeeu&date=20240501012721" target="_blank" rel="noreferrer">
                     <img
                       alt=""
                       src="/resource/news/20251003/Picture1swot.png"
@@ -489,7 +730,7 @@ const News = () => {
                   <br />
                   Whenever we see&nbsp;
                   <a
-                    href="https://oceancurrent.aodn.org.au/#Maps_of_sea_level_and_surface_currents_like_you_ve_never_seen_before"
+                    href="/news#Maps_of_sea_level_and_surface_currents_like_you_ve_never_seen_before"
                     target="_blank"
                     className="anchor"
                     rel="noreferrer"
@@ -502,7 +743,7 @@ const News = () => {
                   mesoscale features (i.e., length scales larger than 100 km) like the eddies from the East Australian
                   Current and the Leeuwin Current.&nbsp;
                   <a
-                    href="https://oceancurrent.aodn.org.au/#SWOT_A_new_type_of_satellite_altimeter_now_in_orbit"
+                    href="/news#SWOT_A_new_type_of_satellite_altimeter_now_in_orbit"
                     target="_blank"
                     className="anchor"
                     rel="noreferrer"
@@ -512,7 +753,7 @@ const News = () => {
                   &nbsp;has given us more information about the shape and intensity of these features, shown us what's
                   between those eddies – smaller scale fronts and sub-mesoscale eddies – and&nbsp;
                   <a
-                    href="https://oceancurrent.aodn.org.au/#Is_wide_swath_altimetry_useful_for_coastal_applications"
+                    href="/news#Is_wide_swath_altimetry_useful_for_coastal_applications"
                     target="_blank"
                     className="anchor"
                     rel="noreferrer"
@@ -552,11 +793,7 @@ const News = () => {
                   result, we have SSH values ranging from negative to positive, making it easier for us to see the
                   features with variable SSH in the map (e.g., eddies, fronts, coastal SSH changes).
                   <br />
-                  <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=swot.MDTCMEMS&amp;region=Perth&amp;date=20250813120000&amp;rtype=DR/"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href="/product/swot-gsla/mdt?region=Perth" target="_blank" rel="noreferrer">
                     <img
                       alt=""
                       src="/resource/news/20251003/Picture2swot.png"
@@ -593,7 +830,7 @@ const News = () => {
                   <br />
                   <br />
                   <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=swot.SSH&amp;region=Brisbane2&amp;date=20240305074927&amp;rtype=DR"
+                    href="/product/swot-gsla/ssh?region=Brisbane2&date=20240305074927"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -603,20 +840,12 @@ const News = () => {
                   <br />
                   &nbsp;
                   <br />
-                  <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=swot.SSH&amp;region=Tas&amp;date=20230910120000&amp;rtype=DR"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href="/product/swot-gsla/ssh?region=Tas&date=20230910120000" target="_blank" rel="noreferrer">
                     Tiny cyclonic eddies south of Tasmania, with drifters
                   </a>
                   <br />
                   <br />
-                  <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=swot.SSH&amp;region=AlbEsp&amp;date=20250722033549&amp;rtype=DR"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href="/product/swot-gsla/ssh?region=AlbEsp&date=20250722033549" target="_blank" rel="noreferrer">
                     Several small eddies grouped off Albany (WA)
                   </a>
                   <br />
@@ -626,11 +855,7 @@ const News = () => {
                     src="/resource/news/20251003/Picture3swot.png"
                     style={{ height: '493px', width: '600px' }}
                   />
-                  <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=swot.SSH&amp;region=SGBR&amp;date=20250625181233&amp;rtype=DR"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href="/product/swot-gsla/ssh?region=SGBR&date=20250625181233" target="_blank" rel="noreferrer">
                     Drifter following a 50 km-diameter anticyclonic eddy off QLD (the eddy is not evident in the gridded
                     SSH product)
                   </a>
@@ -638,7 +863,7 @@ const News = () => {
                   &nbsp;
                   <br />
                   <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=swot.SSH&amp;region=LordHoweS&amp;date=20231222191124&amp;rtype=DR"
+                    href="/product/swot-gsla/ssh?region=LordHoweS&date=20231222191124"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -647,22 +872,14 @@ const News = () => {
                   <br />
                   &nbsp;
                   <br />
-                  <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=swot.SSH&amp;region=JBGulf&amp;date=20250119120000&amp;rtype=DR"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href="/product/swot-gsla/ssh?region=JBGulf&date=20250119120000" target="_blank" rel="noreferrer">
                     Improved SSH measurements off the Joseph Bonaparte Gulf. The gridded SSH product has a stationary
                     cyclonic eddy off the Gulf, likely resultant from an interpolation artefact
                   </a>
                   <br />
                   &nbsp;
                   <br />
-                  <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=swot.SSH&amp;region=RechEyre&amp;date=20240109173750&amp;rtype=DR"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href="/product/swot-gsla/ssh?region=RechEyre&date=20240109173750" target="_blank" rel="noreferrer">
                     SSH in-shelf gradient, with low SSH off Coffin Bay. Another example of SWOT showing in-shelf
                     features that were not resolved in the gridded SL
                   </a>
@@ -672,7 +889,7 @@ const News = () => {
                   Re-sampling of a small cyclonic eddy (157°E,34.5°S) over 12 hours, quantifying the decay in eddy
                   amplitude and change in shape (
                   <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=swot.SSH&amp;region=LordHoweS&amp;date=20250625181233&amp;rtype=DR"
+                    href="/product/swot-gsla/ssh?region=LordHoweS&date=20250625181233"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -680,7 +897,7 @@ const News = () => {
                   </a>
                   &nbsp;and&nbsp;
                   <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=swot.SSH&amp;region=LordHoweS&amp;date=20250626050514&amp;rtype=DR"
+                    href="/product/swot-gsla/ssh?region=LordHoweS&date=20250626050514"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -689,22 +906,14 @@ const News = () => {
                   )<br />
                   &nbsp;
                   <br />
-                  <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=swot.SSH&amp;region=NGBR&amp;date=20250814120000&amp;rtype=DR"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href="/product/swot-gsla/ssh?region=NGBR&date=20250814120000" target="_blank" rel="noreferrer">
                     Data to the west of Torres Strait
                   </a>
                   , a region not included in the gridded SL product
                   <br />
                   &nbsp;
                   <br />
-                  <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=swot.SSH&amp;region=Perth&amp;date=20250813120000&amp;rtype=DR"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href="/product/swot-gsla/ssh?region=Perth&date=20250813120000" target="_blank" rel="noreferrer">
                     Beautiful eddy field off WA
                   </a>
                   <br />
@@ -767,10 +976,7 @@ const News = () => {
                   <br />
                   The mid-depth maxima in T and S measured within the eddy are similar to the ones we've described
                   before in&nbsp;
-                  <a
-                    href="https://oceancurrent.aodn.org.au/#Argo_Observed_Bass_Strait_Water_Off_Central_New_South_Wales"
-                    className="anchor"
-                  >
+                  <a href="/news#Argo_Observed_Bass_Strait_Water_Off_Central_New_South_Wales" className="anchor">
                     eddies in the Tasman Sea
                   </a>
                   . The profiles suggest that the eddy that trapped this float is a lense – an eddy that had its core
@@ -781,7 +987,7 @@ const News = () => {
                   Lense-type eddies are observed in maps of adj. SLA, but often don't have a SST signature. Fig 1
                   confirms that this eddy is indeed a lense: the eddy keeps a strong SLA signal and often a well defined
                   shape (
-                  <a href="https://oceancurrent.aodn.org.au/product.php?product=swot&amp;region=RechEyre&amp;date=20240928010208&amp;rtype=DR">
+                  <a href="/product/swot-gsla/ssh?region=RechEyre&date=20240928010208">
                     Fig 1a, beautifully captured by SWOT
                   </a>
                   ), with no clear signal in SST maps (Fig 1b). We see this eddy in the Adj. SLA maps because the eddy
@@ -794,7 +1000,7 @@ const News = () => {
                   &nbsp;
                   <br />
                   Last month, the eddy from our combo merged with another anticyclonic eddy. SWOT took a snapshot of
-                  <a href="https://oceancurrent.aodn.org.au/product.php?product=swot&amp;region=AlbEsp&amp;date=20250721033518&amp;rtype=DR">
+                  <a href="/product/swot-gsla/ssh?region=AlbEsp&date=20250721033518">
                     the two eddies right before the merge
                   </a>
                   (Fig 3a), and IMOS-OceanCurrent adj. SLA maps show us the merge happening over 3 days (Fig 3b-d).
@@ -811,7 +1017,7 @@ const News = () => {
                   follow the&nbsp;
                   <a href="/news#Tracking_EAC_warm_core_eddies">'Eddy Avenue'</a>
                   &nbsp;from the EAC separation region, take a&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/#Tracking_EAC_warm_core_eddies" className="anchor">
+                  <a href="/news#Tracking_EAC_warm_core_eddies" className="anchor">
                     turn westwards south of Tasmania, and keep going
                   </a>
                   &nbsp;- often entrapping things along the way, like this Argo float.
@@ -857,7 +1063,7 @@ const News = () => {
                   An exceptional subsurface cooling event that occurred from early January to late March 2024, at 40-160
                   m depths (Figure 1, red box) was recorded by the instruments at the WATR20 mooring (200 m depth;
                   Figure 2). This event was marked by&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P51/WATR20/zt/WATR20-2312-Signature100-194_zt.html">
+                  <a href="/product/current-meters/moored-instrument-array?deploymentPlot=WATR20&region=06_Perth">
                     temperatures as low as 12oC in January, at 200 m
                   </a>
                   , with monthly averaged temperature anomalies being about 3°C cooler than climatology (Figure 1b,
@@ -869,19 +1075,14 @@ const News = () => {
                   the summer peaks of the extreme&nbsp;<a href="https://ggweather.com/enso/oni.htm">2015-16 El Niño</a>
                   &nbsp;and the weak 2018-19 El Niño.&nbsp;
                   <br />
-                  <a href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P51/mapst/06_Perth_vmean_1.html">
+                  <a href="/product/current-meters/moored-instrument-array?depth=1&property=vmean&region=06_Perth&date=0000&deploymentPlot=">
                     <img alt="" src="/resource/news/20250531/fig2.png" style={{ height: '394px', width: '400px' }} />
                   </a>
                   <br />
                   The 2024 subsurface cooling event was also sampled during a glider survey a bit farther north, off Two
                   Rocks, from 26 to 30 January 2024 (fast forward from&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=TwoRocks20240115_4d/2024012800.html">
-                    here
-                  </a>
-                  , or click&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=TwoRocks20240115_30d/latest.html">
-                    here for the entire glider track
-                  </a>
+                  <a href="/coming-soon?product=gliders">here</a>, or click&nbsp;
+                  <a href="/coming-soon?product=gliders">here for the entire glider track</a>
                   ). The glider measurements from 27-29 January (Figure 3) show bottom waters cooler than 18oC
                   encroaching upon the shelf, but not reaching the surface, and high values of chlorophyll-<em>a</em>
                   &nbsp;concentration.
@@ -1105,7 +1306,7 @@ const News = () => {
               </div>
 
               <div className="rounded-b bg-white p-4">
-                <a href="https://oceancurrent.aodn.org.au/product.php?product=daily&amp;region=NingLeeu&amp;date=20250122093814&amp;rtype=DR">
+                <a href="/product/six-day-sst/sst?region=NingLeeu&date=20250122">
                   <img alt="" src="/resource/news/20250130/fig1_2.png" style={{ height: '584px', width: '300px' }} />
                 </a>
                 <p>
@@ -1124,26 +1325,18 @@ const News = () => {
                   exceeded 2°C above the seasonal mean (i.e., the average temperature for that time of the year, at that
                   location). In that region, by December, the temperature was 3°C over the seasonal mean at the sea
                   surface (Figure 3b), and 26°C waters were observed down to 100 metres by&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=Onslow20241119_12d/2024120400.html">
-                    a glider off Onslow
-                  </a>
+                  <a href="/coming-soon?product=gliders">a glider off Onslow</a>
                   . An intense Leeuwin Current, acompannied by&nbsp;strong winds from&nbsp;tropical cyclone Sean,
                   carried that hot water southward along the WA shelf break&nbsp;(Figure 3b, c).
                   <br />
                   <br />
                   Ocean temperatures within the Leeuwin current were up to 3°C above the seasonal mean (Figure 3c) near
                   the surface. These anomalously high temperatures extended from the surface to&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/profiles/cycle.php?wmoid=1902049&amp;cycle=167&amp;depth=0">
-                    400 m off Shark Bay
-                  </a>
+                  <a href="/product/argo?wmoid=1902049&cycle=167&depth=0-2000m">400 m off Shark Bay</a>
                   &nbsp;(25oS) and to&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/profiles/cycle.php?wmoid=5905578&amp;cycle=12&amp;depth=0">
-                    800 m off Jurien
-                  </a>
+                  <a href="/product/argo?wmoid=5905578&cycle=12&depth=0-2000m">800 m off Jurien</a>
                   &nbsp;(30°S), as shown by Argo floats sampling the Leeuwin Current and its eddies.&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/profiles/cycle.php?wmoid=5905531&amp;cycle=93.&amp;depth=1">
-                    Outside of the Leeuwin current
-                  </a>
+                  <a href="/product/argo?wmoid=5905531&cycle=93&depth=0-400m">Outside of the Leeuwin current</a>
                   , however, sub-surface temperatures are still within the climatological mean.
                   <br />
                   <br />
@@ -1152,13 +1345,9 @@ const News = () => {
                   <a href="https://imos.org.au/facility/ocean-gliders/event-based-sampling">Event-based</a>
                   &nbsp;facilities have deployed three gliders to monitor this MHW. One glider is currently off Perth
                   doing a routine on-off shelf transect, and two other were&nbsp;deployed off Onslow,
-                  <a href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=Onslow20250129_nrt_4d/latest.html">
-                    one
-                  </a>
+                  <a href="/coming-soon?product=gliders">one</a>
                   doing on-off shelf transects, and
-                  <a href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=Ningaloo20250129_nrt_4d/latest.html">
-                    the other
-                  </a>
+                  <a href="/coming-soon?product=gliders">the other</a>
                   sampling southward along the Ningaloo Coast to be collected in Shark Bay.
                   <br />
                   <br />
@@ -1179,12 +1368,12 @@ const News = () => {
                   <br />
                   The SST in some regions off WA were exceeding the range we had set in our maps. We have now changed
                   the range of the colourbar in&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/product.php?product=snapshot&amp;region=Rowley&amp;date=20250103050000&amp;rtype=DR">
+                  <a href="/product/adjusted-sea-level-anomaly/sst?region=Rowley&date=2025010305">
                     some of our regions
                   </a>
                   &nbsp;off WA for better visualization.
                   <br />
-                  <a href="https://oceancurrent.aodn.org.au/product.php?product=ssta&amp;region=NWS&amp;date=20250131011809&amp;rtype=DR">
+                  <a href="/product/six-day-sst/timeseries?region=NWS">
                     <img alt="" src="/resource/news/20250130/Fig2_1.png" style={{ height: '606px', width: '700px' }} />
                   </a>
                   <br />
@@ -1244,10 +1433,7 @@ const News = () => {
                   The same cannot be said about the Tasmanian leg. The warm-core eddy there now has been in place since
                   July, when it was responsible for the surface water temperature setting new records. An Argo float
                   sampled this eddy on
-                  <a
-                    href="https://oceancurrent.aodn.org.au/profiles/cycle.php?wmoid=5905513&amp;cycle=93&amp;depth=0"
-                    target="blank"
-                  >
+                  <a href="/product/argo?wmoid=5905513&cycle=93&depth=0-2000m" target="blank">
                     11 Dec
                   </a>
                   , finding water an astonishing 5 degrees warmer than usual at 500m and beyond. Depending on the wind,
@@ -1343,14 +1529,14 @@ const News = () => {
                   &nbsp;
                   <br />
                   Thanks to a newly added feature in our&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/waves/waves3.php">Surface Waves maps</a>, we are now able to
-                  visualise and examine time series of wave characteristics collected by the Australian wave buoys from
-                  01 Jun 2024 - it's as simple as clicking a wave buoy symbol on the Surface wave map.
+                  <a href="/product/surface-waves/wave?region=Au">Surface Waves maps</a>, we are now able to visualise
+                  and examine time series of wave characteristics collected by the Australian wave buoys from 01 Jun
+                  2024 - it's as simple as clicking a wave buoy symbol on the Surface wave map.
                   <br />
                   &nbsp;
                   <br />
                   Tasmanian West coast has seen persistently high waves during these extremes. The&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/waves/waves3ts.php?region=Cape_Sorell&amp;date=20240828120000">
+                  <a href="/product/surface-waves/buoy-timeseries?region=Cape_Sorell&date=2024082812">
                     Cape Sorell buoy
                   </a>
                   (145E, 42S) recorded significant wave heights close to 8m over a few days over this period and even
@@ -1359,7 +1545,7 @@ const News = () => {
                   &nbsp;
                   <br />
                   The wave buoys at Cape Sorell and&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/waves/waves3ts.php?region=Cape_Du_Couedic&amp;date=20240828120000">
+                  <a href="/product/surface-waves/buoy-timeseries?region=Cape_Du_Couedic&date=2024082812">
                     Cape du Couedic
                   </a>
                   &nbsp;(Southwest of Kangaroo Island) captured significant wave heights upwards of 7 m on 28th&nbsp;Aug
@@ -1375,7 +1561,7 @@ const News = () => {
                     style={{ height: '431px', width: '600px' }}
                   />
                   Clicking on the Cape Sorell buoy symbol on the map shows a remarkable&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/waves/waves3ts.php?region=Cape_Sorell&amp;date=20240828120000">
+                  <a href="/product/surface-waves/buoy-timeseries?region=Cape_Sorell&date=2024082812">
                     time series of wave data
                   </a>
                   &nbsp;(Figure&nbsp;2) covering several days of this event. The significant wave height consistently
@@ -1440,7 +1626,11 @@ const News = () => {
                 <p>
                   For people interested in using the new, experimental wide-swath altimeter SWOT for coastal
                   applications: we've expanded on our
-                  <a href="https://oceancurrent.aodn.org.au/./#20240301" target="blank" className="anchor">
+                  <a
+                    href="/news#Maps_of_sea_level_and_surface_currents_like_you_ve_never_seen_before"
+                    target="blank"
+                    className="anchor"
+                  >
                     1 March 2024
                   </a>
                   assessment of this new instrument, bringing in Australia's tide gauge network and the IMOS array of
@@ -1571,7 +1761,7 @@ const News = () => {
                   , when SWOT measured about 1.5m/s but the ADCP reported only 0.9m/s. We cannot explain this large
                   error - the SWOT coverage is good and there is nothing suspicious about the ADCP data (see
                   <a
-                    href="https://oceancurrent.aodn.org.au/timeseries/ANMN_P48/CH100/zt/CH100-2309-Sentinel-or-Monitor-Workhorse-ADCP-94p9_zt.html"
+                    href="/product/current-meters/moored-instrument-array?deploymentPlot=CH100&region=11_Coffs"
                     target="blank"
                   >
                     full profile
@@ -1708,7 +1898,7 @@ const News = () => {
                   </a>
                   ). We don't think the&nbsp;offshore advection was&nbsp;due to the wave-driven circulation associated
                   with the
-                  <a href="https://oceancurrent.aodn.org.au/waves/waves3.php?date=20240713000000" target="blank">
+                  <a href="/product/surface-waves/wave?region=Au&date=2024071300" target="blank">
                     easterly swell
                   </a>
                   running at the time. At this point, we think the wave-driven rip took Rick far enough offshore to be
@@ -1761,22 +1951,15 @@ const News = () => {
                   tide is the dominant signal, with beating constituents at 12 and 12.5 h period. At that location, the
                   low tide of 4 July 2024 was indeed very low - about 0.9 m below mean sea level (MSL - the zero of the
                   scale&nbsp;on the left).With the tides removed, the magenta line shows high sea level on
-                  <a href="https://oceancurrent.aodn.org.au/product.php?product=ntsl&amp;region=Au&amp;date=20240530180000&amp;rtype=SR">
-                    30 May
-                  </a>
-                  ,
-                  <a href="https://oceancurrent.aodn.org.au/product.php?product=ntsl&amp;region=Au&amp;date=20240611060000&amp;rtype=SR">
-                    11 June
-                  </a>
+                  <a href="/product/adjusted-sea-level-anomaly/non-tidal-sla?region=Au&date=2024053018">30 May</a>,
+                  <a href="/product/adjusted-sea-level-anomaly/non-tidal-sla?region=Au&date=2024061106">11 June</a>
                   and
-                  <a href="https://oceancurrent.aodn.org.au/product.php?product=ntsl&amp;region=Au&amp;date=20240629060000&amp;rtype=SR">
-                    29 June
-                  </a>
-                  . These are wind- and pressure-driven events associated with the rapid passage of localised low
-                  pressure systems. Then around 1 July we see the sudden drop of sea level into a sustained period of
-                  values between 0.1&nbsp;and 0.2m below MSL. This is the ocean's ('inverse barometer') response to the
-                  large high atmospheric pressure system. One of the reasons it does not go as far as 0.3m below MSL
-                  (which is the effect of pressure alone) is that sea level is gradually
+                  <a href="/product/adjusted-sea-level-anomaly/non-tidal-sla?region=Au&date=2024062906">29 June</a>.
+                  These are wind- and pressure-driven events associated with the rapid passage of localised low pressure
+                  systems. Then around 1 July we see the sudden drop of sea level into a sustained period of values
+                  between 0.1&nbsp;and 0.2m below MSL. This is the ocean's ('inverse barometer') response to the large
+                  high atmospheric pressure system. One of the reasons it does not go as far as 0.3m below MSL (which is
+                  the effect of pressure alone) is that sea level is gradually
                   <a href="https://oceancurrent.aodn.org.au/GSLA_stats/DM02/GSLA_Au_h.html">rising</a>. In just the last
                   20 years it has risen 0.06m - offsetting 20% of this nearly-record-breaking high pressure event.
                   <img
@@ -1786,9 +1969,7 @@ const News = () => {
                   />
                   <br />
                   <br />
-                  <a href="https://oceancurrent.aodn.org.au/product.php?product=ntsl&amp;region=Au&amp;date=20240705120000&amp;rtype=SR">
-                    Figure 2
-                  </a>
+                  <a href="/product/adjusted-sea-level-anomaly/non-tidal-sla?region=Au&date=2024070512">Figure 2</a>
                   shows the large spatial extent of the high pressure system. You see the low sea levels near the centre
                   of the system but you also see isolated regions of either very low or very high sea level,
                   particularly off the coast of NSW. Those are ocean eddies unrelated to the weather. You also see that
@@ -1803,7 +1984,7 @@ const News = () => {
                   </a>
                   show this period of low sea level? A: Because the response to pressure forcing is not actually
                   included in that forecast. Why not? see the info button at the top of our
-                  <a href="https://oceancurrent.aodn.org.au/product.php?product=gsla&amp;region=Au&amp;date=20240629060000&amp;rtype=SR">
+                  <a href="/product/adjusted-sea-level-anomaly/sla?region=Au&date=20240629">
                     Adjusted Sea Level Anomaly
                   </a>
                   maps, where we explain&nbsp;the meaning of 'adjusted'.
@@ -1876,7 +2057,7 @@ const News = () => {
                   on-board the satellites too, resulting in noisier measurements too.
                   <br />
                   <br />
-                  <a href="https://oceancurrent.aodn.org.au/sst.php?link=ht/20240513.html">
+                  <a href="/product/adjusted-sea-level-anomaly/sst?region=Au&date=20240513">
                     <img
                       alt=""
                       src="/resource/news/20240529/fig2_aurora.png"
@@ -1899,7 +2080,7 @@ const News = () => {
                   . In the gridded product from 1 to 23 May, the degraded data is evidenced by abnormally high or low
                   measurements of Adjusted Sea Level Anomalies in north-south tracks, as show in Figure 2 for the
                   13th&nbsp;May (compare with&nbsp;
-                  <a href="https://oceancurrent.aodn.org.au/sst.php?link=ht/20240430.html">
+                  <a href="/product/adjusted-sea-level-anomaly/sst?region=Au&date=20240430">
                     a day with high-quality data only
                   </a>
                   ).
@@ -2026,13 +2207,11 @@ const News = () => {
                   <br />
                   <span style={{ fontSize: '11pt' }}>
                     Late last year we took note of the&nbsp;
-                    <a href="https://oceancurrent.aodn.org.au/#An_early_Bonney_upwelling" className="anchor">
+                    <a href="/news#An_early_Bonney_upwelling" className="anchor">
                       persistent upwelling along the Bonney Coast
                     </a>
                     . Indeed, the ocean conditions led to a phytoplankton bloom, evident in our&nbsp;
-                    <a href="https://oceancurrent.aodn.org.au/product.php?product=oceancolour.CHL&amp;region=SAgulfs&amp;date=20240121050000&amp;rtype=DR">
-                      maps of ocean colour
-                    </a>
+                    <a href="/product/ocean-colour/chl-a?region=SAgulfs&date=2024012105">maps of ocean colour</a>
                     &nbsp;(Figure 1) and in true colour imagery available via the
                     <a href="https://mrs-data.csiro.au/rgb/l1b-5min.true-colour/aqua/2024/01/28/D-20240128.G-0520/A20240128_0520.20240129172022.L1B_QKM.TCfull.jpg">
                       IMOS Satellite Remote Sensing facility
@@ -2115,10 +2294,7 @@ const News = () => {
                 <p>The fourth warm core eddy may give a slight boost for the final stretch off southern Tasmania.</p>
                 <p>
                   Competitors will also notice that the sea temperatures are
-                  <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=daily.pctiles&amp;region=SE&amp;date=20231217141347&amp;rtype=SR"
-                    target="blank"
-                  >
+                  <a href="/product/six-day-sst/centiles?region=SE&date=20231217" target="blank">
                     exceptionally high
                   </a>
                   , potentially affecting the winds. Tropical species may be seen much farther south than usual - beware
@@ -2172,7 +2348,7 @@ const News = () => {
                   The SST anomalies associated with the Bonney upwelling we've seen over the past week are likely the
                   lowest we've seen in years, for this time of year. This extreme is seen in our maps of SST centiles,
                   where the SST of the plume waters are within the
-                  <a href="https://oceancurrent.aodn.org.au/product.php?product=daily.pctiles&amp;region=SAgulfs&amp;date=20231202183128&amp;rtype=DR">
+                  <a href="/product/six-day-sst/centiles?region=SAgulfs&date=20231202">
                     lowest decile of the record (1993-2016)
                   </a>
                   . The spatial extent of this event was also large compared to previous events.
@@ -2229,13 +2405,13 @@ const News = () => {
                   <br />
                   Explore the EAC by clicking on the 'EAC Mooring Array' button in the menu on the right, in the
                   website's
-                  <a href="https://oceancurrent.aodn.org.au/index.php">frontpage</a>. The '
-                  <a href="https://oceancurrent.aodn.org.au/eac_about.php">About the EAC mooring array dataset</a>'
-                  button (Fig. 1A) provides information and references about the mooring and the dataset. The
-                  information icon at the top menu (Fig. 1E) explains the datasets and what is shown on the graphics.
-                  You can explore the data in several ways; click on the calendar icon to look at a specific date (Fig.
-                  1B), click on the movie icon for a movie of daily images surrounding a particular date (Fig. 1D), or
-                  click the table icon to select a particular period that you are interested in (Fig. 1C).
+                  <a href="/">frontpage</a>. The '
+                  <a href="/about/eac-mooring-array">About the EAC mooring array dataset</a>' button (Fig. 1A) provides
+                  information and references about the mooring and the dataset. The information icon at the top menu
+                  (Fig. 1E) explains the datasets and what is shown on the graphics. You can explore the data in several
+                  ways; click on the calendar icon to look at a specific date (Fig. 1B), click on the movie icon for a
+                  movie of daily images surrounding a particular date (Fig. 1D), or click the table icon to select a
+                  particular period that you are interested in (Fig. 1C).
                   <br />
                   <br />
                   <img
@@ -2244,7 +2420,7 @@ const News = () => {
                     style={{ height: '659px', width: '700px' }}
                   />
                   Looking at a particular day,
-                  <a href="https://oceancurrent.aodn.org.au/eac.php?date=20200707132025">the 7rd&nbsp;July 2020</a>,
+                  <a href="/product/eac-mooring-array?region=Brisbane&date=20200707">the 7rd&nbsp;July 2020</a>,
                   the&nbsp;mooring array shows the&nbsp;strongest southward flow associated with&nbsp;the EAC near the
                   shelf break, between the surface and 500 m depth&nbsp;(Fig. 2a, c, d).&nbsp;On that day, the EAC
                   southward velocity was 10 Sv&nbsp;in its core (1Sv = 1x106 m3s-1) represented by the number below the
@@ -2302,7 +2478,7 @@ const News = () => {
                   within the bay. In many places, however, it is far less clear, and slack tide occurs at different
                   times in nearby places. In Clarence Strait (between Darwin and Melville Island), for example, slack
                   tide&nbsp;is half way between high and low tide at Darwin. Stepping through
-                  <a href="https://oceancurrent.aodn.org.au/tides" target="blank">
+                  <a href="/product/tidal-currents/speed" target="blank">
                     our maps of tidal current speed{' '}
                   </a>{' '}
                   is one way to find the approximate time of slack tide at an arbitrary location. We are working on a
@@ -2346,7 +2522,7 @@ const News = () => {
                   news is not good: the water is presently 19.5°C, about 2º&nbsp;less than climatology, sitting
                   somewhere in the
                   <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=daily.pctiles&amp;region=Brisbane2&amp;date=20230701120000&amp;rtype=DR"
+                    href="/product/six-day-sst/centiles?region=Brisbane2&date=20230701"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -2355,7 +2531,7 @@ const News = () => {
                   , i.e. it is only this much colder than usual less than 10% of the time. The culprit is surely the
                   cold core eddy, around which the EAC has been diverting for
                   <a
-                    href="https://oceancurrent.aodn.org.au/product.php?product=fourhour&amp;region=Brisbane2&amp;date=20230701120000&amp;rtype=DR&amp;movie=1"
+                    href="/product/four-hour-sst/sst-filled?region=Brisbane2&date=2023070112"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -2457,11 +2633,7 @@ const News = () => {
                   <em>cold</em>-core eddy. An eastward deviation of the EAC is presently happening at about 30S, with
                   the flow reconnecting with the continental shelf at 32S. In early March this eddy was off Byron Bay,
                   where an
-                  <a
-                    href="http://oceancurrent.imos.org.au/profiles/cycle.php?wmoid=5905515&amp;cycle=100&amp;depth=0#"
-                    target="blank"
-                    className="anchor"
-                  >
+                  <a href="/product/argo?wmoid=5905515&cycle=100&depth=0-2000m" target="blank" className="anchor">
                     Argo float
                   </a>
                   recorded a 100m rise of the isotherms at around 500m depth at the flanks of the eddy. The satellite
@@ -3742,9 +3914,7 @@ const News = () => {
                   3&nbsp;weeks were&nbsp;extraordinary. By 13 April (image 3) we see an elongated body of cold water had
                   extended&nbsp;north from 34S off Sydney&nbsp;to 32S where the frontal eddy had been. The black dots on
                   the image show the trajectory of an
-                  <a href="http://oceancurrent.imos.org.au/gliders/4day.php?link=ForsterA20210329_nrt_30d/2021041400.html">
-                    IMOS glider
-                  </a>
+                  <a href="/coming-soon?product=gliders">IMOS glider</a>
                   that was swept north in this flow (after having a very interesting time sampling the record-breaking
                   floodwaters in the inner shelf - but that's another story). An Argo float also made some observations,
                   a few times&nbsp;
@@ -5037,11 +5207,7 @@ const News = () => {
                   While cloud cover provides great protection for the reef, particularly during this time when reef
                   waters are already at their hottest, it clearly blocks observations using satellite AVHRR SST.
                   In-water observations, however, are ongoing and
-                  <a
-                    href="http://oceancurrent.imos.org.au/gliders/4day.php?link=GBR20200123_nrt_4d/latest.html"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href="/coming-soon?product=gliders" target="_blank" rel="noreferrer">
                     the latest glider observations
                   </a>
                   from the central GBR offshore from Hinchinbrook Island indicate that surface waters have certainly
@@ -7558,10 +7724,7 @@ const News = () => {
                   The
                   <a href="http://anfog.ecm.uwa.edu.au/index.php">IMOS Ocean Glider Facility</a>
                   has launched the
-                  <a href="http://oceancurrent.imos.org.au/gliders/yearmaps.php?link=2018_sl_temp_30d_nrt.html">
-                    third annual glider across Bass Strait
-                  </a>
-                  . It has just
+                  <a href="/coming-soon?product=gliders">third annual glider across Bass Strait</a>. It has just
                   <a href="http://oceancurrent.imos.org.au/daily.php?link=DR_SST_daily/SST/Adelaide/20180309.gif">
                     completed the transect,
                   </a>
@@ -8929,10 +9092,7 @@ const News = () => {
                         glider observations
                       </a>
                       indicated water throughout the water column on the inner shelf was still warmer than
-                      <a href="http://oceancurrent.imos.org.au/gliders/missionts.php?link=sl_Cooktown20160322_nrt.html">
-                        historical observations
-                      </a>
-                      .
+                      <a href="/coming-soon?product=gliders">historical observations</a>.
                     </p>
                   </div>
 
@@ -8950,12 +9110,10 @@ const News = () => {
                       <br />
                       While revealing where the warming occurs, the gliders can also show where cooling occurs. A glider
                       transect in Palm Passage, on the outer Central GBR,&nbsp;
-                      <a href="http://oceancurrent.imos.org.au/gliders/GBR20151103_nrt_12d/latest.html">
-                        detected upwelling
-                      </a>
-                      , in which cooler water lifts up onto the shelf from offshore. This cool water may provide relief
-                      to marine ecosystems sensitive to the marine heatwave. SST from 27 March (below) indicate the
-                      outer reef of the Northern GBR, 2-3 degrees cooler, than the inner reef, may be buffered by a
+                      <a href="/coming-soon?product=gliders">detected upwelling</a>, in which cooler water lifts up onto
+                      the shelf from offshore. This cool water may provide relief to marine ecosystems sensitive to the
+                      marine heatwave. SST from 27 March (below) indicate the outer reef of the Northern GBR, 2-3
+                      degrees cooler, than the inner reef, may be buffered by a
                       <a href="http://www.gbrmpa.gov.au/__data/assets/pdf_file/0016/4444/chpt-3-Steinberg-2007.pdf">
                         combination of upwelling and tidal mixing
                       </a>
@@ -8970,13 +9128,9 @@ const News = () => {
                       for the first time in the Central and Northern GBR. These cascades can occur when heat loss during
                       autumn causes waters to cool and become more dense near the coast. Both cascades occurred nearly
                       at the same time off&nbsp;
-                      <a href="http://oceancurrent.imos.org.au/gliders/Cooktown20160503_nrt_12d/latest.html">
-                        Port Douglas
-                      </a>
+                      <a href="/coming-soon?product=gliders">Port Douglas</a>
                       and the other off
-                      <a href="http://oceancurrent.imos.org.au/gliders/Cooktown20160503_nrt_12d/latest.html">
-                        Mission Beach
-                      </a>
+                      <a href="/coming-soon?product=gliders">Mission Beach</a>
                       south of Cairns. These cascades flow offshore and can cool the communities living near the sea
                       bed. Ongoing glider deployments into winter will inform how long the warming lasts.
                     </p>
@@ -9316,7 +9470,7 @@ const News = () => {
 
               <div className="rounded-b bg-white p-4">
                 <div className="row">
-                  <a href="https://oceancurrent.aodn.org.au/gliders/Portland20160128_nrt_12d/2016021312.html">
+                  <a href="/coming-soon?product=gliders">
                     <img src="/resource/gliders/Portland20160128_nrt_12d/2016021312.gif" style={{ width: '350px' }} />
                   </a>
                   <p>
@@ -9325,17 +9479,11 @@ const News = () => {
                     perhaps the most exciting: percent saturation values exceeded 150 within the upwelled water on 3
                     Feb, confirming that the phytoplankton were very actively photo-synthesizing, producing much more
                     oxygen than was lost to the atmosphere. You can step through the mission seeing either
-                    <a
-                      href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=Portland20160128_nrt_4d/latest.html"
-                      target="blank"
-                    >
+                    <a href="/coming-soon?product=gliders" target="blank">
                       4 days
                     </a>
                     or
-                    <a
-                      href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=Portland20160128_nrt_12d/latest.html"
-                      target="blank"
-                    >
+                    <a href="/coming-soon?product=gliders" target="blank">
                       12 days
                     </a>
                     of the mission track at a time.
@@ -9798,10 +9946,7 @@ const News = () => {
                 <a href="https://oceancurrent.aodn.org.au/sst.php?link=SNSW_chl/2015/2015042504.html" target="blank">
                   <img src="/resource/SNSW_chl/2015/2015042504.gif" style={{ height: '200px' }} />
                 </a>
-                <a
-                  href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=Yamba20150416_4d/2015050100.html"
-                  target="blank"
-                >
+                <a href="/coming-soon?product=gliders" target="blank">
                   <img src="/resource/gliders/Yamba20150416_4d/2015050100.gif" style={{ height: '200px' }} />
                 </a>
                 <p>
@@ -9829,18 +9974,12 @@ const News = () => {
                   An IMOS Slocum glider was also on the job. Its track is shown in magenta overlain on the MODIS images.
                   Its sensors very clearly distinguish the floodwaters from the ocean waters, especially through the
                   impact on the water's salinity and fluorescence. Click forward from
-                  <a
-                    href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=Yamba20150416_4d/2015042612.html"
-                    target="blank"
-                  >
+                  <a href="/coming-soon?product=gliders" target="blank">
                     26 April
                   </a>
                   to see the glider encounter, then depart from, the buoyant pool of floodwaters. The observations
                   during the latter half of
-                  <a
-                    href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=Yamba20150416_4d/2015050100.html"
-                    target="blank"
-                  >
+                  <a href="/coming-soon?product=gliders" target="blank">
                     30 April
                   </a>
                   show how the seaward edge of the plume is over-ridden by the EAC water because the temperature effect
@@ -9941,16 +10080,10 @@ const News = () => {
                 <p>
                   Off Perth, the coastal waters were being drawn into a large anticyclonic Leewin Current eddy on 27 Mar
                   2009. Two IMOS Slocum gliders
-                  <a
-                    href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=TwoRocks20090313_4d/2009032700.html"
-                    target="blank"
-                  >
+                  <a href="/coming-soon?product=gliders" target="blank">
                     [1]
                   </a>
-                  <a
-                    href="https://oceancurrent.aodn.org.au/gliders/4day.php?link=TwoRocks20090327_4d/2009033100.html"
-                    target="blank"
-                  >
+                  <a href="/coming-soon?product=gliders" target="blank">
                     [2]
                   </a>
                   sampled the water over the continental shelf out to the front, confirming that what we see from the

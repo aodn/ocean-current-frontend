@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Navigate, type RouteObject } from 'react-router';
-import { Home, MapView, DataView, ErrorPage, AboutView, InfoView } from '@/pages';
+import { Home, MapView, DataView, ErrorPage, ComingSoonPage, AboutView, InfoView } from '@/pages';
 import { MainLayout, MapLayout, DataVisualisationLayout, ArticleLayout } from '@/layouts';
 import Loading from '@/components/Shared/Loading/Loading';
 import { createProductRedirects, NewsPhpRedirect } from './utils';
@@ -124,6 +124,10 @@ const routes: RouteObject[] = [
   {
     path: APP_ROUTES.NOT_FOUND,
     element: <ErrorPage />,
+  },
+  {
+    path: APP_ROUTES.COMING_SOON,
+    element: <ComingSoonPage />,
   },
   {
     path: '*',
