@@ -4,13 +4,17 @@ import type { GliderDeployment, GliderDeploymentProperties, GliderYearmap } from
 import { convertAreaCoordsToGeoJsonCoordinates } from '@/utils/geo-utils/geo';
 
 /**
- * Picks the most recent year that has
- * deployment bounds, preferring near-real-time maps and the default variable/window.
+ * Picks a drawable map for the requested year/type (latest year by default),
+ * preferring near-real-time maps and the default variable/window.
  */
-export function selectGliderYearmap(maps: GliderYearmap[]): GliderYearmap | undefined {
+export function selectGliderYearmap(
+  maps: GliderYearmap[],
+  year?: number,
+  platform?: GliderYearmap['platform'],
+): GliderYearmap | undefined {
   const withBounds = maps.filter((map) => map.deployments.some(({ bbox }) => bbox !== null));
-  const latestYear = Math.max(...withBounds.map(({ year }) => year));
-  const latest = withBounds.filter(({ year }) => year === latestYear);
+  const latestYear = year ?? Math.max(...withBounds.map(({ year }) => year));
+  const latest = withBounds.filter((map) => map.year === latestYear && (!platform || map.platform === platform));
   const candidates = latest.some(({ is_nrt }) => is_nrt) ? latest.filter(({ is_nrt }) => is_nrt) : latest;
   return (
     candidates.find(
