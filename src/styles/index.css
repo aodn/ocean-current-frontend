@@ -22,6 +22,10 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentcolor);
   }
+
+  html {
+    scroll-padding-top: var(--scroll-padding-top, 0px);
+  }
 }
 
 /* Move the logo container from bottom left to bottom right */
