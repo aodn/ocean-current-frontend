@@ -169,6 +169,7 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
         >
           <GlidersDeploymentLayer
             data={deployments}
+            selectedId={isMiniMap ? missionName : undefined}
             onSelect={(missionName) =>
               mission.mutate(
                 { missionName, window: yearmap.window.replace(/^0+/, '') },
