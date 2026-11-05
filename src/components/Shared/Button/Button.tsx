@@ -12,6 +12,7 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   className = '',
   'aria-label': ariaLabel,
+  'aria-pressed': ariaPressed,
 }) => {
   const buttonType = ButtonType[type];
   const buttonBorderRadius = BorderRadius[borderRadius];
@@ -23,6 +24,7 @@ const Button: React.FC<ButtonProps> = ({
       data-testid={dataTestId}
       disabled={disabled}
       aria-label={ariaLabel}
+      aria-pressed={ariaPressed}
       className={`relative flex items-center justify-center px-4 py-1 text-lg whitespace-nowrap md:px-8 ${buttonSize} ${buttonType} ${buttonBorderRadius} ${
         disabled ? 'cursor-not-allowed opacity-50' : 'transition duration-300 ease-in-out'
       } ${className}`}
