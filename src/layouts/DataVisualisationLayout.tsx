@@ -50,6 +50,7 @@ const DataVisualisationLayout: React.FC = () => {
   const useDate = useDateStore((state) => state.date);
   const product = useProductFromUrl('product');
   const { mainProduct } = useProductConvert();
+  const isGliders = mainProduct?.key === 'gliders';
   const [showVideo, setShowVideo] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const [isSidebarVisible, setSidebarVisible] = useState(true);
@@ -278,13 +279,15 @@ const DataVisualisationLayout: React.FC = () => {
           className={`transition-all duration-300 ${isSidebarVisible ? 'md:ml-4' : 'ml-0'} flex w-full flex-col md:min-h-[800px]`}
         >
           <div className="md:hidden">{mainProduct && <ProductDropdown mainProductKey={mainProduct.key} />}</div>
-          <ProductMenuBar
-            showVideo={showVideo}
-            setShowVideo={setShowVideo}
-            showMap={showMap}
-            setShowMap={setShowMap}
-            mode={shouldShowProductOverMap && !isFishSoopFinder ? 'list' : 'range'}
-          />
+          {!isGliders && (
+            <ProductMenuBar
+              showVideo={showVideo}
+              setShowVideo={setShowVideo}
+              showMap={showMap}
+              setShowMap={setShowMap}
+              mode={shouldShowProductOverMap && !isFishSoopFinder ? 'list' : 'range'}
+            />
+          )}
           <ErrorBoundary key={product?.mainProduct}>
             <Outlet context={{ showVideo, showMap, loading: true }} />
           </ErrorBoundary>

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createMemoryRouter, RouterProvider } from 'react-router';
@@ -13,20 +13,33 @@ vi.mock('@/components/Map/BasicMap', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="interactive-map">{children}</div>,
 }));
 vi.mock('@/components/Map/layers/GlidersDeploymentLayer', () => ({
-  default: ({ data }: { data: { features: { id: string }[] } }) => (
-    <div data-testid="deployment-layer" data-ids={data.features.map(({ id }) => id).join(',')} />
+  default: ({ data, onSelect }: { data: { features: { id: string }[] }; onSelect: (id: string) => void }) => (
+    <div data-testid="deployment-layer" data-ids={data.features.map(({ id }) => id).join(',')}>
+      {data.features.map(({ id }) => (
+        <button key={id} onClick={() => onSelect(id)}>
+          {id}
+        </button>
+      ))}
+    </div>
   ),
 }));
 
-function setup() {
-  const router = createMemoryRouter([{ path: '/map/gliders', element: <GlidersMap /> }], {
-    initialEntries: ['/map/gliders'],
-  });
+function setup(props: { isMiniMap?: boolean; missionName?: string; window?: string } = {}) {
+  const router = createMemoryRouter(
+    [
+      { path: '/map/gliders', element: <GlidersMap {...props} /> },
+      { path: '/product/gliders', element: <p>Mission page</p> },
+    ],
+    {
+      initialEntries: ['/map/gliders'],
+    },
+  );
   render(
     <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
       <RouterProvider router={router} />
     </QueryClientProvider>,
   );
+  return router;
 }
 
 beforeEach(() => {
@@ -109,4 +122,96 @@ it('navigates available years with arrows and resets to the current or latest av
   expect(year).toHaveValue('2026');
   expect(next).toBeDisabled();
   expect(source.fetchGliderYearmaps).toHaveBeenCalledTimes(1);
+});
+
+const mission = {
+  id: 'TwoRocks20261028_nrt@5.',
+  mission_name: 'TwoRocks20261028_nrt',
+  visualisations: { latest_images: { '4d': '/gliders/TwoRocks20261028_nrt_4d/2026110412.gif', '12d': '/wrong.gif' } },
+};
+
+it.each(['04d', '12d', '30d'])(
+  'navigates directly to the mission image for %s without showing a preview',
+  async (window) => {
+    const yearmap = maps.find(({ id }) => id === '2026_sl_temp_04d_nrt')!;
+    vi.mocked(source.fetchGliderYearmaps).mockResolvedValue([{ ...yearmap, window }]);
+    vi.spyOn(source, 'fetchGliderMission').mockResolvedValue(mission);
+    const router = setup();
+    await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
+    await screen.findByText('Mission page');
+    expect(router.state.location.search).toBe(
+      `?missionId=TwoRocks20261028_nrt%405.&window=${window.replace(/^0+/, '')}`,
+    );
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
+  },
+);
+
+it('keeps the map usable if mission resolution fails', async () => {
+  vi.spyOn(source, 'fetchGliderMission').mockRejectedValue(new Error('offline'));
+  setup();
+  await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
+  await screen.findByRole('alert');
+  expect(screen.getByTestId('interactive-map')).toBeInTheDocument();
+});
+
+it('shows only the map in sidebar mode and selects the displayed mission yearmap', async () => {
+  vi.spyOn(source, 'fetchGliderMission').mockResolvedValue({ ...mission, id: 'Bicheno20100813@5.' });
+  const router = setup({ isMiniMap: true, missionName: 'Bicheno20100813' });
+  expect(await screen.findByTestId('deployment-layer')).toHaveAttribute('data-ids', 'Bicheno20100813');
+  expect(screen.queryByRole('combobox', { name: 'Year' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Glider type' })).not.toBeInTheDocument();
+  await userEvent.click(screen.getByRole('button', { name: 'Bicheno20100813' }));
+  await waitFor(() => expect(router.state.location.pathname).toBe('/product/gliders'));
+});
+
+it('ignores a pending mission when the yearmap changes', async () => {
+  let finish!: (value: typeof mission) => void;
+  vi.spyOn(source, 'fetchGliderMission').mockReturnValue(
+    new Promise((resolve) => {
+      finish = resolve;
+    }),
+  );
+  const router = setup();
+  await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
+  await screen.findByText('Loading mission…');
+  await userEvent.click(screen.getByRole('button', { name: 'Previous year' }));
+  await act(async () => finish(mission));
+  expect(router.state.location.pathname).toBe('/map/gliders');
+  expect(screen.queryByText('Loading mission…')).not.toBeInTheDocument();
+});
+
+it('only navigates for the most recently clicked deployment', async () => {
+  let finishFirst!: (value: typeof mission) => void;
+  let finishSecond!: (value: typeof mission) => void;
+  vi.spyOn(source, 'fetchGliderMission')
+    .mockReturnValueOnce(
+      new Promise((resolve) => {
+        finishFirst = resolve;
+      }),
+    )
+    .mockReturnValueOnce(
+      new Promise((resolve) => {
+        finishSecond = resolve;
+      }),
+    );
+  const router = setup();
+  await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
+  await userEvent.click(screen.getByRole('button', { name: 'Ceduna20260924_nrt' }));
+  await act(async () => finishFirst(mission));
+  expect(router.state.location.pathname).toBe('/map/gliders');
+  await act(async () => finishSecond({ ...mission, id: 'Ceduna20260924_nrt@5.' }));
+  expect(router.state.location.search).toBe('?missionId=Ceduna20260924_nrt%405.&window=4d');
+});
+
+it('preserves the active image window when selecting another mission from the minimap', async () => {
+  const yearmap = maps.find(({ id }) => id === '2026_sl_temp_04d_nrt')!;
+  vi.mocked(source.fetchGliderYearmaps).mockResolvedValue([
+    yearmap,
+    { ...yearmap, id: '2026_sl_temp_12d_nrt', window: '12d' },
+  ]);
+  vi.spyOn(source, 'fetchGliderMission').mockResolvedValue(mission);
+  const router = setup({ isMiniMap: true, missionName: mission.mission_name, window: '12d' });
+  await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
+  await screen.findByText('Mission page');
+  expect(router.state.location.search).toBe('?missionId=TwoRocks20261028_nrt%405.&window=12d');
 });
