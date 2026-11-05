@@ -3,7 +3,7 @@ import { MapImageAreas } from '@/types/dataImage';
 const regionArr: MapImageAreas[] = [
   {
     shape: 'rect',
-    coords: [212, 196, 220, 206],
+    coords: [212, 195, 221, 205],
     href: '../CH070/index.html',
     alt: 'CH070',
     name: 'CH070',
@@ -11,7 +11,7 @@ const regionArr: MapImageAreas[] = [
   },
   {
     shape: 'rect',
-    coords: [256, 192, 264, 202],
+    coords: [256, 191, 264, 201],
     href: '../CH100/index.html',
     alt: 'CH100',
     name: 'CH100',

@@ -42,11 +42,13 @@ const DataImageWithCurrentMetersPlots: React.FC<DataImageWithCurrentMetersPlotsP
   const depthTimeElements = useMemo(() => filterLatestAndRemoveFileExtension(depthTimeList?.files), [depthTimeList]);
 
   useEffect(() => {
+    // The API sorts files by name, so the last one is the newest deployment.
+    // This matches the `latest.gif` symlink in each folder on the legacy server.
     if (velocityElements && velocityElements.length > 0) {
-      setSelectedVelocityId(velocityElements[0].id);
+      setSelectedVelocityId(velocityElements[velocityElements.length - 1].id);
     }
     if (depthTimeElements && depthTimeElements.length > 0) {
-      setSelectedDepthTimeId(depthTimeElements[0].id);
+      setSelectedDepthTimeId(depthTimeElements[depthTimeElements.length - 1].id);
     }
   }, [depthTimeElements, velocityElements]);
 

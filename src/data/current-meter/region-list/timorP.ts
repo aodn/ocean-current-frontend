@@ -3,7 +3,7 @@ import { MapImageAreas } from '@/types/dataImage';
 const regionArr: MapImageAreas[] = [
   {
     shape: 'rect',
-    coords: [845, 241, 855, 251],
+    coords: [845, 240, 855, 250],
     href: '../NWSLYN/index.html',
     alt: 'NWSLYN',
     name: 'NWSLYN',

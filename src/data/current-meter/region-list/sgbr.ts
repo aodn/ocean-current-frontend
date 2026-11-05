@@ -3,7 +3,7 @@ import { MapImageAreas } from '@/types/dataImage';
 const regionArr: MapImageAreas[] = [
   {
     shape: 'rect',
-    coords: [466, 147, 475, 157],
+    coords: [467, 146, 476, 156],
     href: '../GBRCCH/index.html',
     alt: 'GBRCCH',
     name: 'GBRCCH',
@@ -19,7 +19,7 @@ const regionArr: MapImageAreas[] = [
   },
   {
     shape: 'rect',
-    coords: [452, 581, 462, 591],
+    coords: [453, 581, 462, 591],
     href: '../GBRHIS/index.html',
     alt: 'GBRHIS',
     name: 'GBRHIS',
@@ -27,7 +27,7 @@ const regionArr: MapImageAreas[] = [
   },
   {
     shape: 'rect',
-    coords: [531, 569, 540, 579],
+    coords: [532, 569, 541, 579],
     href: '../GBROTE/index.html',
     alt: 'GBROTE',
     name: 'GBROTE',

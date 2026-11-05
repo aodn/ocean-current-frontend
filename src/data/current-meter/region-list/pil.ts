@@ -3,7 +3,7 @@ import { MapImageAreas } from '@/types/dataImage';
 const regionArr: MapImageAreas[] = [
   {
     shape: 'rect',
-    coords: [125, 603, 134, 613],
+    coords: [124, 602, 134, 612],
     href: '../NWSBAR/index.html',
     alt: 'NWSBAR',
     name: 'NWSBAR',
