@@ -158,6 +158,7 @@ const catalogueMissions: Mission[] = [
     glider_id: 'SL1292',
     visualisations: {
       ...mission.visualisations,
+      latest_images: { ...mission.visualisations.latest_images, '30d': '/gliders/thirty.gif' },
       details: ['4', '12', '30'].map((label) => ({ label, url: `/gliders/mission_${label}d/latest.html` })),
     },
   },
@@ -306,7 +307,7 @@ it('includes deployments without bounds, deduplicates map variants and uses cata
   await screen.findByText('02 Jan 2011 – —');
   expect(screen.getAllByRole('row')).toHaveLength(2);
   expect(screen.getAllByRole('button', { name: unbounded.mission_name })).toHaveLength(1);
-  expect(screen.getAllByRole('cell', { name: '—' })).toHaveLength(10);
+  expect(screen.getAllByRole('cell', { name: '—' })).toHaveLength(9);
   expect(source.fetchGliderMissionById).not.toHaveBeenCalled();
 });
 
@@ -318,7 +319,8 @@ it('opens an unbounded mission by keyboard and returns to the table with browser
   await userEvent.selectOptions(await screen.findByRole('combobox', { name: 'Year' }), '2011');
   await userEvent.click(screen.getByRole('button', { name: 'Table view' }));
   await screen.findByRole('table');
-  await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Sort deployments' }), 'name-desc');
+  await userEvent.click(screen.getByRole('button', { name: 'Sort deployments' }));
+  await userEvent.click(screen.getByRole('menuitem', { name: 'Mission name (Z–A)' }));
   screen.getByRole('button', { name: unbounded.mission_name }).focus();
   await userEvent.keyboard('{Enter}');
   await screen.findByRole('region', { name: 'Glider mission image' });
@@ -330,7 +332,7 @@ it('opens an unbounded mission by keyboard and returns to the table with browser
   expect(screen.getByRole('button', { name: 'Table view' })).toHaveAttribute('aria-pressed', 'true');
   expect(screen.getByRole('combobox', { name: 'Year' })).toHaveValue('2011');
   expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Seaglider');
-  expect(screen.getByRole('combobox', { name: 'Sort deployments' })).toHaveValue('name-desc');
+  expect(screen.getByRole('button', { name: 'Sort deployments' })).toHaveTextContent('Mission name (Z–A)');
 });
 
 it('keeps the toolbar usable when all deployments lack bounds', async () => {
@@ -410,7 +412,8 @@ it.each(['4', '12', '30'])(
     const router = setup();
     await userEvent.click(await screen.findByRole('button', { name: 'Table view' }));
     await screen.findByRole('table');
-    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Sort deployments' }), 'name-asc');
+    await userEvent.click(screen.getByRole('button', { name: 'Sort deployments' }));
+    await userEvent.click(screen.getByRole('menuitem', { name: 'Mission name (A–Z)' }));
     const row = screen.getByRole('button', { name: mission.mission_name }).closest('tr')!;
     const detailsButton = Array.from(row.querySelectorAll('button')).find((button) => button.textContent === label)!;
     await userEvent.click(detailsButton);
@@ -422,6 +425,6 @@ it.each(['4', '12', '30'])(
     });
     await screen.findByRole('table');
     expect(screen.getByRole('button', { name: 'Table view' })).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByRole('combobox', { name: 'Sort deployments' })).toHaveValue('name-asc');
+    expect(screen.getByRole('button', { name: 'Sort deployments' })).toHaveTextContent('Mission name (A–Z)');
   },
 );

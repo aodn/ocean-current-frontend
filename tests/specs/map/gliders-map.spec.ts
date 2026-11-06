@@ -182,7 +182,10 @@ for (const width of [1280, 390]) {
       start_date: '2011-06-26',
       glider_id: 'SG514',
       end_date: null,
-      visualisations: { latest_images: { '4d': '/gliders/table-test.gif', '12d': '/gliders/table-test.gif' } },
+      visualisations: {
+        latest_images: { '4d': '/gliders/table-test.gif', '12d': '/gliders/table-test.gif', '30d': null },
+        details: ['4', '12', '30'].map((label) => ({ label, url: `/gliders/table_${label}d/latest.html` })),
+      },
     };
     let catalogueRequests = 0;
     await page.route('**/api/v1/gliders/missions?*', async (route) => {
@@ -195,7 +198,14 @@ for (const width of [1280, 390]) {
         glider_id: 'SG519',
         visualisations: {},
       };
-      await route.fulfill({ json: { missions: [mission, historical], total: 2 } });
+      const longMission = {
+        id: 'long-mission',
+        mission_name: 'Perth_ContinentalShelf_ExtendedOffshoreSurvey20110101',
+        start_date: '2011-01-01',
+        glider_id: 'SG514',
+        visualisations: {},
+      };
+      await route.fulfill({ json: { missions: [mission, historical, longMission], total: 3 } });
     });
     await page.route('**/api/v1/gliders/missions/*', async (route) => {
       await route.fulfill({ json: mission });
@@ -214,7 +224,7 @@ for (const width of [1280, 390]) {
     await page.getByRole('button', { name: 'Table view', exact: true }).click();
     const table = page.getByRole('table');
     await expect(table).toBeVisible();
-    await expect(table.getByRole('row')).toHaveCount(3);
+    await expect(table.getByRole('row')).toHaveCount(4);
     await expect(table.getByRole('cell', { name: '26 Jun 2011 – —' })).toBeVisible();
     const initialCatalogueRequests = catalogueRequests;
     await expect(year).toHaveValue('2011');
@@ -231,8 +241,18 @@ for (const width of [1280, 390]) {
       expect(bounds.x).toBeGreaterThanOrEqual(0);
       expect(bounds.x + bounds.width).toBeLessThanOrEqual(width);
     }
+    await expect(page.getByText('3 missions', { exact: true })).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
     await page.screenshot({ path: `/tmp/gliders-table-${width}.png`, fullPage: true });
-    await page.getByRole('combobox', { name: 'Sort deployments' }).selectOption('name-asc');
+    const scroller = page.getByRole('region', { name: 'Gliders deployment table', exact: true });
+    await scroller.evaluate((element) => {
+      element.scrollLeft = element.scrollWidth;
+    });
+    await expect(table.getByRole('button', { name: mission.mission_name, exact: true })).toBeInViewport();
+    await expect(table.getByRole('button', { name: 'View 30-day mission image', exact: true })).toBeDisabled();
+    await page.screenshot({ path: `/tmp/gliders-table-scrolled-${width}.png`, fullPage: true });
+    await page.getByRole('button', { name: 'Sort deployments' }).click();
+    await page.getByRole('menuitem', { name: 'Mission name (A–Z)', exact: true }).click();
     const missionButton = table.getByRole('button', { name: mission.mission_name, exact: true });
     await missionButton.focus();
     await missionButton.press('Enter');
@@ -244,7 +264,7 @@ for (const width of [1280, 390]) {
     await expect(year).toHaveValue('2011');
     await expect(type).toHaveText('Seaglider');
     await expect(page.getByRole('button', { name: 'Table view', exact: true })).toHaveAttribute('aria-pressed', 'true');
-    await expect(page.getByRole('combobox', { name: 'Sort deployments' })).toHaveValue('name-asc');
+    await expect(page.getByRole('button', { name: 'Sort deployments' })).toHaveText('Mission name (A–Z)');
     expect(catalogueRequests).toBe(initialCatalogueRequests);
   });
 

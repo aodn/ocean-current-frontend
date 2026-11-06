@@ -27,7 +27,7 @@ A map with no bounds shows an empty state; a failed request shows an error with 
 
 The table follows the [legacy deployment index](https://www.cmar.csiro.au/remotesensing/oceancurrent/gliders/)
 with Mission, Dates, Latitude, Longitude, Days, Distance (km), Glider (vehicle ID), Processing version,
-T-S, Details, Animation and Scientific data columns. Rows come directly from the cached catalogue query to
+Details, Animation and Scientific data columns. Rows come directly from the cached catalogue query to
 `/api/v1/gliders/missions`, including missions absent from every yearmap. Pagination continues until the
 published `total` is reached; no per-row detail requests are made. Missing values show `—`, coordinates use
 hemisphere labels, and the mission column stays visible while scrolling horizontally.

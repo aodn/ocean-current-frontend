@@ -80,4 +80,14 @@ describe('Dropdown Component', () => {
     expect(screen.queryByText('Option 1')).not.toBeInTheDocument();
     expect(screen.queryByText('Option 2')).not.toBeInTheDocument();
   });
+
+  it('opens the styled dropdown using the keyboard and exposes its expanded state', async () => {
+    render(<Dropdown elements={elements} selectedId="1" ariaLabel="Sort deployments" />);
+    const toggle = screen.getByRole('button', { name: 'Sort deployments' });
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    toggle.focus();
+    await userEvent.keyboard('{Enter}');
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('menuitem', { name: 'Option 2' })).toBeVisible();
+  });
 });

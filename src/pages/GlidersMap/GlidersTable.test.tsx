@@ -75,15 +75,13 @@ it('shows historical and NRT metadata and uses only the published product labels
   expect(row.getByText('115.42° E')).toBeInTheDocument();
   expect(row.getByText('SL1292')).toBeInTheDocument();
   expect(row.getByText('5.')).toBeInTheDocument();
-  expect(row.getByRole('link', { name: 'T-S' })).toHaveAttribute(
-    'href',
-    '/resource/gliders/missionTS/sl_TwoRocks20261028_nrt.html',
-  );
-  const detail = row.getAllByRole('cell')[8];
+  expect(row.queryByRole('link', { name: 'T-S' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('columnheader', { name: 'T-S' })).not.toBeInTheDocument();
+  const detail = row.getByRole('group', { name: 'Mission images' });
   expect(detail.textContent).toBe('4 / 12 / 30');
-  expect(within(detail).getByRole('button', { name: '12' })).toBeInTheDocument();
-  const animation = row.getAllByRole('cell')[9];
-  expect(within(animation).getByRole('link', { name: '30' })).toHaveAttribute(
+  expect(within(detail).getByRole('button', { name: 'View 12-day mission image' })).toBeInTheDocument();
+  const animation = row.getByRole('group', { name: 'Animations' });
+  expect(within(animation).getByRole('link', { name: 'View 30-day animation' })).toHaveAttribute(
     'href',
     '/resource/gliders/TwoRocks20261028_nrt_30d/TwoRocks20261028_nrt_30d.mp4',
   );
@@ -99,9 +97,11 @@ it('shows historical and NRT metadata and uses only the published product labels
 it('sorts by deployment date and mission name and opens the exact catalogue mission', async () => {
   const onSelect = setup();
   expect(screen.getAllByRole('row')[1]).toHaveTextContent('TwoRocks20261028_nrt');
-  await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Sort deployments' }), 'name-asc');
+  await userEvent.click(screen.getByRole('button', { name: 'Sort deployments' }));
+  await userEvent.click(screen.getByRole('menuitem', { name: 'Mission name (A–Z)' }));
   expect(screen.getAllByRole('row')[1]).toHaveTextContent('Bicheno20100813');
-  await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Sort deployments' }), 'date-asc');
+  await userEvent.click(screen.getByRole('button', { name: 'Sort deployments' }));
+  await userEvent.click(screen.getByRole('menuitem', { name: 'Oldest deployment' }));
   expect(screen.getAllByRole('row')[1]).toHaveTextContent('TwoRocks20080621');
   await userEvent.click(screen.getByRole('button', { name: 'TwoRocks20080621' }));
   expect(onSelect).toHaveBeenCalledWith(missions.find(({ mission_name }) => mission_name === 'TwoRocks20080621'));
@@ -122,14 +122,32 @@ it('handles missing metadata, zero values, west longitude and a partial publishe
   expect(screen.getByRole('cell', { name: '0° N' })).toBeInTheDocument();
   expect(screen.getByRole('cell', { name: '10° W' })).toBeInTheDocument();
   expect(screen.getAllByRole('cell', { name: '0' })).toHaveLength(2);
-  expect(screen.getAllByRole('cell', { name: '—' })).toHaveLength(6);
+  expect(screen.getAllByRole('cell', { name: '—' })).toHaveLength(5);
   expect(screen.queryByRole('link')).not.toBeInTheDocument();
-  expect(screen.getByRole('button', { name: '12' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'View 12-day mission image' })).toBeInTheDocument();
 });
 
 it.each(['4', '12', '30'])('opens the mission with the selected %s day Details window', async (label) => {
   const mission = missions.find(({ mission_name }) => mission_name === 'TwoRocks20261028_nrt')!;
   const onSelect = setup([mission]);
-  await userEvent.click(screen.getByRole('button', { name: label }));
+  await userEvent.click(screen.getByRole('button', { name: `View ${label}-day mission image` }));
   expect(onSelect).toHaveBeenCalledWith(mission, `${label}d`);
+});
+
+it('shows the filtered count, explains Version and disables explicitly unavailable images', async () => {
+  const onSelect = setup([
+    {
+      ...missions[0],
+      visualisations: { ...missions[0].visualisations, latest_images: { '4d': '/gliders/four.gif', '12d': null } },
+    },
+  ]);
+  expect(screen.getByRole('heading', { name: 'Deployments' })).toBeInTheDocument();
+  expect(screen.getByText('1 mission')).toBeInTheDocument();
+  expect(screen.getByRole('columnheader', { name: 'Processing version' })).toHaveTextContent('Version');
+  const unavailable = screen.getByRole('button', { name: 'View 12-day mission image' });
+  expect(unavailable).toBeDisabled();
+  expect(unavailable).toHaveAttribute('title', 'Image unavailable');
+  await userEvent.click(unavailable);
+  expect(onSelect).not.toHaveBeenCalled();
+  expect(screen.getByRole('button', { name: 'View 4-day mission image' })).toBeEnabled();
 });
