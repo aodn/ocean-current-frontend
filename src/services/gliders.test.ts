@@ -1,6 +1,6 @@
 import fixture from '@/pages/GlidersMap/fixtures/yearmaps.json';
 import { apiClient, ec2ProxyClient } from './httpClient';
-import { fetchGliderMission, fetchGliderMissionById, fetchGliderYearmaps } from './gliders';
+import { fetchGliderMission, fetchGliderMissionById, fetchGliderMissions, fetchGliderYearmaps } from './gliders';
 
 const mission = { id: 'TwoRocks20261028_nrt@5.', mission_name: 'TwoRocks20261028_nrt', visualisations: {} };
 afterEach(() => vi.restoreAllMocks());
@@ -54,4 +54,15 @@ it('fetches details with the encoded, unmodified versioned ID and cancellation',
   const signal = new AbortController().signal;
   expect(await fetchGliderMissionById(mission.id, signal)).toEqual(mission);
   expect(get).toHaveBeenCalledExactlyOnceWith('/gliders/missions/TwoRocks20261028_nrt%405.', { signal });
+});
+
+it('loads all catalogue pages with cancellation for table metadata', async () => {
+  const get = vi
+    .spyOn(apiClient, 'get')
+    .mockResolvedValueOnce({ data: { missions: [mission], total: 2 } })
+    .mockResolvedValueOnce({ data: { missions: [{ ...mission, id: 'second' }], total: 2 } });
+  const signal = new AbortController().signal;
+  expect(await fetchGliderMissions(signal)).toEqual([mission, { ...mission, id: 'second' }]);
+  expect(get).toHaveBeenNthCalledWith(1, '/gliders/missions', { params: { size: 100, page: 0 }, signal });
+  expect(get).toHaveBeenNthCalledWith(2, '/gliders/missions', { params: { size: 100, page: 1 }, signal });
 });

@@ -86,11 +86,11 @@ test('keeps the deployment map usable on mobile', async ({ page }) => {
   await expect(page.getByRole('region', { name: 'Deployment calendar chart' })).toHaveCount(0);
 });
 
-test('preserves product switching in the sidebar', async ({ page }) => {
-  await page.goto('/map/gliders');
+test('clears Gliders parameters when switching maps in the sidebar', async ({ page }) => {
+  await page.goto('/map/gliders?view=map&year=2011&platform=sg&sort=name-desc&missionId=test&window=12d');
   const menu = page.getByTestId('map-sidebar-menu');
-  await menu.getByRole('menuitem').filter({ hasText: 'Four-hour SST' }).click();
-  await expect(page).toHaveURL(/\/map\/four-hour-sst\/sst/);
+  await menu.getByRole('menuitem').filter({ hasText: 'Argo' }).click();
+  await expect(page).toHaveURL(/\/map\/argo$/);
   await menu.getByRole('menuitem').filter({ hasText: 'Gliders' }).click();
   await expect(page).toHaveURL(/\/map\/gliders/);
   await expect(page.getByRole('region', { name: 'Interactive Australia deployment map' })).toBeVisible();
@@ -174,6 +174,80 @@ for (const width of [1280, 390]) {
 }
 
 for (const width of [1280, 390]) {
+  test(`switches views and returns from an unbounded mission to the table at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 844 });
+    const mission = {
+      id: 'Perth20110626_1@5.',
+      mission_name: 'Perth20110626_1',
+      start_date: '2011-06-26',
+      glider_id: 'SG514',
+      end_date: null,
+      visualisations: { latest_images: { '4d': '/gliders/table-test.gif', '12d': '/gliders/table-test.gif' } },
+    };
+    let catalogueRequests = 0;
+    await page.route('**/api/v1/gliders/missions?*', async (route) => {
+      if (!new URL(route.request().url()).searchParams.has('q')) catalogueRequests++;
+      const historical = {
+        id: 'Bicheno20100813@5.',
+        mission_name: 'Bicheno20100813',
+        start_date: '2010-08-13',
+        end_date: '2011-01-02',
+        glider_id: 'SG519',
+        visualisations: {},
+      };
+      await route.fulfill({ json: { missions: [mission, historical], total: 2 } });
+    });
+    await page.route('**/api/v1/gliders/missions/*', async (route) => {
+      await route.fulfill({ json: mission });
+    });
+    await page.route('**/resource/gliders/table-test.gif', async (route) => {
+      await route.fulfill({
+        body: Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64'),
+        contentType: 'image/gif',
+      });
+    });
+    await page.goto('/map/gliders');
+    const year = page.getByRole('combobox', { name: 'Year', exact: true });
+    const type = page.getByRole('button', { name: 'Glider type', exact: true });
+    await expect(page.getByRole('button', { name: 'Map view', exact: true })).toHaveAttribute('aria-pressed', 'true');
+    await year.selectOption('2011');
+    await page.getByRole('button', { name: 'Table view', exact: true }).click();
+    const table = page.getByRole('table');
+    await expect(table).toBeVisible();
+    await expect(table.getByRole('row')).toHaveCount(3);
+    await expect(table.getByRole('cell', { name: '26 Jun 2011 – —' })).toBeVisible();
+    const initialCatalogueRequests = catalogueRequests;
+    await expect(year).toHaveValue('2011');
+    await expect(type).toHaveText('Seaglider');
+    await page.getByRole('button', { name: 'Map view', exact: true }).click();
+    await expect(
+      page.getByRole('region', { name: 'Interactive Australia deployment map' }),
+    ).toHaveAccessibleDescription(/1 highlighted deployment areas/);
+    await expect(year).toHaveValue('2011');
+    await page.getByRole('button', { name: 'Table view', exact: true }).click();
+    for (const control of [year, type, page.getByRole('button', { name: 'Table view', exact: true })]) {
+      await expect(control).toBeVisible();
+      const bounds = (await control.boundingBox())!;
+      expect(bounds.x).toBeGreaterThanOrEqual(0);
+      expect(bounds.x + bounds.width).toBeLessThanOrEqual(width);
+    }
+    await page.screenshot({ path: `/tmp/gliders-table-${width}.png`, fullPage: true });
+    await page.getByRole('combobox', { name: 'Sort deployments' }).selectOption('name-asc');
+    const missionButton = table.getByRole('button', { name: mission.mission_name, exact: true });
+    await missionButton.focus();
+    await missionButton.press('Enter');
+    await expect(page.getByRole('img', { name: `${mission.mission_name} 4d mission profile` })).toBeVisible();
+    await page.getByRole('button', { name: '12 days', exact: true }).click();
+    await expect(page.getByRole('img', { name: `${mission.mission_name} 12d mission profile` })).toBeVisible();
+    await page.goBack();
+    await expect(table).toBeVisible();
+    await expect(year).toHaveValue('2011');
+    await expect(type).toHaveText('Seaglider');
+    await expect(page.getByRole('button', { name: 'Table view', exact: true })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('combobox', { name: 'Sort deployments' })).toHaveValue('name-asc');
+    expect(catalogueRequests).toBe(initialCatalogueRequests);
+  });
+
   test(`reuses the product sidebar and switches products from a Gliders image at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 844 });
     await page.route('**/api/v1/gliders/missions/*', async (route) => {
