@@ -34,7 +34,7 @@ describe('MapSidebar', () => {
 
     fireEvent.click(screen.getByText('Surface Waves'));
 
-    expect(mockNavigate).toHaveBeenCalledWith(getProductPathWithSubProduct('surfaceWaves'), { region: null });
+    expect(mockNavigate).toHaveBeenCalledWith(getProductPathWithSubProduct('surfaceWaves'), { region: null }, false);
   });
 
   it('does nothing when clicking the already-active product', () => {
@@ -51,9 +51,13 @@ describe('MapSidebar', () => {
 
     fireEvent.click(screen.getByText('EAC Mooring Array'));
 
-    expect(mockNavigate).toHaveBeenCalledWith(getProductPathWithSubProduct('EACMooringArray'), {
-      region: 'Brisbane',
-    });
+    expect(mockNavigate).toHaveBeenCalledWith(
+      getProductPathWithSubProduct('EACMooringArray'),
+      {
+        region: 'Brisbane',
+      },
+      false,
+    );
   });
 
   it('clears region for Current Meters', () => {
@@ -61,6 +65,23 @@ describe('MapSidebar', () => {
 
     fireEvent.click(screen.getByText('Current Meters'));
 
-    expect(mockNavigate).toHaveBeenCalledWith(getProductPathWithSubProduct('currentMeters'), { region: null });
+    expect(mockNavigate).toHaveBeenCalledWith(getProductPathWithSubProduct('currentMeters'), { region: null }, false);
+  });
+
+  it('replaces Gliders parameters when switching to Argo', () => {
+    setActiveProductId('gliders');
+    render(<MapSidebar />);
+
+    fireEvent.click(screen.getByText('Argo'));
+
+    expect(mockNavigate).toHaveBeenCalledWith(getProductPathWithSubProduct('argo'), { region: null }, true);
+  });
+
+  it('enters Gliders without carrying parameters from the previous map', () => {
+    render(<MapSidebar />);
+
+    fireEvent.click(screen.getByText('Gliders'));
+
+    expect(mockNavigate).toHaveBeenCalledWith(getProductPathWithSubProduct('gliders'), { region: null }, true);
   });
 });

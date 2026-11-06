@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router';
+import { useLocation, useSearchParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { sharedQueryConfig } from '@/configs/query';
 import { fetchGliderMissionById } from '@/services/gliders';
@@ -10,6 +10,7 @@ export const GLIDER_MISSION_WINDOWS = ['4d', '12d', '30d'];
  * mission image share the query key, so they read the same cached mission.
  */
 const useGliderMission = () => {
+  const location = useLocation();
   const [params, setParams] = useSearchParams();
   const missionId = params.get('missionId') ?? '';
   const window = params.get('window') ?? '4d';
@@ -38,7 +39,7 @@ const useGliderMission = () => {
           next.set('window', window);
           return next;
         },
-        { replace: true },
+        { replace: true, state: location.state },
       ),
   };
 };
