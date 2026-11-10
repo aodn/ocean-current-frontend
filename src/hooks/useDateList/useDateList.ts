@@ -115,6 +115,8 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
   const metaData = useArgoStore((state) => state);
   const wmoId = metaData.selectedArgoParams.worldMeteorologicalOrgId;
   const { isTidalCurrentsPointSelected, selectedPoint } = useTidalCurrentPoint(productId);
+  const isTidalCurrentsMapProduct =
+    (productId === 'tidalCurrents-spd' || productId === 'tidalCurrents-sl') && !isTidalCurrentsPointSelected;
 
   const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
 
@@ -229,17 +231,19 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
       dateList = processArgoDateList(data as ArgoProfileCycle[]);
     } else {
       // Products whose files sit in year folders arrive as multiple groups and
-      // need flattening and re-sorting across groups
-      if (productId === 'oceanColour-chlA' || productId === 'fishSOOP-profiles') {
+      // need flattening and re-sorting across groups. Tidal Currents year folders
+      // also overlap (2026/ ends with early-2027 files that 2027/ also starts with).
+      if (productId === 'oceanColour-chlA' || productId === 'fishSOOP-profiles' || isTidalCurrentsMapProduct) {
         dateList = processGroupedFilesToDateList(data as ImageListResponse[]);
       } else {
         /**
          * products comes here:
-         * 1. 4-hour-sst 2.daily-sst 3.adjusted-sea-level 4.surface-wave 5. tidal-currents 6. sealCtd 7. eac-mooring
+         * 1. 4-hour-sst 2.daily-sst 3.adjusted-sea-level 4.surface-wave 5. tidal-currents point month plots
+         * 6. sealCtd 7. eac-mooring
          *
          * NOTICE!!!!!!!
-         * For tidal current with region = kingsound, it has data of 2011 which exists in data source. we can remove it
-         * if necessary in the future by filter it out from the fileList.
+         * For tidal current with region = kingsound, it has data of 2011 which exists in data source (handled by
+         * the grouped branch above). we can remove it if necessary in the future by filtering it out.
          */
         const allFiles = mergeFiles(data as ImageListResponse[]);
         const fileList = removeDuplicatesByKey(allFiles, (file) => file.name);

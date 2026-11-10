@@ -1,6 +1,4 @@
-import { Dayjs } from 'dayjs';
 import { ContentType } from '@/constants/request';
-import { buildTidalCurrentsTagFileUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
 import { ec2ProxyClient } from './httpClient';
 
 const createTagsObjArray = (areaMatches: RegExpStringIterator<RegExpExecArray>) => {
@@ -23,16 +21,14 @@ const createTagsObjArray = (areaMatches: RegExpStringIterator<RegExpExecArray>) 
   });
 };
 
-const getTidalCurrentsTagsData = async (date: Dayjs, subProduct: string, region: string) => {
-  if (!subProduct || !region || !date) {
-    console.error('The subProduct, region and date are required to get Tidal Currents TAG file.');
+const getTidalCurrentsTagsData = async (tagFileUrl: string) => {
+  if (!tagFileUrl) {
+    console.error('The Tidal Currents TAG file url is required.');
     return [];
   }
 
-  const url = buildTidalCurrentsTagFileUrl(region, subProduct, date);
-
   try {
-    const htmlString = await ec2ProxyClient.get<string>(url, {
+    const htmlString = await ec2ProxyClient.get<string>(tagFileUrl, {
       headers: {
         'Content-Type': ContentType.TEXT,
       },

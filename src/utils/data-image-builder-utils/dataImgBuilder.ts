@@ -260,25 +260,58 @@ const buildSurfaceWavesBuoyTimeseriesImageUrl = (buoyRegion: string, date: Dayjs
   return `${imageUrlConfig.imageS3BaseUrl}/WAVES_TS/${formattedBuoyLocation}/y${year}/m${month}/${formattedDate}_BuoyTS.png`;
 };
 
+/**
+ * Tidal Currents files sit in year folders, but the folder year does not always match the
+ * file's year: e.g. `tides/Bass_hv/2026/` holds `202512310200.gif` and `202701020100.gif`,
+ * and there is no `2025/` folder. Resolve the folder from the indexed image list (the real
+ * location on the server) and only fall back to the date's year when the file isn't listed.
+ * Returned without leading/trailing slashes, e.g. `tides/Bass_hv/2026`.
+ */
+const getTidalCurrentsFolderPath = (
+  region: string,
+  subProduct: string,
+  date: Dayjs,
+  tidalCurrentsImageData?: ImageListResponse[],
+): string => {
+  const fileName = `${date.format(DateFormat.MINUTE)}.gif`;
+  const year = date.format(DateFormat.YEAR_ONLY);
+  const prodFolder = subProduct === 'tidalCurrents-spd' ? 'spd' : 'hv';
+  const trimSlashes = (path: string) => path.replace(/^\/+|\/+$/g, '');
+
+  // A file can be in two year folders (2026/ and 2027/ both hold 202612310000.gif, with
+  // different content). Prefer the folder matching the file's year, so the choice doesn't
+  // depend on the order of the image list.
+  const indexedPaths = (tidalCurrentsImageData ?? [])
+    .filter((item) => item.files.some((e) => e.name === fileName))
+    .map((item) => trimSlashes(item.path));
+  const indexedPath = indexedPaths.find((path) => path.endsWith(`/${year}`)) ?? indexedPaths[0];
+  if (indexedPath) return indexedPath;
+
+  return `tides/${region}_${prodFolder}/${year}`;
+};
+
 const buildTidalCurrentsMapImageUrl = (
   region: string,
+  subProduct: string,
   date: Dayjs,
   tidalCurrentsImageData?: ImageListResponse[],
 ): string => {
   if (region === 'Aust') return `${imageUrlConfig.imageBaseUrl}/tides/tidemapindex.gif`;
-  const formattedDate = date.format(DateFormat.MINUTE);
-  const path =
-    tidalCurrentsImageData?.find((item) => item.files.some((e) => e.name === `${formattedDate}.gif`))?.path ?? '';
-  // TODO: year needed to be determined https://github.com/aodn/backlog/issues/7428
-  return `${imageUrlConfig.imageBaseUrl}/${path}/${formattedDate}.gif`;
+  const folderPath = getTidalCurrentsFolderPath(region, subProduct, date, tidalCurrentsImageData);
+  return `${imageUrlConfig.imageBaseUrl}/${folderPath}/${date.format(DateFormat.MINUTE)}.gif`;
 };
 
-const buildTidalCurrentsTagFileUrl = (region: string, subProduct: string, date: Dayjs): string => {
-  const prodFolder = subProduct === 'tidalCurrents-spd' ? 'spd' : 'hv';
-  const formattedDate = date.format(DateFormat.MINUTE);
-  const year = date.format(DateFormat.YEAR_ONLY);
-
-  return `tides/${region}_${prodFolder}/${year}/${formattedDate}.txt`;
+// Relative to the EC2 proxy client. Uses the same folder as the map image, as files with the
+// same name can exist in two year folders with different content (e.g. 2026/ and 2027/ both
+// hold 202612310000.gif), and the clickable areas must match the image shown.
+const buildTidalCurrentsTagFileUrl = (
+  region: string,
+  subProduct: string,
+  date: Dayjs,
+  tidalCurrentsImageData?: ImageListResponse[],
+): string => {
+  const folderPath = getTidalCurrentsFolderPath(region, subProduct, date, tidalCurrentsImageData);
+  return `${folderPath}/${date.format(DateFormat.MINUTE)}.txt`;
 };
 
 const buildTidalCurrentsDataImageUrl = (point: string, date: Dayjs): string => {

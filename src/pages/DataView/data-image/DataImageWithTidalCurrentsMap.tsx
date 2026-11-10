@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { useSearchParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
@@ -9,6 +9,8 @@ import regionArr from '@/data/tidalCurrents';
 import { MapImageAreas } from '@/types/dataImage';
 import { DateFormat } from '@/types/date';
 import { getTidalCurrentsTagsData } from '@/services/tidalCurrents';
+import { buildTidalCurrentsTagFileUrl } from '@/utils/data-image-builder-utils/dataImgBuilder';
+import { ImageListResponse } from '@/types/imageList';
 import { useResizeObserver } from '@/hooks';
 import { sharedQueryConfig } from '@/configs/query';
 import useProductStore, { setIsProductImageLoading } from '@/stores/product-store/productStore';
@@ -22,7 +24,12 @@ type DataImageWithTidalCurrentsMapProps = {
   productId: ProductID;
   date: Dayjs;
   region: string;
+  tidalCurrentsImageData?: ImageListResponse[];
 };
+
+// Stable fallback: a new `[]` on every render (while the TAG query is pending, disabled or
+// failed) changes `tagData`, re-runs the effect below and loops via setAreas.
+const NO_TAGS: Record<string, string | number[]>[] = [];
 
 const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps> = ({
   mainProduct,
@@ -30,6 +37,7 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   productId,
   date,
   region,
+  tidalCurrentsImageData,
 }) => {
   const [_, setSearchParams] = useSearchParams();
   const imgRef = useRef<HTMLImageElement | null>(null);
@@ -39,13 +47,25 @@ const DataImageWithTidalCurrentsMap: React.FC<DataImageWithTidalCurrentsMapProps
   const { isTidalCurrentsPointSelected } = useTidalCurrentPoint(productId);
   const isProductImageLoading = useProductStore((state) => state.isProductImageLoading);
   const renderedSrc = useRef('');
+  const tagFileUrl = useMemo(
+    () => buildTidalCurrentsTagFileUrl(region, productId, date, tidalCurrentsImageData),
+    [region, productId, date, tidalCurrentsImageData],
+  );
 
-  const { data: apiTagData = [] } = useQuery({
-    queryKey: ['tidalCurrentsTags', date.format(DateFormat.MINUTE), productId, region],
+  const { data: apiTagData = NO_TAGS } = useQuery({
+    queryKey: ['tidalCurrentsTags', tagFileUrl],
     queryFn: async () => {
-      return await getTidalCurrentsTagsData(date, productId, region);
+      return await getTidalCurrentsTagsData(tagFileUrl);
     },
-    enabled: !!date && !!productId && !!region && !isTidalCurrentsPointSelected,
+    // Wait for the image list so the TAG file comes from the same folder as the image.
+    // 'Aust' uses the static regionArr areas instead.
+    enabled:
+      !!date &&
+      !!productId &&
+      !!region &&
+      region !== 'Aust' &&
+      !!tidalCurrentsImageData &&
+      !isTidalCurrentsPointSelected,
     ...sharedQueryConfig,
   });
 

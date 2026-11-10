@@ -515,10 +515,74 @@ describe('buildTidalCurrentsMapImageUrl', () => {
     ];
 
     // Act
-    const imageUrl = buildTidalCurrentsMapImageUrl(region, date, tidalCurrentsImageData);
+    const imageUrl = buildTidalCurrentsMapImageUrl(region, 'tidalCurrents-sl', date, tidalCurrentsImageData);
 
     // Assert
     expect(imageUrl).toBe(`${imageBaseUrl}/tides/GOC_hv/2025/202502280000.gif`);
+  });
+
+  it('should use the indexed folder when it differs from the date year', () => {
+    // 31 Dec 2025 sits in the 2026 folder; there is no 2025 folder on the server
+    const date = dayjs('202512310200');
+    const tidalCurrentsImageData = [
+      {
+        path: '/tides/Bass_hv/2027',
+        region: 'Bass',
+        productId: 'tidalCurrents-sl',
+        files: [{ name: '202612310000.gif' }],
+      },
+      {
+        path: '/tides/Bass_hv/2026',
+        region: 'Bass',
+        productId: 'tidalCurrents-sl',
+        files: [{ name: '202512310200.gif' }, { name: '202612302300.gif' }],
+      },
+    ];
+
+    const imageUrl = buildTidalCurrentsMapImageUrl('Bass', 'tidalCurrents-sl', date, tidalCurrentsImageData);
+
+    expect(imageUrl).toBe(`${imageBaseUrl}/tides/Bass_hv/2026/202512310200.gif`);
+  });
+
+  it('should prefer the folder matching the file year when the file is in two year folders', () => {
+    const tidalCurrentsImageData = [
+      {
+        path: '/tides/Bass_hv/2027',
+        region: 'Bass',
+        productId: 'tidalCurrents-sl',
+        files: [{ name: '202612310000.gif' }, { name: '202701020100.gif' }],
+      },
+      {
+        path: '/tides/Bass_hv/2026',
+        region: 'Bass',
+        productId: 'tidalCurrents-sl',
+        files: [{ name: '202612310000.gif' }, { name: '202701020100.gif' }],
+      },
+    ];
+
+    expect(
+      buildTidalCurrentsMapImageUrl('Bass', 'tidalCurrents-sl', dayjs('202612310000'), tidalCurrentsImageData),
+    ).toBe(`${imageBaseUrl}/tides/Bass_hv/2026/202612310000.gif`);
+    expect(
+      buildTidalCurrentsMapImageUrl('Bass', 'tidalCurrents-sl', dayjs('202701020100'), tidalCurrentsImageData),
+    ).toBe(`${imageBaseUrl}/tides/Bass_hv/2027/202701020100.gif`);
+    expect(
+      buildTidalCurrentsTagFileUrl('Bass', 'tidalCurrents-sl', dayjs('202612310000'), tidalCurrentsImageData),
+    ).toBe('tides/Bass_hv/2026/202612310000.txt');
+  });
+
+  it('should fall back to the date year folder when the file is not in the image list', () => {
+    const date = dayjs('202611081500');
+
+    const imageUrl = buildTidalCurrentsMapImageUrl('Bass', 'tidalCurrents-spd', date, []);
+
+    expect(imageUrl).toBe(`${imageBaseUrl}/tides/Bass_spd/2026/202611081500.gif`);
+  });
+
+  it('should return the index map for Aust', () => {
+    const imageUrl = buildTidalCurrentsMapImageUrl('Aust', 'tidalCurrents-spd', dayjs('202611081500'));
+
+    expect(imageUrl).toBe(`${imageBaseUrl}/tides/tidemapindex.gif`);
   });
 });
 
@@ -534,6 +598,24 @@ describe('buildTidalCurrentsTagFileUrl', () => {
 
     // Assert
     expect(imageUrl).toBe('tides/GOC_hv/2025/202502280000.txt');
+  });
+
+  it('should use the same indexed folder as the map image', () => {
+    const tidalCurrentsImageData = [
+      {
+        path: '/tides/Bass_spd/2026',
+        region: 'Bass',
+        productId: 'tidalCurrents-spd',
+        files: [{ name: '202512310200.gif' }, { name: '202701020100.gif' }],
+      },
+    ];
+
+    expect(
+      buildTidalCurrentsTagFileUrl('Bass', 'tidalCurrents-spd', dayjs('202512310200'), tidalCurrentsImageData),
+    ).toBe('tides/Bass_spd/2026/202512310200.txt');
+    expect(
+      buildTidalCurrentsTagFileUrl('Bass', 'tidalCurrents-spd', dayjs('202701020100'), tidalCurrentsImageData),
+    ).toBe('tides/Bass_spd/2026/202701020100.txt');
   });
 });
 
