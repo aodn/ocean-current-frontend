@@ -134,7 +134,7 @@ const ProductContent: React.FC = () => {
             currentMetersParams.depth,
           );
         case isTidalCurrents && !hasSelectedParams.point:
-          return buildTidalCurrentsMapImageUrl(useRegionCode ?? 'Au', useDate, tidalCurrentsImageData);
+          return buildTidalCurrentsMapImageUrl(useRegionCode ?? 'Au', useProductId, useDate, tidalCurrentsImageData);
         case isTidalCurrents && hasSelectedParams.point && !!urlParams.point:
           return buildTidalCurrentsDataImageUrl(urlParams.point!, useDate);
         case isSealCtd && useProductId !== 'sealCtd-sealTracks':
@@ -305,6 +305,7 @@ const ProductContent: React.FC = () => {
         date={useDate}
         productId={useProductId}
         region={useRegionCode ?? 'Au'}
+        tidalCurrentsImageData={tidalCurrentsImageData}
       />
     );
   }
