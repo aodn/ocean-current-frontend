@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { ToggleButtonProps } from './types/toggleButtonProps.types';
 
-const ToggleButton: React.FC<ToggleButtonProps> = ({ isOn = false, onToggle, disabled = false }) => {
+const ToggleButton: React.FC<ToggleButtonProps> = ({
+  isOn = false,
+  onToggle,
+  disabled = false,
+  'aria-label': ariaLabel,
+}) => {
   const [isToggled, setIsToggled] = useState(isOn);
 
   useEffect(() => {
@@ -18,9 +23,13 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({ isOn = false, onToggle, dis
 
   return (
     <button
+      type="button"
+      role="switch"
+      aria-checked={isToggled}
+      aria-label={ariaLabel}
       onClick={handleToggle}
       disabled={disabled}
-      className={`flex h-6 w-16 items-center rounded-full p-1 ${
+      className={`focus-visible:outline-imos-calypso-blue flex h-6 w-16 shrink-0 items-center rounded-full p-1 focus-visible:outline-2 focus-visible:outline-offset-2 ${
         isToggled ? 'bg-imos-sea-blue' : 'bg-gray-300'
       } ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
     >

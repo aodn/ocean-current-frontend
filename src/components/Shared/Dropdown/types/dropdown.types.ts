@@ -23,4 +23,5 @@ export interface DropdownProps<T> {
   widePaddingMenu?: boolean;
   /** data-testid for the toggle button, e.g. for E2E tests to open the dropdown. */
   toggleTestId?: string;
+  ariaLabel?: string;
 }

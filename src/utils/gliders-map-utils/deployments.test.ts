@@ -10,12 +10,12 @@ describe('selectGliderYearmap', () => {
     expect(selectGliderYearmap(maps)?.id).toBe('2026_sl_temp_04d_nrt');
   });
 
-  it('falls back to delayed-mode maps and ignores maps without bounds', () => {
+  it('falls back to delayed-mode maps and allows maps without bounds for the table', () => {
     const delayedOnly = maps.filter(({ is_nrt }) => !is_nrt);
     expect(selectGliderYearmap(delayedOnly)?.id).toBe('2026_sl_temp_04d');
     const unverified2030 = { ...byId('2026_sl_temp_04d_nrt'), id: '2030_sl_temp_04d_nrt', year: 2030 };
     unverified2030.deployments = unverified2030.deployments.map((deployment) => ({ ...deployment, bbox: null }));
-    expect(selectGliderYearmap([...maps, unverified2030])?.id).toBe('2026_sl_temp_04d_nrt');
+    expect(selectGliderYearmap([...maps, unverified2030])?.id).toBe('2030_sl_temp_04d_nrt');
   });
 
   it('restricts selection to the requested year and type, preserving map preferences', () => {

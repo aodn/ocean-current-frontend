@@ -31,3 +31,24 @@ export async function fetchGliderMissionById(id: string, signal?: AbortSignal): 
   const { data } = await apiClient.get<GliderMission>(`/gliders/missions/${encodeURIComponent(id)}`, { signal });
   return data;
 }
+
+/** Fetch the catalogue once for table metadata, rather than resolving each deployment separately. */
+export async function fetchGliderMissions(signal?: AbortSignal): Promise<GliderMission[]> {
+  const missions: GliderMission[] = [];
+  let page = 0;
+  let total: number;
+  do {
+    const { data } = await apiClient.get<{ missions: GliderMission[]; total: number }>('/gliders/missions', {
+      params: { size: 100, page },
+      signal,
+    });
+    if (!data || !Array.isArray(data.missions) || !Number.isSafeInteger(data.total) || data.total < 0) {
+      throw new Error('Invalid Gliders catalogue response');
+    }
+    if (!data.missions.length && missions.length < data.total) throw new Error('Incomplete Gliders catalogue page');
+    missions.push(...data.missions);
+    total = data.total;
+    page += 1;
+  } while (missions.length < total);
+  return missions;
+}

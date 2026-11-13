@@ -18,6 +18,7 @@ const Dropdown = <T,>({
   menuShadow = true,
   widePaddingMenu = false,
   toggleTestId,
+  ariaLabel,
 }: DropdownProps<T>): JSX.Element => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [selectedElement, setSelectedElement] = useState<DropdownElement<T> | null>(null);
@@ -80,12 +81,15 @@ const Dropdown = <T,>({
 
   return (
     <div className="relative h-full w-full" ref={dropdownRef}>
-      <div
+      <button
+        type="button"
         onClick={toggleDropdown}
-        aria-hidden="true"
+        aria-label={ariaLabel}
+        aria-haspopup="menu"
+        aria-expanded={isDropdownOpen}
         data-testid={toggleTestId}
         className={cn(
-          'text-imos-dark-grey flex h-full items-center justify-between shadow-sm',
+          'text-imos-dark-grey focus-visible:ring-imos-calypso-blue/50 flex h-full w-full items-center justify-between text-left shadow-sm focus-visible:ring-2 focus-visible:outline-none',
           header
             ? 'bg-imos-deeper-blue rounded-t-lg px-3 py-2 text-lg md:px-4 md:py-3'
             : 'rounded-md bg-white px-3 py-1 text-base md:px-4 md:py-2',
@@ -109,7 +113,7 @@ const Dropdown = <T,>({
           className={`transform transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''} ${header ? 'h-4 w-4' : 'h-3 w-3'} ms-3`}
           color={header ? 'imos-white' : 'imos-grey'}
         />
-      </div>
+      </button>
       {isDropdownOpen && elementsWithLoading.length > 0 && (
         <div
           className={cn(
