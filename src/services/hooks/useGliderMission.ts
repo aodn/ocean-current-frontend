@@ -1,5 +1,7 @@
+import dayjs from 'dayjs';
 import { useLocation, useSearchParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
+import { DateFormat } from '@/types/date';
 import { sharedQueryConfig } from '@/configs/query';
 import { fetchGliderMissionById } from '@/services/gliders';
 import { resolveGliderResourceUrl } from '@/utils/gliders-map-utils/catalogue';
@@ -33,7 +35,29 @@ const useGliderMission = () => {
     retry: false,
   });
 
+  const frames = mission?.image_history?.[window] ?? [];
+  const requested = dayjs(params.get('date'), [DateFormat.HOUR, DateFormat.DAY], true);
+  const requestedIndex = requested.isValid()
+    ? frames.findIndex((frame) => frame.date >= requested.format('YYYY-MM-DDTHH:mm:ss'))
+    : frames.findIndex((frame) => frame.url === mission?.visualisations.latest_images?.[window]);
+  const frameIndex = requestedIndex < 0 ? frames.length - 1 : requestedIndex;
+  const selectedFrame = frames[frameIndex];
+
+  const setDate = (date: Date) =>
+    setParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        next.set('date', dayjs(date).format(DateFormat.HOUR));
+        return next;
+      },
+      { replace: true, state: location.state },
+    );
+
   return {
+    frames,
+    frameIndex,
+    selectedFrame,
+    setDate,
     missionId,
     validParams,
     mission,
@@ -47,7 +71,9 @@ const useGliderMission = () => {
       mission?.visualisations.animations?.find(({ label }) => `${Number(label)}d` === window)?.url,
     ),
     /** Windows with a published GIF for the selected mission. */
-    windows: GLIDER_MISSION_WINDOWS.filter((key) => mission?.visualisations.latest_images?.[key]),
+    windows: GLIDER_MISSION_WINDOWS.filter(
+      (key) => mission?.visualisations.latest_images?.[key] || mission?.image_history?.[key]?.length,
+    ),
     setView: (view: 'profile' | 'video' | typeof GLIDER_TS_VIEW) =>
       setParams(
         (prev) => {

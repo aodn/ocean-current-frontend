@@ -421,6 +421,83 @@ for (const width of [1280, 390]) {
 }
 
 for (const width of [1280, 390]) {
+  test(`navigates mission image dates across gaps at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 844 });
+    const frames = [
+      { date: '2026-10-01T00:00:00', url: '/gliders/history/2026100100.gif' },
+      { date: '2026-10-01T12:00:00', url: '/gliders/history/2026100112.gif' },
+      { date: '2026-10-04T00:00:00', url: '/gliders/history/2026100400.gif' },
+    ];
+    await page.route('**/api/v1/gliders/missions/*', (route) =>
+      route.fulfill({
+        json: {
+          id: 'Perth20110626_1@5.',
+          mission_name: 'Perth20110626_1',
+          visualisations: { latest_images: { '4d': frames[2].url } },
+          image_history: { '4d': frames },
+        },
+      }),
+    );
+    await page.route('**/resource/gliders/history/*.gif', (route) =>
+      route.fulfill({
+        body: Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64'),
+        contentType: 'image/gif',
+      }),
+    );
+    await page.goto('/product/gliders?missionId=Perth20110626_1%405.&window=4d');
+    const image = page.getByRole('img', { name: 'Perth20110626_1 4d mission profile' });
+    await expect(image).toHaveAttribute('src', `/resource${frames[2].url}`);
+    await expect(page.getByTestId('date-next-button')).toBeDisabled();
+    await page.getByTestId('date-previous-button').click();
+    await expect(image).toHaveAttribute('src', `/resource${frames[1].url}`);
+    await expect(page.getByTestId('selected-date')).toHaveText('01 Oct 2026 12:00');
+    await page.getByTestId('date-previous-button').click();
+    await expect(page.getByTestId('date-previous-button')).toBeDisabled();
+    await expect(image).toHaveAttribute('src', `/resource${frames[0].url}`);
+    await page.getByLabel('calendar icon').click();
+    await expect(page.getByRole('gridcell', { name: /October 2nd/ })).toHaveAttribute('aria-disabled', 'true');
+    await page.getByRole('gridcell', { name: /October 4th/ }).click();
+    await expect(image).toHaveAttribute('src', `/resource${frames[2].url}`);
+    await page.reload();
+    await expect(image).toHaveAttribute('src', `/resource${frames[2].url}`);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+  });
+}
+
+for (const width of [1280, 390]) {
+  test(`retains the mission heading at ${width}px`, async ({ page }, testInfo) => {
+    await page.setViewportSize({ width, height: 844 });
+    await page.route('**/api/v1/gliders/missions/*', async (route) => {
+      await route.fulfill({
+        json: {
+          id: 'TwoRocks20261028_nrt@5.',
+          mission_name: 'TwoRocks20261028_nrt',
+          visualisations: { latest_images: { '4d': '/gliders/test.gif' } },
+        },
+      });
+    });
+    await page.route('**/resource/gliders/test.gif', async (route) => {
+      await route.fulfill({
+        body: Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64'),
+        contentType: 'image/gif',
+      });
+    });
+    await page.goto('/product/gliders?missionId=TwoRocks20261028_nrt%405.&window=4d');
+    const heading = page.getByRole('heading', { level: 1, name: 'TwoRocks20261028_nrt' });
+    await expect(heading).toBeVisible();
+    if (width >= 768) {
+      await page.getByRole('button', { name: 'Toggle sidebar' }).click();
+      await expect(heading).toBeVisible();
+      await page.getByRole('button', { name: 'Toggle sidebar' }).click();
+    }
+    await testInfo.attach('gliders-mission-heading', {
+      body: await page.screenshot({ fullPage: true }),
+      contentType: 'image/png',
+    });
+  });
+}
+
+for (const width of [1280, 390]) {
   test(`preserves data mode across map, table, and saved URLs at ${width}px`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width, height: 844 });
     const missions = [

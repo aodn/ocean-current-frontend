@@ -5,6 +5,7 @@ import VideoToggleButton from '@/components/ProductMenuBar/components/VideoToggl
 import { apiConfig } from '@/configs/api';
 import { useGliderMission } from '@/services/hooks';
 import { TEMPERATURE_SALINITY_TITLE } from '@/services/hooks/useGliderMission';
+import GliderDatePagination from './GliderDatePagination';
 
 /** Only same-app Gliders map URLs written by the deployments view are followed. */
 const getReturnTo = (state: unknown) => {
@@ -25,21 +26,23 @@ const GliderMission = () => {
     isVideo,
     videoUrl,
     setView,
+    selectedFrame,
   } = useGliderMission();
   const returnTo = getReturnTo(useLocation().state);
   const imagePath = isTemperatureSalinity
     ? mission?.visualisations.temperature_salinity_image
-    : mission?.visualisations.latest_images?.[window];
+    : (selectedFrame?.url ?? mission?.visualisations.latest_images?.[window]);
   const missionName = mission?.mission_name ?? missionId;
 
   return (
     <>
       <div
-        className="font-open-sans text-imos-dark-grey mb-2 flex h-11 font-medium"
+        className="font-open-sans text-imos-dark-grey mb-2 flex flex-wrap items-center gap-2 font-medium"
         role="toolbar"
         aria-label="Mission tools"
       >
-        <div className="w-full md:w-auto">
+        <GliderDatePagination />
+        <div className="h-11 grow md:grow-0">
           <VideoToggleButton
             active={isVideo}
             disabled={!isVideo && (!validParams || isTemperatureSalinity || !videoUrl)}

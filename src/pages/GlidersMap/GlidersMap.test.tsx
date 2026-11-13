@@ -630,6 +630,20 @@ it('prefers a drawable platform over an unbounded NRT map in the same year', asy
   await screen.findByTestId('deployment-layer');
 });
 
+it('also selects an available history-only window from a table mission', async () => {
+  vi.mocked(source.fetchGliderMissions).mockResolvedValue([
+    {
+      ...mission,
+      visualisations: {},
+      image_history: { '12d': [{ date: '2026-11-04T12:00:00', url: '/gliders/twelve.gif' }] },
+    },
+  ]);
+  const router = setup();
+  await userEvent.click(await screen.findByRole('switch', { name: 'Table view' }));
+  await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
+  await waitFor(() => expect(new URLSearchParams(router.state.location.search).get('window')).toBe('12d'));
+});
+
 it('restores an explicit glider type after visiting a year that only has the other type', async () => {
   const sg = maps.find(({ platform }) => platform === 'sg')!;
   vi.mocked(source.fetchGliderYearmaps).mockResolvedValue([...maps, { ...sg, id: '2026_sg_temp_04d', year: 2026 }]);

@@ -13,7 +13,7 @@ Geometry comes from the published `/resource/api/gliders-yearmaps.json` (`schema
 
 ## Map selection
 
-The page uses the most recent year that has at least one deployment, prefers NRT
+The map defaults to the most recent year with drawable deployment bounds, prefers NRT
 maps for that year, then prefers the default variable and window in `src/configs/products/gliders-map.ts`
 (`temp`, `04d`).
 
@@ -22,6 +22,14 @@ maps for that year, then prefers the default variable and window in `src/configs
 Each deployment `bbox` (`[west, south, east, north]`) becomes a polygon via `convertAreaCoordsToGeoJsonCoordinates`.
 Deployments with `bbox: null` are skipped on the map. Selecting a polygon opens the existing mission image view.
 A map with no bounds shows an empty state; a failed request shows an error with a retry button.
+The map/table switch remains available while yearmaps load or fail.
+Mission names and geographic bounds also have a text alternative outside the canvas.
+The minimap falls back to a drawable map if a mission/window has no matching yearmap, and its loading/error
+feedback remains visible below the map. Mission request failures offer a retry in the main content.
+
+Unavailable URL years fall back after resolving the applicable metadata. Explicit map filters absent from
+yearmaps load the catalogue as well, preserving saved catalogue-only selections. Empty yearmaps cannot
+supply the default glider type. The mission name remains an h1 in the main content when the sidebar is collapsed.
 
 ## Table view
 
@@ -43,7 +51,8 @@ The API publishes `start_date`, `end_date`, `glider_id` and product links, but n
 platform and no year/platform query filters. The frontend filters the complete paginated catalogue locally.
 A mission belongs to every year covered by its published date range, matching yearmap behaviour for cross-year
 missions (for example Bicheno20100813 continues into 2011). Vehicle ID prefixes `SL` and `SG` resolve Slocum and
-Seaglider; published yearmap membership supplies missing date/type metadata. Dates or types are never guessed
+Seaglider; published yearmap membership supplies missing date/type metadata. When end_date is missing,
+the known start year and published yearmap years are retained. Dates or types are never guessed
 from mission names. Missions lacking both usable catalogue metadata and yearmap membership cannot be classified,
 and the table reports that limitation. Explicit platform and year membership fields would make this reliable for
 future missions with unknown vehicle prefixes or missing dates. The current API catalogue has populated dates
