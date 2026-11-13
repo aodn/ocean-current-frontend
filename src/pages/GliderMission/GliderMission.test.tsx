@@ -140,3 +140,68 @@ it('does not truncate an unversioned mission ID in the minimap', async () => {
   setup('missionId=unversioned&window=4d');
   expect(await screen.findByTestId('minimap')).not.toHaveAttribute('data-mission');
 });
+
+describe('temperature–salinity diagram', () => {
+  const tsImage = '/gliders/missionTS/sl_TwoRocks20261028_nrt.gif';
+  const withDiagram = {
+    ...mission,
+    visualisations: { ...mission.visualisations, temperature_salinity_image: tsImage },
+  };
+  const search = 'missionId=TwoRocks20261028_nrt%405.&view=ts';
+
+  it('shows the mission diagram with its name, without date or window controls', async () => {
+    vi.mocked(service.fetchGliderMissionById).mockResolvedValue(withDiagram);
+    setup(search);
+    const image = await screen.findByRole('img');
+    expect(image).toHaveAttribute('src', `/resource${tsImage}`);
+    expect(image).toHaveAccessibleName('TwoRocks20261028_nrt temperature–salinity diagram');
+    // The sidebar names the mission; the image identifies the view.
+    expect(screen.getByRole('heading', { name: 'TwoRocks20261028_nrt' })).toBeInTheDocument();
+    expect(screen.queryByRole('group', { name: 'Time window' })).not.toBeInTheDocument();
+  });
+
+  it.each([
+    ['not published', mission],
+    [
+      'explicitly null',
+      { ...mission, visualisations: { ...mission.visualisations, temperature_salinity_image: null } },
+    ],
+  ])('shows an unavailable state when the diagram is %s', async (_, data) => {
+    vi.mocked(service.fetchGliderMissionById).mockResolvedValue(data);
+    setup(search);
+    expect(await screen.findByText('Temperature–salinity diagram unavailable')).toHaveRole('status');
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
+  });
+
+  it('shows an unavailable state when the diagram fails to load', async () => {
+    vi.mocked(service.fetchGliderMissionById).mockResolvedValue(withDiagram);
+    setup(search);
+    fireEvent.error(await screen.findByRole('img'));
+    expect(screen.getByText('Temperature–salinity diagram unavailable')).toHaveRole('status');
+  });
+
+  it('shows a retryable request error for an unknown mission', async () => {
+    vi.mocked(service.fetchGliderMissionById).mockRejectedValue(new Error('404'));
+    setup(search);
+    expect(await screen.findByRole('alert')).toHaveTextContent('Unable to load this Gliders mission.');
+  });
+});
+
+it.each([
+  [{ glidersReturnTo: '/map/gliders?view=table&year=2026&platform=sl&sort=name-asc' }, true],
+  [{ glidersReturnTo: 'https://example.org/map/gliders?view=table' }, false],
+  [null, false],
+])('only offers a return link to the Gliders deployments view: %o', async (state, shown) => {
+  const router = createMemoryRouter([{ path: '/product/gliders', element: <GliderMission /> }], {
+    initialEntries: [{ pathname: '/product/gliders', search: '?missionId=TwoRocks20261028_nrt%405.&view=ts', state }],
+  });
+  render(
+    <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>,
+  );
+  await screen.findByText('Temperature–salinity diagram unavailable');
+  const link = screen.queryByRole('link', { name: 'Back to deployments' });
+  if (shown) expect(link).toHaveAttribute('href', state!.glidersReturnTo);
+  else expect(link).not.toBeInTheDocument();
+});

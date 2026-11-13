@@ -16,7 +16,7 @@ import { buildGliderDeployments, selectGliderYearmap } from '@/utils/gliders-map
 import GliderDataModeSelect from '@/components/GliderDataModeSelect/GliderDataModeSelect';
 import GliderTypeSelect from '@/components/GliderTypeSelect/GliderTypeSelect';
 import { getGliderMissionDataMode, getGliderMissionFilters } from '@/utils/gliders-map-utils/catalogue';
-import { GLIDER_MISSION_WINDOWS } from '@/services/hooks/useGliderMission';
+import { GLIDER_MISSION_WINDOWS, GLIDER_TS_VIEW } from '@/services/hooks/useGliderMission';
 import GlidersTable from './GlidersTable';
 
 interface Props {
@@ -170,7 +170,9 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
       { missionName, window: selectedWindow ?? availableWindow ?? preferredWindow, catalogueMission },
       {
         onSuccess: (data, { window }) => {
-          const params = new URLSearchParams({ missionId: data.id, window });
+          const params = new URLSearchParams(
+            window === GLIDER_TS_VIEW ? { missionId: data.id, view: GLIDER_TS_VIEW } : { missionId: data.id, window },
+          );
           void navigate(`/product/gliders?${params}`, {
             state: isMiniMap ? location.state : { glidersReturnTo: `/map/gliders?${returnParams}` },
           });

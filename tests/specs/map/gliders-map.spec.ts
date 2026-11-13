@@ -174,6 +174,72 @@ for (const width of [1280, 390]) {
 }
 
 for (const width of [1280, 390]) {
+  test(`opens a T-S diagram from the table and returns to the filtered table at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 844 });
+    const tsUrl = 'https://oceancurrent.aodn.org.au/gliders/missionTS';
+    const withDiagram = {
+      id: 'Perth20110626_1@5.',
+      mission_name: 'Perth20110626_1',
+      start_date: '2011-06-26',
+      glider_id: 'SG514',
+      temperature_salinity_url: `${tsUrl}/sg_Perth20110626_1.html`,
+      visualisations: { temperature_salinity_image: '/gliders/missionTS/sg_Perth20110626_1.gif' },
+    };
+    const broken = {
+      id: 'Bicheno20100813@5.',
+      mission_name: 'Bicheno20100813',
+      start_date: '2010-08-13',
+      end_date: '2011-01-02',
+      glider_id: 'SG519',
+      temperature_salinity_url: `${tsUrl}/sg_Bicheno20100813.html`,
+      visualisations: { temperature_salinity_image: '/gliders/missionTS/sg_Bicheno20100813.gif' },
+    };
+    const missions = [withDiagram, broken];
+    await page.route('**/api/v1/gliders/missions?*', (route) => route.fulfill({ json: { missions, total: 2 } }));
+    await page.route('**/api/v1/gliders/missions/*', async (route) => {
+      const id = decodeURIComponent(new URL(route.request().url()).pathname.split('/').pop()!);
+      await route.fulfill({ json: missions.find((mission) => mission.id === id) });
+    });
+    await page.route('**/resource/gliders/missionTS/sg_Perth20110626_1.gif', (route) =>
+      route.fulfill({
+        body: Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64'),
+        contentType: 'image/gif',
+      }),
+    );
+    await page.route('**/resource/gliders/missionTS/sg_Bicheno20100813.gif', (route) => route.fulfill({ status: 404 }));
+
+    await page.goto('/map/gliders?view=table&year=2011&platform=sg&sort=name-desc&mode=delayed');
+    const table = page.getByRole('table');
+    await expect(table.getByRole('row')).toHaveCount(3);
+    await table.getByRole('button', { name: 'View Perth20110626_1 temperature–salinity diagram' }).click();
+    await expect(page).toHaveURL(/\/product\/gliders\?missionId=Perth20110626_1%405\.&view=ts$/);
+    await expect(page.getByRole('heading', { name: 'Perth20110626_1', exact: true })).toBeVisible();
+    const diagram = page.getByRole('img', { name: 'Perth20110626_1 temperature–salinity diagram' });
+    await expect(diagram).toHaveAttribute('src', '/resource/gliders/missionTS/sg_Perth20110626_1.gif');
+    await expect.poll(() => diagram.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(1);
+    await expect(page.getByRole('group', { name: 'Time window' })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Previous date' })).toHaveCount(0);
+
+    await page.getByRole('link', { name: 'Back to deployments' }).click();
+    await expect(page).toHaveURL(/\/map\/gliders\?/);
+    const params = new URL(page.url()).searchParams;
+    expect(Object.fromEntries(params)).toEqual({
+      view: 'table',
+      year: '2011',
+      platform: 'sg',
+      sort: 'name-desc',
+      mode: 'delayed',
+    });
+    await expect(page.getByRole('button', { name: 'Sort deployments' })).toHaveText('Mission name (Z–A)');
+    await expect(page.getByRole('combobox', { name: 'Year', exact: true })).toHaveValue('2011');
+
+    await table.getByRole('button', { name: 'View Bicheno20100813 temperature–salinity diagram' }).click();
+    await expect(page.getByText('Temperature–salinity diagram unavailable')).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Back to deployments' })).toBeVisible();
+  });
+}
+
+for (const width of [1280, 390]) {
   test(`switches views and returns from an unbounded mission to the table at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 844 });
     const mission = {

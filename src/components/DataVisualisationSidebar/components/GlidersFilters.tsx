@@ -5,11 +5,11 @@ import { useGliderMission } from '@/services/hooks';
 import CollapsibleSection from './CollapsibleSection';
 
 const GlidersFilters: React.FC = () => {
-  const { validParams, windows, window, setWindow } = useGliderMission();
+  const { validParams, windows, window, setWindow, isTemperatureSalinity } = useGliderMission();
 
   return (
     <>
-      {validParams && windows.length > 0 && (
+      {validParams && !isTemperatureSalinity && windows.length > 0 && (
         <CollapsibleSection title={ProductSidebarText.TIME_WINDOW}>
           <div role="group" aria-label={ProductSidebarText.TIME_WINDOW} className="flex flex-wrap gap-2">
             {windows.map((key) => {
