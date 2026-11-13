@@ -42,6 +42,16 @@ const useGliderMission = () => {
     isTemperatureSalinity,
     /** Windows with a published GIF for the selected mission. */
     windows: GLIDER_MISSION_WINDOWS.filter((key) => mission?.visualisations.latest_images?.[key]),
+    setView: (view: 'profile' | typeof GLIDER_TS_VIEW) =>
+      setParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+          if (view === GLIDER_TS_VIEW) next.set('view', GLIDER_TS_VIEW);
+          else next.delete('view');
+          return next;
+        },
+        { replace: true, state: location.state },
+      ),
     // Replace rather than push, so Back still returns to the Gliders map.
     setWindow: (window: string) =>
       setParams(

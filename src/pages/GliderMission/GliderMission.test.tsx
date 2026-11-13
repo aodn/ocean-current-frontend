@@ -149,6 +149,24 @@ describe('temperature–salinity diagram', () => {
   };
   const search = 'missionId=TwoRocks20261028_nrt%405.&view=ts';
 
+  it('switches from the sidebar to the mission diagram and back, preserving the window', async () => {
+    vi.mocked(service.fetchGliderMissionById).mockResolvedValue(withDiagram);
+    const router = setup();
+    await screen.findByRole('img', { name: 'TwoRocks20261028_nrt 12d mission profile' });
+    await userEvent.click(screen.getByRole('button', { name: 'Temperature–salinity diagram' }));
+    expect(screen.getByRole('img')).toHaveAttribute('src', `/resource${tsImage}`);
+    expect(screen.getByRole('button', { name: 'Temperature–salinity diagram' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    expect(router.state.location.search).toBe('?missionId=TwoRocks20261028_nrt%405.&window=12d&view=ts');
+    await userEvent.click(screen.getByRole('button', { name: 'Mission profile' }));
+    expect(screen.getByRole('img')).toHaveAttribute('src', '/resource/gliders/twelve.gif');
+    expect(router.state.location.search).toBe('?missionId=TwoRocks20261028_nrt%405.&window=12d');
+    expect(router.state.historyAction).toBe('REPLACE');
+    expect(service.fetchGliderMissionById).toHaveBeenCalledTimes(1);
+  });
+
   it('shows the mission diagram with its name, without date or window controls', async () => {
     vi.mocked(service.fetchGliderMissionById).mockResolvedValue(withDiagram);
     setup(search);
@@ -171,6 +189,7 @@ describe('temperature–salinity diagram', () => {
     setup(search);
     expect(await screen.findByText('Temperature–salinity diagram unavailable')).toHaveRole('status');
     expect(screen.queryByRole('img')).not.toBeInTheDocument();
+    expect(screen.queryByRole('group', { name: 'Visualisation' })).not.toBeInTheDocument();
   });
 
   it('shows an unavailable state when the diagram fails to load', async () => {
