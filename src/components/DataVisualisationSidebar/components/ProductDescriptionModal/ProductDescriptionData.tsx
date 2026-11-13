@@ -277,6 +277,23 @@ const ArgoModalData = () => {
   );
 };
 
+const GlidersModalData = () => {
+  return (
+    <div className="p-4 text-gray-800">
+      <p className="mb-2">
+        IMOS operates two types of glider; Seagliders for blue-water missions sampling to 1000m, and Slocum gliders for
+        continental shelf missions. Both types, like Argo profilers, can change their buoyancy, allowing them to sink to
+        a chosen depth then rise back up again. Unlike Argo profilers, however, they have wings so they can glide
+        through the water in a chosen direction. The forward velocity is only about 0.25m/s, which is faster than ocean
+        currents in many places but much slower than strong ocean currents. Glider piloting, consequently, is quite a
+        challenge so missions do not always achieve the planned trajectory. The relative motion of the glider with
+        respect to the water should also be borne in mind when analysing the data. This is why the graphics presented
+        here have a map showing the glider trajectory alongside section views of the sensor data.
+      </p>
+    </div>
+  );
+};
+
 const TidalCurrentsModalData = () => {
   return (
     <div className="p-4 text-gray-800">
@@ -2279,6 +2296,7 @@ export {
   EACMooringArrayModalData,
   CurrentMetersModalData,
   ArgoModalData,
+  GlidersModalData,
   TidalCurrentsModalData,
   SealCtdModalData,
   SwotGslaModalData,

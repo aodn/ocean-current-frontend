@@ -22,8 +22,20 @@ vi.mock('@/components/Map/BasicMap', () => ({
   },
 }));
 vi.mock('@/components/Map/layers/GlidersDeploymentLayer', () => ({
-  default: ({ data, onSelect }: { data: { features: { id: string }[] }; onSelect: (id: string) => void }) => (
-    <div data-testid="deployment-layer" data-ids={data.features.map(({ id }) => id).join(',')}>
+  default: ({
+    data,
+    onSelect,
+    selectedId,
+  }: {
+    data: { features: { id: string }[] };
+    onSelect: (id: string) => void;
+    selectedId?: string;
+  }) => (
+    <div
+      data-testid="deployment-layer"
+      data-ids={data.features.map(({ id }) => id).join(',')}
+      data-selected={selectedId ?? ''}
+    >
       {data.features.map(({ id }) => (
         <button key={id} onClick={() => onSelect(id)}>
           {id}
@@ -66,6 +78,7 @@ it('shows the latest NRT yearmap by default', async () => {
   const layer = await screen.findByTestId('deployment-layer');
   expect(layer.dataset.ids?.split(',')).toHaveLength(12);
   expect(layer.dataset.ids).toContain('TwoRocks20261028_nrt');
+  expect(layer).toHaveAttribute('data-selected', '');
 });
 
 it('shows an empty state when no yearmap has bounds', async () => {
@@ -173,7 +186,9 @@ it('keeps the map usable if mission resolution fails', async () => {
 it('shows only the map in sidebar mode and selects the displayed mission yearmap', async () => {
   vi.spyOn(source, 'fetchGliderMission').mockResolvedValue({ ...mission, id: 'Bicheno20100813@5.' });
   const router = setup({ isMiniMap: true, missionName: 'Bicheno20100813' });
-  expect(await screen.findByTestId('deployment-layer')).toHaveAttribute('data-ids', 'Bicheno20100813');
+  const layer = await screen.findByTestId('deployment-layer');
+  expect(layer).toHaveAttribute('data-ids', 'Bicheno20100813');
+  expect(layer).toHaveAttribute('data-selected', 'Bicheno20100813');
   expect(screen.queryByRole('combobox', { name: 'Year' })).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: 'Glider type' })).not.toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: 'Bicheno20100813' }));

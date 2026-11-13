@@ -228,7 +228,11 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
               navigationControl={!isMiniMap}
               showCursorLocationPanel={!isMiniMap}
             >
-              <GlidersDeploymentLayer data={deployments} onSelect={selectMission} />
+              <GlidersDeploymentLayer
+                selectedId={isMiniMap ? missionName : undefined}
+                data={deployments}
+                onSelect={selectMission}
+              />
             </BasicMap>
           </div>
         </>

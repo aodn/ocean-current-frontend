@@ -7,6 +7,7 @@ import {
   EACMooringArrayModalData,
   CurrentMetersModalData,
   ArgoModalData,
+  GlidersModalData,
   TidalCurrentsModalData,
   SealCtdModalData,
   SwotGslaModalData,
@@ -80,6 +81,13 @@ export const productInfoList: ProductInfo[] = [
       'Temperature and salinity data from the selected float compared with satellite-adjusted climatology, down to 2000m in the Australian region.',
     description: ArgoModalData,
     aboutButtonText: 'About Argo profiles',
+  },
+  {
+    id: 'gliders',
+    title: 'Gliders',
+    summary:
+      'IMOS operates two types of glider; Seagliders for blue-water missions sampling to 1000m, and Slocum gliders for continental shelf missions. Both types, like Argo profilers, can change their buoyancy, allowing them to sink to a chosen depth then rise back up again.',
+    description: GlidersModalData,
   },
   {
     id: 'tidalCurrents',
