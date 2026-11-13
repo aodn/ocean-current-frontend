@@ -48,10 +48,14 @@ const MapLayout: React.FC = () => {
         <div className="mb-4 md:hidden">
           <ProductDropdown mainProductKey={mainProduct.key} />
         </div>
-        <div className="hidden w-1/3 md:block">
+        <div
+          className={
+            mainProduct.key === 'gliders' ? 'hidden shrink-0 md:block md:w-56 lg:w-64' : 'hidden w-1/3 md:block'
+          }
+        >
           <MapSidebar />
         </div>
-        <div className="w-full md:mx-2">
+        <div className={mainProduct.key === 'gliders' ? 'w-full min-w-0 md:mx-2' : 'w-full md:mx-2'}>
           {isArgo && <ArgoMapMenuBar />}
           <div className="w-full">
             <Outlet />

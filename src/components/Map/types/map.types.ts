@@ -8,6 +8,7 @@ export interface Region {
 
 export interface BasicMapProps {
   children?: React.ReactNode;
+  showProductLayers?: boolean;
   id?: string;
   mapStyle?: string;
   isMiniMap?: boolean;

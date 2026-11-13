@@ -29,6 +29,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
   mapStyle = MAP_STYLE as StyleSpecification,
   style,
   children,
+  showProductLayers = true,
   isMiniMap = false,
   navigationControl = true,
   showCursorLocationPanel = true,
@@ -173,7 +174,7 @@ const BasicMap: React.FC<BasicMapProps> = ({
       mapStyle={mapStyle}
       projection={{ name: 'mercator' }}
       attributionControl={false}
-      interactiveLayerIds={interactiveIds}
+      interactiveLayerIds={showProductLayers ? interactiveIds : []}
       dragRotate={false}
       touchPitch={false}
       pitchWithRotate={false}
@@ -188,10 +189,10 @@ const BasicMap: React.FC<BasicMapProps> = ({
       {/* Control to handle actions after map animations complete */}
       <MapAnimationCompleteHandler />
 
-      {isStyleLoaded && memoizedLayers.dataImageLayer}
-      {isStyleLoaded && !isArgo && memoizedLayers.regionPolygonLayer}
-      {isStyleLoaded && shouldShowArgoLayer && memoizedLayers.argoAsProductLayer}
-      {isStyleLoaded && isCurrentMeters && memoizedLayers.currentMetersDeploymentPlotsLayer}
+      {isStyleLoaded && showProductLayers && memoizedLayers.dataImageLayer}
+      {isStyleLoaded && showProductLayers && !isArgo && memoizedLayers.regionPolygonLayer}
+      {isStyleLoaded && showProductLayers && shouldShowArgoLayer && memoizedLayers.argoAsProductLayer}
+      {isStyleLoaded && showProductLayers && isCurrentMeters && memoizedLayers.currentMetersDeploymentPlotsLayer}
     </Map>
   );
 };
