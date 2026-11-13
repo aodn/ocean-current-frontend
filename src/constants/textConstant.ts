@@ -25,6 +25,7 @@ export enum ProductSidebarText {
   QUARTER = 'Quarter',
   PAGE = 'Page',
   TIME_WINDOW = 'Time window',
+  VISUALISATION = 'Visualisation',
 }
 
 export enum ProductMenubarText {
