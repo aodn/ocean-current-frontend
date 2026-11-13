@@ -31,7 +31,11 @@ const MapSidebar: React.FC = () => {
     // always stays in the interactive map view (see #522). The "land directly on a figure"
     // landing config only applies to the navbar and the /product page's own dropdown.
     const targetPath = getProductPathWithSubProduct(id);
-    updateQueryParamsAndNavigate(targetPath, queryToUpdate);
+    updateQueryParamsAndNavigate(
+      targetPath,
+      queryToUpdate,
+      productIdWithoutSubProduct === 'gliders' || id === 'gliders',
+    );
   };
 
   return (

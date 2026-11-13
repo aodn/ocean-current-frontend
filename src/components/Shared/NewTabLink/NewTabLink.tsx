@@ -5,10 +5,17 @@ interface NewTabLinkProps {
   href: string;
   className?: string;
   children: React.ReactNode;
+  'aria-label'?: string;
 }
 
-const NewTabLink: React.FC<NewTabLinkProps> = ({ href, className, children }) => (
-  <a href={href} target="_blank" rel="noreferrer noopener" className={cn('text-imos-sea-blue', className)}>
+const NewTabLink: React.FC<NewTabLinkProps> = ({ href, className, children, 'aria-label': ariaLabel }) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noreferrer noopener"
+    aria-label={ariaLabel}
+    className={cn('text-imos-sea-blue', className)}
+  >
     {children}
   </a>
 );

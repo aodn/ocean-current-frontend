@@ -38,7 +38,26 @@ export interface GliderDeploymentProperties {
 export interface GliderMission {
   id: string;
   mission_name: string;
+  /** Published processing mode; older cached catalogue entries may omit it. */
+  is_nrt?: boolean;
+  start_date?: string | null;
+  end_date?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  duration_days?: number | null;
+  distance_travelled_km?: number | null;
+  glider_id?: string | null;
+  processing_version?: string | null;
+  temperature_salinity_url?: string | null;
+  scientific_data_url?: string | null;
   visualisations: {
+    details?: GliderProductLink[] | null;
+    animations?: GliderProductLink[] | null;
     latest_images?: Partial<Record<string, string | null>> | null;
   };
+}
+
+export interface GliderProductLink {
+  label: string;
+  url: string;
 }
