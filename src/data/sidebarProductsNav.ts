@@ -16,6 +16,7 @@ import {
 } from '@/components/Shared/Icons';
 import { DropdownElement } from '@/components/Shared/Dropdown/types/dropdown.types';
 import { SidebarProductID } from '@/configs/products/landing';
+import { featureFlags } from '@/configs/featureFlags';
 
 export const sidebarProductsNav: DropdownElement<SidebarProductID>[] = [
   {
@@ -53,7 +54,7 @@ export const sidebarProductsNav: DropdownElement<SidebarProductID>[] = [
     label: 'SWOT and GSLA',
     Icon: SwotIcon,
   },
-  { id: 'gliders', label: 'Gliders', Icon: GlidersIcon },
+  ...(featureFlags.gliders ? [{ id: 'gliders' as const, label: 'Gliders', Icon: GlidersIcon }] : []),
   {
     id: 'argo',
     label: 'Argo',

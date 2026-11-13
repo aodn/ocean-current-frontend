@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Navigate, type RouteObject } from 'react-router';
+import { featureFlags } from '@/configs/featureFlags';
 import { Home, MapView, DataView, ErrorPage, ComingSoonPage, AboutView, InfoView } from '@/pages';
 import { MainLayout, MapLayout, DataVisualisationLayout, ArticleLayout } from '@/layouts';
 import Loading from '@/components/Shared/Loading/Loading';
@@ -32,7 +33,7 @@ const routes: RouteObject[] = [
             path: 'gliders',
             element: (
               <Suspense fallback={<Loading />}>
-                <GliderMission />
+                {featureFlags.gliders ? <GliderMission /> : <Navigate to={APP_ROUTES.NOT_FOUND} replace />}
               </Suspense>
             ),
           },
@@ -59,7 +60,7 @@ const routes: RouteObject[] = [
             path: 'gliders',
             element: (
               <Suspense fallback={<Loading />}>
-                <GlidersMap />
+                {featureFlags.gliders ? <GlidersMap /> : <Navigate to={APP_ROUTES.NOT_FOUND} replace />}
               </Suspense>
             ),
           },
