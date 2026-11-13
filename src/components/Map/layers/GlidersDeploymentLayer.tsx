@@ -2,13 +2,17 @@ import { useEffect } from 'react';
 import { Layer, Source, useMap, type MapMouseEvent } from 'react-map-gl/mapbox';
 import type { FeatureCollection, Polygon } from 'geojson';
 import type { GliderDeploymentProperties } from '@/types/gliders';
+import { color } from '@/styles/colors';
 
 interface Props {
   onSelect: (missionName: string) => void;
   data: FeatureCollection<Polygon, GliderDeploymentProperties>;
+  /** Mission whose deployment area is highlighted. */
+  selectedId?: string;
 }
 
-const GlidersDeploymentLayer = ({ data, onSelect }: Props) => {
+const GlidersDeploymentLayer = ({ data, onSelect, selectedId }: Props) => {
+  const isSelected = ['==', ['get', 'id'], selectedId ?? ''];
   const { current: map } = useMap();
   useEffect(() => {
     if (!map) return;
@@ -36,8 +40,16 @@ const GlidersDeploymentLayer = ({ data, onSelect }: Props) => {
   }, [map, onSelect]);
   return (
     <Source id="gliders-deployments" type="geojson" data={data}>
-      <Layer id="gliders-deployment-fill" type="fill" paint={{ 'fill-color': '#2972FF', 'fill-opacity': 0.2 }} />
-      <Layer id="gliders-deployment-outlines" type="line" paint={{ 'line-color': '#1856b3', 'line-width': 1.5 }} />
+      <Layer
+        id="gliders-deployment-fill"
+        type="fill"
+        paint={{ 'fill-color': color.dodgerBlue, 'fill-opacity': ['case', isSelected, 0.6, 0.2] }}
+      />
+      <Layer
+        id="gliders-deployment-outlines"
+        type="line"
+        paint={{ 'line-color': color.calypsoBlue, 'line-width': ['case', isSelected, 3, 1.5] }}
+      />
     </Source>
   );
 };

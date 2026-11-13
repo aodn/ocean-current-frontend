@@ -1,11 +1,12 @@
 import { render } from '@testing-library/react';
-import { useMap, type MapMouseEvent } from 'react-map-gl/mapbox';
+import { Layer, useMap, type MapMouseEvent } from 'react-map-gl/mapbox';
+import { color } from '@/styles/colors';
 import GlidersDeploymentLayer from './GlidersDeploymentLayer';
 
 vi.mock('react-map-gl/mapbox', () => ({
   useMap: vi.fn(),
   Source: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  Layer: () => null,
+  Layer: vi.fn(() => null),
 }));
 
 it('selects a clicked deployment and cleans up delegated map listeners', () => {
@@ -32,6 +33,23 @@ it('cleans up safely when navigation has already removed the map canvas', () => 
     <GlidersDeploymentLayer data={{ type: 'FeatureCollection', features: [] }} onSelect={vi.fn()} />,
   );
   expect(() => unmount()).not.toThrow();
+});
+
+it('highlights the selected deployment area', () => {
+  vi.mocked(Layer).mockClear();
+  vi.mocked(useMap).mockReturnValue({ current: undefined } as unknown as ReturnType<typeof useMap>);
+  render(
+    <GlidersDeploymentLayer
+      data={{ type: 'FeatureCollection', features: [] }}
+      onSelect={vi.fn()}
+      selectedId="TwoRocks20261028_nrt"
+    />,
+  );
+  const isSelected = ['==', ['get', 'id'], 'TwoRocks20261028_nrt'];
+  expect(vi.mocked(Layer).mock.calls.map(([props]) => props.paint)).toEqual([
+    { 'fill-color': color.dodgerBlue, 'fill-opacity': ['case', isSelected, 0.6, 0.2] },
+    { 'line-color': color.calypsoBlue, 'line-width': ['case', isSelected, 3, 1.5] },
+  ]);
 });
 
 it('opens the first deployment under the click', () => {

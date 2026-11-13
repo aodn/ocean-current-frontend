@@ -1,28 +1,15 @@
-import { useSearchParams } from 'react-router';
-import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import Loading from '@/components/Shared/Loading/Loading';
 import { apiConfig } from '@/configs/api';
-import { sharedQueryConfig } from '@/configs/query';
-import { fetchGliderMissionById } from '@/services/gliders';
+import { useGliderMission } from '@/services/hooks';
 
 const GliderMission = () => {
-  const [params] = useSearchParams();
-  const missionId = params.get('missionId') ?? '';
-  const window = params.get('window') ?? '4d';
-  const validParams = missionId.length > 0 && ['4d', '12d', '30d'].includes(window);
-  const { data, isPending, isError, refetch } = useQuery({
-    ...sharedQueryConfig,
-    queryKey: ['gliders', 'missionById', missionId],
-    queryFn: ({ signal }) => fetchGliderMissionById(missionId, signal),
-    enabled: validParams,
-    retry: false,
-  });
-  const imagePath = data?.visualisations.latest_images?.[window];
+  const { missionId, validParams, mission, isPending, isError, refetch, window } = useGliderMission();
+  const imagePath = mission?.visualisations.latest_images?.[window];
 
   return (
     <section aria-label="Glider mission image" className="rounded-md bg-white p-4">
-      <h1 className="mb-3 text-xl font-semibold break-all">{data?.mission_name ?? 'Glider mission'}</h1>
+      <h1 className="mb-3 text-xl font-semibold break-all">{mission?.mission_name ?? 'Glider mission'}</h1>
       <div aria-live="polite">
         {!validParams ? (
           <p>Select a mission and a valid window from the Gliders map.</p>
@@ -39,7 +26,7 @@ const GliderMission = () => {
           <GliderMissionImage
             key={`${missionId}:${window}:${imagePath}`}
             path={imagePath}
-            missionName={data?.mission_name ?? missionId}
+            missionName={mission?.mission_name ?? missionId}
             window={window}
           />
         )}

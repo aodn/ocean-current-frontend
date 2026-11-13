@@ -24,6 +24,7 @@ export enum ProductSidebarText {
   WMO = 'WMO',
   QUARTER = 'Quarter',
   PAGE = 'Page',
+  TIME_WINDOW = 'Time window',
 }
 
 export enum ProductMenubarText {

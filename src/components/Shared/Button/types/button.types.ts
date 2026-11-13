@@ -28,4 +28,5 @@ export interface ButtonProps {
   className?: string;
   children: React.ReactNode;
   'aria-label'?: string;
+  'aria-pressed'?: boolean;
 }
