@@ -107,8 +107,7 @@ export const linksData: LinkItem[] = [
         Icon: GlidersIcon,
         title: 'Gliders',
         description: 'Near-coast ocean properties at sub-surface',
-        // TODO(#522): gliders landing TBD — coming soon until the new gliders page exists
-        url: `${APP_ROUTES.COMING_SOON}?product=gliders`,
+        url: buildLandingUrl('gliders'),
       },
       {
         id: 'tidalCurrents',

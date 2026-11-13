@@ -536,9 +536,6 @@ export const OC_PRODUCTS: Product[] = [
     localSegment: '',
     stateSegment: 'EAC_array_figures/SST/Brisbane',
   },
-  /*
-    These products are not yet implemented, just for Navigation purposes
-  */
   {
     title: 'Gliders',
     key: 'gliders',
