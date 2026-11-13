@@ -2,7 +2,7 @@ import type { GliderMission, GliderYearmap, GliderYearmapsResponse } from '@/typ
 import { apiClient, ec2ProxyClient } from './httpClient';
 
 export async function fetchGliderYearmaps(signal?: AbortSignal): Promise<GliderYearmap[]> {
-  const { data } = await ec2ProxyClient.get<GliderYearmapsResponse>('/api/gliders-yearmaps.json', { signal });
+  const { data } = await ec2ProxyClient.get<GliderYearmapsResponse>('/api/gliders/gliders-yearmaps.json', { signal });
   if (data?.schema_version !== 1 || !Array.isArray(data.maps)) {
     throw new Error('Unsupported Gliders yearmaps response');
   }

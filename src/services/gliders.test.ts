@@ -40,7 +40,7 @@ describe('fetchGliderYearmaps', () => {
     const get = vi.spyOn(ec2ProxyClient, 'get').mockResolvedValue({ data: fixture });
     const signal = new AbortController().signal;
     expect(await fetchGliderYearmaps(signal)).toEqual(fixture.maps);
-    expect(get).toHaveBeenCalledExactlyOnceWith('/api/gliders-yearmaps.json', { signal });
+    expect(get).toHaveBeenCalledExactlyOnceWith('/api/gliders/gliders-yearmaps.json', { signal });
   });
 
   it.each([null, {}, { schema_version: 2, maps: [] }])('rejects unsupported responses: %o', async (data) => {
