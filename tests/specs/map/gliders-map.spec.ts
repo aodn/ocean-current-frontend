@@ -13,7 +13,7 @@ test.use({
 const fixtureRoot = 'src/pages/GlidersMap/fixtures/';
 
 test.beforeEach(async ({ page }) => {
-  await page.route('**/resource/api/gliders-yearmaps.json', async (route) => {
+  await page.route('**/resource/api/gliders/gliders-yearmaps.json', async (route) => {
     await route.fulfill({ body: readFileSync(`${fixtureRoot}yearmaps.json`), contentType: 'application/json' });
   });
   // A deterministic, empty basemap still exercises the real Mapbox/WebGL GeoJSON layer.
@@ -101,7 +101,7 @@ for (const width of [1280, 390]) {
     await page.setViewportSize({ width, height: 844 });
     let requests = 0;
     await page.route('**/api/v1/gliders/missions?*', (route) => route.fulfill({ json: { missions: [], total: 0 } }));
-    await page.route('**/resource/api/gliders-yearmaps.json', async (route) => {
+    await page.route('**/resource/api/gliders/gliders-yearmaps.json', async (route) => {
       requests++;
       const data = JSON.parse(readFileSync(`${fixtureRoot}yearmaps.json`, 'utf8')) as GliderYearmapsResponse;
       const seaglider = data.maps.find(({ platform }) => platform === 'sg')!;

@@ -2,7 +2,7 @@ import type { BoundingBox } from '@/types/map';
 
 export type GliderDataMode = 'nrt' | 'delayed';
 
-/** One deployment rectangle on a published yearmap (`/resource/api/gliders-yearmaps.json`). */
+/** One deployment rectangle on a published yearmap (`/resource/api/gliders/gliders-yearmaps.json`). */
 export interface GliderDeployment {
   mission_name: string;
   /** Selection rectangle on the source image: [left, top, right, bottom] in pixels. */
