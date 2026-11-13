@@ -174,6 +174,48 @@ for (const width of [1280, 390]) {
 }
 
 for (const width of [1280, 390]) {
+  test(`plays the selected mission video and returns to its profile at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 844 });
+    const mission = {
+      id: 'TwoRocks20261028_nrt@5.',
+      mission_name: 'TwoRocks20261028_nrt',
+      visualisations: {
+        latest_images: { '4d': '/gliders/video-test.gif', '12d': '/gliders/video-test.gif' },
+        animations: [{ label: '4', url: 'https://oceancurrent.aodn.org.au/gliders/video-test.mp4' }],
+      },
+    };
+    await page.route('**/api/v1/gliders/missions/*', (route) => route.fulfill({ json: mission }));
+    await page.route('**/resource/gliders/video-test.gif', (route) =>
+      route.fulfill({
+        body: Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64'),
+        contentType: 'image/gif',
+      }),
+    );
+    // A one-second, solid-colour MP4 exercises the browser's real media player.
+    await page.route('**/resource/gliders/video-test.mp4', (route) =>
+      route.fulfill({ path: 'tests/mocks/data/glider-animation.mp4', contentType: 'video/mp4' }),
+    );
+    await page.goto('/product/gliders?missionId=TwoRocks20261028_nrt%405.&window=4d');
+    const toggle = page.getByRole('button', { name: 'Toggle video' });
+    await expect(toggle).toBeEnabled();
+    await toggle.click();
+    const video = page.getByLabel('TwoRocks20261028_nrt 4d mission video');
+    await expect(video).toBeVisible();
+    await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+    await expect
+      .poll(() => video.evaluate((element: HTMLVideoElement) => element.readyState))
+      .toBeGreaterThanOrEqual(2);
+    await video.evaluate((element: HTMLVideoElement) => element.play());
+    await expect.poll(() => video.evaluate((element: HTMLVideoElement) => element.currentTime)).toBeGreaterThan(0);
+    await page.screenshot({ path: `/tmp/gliders-mission-video-${width}.png`, fullPage: true });
+    await toggle.click();
+    await expect(video).toHaveCount(0);
+    await expect(page.getByRole('img', { name: 'TwoRocks20261028_nrt 4d mission profile' })).toBeVisible();
+    await expect(page).toHaveURL(/window=4d$/);
+    await page.getByRole('button', { name: '12 days', exact: true }).click();
+    await expect(toggle).toBeDisabled();
+  });
+
   test(`opens a T-S diagram from the table and returns to the filtered table at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 844 });
     const tsUrl = 'https://oceancurrent.aodn.org.au/gliders/missionTS';

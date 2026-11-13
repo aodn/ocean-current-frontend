@@ -206,6 +206,74 @@ describe('temperature–salinity diagram', () => {
   });
 });
 
+describe('mission video', () => {
+  const withVideo = {
+    ...mission,
+    visualisations: {
+      ...mission.visualisations,
+      animations: [{ label: '12', url: 'https://oceancurrent.aodn.org.au/gliders/twelve.mp4' }],
+    },
+  };
+
+  it('toggles the published MP4 and returns to the same mission profile without refetching', async () => {
+    vi.mocked(service.fetchGliderMissionById).mockResolvedValue(withVideo);
+    const router = setup();
+    await screen.findByRole('img');
+    const button = screen.getByRole('button', { name: 'Toggle video' });
+    await userEvent.click(button);
+    const video = screen.getByLabelText(`${mission.mission_name} 12d mission video`);
+    expect(video).toHaveAttribute('controls');
+    expect(video).toHaveAttribute('playsinline');
+    expect(video.querySelector('source')).toHaveAttribute('src', '/resource/gliders/twelve.mp4');
+    expect(button).toHaveAttribute('aria-pressed', 'true');
+    expect(button).toHaveTextContent('Video');
+    expect(button).not.toHaveTextContent('Exit');
+    expect(router.state.location.search).toBe('?missionId=TwoRocks20261028_nrt%405.&window=12d&view=video');
+    await userEvent.click(button);
+    expect(screen.getByRole('img')).toHaveAttribute('src', '/resource/gliders/twelve.gif');
+    expect(screen.queryByLabelText(`${mission.mission_name} 12d mission video`)).not.toBeInTheDocument();
+    expect(router.state.location.search).toBe('?missionId=TwoRocks20261028_nrt%405.&window=12d');
+    expect(service.fetchGliderMissionById).toHaveBeenCalledTimes(1);
+  });
+
+  it('disables video for a window without an animation', async () => {
+    vi.mocked(service.fetchGliderMissionById).mockResolvedValue(withVideo);
+    setup();
+    await screen.findByRole('img');
+    await userEvent.click(windowButton('4 days'));
+    expect(screen.getByRole('button', { name: 'Toggle video' })).toBeDisabled();
+  });
+
+  it('disables video in the T-S view even when the mission has an animation', async () => {
+    vi.mocked(service.fetchGliderMissionById).mockResolvedValue({
+      ...withVideo,
+      visualisations: { ...withVideo.visualisations, temperature_salinity_image: '/gliders/ts.gif' },
+    });
+    setup('missionId=TwoRocks20261028_nrt%405.&window=12d&view=ts');
+    await screen.findByRole('img');
+    expect(screen.getByRole('button', { name: 'Toggle video' })).toBeDisabled();
+  });
+
+  it('handles a direct video link and a failed MP4, allowing a return to the profile', async () => {
+    vi.mocked(service.fetchGliderMissionById).mockResolvedValue(withVideo);
+    setup('missionId=TwoRocks20261028_nrt%405.&window=12d&view=video');
+    const video = await screen.findByLabelText(`${mission.mission_name} 12d mission video`);
+    fireEvent.error(video.querySelector('source')!);
+    expect(screen.getByText('Video unavailable')).toHaveRole('status');
+    await userEvent.click(screen.getByRole('button', { name: 'Toggle video' }));
+    expect(screen.getByRole('img')).toHaveAttribute('src', '/resource/gliders/twelve.gif');
+  });
+
+  it('shows an unavailable state when changing to a window without a video', async () => {
+    vi.mocked(service.fetchGliderMissionById).mockResolvedValue(withVideo);
+    setup('missionId=TwoRocks20261028_nrt%405.&window=12d&view=video');
+    await screen.findByLabelText(`${mission.mission_name} 12d mission video`);
+    await userEvent.click(windowButton('4 days'));
+    expect(screen.getByText('Video unavailable')).toHaveRole('status');
+    expect(screen.getByRole('button', { name: 'Toggle video' })).toBeEnabled();
+  });
+});
+
 it.each([
   [{ glidersReturnTo: '/map/gliders?view=table&year=2026&platform=sl&sort=name-asc' }, true],
   [{ glidersReturnTo: 'https://example.org/map/gliders?view=table' }, false],

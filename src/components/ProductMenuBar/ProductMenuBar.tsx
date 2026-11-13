@@ -23,7 +23,8 @@ import { DEFAULT_SUB_PRODUCT_ROUTES } from '@/configs/products/default-routes';
 import { useTidalCurrentPoint } from '@/pages/DataView/product-content/hooks/useTidalCurrentPoint';
 import { toYYYYMM } from '@/utils/date-utils/date';
 import DatePagination from '../DatePagination';
-import { VideoIcon, ResetIcon, MapIcon } from '../Shared/Icons/ui';
+import { ResetIcon, MapIcon } from '../Shared/Icons/ui';
+import VideoToggleButton from './components/VideoToggleButton';
 import { ProductMenuBarProps } from './types/ProductMenuBar.types';
 
 const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
@@ -224,23 +225,7 @@ const ProductMenuBar: React.FC<ProductMenuBarProps> = ({
           </>
         )}
         <div className="order-1 box-border h-11 flex-1 rounded-md border-none md:order-0 md:flex-initial md:grow">
-          <Button
-            onClick={handleToggleVideo}
-            disabled={shouldDisableOption}
-            borderRadius="extraSmall"
-            className={`flex-center h-full w-full border-none px-2! md:p-3 md:px-5 ${showVideo ? '' : 'bg-white'}`}
-            aria-label="Toggle video"
-          >
-            <VideoIcon color="imos-deep-blue" size="xl" className="shrink-0" />
-            <p
-              className={`ml-2 text-sm md:ml-3 md:w-20 md:text-base ${showVideo ? 'text-imos-blue' : 'text-imos-deep-blue md:text-imos-dark-grey'}`}
-            >
-              <span className="md:hidden">{ProductMenubarText.VIDEO}</span>
-              <span className="hidden md:inline">
-                {showVideo ? ProductMenubarText.EXIT_VIDEO : ProductMenubarText.VIDEO}
-              </span>
-            </p>
-          </Button>
+          <VideoToggleButton active={showVideo} disabled={shouldDisableOption} onClick={handleToggleVideo} />
         </div>
 
         <div className="order-2 box-border h-11 flex-1 rounded-md border-none px-1 md:order-0 md:flex-initial md:grow">
