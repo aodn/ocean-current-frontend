@@ -102,6 +102,7 @@ const ProductSideBar: React.FC = () => {
     return <Loading />;
   }
 
+  const isGliders = mainProduct.key === 'gliders';
   const productInfo = getProductInfoByKey(mainProduct.key, subProduct?.key);
   const productLegendItems = getProductLegend(mainProduct.key, subProduct?.key);
 
@@ -170,51 +171,53 @@ const ProductSideBar: React.FC = () => {
       <div className="hidden md:block">
         <ProductDropdown mainProductKey={mainProduct.key} />
       </div>
-      <div className="hidden md:block">{shouldRenderMiniMap && <MiniMap />}</div>
+      <div className="hidden md:block">{(isGliders || shouldRenderMiniMap) && <MiniMap />}</div>
 
-      <div className="*:border-imos-light-blue *:border-b-1 [&>*:last-child]:border-b-0">
-        {productInfo && <ProductSummary productInfo={productInfo} />}
+      {!isGliders && (
+        <div className="*:border-imos-light-blue *:border-b-1 [&>*:last-child]:border-b-0">
+          {productInfo && <ProductSummary productInfo={productInfo} />}
 
-        {subProduct && subProducts.length > 0 && (
-          <CollapsibleSection title={ProductSidebarText.OPTIONS}>
-            <SubProductOptions
-              subProducts={subProducts}
-              subProductKey={subProduct?.key}
-              handleSubProductChange={handleSubProductChange}
-              disabled={subProductOptionButtonDisable}
-              disabledKeys={subProductDisabledKeys}
-            />
-          </CollapsibleSection>
-        )}
+          {subProduct && subProducts.length > 0 && (
+            <CollapsibleSection title={ProductSidebarText.OPTIONS}>
+              <SubProductOptions
+                subProducts={subProducts}
+                subProductKey={subProduct?.key}
+                handleSubProductChange={handleSubProductChange}
+                disabled={subProductOptionButtonDisable}
+                disabledKeys={subProductDisabledKeys}
+              />
+            </CollapsibleSection>
+          )}
 
-        {filteredDataSources.length > 0 && (
-          <CollapsibleSection title={ProductSidebarText.DATA_SOURCES}>
-            <DataSources filteredDataSources={filteredDataSources} />
-          </CollapsibleSection>
-        )}
+          {filteredDataSources.length > 0 && (
+            <CollapsibleSection title={ProductSidebarText.DATA_SOURCES}>
+              <DataSources filteredDataSources={filteredDataSources} />
+            </CollapsibleSection>
+          )}
 
-        {isArgo && (
-          <CollapsibleSection title={ProductSidebarText.WMO}>
-            <WmoSection />
-          </CollapsibleSection>
-        )}
+          {isArgo && (
+            <CollapsibleSection title={ProductSidebarText.WMO}>
+              <WmoSection />
+            </CollapsibleSection>
+          )}
 
-        {isArgo && (
-          <CollapsibleSection title={ProductSidebarText.ARGO_PROFILES}>
-            <ArgoFilters />
-          </CollapsibleSection>
-        )}
+          {isArgo && (
+            <CollapsibleSection title={ProductSidebarText.ARGO_PROFILES}>
+              <ArgoFilters />
+            </CollapsibleSection>
+          )}
 
-        {isCurrentMeters && <CurrentMetersFilters subProduct={subProduct} />}
+          {isCurrentMeters && <CurrentMetersFilters subProduct={subProduct} />}
 
-        {isFishSoop && <FishSoopFilters subProduct={subProduct} />}
+          {isFishSoop && <FishSoopFilters subProduct={subProduct} />}
 
-        {productLegendItems && productLegendItems.length > 0 && (
-          <CollapsibleSection title={ProductSidebarText.LEGEND}>
-            <Legend legendItems={productLegendItems} title={productInfo?.title ?? mainProduct.title} />
-          </CollapsibleSection>
-        )}
-      </div>
+          {productLegendItems && productLegendItems.length > 0 && (
+            <CollapsibleSection title={ProductSidebarText.LEGEND}>
+              <Legend legendItems={productLegendItems} title={productInfo?.title ?? mainProduct.title} />
+            </CollapsibleSection>
+          )}
+        </div>
+      )}
     </div>
   );
 };

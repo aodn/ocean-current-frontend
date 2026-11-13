@@ -78,7 +78,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
           deploymentPlot: null,
           point: null,
         };
-        updateQueryParamsAndNavigate(targetPath, queryToUpdate);
+        updateQueryParamsAndNavigate(targetPath, queryToUpdate, mainProductKey === 'gliders');
         return;
       }
 
@@ -111,7 +111,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
           deploymentPlot: null,
           point: null,
         };
-        updateQueryParamsAndNavigate(targetPath, queryToUpdate);
+        updateQueryParamsAndNavigate(targetPath, queryToUpdate, mainProductKey === 'gliders');
         return;
       }
 
@@ -167,7 +167,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ mainProductKey }) => 
         }
       }
 
-      updateQueryParamsAndNavigate(targetPath, queryToUpdate);
+      updateQueryParamsAndNavigate(targetPath, queryToUpdate, mainProductKey === 'gliders');
     } finally {
       setIsLoading(false);
       setLoadingProductId(null);

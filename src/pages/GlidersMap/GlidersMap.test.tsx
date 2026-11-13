@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createMemoryRouter, RouterProvider } from 'react-router';
@@ -22,22 +22,35 @@ vi.mock('@/components/Map/BasicMap', () => ({
   },
 }));
 vi.mock('@/components/Map/layers/GlidersDeploymentLayer', () => ({
-  default: ({ data }: { data: { features: { id: string }[] } }) => (
-    <div data-testid="deployment-layer" data-ids={data.features.map(({ id }) => id).join(',')} />
+  default: ({ data, onSelect }: { data: { features: { id: string }[] }; onSelect: (id: string) => void }) => (
+    <div data-testid="deployment-layer" data-ids={data.features.map(({ id }) => id).join(',')}>
+      {data.features.map(({ id }) => (
+        <button key={id} onClick={() => onSelect(id)}>
+          {id}
+        </button>
+      ))}
+    </div>
   ),
 }));
 
-function setup(cached = false) {
+function setup(props: { isMiniMap?: boolean; missionName?: string; window?: string } = {}, cached = false) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   if (cached) client.setQueryData(['gliders', 'yearmaps'], maps);
-  const router = createMemoryRouter([{ path: '/map/gliders', element: <GlidersMap /> }], {
-    initialEntries: ['/map/gliders'],
-  });
+  const router = createMemoryRouter(
+    [
+      { path: '/map/gliders', element: <GlidersMap {...props} /> },
+      { path: '/product/gliders', element: <p>Mission page</p> },
+    ],
+    {
+      initialEntries: ['/map/gliders'],
+    },
+  );
   render(
     <QueryClientProvider client={client}>
       <RouterProvider router={router} />
     </QueryClientProvider>,
   );
+  return router;
 }
 
 beforeEach(() => {
@@ -127,9 +140,101 @@ it('navigates available years with arrows and resets to the current or latest av
   expect(source.fetchGliderYearmaps).toHaveBeenCalledTimes(1);
 });
 
+const mission = {
+  id: 'TwoRocks20261028_nrt@5.',
+  mission_name: 'TwoRocks20261028_nrt',
+  visualisations: { latest_images: { '4d': '/gliders/TwoRocks20261028_nrt_4d/2026110412.gif', '12d': '/wrong.gif' } },
+};
+
+it.each(['04d', '12d', '30d'])(
+  'navigates directly to the mission image for %s without showing a preview',
+  async (window) => {
+    const yearmap = maps.find(({ id }) => id === '2026_sl_temp_04d_nrt')!;
+    vi.mocked(source.fetchGliderYearmaps).mockResolvedValue([{ ...yearmap, window }]);
+    vi.spyOn(source, 'fetchGliderMission').mockResolvedValue(mission);
+    const router = setup();
+    await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
+    await screen.findByText('Mission page');
+    expect(router.state.location.search).toBe(
+      `?missionId=TwoRocks20261028_nrt%405.&window=${window.replace(/^0+/, '')}`,
+    );
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
+  },
+);
+
+it('keeps the map usable if mission resolution fails', async () => {
+  vi.spyOn(source, 'fetchGliderMission').mockRejectedValue(new Error('offline'));
+  setup();
+  await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
+  await screen.findByRole('alert');
+  expect(screen.getByTestId('interactive-map')).toBeInTheDocument();
+});
+
+it('shows only the map in sidebar mode and selects the displayed mission yearmap', async () => {
+  vi.spyOn(source, 'fetchGliderMission').mockResolvedValue({ ...mission, id: 'Bicheno20100813@5.' });
+  const router = setup({ isMiniMap: true, missionName: 'Bicheno20100813' });
+  expect(await screen.findByTestId('deployment-layer')).toHaveAttribute('data-ids', 'Bicheno20100813');
+  expect(screen.queryByRole('combobox', { name: 'Year' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Glider type' })).not.toBeInTheDocument();
+  await userEvent.click(screen.getByRole('button', { name: 'Bicheno20100813' }));
+  await waitFor(() => expect(router.state.location.pathname).toBe('/product/gliders'));
+});
+
+it('ignores a pending mission when the yearmap changes', async () => {
+  let finish!: (value: typeof mission) => void;
+  vi.spyOn(source, 'fetchGliderMission').mockReturnValue(
+    new Promise((resolve) => {
+      finish = resolve;
+    }),
+  );
+  const router = setup();
+  await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
+  await screen.findByText('Loading mission…');
+  await userEvent.click(screen.getByRole('button', { name: 'Previous year' }));
+  await act(async () => finish(mission));
+  expect(router.state.location.pathname).toBe('/map/gliders');
+  expect(screen.queryByText('Loading mission…')).not.toBeInTheDocument();
+});
+
+it('only navigates for the most recently clicked deployment', async () => {
+  let finishFirst!: (value: typeof mission) => void;
+  let finishSecond!: (value: typeof mission) => void;
+  vi.spyOn(source, 'fetchGliderMission')
+    .mockReturnValueOnce(
+      new Promise((resolve) => {
+        finishFirst = resolve;
+      }),
+    )
+    .mockReturnValueOnce(
+      new Promise((resolve) => {
+        finishSecond = resolve;
+      }),
+    );
+  const router = setup();
+  await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
+  await userEvent.click(screen.getByRole('button', { name: 'Ceduna20260924_nrt' }));
+  await act(async () => finishFirst(mission));
+  expect(router.state.location.pathname).toBe('/map/gliders');
+  await act(async () => finishSecond({ ...mission, id: 'Ceduna20260924_nrt@5.' }));
+  expect(router.state.location.search).toBe('?missionId=Ceduna20260924_nrt%405.&window=4d');
+});
+
+it('preserves the active image window when selecting another mission from the minimap', async () => {
+  const yearmap = maps.find(({ id }) => id === '2026_sl_temp_04d_nrt')!;
+  vi.mocked(source.fetchGliderYearmaps).mockResolvedValue([
+    yearmap,
+    { ...yearmap, id: '2026_sl_temp_12d_nrt', window: '12d' },
+  ]);
+  vi.spyOn(source, 'fetchGliderMission').mockResolvedValue(mission);
+  const router = setup({ isMiniMap: true, missionName: mission.mission_name, window: '12d' });
+  await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
+  await screen.findByText('Mission page');
+  expect(router.state.location.search).toBe('?missionId=TwoRocks20261028_nrt%405.&window=12d');
+});
+
 it('preserves mobile initialization on a cached revisit', async () => {
   mobile.value = true;
-  setup(true);
+  setup({}, true);
   await screen.findByTestId('deployment-layer');
   expect(useMapStore.getState().mapViewState).toEqual(initialMobileMapViewState.mapViewState);
 });
@@ -141,26 +246,14 @@ it('exposes mission names and geographic bounds outside the canvas', async () =>
   expect(list).toHaveTextContent(/west .*south .*east .*north/);
 });
 
-it('opens delayed deployments explicitly without mixing them with NRT', async () => {
-  setup();
-  const mode = await screen.findByRole('combobox', { name: 'Data mode' });
-  expect(mode).toHaveValue('nrt');
-  await userEvent.selectOptions(mode, 'delayed');
-  const layer = screen.getByTestId('deployment-layer');
-  expect(layer.dataset.ids).toContain('BassStrait20260316');
-  expect(layer.dataset.ids).not.toContain('TwoRocks20261028_nrt');
-  await userEvent.selectOptions(mode, 'nrt');
-  expect(layer.dataset.ids).toContain('TwoRocks20261028_nrt');
-});
-
-it('keeps the mode selector available when a mode has no deployments', async () => {
-  vi.mocked(source.fetchGliderYearmaps).mockResolvedValue([maps[0]]);
-  setup();
-  const mode = await screen.findByRole('combobox', { name: 'Data mode' });
-  expect(screen.queryByTestId('interactive-map')).not.toBeInTheDocument();
-  await userEvent.selectOptions(mode, 'delayed');
-  await screen.findByTestId('interactive-map');
-});
+it.each(['UnknownMission', 'TwoRocks20261028_nrt'])(
+  'keeps the minimap usable with unmatched mission/window: %s',
+  async (missionName) => {
+    setup({ isMiniMap: true, missionName, window: 'invalid' });
+    await screen.findByTestId('interactive-map');
+    expect(screen.getByTestId('deployment-layer').dataset.ids).not.toBe('');
+  },
+);
 
 it('restores an explicit glider type after visiting a year that only has the other type', async () => {
   const sg = maps.find(({ platform }) => platform === 'sg')!;

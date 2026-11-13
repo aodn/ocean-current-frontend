@@ -173,3 +173,43 @@ for (const width of [1280, 390]) {
     expect(requests).toBe(1);
   });
 }
+
+for (const width of [1280, 390]) {
+  test(`reuses the product sidebar and switches products from a Gliders image at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 844 });
+    await page.route('**/api/v1/gliders/missions/*', async (route) => {
+      await route.fulfill({
+        json: {
+          id: 'TwoRocks20261028_nrt@5.',
+          mission_name: 'TwoRocks20261028_nrt',
+          visualisations: { latest_images: { '4d': '/gliders/test.gif' } },
+        },
+      });
+    });
+    await page.route('**/resource/gliders/test.gif', async (route) => {
+      await route.fulfill({
+        body: Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64'),
+        contentType: 'image/gif',
+      });
+    });
+    await page.goto('/product/gliders?missionId=TwoRocks20261028_nrt%405.&window=4d');
+    await expect(page.getByRole('heading', { name: 'TwoRocks20261028_nrt' })).toBeVisible();
+    const dropdown = page.getByTestId('product-dropdown-toggle').filter({ visible: true });
+    await expect(dropdown).toHaveText('Gliders');
+    if (width >= 768) {
+      const map = page.getByRole('region', { name: 'Interactive Australia deployment map' });
+      await expect(map).toBeVisible();
+      expect((await map.boundingBox())!.height).toBe(240);
+      expect(Math.round((await map.boundingBox())!.width)).toBe(Math.round((await dropdown.boundingBox())!.width));
+      await page.getByRole('button', { name: 'Toggle sidebar' }).click();
+      await expect(dropdown).not.toBeInViewport();
+      await page.getByRole('button', { name: 'Toggle sidebar' }).click();
+      await expect(dropdown).toBeInViewport();
+    }
+    await dropdown.click();
+    await page.getByRole('menuitem', { name: 'Four-hour SST', exact: true }).click();
+    await expect(page).toHaveURL(/\/product\/four-hour-sst\/sst/);
+    expect(new URL(page.url()).searchParams.has('missionId')).toBe(false);
+    expect(new URL(page.url()).searchParams.has('window')).toBe(false);
+  });
+}
