@@ -1,7 +1,8 @@
+import { featureFlags } from '@/configs/featureFlags';
 import { DateFormat } from '@/types/date';
 import { Product, ProductID } from '@/types/product';
 
-export const OC_PRODUCTS: Product[] = [
+const products: Product[] = [
   {
     title: 'Four hour SST',
     path: 'four-hour-sst',
@@ -635,6 +636,8 @@ export const OC_PRODUCTS: Product[] = [
     dateFormat: null,
   },
 ] as const;
+
+export const OC_PRODUCTS: Product[] = products.filter((product) => product.key !== 'gliders' || featureFlags.gliders);
 
 export type NearestDateSearchConfig = { windowSize: number };
 

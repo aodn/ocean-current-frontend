@@ -33,6 +33,8 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
+    // Test gated features regardless of the developer's .env.local; featureFlags.test.ts covers the disabled state.
+    env: { VITE_ENABLE_GLIDERS: 'true' },
     include: ['src/**/*.test.[jt]s?(x)'],
     deps: {
       optimizer: {

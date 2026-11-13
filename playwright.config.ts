@@ -56,6 +56,7 @@ export default defineConfig({
           timeout: 120 * 1000,
           env: {
             VITE_MAPBOX_ACCESS_TOKEN: MAPBOX_ACCESS_TOKEN,
+            VITE_ENABLE_GLIDERS: 'true',
           },
         }
       : {
@@ -66,6 +67,7 @@ export default defineConfig({
           env: {
             VITE_PORT: PORT,
             VITE_MAPBOX_ACCESS_TOKEN: MAPBOX_ACCESS_TOKEN,
+            VITE_ENABLE_GLIDERS: 'true',
           },
         },
 });

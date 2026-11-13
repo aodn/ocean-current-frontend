@@ -18,6 +18,7 @@ import {
   FishSOOPIcon,
 } from '@/components/Shared/Icons';
 import { APP_ROUTES } from '@/routers/appRoutes';
+import { featureFlags } from '@/configs/featureFlags';
 import { buildLandingUrl } from '@/configs/products/landing';
 
 export const linksData: LinkItem[] = [
@@ -107,7 +108,8 @@ export const linksData: LinkItem[] = [
         Icon: GlidersIcon,
         title: 'Gliders',
         description: 'Near-coast ocean properties at sub-surface',
-        url: buildLandingUrl('gliders'),
+        // Until Gliders is released, keep the existing coming-soon destination.
+        url: featureFlags.gliders ? buildLandingUrl('gliders') : `${APP_ROUTES.COMING_SOON}?product=gliders`,
       },
       {
         id: 'tidalCurrents',
