@@ -50,6 +50,7 @@ export interface GliderMission {
   processing_version?: string | null;
   temperature_salinity_url?: string | null;
   scientific_data_url?: string | null;
+  image_history?: Partial<Record<string, GliderImageFrame[]>>;
   visualisations: {
     details?: GliderProductLink[] | null;
     animations?: GliderProductLink[] | null;
@@ -60,5 +61,10 @@ export interface GliderMission {
 
 export interface GliderProductLink {
   label: string;
+  url: string;
+}
+
+export interface GliderImageFrame {
+  date: string;
   url: string;
 }

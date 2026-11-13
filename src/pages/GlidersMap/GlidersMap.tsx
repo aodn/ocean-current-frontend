@@ -165,7 +165,9 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
     const preferredWindow = yearmap?.window.replace(/^0+/, '') ?? '4d';
     const availableWindow =
       catalogueMission &&
-      [preferredWindow, ...GLIDER_MISSION_WINDOWS].find((key) => catalogueMission.visualisations.latest_images?.[key]);
+      [preferredWindow, ...GLIDER_MISSION_WINDOWS].find(
+        (key) => catalogueMission.visualisations.latest_images?.[key] || catalogueMission.image_history?.[key]?.length,
+      );
     mission.mutate(
       { missionName, window: selectedWindow ?? availableWindow ?? preferredWindow, catalogueMission },
       {

@@ -292,3 +292,94 @@ it.each([
   if (shown) expect(link).toHaveAttribute('href', state!.glidersReturnTo);
   else expect(link).not.toBeInTheDocument();
 });
+
+describe('mission image history', () => {
+  const history = [
+    { date: '2026-10-01T00:00:00', url: '/gliders/first.gif' },
+    { date: '2026-10-01T12:00:00', url: '/gliders/second.gif' },
+    { date: '2026-10-04T00:00:00', url: '/gliders/last.gif' },
+  ];
+  const withHistory = {
+    ...mission,
+    image_history: {
+      '4d': [{ date: '2026-10-03T00:00:00', url: '/gliders/window-four.gif' }],
+      '12d': history,
+    },
+  };
+  const profile = () => screen.getByRole('img', { name: /12d mission profile/ });
+
+  beforeEach(() => vi.mocked(service.fetchGliderMissionById).mockResolvedValue(withHistory));
+
+  it('walks every frame, skips missing days and stops at both ends', async () => {
+    const router = setup();
+    await screen.findByTestId('date-pagination');
+    expect(profile()).toHaveAttribute('src', '/resource/gliders/last.gif');
+    expect(screen.getByTestId('date-next-button')).toBeDisabled();
+    await userEvent.click(screen.getByTestId('date-previous-button'));
+    expect(profile()).toHaveAttribute('src', '/resource/gliders/second.gif');
+    expect(screen.getByTestId('selected-date')).toHaveTextContent('01 Oct 2026 12:00');
+    await userEvent.click(screen.getByTestId('date-previous-button'));
+    expect(profile()).toHaveAttribute('src', '/resource/gliders/first.gif');
+    expect(screen.getByTestId('date-previous-button')).toBeDisabled();
+    await userEvent.click(screen.getByTestId('date-next-button'));
+    expect(profile()).toHaveAttribute('src', '/resource/gliders/second.gif');
+    await userEvent.click(screen.getByTestId('date-next-button'));
+    expect(profile()).toHaveAttribute('src', '/resource/gliders/last.gif');
+    expect(new URLSearchParams(router.state.location.search).get('date')).toBe('2026100400');
+    expect(service.fetchGliderMissionById).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([
+    ['20261002', '/resource/gliders/last.gif'],
+    ['2026090100', '/resource/gliders/first.gif'],
+    ['2026110100', '/resource/gliders/last.gif'],
+    ['invalid', '/resource/gliders/last.gif'],
+  ])('resolves unavailable or invalid date %s to an available image', async (date, src) => {
+    setup(`missionId=${encodeURIComponent(mission.id)}&window=12d&date=${date}`);
+    await screen.findByTestId('date-pagination');
+    expect(profile()).toHaveAttribute('src', src);
+  });
+
+  it('resets to the newest image and keeps the selected date across windows', async () => {
+    setup(`missionId=${encodeURIComponent(mission.id)}&window=12d&date=2026100112`);
+    await screen.findByTestId('date-pagination');
+    await userEvent.click(screen.getByRole('button', { name: '4 days' }));
+    expect(screen.getByRole('img', { name: /4d mission profile/ })).toHaveAttribute(
+      'src',
+      '/resource/gliders/window-four.gif',
+    );
+    expect(screen.getByTestId('date-previous-button')).toBeDisabled();
+    expect(screen.getByTestId('date-next-button')).toBeDisabled();
+    await userEvent.click(screen.getByRole('button', { name: '12 days' }));
+    expect(profile()).toHaveAttribute('src', '/resource/gliders/second.gif');
+    await userEvent.click(screen.getByRole('button', { name: 'Reset to latest date' }));
+    expect(profile()).toHaveAttribute('src', '/resource/gliders/last.gif');
+  });
+
+  it('uses the shared calendar to pick the first image of an available day', async () => {
+    setup();
+    await screen.findByTestId('date-pagination');
+    await userEvent.click(screen.getByLabelText('calendar icon'));
+    const missing = screen.getByRole('gridcell', { name: /October 2nd/ });
+    expect(missing).toHaveAttribute('aria-disabled', 'true');
+    await userEvent.click(screen.getByRole('gridcell', { name: /October 1st/ }));
+    expect(profile()).toHaveAttribute('src', '/resource/gliders/first.gif');
+  });
+
+  it('disables dates during video playback and preserves the date when returning', async () => {
+    vi.mocked(service.fetchGliderMissionById).mockResolvedValue({
+      ...withHistory,
+      visualisations: {
+        ...mission.visualisations,
+        animations: [{ label: '12', url: '/gliders/animation.mp4' }],
+      },
+    });
+    setup(`missionId=${encodeURIComponent(mission.id)}&window=12d&date=2026100112`);
+    await screen.findByTestId('date-pagination');
+    await userEvent.click(screen.getByRole('button', { name: 'Toggle video' }));
+    expect(screen.getByTestId('date-previous-button')).toBeDisabled();
+    expect(screen.getByTestId('date-next-button')).toBeDisabled();
+    await userEvent.click(screen.getByRole('button', { name: 'Toggle video' }));
+    expect(profile()).toHaveAttribute('src', '/resource/gliders/second.gif');
+  });
+});
