@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { Dropdown } from '@/components/Shared';
 import NewTabLink from '@/components/Shared/NewTabLink/NewTabLink';
 import { resolveGliderResourceUrl } from '@/utils/gliders-map-utils/catalogue';
+import { GLIDER_TS_VIEW } from '@/services/hooks/useGliderMission';
 import type { GliderMission, GliderProductLink } from '@/types/gliders';
 
 const formatDate = (date?: string | null) => (date && dayjs(date).isValid() ? dayjs(date).format('DD MMM YYYY') : '—');
@@ -73,6 +74,23 @@ const WindowLinks = ({
         </Fragment>
       ))}
     </span>
+  );
+};
+
+const TemperatureSalinityButton = ({ mission, onSelect }: { mission: GliderMission; onSelect: () => void }) => {
+  if (!mission.temperature_salinity_url) return <span className="text-imos-subheading-grey">—</span>;
+  const unavailable = !mission.visualisations.temperature_salinity_image;
+  return (
+    <button
+      type="button"
+      className={`${linkClass} enabled:hover:bg-imos-light-blue disabled:text-imos-grey! cursor-pointer p-0 disabled:cursor-not-allowed disabled:no-underline`}
+      aria-label={`View ${mission.mission_name} temperature–salinity diagram`}
+      disabled={unavailable}
+      title={unavailable ? 'Diagram unavailable' : undefined}
+      onClick={onSelect}
+    >
+      T-S
+    </button>
   );
 };
 
@@ -147,6 +165,7 @@ const GlidersTable = ({
                   'Distance (km)',
                   'Glider',
                   'Version',
+                  'T-S',
                   'Details',
                   'Animation',
                   'Scientific data',
@@ -196,6 +215,9 @@ const GlidersTable = ({
                   <td className="tabular-nums">{mission.distance_travelled_km ?? '—'}</td>
                   <td>{mission.glider_id || '—'}</td>
                   <td className="tabular-nums">{mission.processing_version || '—'}</td>
+                  <td>
+                    <TemperatureSalinityButton mission={mission} onSelect={() => onSelect(mission, GLIDER_TS_VIEW)} />
+                  </td>
                   <td>
                     <WindowLinks
                       links={mission.visualisations.details}

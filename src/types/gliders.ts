@@ -54,6 +54,7 @@ export interface GliderMission {
     details?: GliderProductLink[] | null;
     animations?: GliderProductLink[] | null;
     latest_images?: Partial<Record<string, string | null>> | null;
+    temperature_salinity_image?: string | null;
   };
 }
 

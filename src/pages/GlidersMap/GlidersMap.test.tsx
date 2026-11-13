@@ -330,7 +330,7 @@ it('includes deployments without bounds, deduplicates map variants and uses cata
   await screen.findByText('02 Jan 2011 – —');
   expect(screen.getAllByRole('row')).toHaveLength(2);
   expect(screen.getAllByRole('button', { name: unbounded.mission_name })).toHaveLength(1);
-  expect(screen.getAllByRole('cell', { name: '—' })).toHaveLength(9);
+  expect(screen.getAllByRole('cell', { name: '—' })).toHaveLength(10);
   expect(source.fetchGliderMissionById).not.toHaveBeenCalled();
 });
 
@@ -456,6 +456,42 @@ it.each(['4', '12', '30'])(
     expect(screen.getByRole('button', { name: 'Sort deployments' })).toHaveTextContent('Mission name (A–Z)');
   },
 );
+
+it('opens the selected mission T-S diagram from the table and returns with filters and sort', async () => {
+  const tsImage = '/gliders/missionTS/sl_TwoRocks20261028_nrt.gif';
+  const withDiagram = {
+    ...catalogueMissions[0],
+    temperature_salinity_url: 'https://oceancurrent.aodn.org.au/gliders/missionTS/sl_TwoRocks20261028_nrt.html',
+    visualisations: { ...catalogueMissions[0].visualisations, temperature_salinity_image: tsImage },
+  };
+  vi.mocked(source.fetchGliderMissions).mockResolvedValue([withDiagram, ...catalogueMissions.slice(1)]);
+  vi.mocked(source.fetchGliderMissionById).mockResolvedValue(withDiagram);
+  const router = setup();
+  await userEvent.click(await screen.findByRole('switch', { name: 'Table view' }));
+  await screen.findByRole('table');
+  await userEvent.click(screen.getByRole('button', { name: 'Sort deployments' }));
+  await userEvent.click(screen.getByRole('menuitem', { name: 'Oldest deployment' }));
+  const tableSearch = new URLSearchParams(router.state.location.search);
+
+  await userEvent.click(
+    screen.getByRole('button', { name: `View ${mission.mission_name} temperature–salinity diagram` }),
+  );
+  await screen.findByRole('region', { name: 'Glider mission image' });
+  expect(router.state.location.search).toBe(`?missionId=${encodeURIComponent(mission.id)}&view=ts`);
+  const diagram = await screen.findByRole('img', { name: `${mission.mission_name} temperature–salinity diagram` });
+  expect(diagram).toHaveAttribute('src', `/resource${tsImage}`);
+  expect(source.fetchGliderMissionById).toHaveBeenCalledWith(mission.id, expect.any(AbortSignal));
+
+  await userEvent.click(screen.getByRole('link', { name: 'Back to deployments' }));
+  await screen.findByRole('table');
+  const returned = new URLSearchParams(router.state.location.search);
+  expect(router.state.location.pathname).toBe('/map/gliders');
+  for (const key of ['view', 'year', 'platform', 'sort']) expect(returned.get(key)).toBe(tableSearch.get(key));
+  expect(returned.get('sort')).toBe('date-asc');
+  expect(screen.getByRole('switch', { name: 'Table view' })).toHaveAttribute('aria-checked', 'true');
+  expect(screen.getByRole('button', { name: 'Sort deployments' })).toHaveTextContent('Oldest deployment');
+});
+
 it('preserves mobile initialization on a cached revisit', async () => {
   mobile.value = true;
   setup({}, true);

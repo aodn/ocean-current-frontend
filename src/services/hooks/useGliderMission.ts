@@ -4,9 +4,11 @@ import { sharedQueryConfig } from '@/configs/query';
 import { fetchGliderMissionById } from '@/services/gliders';
 
 export const GLIDER_MISSION_WINDOWS = ['4d', '12d', '30d'];
+export const GLIDER_TS_VIEW = 'ts';
+export const TEMPERATURE_SALINITY_TITLE = 'Temperature–salinity diagram';
 
 /**
- * The Gliders mission selected in the URL (`missionId`, `window`). The sidebar and the
+ * The Gliders mission selected in the URL (`missionId`, and `window` or `view=ts`). The sidebar and the
  * mission image share the query key, so they read the same cached mission.
  */
 const useGliderMission = () => {
@@ -14,7 +16,8 @@ const useGliderMission = () => {
   const [params, setParams] = useSearchParams();
   const missionId = params.get('missionId') ?? '';
   const window = params.get('window') ?? '4d';
-  const validParams = missionId.length > 0 && GLIDER_MISSION_WINDOWS.includes(window);
+  const isTemperatureSalinity = params.get('view') === GLIDER_TS_VIEW;
+  const validParams = missionId.length > 0 && (isTemperatureSalinity || GLIDER_MISSION_WINDOWS.includes(window));
   const {
     data: mission,
     isPending,
@@ -36,6 +39,7 @@ const useGliderMission = () => {
     isError,
     refetch,
     window,
+    isTemperatureSalinity,
     /** Windows with a published GIF for the selected mission. */
     windows: GLIDER_MISSION_WINDOWS.filter((key) => mission?.visualisations.latest_images?.[key]),
     // Replace rather than push, so Back still returns to the Gliders map.
