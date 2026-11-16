@@ -1,38 +1,33 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router';
-import Loading from '@/components/Shared/Loading/Loading';
+import { Link, useLocation, useSearchParams } from 'react-router';
 import VideoToggleButton from '@/components/ProductMenuBar/components/VideoToggleButton';
-import { apiConfig } from '@/configs/api';
 import { useGliderMission } from '@/services/hooks';
+import useGliderTs from '@/services/hooks/useGliderTs';
 import { TEMPERATURE_SALINITY_TITLE } from '@/services/hooks/useGliderMission';
+import Loading from '@/components/Shared/Loading/Loading';
+import { apiConfig } from '@/configs/api';
+import { GLIDERS_DEPLOYMENTS_URL, getGlidersReturnTo } from '@/utils/gliders-map-utils/deployments';
+import GliderTsIndex, { GliderTsNavigation } from './GliderTs';
 import GliderDatePagination from './GliderDatePagination';
 
-/** Only same-app Gliders map URLs written by the deployments view are followed. */
-const getReturnTo = (state: unknown) => {
-  const returnTo = (state as { glidersReturnTo?: unknown } | null)?.glidersReturnTo;
-  return typeof returnTo === 'string' && returnTo.startsWith('/map/gliders?') ? returnTo : undefined;
+const GliderMission = () => {
+  const [params] = useSearchParams();
+  return params.get('view') === 'ts-index' ? <GliderTsIndex /> : <GliderMissionViewer />;
 };
 
-const GliderMission = () => {
-  const {
-    missionId,
-    validParams,
-    mission,
-    isPending,
-    isError,
-    refetch,
-    window,
-    isTemperatureSalinity,
-    isVideo,
-    videoUrl,
-    setView,
-    selectedFrame,
-  } = useGliderMission();
-  const returnTo = getReturnTo(useLocation().state);
+const GliderMissionViewer = () => {
+  const selection = useGliderMission();
+  const { missionId, validParams, mission, window, isTemperatureSalinity, isVideo, videoUrl, setView, selectedFrame } =
+    selection;
+  const ts = useGliderTs(isTemperatureSalinity);
+  // Historical diagrams have no catalogue mission, so the T-S index is their only source.
+  const indexOnly = isTemperatureSalinity && !missionId;
+  const { isPending, isError, refetch } = indexOnly ? ts : selection;
+  const returnTo = getGlidersReturnTo(useLocation().state) ?? (indexOnly ? GLIDERS_DEPLOYMENTS_URL : undefined);
   const imagePath = isTemperatureSalinity
-    ? mission?.visualisations.temperature_salinity_image
+    ? (ts.diagram?.image_url ?? mission?.visualisations.temperature_salinity_image)
     : (selectedFrame?.url ?? mission?.visualisations.latest_images?.[window]);
-  const missionName = mission?.mission_name ?? missionId;
+  const missionName = mission?.mission_name ?? ts.diagram?.id ?? missionId;
 
   return (
     <>
@@ -41,6 +36,7 @@ const GliderMission = () => {
         role="toolbar"
         aria-label="Mission tools"
       >
+        {isTemperatureSalinity && <GliderTsNavigation previous={ts.previous} next={ts.next} />}
         <GliderDatePagination />
         <div className="h-11 grow md:grow-0">
           <VideoToggleButton
@@ -59,9 +55,17 @@ const GliderMission = () => {
             Back to deployments
           </Link>
         )}
-        <h1 className="mb-3 text-xl font-semibold break-all">{mission?.mission_name ?? 'Glider mission'}</h1>
+        <h1 className="mb-3 text-xl font-semibold break-all">{missionName || 'Glider mission'}</h1>
         <div aria-live="polite">
-          {!validParams ? (
+          {isTemperatureSalinity && ts.isError && !indexOnly && (
+            <p role="alert">
+              Unable to load T-S navigation.{' '}
+              <button type="button" onClick={() => void ts.refetch()}>
+                Retry navigation
+              </button>
+            </p>
+          )}
+          {!validParams && !indexOnly ? (
             <p>Select a mission and a valid window from the Gliders map.</p>
           ) : isPending ? (
             <p role="status">Loading mission…</p>
@@ -116,6 +120,7 @@ const GliderMissionVideo = ({ url, name }: { url?: string; name: string }) => {
     </video>
   );
 };
+
 interface Props {
   path?: string | null;
   alt: string;

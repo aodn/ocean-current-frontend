@@ -5,6 +5,9 @@ import { Map } from './components/Map';
 import { ImageMap } from './components/ImageMap';
 
 export class ProductPage extends BasePage {
+  readonly tsPrevious: Locator;
+  readonly tsNext: Locator;
+  readonly tsIndex: Locator;
   readonly map: Map;
   readonly imageMap: ImageMap;
   readonly datePicker: Locator;
@@ -23,6 +26,9 @@ export class ProductPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
+    this.tsPrevious = page.getByRole('link', { name: 'Previous', exact: true });
+    this.tsNext = page.getByRole('link', { name: 'Next', exact: true });
+    this.tsIndex = page.getByRole('link', { name: 'T-S index', exact: true });
     this.map = new Map(page);
     this.imageMap = new ImageMap(page);
     this.datePicker = page.getByTestId('date-pagination');

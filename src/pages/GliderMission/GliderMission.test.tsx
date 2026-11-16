@@ -46,6 +46,7 @@ const windowButton = (name: string) => screen.getByRole('button', { name });
 beforeEach(() => {
   setProductId('gliders');
   vi.spyOn(service, 'fetchGliderMissionById').mockResolvedValue(mission);
+  vi.spyOn(service, 'fetchGliderTsDiagrams').mockResolvedValue([]);
 });
 afterEach(() => {
   useProductStore.setState(useProductStore.getInitialState());
@@ -56,6 +57,7 @@ it('opens a mission directly from its encoded ID and window', async () => {
   setup();
   expect(await screen.findByRole('img')).toHaveAttribute('src', '/resource/gliders/twelve.gif');
   expect(service.fetchGliderMissionById).toHaveBeenCalledWith(mission.id, expect.any(AbortSignal));
+  expect(service.fetchGliderTsDiagrams).not.toHaveBeenCalled();
   expect(screen.getByRole('heading', { name: mission.mission_name })).toBeInTheDocument();
   expect(screen.queryByRole('link', { name: 'Back to map' })).not.toBeInTheDocument();
 });

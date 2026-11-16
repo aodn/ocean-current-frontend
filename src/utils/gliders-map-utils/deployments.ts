@@ -42,3 +42,11 @@ export function buildGliderDeployments(
     ),
   };
 }
+
+export const GLIDERS_DEPLOYMENTS_URL = '/map/gliders?view=table';
+
+/** Only same-app Gliders map URLs written by the deployments view are followed. */
+export function getGlidersReturnTo(state: unknown): string | undefined {
+  const returnTo = (state as { glidersReturnTo?: unknown } | null)?.glidersReturnTo;
+  return typeof returnTo === 'string' && returnTo.startsWith('/map/gliders?') ? returnTo : undefined;
+}
