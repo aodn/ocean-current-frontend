@@ -69,8 +69,14 @@ it('loads all catalogue pages with cancellation for table metadata', async () =>
     .mockResolvedValueOnce({ data: { missions: [{ ...mission, id: 'second' }], total: 2 } });
   const signal = new AbortController().signal;
   expect(await fetchGliderMissions(signal)).toEqual([mission, { ...mission, id: 'second' }]);
-  expect(get).toHaveBeenNthCalledWith(1, '/gliders/missions', { params: { size: 100, page: 0 }, signal });
-  expect(get).toHaveBeenNthCalledWith(2, '/gliders/missions', { params: { size: 100, page: 1 }, signal });
+  expect(get).toHaveBeenNthCalledWith(1, '/gliders/missions', {
+    params: { order: 'distance_alongshore_to_darwin', size: 100, page: 0 },
+    signal,
+  });
+  expect(get).toHaveBeenNthCalledWith(2, '/gliders/missions', {
+    params: { order: 'distance_alongshore_to_darwin', size: 100, page: 1 },
+    signal,
+  });
 });
 
 it.each([null, {}, { missions: [] }, { missions: null, total: 1 }, { missions: [], total: -1 }])(

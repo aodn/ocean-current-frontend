@@ -77,7 +77,7 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
         )));
   const catalogue = useQuery({
     ...sharedQueryConfig,
-    queryKey: ['gliders', 'missions'],
+    queryKey: ['gliders', 'missions', 'distance_alongshore_to_darwin'],
     queryFn: ({ signal }) => fetchGliderMissions(signal),
     enabled: needsCatalogue,
     retry: false,

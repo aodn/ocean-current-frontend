@@ -298,7 +298,10 @@ for (const width of [1280, 390]) {
     };
     let catalogueRequests = 0;
     await page.route('**/api/v1/gliders/missions?*', async (route) => {
-      if (!new URL(route.request().url()).searchParams.has('q')) catalogueRequests++;
+      if (!new URL(route.request().url()).searchParams.has('q')) {
+        expect(new URL(route.request().url()).searchParams.get('order')).toBe('distance_alongshore_to_darwin');
+        catalogueRequests++;
+      }
       const historical = {
         id: 'Bicheno20100813@5.',
         mission_name: 'Bicheno20100813',
@@ -367,11 +370,11 @@ for (const width of [1280, 390]) {
     await page.getByRole('button', { name: 'Sort deployments' }).click();
     const labelPositions = await page
       .getByRole('menu')
-      .filter({ has: page.getByRole('menuitem', { name: 'Mission name (A–Z)', exact: true }) })
+      .filter({ has: page.getByRole('menuitem', { name: 'Alongshore to Darwin', exact: true }) })
       .getByRole('menuitem')
       .evaluateAll((items) => items.map((item) => item.querySelector('span')!.getBoundingClientRect().left));
     for (const position of labelPositions) expect(position).toBeCloseTo(labelPositions[0], 0);
-    await page.getByRole('menuitem', { name: 'Mission name (A–Z)', exact: true }).click();
+    await page.getByRole('menuitem', { name: 'Alongshore to Darwin', exact: true }).click();
     await expect(page.getByRole('button', { name: 'Sort deployments' }).locator('span')).toHaveCSS(
       'white-space',
       'nowrap',
@@ -391,8 +394,16 @@ for (const width of [1280, 390]) {
     await expect(year).toHaveValue('2011');
     await expect(type).toHaveText('Seaglider');
     await expect(page.getByRole('switch', { name: 'Table view', exact: true })).toHaveAttribute('aria-checked', 'true');
-    await expect(page.getByRole('button', { name: 'Sort deployments' })).toHaveText('Mission name (A–Z)');
+    await expect(page.getByRole('button', { name: 'Sort deployments' })).toHaveText('Alongshore to Darwin');
     expect(catalogueRequests).toBe(initialCatalogueRequests);
+    await expect(table.getByRole('row').nth(2)).toContainText('Bicheno20100813');
+    await expect(page).toHaveURL(/sort=distance-alongshore/);
+    await page.reload();
+    await expect(table).toBeVisible();
+    await expect(year).toHaveValue('2011');
+    await expect(type).toHaveText('Seaglider');
+    await expect(page.getByRole('button', { name: 'Sort deployments' })).toHaveText('Alongshore to Darwin');
+    await expect(table.getByRole('row').nth(2)).toContainText('Bicheno20100813');
   });
 
   test(`reuses the product sidebar and switches products from a Gliders image at ${width}px`, async ({ page }) => {

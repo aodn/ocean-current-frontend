@@ -174,3 +174,14 @@ it('opens the T-S diagram in the app and disables it when no diagram image is pu
   // A mission without a published T-S link has no action.
   expect(screen.queryByRole('button', { name: /Bicheno20100813 temperature/ })).not.toBeInTheDocument();
 });
+
+it('preserves the published alongshore order after switching from date sorting', async () => {
+  const ordered = [missions[1], missions[0], missions[2]];
+  const onSelect = setup(ordered);
+  await userEvent.click(screen.getByRole('button', { name: 'Sort deployments' }));
+  await userEvent.click(screen.getByRole('menuitem', { name: 'Alongshore to Darwin' }));
+  const rows = screen.getAllByRole('row').slice(1);
+  ordered.forEach((mission, index) => expect(rows[index]).toHaveTextContent(mission.mission_name));
+  await userEvent.click(screen.getByRole('button', { name: ordered[0].mission_name }));
+  expect(onSelect).toHaveBeenCalledWith(ordered[0]);
+});

@@ -19,6 +19,7 @@ const sortOptions = [
   { id: 'date-asc', label: 'Oldest deployment' },
   { id: 'name-asc', label: 'Mission name (A–Z)' },
   { id: 'name-desc', label: 'Mission name (Z–A)' },
+  { id: 'distance-alongshore', label: 'Alongshore to Darwin' },
 ];
 
 const ProductLink = ({ url, label, ariaLabel }: { url?: string | null; label: string; ariaLabel?: string }) => {
@@ -105,14 +106,17 @@ const GlidersTable = ({
   const sort = params.get('sort') ?? 'date-desc';
   const byName = sort.startsWith('name');
   const ascending = sort.endsWith('asc');
-  const sorted = [...missions].sort((a, b) => {
-    // Unknown deployment dates always follow dated missions, in either direction.
-    if (!byName && Boolean(a.start_date) !== Boolean(b.start_date)) return a.start_date ? -1 : 1;
-    const order = byName
-      ? a.mission_name.localeCompare(b.mission_name)
-      : (a.start_date ?? '').localeCompare(b.start_date ?? '');
-    return (ascending ? order : -order) || a.mission_name.localeCompare(b.mission_name);
-  });
+  const sorted =
+    sort === 'distance-alongshore'
+      ? missions
+      : [...missions].sort((a, b) => {
+          // Unknown deployment dates always follow dated missions, in either direction.
+          if (!byName && Boolean(a.start_date) !== Boolean(b.start_date)) return a.start_date ? -1 : 1;
+          const order = byName
+            ? a.mission_name.localeCompare(b.mission_name)
+            : (a.start_date ?? '').localeCompare(b.start_date ?? '');
+          return (ascending ? order : -order) || a.mission_name.localeCompare(b.mission_name);
+        });
 
   return (
     <section
