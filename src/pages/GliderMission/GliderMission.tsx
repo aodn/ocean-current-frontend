@@ -23,7 +23,8 @@ const GliderMissionViewer = () => {
   const ts = useGliderTs(isTemperatureSalinity);
   // Historical diagrams have no catalogue mission, so the T-S index is their only source.
   const indexOnly = isTemperatureSalinity && !missionId;
-  const { isPending, isError, refetch } = indexOnly ? ts : selection;
+  const { isPending: contentPending, isError, refetch } = indexOnly ? ts : selection;
+  const isPending = contentPending || (isTemperatureSalinity && params.has('diagramId') && ts.isPending);
   const returnTo = getGlidersReturnTo(useLocation().state) ?? (indexOnly ? GLIDERS_DEPLOYMENTS_URL : undefined);
   // A selected diagram stays unavailable when its image is null or its ID is unknown.
   const tsImage =

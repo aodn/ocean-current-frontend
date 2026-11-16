@@ -1,8 +1,9 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import * as service from '@/services/gliders';
+import type { GliderTsDiagram } from '@/types/gliders';
 import GlidersFilters from '@/components/DataVisualisationSidebar/components/GlidersFilters';
 import MiniMap from '@/components/DataVisualisationSidebar/components/MiniMap';
 import useProductStore, { setProductId } from '@/stores/product-store/productStore';
@@ -143,6 +144,16 @@ it('does not truncate an unversioned mission ID in the minimap', async () => {
   expect(await screen.findByTestId('minimap')).not.toHaveAttribute('data-mission');
 });
 
+it.each([
+  ['view=ts-index', 'T-S diagram index'],
+  ['view=ts&diagramId=sg_Historical20010101', 'Temperature–salinity diagram unavailable'],
+])('hides the minimap for mission-less T-S views: %s', async (search, readyText) => {
+  setup(search);
+  await screen.findByText(readyText);
+  expect(screen.queryByTestId('minimap')).not.toBeInTheDocument();
+  expect(service.fetchGliderMissionById).not.toHaveBeenCalled();
+});
+
 describe('temperature–salinity diagram', () => {
   const tsImage = '/gliders/missionTS/sl_TwoRocks20261028_nrt.gif';
   const withDiagram = {
@@ -150,6 +161,28 @@ describe('temperature–salinity diagram', () => {
     visualisations: { ...mission.visualisations, temperature_salinity_image: tsImage },
   };
   const search = 'missionId=TwoRocks20261028_nrt%405.&view=ts';
+
+  it('waits for the selected T-S index after the mission has loaded', async () => {
+    let completeIndex!: (diagrams: GliderTsDiagram[]) => void;
+    const pendingIndex = new Promise<GliderTsDiagram[]>((resolve) => {
+      completeIndex = resolve;
+    });
+    vi.mocked(service.fetchGliderTsDiagrams).mockReturnValue(pendingIndex);
+    vi.mocked(service.fetchGliderMissionById).mockResolvedValue(withDiagram);
+    const diagramId = 'sl_TwoRocks20261028_nrt';
+    setup(search + `&diagramId=${diagramId}`);
+
+    await screen.findByRole('heading', { name: mission.mission_name });
+    expect(screen.getByRole('status')).toHaveTextContent('Loading mission…');
+    expect(screen.queryByText('Temperature–salinity diagram unavailable')).not.toBeInTheDocument();
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
+
+    await act(async () => {
+      completeIndex([{ id: diagramId, image_url: tsImage, mission_ids: [mission.id] }]);
+    });
+    expect(await screen.findByRole('img')).toHaveAttribute('src', `/resource${tsImage}`);
+    expect(screen.queryByText('Loading mission…')).not.toBeInTheDocument();
+  });
 
   it('switches from the sidebar to the mission diagram and back, preserving the window', async () => {
     vi.mocked(service.fetchGliderMissionById).mockResolvedValue(withDiagram);
@@ -175,6 +208,7 @@ describe('temperature–salinity diagram', () => {
     const image = await screen.findByRole('img');
     expect(image).toHaveAttribute('src', `/resource${tsImage}`);
     expect(image).toHaveAccessibleName('TwoRocks20261028_nrt temperature–salinity diagram');
+    expect(screen.getByTestId('minimap')).toHaveAttribute('data-mission', mission.mission_name);
     // The sidebar names the mission; the image identifies the view.
     expect(screen.getByRole('heading', { name: 'TwoRocks20261028_nrt' })).toBeInTheDocument();
     expect(screen.queryByRole('group', { name: 'Time window' })).not.toBeInTheDocument();
