@@ -11,6 +11,8 @@ const MiniMap: React.FC = () => {
   const { mainProduct } = useProductConvert();
   const [params] = useSearchParams();
   const missionId = params.get('missionId') ?? '';
+  // The T-S index and historical diagrams have no mission to locate.
+  if (mainProduct?.key === 'gliders' && !missionId && params.get('view')?.startsWith('ts')) return null;
   const versionIndex = missionId.lastIndexOf('@');
   const missionName = versionIndex > 0 ? missionId.slice(0, versionIndex) : undefined;
   return (

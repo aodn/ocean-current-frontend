@@ -68,3 +68,10 @@ export interface GliderImageFrame {
   date: string;
   url: string;
 }
+
+/** Ordered entry in the complete legacy T-S index, including historical assets. */
+export interface GliderTsDiagram {
+  id: string;
+  image_url: string | null;
+  mission_ids: string[];
+}

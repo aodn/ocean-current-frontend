@@ -1,4 +1,4 @@
-import type { GliderMission, GliderYearmap, GliderYearmapsResponse } from '@/types/gliders';
+import type { GliderMission, GliderTsDiagram, GliderYearmap, GliderYearmapsResponse } from '@/types/gliders';
 import { apiClient, ec2ProxyClient } from './httpClient';
 
 export async function fetchGliderYearmaps(signal?: AbortSignal): Promise<GliderYearmap[]> {
@@ -51,4 +51,23 @@ export async function fetchGliderMissions(signal?: AbortSignal): Promise<GliderM
     page += 1;
   } while (missions.length < total);
   return missions;
+}
+
+export async function fetchGliderTsDiagrams(signal?: AbortSignal): Promise<GliderTsDiagram[]> {
+  const { data } = await apiClient.get<{ diagrams: GliderTsDiagram[] }>('/gliders/ts-diagrams', { signal });
+  // Check the response shape here; source identifiers and paths are validated by the API.
+  if (
+    !Array.isArray(data?.diagrams) ||
+    data.diagrams.some(
+      (diagram) =>
+        !diagram ||
+        typeof diagram.id !== 'string' ||
+        (diagram.image_url !== null && typeof diagram.image_url !== 'string') ||
+        !Array.isArray(diagram.mission_ids) ||
+        diagram.mission_ids.some((id) => typeof id !== 'string'),
+    )
+  ) {
+    throw new Error('Invalid Gliders T-S index response');
+  }
+  return data.diagrams;
 }

@@ -544,3 +544,59 @@ for (const width of [1280, 390]) {
     });
   });
 }
+
+for (const width of [1280, 390]) {
+  test(`browses the complete T-S index at ${width}px`, async ({ page, productPage }, testInfo) => {
+    await page.setViewportSize({ width, height: 844 });
+    const mission = {
+      id: 'TwoRocks20261028_nrt@5.',
+      mission_name: 'TwoRocks20261028_nrt',
+      start_date: '2026-10-28',
+      is_nrt: true,
+      glider_id: 'SL248',
+      temperature_salinity_url: '/gliders/missionTS/sl_TwoRocks20261028_nrt.html',
+      visualisations: {
+        temperature_salinity_image: '/gliders/missionTS/current.gif',
+        latest_images: { '4d': '/gliders/missionTS/current.gif' },
+      },
+    };
+    const diagrams = [
+      { id: 'sg_Historical20010101', image_url: '/gliders/missionTS/historical.gif', mission_ids: [] },
+      { id: 'sl_TwoRocks20261028_nrt', image_url: '/gliders/missionTS/current.gif', mission_ids: [mission.id] },
+    ];
+    await page.route('**/api/v1/gliders/ts-diagrams', (route) => route.fulfill({ json: { diagrams } }));
+    await page.route('**/api/v1/gliders/missions?*', (route) =>
+      route.fulfill({ json: { missions: [mission], total: 1 } }),
+    );
+    await page.route('**/api/v1/gliders/missions/*', (route) => route.fulfill({ json: mission }));
+    await page.route('**/resource/gliders/missionTS/*.gif', (route) =>
+      route.fulfill({
+        body: Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64'),
+        contentType: 'image/gif',
+      }),
+    );
+    await page.goto('/map/gliders?view=table&year=2026&platform=sl&mode=nrt');
+    await page.getByRole('button', { name: `View ${mission.mission_name} temperature–salinity diagram` }).click();
+    await expect(productPage.tsNext).toBeVisible();
+    await productPage.tsNext.click();
+    await expect(page).toHaveURL(/diagramId=sg_Historical20010101/);
+    expect(new URL(page.url()).searchParams.has('missionId')).toBe(false);
+    await expect(page.getByRole('img', { name: /Historical20010101 temperature/ })).toBeVisible();
+    await page.reload();
+    await expect(productPage.tsPrevious).toBeVisible();
+    await productPage.tsPrevious.click();
+    await expect(page).toHaveURL(/diagramId=sl_TwoRocks20261028_nrt/);
+    await productPage.tsIndex.click();
+    await expect(page.getByRole('heading', { name: 'T-S diagram index' })).toBeVisible();
+    await page.getByRole('combobox', { name: 'Glider type' }).selectOption('Seaglider');
+    await expect(page.getByRole('rowheader')).toHaveText(['Historical20010101']);
+    await page.getByRole('link', { name: 'View sg_Historical20010101 temperature–salinity diagram' }).click();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+    await testInfo.attach(`ts-navigation-${width}`, {
+      body: await page.screenshot({ path: testInfo.outputPath(`ts-navigation-${width}.png`), fullPage: true }),
+      contentType: 'image/png',
+    });
+    await page.getByRole('link', { name: 'Back to deployments' }).click();
+    await expect(page).toHaveURL(/view=table.*year=2026/);
+  });
+}

@@ -78,8 +78,17 @@ const useGliderMission = () => {
       setParams(
         (prev) => {
           const next = new URLSearchParams(prev);
-          if (view === 'profile') next.delete('view');
-          else next.set('view', view);
+          if (view === 'profile') {
+            next.delete('view');
+            if (next.has('diagramId')) {
+              next.delete('date');
+              const firstWindow = GLIDER_MISSION_WINDOWS.find(
+                (key) => mission?.visualisations.latest_images?.[key] || mission?.image_history?.[key]?.length,
+              );
+              if (firstWindow) next.set('window', firstWindow);
+            }
+            next.delete('diagramId');
+          } else next.set('view', view);
           return next;
         },
         { replace: true, state: location.state },
