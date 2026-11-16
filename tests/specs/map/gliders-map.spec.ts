@@ -588,7 +588,9 @@ for (const width of [1280, 390]) {
     await expect(page).toHaveURL(/diagramId=sl_TwoRocks20261028_nrt/);
     await productPage.tsIndex.click();
     await expect(page.getByRole('heading', { name: 'T-S diagram index' })).toBeVisible();
-    await page.getByRole('link', { name: 'sg_Historical20010101', exact: true }).click();
+    await page.getByRole('combobox', { name: 'Glider type' }).selectOption('Seaglider');
+    await expect(page.getByRole('rowheader')).toHaveText(['Historical20010101']);
+    await page.getByRole('link', { name: 'View sg_Historical20010101 temperature–salinity diagram' }).click();
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
     await testInfo.attach(`ts-navigation-${width}`, {
       body: await page.screenshot({ path: testInfo.outputPath(`ts-navigation-${width}.png`), fullPage: true }),
