@@ -365,7 +365,21 @@ for (const width of [1280, 390]) {
     await expect(table.getByRole('button', { name: mission.mission_name, exact: true })).toBeInViewport();
     await expect(table.getByRole('button', { name: 'View 30-day mission image', exact: true })).toBeDisabled();
     await page.getByRole('button', { name: 'Sort deployments' }).click();
+    const labelPositions = await page
+      .getByRole('menu')
+      .filter({ has: page.getByRole('menuitem', { name: 'Mission name (A–Z)', exact: true }) })
+      .getByRole('menuitem')
+      .evaluateAll((items) => items.map((item) => item.querySelector('span')!.getBoundingClientRect().left));
+    for (const position of labelPositions) expect(position).toBeCloseTo(labelPositions[0], 0);
     await page.getByRole('menuitem', { name: 'Mission name (A–Z)', exact: true }).click();
+    await expect(page.getByRole('button', { name: 'Sort deployments' }).locator('span')).toHaveCSS(
+      'white-space',
+      'nowrap',
+    );
+    await expect(page.getByRole('button', { name: 'Sort deployments' }).locator('span')).toHaveCSS(
+      'text-overflow',
+      'ellipsis',
+    );
     const missionButton = table.getByRole('button', { name: mission.mission_name, exact: true });
     await missionButton.focus();
     await missionButton.press('Enter');

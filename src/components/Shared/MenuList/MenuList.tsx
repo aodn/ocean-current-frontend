@@ -31,7 +31,6 @@ const MenuList = <T,>({
             tabIndex={disabled || isLoading ? -1 : 0}
             className={cn(
               'flex cursor-pointer items-center rounded p-3 duration-300',
-              !showIcons && 'justify-center',
               isSelected ? 'bg-imos-deep-blue' : 'hover:bg-imos-hover-blue/20',
               (disabled || isLoading) && 'cursor-not-allowed opacity-50',
             )}

@@ -98,7 +98,7 @@ const Dropdown = <T,>({
           processingItemId ? 'cursor-not-allowed opacity-75' : 'cursor-pointer',
         )}
       >
-        <div className="flex items-center">
+        <div className="flex min-w-0 items-center">
           {showIcons &&
             selectedElement &&
             (() => {
@@ -107,10 +107,12 @@ const Dropdown = <T,>({
                 RenderedIcon && <RenderedIcon className="mr-4" size="xl" color={header ? 'imos-white' : 'imos-grey'} />
               );
             })()}
-          <span className={header ? 'text-white' : ''}>{selectedElement ? selectedElement.label : 'Select Item'}</span>
+          <span className={cn('truncate', header && 'text-white')}>
+            {selectedElement ? selectedElement.label : 'Select Item'}
+          </span>
         </div>
         <ArrowIcon
-          className={`transform transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''} ${header ? 'h-4 w-4' : 'h-3 w-3'} ms-3`}
+          className={`transform transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''} ${header ? 'h-4 w-4' : 'h-3 w-3'} ms-3 shrink-0`}
           color={header ? 'imos-white' : 'imos-grey'}
         />
       </button>
