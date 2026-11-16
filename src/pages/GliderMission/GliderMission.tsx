@@ -16,6 +16,7 @@ const GliderMission = () => {
 };
 
 const GliderMissionViewer = () => {
+  const [params] = useSearchParams();
   const selection = useGliderMission();
   const { missionId, validParams, mission, window, isTemperatureSalinity, isVideo, videoUrl, setView, selectedFrame } =
     selection;
@@ -24,8 +25,11 @@ const GliderMissionViewer = () => {
   const indexOnly = isTemperatureSalinity && !missionId;
   const { isPending, isError, refetch } = indexOnly ? ts : selection;
   const returnTo = getGlidersReturnTo(useLocation().state) ?? (indexOnly ? GLIDERS_DEPLOYMENTS_URL : undefined);
+  // A selected diagram stays unavailable when its image is null or its ID is unknown.
+  const tsImage =
+    ts.diagram || params.has('diagramId') ? ts.diagram?.image_url : mission?.visualisations.temperature_salinity_image;
   const imagePath = isTemperatureSalinity
-    ? (ts.diagram?.image_url ?? mission?.visualisations.temperature_salinity_image)
+    ? tsImage
     : (selectedFrame?.url ?? mission?.visualisations.latest_images?.[window]);
   const missionName = mission?.mission_name ?? ts.diagram?.id ?? missionId;
 

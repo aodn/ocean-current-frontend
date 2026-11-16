@@ -54,7 +54,20 @@ export async function fetchGliderMissions(signal?: AbortSignal): Promise<GliderM
 }
 
 export async function fetchGliderTsDiagrams(signal?: AbortSignal): Promise<GliderTsDiagram[]> {
-  // The publisher and the API validate identifiers, image paths and mission references.
   const { data } = await apiClient.get<{ diagrams: GliderTsDiagram[] }>('/gliders/ts-diagrams', { signal });
+  // Check the response shape here; source identifiers and paths are validated by the API.
+  if (
+    !Array.isArray(data?.diagrams) ||
+    data.diagrams.some(
+      (diagram) =>
+        !diagram ||
+        typeof diagram.id !== 'string' ||
+        (diagram.image_url !== null && typeof diagram.image_url !== 'string') ||
+        !Array.isArray(diagram.mission_ids) ||
+        diagram.mission_ids.some((id) => typeof id !== 'string'),
+    )
+  ) {
+    throw new Error('Invalid Gliders T-S index response');
+  }
   return data.diagrams;
 }

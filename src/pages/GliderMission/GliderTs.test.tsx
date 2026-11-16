@@ -91,3 +91,11 @@ it('offers a retry when loading fails', async () => {
   await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
   await screen.findByRole('table');
 });
+
+it('keeps an incomplete response recoverable without crashing the index', async () => {
+  vi.mocked(apiClient.get).mockResolvedValueOnce({ data: { diagrams: [{ id: diagrams[0].id, image_url: null }] } });
+  setup('view=ts-index');
+  expect(await screen.findByRole('alert')).toHaveTextContent('Unable to load T-S index.');
+  await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
+  await screen.findByRole('table');
+});

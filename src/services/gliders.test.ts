@@ -1,6 +1,12 @@
 import fixture from '@/pages/GlidersMap/fixtures/yearmaps.json';
 import { apiClient, ec2ProxyClient } from './httpClient';
-import { fetchGliderMission, fetchGliderMissionById, fetchGliderMissions, fetchGliderYearmaps } from './gliders';
+import {
+  fetchGliderMission,
+  fetchGliderMissionById,
+  fetchGliderMissions,
+  fetchGliderTsDiagrams,
+  fetchGliderYearmaps,
+} from './gliders';
 
 const mission = { id: 'TwoRocks20261028_nrt@5.', mission_name: 'TwoRocks20261028_nrt', visualisations: {} };
 afterEach(() => vi.restoreAllMocks());
@@ -80,4 +86,30 @@ it('rejects a prematurely empty catalogue page', async () => {
     .mockResolvedValueOnce({ data: { missions: [mission], total: 2 } })
     .mockResolvedValueOnce({ data: { missions: [], total: 2 } });
   await expect(fetchGliderMissions()).rejects.toThrow('Incomplete Gliders catalogue page');
+});
+
+describe('fetchGliderTsDiagrams', () => {
+  const diagram = { id: 'sl_Current20260101', image_url: null, mission_ids: ['Current20260101@5.'] };
+
+  it('preserves unavailable images and passes cancellation to the API', async () => {
+    const get = vi.spyOn(apiClient, 'get').mockResolvedValue({ data: { diagrams: [diagram] } });
+    const signal = new AbortController().signal;
+    expect(await fetchGliderTsDiagrams(signal)).toEqual([diagram]);
+    expect(get).toHaveBeenCalledExactlyOnceWith('/gliders/ts-diagrams', { signal });
+  });
+
+  it.each([
+    null,
+    {},
+    { diagrams: null },
+    { diagrams: [null] },
+    { diagrams: [{ ...diagram, id: null }] },
+    { diagrams: [{ ...diagram, image_url: undefined }] },
+    { diagrams: [{ id: diagram.id, image_url: null }] },
+    { diagrams: [{ ...diagram, mission_ids: null }] },
+    { diagrams: [{ ...diagram, mission_ids: [null] }] },
+  ])('rejects incomplete responses as query errors: %o', async (data) => {
+    vi.spyOn(apiClient, 'get').mockResolvedValue({ data });
+    await expect(fetchGliderTsDiagrams()).rejects.toThrow('Invalid Gliders T-S index response');
+  });
 });

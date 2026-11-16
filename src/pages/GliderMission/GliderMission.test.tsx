@@ -201,6 +201,48 @@ describe('temperature–salinity diagram', () => {
     expect(screen.getByText('Temperature–salinity diagram unavailable')).toHaveRole('status');
   });
 
+  it.each(['mission association', 'explicit selection'])(
+    'does not replace a null diagram image with the mission image: %s',
+    async (selection) => {
+      vi.mocked(service.fetchGliderMissionById).mockResolvedValue(withDiagram);
+      vi.mocked(service.fetchGliderTsDiagrams).mockResolvedValue([
+        { id: 'sl_Selected20260101', image_url: null, mission_ids: [mission.id] },
+      ]);
+      setup(search + (selection === 'explicit selection' ? '&diagramId=sl_Selected20260101' : ''));
+      await screen.findByRole('link', { name: 'Next' });
+      expect(screen.getByRole('status')).toHaveTextContent('Temperature–salinity diagram unavailable');
+      expect(screen.queryByRole('img')).not.toBeInTheDocument();
+    },
+  );
+
+  it('keeps an unknown diagram unavailable rather than displaying the mission image', async () => {
+    vi.mocked(service.fetchGliderMissionById).mockResolvedValue(withDiagram);
+    setup(search + '&diagramId=unknown');
+    await screen.findByRole('heading', { name: mission.mission_name });
+    expect(screen.getByRole('status')).toHaveTextContent('Temperature–salinity diagram unavailable');
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'T-S index' })).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Next' })).not.toBeInTheDocument();
+  });
+
+  it('clears the selected diagram and date when returning to the first available profile window', async () => {
+    vi.mocked(service.fetchGliderMissionById).mockResolvedValue({
+      ...withDiagram,
+      visualisations: { ...withDiagram.visualisations, latest_images: { '12d': '/gliders/twelve.gif' } },
+    });
+    const router = setup(search + '&diagramId=sl_Selected20260101&window=30d&date=2026010100');
+    await screen.findByRole('heading', { name: mission.mission_name });
+    await userEvent.click(windowButton('Mission profile'));
+    const params = new URLSearchParams(router.state.location.search);
+    expect(params.has('diagramId')).toBe(false);
+    expect(params.has('date')).toBe(false);
+    expect(params.has('view')).toBe(false);
+    expect(params.get('missionId')).toBe(mission.id);
+    expect(params.get('window')).toBe('12d');
+    expect(router.state.historyAction).toBe('REPLACE');
+    expect(await screen.findByRole('img')).toHaveAttribute('src', '/resource/gliders/twelve.gif');
+  });
+
   it('shows a retryable request error for an unknown mission', async () => {
     vi.mocked(service.fetchGliderMissionById).mockRejectedValue(new Error('404'));
     setup(search);
