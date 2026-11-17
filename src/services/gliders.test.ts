@@ -119,3 +119,12 @@ describe('fetchGliderTsDiagrams', () => {
     await expect(fetchGliderTsDiagrams()).rejects.toThrow('Invalid Gliders T-S index response');
   });
 });
+
+it('requests the event membership and accepts an empty catalogue', async () => {
+  const get = vi.spyOn(apiClient, 'get').mockResolvedValue({ data: { missions: [], total: 0 } });
+  expect(await fetchGliderMissions(undefined, 'event_based_sampling')).toEqual([]);
+  expect(get).toHaveBeenCalledWith('/gliders/missions', {
+    params: { order: 'event_based_sampling', size: 100, page: 0 },
+    signal: undefined,
+  });
+});

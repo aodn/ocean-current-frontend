@@ -33,13 +33,16 @@ export async function fetchGliderMissionById(id: string, signal?: AbortSignal): 
 }
 
 /** Fetch the catalogue once for table metadata, rather than resolving each deployment separately. */
-export async function fetchGliderMissions(signal?: AbortSignal): Promise<GliderMission[]> {
+export async function fetchGliderMissions(
+  signal?: AbortSignal,
+  order: 'distance_alongshore_to_darwin' | 'event_based_sampling' = 'distance_alongshore_to_darwin',
+): Promise<GliderMission[]> {
   const missions: GliderMission[] = [];
   let page = 0;
   let total: number;
   do {
     const { data } = await apiClient.get<{ missions: GliderMission[]; total: number }>('/gliders/missions', {
-      params: { order: 'distance_alongshore_to_darwin', size: 100, page },
+      params: { order, size: 100, page },
       signal,
     });
     if (!data || !Array.isArray(data.missions) || !Number.isSafeInteger(data.total) || data.total < 0) {

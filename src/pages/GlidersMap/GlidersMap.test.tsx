@@ -348,7 +348,7 @@ it('opens an unbounded mission by keyboard and returns to the table with browser
   await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Year' }), '2011');
   await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
   await screen.findByRole('table');
-  await userEvent.click(screen.getByRole('button', { name: 'Sort deployments' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Browse deployments' }));
   await userEvent.click(screen.getByRole('menuitem', { name: 'Mission name (Z–A)' }));
   screen.getByRole('button', { name: unbounded.mission_name }).focus();
   await userEvent.keyboard('{Enter}');
@@ -361,7 +361,7 @@ it('opens an unbounded mission by keyboard and returns to the table with browser
   expect(screen.getByRole('switch', { name: 'Table view' })).toHaveAttribute('aria-checked', 'true');
   expect(screen.getByRole('combobox', { name: 'Year' })).toHaveValue('2011');
   expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Seaglider');
-  expect(screen.getByRole('button', { name: 'Sort deployments' })).toHaveTextContent('Mission name (Z–A)');
+  expect(screen.getByRole('button', { name: 'Browse deployments' })).toHaveTextContent('Mission name (Z–A)');
 });
 
 it('keeps the toolbar usable when all deployments lack bounds', async () => {
@@ -445,7 +445,7 @@ it.each(['4', '12', '30'])(
     const router = setup();
     await userEvent.click(await screen.findByRole('switch', { name: 'Table view' }));
     await screen.findByRole('table');
-    await userEvent.click(screen.getByRole('button', { name: 'Sort deployments' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Browse deployments' }));
     await userEvent.click(screen.getByRole('menuitem', { name: 'Mission name (A–Z)' }));
     const row = screen.getByRole('button', { name: mission.mission_name }).closest('tr')!;
     const detailsButton = Array.from(row.querySelectorAll('button')).find((button) => button.textContent === label)!;
@@ -458,7 +458,7 @@ it.each(['4', '12', '30'])(
     });
     await screen.findByRole('table');
     expect(screen.getByRole('switch', { name: 'Table view' })).toHaveAttribute('aria-checked', 'true');
-    expect(screen.getByRole('button', { name: 'Sort deployments' })).toHaveTextContent('Mission name (A–Z)');
+    expect(screen.getByRole('button', { name: 'Browse deployments' })).toHaveTextContent('Mission name (A–Z)');
   },
 );
 
@@ -474,7 +474,7 @@ it('opens the selected mission T-S diagram from the table and returns with filte
   const router = setup();
   await userEvent.click(await screen.findByRole('switch', { name: 'Table view' }));
   await screen.findByRole('table');
-  await userEvent.click(screen.getByRole('button', { name: 'Sort deployments' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Browse deployments' }));
   await userEvent.click(screen.getByRole('menuitem', { name: 'Oldest deployment' }));
   const tableSearch = new URLSearchParams(router.state.location.search);
 
@@ -494,7 +494,7 @@ it('opens the selected mission T-S diagram from the table and returns with filte
   for (const key of ['view', 'year', 'platform', 'sort']) expect(returned.get(key)).toBe(tableSearch.get(key));
   expect(returned.get('sort')).toBe('date-asc');
   expect(screen.getByRole('switch', { name: 'Table view' })).toHaveAttribute('aria-checked', 'true');
-  expect(screen.getByRole('button', { name: 'Sort deployments' })).toHaveTextContent('Oldest deployment');
+  expect(screen.getByRole('button', { name: 'Browse deployments' })).toHaveTextContent('Oldest deployment');
 });
 
 it('preserves mobile initialization on a cached revisit', async () => {
@@ -709,4 +709,23 @@ it('does not silently fall back to delayed data when NRT is empty', async () => 
   expect(screen.getByRole('button', { name: 'Data mode' })).toHaveTextContent('NRT');
   await selectDataMode('Delayed');
   expect(screen.getByTestId('deployment-layer').dataset.ids).toContain('Bicheno20100813');
+});
+
+it('keeps filters and the browse control when the event catalogue fails and can be retried', async () => {
+  vi.mocked(source.fetchGliderMissions).mockImplementation(async (_signal, order) => {
+    if (order === 'event_based_sampling') throw new Error('offline');
+    return catalogueMissions;
+  });
+  const router = setup({}, false, '?view=table&year=2011&platform=sg&mode=delayed');
+  await screen.findByRole('table');
+  await userEvent.click(screen.getByRole('button', { name: 'Browse deployments' }));
+  await userEvent.click(screen.getByRole('menuitem', { name: 'Event-based sampling' }));
+  await screen.findByRole('alert');
+  expect(router.state.location.search).toContain('sort=event-based-sampling');
+  expect(screen.getByRole('combobox', { name: 'Year' })).toHaveValue('2011');
+  expect(screen.getByRole('button', { name: 'Browse deployments' })).toBeEnabled();
+  vi.mocked(source.fetchGliderMissions).mockResolvedValue([]);
+  await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
+  await screen.findByText(/No event-based sampling deployments match/);
+  expect(screen.getByRole('button', { name: 'Data mode' })).toHaveTextContent('Delayed');
 });
