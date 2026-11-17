@@ -272,7 +272,7 @@ for (const width of [1280, 390]) {
       sort: 'name-desc',
       mode: 'delayed',
     });
-    await expect(page.getByRole('button', { name: 'Sort deployments' })).toHaveText('Mission name (Z–A)');
+    await expect(page.getByRole('button', { name: 'Browse deployments' })).toHaveText('Mission name (Z–A)');
     await expect(page.getByRole('combobox', { name: 'Year', exact: true })).toHaveValue('2011');
 
     await table.getByRole('button', { name: 'View Bicheno20100813 temperature–salinity diagram' }).click();
@@ -367,7 +367,7 @@ for (const width of [1280, 390]) {
     });
     await expect(table.getByRole('button', { name: mission.mission_name, exact: true })).toBeInViewport();
     await expect(table.getByRole('button', { name: 'View 30-day mission image', exact: true })).toBeDisabled();
-    await page.getByRole('button', { name: 'Sort deployments' }).click();
+    await page.getByRole('button', { name: 'Browse deployments' }).click();
     const labelPositions = await page
       .getByRole('menu')
       .filter({ has: page.getByRole('menuitem', { name: 'Alongshore to Darwin', exact: true }) })
@@ -375,11 +375,11 @@ for (const width of [1280, 390]) {
       .evaluateAll((items) => items.map((item) => item.querySelector('span')!.getBoundingClientRect().left));
     for (const position of labelPositions) expect(position).toBeCloseTo(labelPositions[0], 0);
     await page.getByRole('menuitem', { name: 'Alongshore to Darwin', exact: true }).click();
-    await expect(page.getByRole('button', { name: 'Sort deployments' }).locator('span')).toHaveCSS(
+    await expect(page.getByRole('button', { name: 'Browse deployments' }).locator('span')).toHaveCSS(
       'white-space',
       'nowrap',
     );
-    await expect(page.getByRole('button', { name: 'Sort deployments' }).locator('span')).toHaveCSS(
+    await expect(page.getByRole('button', { name: 'Browse deployments' }).locator('span')).toHaveCSS(
       'text-overflow',
       'ellipsis',
     );
@@ -394,7 +394,7 @@ for (const width of [1280, 390]) {
     await expect(year).toHaveValue('2011');
     await expect(type).toHaveText('Seaglider');
     await expect(page.getByRole('switch', { name: 'Table view', exact: true })).toHaveAttribute('aria-checked', 'true');
-    await expect(page.getByRole('button', { name: 'Sort deployments' })).toHaveText('Alongshore to Darwin');
+    await expect(page.getByRole('button', { name: 'Browse deployments' })).toHaveText('Alongshore to Darwin');
     expect(catalogueRequests).toBe(initialCatalogueRequests);
     await expect(table.getByRole('row').nth(2)).toContainText('Bicheno20100813');
     await expect(page).toHaveURL(/sort=distance-alongshore/);
@@ -402,7 +402,7 @@ for (const width of [1280, 390]) {
     await expect(table).toBeVisible();
     await expect(year).toHaveValue('2011');
     await expect(type).toHaveText('Seaglider');
-    await expect(page.getByRole('button', { name: 'Sort deployments' })).toHaveText('Alongshore to Darwin');
+    await expect(page.getByRole('button', { name: 'Browse deployments' })).toHaveText('Alongshore to Darwin');
     await expect(table.getByRole('row').nth(2)).toContainText('Bicheno20100813');
   });
 
@@ -623,5 +623,43 @@ for (const width of [1280, 390]) {
     });
     await page.getByRole('link', { name: 'Back to deployments' }).click();
     await expect(page).toHaveURL(/view=table.*year=2026/);
+  });
+}
+
+for (const width of [1280, 390]) {
+  test(`browses event membership in published order at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 844 });
+    const missions = ['First', 'Second', 'Excluded'].map((name, index) => ({
+      id: `${name}@5.01`,
+      mission_name: name,
+      start_date: `2026-01-0${index + 1}`,
+      glider_id: 'SL123',
+      is_nrt: false,
+      visualisations: {},
+    }));
+    let eventRequests = 0;
+    await page.route('**/api/v1/gliders/missions?*', async (route) => {
+      const event = new URL(route.request().url()).searchParams.get('order') === 'event_based_sampling';
+      if (event) eventRequests++;
+      const rows = event ? [missions[1], missions[0]] : missions;
+      await route.fulfill({ json: { missions: rows, total: rows.length } });
+    });
+    await page.goto('/map/gliders?view=table&year=2026&platform=sl&mode=delayed');
+    await expect(page.getByRole('button', { name: 'Excluded', exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'Browse deployments' }).click();
+    await page.getByRole('menuitem', { name: 'Event-based sampling', exact: true }).click();
+    const rows = page.getByRole('table').getByRole('row');
+    await expect(rows).toHaveCount(3);
+    await expect(rows.nth(1)).toContainText('Second');
+    await expect(rows.nth(2)).toContainText('First');
+    await expect(page.getByRole('button', { name: 'Excluded', exact: true })).toHaveCount(0);
+    await page.getByRole('combobox', { name: 'Data mode' }).selectOption('nrt');
+    await expect(page.getByText(/No event-based sampling deployments match/)).toBeVisible();
+    await page.getByRole('combobox', { name: 'Data mode' }).selectOption('delayed');
+    await expect(rows).toHaveCount(3);
+    expect(eventRequests).toBe(1);
+    await page.reload();
+    await expect(rows.nth(1)).toContainText('Second');
+    await expect(page.getByRole('button', { name: 'Browse deployments' })).toHaveText('Event-based sampling');
   });
 }

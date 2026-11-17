@@ -97,10 +97,10 @@ it('shows historical and NRT metadata and uses only the published product labels
 it('sorts by deployment date and mission name and opens the exact catalogue mission', async () => {
   const onSelect = setup();
   expect(screen.getAllByRole('row')[1]).toHaveTextContent('TwoRocks20261028_nrt');
-  await userEvent.click(screen.getByRole('button', { name: 'Sort deployments' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Browse deployments' }));
   await userEvent.click(screen.getByRole('menuitem', { name: 'Mission name (A–Z)' }));
   expect(screen.getAllByRole('row')[1]).toHaveTextContent('Bicheno20100813');
-  await userEvent.click(screen.getByRole('button', { name: 'Sort deployments' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Browse deployments' }));
   await userEvent.click(screen.getByRole('menuitem', { name: 'Oldest deployment' }));
   expect(screen.getAllByRole('row')[1]).toHaveTextContent('TwoRocks20080621');
   await userEvent.click(screen.getByRole('button', { name: 'TwoRocks20080621' }));
@@ -178,7 +178,7 @@ it('opens the T-S diagram in the app and disables it when no diagram image is pu
 it('preserves the published alongshore order after switching from date sorting', async () => {
   const ordered = [missions[1], missions[0], missions[2]];
   const onSelect = setup(ordered);
-  await userEvent.click(screen.getByRole('button', { name: 'Sort deployments' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Browse deployments' }));
   await userEvent.click(screen.getByRole('menuitem', { name: 'Alongshore to Darwin' }));
   const rows = screen.getAllByRole('row').slice(1);
   ordered.forEach((mission, index) => expect(rows[index]).toHaveTextContent(mission.mission_name));

@@ -82,6 +82,15 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
     enabled: needsCatalogue,
     retry: false,
   });
+  const eventView = !isMiniMap && view === 'table' && params.get('sort') === 'event-based-sampling';
+  const events = useQuery({
+    ...sharedQueryConfig,
+    queryKey: ['gliders', 'missions', 'event_based_sampling'],
+    queryFn: ({ signal }) => fetchGliderMissions(signal, 'event_based_sampling'),
+    enabled: eventView,
+    retry: false,
+  });
+  const activeCatalogue = eventView ? events : catalogue;
   const catalogueMissions = useMemo(
     () =>
       (catalogue.data ?? []).map((mission) => ({
@@ -182,7 +191,15 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
       },
     );
   };
-  const tableMissions = catalogueMissions
+  const tableMissions = (
+    eventView
+      ? (events.data ?? []).map((mission) => ({
+          mission,
+          ...getGliderMissionFilters(mission, yearmaps ?? []),
+          mode: getGliderMissionDataMode(mission, yearmaps ?? []),
+        }))
+      : catalogueMissions
+  )
     .filter(
       (mission) =>
         year !== undefined &&
@@ -302,28 +319,35 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
         </p>
       )}
       {view === 'table' ? (
-        catalogue.isPending ? (
-          <p role="status">Loading missions…</p>
-        ) : catalogue.isError ? (
-          <div role="alert">
-            <p>Unable to load Gliders missions.</p>
-            <button type="button" className="mt-2 rounded border px-3 py-2" onClick={() => void catalogue.refetch()}>
-              Try again
-            </button>
-          </div>
-        ) : (
-          <>
-            {unclassified && (
-              <p role="status">
-                Some catalogue missions have no year, glider type or data mode metadata and cannot be filtered.
-              </p>
-            )}
-            <GlidersTable
-              missions={tableMissions}
-              onSelect={(mission, window) => selectMission(mission.mission_name, mission, window)}
-            />
-          </>
-        )
+        <>
+          {unclassified && (
+            <p role="status">
+              Some catalogue missions have no year, glider type or data mode metadata and cannot be filtered.
+            </p>
+          )}
+          <GlidersTable
+            missions={tableMissions}
+            status={
+              catalogue.isError || activeCatalogue.isError ? (
+                <div role="alert" className="p-4">
+                  <p>Unable to load Gliders missions.</p>
+                  <button
+                    type="button"
+                    className="mt-2 rounded border px-3 py-2"
+                    onClick={() => void (catalogue.isError ? catalogue : activeCatalogue).refetch()}
+                  >
+                    Try again
+                  </button>
+                </div>
+              ) : catalogue.isPending || activeCatalogue.isPending ? (
+                <p role="status" className="p-4">
+                  Loading missions…
+                </p>
+              ) : undefined
+            }
+            onSelect={(mission, window) => selectMission(mission.mission_name, mission, window)}
+          />
+        </>
       ) : isPending ? (
         <Loading className={isMiniMap ? 'h-full' : 'min-h-125'} />
       ) : isError ? (

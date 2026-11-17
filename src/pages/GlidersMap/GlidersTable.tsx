@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, type ReactNode } from 'react';
 import { useSearchParams } from 'react-router';
 import dayjs from 'dayjs';
 import { Dropdown } from '@/components/Shared';
@@ -20,6 +20,7 @@ const sortOptions = [
   { id: 'name-asc', label: 'Mission name (A–Z)' },
   { id: 'name-desc', label: 'Mission name (Z–A)' },
   { id: 'distance-alongshore', label: 'Alongshore to Darwin' },
+  { id: 'event-based-sampling', label: 'Event-based sampling' },
 ];
 
 const ProductLink = ({ url, label, ariaLabel }: { url?: string | null; label: string; ariaLabel?: string }) => {
@@ -98,7 +99,9 @@ const TemperatureSalinityButton = ({ mission, onSelect }: { mission: GliderMissi
 const GlidersTable = ({
   missions,
   onSelect,
+  status,
 }: {
+  status?: ReactNode;
   missions: GliderMission[];
   onSelect: (mission: GliderMission, window?: string) => void;
 }) => {
@@ -107,7 +110,7 @@ const GlidersTable = ({
   const byName = sort.startsWith('name');
   const ascending = sort.endsWith('asc');
   const sorted =
-    sort === 'distance-alongshore'
+    sort === 'distance-alongshore' || sort === 'event-based-sampling'
       ? missions
       : [...missions].sort((a, b) => {
           // Unknown deployment dates always follow dated missions, in either direction.
@@ -126,15 +129,17 @@ const GlidersTable = ({
       <div className="border-imos-light-blue flex flex-wrap items-center gap-3 border-b px-4 py-3">
         <div className="flex items-center gap-2">
           <h2 className="m-0 text-base font-semibold">Deployments</h2>
-          <span className="bg-imos-light-blue text-imos-deeper-blue rounded-full px-2 py-0.5 text-xs font-medium tabular-nums">
-            {missions.length} {missions.length === 1 ? 'mission' : 'missions'}
-          </span>
+          {!status && (
+            <span className="bg-imos-light-blue text-imos-deeper-blue rounded-full px-2 py-0.5 text-xs font-medium tabular-nums">
+              {missions.length} {missions.length === 1 ? 'mission' : 'missions'}
+            </span>
+          )}
         </div>
         <div className="flex w-full flex-wrap items-center gap-2 sm:ml-auto sm:w-auto">
-          <span className="text-imos-text-grey text-sm">Sort by</span>
+          <span className="text-imos-text-grey text-sm">Browse by</span>
           <div className="h-10 min-w-0 grow basis-56 sm:w-56 sm:grow-0">
             <Dropdown
-              ariaLabel="Sort deployments"
+              ariaLabel="Browse deployments"
               elements={sortOptions}
               selectedId={sort}
               onChange={({ id }) => {
@@ -146,9 +151,13 @@ const GlidersTable = ({
           </div>
         </div>
       </div>
-      {missions.length === 0 ? (
+      {status ? (
+        status
+      ) : missions.length === 0 ? (
         <p role="status" className="m-0 px-4 py-6 text-sm">
-          No deployments are available for the selected year and glider type.
+          {sort === 'event-based-sampling'
+            ? 'No event-based sampling deployments match the selected year, glider type and data mode. Try changing these filters.'
+            : 'No deployments are available for the selected year and glider type.'}
         </p>
       ) : (
         <div
