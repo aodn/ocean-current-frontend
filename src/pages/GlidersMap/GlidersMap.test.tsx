@@ -46,6 +46,11 @@ vi.mock('@/components/Map/layers/GlidersDeploymentLayer', () => ({
   ),
 }));
 
+async function selectDataMode(mode: 'NRT' | 'Delayed') {
+  await userEvent.click(await screen.findByRole('button', { name: 'Data mode' }));
+  await userEvent.click(screen.getByRole('menuitemradio', { name: mode }));
+}
+
 function setup(
   props: { isMiniMap?: boolean; missionName?: string; window?: string } = {},
   cached = false,
@@ -129,7 +134,7 @@ it('switches types locally and selects an available type when changing years', a
   await userEvent.click(type);
   await userEvent.click(screen.getByRole('menuitemradio', { name: 'Seaglider' }));
   expect(screen.getByTestId('deployment-layer')).toHaveAttribute('data-ids', 'Bicheno20100813');
-  await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Data mode' }), 'delayed');
+  await selectDataMode('Delayed');
   await userEvent.selectOptions(year, '2011');
   expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Seaglider');
   await userEvent.selectOptions(year, '2008');
@@ -150,7 +155,7 @@ it('navigates available years with arrows and resets to the current or latest av
   const previous = screen.getByRole('button', { name: 'Previous year' });
   const next = screen.getByRole('button', { name: 'Next year' });
   expect(next).toBeDisabled();
-  await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Data mode' }), 'delayed');
+  await selectDataMode('Delayed');
   await userEvent.click(previous);
   expect(year).toHaveValue('2011');
   expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Seaglider');
@@ -300,7 +305,7 @@ it('preserves the year and type across view switches and loads the catalogue onl
   await screen.findByTestId('interactive-map');
   expect(screen.getByRole('switch', { name: 'Table view' })).toHaveAttribute('aria-checked', 'false');
   expect(source.fetchGliderMissions).not.toHaveBeenCalled();
-  await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Data mode' }), 'delayed');
+  await selectDataMode('Delayed');
   await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Year' }), '2011');
   await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
   await screen.findByRole('table');
@@ -325,7 +330,7 @@ it('includes deployments without bounds, deduplicates map variants and uses cata
     { ...mission, is_nrt: false, mission_name: unbounded.mission_name, start_date: '2011-01-02', end_date: null },
   ]);
   setup();
-  await userEvent.selectOptions(await screen.findByRole('combobox', { name: 'Data mode' }), 'delayed');
+  await selectDataMode('Delayed');
   await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
   await screen.findByText('02 Jan 2011 – —');
   expect(screen.getAllByRole('row')).toHaveLength(2);
@@ -339,7 +344,7 @@ it('opens an unbounded mission by keyboard and returns to the table with browser
   const unbounded = yearmap.deployments.find(({ bbox }) => bbox === null)!;
   vi.spyOn(source, 'fetchGliderMission').mockResolvedValue({ ...mission, mission_name: unbounded.mission_name });
   const router = setup();
-  await userEvent.selectOptions(await screen.findByRole('combobox', { name: 'Data mode' }), 'delayed');
+  await selectDataMode('Delayed');
   await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Year' }), '2011');
   await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
   await screen.findByRole('table');
@@ -365,7 +370,7 @@ it('keeps the toolbar usable when all deployments lack bounds', async () => {
   ]);
   setup();
   await screen.findByText('No deployment areas are available for this map.');
-  await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Data mode' }), 'delayed');
+  await selectDataMode('Delayed');
   await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
   expect(await screen.findByRole('table')).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'PortStephens20081125' })).toBeInTheDocument();
@@ -404,7 +409,7 @@ it('includes catalogue missions absent from all yearmaps and preserves their fil
     },
   ]);
   const router = setup();
-  await userEvent.selectOptions(await screen.findByRole('combobox', { name: 'Data mode' }), 'nrt');
+  await selectDataMode('NRT');
   await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Year' }), '2011');
   await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
   expect(await screen.findByRole('button', { name: 'OffMap' })).toBeInTheDocument();
@@ -521,7 +526,7 @@ it.each(['?year=1999', '?year=2099&platform=invalid', '?view=table&year=1999'])(
     setup({}, false, search);
     await waitFor(() => expect(screen.getByRole('combobox', { name: 'Year' })).toHaveValue('2026'));
     expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Slocum');
-    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Data mode' }), 'delayed');
+    await selectDataMode('Delayed');
     await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Year' }), '2011');
     expect(screen.getByRole('combobox', { name: 'Year' })).toHaveValue('2011');
   },
@@ -649,7 +654,7 @@ it('restores an explicit glider type after visiting a year that only has the oth
   vi.mocked(source.fetchGliderYearmaps).mockResolvedValue([...maps, { ...sg, id: '2026_sg_temp_04d', year: 2026 }]);
   setup();
   const year = await screen.findByRole('combobox', { name: 'Year' });
-  await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Data mode' }), 'delayed');
+  await selectDataMode('Delayed');
   await userEvent.click(screen.getByRole('button', { name: 'Glider type' }));
   await userEvent.click(screen.getByRole('menuitemradio', { name: 'Seaglider' }));
   await userEvent.click(screen.getByRole('button', { name: 'Glider type' }));
@@ -665,9 +670,9 @@ it('keeps map and table in the same explicit mode and preserves it on return fro
   const delayed = { ...catalogueMissions[0], id: 'Delayed@5.', mission_name: 'Delayed_nrt', is_nrt: false };
   vi.mocked(source.fetchGliderMissions).mockResolvedValue([catalogueMissions[0], delayed]);
   const router = setup();
-  const mode = await screen.findByRole('combobox', { name: 'Data mode' });
-  expect(mode).toHaveValue('nrt');
-  await userEvent.selectOptions(mode, 'delayed');
+  const mode = await screen.findByRole('button', { name: 'Data mode' });
+  expect(mode).toHaveTextContent('NRT');
+  await selectDataMode('Delayed');
   expect(screen.getByRole('combobox', { name: 'Year' })).toHaveValue('2026');
   expect(screen.getByTestId('deployment-layer').dataset.ids).toContain('BassStrait20260316');
   expect(screen.getByTestId('deployment-layer').dataset.ids).not.toContain(mission.mission_name);
@@ -680,8 +685,8 @@ it('keeps map and table in the same explicit mode and preserves it on return fro
     await router.navigate(-1);
   });
   await screen.findByRole('button', { name: delayed.mission_name });
-  expect(screen.getByRole('combobox', { name: 'Data mode' })).toHaveValue('delayed');
-  await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Data mode' }), 'nrt');
+  expect(screen.getByRole('button', { name: 'Data mode' })).toHaveTextContent('Delayed');
+  await selectDataMode('NRT');
   await screen.findByRole('button', { name: mission.mission_name });
   expect(screen.queryByRole('button', { name: delayed.mission_name })).not.toBeInTheDocument();
 });
@@ -701,8 +706,8 @@ it('restores the explicit type after a temporary fallback and a map/table switch
 it('does not silently fall back to delayed data when NRT is empty', async () => {
   setup({}, false, '?year=2011');
   await screen.findByText('No deployment areas are available for this map.');
-  expect(screen.getByRole('combobox', { name: 'Data mode' })).toHaveValue('nrt');
-  await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Data mode' }), 'delayed');
+  expect(screen.getByRole('button', { name: 'Data mode' })).toHaveTextContent('NRT');
+  await selectDataMode('Delayed');
   expect(screen.getByTestId('deployment-layer').dataset.ids).toContain('Bicheno20100813');
 });
 
@@ -722,5 +727,5 @@ it('keeps filters and the browse control when the event catalogue fails and can 
   vi.mocked(source.fetchGliderMissions).mockResolvedValue([]);
   await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
   await screen.findByText(/No event-based sampling deployments match/);
-  expect(screen.getByRole('combobox', { name: 'Data mode' })).toHaveValue('delayed');
+  expect(screen.getByRole('button', { name: 'Data mode' })).toHaveTextContent('Delayed');
 });

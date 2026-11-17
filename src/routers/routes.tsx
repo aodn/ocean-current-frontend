@@ -9,6 +9,7 @@ import { APP_ROUTES } from './appRoutes';
 
 const GliderMission = lazy(() => import('@/pages/GliderMission/GliderMission'));
 const GlidersMap = lazy(() => import('@/pages/GlidersMap/GlidersMap'));
+const GlidersNotes = lazy(() => import('@/pages/GlidersNotes/GlidersNotes'));
 
 const NewsLayout = lazy(() => import('@/layouts/NewsLayout'));
 const News = lazy(() => import('@/pages/News/News'));
@@ -86,6 +87,14 @@ const routes: RouteObject[] = [
           {
             index: true,
             element: <Navigate to={APP_ROUTES.NOT_FOUND} replace />,
+          },
+          {
+            path: 'gliders',
+            element: (
+              <Suspense fallback={<Loading />}>
+                {featureFlags.gliders ? <GlidersNotes /> : <Navigate to={APP_ROUTES.NOT_FOUND} replace />}
+              </Suspense>
+            ),
           },
           {
             path: ':product/:subProduct',

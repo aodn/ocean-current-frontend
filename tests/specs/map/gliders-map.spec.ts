@@ -109,7 +109,8 @@ for (const width of [1280, 390]) {
       await route.fulfill({ json: data });
     });
     await page.goto('/map/gliders');
-    await page.getByRole('combobox', { name: 'Data mode' }).selectOption('delayed');
+    await page.getByRole('button', { name: 'Data mode' }).click();
+    await page.getByRole('menuitemradio', { name: 'Delayed', exact: true }).click();
     const year = page.getByRole('combobox', { name: 'Year', exact: true });
     const type = page.getByRole('button', { name: 'Glider type', exact: true });
     const map = page.getByRole('region', { name: 'Interactive Australia deployment map' });
@@ -152,6 +153,7 @@ for (const width of [1280, 390]) {
     await expect(type.locator('svg')).toHaveCount(1);
     await expect(map).toHaveAccessibleDescription(/3 highlighted deployment areas on map 2008_sl_temp_04d/);
     for (const control of [year, type]) {
+      await control.scrollIntoViewIfNeeded();
       const bounds = await control.boundingBox();
       expect(bounds).not.toBeNull();
       expect((await (control === year ? control.locator('../..') : control.locator('..')).boundingBox())!.height).toBe(
@@ -331,7 +333,8 @@ for (const width of [1280, 390]) {
       });
     });
     await page.goto('/map/gliders');
-    await page.getByRole('combobox', { name: 'Data mode' }).selectOption('delayed');
+    await page.getByRole('button', { name: 'Data mode' }).click();
+    await page.getByRole('menuitemradio', { name: 'Delayed', exact: true }).click();
     const year = page.getByRole('combobox', { name: 'Year', exact: true });
     const type = page.getByRole('button', { name: 'Glider type', exact: true });
     await expect(page.getByRole('switch', { name: 'Table view', exact: true })).toHaveAttribute(
@@ -355,6 +358,7 @@ for (const width of [1280, 390]) {
     await page.getByRole('switch', { name: 'Table view', exact: true }).click();
     for (const control of [year, type, page.getByRole('switch', { name: 'Table view', exact: true })]) {
       await expect(control).toBeVisible();
+      await control.scrollIntoViewIfNeeded();
       const bounds = (await control.boundingBox())!;
       expect(bounds.x).toBeGreaterThanOrEqual(0);
       expect(bounds.x + bounds.width).toBeLessThanOrEqual(width);
@@ -547,20 +551,24 @@ for (const width of [1280, 390]) {
       route.fulfill({ json: { missions, total: missions.length } }),
     );
     await page.goto('/map/gliders');
-    const mode = page.getByRole('combobox', { name: 'Data mode' });
+    const mode = page.getByRole('button', { name: 'Data mode' });
     const view = page.getByRole('switch', { name: 'Table view', exact: true });
     const map = page.getByRole('region', { name: 'Interactive Australia deployment map' });
-    await expect(mode).toHaveValue('nrt');
+    await expect(mode).toHaveText('NRT');
     await expect(map).toHaveAccessibleDescription(/12 highlighted deployment areas/);
-    await mode.selectOption('delayed');
+    await mode.press('Enter');
+    await expect(page.getByRole('menuitemradio', { name: 'NRT', exact: true })).toBeFocused();
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
     await expect(map).toHaveAccessibleDescription(/2 highlighted deployment areas on map 2026_sl_temp_04d\./);
     await view.click();
     await expect(page.getByRole('button', { name: 'DelayedMission', exact: true })).toBeVisible();
     await expect(page.getByRole('button', { name: 'RealtimeMission', exact: true })).toHaveCount(0);
     await page.reload();
-    await expect(mode).toHaveValue('delayed');
+    await expect(mode).toHaveText('Delayed');
     await expect(page.getByRole('button', { name: 'DelayedMission', exact: true })).toBeVisible();
-    await mode.selectOption('nrt');
+    await mode.click();
+    await page.getByRole('menuitemradio', { name: 'NRT', exact: true }).click();
     await expect(page.getByRole('button', { name: 'RealtimeMission', exact: true })).toBeVisible();
     await expect(page.getByRole('button', { name: 'DelayedMission', exact: true })).toHaveCount(0);
     await testInfo.attach(`gliders-data-mode-${width}`, {
@@ -653,9 +661,12 @@ for (const width of [1280, 390]) {
     await expect(rows.nth(1)).toContainText('Second');
     await expect(rows.nth(2)).toContainText('First');
     await expect(page.getByRole('button', { name: 'Excluded', exact: true })).toHaveCount(0);
-    await page.getByRole('combobox', { name: 'Data mode' }).selectOption('nrt');
+    const mode = page.getByRole('button', { name: 'Data mode' });
+    await mode.click();
+    await page.getByRole('menuitemradio', { name: 'NRT', exact: true }).click();
     await expect(page.getByText(/No event-based sampling deployments match/)).toBeVisible();
-    await page.getByRole('combobox', { name: 'Data mode' }).selectOption('delayed');
+    await mode.click();
+    await page.getByRole('menuitemradio', { name: 'Delayed', exact: true }).click();
     await expect(rows).toHaveCount(3);
     expect(eventRequests).toBe(1);
     await page.reload();
@@ -663,3 +674,72 @@ for (const width of [1280, 390]) {
     await expect(page.getByRole('button', { name: 'Browse deployments' })).toHaveText('Event-based sampling');
   });
 }
+
+for (const [width, view] of [
+  [1280, 'map'],
+  [390, 'table'],
+] as const) {
+  test(`opens Gliders notes from the ${view} and preserves the deployment filters`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 844 });
+    await page.route('**/api/v1/gliders/missions?*', (route) => route.fulfill({ json: { missions: [], total: 0 } }));
+    const deployments = `/map/gliders?view=${view}&year=2011&platform=sg&mode=delayed&sort=name-desc`;
+    await page.goto(deployments);
+    const controls = page.getByRole('group', { name: 'Gliders controls' });
+    const notes = controls.getByRole('link', { name: 'Notes & resources' });
+    await expect(controls.getByRole('combobox', { name: 'Year' })).toBeVisible();
+    const sameRow = await controls.evaluate((bar) => {
+      const centers = Array.from(bar.children, (child) => {
+        const { top, height } = child.getBoundingClientRect();
+        return top + height / 2;
+      });
+      return Math.max(...centers) - Math.min(...centers) < 1;
+    });
+    expect(sameRow).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+    if (width === 1280) {
+      await expect(notes).toBeInViewport({ ratio: 1 });
+      const rightGap = await controls.evaluate(
+        (bar) => bar.getBoundingClientRect().right - bar.lastElementChild!.getBoundingClientRect().right,
+      );
+      expect(rightGap).toBeLessThanOrEqual(4);
+    }
+    await notes.click();
+    await expect(page).toHaveURL(/\/about\/gliders$/);
+    await expect(page.getByRole('heading', { name: 'Gliders notes and resources' })).toBeVisible();
+    const history = page.locator('details').filter({ hasText: 'Revision history' });
+    await expect(history).not.toHaveAttribute('open');
+    await history.getByText('Revision history', { exact: true }).click();
+    await expect(history.getByText('2025', { exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Historical data notes' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'IMOS Ocean Gliders' })).toHaveAttribute(
+      'href',
+      'https://imos.org.au/facility/ocean-gliders',
+    );
+    await expect(page.getByRole('link', { name: 'AODN THREDDS glider data catalogue' })).toHaveAttribute(
+      'href',
+      'https://thredds.aodn.org.au/thredds/catalog/IMOS/ANFOG/catalog.html',
+    );
+    await expect(page.getByRole('link', { name: 'Event Based Sampling programme' })).toHaveAttribute(
+      'href',
+      'https://imos.org.au/facility/ocean-gliders/event-based-sampling',
+    );
+    await page.getByRole('link', { name: 'Back to deployments' }).click();
+    await expect(page).toHaveURL(deployments);
+    await expect(page.getByRole('combobox', { name: 'Year' })).toHaveValue('2011');
+    await expect(page.getByRole('button', { name: 'Glider type' })).toHaveText('Seaglider');
+    await expect(page.getByRole('button', { name: 'Data mode' })).toHaveText('Delayed');
+    await expect(page.getByRole('switch', { name: 'Table view' })).toHaveAttribute(
+      'aria-checked',
+      String(view === 'table'),
+    );
+  });
+}
+
+test('opens Gliders notes directly and links back to the deployment table', async ({ page }) => {
+  await page.goto('/about/gliders');
+  await expect(page.getByRole('heading', { name: 'Gliders notes and resources' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Back to deployments' })).toHaveAttribute(
+    'href',
+    '/map/gliders?view=table',
+  );
+});
