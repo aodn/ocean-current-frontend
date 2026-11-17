@@ -1,10 +1,10 @@
 import { useEffect, useLayoutEffect, useId, useMemo } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router';
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router';
 import dayjs from 'dayjs';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Button, ToggleButton } from '@/components/Shared';
 import type { GliderMission, GliderYearmap } from '@/types/gliders';
-import { ArrowIcon, CalendarIcon, ResetIcon } from '@/components/Shared/Icons';
+import { ArrowIcon, CalendarIcon, InfoIcon, ResetIcon } from '@/components/Shared/Icons';
 import BasicMap from '@/components/Map/BasicMap';
 import GlidersDeploymentLayer from '@/components/Map/layers/GlidersDeploymentLayer';
 import Loading from '@/components/Shared/Loading/Loading';
@@ -157,11 +157,13 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
   const selectYear = (year: number) => setSelection({ year });
   const yearIndex = years.indexOf(year ?? 0);
 
+  const returnParams = new URLSearchParams(params);
+  returnParams.set('view', view);
+  if (year !== undefined) returnParams.set('year', String(year));
+  returnParams.set('mode', mode);
+  const glidersReturnTo = `/map/gliders?${returnParams}`;
+
   const selectMission = (missionName: string, catalogueMission?: GliderMission, selectedWindow?: string) => {
-    const returnParams = new URLSearchParams(params);
-    returnParams.set('view', view);
-    if (year !== undefined) returnParams.set('year', String(year));
-    returnParams.set('mode', mode);
     const preferredWindow = yearmap?.window.replace(/^0+/, '') ?? '4d';
     const availableWindow =
       catalogueMission &&
@@ -176,7 +178,7 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
             window === GLIDER_TS_VIEW ? { missionId: data.id, view: GLIDER_TS_VIEW } : { missionId: data.id, window },
           );
           void navigate(`/product/gliders?${params}`, {
-            state: isMiniMap ? location.state : { glidersReturnTo: `/map/gliders?${returnParams}` },
+            state: isMiniMap ? location.state : { glidersReturnTo },
           });
         },
       },
@@ -196,29 +198,33 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
   return (
     <section aria-label="Gliders deployments" className="min-w-0">
       {!isMiniMap && (
-        <div className="font-open-sans text-imos-dark-grey mb-2 flex w-full flex-wrap items-center gap-2 font-medium md:gap-3">
+        <div
+          role="group"
+          aria-label="Gliders controls"
+          className="font-open-sans text-imos-dark-grey mb-2 flex w-full items-center gap-2 overflow-x-auto p-1 text-sm font-medium whitespace-nowrap [&>*]:shrink-0"
+        >
           {year !== undefined && activePlatform && (
             <>
-              <div className="border-imos-calypso-blue/50 flex h-11 min-w-0 grow basis-[calc(100%-4rem)] items-center rounded-md border bg-white md:grow-0 md:basis-80 md:border-none">
+              <div className="border-imos-calypso-blue/50 flex h-11 grow items-center rounded-md border bg-white md:border-none">
                 <button
                   type="button"
                   aria-label="Previous year"
                   disabled={yearIndex >= years.length - 1}
                   onClick={() => selectYear(years[yearIndex + 1])}
-                  className="border-imos-calypso-blue/20 flex h-full w-11 shrink-0 cursor-pointer items-center justify-center border-r disabled:cursor-not-allowed disabled:opacity-40"
+                  className="border-imos-calypso-blue/20 flex h-full w-9 shrink-0 cursor-pointer items-center justify-center border-r disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <ArrowIcon size="sm" color="imos-deep-blue" className="rotate-90" aria-hidden="true" />
                 </button>
-                <label className="focus-within:ring-imos-calypso-blue/50 flex h-full min-w-0 flex-1 items-center justify-center gap-3 px-3 focus-within:ring-2 focus-within:ring-inset">
+                <label className="focus-within:ring-imos-calypso-blue/50 flex h-full flex-1 items-center justify-center gap-2 px-2 focus-within:ring-2 focus-within:ring-inset">
                   <span className="sr-only">Year</span>
                   <CalendarIcon
                     size="lg"
                     color="imos-deep-blue"
                     aria-hidden="true"
-                    className="pointer-events-none shrink-0"
+                    className="pointer-events-none hidden shrink-0 md:block"
                   />
                   <select
-                    className="h-full w-16 cursor-pointer appearance-none bg-transparent text-center text-base outline-none"
+                    className="h-full w-14 cursor-pointer appearance-none bg-transparent text-center text-lg font-semibold outline-none"
                     value={year}
                     onChange={(event) => selectYear(Number(event.target.value))}
                   >
@@ -234,14 +240,14 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
                   aria-label="Next year"
                   disabled={yearIndex <= 0}
                   onClick={() => selectYear(years[yearIndex - 1])}
-                  className="border-imos-calypso-blue/20 flex h-full w-11 shrink-0 cursor-pointer items-center justify-center border-l disabled:cursor-not-allowed disabled:opacity-40"
+                  className="border-imos-calypso-blue/20 flex h-full w-9 shrink-0 cursor-pointer items-center justify-center border-l disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <ArrowIcon size="sm" color="imos-deep-blue" className="-rotate-90" aria-hidden="true" />
                 </button>
               </div>
               <Button
                 onClick={() => selectYear(years.includes(dayjs().year()) ? dayjs().year() : years[0])}
-                className="flex-center border-imos-calypso-blue/50 h-11 w-12 shrink-0 rounded-md bg-white p-3! md:border-none md:p-4!"
+                className="flex-center border-imos-calypso-blue/50 h-11 w-10 shrink-0 rounded-md bg-white p-3! md:border-none md:p-4!"
                 aria-label="Reset to current year"
                 borderRadius="extraSmall"
               >
@@ -271,9 +277,9 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
           <div
             role="group"
             aria-label="Deployment view"
-            className="flex h-11 items-center gap-3 rounded-md bg-white px-3"
+            className="flex h-11 items-center gap-2 rounded-md bg-white px-2"
           >
-            <span className={view === 'map' ? 'text-imos-calypso-blue' : 'text-imos-text-grey'}>Map view</span>
+            <span className={view === 'map' ? 'text-imos-calypso-blue' : 'text-imos-text-grey'}>Map</span>
             <ToggleButton
               isOn={view === 'table'}
               disabled={false}
@@ -291,8 +297,16 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
                 );
               }}
             />
-            <span className={view === 'table' ? 'text-imos-calypso-blue' : 'text-imos-text-grey'}>Table view</span>
+            <span className={view === 'table' ? 'text-imos-calypso-blue' : 'text-imos-text-grey'}>Table</span>
           </div>
+          <Link
+            className="border-imos-calypso-blue/50 text-imos-deep-blue hover:bg-imos-cloud-tint focus-visible:ring-imos-calypso-blue/50 flex h-11 items-center gap-1.5 rounded-md border bg-white px-2 focus-visible:ring-2 focus-visible:outline-none"
+            to="/about/gliders"
+            state={{ glidersReturnTo }}
+          >
+            <InfoIcon size="sm" color="imos-deep-blue" aria-hidden="true" />
+            Notes &amp; resources
+          </Link>
         </div>
       )}
       {!isMiniMap && platform && activePlatform && platform !== activePlatform && year !== undefined && (
