@@ -38,6 +38,38 @@ export default function GlidersNotes() {
         <Link className="text-imos-sea-blue underline" to={back}>
           Back to deployments
         </Link>
+        <div className="grid items-start gap-6 md:grid-cols-[2fr_1fr]">
+          <section>
+            <h2 className={headingClass}>Understanding the plots</h2>
+            <ul className="list-disc space-y-2 pl-5">
+              <li>
+                <strong>Annual overviews</strong> show where and when missions took place and the depth range of the
+                observations.
+              </li>
+              <li>
+                <strong>Temperature–salinity diagrams</strong> show how temperature and salinity vary together, with
+                colours indicating depth. The climatological reference helps identify unusual observations or possible
+                calibration issues.
+              </li>
+              <li>
+                <strong>Mission profiles</strong> show the glider track alongside measurements by time and depth. The 4,
+                12 and 30-day windows show different lengths of the same mission record.
+              </li>
+            </ul>
+          </section>
+          <section className="bg-imos-cloud-tint/60 rounded-md p-4">
+            <h2 className={headingClass}>Resources</h2>
+            <ul className="list-disc space-y-2 pl-5">
+              {resources.map(([label, href]) => (
+                <li key={href}>
+                  <NewTabLink className="underline" href={href}>
+                    {label}
+                  </NewTabLink>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
         <section>
           <h2 className={headingClass}>About ocean gliders</h2>
           <p>
@@ -45,34 +77,6 @@ export default function GlidersNotes() {
             up and down and use wings to travel through the water. In the deployments shown here, Seagliders are used
             for deep offshore missions and Slocum gliders typically survey the continental shelf.
           </p>
-        </section>
-        <section>
-          <h2 className={headingClass}>Understanding the plots</h2>
-          <ul className="list-disc space-y-2 pl-5">
-            <li>
-              <strong>Annual overviews</strong> show where and when missions took place and the depth range of the
-              observations.
-            </li>
-            <li>
-              <strong>Temperature–salinity diagrams</strong> show how temperature and salinity vary together, with
-              colours indicating depth. The climatological reference helps identify unusual observations or possible
-              calibration issues.
-            </li>
-            <li>
-              <strong>Mission profiles</strong> show the glider track alongside measurements by time and depth. The 4,
-              12 and 30-day windows show different lengths of the same mission record.
-            </li>
-          </ul>
-        </section>
-        <section>
-          <h2 className={headingClass}>Revision history</h2>
-          <ul className="list-disc space-y-2 pl-5">
-            {revisions.map(([year, description]) => (
-              <li key={year}>
-                <strong>{year}</strong> — {description}
-              </li>
-            ))}
-          </ul>
         </section>
         <section>
           <h2 className={headingClass}>Historical data notes</h2>
@@ -84,18 +88,16 @@ export default function GlidersNotes() {
           </p>
           <p className="mt-2 text-sm">Adapted from the original IMOS OceanCurrent Gliders notes.</p>
         </section>
-        <section>
-          <h2 className={headingClass}>Resources</h2>
-          <ul className="list-disc space-y-2 pl-5">
-            {resources.map(([label, href]) => (
-              <li key={href}>
-                <NewTabLink className="underline" href={href}>
-                  {label}
-                </NewTabLink>
+        <details className="border-imos-pale-blue rounded-md border px-4 py-3">
+          <summary className="text-imos-deep-blue cursor-pointer text-lg font-semibold">Revision history</summary>
+          <ul className="mt-3 list-disc space-y-2 pl-5">
+            {revisions.map(([year, description]) => (
+              <li key={year}>
+                <strong>{year}</strong> — {description}
               </li>
             ))}
           </ul>
-        </section>
+        </details>
       </div>
     </ArticleCard>
   );

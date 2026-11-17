@@ -644,7 +644,7 @@ for (const [width, view] of [
     const deployments = `/map/gliders?view=${view}&year=2011&platform=sg&mode=delayed&sort=name-desc`;
     await page.goto(deployments);
     const controls = page.getByRole('group', { name: 'Gliders controls' });
-    const notes = controls.getByRole('link', { name: 'Notes and resources' });
+    const notes = controls.getByRole('link', { name: 'Notes & resources' });
     await expect(controls.getByRole('combobox', { name: 'Year' })).toBeVisible();
     const sameRow = await controls.evaluate((bar) => {
       const centers = Array.from(bar.children, (child) => {
@@ -665,7 +665,10 @@ for (const [width, view] of [
     await notes.click();
     await expect(page).toHaveURL(/\/about\/gliders$/);
     await expect(page.getByRole('heading', { name: 'Gliders notes and resources' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Revision history' })).toBeVisible();
+    const history = page.locator('details').filter({ hasText: 'Revision history' });
+    await expect(history).not.toHaveAttribute('open');
+    await history.getByText('Revision history', { exact: true }).click();
+    await expect(history.getByText('2025', { exact: true })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Historical data notes' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'IMOS Ocean Gliders' })).toHaveAttribute(
       'href',

@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Button, ToggleButton } from '@/components/Shared';
 import type { GliderMission, GliderYearmap } from '@/types/gliders';
-import { ArrowIcon, CalendarIcon, ResetIcon } from '@/components/Shared/Icons';
+import { ArrowIcon, CalendarIcon, InfoIcon, ResetIcon } from '@/components/Shared/Icons';
 import BasicMap from '@/components/Map/BasicMap';
 import GlidersDeploymentLayer from '@/components/Map/layers/GlidersDeploymentLayer';
 import Loading from '@/components/Shared/Loading/Loading';
@@ -300,11 +300,12 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
             <span className={view === 'table' ? 'text-imos-calypso-blue' : 'text-imos-text-grey'}>Table</span>
           </div>
           <Link
-            className="text-imos-sea-blue flex h-11 items-center rounded-md bg-white px-2 underline"
+            className="border-imos-calypso-blue/50 text-imos-deep-blue hover:bg-imos-cloud-tint focus-visible:ring-imos-calypso-blue/50 flex h-11 items-center gap-1.5 rounded-md border bg-white px-2 focus-visible:ring-2 focus-visible:outline-none"
             to="/about/gliders"
             state={{ glidersReturnTo }}
           >
-            Notes and resources
+            <InfoIcon size="sm" color="imos-deep-blue" aria-hidden="true" />
+            Notes &amp; resources
           </Link>
         </div>
       )}
