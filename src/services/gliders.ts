@@ -39,7 +39,7 @@ export async function fetchGliderMissions(signal?: AbortSignal): Promise<GliderM
   let total: number;
   do {
     const { data } = await apiClient.get<{ missions: GliderMission[]; total: number }>('/gliders/missions', {
-      params: { size: 100, page },
+      params: { order: 'distance_alongshore_to_darwin', size: 100, page },
       signal,
     });
     if (!data || !Array.isArray(data.missions) || !Number.isSafeInteger(data.total) || data.total < 0) {
