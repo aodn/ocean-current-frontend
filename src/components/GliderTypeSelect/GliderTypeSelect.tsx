@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { ArrowIcon, GlidersIcon } from '@/components/Shared/Icons';
 import { useOutsideClick } from '@/hooks';
 import type { GliderYearmap } from '@/types/gliders';
@@ -16,11 +16,33 @@ const GliderTypeSelect = ({
 }) => {
   const [open, setOpen] = useState(false);
   const container = useRef<HTMLDivElement>(null);
+  const menu = useRef<HTMLDivElement>(null);
   const button = useRef<HTMLButtonElement>(null);
   const menuId = useId();
   const canSelect = platforms.length > 1;
   const elements = platforms.map((id) => ({ id, label: id === 'sl' ? 'Slocum' : 'Seaglider' }));
   useOutsideClick(container, () => setOpen(false));
+
+  useLayoutEffect(() => {
+    const popup = menu.current;
+    const trigger = button.current;
+    if (!open || !popup || !trigger) return;
+
+    const positionMenu = () => {
+      const bounds = trigger.getBoundingClientRect();
+      const width = Math.max(bounds.width, 152);
+      popup.style.width = `${width}px`;
+      popup.style.left = `${Math.max(0, Math.min(bounds.left, window.innerWidth - width))}px`;
+      popup.style.top = `${bounds.bottom + 4}px`;
+    };
+    positionMenu();
+    window.addEventListener('scroll', positionMenu, true);
+    window.addEventListener('resize', positionMenu);
+    return () => {
+      window.removeEventListener('scroll', positionMenu, true);
+      window.removeEventListener('resize', positionMenu);
+    };
+  }, [open]);
 
   const selectedIndex = platforms.indexOf(value);
   useEffect(() => {
@@ -51,7 +73,7 @@ const GliderTypeSelect = ({
   };
 
   return (
-    <div ref={container} className="relative h-11 min-w-0 grow basis-full md:grow-0 md:basis-52">
+    <div ref={container} className="h-11">
       <button
         onKeyDown={handleKeyDown}
         ref={button}
@@ -63,7 +85,7 @@ const GliderTypeSelect = ({
         aria-controls={open ? menuId : undefined}
         disabled={!canSelect}
         onClick={() => setOpen(!open)}
-        className="border-imos-calypso-blue/50 focus-visible:ring-imos-calypso-blue/50 flex h-full w-full items-center gap-3 rounded-md border bg-white px-4 text-base focus-visible:ring-2 focus-visible:outline-none enabled:cursor-pointer md:border-none"
+        className="border-imos-calypso-blue/50 focus-visible:ring-imos-calypso-blue/50 flex h-full w-full items-center gap-2 rounded-md border bg-white px-3 text-base focus-visible:ring-2 focus-visible:outline-none enabled:cursor-pointer md:border-none"
       >
         <GlidersIcon size="lg" color="imos-deep-blue" aria-hidden="true" className="shrink-0" />
         <span id={`${menuId}-value`} className="flex-1 text-left">
@@ -76,11 +98,12 @@ const GliderTypeSelect = ({
       {open && canSelect && (
         <div
           id={menuId}
+          ref={menu}
           role="menu"
           tabIndex={-1}
           aria-label="Glider type"
           onKeyDown={handleKeyDown}
-          className="shadow-menu border-imos-calypso-blue/20 absolute z-40 mt-1 flex w-full flex-col gap-1 overflow-hidden rounded-lg border bg-white p-1"
+          className="shadow-menu border-imos-calypso-blue/20 fixed inset-auto z-40 m-0 flex-col gap-1 overflow-hidden rounded-lg border bg-white p-1 open:flex"
         >
           {elements.map(({ id, label }) => (
             <button
