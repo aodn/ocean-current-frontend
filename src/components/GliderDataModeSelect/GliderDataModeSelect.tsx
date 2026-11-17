@@ -1,4 +1,11 @@
+import GliderFilterMenu from '@/components/GliderFilterMenu/GliderFilterMenu';
+import { DataIcon } from '@/components/Shared/Icons';
 import type { GliderDataMode } from '@/types/gliders';
+
+const elements = [
+  { id: 'nrt', label: 'NRT' },
+  { id: 'delayed', label: 'Delayed' },
+] as const;
 
 const GliderDataModeSelect = ({
   value,
@@ -6,18 +13,6 @@ const GliderDataModeSelect = ({
 }: {
   value: GliderDataMode;
   onChange: (mode: GliderDataMode) => void;
-}) => (
-  <label className="border-imos-calypso-blue/50 flex h-11 items-center gap-2 rounded-md border bg-white px-3">
-    <span>Data mode</span>
-    <select
-      value={value}
-      onChange={(event) => onChange(event.target.value === 'delayed' ? 'delayed' : 'nrt')}
-      className="h-full cursor-pointer bg-transparent"
-    >
-      <option value="nrt">NRT</option>
-      <option value="delayed">Delayed</option>
-    </select>
-  </label>
-);
+}) => <GliderFilterMenu label="Data mode" icon={DataIcon} elements={elements} value={value} onChange={onChange} />;
 
 export default GliderDataModeSelect;

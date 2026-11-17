@@ -109,7 +109,8 @@ for (const width of [1280, 390]) {
       await route.fulfill({ json: data });
     });
     await page.goto('/map/gliders');
-    await page.getByRole('combobox', { name: 'Data mode' }).selectOption('delayed');
+    await page.getByRole('button', { name: 'Data mode' }).click();
+    await page.getByRole('menuitemradio', { name: 'Delayed', exact: true }).click();
     const year = page.getByRole('combobox', { name: 'Year', exact: true });
     const type = page.getByRole('button', { name: 'Glider type', exact: true });
     const map = page.getByRole('region', { name: 'Interactive Australia deployment map' });
@@ -332,7 +333,8 @@ for (const width of [1280, 390]) {
       });
     });
     await page.goto('/map/gliders');
-    await page.getByRole('combobox', { name: 'Data mode' }).selectOption('delayed');
+    await page.getByRole('button', { name: 'Data mode' }).click();
+    await page.getByRole('menuitemradio', { name: 'Delayed', exact: true }).click();
     const year = page.getByRole('combobox', { name: 'Year', exact: true });
     const type = page.getByRole('button', { name: 'Glider type', exact: true });
     await expect(page.getByRole('switch', { name: 'Table view', exact: true })).toHaveAttribute(
@@ -549,20 +551,24 @@ for (const width of [1280, 390]) {
       route.fulfill({ json: { missions, total: missions.length } }),
     );
     await page.goto('/map/gliders');
-    const mode = page.getByRole('combobox', { name: 'Data mode' });
+    const mode = page.getByRole('button', { name: 'Data mode' });
     const view = page.getByRole('switch', { name: 'Table view', exact: true });
     const map = page.getByRole('region', { name: 'Interactive Australia deployment map' });
-    await expect(mode).toHaveValue('nrt');
+    await expect(mode).toHaveText('NRT');
     await expect(map).toHaveAccessibleDescription(/12 highlighted deployment areas/);
-    await mode.selectOption('delayed');
+    await mode.press('Enter');
+    await expect(page.getByRole('menuitemradio', { name: 'NRT', exact: true })).toBeFocused();
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
     await expect(map).toHaveAccessibleDescription(/2 highlighted deployment areas on map 2026_sl_temp_04d\./);
     await view.click();
     await expect(page.getByRole('button', { name: 'DelayedMission', exact: true })).toBeVisible();
     await expect(page.getByRole('button', { name: 'RealtimeMission', exact: true })).toHaveCount(0);
     await page.reload();
-    await expect(mode).toHaveValue('delayed');
+    await expect(mode).toHaveText('Delayed');
     await expect(page.getByRole('button', { name: 'DelayedMission', exact: true })).toBeVisible();
-    await mode.selectOption('nrt');
+    await mode.click();
+    await page.getByRole('menuitemradio', { name: 'NRT', exact: true }).click();
     await expect(page.getByRole('button', { name: 'RealtimeMission', exact: true })).toBeVisible();
     await expect(page.getByRole('button', { name: 'DelayedMission', exact: true })).toHaveCount(0);
     await testInfo.attach(`gliders-data-mode-${width}`, {
@@ -677,7 +683,7 @@ for (const [width, view] of [
     await expect(page).toHaveURL(deployments);
     await expect(page.getByRole('combobox', { name: 'Year' })).toHaveValue('2011');
     await expect(page.getByRole('button', { name: 'Glider type' })).toHaveText('Seaglider');
-    await expect(page.getByRole('combobox', { name: 'Data mode' })).toHaveValue('delayed');
+    await expect(page.getByRole('button', { name: 'Data mode' })).toHaveText('Delayed');
     await expect(page.getByRole('switch', { name: 'Table view' })).toHaveAttribute(
       'aria-checked',
       String(view === 'table'),
