@@ -242,6 +242,9 @@ it('shows only the map in sidebar mode and selects the displayed mission yearmap
   const layer = await screen.findByTestId('deployment-layer');
   expect(layer).toHaveAttribute('data-ids', 'Bicheno20100813');
   expect(layer).toHaveAttribute('data-selected', 'Bicheno20100813');
+  expect(screen.getByRole('region', { name: 'Interactive Australia deployment map' })).toHaveAccessibleDescription(
+    /Selected deployment: Bicheno20100813/,
+  );
   expect(screen.queryByRole('combobox', { name: 'Year' })).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: 'Glider type' })).not.toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: 'Bicheno20100813' }));
@@ -517,6 +520,11 @@ it.each(['UnknownMission', 'TwoRocks20261028_nrt'])(
     setup({ isMiniMap: true, missionName, window: 'invalid' });
     await screen.findByTestId('interactive-map');
     expect(screen.getByTestId('deployment-layer').dataset.ids).not.toBe('');
+    if (missionName === 'UnknownMission') {
+      expect(screen.getByTestId('deployment-layer')).toHaveAttribute('data-selected', '');
+    } else {
+      expect(screen.getByTestId('deployment-layer')).toHaveAttribute('data-selected', missionName);
+    }
   },
 );
 

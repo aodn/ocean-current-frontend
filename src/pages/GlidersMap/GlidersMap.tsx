@@ -124,15 +124,14 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
       : (selectGliderYearmap(view === 'map' ? drawableMaps : availableMaps, year)?.platform ??
         selectGliderYearmap(availableMaps, year)?.platform ??
         platforms[0]);
-  const missionMaps = useMemo(
-    () =>
-      drawableMaps.filter(
-        (map) =>
-          (!window || map.window.replace(/^0+/, '') === window) &&
-          map.deployments.some((deployment) => deployment.mission_name === missionName),
-      ),
-    [drawableMaps, missionName, window],
-  );
+  const missionMaps = useMemo(() => {
+    if (!isMiniMap || !missionName) return [];
+    const maps = drawableMaps.filter(({ deployments }) =>
+      deployments.some(({ mission_name, bbox }) => mission_name === missionName && bbox !== null),
+    );
+    const windowMaps = maps.filter((map) => map.window.replace(/^0+/, '') === window);
+    return windowMaps.length ? windowMaps : maps;
+  }, [drawableMaps, isMiniMap, missionName, window]);
   const yearmap = useMemo(
     () =>
       selectGliderYearmap(
@@ -162,6 +161,9 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
     resetMission();
   }, [yearmap?.id, year, activePlatform, mode, view, resetMission]);
   const deployments = useMemo(() => buildGliderDeployments(yearmap?.deployments ?? []), [yearmap]);
+  const selectedDeployment = isMiniMap
+    ? yearmap?.deployments.find(({ mission_name, bbox }) => mission_name === missionName && bbox !== null)
+    : undefined;
 
   const selectYear = (year: number) => setSelection({ year });
   const yearIndex = years.indexOf(year ?? 0);
@@ -379,6 +381,7 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
         <>
           <p id={descriptionId} className="sr-only">
             {deployments.features.length} highlighted deployment areas on map {yearmap.id}.
+            {selectedDeployment && ` Selected deployment: ${selectedDeployment.mission_name}.`}
           </p>
           <ul className="sr-only" aria-label="Deployment bounds">
             {yearmap?.deployments.map(({ mission_name, bbox }) =>
@@ -405,7 +408,8 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
             >
               <GlidersDeploymentLayer
                 data={deployments}
-                selectedId={isMiniMap ? missionName : undefined}
+                selectedId={selectedDeployment?.mission_name}
+                selectedBounds={selectedDeployment?.bbox}
                 onSelect={selectMission}
               />
             </BasicMap>

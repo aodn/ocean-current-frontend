@@ -593,15 +593,20 @@ for (const width of [1280, 390]) {
         latest_images: { '4d': '/gliders/missionTS/current.gif' },
       },
     };
+    const otherMission = { ...mission, id: 'Ceduna20260924_nrt@5.', mission_name: 'Ceduna20260924_nrt' };
     const diagrams = [
       { id: 'sg_Historical20010101', image_url: '/gliders/missionTS/historical.gif', mission_ids: [] },
+      { id: 'sl_Ceduna20260924_nrt', image_url: '/gliders/missionTS/current.gif', mission_ids: [otherMission.id] },
       { id: 'sl_TwoRocks20261028_nrt', image_url: '/gliders/missionTS/current.gif', mission_ids: [mission.id] },
     ];
     await page.route('**/api/v1/gliders/ts-diagrams', (route) => route.fulfill({ json: { diagrams } }));
     await page.route('**/api/v1/gliders/missions?*', (route) =>
       route.fulfill({ json: { missions: [mission], total: 1 } }),
     );
-    await page.route('**/api/v1/gliders/missions/*', (route) => route.fulfill({ json: mission }));
+    await page.route('**/api/v1/gliders/missions/*', (route) => {
+      const id = decodeURIComponent(new URL(route.request().url()).pathname.split('/').pop()!);
+      return route.fulfill({ json: id === otherMission.id ? otherMission : mission });
+    });
     await page.route('**/resource/gliders/missionTS/*.gif', (route) =>
       route.fulfill({
         body: Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64'),
@@ -610,15 +615,27 @@ for (const width of [1280, 390]) {
     );
     await page.goto('/map/gliders?view=table&year=2026&platform=sl&mode=nrt');
     await page.getByRole('button', { name: `View ${mission.mission_name} temperature–salinity diagram` }).click();
+    const selectedMission = page.getByRole('group', { name: 'Selected mission' });
+    const minimap = page.getByRole('region', { name: 'Interactive Australia deployment map' });
+    await expect(selectedMission).toHaveText(`Selected mission${mission.mission_name}`);
+    if (width >= 768) {
+      await expect(minimap).toHaveAccessibleDescription(/Selected deployment: TwoRocks20261028_nrt/);
+    }
     await expect(productPage.tsNext).toBeVisible();
     await productPage.tsNext.click();
     await expect(page).toHaveURL(/diagramId=sg_Historical20010101/);
     expect(new URL(page.url()).searchParams.has('missionId')).toBe(false);
     await expect(page.getByRole('img', { name: /Historical20010101 temperature/ })).toBeVisible();
+    await expect(selectedMission).toHaveCount(0);
     await page.reload();
     await expect(productPage.tsPrevious).toBeVisible();
     await productPage.tsPrevious.click();
     await expect(page).toHaveURL(/diagramId=sl_TwoRocks20261028_nrt/);
+    await productPage.tsPrevious.click();
+    await expect(selectedMission).toHaveText(`Selected mission${otherMission.mission_name}`);
+    if (width >= 768) {
+      await expect(minimap).toHaveAccessibleDescription(/Selected deployment: Ceduna20260924_nrt/);
+    }
     await productPage.tsIndex.click();
     await expect(page.getByRole('heading', { name: 'T-S diagram index' })).toBeVisible();
     await page.getByRole('combobox', { name: 'Glider type' }).selectOption('Seaglider');
