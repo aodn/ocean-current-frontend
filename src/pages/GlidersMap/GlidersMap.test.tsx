@@ -669,9 +669,11 @@ it('restores an explicit glider type after visiting a year that only has the oth
   await userEvent.click(screen.getByRole('menuitemradio', { name: 'Slocum' }));
   await userEvent.selectOptions(year, '2011');
   expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Seaglider');
-  expect(screen.getByText('Slocum is unavailable for 2011; showing Seaglider.')).toBeInTheDocument();
+  expect(screen.getByRole('status')).toHaveTextContent('Showing Seaglider for 2011');
+  expect(screen.getByRole('status')).toHaveTextContent('Slocum isn’t available for this year.');
   await userEvent.selectOptions(year, '2026');
   expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Slocum');
+  expect(screen.queryByText('Showing Seaglider for 2011')).not.toBeInTheDocument();
 });
 
 it('keeps map and table in the same explicit mode and preserves it on return from a mission', async () => {

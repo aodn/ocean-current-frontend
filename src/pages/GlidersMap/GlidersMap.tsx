@@ -329,10 +329,18 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
         </div>
       )}
       {!isMiniMap && platform && activePlatform && platform !== activePlatform && year !== undefined && (
-        <p role="status">
-          {platform === 'sl' ? 'Slocum' : 'Seaglider'} is unavailable for {year}; showing{' '}
-          {activePlatform === 'sl' ? 'Slocum' : 'Seaglider'}.
-        </p>
+        <div
+          role="status"
+          className="bg-imos-cloud-tint text-imos-deep-blue mb-2 flex items-start gap-2 rounded-md px-3 py-2 text-sm"
+        >
+          <InfoIcon size="sm" color="imos-deep-blue" aria-hidden="true" className="mt-0.5 shrink-0" />
+          <div>
+            <p className="font-semibold">
+              Showing {activePlatform === 'sl' ? 'Slocum' : 'Seaglider'} for {year}
+            </p>
+            <p>{platform === 'sl' ? 'Slocum' : 'Seaglider'} isn’t available for this year.</p>
+          </div>
+        </div>
       )}
       {view === 'table' ? (
         <>
