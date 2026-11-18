@@ -3,6 +3,7 @@ import { render, screen, waitFor, fireEvent, act } from '@testing-library/react'
 import '@testing-library/jest-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import dayjs from 'dayjs';
+import { featureFlags } from '@/configs/featureFlags';
 import { createTestQueryClient } from '@/configs/query';
 import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
 import { useImageTags } from '@/services/hooks';
@@ -166,4 +167,28 @@ describe('DataImageWithArgoMap — Argo area click', () => {
       expect(screen.getByTestId('linear-progress')).toBeInTheDocument();
     });
   });
+});
+
+it.each([true, false])('renders ANFOG as a native new-tab link when Gliders is %s', async (gliders) => {
+  const original = featureFlags.gliders;
+  featureFlags.gliders = gliders;
+  vi.mocked(useImageTags).mockReturnValue({
+    data: [{ type: 'ANFOG', coordX: 50, coordY: 50, shipName: 'LizardSlope20210317', anfogUnknown: 'SL502' }],
+  } as ReturnType<typeof useImageTags>);
+  try {
+    const { container } = renderComponent();
+    triggerImageLoad();
+    await waitFor(() =>
+      expect(container.querySelector('area')).toHaveAttribute(
+        'href',
+        gliders
+          ? '/gliders/from-image-tag?mission=LizardSlope20210317&glider=SL502&date=20250115'
+          : '/coming-soon?product=gliders',
+      ),
+    );
+    expect(container.querySelector('area')).toHaveAttribute('target', '_blank');
+    expect(container.querySelector('area')).toHaveAttribute('rel', 'noopener noreferrer');
+  } finally {
+    featureFlags.gliders = original;
+  }
 });
