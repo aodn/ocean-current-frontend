@@ -4,10 +4,12 @@ import { featureFlags } from '@/configs/featureFlags';
 import { Home, MapView, DataView, ErrorPage, ComingSoonPage, AboutView, InfoView } from '@/pages';
 import { MainLayout, MapLayout, DataVisualisationLayout, ArticleLayout } from '@/layouts';
 import Loading from '@/components/Shared/Loading/Loading';
+import { GLIDERS_COMING_SOON } from '@/utils/gliders-map-utils/links';
 import { createProductRedirects, NewsPhpRedirect } from './utils';
 import { APP_ROUTES } from './appRoutes';
 
 const GliderMission = lazy(() => import('@/pages/GliderMission/GliderMission'));
+const GliderImageTag = lazy(() => import('@/pages/GliderMission/GliderImageTag'));
 const GlidersMap = lazy(() => import('@/pages/GlidersMap/GlidersMap'));
 const GlidersNotes = lazy(() => import('@/pages/GlidersNotes/GlidersNotes'));
 
@@ -25,6 +27,16 @@ const routes: RouteObject[] = [
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: '/gliders/from-image-tag',
+        element: featureFlags.gliders ? (
+          <Suspense fallback={<Loading />}>
+            <GliderImageTag />
+          </Suspense>
+        ) : (
+          <Navigate to={GLIDERS_COMING_SOON} replace />
+        ),
       },
       {
         path: APP_ROUTES.PRODUCT,

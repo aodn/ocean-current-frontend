@@ -9,20 +9,27 @@ export async function fetchGliderYearmaps(signal?: AbortSignal): Promise<GliderY
   return data.maps;
 }
 
-/** Match the exact published name; the API's search is a paginated substring search. */
-export async function fetchGliderMission(missionName: string, signal?: AbortSignal): Promise<GliderMission> {
+export async function searchGliderMissions(query: string, signal?: AbortSignal): Promise<GliderMission[]> {
   const matches: GliderMission[] = [];
   let page = 0;
   let total: number;
   do {
     const { data } = await apiClient.get<{ missions: GliderMission[]; total: number }>('/gliders/missions', {
-      params: { q: missionName, size: 100, page },
+      params: { q: query, size: 100, page },
       signal,
     });
-    matches.push(...data.missions.filter(({ mission_name }) => mission_name === missionName));
+    matches.push(...data.missions);
     total = data.total;
     page += 1;
   } while (page * 100 < total);
+  return matches;
+}
+
+/** Match the exact published name; the API's search is a paginated substring search. */
+export async function fetchGliderMission(missionName: string, signal?: AbortSignal): Promise<GliderMission> {
+  const matches = (await searchGliderMissions(missionName, signal)).filter(
+    ({ mission_name }) => mission_name === missionName,
+  );
   if (matches.length !== 1) throw new Error(`Expected one mission for ${missionName}; found ${matches.length}`);
   return matches[0];
 }

@@ -17,6 +17,7 @@ import { DateFormat } from '@/types/date';
 import { useDateList, useResizeObserver } from '@/hooks';
 import useProductStore, { setIsProductImageLoading } from '@/stores/product-store/productStore';
 import { LinearProgress } from '@/components/Shared';
+import { glidersHref } from '@/utils/gliders-map-utils/links';
 import { cn } from '@/utils/classname-util/cn';
 
 type DataImageWithArgoMapProps = {
@@ -72,6 +73,7 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
 
   const handleAreaClick = useCallback(
     async (e: React.MouseEvent, area: ImageTagMapArea) => {
+      if (area.type === 'ANFOG') return;
       e.preventDefault();
       if (area.type === 'Argo') {
         const wmoId = String(area.wmoId!);
@@ -140,7 +142,10 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
             type,
             shape: 'circle',
             coords: [coordX, coordY, 10],
-            href: `https://oceancurrent.aodn.org.au/gliders/${item.shipName}_nrt_12d/${dateFormatted + '00'}.gif`,
+            href: glidersHref(
+              `/gliders/from-image-tag?${new URLSearchParams({ mission: item.shipName, glider: item.anfogUnknown, date: dateFormatted })}`,
+            ),
+            alt: `Open glider mission ${item.shipName}`,
             tooltip: item.anfogUnknown + item.shipName,
           });
           break;
@@ -216,14 +221,16 @@ const DataImageWithArgoMap: React.FC<DataImageWithArgoMapProps> = ({
               key={`${area.tooltip ?? ''}-${area.coords[0]}-${area.coords[1]}-${index}`}
               shape={area.shape}
               coords={area.coords.join(',')}
-              alt={area.tooltip || `Area ${index + 1}`}
+              alt={area.alt || area.tooltip || `Area ${index + 1}`}
               data-tooltip={area.tooltip}
               onMouseEnter={(e) => area.tooltip && setTooltip({ text: area.tooltip, x: e.clientX, y: e.clientY })}
               onMouseMove={(e) => setTooltip((prev) => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null))}
               onMouseLeave={() => setTooltip(null)}
               onClick={(e) => handleAreaClick(e, area)}
               href={area.href || undefined}
-              aria-hidden="true"
+              target={area.type === 'ANFOG' ? '_blank' : undefined}
+              rel={area.type === 'ANFOG' ? 'noopener noreferrer' : undefined}
+              aria-hidden={area.type !== 'ANFOG' || undefined}
               className="cursor-pointer"
             />
           ))}

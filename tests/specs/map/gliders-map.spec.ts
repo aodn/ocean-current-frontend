@@ -760,3 +760,28 @@ test('opens Gliders notes directly and links back to the deployment table', asyn
     '/map/gliders?view=table',
   );
 });
+
+test('retries an ANFOG lookup and opens the profile at the tagged image date', async ({ page }) => {
+  const id = 'LizardSlope20210317@5.01';
+  const mission = {
+    id,
+    mission_name: 'LizardSlope20210317',
+    glider_id: 'SL502',
+    is_nrt: false,
+    visualisations: {},
+    image_history: { '12d': [{ date: '2021-03-31T00:00:00', url: '/gliders/anfog.gif' }] },
+  };
+  let requests = 0;
+  await page.route('**/api/v1/gliders/missions?*', (route) =>
+    ++requests === 1 ? route.fulfill({ status: 503 }) : route.fulfill({ json: { missions: [mission], total: 1 } }),
+  );
+  await page.route('**/api/v1/gliders/missions/*', (route) => route.fulfill({ json: mission }));
+  await page.route('**/resource/gliders/anfog.gif', (route) =>
+    route.fulfill({ body: Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64') }),
+  );
+  await page.goto('/gliders/from-image-tag?mission=LizardSlope20210317&glider=SL502&date=20210331');
+  await expect(page.getByRole('alert')).toContainText('Unable to load');
+  await page.getByRole('button', { name: 'Try again' }).click();
+  await expect(page).toHaveURL(/missionId=LizardSlope20210317%405\.01&window=12d&date=2021033100$/);
+  await expect(page.getByRole('img', { name: 'LizardSlope20210317 12d mission profile' })).toBeVisible();
+});
