@@ -78,6 +78,7 @@ it('shows the selected mission on the minimap of its yearmap window', async () =
   const minimap = screen.getByTestId('minimap');
   expect(minimap).toHaveAttribute('data-mission', mission.mission_name);
   expect(minimap).toHaveAttribute('data-window', '12d');
+  expect(screen.getByRole('group', { name: 'Selected mission' })).toHaveTextContent(mission.mission_name);
 });
 it('offers only published windows and switches the image and URL without refetching', async () => {
   const router = setup();
@@ -90,6 +91,7 @@ it('offers only published windows and switches the image and URL without refetch
   expect(windowButton('4 days')).toHaveAttribute('aria-pressed', 'true');
   expect(windowButton('12 days')).toHaveAttribute('aria-pressed', 'false');
   expect(screen.getByTestId('minimap')).toHaveAttribute('data-window', '4d');
+  expect(screen.getByRole('group', { name: 'Selected mission' })).toHaveTextContent(mission.mission_name);
   expect(router.state.location.search).toBe('?missionId=TwoRocks20261028_nrt%405.&window=4d');
   expect(router.state.historyAction).toBe('REPLACE');
   expect(service.fetchGliderMissionById).toHaveBeenCalledTimes(1);
@@ -123,6 +125,9 @@ it('uses the window from the URL when another mission is opened', async () => {
   expect(await screen.findByRole('heading', { name: 'Ceduna20260924_nrt' })).toBeInTheDocument();
   expect(screen.getByRole('img')).toHaveAttribute('src', '/resource/gliders/twelve.gif');
   expect(screen.getByTestId('minimap')).toHaveAttribute('data-mission', 'Ceduna20260924_nrt');
+  const indicator = screen.getByRole('group', { name: 'Selected mission' });
+  expect(indicator).toHaveTextContent('Ceduna20260924_nrt');
+  expect(indicator).not.toHaveTextContent(mission.mission_name);
 });
 it('allows retrying a mission request failure', async () => {
   vi.mocked(service.fetchGliderMissionById).mockRejectedValueOnce(new Error('404'));

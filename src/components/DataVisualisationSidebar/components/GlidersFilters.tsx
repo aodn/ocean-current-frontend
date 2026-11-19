@@ -3,6 +3,7 @@ import { Button } from '@/components/Shared';
 import { ProductSidebarText } from '@/constants/textConstant';
 import { useGliderMission } from '@/services/hooks';
 import { TEMPERATURE_SALINITY_TITLE } from '@/services/hooks/useGliderMission';
+import { color } from '@/styles/colors';
 import CollapsibleSection from './CollapsibleSection';
 
 const GlidersFilters: React.FC = () => {
@@ -10,6 +11,15 @@ const GlidersFilters: React.FC = () => {
 
   return (
     <>
+      {validParams && mission && (
+        <div role="group" aria-label="Selected mission" className="flex items-center gap-2 px-4 py-3">
+          <span aria-hidden="true" className="size-4 shrink-0 rounded-sm" style={{ backgroundColor: color.primary2 }} />
+          <div className="min-w-0">
+            <div className="text-imos-text-grey text-sm">Selected mission</div>
+            <div className="text-imos-dark-grey font-semibold wrap-anywhere">{mission.mission_name}</div>
+          </div>
+        </div>
+      )}
       {validParams && mission?.visualisations.temperature_salinity_image && (
         <CollapsibleSection title={ProductSidebarText.VISUALISATION}>
           <div role="group" aria-label={ProductSidebarText.VISUALISATION} className="flex flex-wrap gap-2">

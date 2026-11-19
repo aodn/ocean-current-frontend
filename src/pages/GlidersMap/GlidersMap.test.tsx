@@ -242,6 +242,9 @@ it('shows only the map in sidebar mode and selects the displayed mission yearmap
   const layer = await screen.findByTestId('deployment-layer');
   expect(layer).toHaveAttribute('data-ids', 'Bicheno20100813');
   expect(layer).toHaveAttribute('data-selected', 'Bicheno20100813');
+  expect(screen.getByRole('region', { name: 'Interactive Australia deployment map' })).toHaveAccessibleDescription(
+    /Selected deployment: Bicheno20100813/,
+  );
   expect(screen.queryByRole('combobox', { name: 'Year' })).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: 'Glider type' })).not.toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: 'Bicheno20100813' }));
@@ -517,6 +520,11 @@ it.each(['UnknownMission', 'TwoRocks20261028_nrt'])(
     setup({ isMiniMap: true, missionName, window: 'invalid' });
     await screen.findByTestId('interactive-map');
     expect(screen.getByTestId('deployment-layer').dataset.ids).not.toBe('');
+    if (missionName === 'UnknownMission') {
+      expect(screen.getByTestId('deployment-layer')).toHaveAttribute('data-selected', '');
+    } else {
+      expect(screen.getByTestId('deployment-layer')).toHaveAttribute('data-selected', missionName);
+    }
   },
 );
 
@@ -661,9 +669,11 @@ it('restores an explicit glider type after visiting a year that only has the oth
   await userEvent.click(screen.getByRole('menuitemradio', { name: 'Slocum' }));
   await userEvent.selectOptions(year, '2011');
   expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Seaglider');
-  expect(screen.getByText('Slocum is unavailable for 2011; showing Seaglider.')).toBeInTheDocument();
+  expect(screen.getByRole('status')).toHaveTextContent('Showing Seaglider for 2011');
+  expect(screen.getByRole('status')).toHaveTextContent('Slocum isn’t available for this year.');
   await userEvent.selectOptions(year, '2026');
   expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Slocum');
+  expect(screen.queryByText('Showing Seaglider for 2011')).not.toBeInTheDocument();
 });
 
 it('keeps map and table in the same explicit mode and preserves it on return from a mission', async () => {
