@@ -9,3 +9,11 @@ export function gliderProfileHref(missionId: string, window: string, date?: stri
   if (date) params.set('date', date);
   return glidersHref(`/product/gliders?${params}`);
 }
+
+export function copyGliderTsIndexFilters(source: URLSearchParams, target: URLSearchParams) {
+  for (const key of ['platform', 'mode', 'startDate', 'endDate']) {
+    const value = source.get(key);
+    if (value) target.set(key, value);
+  }
+  return target;
+}

@@ -1,5 +1,9 @@
 import { Link, useLocation, useSearchParams } from 'react-router';
 import dayjs from 'dayjs';
+import GliderFilterMenu from '@/components/GliderFilterMenu/GliderFilterMenu';
+import { DataIcon, GlidersIcon } from '@/components/Shared/Icons';
+import '@/configs/dayjs';
+import { copyGliderTsIndexFilters } from '@/utils/gliders-map-utils/links';
 import useGliderTs from '@/services/hooks/useGliderTs';
 import type { GliderTsDiagram } from '@/types/gliders';
 import { GLIDERS_DEPLOYMENTS_URL, getGlidersReturnTo } from '@/utils/gliders-map-utils/deployments';
@@ -8,6 +12,8 @@ const linkClass = 'text-imos-calypso-blue! rounded-md px-3 py-2 underline focus-
 
 export function GliderTsNavigation({ previous, next }: { previous?: string; next?: string }) {
   const { state } = useLocation();
+  const [params] = useSearchParams();
+  const indexParams = copyGliderTsIndexFilters(params, new URLSearchParams({ view: 'ts-index' }));
   return (
     <nav
       aria-label="T-S diagram navigation"
@@ -23,7 +29,7 @@ export function GliderTsNavigation({ previous, next }: { previous?: string; next
           Next
         </Link>
       )}
-      <Link className={linkClass} state={state} to="/product/gliders?view=ts-index">
+      <Link className={linkClass} state={state} to={`/product/gliders?${indexParams}`}>
         T-S index
       </Link>
     </nav>
@@ -37,44 +43,63 @@ export function GliderTsNavigation({ previous, next }: { previous?: string; next
 export function describeTsDiagram({ id }: GliderTsDiagram) {
   // Some names add a digit before or after the date (`sl_Forster120230714`, `sg_Bremer201703011`).
   const digits = id.match(/\d{8,}/)?.[0] ?? '';
-  const dateText = [digits.slice(-8), digits.slice(0, 8)].find((text) =>
-    /^20\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])$/.test(text),
-  );
+  const date = [digits.slice(-8), digits.slice(0, 8)]
+    .filter((text) => /^20\d{6}$/.test(text))
+    .map((text) => dayjs(text, 'YYYYMMDD', true))
+    .find((candidate) => candidate.isValid());
   return {
     name: id.slice(3),
     platform: id.startsWith('sg_') ? 'Seaglider' : 'Slocum',
-    date: dateText ? dayjs(dateText, 'YYYYMMDD') : undefined,
+    date,
     mode: id.endsWith('_nrt') ? 'NRT' : 'Delayed',
   };
 }
 
-const filters = [
-  { key: 'year', label: 'Year' },
-  { key: 'platform', label: 'Glider type' },
-  { key: 'mode', label: 'Data mode' },
-] as const;
+const platforms = [
+  { id: '', label: 'All types' },
+  { id: 'Slocum', label: 'Slocum' },
+  { id: 'Seaglider', label: 'Seaglider' },
+];
+const modes = [
+  { id: '', label: 'All modes' },
+  { id: 'NRT', label: 'NRT' },
+  { id: 'Delayed', label: 'Delayed' },
+];
 
 export default function GliderTsIndex() {
   const { diagrams, getDiagramUrl, isPending, isError, refetch } = useGliderTs();
   const { state } = useLocation();
   const [params, setParams] = useSearchParams();
   const back = getGlidersReturnTo(state) ?? GLIDERS_DEPLOYMENTS_URL;
-  const rows = diagrams.map((diagram) => {
-    const row = describeTsDiagram(diagram);
-    return { diagram, ...row, year: row.date ? String(row.date.year()) : '' };
+  const platform = params.get('platform') ?? '';
+  const mode = params.get('mode') ?? '';
+  const rows = diagrams.map((diagram) => ({ diagram, ...describeTsDiagram(diagram) }));
+  const dateFormat = 'YYYY-MM-DD';
+  const startDate = params.get('startDate') ?? '';
+  const endDate = params.get('endDate') ?? '';
+  const invalidStart = !!startDate && !dayjs(startDate, dateFormat, true).isValid();
+  const invalidEnd = !!endDate && !dayjs(endDate, dateFormat, true).isValid();
+  const reversed = !!startDate && !!endDate && startDate > endDate;
+  const dateError =
+    invalidStart || invalidEnd
+      ? 'Enter valid deployment dates.'
+      : reversed
+        ? 'The start date must be on or before the end date.'
+        : undefined;
+  const visible = rows.filter((row) => {
+    if ((platform && row.platform !== platform) || (mode && row.mode !== mode)) return false;
+    if (!startDate && !endDate) return true;
+    const date = row.date?.format(dateFormat);
+    return !!date && (!startDate || date >= startDate) && (!endDate || date <= endDate);
   });
-  const options = {
-    year: [...new Set(rows.map(({ year }) => year).filter(Boolean))].sort().reverse(),
-    platform: ['Slocum', 'Seaglider'],
-    mode: ['NRT', 'Delayed'],
-  };
-  const visible = rows.filter((row) => filters.every(({ key }) => !params.get(key) || row[key] === params.get(key)));
-  const setFilter = (key: string, value: string) =>
+  const updateFilters = (values: Record<string, string>) =>
     setParams(
       (prev) => {
         const next = new URLSearchParams(prev);
-        if (value) next.set(key, value);
-        else next.delete(key);
+        for (const [key, value] of Object.entries(values)) {
+          if (value) next.set(key, value);
+          else next.delete(key);
+        }
         return next;
       },
       { replace: true, state },
@@ -96,35 +121,67 @@ export default function GliderTsIndex() {
         </div>
       ) : (
         <div className="border-imos-pale-blue w-full min-w-0 rounded-md border bg-white">
-          <div className="border-imos-light-blue flex flex-wrap items-center gap-3 border-b px-4 py-3">
-            <div className="flex items-center gap-2">
-              <h1 className="m-0 text-base font-semibold">T-S diagram index</h1>
-              <span className="bg-imos-light-blue text-imos-deeper-blue rounded-full px-2 py-0.5 text-xs font-medium tabular-nums">
-                {visible.length} {visible.length === 1 ? 'diagram' : 'diagrams'}
-              </span>
+          <div className="border-imos-light-blue flex flex-wrap items-center justify-between gap-x-2 gap-y-2 border-b px-2 py-2">
+            <div className="flex shrink-0 items-center gap-1.5">
+              <h1 className="m-0 text-sm font-semibold">T-S diagram index</h1>
+              {!dateError && (
+                <span className="bg-imos-light-blue text-imos-deeper-blue rounded-full px-2 py-0.5 text-xs font-medium tabular-nums">
+                  {visible.length} {visible.length === 1 ? 'diagram' : 'diagrams'}
+                </span>
+              )}
             </div>
-            <div className="flex w-full flex-wrap items-center gap-2 sm:ml-auto sm:w-auto">
-              {filters.map(({ key, label }) => (
-                <label
-                  key={key}
-                  className="border-imos-calypso-blue/50 flex h-10 grow items-center gap-2 rounded-md border px-3 sm:grow-0"
+            <div className="flex min-w-0 flex-wrap items-center gap-1.5">
+              <GliderFilterMenu
+                compact
+                label="Glider type"
+                icon={GlidersIcon}
+                elements={platforms}
+                value={platform}
+                onChange={(value) => updateFilters({ platform: value })}
+              />
+              <GliderFilterMenu
+                compact
+                label="Data mode"
+                icon={DataIcon}
+                elements={modes}
+                value={mode}
+                onChange={(value) => updateFilters({ mode: value })}
+              />
+              <div role="group" aria-label="Deployment date" className="flex min-w-0 flex-wrap items-center gap-1.5">
+                {[
+                  { key: 'startDate', label: 'From', value: startDate, invalid: invalidStart },
+                  { key: 'endDate', label: 'To', value: endDate, invalid: invalidEnd },
+                ].map(({ key, label, value, invalid }) => (
+                  <label key={key} className="flex min-w-0 flex-wrap items-center gap-1 text-sm">
+                    {label}
+                    <input
+                      type="date"
+                      value={invalid ? '' : value}
+                      aria-invalid={invalid || (!!dateError && reversed)}
+                      aria-describedby={dateError ? 'ts-date-error' : undefined}
+                      onChange={(event) => updateFilters({ [key]: event.target.value })}
+                      className="border-imos-calypso-blue/50 h-9 w-[7.5rem] max-w-full rounded-md border px-1"
+                    />
+                  </label>
+                ))}
+                <button
+                  type="button"
+                  aria-label="Clear dates"
+                  disabled={!params.has('startDate') && !params.has('endDate')}
+                  onClick={() => updateFilters({ startDate: '', endDate: '' })}
+                  className="text-imos-calypso-blue min-h-9 rounded-md px-2 text-sm underline disabled:opacity-50"
                 >
-                  <span className="text-imos-text-grey text-sm">{label}</span>
-                  <select
-                    value={params.get(key) ?? ''}
-                    onChange={(event) => setFilter(key, event.target.value)}
-                    className="h-full cursor-pointer bg-transparent"
-                  >
-                    <option value="">All</option>
-                    {options[key].map((option) => (
-                      <option key={option}>{option}</option>
-                    ))}
-                  </select>
-                </label>
-              ))}
+                  Clear
+                </button>
+              </div>
             </div>
+            {dateError && (
+              <p id="ts-date-error" role="alert" className="w-full text-sm">
+                {dateError}
+              </p>
+            )}
           </div>
-          {visible.length === 0 ? (
+          {dateError ? null : visible.length === 0 ? (
             <p role="status" className="m-0 px-4 py-6 text-sm">
               No T-S diagrams match the selected filters.
             </p>

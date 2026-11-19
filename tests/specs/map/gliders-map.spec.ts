@@ -638,9 +638,47 @@ for (const width of [1280, 390]) {
     }
     await productPage.tsIndex.click();
     await expect(page.getByRole('heading', { name: 'T-S diagram index' })).toBeVisible();
-    await page.getByRole('combobox', { name: 'Glider type' }).selectOption('Seaglider');
+    await page.getByRole('button', { name: 'Glider type', exact: true }).click();
+    await page.getByRole('menuitemradio', { name: 'Seaglider', exact: true }).click();
+    await page.getByRole('button', { name: 'Data mode', exact: true }).click();
+    await page.getByRole('menuitemradio', { name: 'Delayed', exact: true }).click();
+    await page.getByLabel('From', { exact: true }).fill('2001-01-01');
+    await page.getByLabel('To', { exact: true }).fill('2001-01-01');
     await expect(page.getByRole('rowheader')).toHaveText(['Historical20010101']);
-    await page.getByRole('link', { name: 'View sg_Historical20010101 temperature–salinity diagram' }).click();
+    const filteredUrl = page.url();
+    await page.reload();
+    await expect(page.getByLabel('From', { exact: true })).toHaveValue('2001-01-01');
+    await expect(page.getByLabel('To', { exact: true })).toHaveValue('2001-01-01');
+    if (width === 1280) {
+      const heading = await page.getByRole('heading', { name: 'T-S diagram index' }).boundingBox();
+      const from = await page.getByLabel('From', { exact: true }).boundingBox();
+      expect(heading).not.toBeNull();
+      expect(from).not.toBeNull();
+      expect(from!.x).toBeGreaterThan(heading!.x + heading!.width);
+      expect(from!.y).toBeLessThan(heading!.y + heading!.height);
+      expect(from!.y + from!.height).toBeGreaterThan(heading!.y);
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+    const historicalDiagram = page.getByRole('link', {
+      name: 'View sg_Historical20010101 temperature–salinity diagram',
+    });
+    await historicalDiagram.click();
+    await page.goBack();
+    await expect(page).toHaveURL(filteredUrl);
+    await historicalDiagram.click();
+    await productPage.tsNext.click();
+    await expect(page).toHaveURL(/diagramId=sl_Ceduna20260924_nrt/);
+    await productPage.tsIndex.click();
+    await expect(page).toHaveURL(filteredUrl);
+    await expect(page.getByRole('rowheader')).toHaveText(['Historical20010101']);
+    await page.getByLabel('To', { exact: true }).fill('2001-01-02');
+    await page.getByLabel('From', { exact: true }).fill('2001-01-02');
+    await expect(page.getByText('No T-S diagrams match the selected filters.')).toBeVisible();
+    await page.getByRole('button', { name: 'Clear dates' }).click();
+    await expect(page.getByLabel('From', { exact: true })).toHaveValue('');
+    await expect(page.getByLabel('To', { exact: true })).toHaveValue('');
+    await expect(page.getByRole('rowheader')).toHaveText(['Historical20010101']);
+    await historicalDiagram.click();
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
     await testInfo.attach(`ts-navigation-${width}`, {
       body: await page.screenshot({ path: testInfo.outputPath(`ts-navigation-${width}.png`), fullPage: true }),

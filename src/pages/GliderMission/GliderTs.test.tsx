@@ -53,17 +53,21 @@ it('lists historical diagrams in a table in source order and opens them', async 
   await userEvent.click(diagramLink(diagrams[0].id));
   expect(screen.getByRole('img')).toBeInTheDocument();
 });
-it('filters by year, glider type and data mode', async () => {
+it('filters by glider type and data mode using the Gliders menus', async () => {
   const router = setup('view=ts-index');
   await screen.findByRole('table');
-  await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Glider type' }), 'Slocum');
+  await userEvent.click(screen.getByRole('button', { name: 'Glider type' }));
+  await userEvent.click(screen.getByRole('menuitemradio', { name: 'Slocum' }));
   expect(rowNames()).toEqual(['Current20260101']);
   expect(router.state.location.search).toContain('platform=Slocum');
-  await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Year' }), '2001');
+  await userEvent.click(screen.getByRole('button', { name: 'Data mode' }));
+  await userEvent.click(screen.getByRole('menuitemradio', { name: 'NRT' }));
   expect(screen.getByRole('status')).toHaveTextContent('No T-S diagrams match');
-  await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Glider type' }), '');
-  await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Data mode' }), 'Delayed');
-  expect(rowNames()).toEqual(['Historical20010101']);
+  await userEvent.click(screen.getByRole('button', { name: 'Data mode' }));
+  await userEvent.click(screen.getByRole('menuitemradio', { name: 'All modes' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Glider type' }));
+  await userEvent.click(screen.getByRole('menuitemradio', { name: 'All types' }));
+  expect(rowNames()).toEqual(['Historical20010101', 'Current20260101']);
 });
 it.each([
   ['sl_TwoRocks20261028_nrt', 'TwoRocks20261028_nrt', 'Slocum', '28 Oct 2026', 'NRT'],
@@ -98,4 +102,48 @@ it('keeps an incomplete response recoverable without crashing the index', async 
   expect(await screen.findByRole('alert')).toHaveTextContent('Unable to load T-S index.');
   await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
   await screen.findByRole('table');
+});
+
+it.each([
+  ['startDate=2026-01-01', ['Current20260101']],
+  ['endDate=2026-01-01', ['Historical20010101', 'Current20260101']],
+  ['startDate=2001-01-01&endDate=2026-01-01', ['Historical20010101', 'Current20260101']],
+  ['startDate=2026-01-01&endDate=2026-01-01', ['Current20260101']],
+])('filters deployment dates inclusively in published order with %s', async (range, expected) => {
+  vi.mocked(apiClient.get).mockResolvedValue({
+    data: { diagrams: [...diagrams, { id: 'sg_Unknown', image_url: null, mission_ids: [] }] },
+  });
+  setup(`view=ts-index&${range}`);
+  await screen.findByRole('table');
+  expect(rowNames()).toEqual(expected);
+});
+
+it.each([
+  ['startDate=2026-02-30', 'Enter valid deployment dates.'],
+  ['startDate=01-01-2026', 'Enter valid deployment dates.'],
+  ['startDate=2026-01-02&endDate=2026-01-01', 'The start date must be on or before the end date.'],
+])('reports an invalid range and recovers on clear with %s', async (range, message) => {
+  setup(`view=ts-index&${range}`);
+  expect(await screen.findByRole('alert')).toHaveTextContent(message);
+  expect(screen.queryByRole('table')).not.toBeInTheDocument();
+  await userEvent.click(screen.getByRole('button', { name: 'Clear dates' }));
+  expect(rowNames()).toEqual(['Historical20010101', 'Current20260101']);
+});
+
+it('combines dates with the other filters and clears only the dates', async () => {
+  const router = setup('view=ts-index&platform=Slocum&mode=Delayed&endDate=2026-01-01');
+  await screen.findByRole('table');
+  fireEvent.change(screen.getByLabelText('From'), { target: { value: '2026-01-01' } });
+  expect(rowNames()).toEqual(['Current20260101']);
+  fireEvent.change(screen.getByLabelText('To'), { target: { value: '2025-12-31' } });
+  expect(screen.getByRole('alert')).toHaveTextContent('The start date must be on or before the end date.');
+  fireEvent.change(screen.getByLabelText('From'), { target: { value: '' } });
+  expect(screen.getByRole('status')).toHaveTextContent('No T-S diagrams match the selected filters.');
+  await userEvent.click(screen.getByRole('button', { name: 'Clear dates' }));
+  expect(router.state.location.search).toBe('?view=ts-index&platform=Slocum&mode=Delayed');
+  expect(rowNames()).toEqual(['Current20260101']);
+});
+
+it('does not roll impossible deployment dates into another month', () => {
+  expect(describeTsDiagram({ id: 'sg_Impossible20230229', image_url: null, mission_ids: [] }).date).toBeUndefined();
 });
