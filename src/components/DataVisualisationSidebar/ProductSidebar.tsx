@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useSearchParams } from 'react-router';
 import { Loading } from '@/components/Shared';
+import type { ProductMapLinkProps } from '@/components/Shared/ProductMapLink/ProductMapLink';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
 import { ProductSidebarText } from '@/constants/textConstant';
 import useDateStore from '@/stores/date-store/dateStore';
@@ -22,7 +23,6 @@ import {
 import { currentMeterSYearOptionsData } from '@/data/current-meter/sidebarOptions';
 import { ProductID } from '@/types/product';
 import useProductCheck from '@/stores/product-store/hooks/useProductCheck';
-import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProductOverMap';
 import { useQueryParams } from '@/hooks';
 import { findLeafFlatProductById, getProductLegend } from '@/utils/product-utils/product';
 import { isProductAvailableInRegion } from '@/utils/region-utils/region';
@@ -52,14 +52,12 @@ const REGION_GATED_SUB_PRODUCTS: ProductID[] = [
   'adjustedSeaLevelAnomaly-nonTidalSla',
 ];
 
-const ProductSideBar: React.FC = () => {
+const ProductSideBar = ({ showMiniMap, mapLink }: { showMiniMap: boolean; mapLink?: ProductMapLinkProps }) => {
   const [searchParams] = useSearchParams();
   const { mainProduct, subProduct, subProducts } = useProductConvert();
   const { updateQueryParamsAndNavigate, getQueryParamsByKey } = useQueryParams();
   const useDate = useDateStore((state) => state.date);
-  const { isArgo, isCurrentMeters, isSealCtd, isSurfaceWaves, isFishSoop, isFishSoopAverageAnomalies } =
-    useProductCheck();
-  const shouldRenderMiniMap = useShowProductOverMap() && !isFishSoopAverageAnomalies;
+  const { isArgo, isCurrentMeters, isSealCtd, isSurfaceWaves, isFishSoop } = useProductCheck();
 
   const mooredInstrumentArrayPath = useMemo(() => {
     return (
@@ -172,7 +170,11 @@ const ProductSideBar: React.FC = () => {
       <div className="hidden md:block">
         <ProductDropdown mainProductKey={mainProduct.key} />
       </div>
-      <div className="hidden md:block">{(isGliders || shouldRenderMiniMap) && <MiniMap />}</div>
+      {showMiniMap && (
+        <div className="hidden md:block">
+          <MiniMap mapLink={mapLink} />
+        </div>
+      )}
 
       <div className="*:border-imos-light-blue *:border-b-1 [&>*:last-child]:border-b-0">
         {productInfo && <ProductSummary productInfo={productInfo} />}

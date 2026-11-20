@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { Link, useLocation, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 import VideoToggleButton from '@/components/ProductMenuBar/components/VideoToggleButton';
 import { useGliderMission } from '@/services/hooks';
 import useGliderTs from '@/services/hooks/useGliderTs';
 import { TEMPERATURE_SALINITY_TITLE } from '@/services/hooks/useGliderMission';
 import Loading from '@/components/Shared/Loading/Loading';
 import { apiConfig } from '@/configs/api';
-import { GLIDERS_DEPLOYMENTS_URL, getGlidersReturnTo } from '@/utils/gliders-map-utils/deployments';
 import GliderTsIndex, { GliderTsNavigation } from './GliderTs';
 import GliderDatePagination from './GliderDatePagination';
 
@@ -25,7 +24,6 @@ const GliderMissionViewer = () => {
   const indexOnly = isTemperatureSalinity && !missionId;
   const { isPending: contentPending, isError, refetch } = indexOnly ? ts : selection;
   const isPending = contentPending || (isTemperatureSalinity && params.has('diagramId') && ts.isPending);
-  const returnTo = getGlidersReturnTo(useLocation().state) ?? (indexOnly ? GLIDERS_DEPLOYMENTS_URL : undefined);
   // A selected diagram stays unavailable when its image is null or its ID is unknown.
   const tsImage =
     ts.diagram || params.has('diagramId') ? ts.diagram?.image_url : mission?.visualisations.temperature_salinity_image;
@@ -52,14 +50,6 @@ const GliderMissionViewer = () => {
         </div>
       </div>
       <section aria-label="Glider mission image" className="rounded-md bg-white p-4">
-        {returnTo && (
-          <Link
-            to={returnTo}
-            className="text-imos-calypso-blue! hover:text-imos-deeper-blue! mb-3 inline-block underline underline-offset-2"
-          >
-            Back to deployments
-          </Link>
-        )}
         <h1 className="mb-3 text-xl font-semibold break-all">{missionName || 'Glider mission'}</h1>
         <div aria-live="polite">
           {isTemperatureSalinity && ts.isError && !indexOnly && (
