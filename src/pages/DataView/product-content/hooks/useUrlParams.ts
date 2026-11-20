@@ -7,6 +7,7 @@ export function useUrlParams() {
   // URL parameters
   const urlParams = useMemo(
     () => ({
+      date: searchParams.get('date'),
       buoyRegion: searchParams.get('region'),
       point: searchParams.get('point'),
       sealCtdTag: searchParams.get('sealId'),
