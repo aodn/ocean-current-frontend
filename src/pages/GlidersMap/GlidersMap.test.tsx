@@ -8,6 +8,7 @@ import useMapStore, { patchMapViewState } from '@/stores/map-store/mapStore';
 import * as source from '@/services/gliders';
 import type { GliderMission as Mission, GliderYearmap } from '@/types/gliders';
 import GliderMission from '@/pages/GliderMission/GliderMission';
+import { getGlidersReturnTo } from '@/utils/gliders-map-utils/deployments';
 import fixture from './fixtures/yearmaps.json';
 import GlidersMap from './GlidersMap';
 
@@ -224,6 +225,7 @@ it.each(['04d', '12d', '30d'])(
     expect(router.state.location.search).toBe(
       `?missionId=TwoRocks20261028_nrt%405.&window=${window.replace(/^0+/, '')}`,
     );
+    expect(getGlidersReturnTo(router.state.location.state)).toBe('/map/gliders?view=map&year=2026&mode=nrt');
     expect(screen.getByRole('region', { name: 'Glider mission image' })).toBeInTheDocument();
   },
 );
@@ -465,7 +467,7 @@ it.each(['4', '12', '30'])(
   },
 );
 
-it('opens the selected mission T-S diagram from the table and returns with filters and sort', async () => {
+it('opens the selected mission T-S diagram and carries the table filters and sort', async () => {
   const tsImage = '/gliders/missionTS/sl_TwoRocks20261028_nrt.gif';
   const withDiagram = {
     ...catalogueMissions[0],
@@ -490,14 +492,12 @@ it('opens the selected mission T-S diagram from the table and returns with filte
   expect(diagram).toHaveAttribute('src', `/resource${tsImage}`);
   expect(source.fetchGliderMissionById).toHaveBeenCalledWith(mission.id, expect.any(AbortSignal));
 
-  await userEvent.click(screen.getByRole('link', { name: 'Back to deployments' }));
-  await screen.findByRole('table');
-  const returned = new URLSearchParams(router.state.location.search);
-  expect(router.state.location.pathname).toBe('/map/gliders');
-  for (const key of ['view', 'year', 'platform', 'sort']) expect(returned.get(key)).toBe(tableSearch.get(key));
-  expect(returned.get('sort')).toBe('date-asc');
-  expect(screen.getByRole('switch', { name: 'Table view' })).toHaveAttribute('aria-checked', 'true');
-  expect(screen.getByRole('button', { name: 'Browse deployments' })).toHaveTextContent('Oldest deployment');
+  const destination = new URL(getGlidersReturnTo(router.state.location.state)!, 'http://localhost');
+  expect(destination.pathname).toBe('/map/gliders');
+  for (const key of ['view', 'year', 'platform', 'mode', 'sort']) {
+    expect(destination.searchParams.get(key)).toBe(tableSearch.get(key));
+  }
+  expect(destination.searchParams.get('sort')).toBe('date-asc');
 });
 
 it('preserves mobile initialization on a cached revisit', async () => {

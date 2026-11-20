@@ -1,9 +1,23 @@
 import fixture from '@/pages/GlidersMap/fixtures/yearmaps.json';
 import type { GliderYearmap } from '@/types/gliders';
-import { buildGliderDeployments, selectGliderYearmap } from './deployments';
+import { buildGliderDeployments, getGlidersReturnTo, selectGliderYearmap } from './deployments';
 
 const maps = fixture.maps as GliderYearmap[];
 const byId = (id: string) => maps.find((map) => map.id === id)!;
+
+describe('getGlidersReturnTo', () => {
+  it('keeps the local deployments URL and its filters', () => {
+    const url = '/map/gliders?view=table&year=2026&platform=sl&sort=name-asc';
+    expect(getGlidersReturnTo({ glidersReturnTo: url })).toBe(url);
+  });
+
+  it.each([null, { glidersReturnTo: 'https://example.org/map/gliders?view=table' }])(
+    'discards missing or external destinations: %o',
+    (state) => {
+      expect(getGlidersReturnTo(state)).toBeUndefined();
+    },
+  );
+});
 
 describe('selectGliderYearmap', () => {
   it('defaults to the latest NRT map with the default variable and window', () => {

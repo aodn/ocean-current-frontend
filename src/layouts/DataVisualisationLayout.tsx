@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
-import { Outlet, useSearchParams } from 'react-router';
+import { Outlet, useLocation, useSearchParams } from 'react-router';
 import dayjs from 'dayjs';
 import { setSelectedArgoParams } from '@/stores/argo-store/argoStore';
 import useDateStore, { setDate } from '@/stores/date-store/dateStore';
@@ -27,7 +27,9 @@ import { Loading } from '@/components/Shared';
 import ProductMenuBar from '@/components/ProductMenuBar/ProductMenuBar';
 import ProductSideBar from '@/components/DataVisualisationSidebar/ProductSidebar';
 import ProductDropdown from '@/components/DataVisualisationSidebar/components/ProductDropdown';
+import ProductMapLink, { type ProductMapLinkProps } from '@/components/Shared/ProductMapLink/ProductMapLink';
 import useProductConvert from '@/stores/product-store/hooks/useProductConvert';
+import useProductPath from '@/stores/product-store/hooks/useProductPath';
 import { ArgoDepths } from '@/constants/argo';
 import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { DateFormat } from '@/types/date';
@@ -35,6 +37,7 @@ import { useShowProductOverMap } from '@/stores/product-store/hooks/useShowProdu
 import { ProductID } from '@/types/product';
 import useMapStore from '@/stores/map-store/mapStore';
 import { useUrlParams } from '@/pages/DataView/product-content/hooks/useUrlParams';
+import { getGlidersReturnTo } from '@/utils/gliders-map-utils/deployments';
 
 type ParseeDateWithFormat = {
   dateString: string;
@@ -46,10 +49,12 @@ type ParseeDateWithFormat = {
 
 const DataVisualisationLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const { isArgo, isSurfaceWavesBuoyTimeseries, isFishSoopProfiles } = useProductCheck();
+  const { state } = useLocation();
+  const { isArgo, isSurfaceWavesBuoyTimeseries, isFishSoopProfiles, isFishSoopAverageAnomalies } = useProductCheck();
   const useDate = useDateStore((state) => state.date);
   const product = useProductFromUrl('product');
   const { mainProduct } = useProductConvert();
+  const productPath = useProductPath();
   const isGliders = mainProduct?.key === 'gliders';
   const [showVideo, setShowVideo] = useState(false);
   const [showMap, setShowMap] = useState(false);
@@ -259,6 +264,19 @@ const DataVisualisationLayout: React.FC = () => {
     return <Loading />;
   }
 
+  const view = searchParams.get('view');
+  const isGlidersIndex = isGliders && view === 'ts-index';
+  const showMiniMap = isGliders
+    ? !isGlidersIndex && (!view?.startsWith('ts') || !!searchParams.get('missionId'))
+    : shouldShowProductOverMap && !isFishSoopAverageAnomalies;
+  let mapLink: ProductMapLinkProps | undefined;
+  if (isGliders && !isGlidersIndex) {
+    mapLink = { to: getGlidersReturnTo(state) ?? '/map/gliders', label: 'Back to deployments' };
+  } else if (showMiniMap && productPath) {
+    const search = isArgo && date ? `?${new URLSearchParams({ date })}` : '';
+    mapLink = { to: `/map/${productPath}${search}`, label: 'Open full product map' };
+  }
+
   return (
     <div className="max-w-8xl relative mx-auto mt-4 mb-4 w-full px-4 md:mb-9">
       <div className="flex flex-col-reverse md:flex-row">
@@ -273,12 +291,20 @@ const DataVisualisationLayout: React.FC = () => {
           />
         </button>
         <div className={`transition-all duration-300 ${isSidebarVisible ? 'md:w-1/3' : 'w-0 overflow-hidden'}`}>
-          <ProductSideBar />
+          <ProductSideBar showMiniMap={showMiniMap} mapLink={isSidebarVisible ? mapLink : undefined} />
         </div>
         <div
           className={`transition-all duration-300 ${isSidebarVisible ? 'md:ml-4' : 'ml-0'} flex w-full flex-col md:min-h-[800px]`}
         >
-          <div className="md:hidden">{mainProduct && <ProductDropdown mainProductKey={mainProduct.key} />}</div>
+          <div className="flex items-center gap-2 md:hidden">
+            <div className="min-w-0 grow">{mainProduct && <ProductDropdown mainProductKey={mainProduct.key} />}</div>
+            {mapLink && <ProductMapLink {...mapLink} />}
+          </div>
+          {mapLink && (!showMiniMap || !isSidebarVisible) && (
+            <div className="mb-2 hidden md:flex">
+              <ProductMapLink {...mapLink} />
+            </div>
+          )}
           {!isGliders && (
             <ProductMenuBar
               showVideo={showVideo}

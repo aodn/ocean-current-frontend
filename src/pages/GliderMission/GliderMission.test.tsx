@@ -60,7 +60,6 @@ it('opens a mission directly from its encoded ID and window', async () => {
   expect(service.fetchGliderMissionById).toHaveBeenCalledWith(mission.id, expect.any(AbortSignal));
   expect(service.fetchGliderTsDiagrams).not.toHaveBeenCalled();
   expect(screen.getByRole('heading', { name: mission.mission_name })).toBeInTheDocument();
-  expect(screen.queryByRole('link', { name: 'Back to map' })).not.toBeInTheDocument();
 });
 it('defaults to the four day window', async () => {
   setup('missionId=TwoRocks20261028_nrt%405.');
@@ -355,25 +354,6 @@ describe('mission video', () => {
     expect(screen.getByText('Video unavailable')).toHaveRole('status');
     expect(screen.getByRole('button', { name: 'Toggle video' })).toBeEnabled();
   });
-});
-
-it.each([
-  [{ glidersReturnTo: '/map/gliders?view=table&year=2026&platform=sl&sort=name-asc' }, true],
-  [{ glidersReturnTo: 'https://example.org/map/gliders?view=table' }, false],
-  [null, false],
-])('only offers a return link to the Gliders deployments view: %o', async (state, shown) => {
-  const router = createMemoryRouter([{ path: '/product/gliders', element: <GliderMission /> }], {
-    initialEntries: [{ pathname: '/product/gliders', search: '?missionId=TwoRocks20261028_nrt%405.&view=ts', state }],
-  });
-  render(
-    <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>,
-  );
-  await screen.findByText('Temperature–salinity diagram unavailable');
-  const link = screen.queryByRole('link', { name: 'Back to deployments' });
-  if (shown) expect(link).toHaveAttribute('href', state!.glidersReturnTo);
-  else expect(link).not.toBeInTheDocument();
 });
 
 describe('mission image history', () => {
