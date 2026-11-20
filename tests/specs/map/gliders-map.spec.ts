@@ -86,6 +86,37 @@ test('keeps the deployment map usable on mobile', async ({ page }) => {
   await expect(page.getByRole('region', { name: 'Deployment calendar chart' })).toHaveCount(0);
 });
 
+test('returns from a map deployment to the same Gliders map selection', async ({ page, productPage }) => {
+  await page.setViewportSize({ width: 1280, height: 844 });
+  const data = JSON.parse(readFileSync(`${fixtureRoot}yearmaps.json`, 'utf8')) as GliderYearmapsResponse;
+  const map = data.maps.find(({ id }) => id === '2026_sl_temp_04d_nrt')!;
+  const deployment = map.deployments.find(({ mission_name }) => mission_name === 'TwoRocks20261028_nrt')!;
+  // Put the single fixture deployment around the initial map centre so it can be clicked consistently.
+  map.deployments = [{ ...deployment, bbox: [137, -31, 143, -26] }];
+  const mission = { id: `${deployment.mission_name}@5.`, mission_name: deployment.mission_name, visualisations: {} };
+  await page.route('**/resource/api/gliders/gliders-yearmaps.json', (route) => route.fulfill({ json: data }));
+  await page.route('**/api/v1/gliders/missions?*', (route) =>
+    route.fulfill({ json: { missions: [mission], total: 1 } }),
+  );
+  await page.route('**/api/v1/gliders/missions/*', (route) => route.fulfill({ json: mission }));
+
+  const mapUrl = '/map/gliders?view=map&year=2026&platform=sl&mode=nrt';
+  await page.goto(mapUrl);
+  const canvas = page.getByRole('region', { name: 'Interactive Australia deployment map' }).locator('canvas');
+  await expect
+    .poll(async () => {
+      await canvas.hover({ position: { x: 10, y: 10 } });
+      await canvas.hover();
+      return canvas.evaluate((element) => element.style.cursor);
+    })
+    .toBe('pointer');
+  await canvas.click();
+  await expect(page.getByRole('heading', { name: mission.mission_name, exact: true })).toBeVisible();
+  await expect(productPage.backToDeployments).toHaveAttribute('href', mapUrl);
+  await productPage.backToDeployments.click();
+  await expect(page).toHaveURL(mapUrl);
+});
+
 test('clears Gliders parameters when switching maps in the sidebar', async ({ page }) => {
   await page.goto('/map/gliders?view=map&year=2011&platform=sg&sort=name-desc&missionId=test&window=12d');
   const menu = page.getByTestId('map-sidebar-menu');
@@ -176,7 +207,7 @@ for (const width of [1280, 390]) {
 }
 
 for (const width of [1280, 390]) {
-  test(`plays the selected mission video and returns to its profile at ${width}px`, async ({ page }) => {
+  test(`plays the selected mission video and returns to its profile at ${width}px`, async ({ page, productPage }) => {
     await page.setViewportSize({ width, height: 844 });
     const mission = {
       id: 'TwoRocks20261028_nrt@5.',
@@ -216,9 +247,15 @@ for (const width of [1280, 390]) {
     await expect(page).toHaveURL(/window=4d$/);
     await page.getByRole('button', { name: '12 days', exact: true }).click();
     await expect(toggle).toBeDisabled();
+    await expect(productPage.backToDeployments).toHaveAttribute('href', '/map/gliders');
+    await productPage.backToDeployments.click();
+    await expect(page).toHaveURL('/map/gliders');
   });
 
-  test(`opens a T-S diagram from the table and returns to the filtered table at ${width}px`, async ({ page }) => {
+  test(`opens a T-S diagram from the table and returns to the filtered table at ${width}px`, async ({
+    page,
+    productPage,
+  }) => {
     await page.setViewportSize({ width, height: 844 });
     const tsUrl = 'https://oceancurrent.aodn.org.au/gliders/missionTS';
     const withDiagram = {
@@ -264,7 +301,13 @@ for (const width of [1280, 390]) {
     await expect(page.getByRole('group', { name: 'Time window' })).toHaveCount(0);
     await expect(page.getByRole('button', { name: 'Previous date' })).toHaveCount(0);
 
-    await page.getByRole('link', { name: 'Back to deployments' }).click();
+    await expect(productPage.backToDeployments).toHaveCount(1);
+    if (width >= 768) {
+      await page.getByRole('button', { name: 'Toggle sidebar' }).click();
+      await expect(productPage.backToDeployments).toHaveCount(1);
+    }
+    await productPage.backToDeployments.focus();
+    await productPage.backToDeployments.press('Enter');
     await expect(page).toHaveURL(/\/map\/gliders\?/);
     const params = new URL(page.url()).searchParams;
     expect(Object.fromEntries(params)).toEqual({
@@ -279,7 +322,7 @@ for (const width of [1280, 390]) {
 
     await table.getByRole('button', { name: 'View Bicheno20100813 temperature–salinity diagram' }).click();
     await expect(page.getByText('Temperature–salinity diagram unavailable')).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Back to deployments' })).toBeVisible();
+    await expect(productPage.backToDeployments).toBeVisible();
   });
 }
 
@@ -684,8 +727,11 @@ for (const width of [1280, 390]) {
       body: await page.screenshot({ path: testInfo.outputPath(`ts-navigation-${width}.png`), fullPage: true }),
       contentType: 'image/png',
     });
-    await page.getByRole('link', { name: 'Back to deployments' }).click();
+    await productPage.backToDeployments.click();
     await expect(page).toHaveURL(/view=table.*year=2026/);
+    await page.goto('/product/gliders?view=ts&diagramId=sg_Historical20010101');
+    await expect(page.getByRole('img', { name: /Historical20010101 temperature/ })).toBeVisible();
+    await expect(productPage.backToDeployments).toHaveAttribute('href', '/map/gliders');
   });
 }
 
