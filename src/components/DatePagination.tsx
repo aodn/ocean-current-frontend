@@ -46,7 +46,7 @@ const DatePagination: React.FC<DatePaginationProps> = ({
     navigationMode === 'dateList' ? dateListNavigation : dateRangeNavigation;
   // For product only with fixed date range (sst timeseries)
   const isSstTimeseries = productId === 'sixDaySst-timeseries';
-  const isDatePickerDisabled = isSstTimeseries;
+  const isDatePickerDisabled = isSstTimeseries || (navigationMode === 'dateList' && dateList.length === 0);
   const displayText = isSstTimeseries ? ProductMenubarText.SIX_DAY_SST_TIMESERIES_DATE : undefined;
 
   const adjustedCanGoNext = canGoNext && !isSstTimeseries;

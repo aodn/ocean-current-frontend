@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router';
 import dayjs from 'dayjs';
 import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
 import { ProductID } from '@/types/product';
@@ -111,12 +112,14 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
 
   const regionScope = useProductStore((state) => state.productParams.regionScope);
   const regionCodeFromStore = useProductStore((state) => state.productParams.regionCode);
-  const region = regionCodeFromStore;
+  const [searchParams] = useSearchParams();
   const metaData = useArgoStore((state) => state);
   const wmoId = metaData.selectedArgoParams.worldMeteorologicalOrgId;
   const { isTidalCurrentsPointSelected, selectedPoint } = useTidalCurrentPoint(productId);
   const isTidalCurrentsMapProduct =
     (productId === 'tidalCurrents-spd' || productId === 'tidalCurrents-sl') && !isTidalCurrentsPointSelected;
+  // A regional link can change before the product store catches up. Resolve its date against its own index.
+  const region = (isTidalCurrentsMapProduct && searchParams.get('region')) || regionCodeFromStore;
 
   const dateFormat = getDateFormatByProductIdAndRegionScope(productId, regionScope);
 
@@ -259,7 +262,7 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
     }
   }
 
-  if (dateList.length === 0) {
+  if (dateList.length === 0 && !isTidalCurrentsMapProduct) {
     if (!isArgo && !shouldUseApi && productId === 'monthlyMeans-30day') {
       const mockData = (monthlyMeansMockQuery.data as DateItem[] | undefined) || [];
       if (mockData.length > 0) {

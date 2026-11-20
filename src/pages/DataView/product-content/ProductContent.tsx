@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import dayjs from 'dayjs';
 import { useOutletContext } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -21,6 +22,7 @@ import { fetchArgoProfileCyclesByWmoId } from '@/services/argo';
 import { sharedQueryConfig } from '@/configs/query';
 import { VideoPlayerOutletContext } from '@/types/router';
 import ErrorImage from '@/components/Shared/ErrorImage/ErrorImage';
+import { DateFormat } from '@/types/date';
 import { CurrentMetersSubProductsKey } from '@/constants/currentMeters';
 import { CurrentMetersDeploymentPlotNames } from '@/types/currentMeters';
 import { RegionScope } from '@/constants/region';
@@ -84,7 +86,7 @@ const ProductContent: React.FC = () => {
   // the current product is still loading, `useDate` may still hold a stale/default date
   // (e.g. the previous product's, if we landed here without a `date` param), so a resulting
   // image 404 shouldn't yet be treated as a genuine "not available" error.
-  const { isLoading: isProductDateListLoading } = useDateList({ productId: useProductId, mode: 'list' });
+  const { isLoading: isProductDateListLoading, dateList } = useDateList({ productId: useProductId, mode: 'list' });
 
   // Determine if we should render with argo tags
   const shouldRenderDataImageWithArgoTags = useMemo(
@@ -298,6 +300,21 @@ const ProductContent: React.FC = () => {
 
   // Tidal currents
   if (isTidalCurrents) {
+    if (
+      !hasSelectedParams.point &&
+      useRegionCode !== 'Aust' &&
+      dayjs(urlParams.date, DateFormat.MINUTE, true).isValid()
+    ) {
+      if (isProductDateListLoading) return <Loading />;
+      if (!dateList.length) return <ErrorImage date={useDate} productId={useProductId} />;
+      // Date navigation replaces the URL first, then the image date store follows it.
+      if (
+        useDate.format(DateFormat.MINUTE) !== urlParams.date ||
+        !dateList.some(({ date }) => date === urlParams.date)
+      ) {
+        return <Loading />;
+      }
+    }
     return (
       <DataImageWithTidalCurrentsMap
         mainProduct={mainProduct}
