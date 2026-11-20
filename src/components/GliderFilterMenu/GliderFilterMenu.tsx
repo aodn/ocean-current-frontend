@@ -8,12 +8,14 @@ const GliderFilterMenu = <T extends string>({
   elements,
   value,
   onChange,
+  compact = false,
 }: {
   label: string;
   icon: ComponentType<IconProps>;
   elements: readonly { id: T; label: string }[];
   value: T;
   onChange: (value: T) => void;
+  compact?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
   const container = useRef<HTMLDivElement>(null);
@@ -30,7 +32,7 @@ const GliderFilterMenu = <T extends string>({
 
     const positionMenu = () => {
       const bounds = trigger.getBoundingClientRect();
-      const width = Math.max(bounds.width, 152);
+      const width = Math.max(bounds.width, compact ? 120 : 152);
       popup.style.width = `${width}px`;
       popup.style.left = `${Math.max(0, Math.min(bounds.left, window.innerWidth - width))}px`;
       popup.style.top = `${bounds.bottom + 4}px`;
@@ -42,7 +44,7 @@ const GliderFilterMenu = <T extends string>({
       window.removeEventListener('scroll', positionMenu, true);
       window.removeEventListener('resize', positionMenu);
     };
-  }, [open]);
+  }, [compact, open]);
 
   const selectedIndex = elements.findIndex(({ id }) => id === value);
   useEffect(() => {
@@ -73,7 +75,7 @@ const GliderFilterMenu = <T extends string>({
   };
 
   return (
-    <div ref={container} className="h-11">
+    <div ref={container} className={compact ? 'h-9' : 'h-11'}>
       <button
         onKeyDown={handleKeyDown}
         ref={button}
@@ -85,9 +87,9 @@ const GliderFilterMenu = <T extends string>({
         aria-controls={open ? menuId : undefined}
         disabled={!canSelect}
         onClick={() => setOpen(!open)}
-        className="border-imos-calypso-blue/50 focus-visible:ring-imos-calypso-blue/50 flex h-full w-full items-center gap-2 rounded-md border bg-white px-3 text-base focus-visible:ring-2 focus-visible:outline-none enabled:cursor-pointer md:border-none"
+        className={`border-imos-calypso-blue/50 focus-visible:ring-imos-calypso-blue/50 flex h-full w-full items-center rounded-md border bg-white focus-visible:ring-2 focus-visible:outline-none enabled:cursor-pointer ${compact ? 'gap-1 px-1.5 text-sm' : 'gap-2 px-3 text-base md:border-none'}`}
       >
-        <Icon size="lg" color="imos-deep-blue" aria-hidden="true" className="shrink-0" />
+        <Icon size={compact ? 'sm' : 'lg'} color="imos-deep-blue" aria-hidden="true" className="shrink-0" />
         <span id={`${menuId}-value`} className="flex-1 text-left">
           {elements.find(({ id }) => id === value)?.label}
         </span>
@@ -117,11 +119,11 @@ const GliderFilterMenu = <T extends string>({
                 onChange(id);
                 button.current?.focus();
               }}
-              className={`flex w-full cursor-pointer items-center rounded p-3 text-left text-base focus-visible:outline-2 focus-visible:outline-offset-[-2px] ${id === value ? 'bg-imos-deep-blue text-white' : 'text-imos-dark-grey hover:bg-imos-hover-blue/20'}`}
+              className={`flex w-full cursor-pointer items-center rounded text-left focus-visible:outline-2 focus-visible:outline-offset-[-2px] ${compact ? 'gap-2 px-2 py-1.5 text-sm' : 'p-3 text-base'} ${id === value ? 'bg-imos-deep-blue text-white' : 'text-imos-dark-grey hover:bg-imos-hover-blue/20'}`}
             >
               <Icon
-                className="mr-4 shrink-0"
-                size="xl"
+                className={compact ? 'shrink-0' : 'mr-4 shrink-0'}
+                size={compact ? 'sm' : 'xl'}
                 color={id === value ? 'imos-white' : 'imos-grey'}
                 aria-hidden="true"
               />

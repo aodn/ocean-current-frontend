@@ -2,6 +2,7 @@ import { useSearchParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { sharedQueryConfig } from '@/configs/query';
 import { fetchGliderTsDiagrams } from '@/services/gliders';
+import { copyGliderTsIndexFilters } from '@/utils/gliders-map-utils/links';
 import type { GliderTsDiagram } from '@/types/gliders';
 
 /** The complete source order is shared by the viewer, navigation and index. */
@@ -29,7 +30,7 @@ export default function useGliderTs(enabled = true) {
         ? diagram.mission_ids[0]
         : undefined;
     if (associatedId) next.set('missionId', associatedId);
-    return `/product/gliders?${next}`;
+    return `/product/gliders?${copyGliderTsIndexFilters(params, next)}`;
   };
 
   return {
