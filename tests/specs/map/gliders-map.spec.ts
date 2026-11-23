@@ -93,7 +93,23 @@ test('returns from a map deployment to the same Gliders map selection', async ({
   const deployment = map.deployments.find(({ mission_name }) => mission_name === 'TwoRocks20261028_nrt')!;
   // Put the single fixture deployment around the initial map centre so it can be clicked consistently.
   map.deployments = [{ ...deployment, bbox: [137, -31, 143, -26] }];
-  const mission = { id: `${deployment.mission_name}@5.`, mission_name: deployment.mission_name, visualisations: {} };
+  const frame = {
+    date: '2026-11-12T12:00:00',
+    url: '/gliders/history/profile.gif',
+    projected_tracks_url: '/gliders/history/projected.gif',
+  };
+  const mission = {
+    id: `${deployment.mission_name}@5.`,
+    mission_name: deployment.mission_name,
+    visualisations: { latest_images: { '4d': frame.url } },
+    image_history: { '4d': [frame] },
+  };
+  await page.route('**/resource/gliders/history/*.gif', (route) =>
+    route.fulfill({
+      body: Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64'),
+      contentType: 'image/gif',
+    }),
+  );
   await page.route('**/resource/api/gliders/gliders-yearmaps.json', (route) => route.fulfill({ json: data }));
   await page.route('**/api/v1/gliders/missions?*', (route) =>
     route.fulfill({ json: { missions: [mission], total: 1 } }),
@@ -112,15 +128,17 @@ test('returns from a map deployment to the same Gliders map selection', async ({
     .toBe('pointer');
   await canvas.click();
   await expect(page.getByRole('heading', { name: mission.mission_name, exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Projected tracks' }).click();
+  const projection = page.getByRole('img', { name: /24-hour projection/ });
+  await expect(projection).toHaveAttribute('src', `/resource${frame.projected_tracks_url}`);
+  await expect(page).toHaveURL(/view=projected-tracks/);
+  await page.reload();
+  await expect(projection).toBeVisible();
+  await expect(page.getByText('Deployment areas', { exact: true })).toHaveCount(0);
   await expect(productPage.backToDeployments).toHaveAttribute('href', mapUrl);
   await productPage.backToDeployments.click();
   await expect(page).toHaveURL(mapUrl);
-  await page.getByText('Deployment areas', { exact: true }).press('Enter');
-  await page
-    .getByRole('list', { name: 'Deployment bounds' })
-    .getByRole('button', { name: mission.mission_name })
-    .press('Enter');
-  await expect(page.getByRole('heading', { name: mission.mission_name, exact: true })).toBeVisible();
+  await expect(page.getByText('Deployment areas', { exact: true })).toHaveCount(0);
 });
 
 test.describe('Gliders annual figures and overlapping deployments', () => {

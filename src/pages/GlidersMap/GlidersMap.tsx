@@ -78,7 +78,6 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
   const areaTitleId = useId();
   const areaDialog = useRef<HTMLDialogElement>(null);
   const [areaMissions, setAreaMissions] = useState<string[]>([]);
-  const [focusedDeployment, setFocusedDeployment] = useState<string>();
 
   useLayoutEffect(() => {
     if (areaMissions.length) areaDialog.current?.showModal();
@@ -569,35 +568,12 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
             >
               <GlidersDeploymentLayer
                 data={deployments}
-                selectedId={focusedDeployment ?? selectedDeployment?.mission_name}
-                selectedBounds={focusedDeployment ? undefined : selectedDeployment?.bbox}
+                selectedId={selectedDeployment?.mission_name}
+                selectedBounds={selectedDeployment?.bbox}
                 onSelect={selectAreas}
               />
             </BasicMap>
           </div>
-          <details key={yearmap.id} className="text-imos-deep-blue mt-2 text-sm">
-            <summary className="w-fit cursor-pointer py-1">Deployment areas</summary>
-            <ul className="flex flex-wrap gap-x-4" aria-label="Deployment bounds">
-              {yearmap.deployments.map(({ mission_name, bbox }) =>
-                bbox ? (
-                  <li key={mission_name}>
-                    <button
-                      type="button"
-                      className="cursor-pointer py-1 underline"
-                      onFocus={() => setFocusedDeployment(mission_name)}
-                      onBlur={() => setFocusedDeployment(undefined)}
-                      onClick={() => selectMission(mission_name)}
-                    >
-                      {mission_name}
-                    </button>
-                    <span className="sr-only">
-                      west {bbox[0]}, south {bbox[1]}, east {bbox[2]}, north {bbox[3]} degrees.
-                    </span>
-                  </li>
-                ) : null,
-              )}
-            </ul>
-          </details>
         </>
       )}
       {mission.isPending && <p role="status">Loading mission…</p>}

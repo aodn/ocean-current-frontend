@@ -7,7 +7,9 @@ import { color } from '@/styles/colors';
 import CollapsibleSection from './CollapsibleSection';
 
 const GlidersFilters: React.FC = () => {
-  const { validParams, mission, windows, window, setWindow, isTemperatureSalinity, setView } = useGliderMission();
+  const { validParams, mission, windows, window, setWindow, isTemperatureSalinity, isProjectedTracks, setView } =
+    useGliderMission();
+  const isProfile = !isTemperatureSalinity && !isProjectedTracks;
 
   return (
     <>
@@ -25,8 +27,8 @@ const GlidersFilters: React.FC = () => {
           <div role="group" aria-label={ProductSidebarText.VISUALISATION} className="flex flex-wrap gap-2">
             <Button
               borderRadius="small"
-              type={isTemperatureSalinity ? 'secondary' : 'primary'}
-              aria-pressed={!isTemperatureSalinity}
+              type={isProfile ? 'primary' : 'secondary'}
+              aria-pressed={isProfile}
               onClick={() => setView('profile')}
             >
               Mission profile

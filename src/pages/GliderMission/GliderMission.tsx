@@ -3,11 +3,14 @@ import { useSearchParams } from 'react-router';
 import VideoToggleButton from '@/components/ProductMenuBar/components/VideoToggleButton';
 import { useGliderMission } from '@/services/hooks';
 import useGliderTs from '@/services/hooks/useGliderTs';
-import { TEMPERATURE_SALINITY_TITLE } from '@/services/hooks/useGliderMission';
+import { GLIDER_PROJECTED_TRACKS_VIEW, TEMPERATURE_SALINITY_TITLE } from '@/services/hooks/useGliderMission';
+import { Button } from '@/components/Shared';
 import Loading from '@/components/Shared/Loading/Loading';
 import { apiConfig } from '@/configs/api';
 import GliderTsIndex, { GliderTsNavigation } from './GliderTs';
 import GliderDatePagination from './GliderDatePagination';
+
+const projectionHours: Record<string, number> = { '4d': 24, '12d': 48, '30d': 72 };
 
 const GliderMission = () => {
   const [params] = useSearchParams();
@@ -17,8 +20,18 @@ const GliderMission = () => {
 const GliderMissionViewer = () => {
   const [params] = useSearchParams();
   const selection = useGliderMission();
-  const { missionId, validParams, mission, window, isTemperatureSalinity, isVideo, videoUrl, setView, selectedFrame } =
-    selection;
+  const {
+    missionId,
+    validParams,
+    mission,
+    window,
+    isTemperatureSalinity,
+    isVideo,
+    isProjectedTracks,
+    videoUrl,
+    setView,
+    selectedFrame,
+  } = selection;
   const ts = useGliderTs(isTemperatureSalinity);
   // Historical diagrams have no catalogue mission, so the T-S index is their only source.
   const indexOnly = isTemperatureSalinity && !missionId;
@@ -30,6 +43,8 @@ const GliderMissionViewer = () => {
   const imagePath = isTemperatureSalinity
     ? tsImage
     : (selectedFrame?.url ?? mission?.visualisations.latest_images?.[window]);
+  const projectionPath = selectedFrame?.projected_tracks_url;
+  const projectionLabel = `${projectionHours[window]}-hour projection`;
   const missionName = mission?.mission_name ?? ts.diagram?.id ?? missionId;
 
   return (
@@ -48,6 +63,17 @@ const GliderMissionViewer = () => {
             onClick={() => setView(isVideo ? 'profile' : 'video')}
           />
         </div>
+        {(isProjectedTracks || (!isTemperatureSalinity && projectionPath)) && (
+          <Button
+            aria-pressed={isProjectedTracks}
+            type={isProjectedTracks ? 'primary' : 'secondary'}
+            borderRadius="extraSmall"
+            className="h-11"
+            onClick={() => setView(isProjectedTracks ? 'profile' : GLIDER_PROJECTED_TRACKS_VIEW)}
+          >
+            Projected tracks
+          </Button>
+        )}
       </div>
       <section aria-label="Glider mission image" className="rounded-md bg-white p-4">
         <h1 className="mb-3 text-xl font-semibold break-all">{missionName || 'Glider mission'}</h1>
@@ -77,6 +103,20 @@ const GliderMissionViewer = () => {
               url={videoUrl}
               name={`${missionName} ${window} mission video`}
             />
+          ) : isProjectedTracks ? (
+            projectionPath ? (
+              <>
+                <h2 className="mb-2 font-semibold">{projectionLabel}</h2>
+                <GliderMissionImage
+                  key={projectionPath}
+                  path={projectionPath}
+                  alt={`${missionName} ${projectionLabel}`}
+                  unavailableText="Unable to load projected tracks"
+                />
+              </>
+            ) : (
+              <p role="status">Projected tracks unavailable for this date and window</p>
+            )
           ) : (
             <GliderMissionImage
               key={`${missionId}:${isTemperatureSalinity ? 'ts' : window}:${imagePath}`}

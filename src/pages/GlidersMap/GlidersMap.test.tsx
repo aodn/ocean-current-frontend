@@ -522,12 +522,10 @@ it('preserves mobile initialization on a cached revisit', async () => {
   expect(useMapStore.getState().mapViewState).toEqual(initialMobileMapViewState.mapViewState);
 });
 
-it('exposes mission names and geographic bounds outside the canvas', async () => {
-  setup();
-  await userEvent.click(await screen.findByText('Deployment areas', { selector: 'summary' }));
-  const list = await screen.findByRole('list', { name: 'Deployment bounds' });
-  expect(list).toHaveTextContent('TwoRocks20261028_nrt');
-  expect(list).toHaveTextContent(/west .*south .*east .*north/);
+it.each([false, true])('omits the deployment areas list with isMiniMap=%s', async (isMiniMap) => {
+  setup({ isMiniMap, missionName: 'TwoRocks20261028_nrt', window: '4d' });
+  await screen.findByTestId('deployment-layer');
+  expect(screen.queryByText('Deployment areas', { selector: 'summary' })).not.toBeInTheDocument();
 });
 
 it.each(['UnknownMission', 'TwoRocks20261028_nrt'])(

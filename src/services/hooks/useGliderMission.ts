@@ -8,10 +8,11 @@ import { resolveGliderResourceUrl } from '@/utils/gliders-map-utils/catalogue';
 
 export const GLIDER_MISSION_WINDOWS = ['4d', '12d', '30d'];
 export const GLIDER_TS_VIEW = 'ts';
+export const GLIDER_PROJECTED_TRACKS_VIEW = 'projected-tracks';
 export const TEMPERATURE_SALINITY_TITLE = 'Temperature–salinity diagram';
 
 /**
- * The Gliders mission selected in the URL (`missionId`, `window`, and optional `view=ts` or `view=video`). The sidebar and the
+ * The Gliders mission selected in the URL (`missionId`, `window`, and optional `view=ts` or `view=video` or `view=projected-tracks`). The sidebar and the
  * mission image share the query key, so they read the same cached mission.
  */
 const useGliderMission = () => {
@@ -67,6 +68,7 @@ const useGliderMission = () => {
     window,
     isTemperatureSalinity,
     isVideo,
+    isProjectedTracks: params.get('view') === GLIDER_PROJECTED_TRACKS_VIEW,
     videoUrl: resolveGliderResourceUrl(
       mission?.visualisations.animations?.find(({ label }) => `${Number(label)}d` === window)?.url,
     ),
@@ -74,7 +76,7 @@ const useGliderMission = () => {
     windows: GLIDER_MISSION_WINDOWS.filter(
       (key) => mission?.visualisations.latest_images?.[key] || mission?.image_history?.[key]?.length,
     ),
-    setView: (view: 'profile' | 'video' | typeof GLIDER_TS_VIEW) =>
+    setView: (view: 'profile' | 'video' | typeof GLIDER_TS_VIEW | typeof GLIDER_PROJECTED_TRACKS_VIEW) =>
       setParams(
         (prev) => {
           const next = new URLSearchParams(prev);

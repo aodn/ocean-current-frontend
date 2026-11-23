@@ -71,6 +71,7 @@ export interface GliderProductLink {
 export interface GliderImageFrame {
   date: string;
   url: string;
+  projected_tracks_url?: string;
 }
 
 /** Ordered entry in the complete legacy T-S index, including historical assets. */
