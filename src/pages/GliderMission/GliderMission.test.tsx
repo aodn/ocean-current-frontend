@@ -64,8 +64,8 @@ it('opens a mission directly from its encoded ID and window', async () => {
 it('offers Share once the mission has loaded', async () => {
   setup();
   expect(screen.getByRole('status')).toHaveTextContent('Loading mission…');
-  expect(screen.queryByRole('button', { name: 'Share', exact: true })).not.toBeInTheDocument();
-  expect(await screen.findByRole('button', { name: 'Share', exact: true })).toBeEnabled();
+  expect(screen.queryByRole('button', { name: 'Share' })).not.toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: 'Share' })).toBeEnabled();
 });
 it('defaults to the four day window', async () => {
   setup('missionId=TwoRocks20261028_nrt%405.');
@@ -75,7 +75,7 @@ it.each(['', 'missionId=test&window=invalid'])('handles incomplete or invalid UR
   setup(search);
   expect(screen.getByText('Select a mission and a valid window from the Gliders map.')).toBeInTheDocument();
   expect(screen.queryByRole('group', { name: 'Time window' })).not.toBeInTheDocument();
-  expect(screen.queryByRole('button', { name: 'Share', exact: true })).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Share' })).not.toBeInTheDocument();
   expect(service.fetchGliderMissionById).not.toHaveBeenCalled();
 });
 it('shows the selected mission on the minimap of its yearmap window', async () => {
