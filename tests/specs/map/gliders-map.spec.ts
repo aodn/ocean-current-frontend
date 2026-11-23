@@ -265,14 +265,19 @@ test.describe('Gliders annual figures and overlapping deployments', () => {
   });
 });
 
-test('clears Gliders parameters when switching maps in the sidebar', async ({ page }) => {
+test('keeps the sidebar width and clears Gliders parameters when switching maps', async ({ page }) => {
   await page.goto('/map/gliders?view=map&year=2011&platform=sg&sort=name-desc&missionId=test&window=12d');
   const menu = page.getByTestId('map-sidebar-menu');
+  await expect(menu).toBeVisible();
+  const { width } = (await menu.boundingBox())!;
   await menu.getByRole('menuitem').filter({ hasText: 'Argo' }).click();
   await expect(page).toHaveURL(/\/map\/argo$/);
+  await expect(page.getByRole('button', { name: 'Reset to latest date' })).toBeVisible();
+  expect((await menu.boundingBox())?.width).toBe(width);
   await menu.getByRole('menuitem').filter({ hasText: 'Gliders' }).click();
   await expect(page).toHaveURL(/\/map\/gliders/);
   await expect(page.getByRole('region', { name: 'Interactive Australia deployment map' })).toBeVisible();
+  expect((await menu.boundingBox())?.width).toBe(width);
 });
 
 for (const width of [1280, 390]) {
