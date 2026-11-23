@@ -6,13 +6,19 @@ interface ErrorContentProps {
   title: string;
   description: string;
   showHomeButton?: boolean;
+  headingAs?: 'h1' | 'h2';
 }
 
-const ErrorContent: React.FC<ErrorContentProps> = ({ title, description, showHomeButton = true }) => {
+const ErrorContent: React.FC<ErrorContentProps> = ({
+  title,
+  description,
+  showHomeButton = true,
+  headingAs: Heading = 'h1',
+}) => {
   return (
     <div className="flex w-full flex-1 flex-col items-center justify-center bg-white text-center">
       <img src={NotFoundIcon} alt="" aria-hidden="true" />
-      <h1 className="font-poppins text-imos-dark-grey mt-6 text-2xl font-medium md:text-3xl">{title}</h1>
+      <Heading className="font-poppins text-imos-dark-grey mt-6 text-2xl font-medium md:text-3xl">{title}</Heading>
       <p className="text-imos-text-grey mt-3 max-w-md">{description}</p>
       {showHomeButton && (
         <Link
