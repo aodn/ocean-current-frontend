@@ -10,6 +10,7 @@ import GlidersDeploymentLayer from '@/components/Map/layers/GlidersDeploymentLay
 import Loading from '@/components/Shared/Loading/Loading';
 import { sharedQueryConfig } from '@/configs/query';
 import { initialMiniMapViewState } from '@/configs/map';
+import ErrorContent from '@/errors/error-content/ErrorContent';
 import { resetMapStore, setMapViewState } from '@/stores/map-store/mapStore';
 import { fetchGliderMission, fetchGliderMissions, fetchGliderYearmaps } from '@/services/gliders';
 import { buildGliderDeployments, selectGliderYearmap } from '@/utils/gliders-map-utils/deployments';
@@ -442,7 +443,21 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
           onSelect={selectAreas}
         />
       ) : !yearmap || deployments.features.length === 0 ? (
-        <p role="status">No deployment areas are available for this map.</p>
+        isMiniMap ? (
+          <p role="status">No deployment areas to show.</p>
+        ) : (
+          <div role="status" className="flex min-h-125 overflow-hidden rounded-md">
+            <ErrorContent
+              title={
+                year !== undefined && activePlatform
+                  ? `No map areas for ${activePlatform === 'sl' ? 'Slocum' : 'Seaglider'} in ${year} (${mode === 'nrt' ? 'NRT' : 'Delayed'}).`
+                  : 'No deployment areas to show.'
+              }
+              description="Try changing the filters or open Table to browse deployments."
+              showHomeButton={false}
+            />
+          </div>
+        )
       ) : (
         <>
           <p id={descriptionId} className="sr-only">
