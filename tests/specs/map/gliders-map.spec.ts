@@ -154,6 +154,10 @@ test.describe('Gliders annual figures and overlapping deployments', () => {
       pixel_rect: [451, 343, 480, 378],
       plot_pixel_rects: [[201, 693, 355, 757]],
     });
+    data.maps.push(
+      { ...seaglider, id: '2011_sg_temp_12d', window: '12d' },
+      { ...seaglider, id: '2011_sg_psal_12d', variable: 'psal', window: '12d' },
+    );
     await page.route('**/resource/api/gliders/gliders-yearmaps.json', (route) => route.fulfill({ json: data }));
     await page.route('**/api/v1/gliders/missions?*', (route) => {
       const name = new URL(route.request().url()).searchParams.get('q');
@@ -191,6 +195,16 @@ test.describe('Gliders annual figures and overlapping deployments', () => {
     await expect(image).toHaveAttribute('src', `/resource${seaglider.image_url}`);
     await expect(mode).toHaveCount(0);
 
+    const variable = page.getByRole('combobox', { name: 'Variable', exact: true });
+    const window = page.getByRole('combobox', { name: 'Time window', exact: true });
+    await variable.focus();
+    await variable.press('ArrowDown');
+    await expect(variable).toHaveValue('psal');
+    await expect(window).toHaveValue('12d');
+    await variable.press('ArrowUp');
+    await expect(variable).toHaveValue('temp');
+    await expect(window).toHaveValue('12d');
+
     const area = page.getByRole('button', { name: `Select deployment ${first}`, exact: true });
     const plot = page.getByRole('button', { name: `Select plot for ${first}`, exact: true });
     await expect(area).toBeVisible();
@@ -222,7 +236,11 @@ test.describe('Gliders annual figures and overlapping deployments', () => {
     await expect(chooser.getByRole('button', { name: first, exact: true })).toBeVisible();
     await chooser.getByRole('button', { name: second, exact: true }).click();
     await expect(page.getByRole('heading', { name: second, exact: true })).toBeVisible();
+    await expect(page).toHaveURL(/window=12d/);
     await productPage.backToDeployments.click();
+    await expect(window).toHaveValue('12d');
+    await page.reload();
+    await expect(window).toHaveValue('12d');
     await area.press('Enter');
     await expect(page.getByRole('heading', { name: first, exact: true })).toBeVisible();
     await productPage.backToDeployments.click();
@@ -238,6 +256,8 @@ test.describe('Gliders annual figures and overlapping deployments', () => {
     await page.goto('/map/gliders?view=annual&year=2007&platform=sl');
     await expect(page.getByRole('heading', { name: 'Slocum · 2007' })).toBeVisible();
     await expect(page.getByText('No annual plot is available for this selection.')).toBeVisible();
+    await expect(variable).toHaveCount(0);
+    await expect(window).toHaveCount(0);
   });
 
   test('offers every map deployment at an overlapping touch point', async ({ page }) => {

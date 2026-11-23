@@ -758,3 +758,36 @@ it('keeps filters and the browse control when the event catalogue fails and can 
   await screen.findByText(/No event-based sampling deployments match/);
   expect(screen.getByRole('button', { name: 'Data mode' })).toHaveTextContent('Delayed');
 });
+
+it('offers only annual combinations with a figure in the active mode', async () => {
+  const base = { ...maps[0], year: 2026, platform: 'sl' as const, is_nrt: true, deployments: [] };
+  vi.mocked(source.fetchGliderYearmaps).mockResolvedValue([
+    { ...base, id: 'temp-04d', variable: 'temp', window: '04d', image_url: '/gliders/temp.gif' },
+    { ...base, id: 'temp-12d', variable: 'temp', window: '12d', image_url: '/gliders/temp.gif' },
+    { ...base, id: 'psal-30d', variable: 'psal', window: '30d', image_url: '/gliders/psal.gif' },
+    { ...base, id: 'psal-04d', variable: 'psal', window: '04d', image_url: null },
+    { ...base, id: 'doxy-04d', variable: 'doxy', window: '04d', image_url: '/gliders/doxy.gif', is_nrt: false },
+  ]);
+  const router = setup({}, false, '?view=annual&year=2026&platform=sl&var=unknown&window=invalid');
+  const variable = await screen.findByRole('combobox', { name: 'Variable' });
+  const window = screen.getByRole('combobox', { name: 'Time window' });
+  expect(variable).toHaveValue('temp');
+  expect(window).toHaveValue('04d');
+  expect(within(variable).queryByRole('option', { name: 'Oxygen' })).not.toBeInTheDocument();
+
+  await userEvent.selectOptions(window, '12d');
+  await userEvent.selectOptions(variable, 'psal');
+  expect(window).toHaveValue('30d');
+  expect(within(window).getAllByRole('option')).toHaveLength(1);
+  const params = new URLSearchParams(router.state.location.search);
+  expect(Object.fromEntries(params)).toMatchObject({ year: '2026', platform: 'sl', var: 'psal', window: '30d' });
+  expect(screen.getByRole('img')).toHaveAttribute('src', '/resource/gliders/psal.gif');
+
+  await selectDataMode('Delayed');
+  expect(variable).toHaveValue('doxy');
+  expect(window).toHaveValue('04d');
+  await selectDataMode('NRT');
+  expect(variable).toHaveValue('psal');
+  expect(window).toHaveValue('30d');
+  expect(source.fetchGliderYearmaps).toHaveBeenCalledTimes(1);
+});
