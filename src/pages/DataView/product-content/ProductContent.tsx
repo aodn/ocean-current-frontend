@@ -300,21 +300,20 @@ const ProductContent: React.FC = () => {
 
   // Tidal currents
   if (isTidalCurrents) {
-    if (
-      !hasSelectedParams.point &&
-      useRegionCode !== 'Aust' &&
-      dayjs(urlParams.date, DateFormat.MINUTE, true).isValid()
-    ) {
-      if (isProductDateListLoading) return <Loading />;
-      if (!dateList.length) return <ErrorImage date={useDate} productId={useProductId} />;
-      // Date navigation replaces the URL first, then the image date store follows it.
-      if (
-        useDate.format(DateFormat.MINUTE) !== urlParams.date ||
-        !dateList.some(({ date }) => date === urlParams.date)
-      ) {
-        return <Loading />;
+    const isDatedRegionalMap =
+      !hasSelectedParams.point && useRegionCode !== 'Aust' && dayjs(urlParams.date, DateFormat.MINUTE, true).isValid();
+
+    if (isDatedRegionalMap) {
+      if (!isProductDateListLoading && !dateList.length) {
+        return <ErrorImage date={useDate} productId={useProductId} />;
       }
+      const isDateReady =
+        !isProductDateListLoading &&
+        useDate.format(DateFormat.MINUTE) === urlParams.date &&
+        dateList.some(({ date }) => date === urlParams.date);
+      if (!isDateReady) return <Loading />;
     }
+
     return (
       <DataImageWithTidalCurrentsMap
         mainProduct={mainProduct}
