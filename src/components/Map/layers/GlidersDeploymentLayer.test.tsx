@@ -22,7 +22,7 @@ it('selects a clicked deployment and cleans up delegated map listeners', () => {
   );
   const click = map.on.mock.calls.find(([event]) => event === 'click')![2] as (event: MapMouseEvent) => void;
   click({ features: [{ properties: { id: 'TwoRocks20261028_nrt' } }] } as unknown as MapMouseEvent);
-  expect(onSelect).toHaveBeenCalledWith('TwoRocks20261028_nrt');
+  expect(onSelect).toHaveBeenCalledWith(['TwoRocks20261028_nrt']);
   click({ features: [] } as unknown as MapMouseEvent);
   expect(onSelect).toHaveBeenCalledTimes(1);
   unmount();
@@ -90,12 +90,12 @@ it('frames each selected area once the minimap has space', () => {
   expect(map.fitBounds.mock.calls.map(([bounds]) => bounds)).toEqual([initial, next]);
 });
 
-it('opens the first deployment under the click', () => {
+it('selects all unique deployments under the click', () => {
   const map = { on: vi.fn(), off: vi.fn(), getCanvas: () => ({ style: {} }) };
   vi.mocked(useMap).mockReturnValue({ current: map } as unknown as ReturnType<typeof useMap>);
   const onSelect = vi.fn();
   render(<GlidersDeploymentLayer data={{ type: 'FeatureCollection', features: [] }} onSelect={onSelect} />);
   const click = map.on.mock.calls.find(([event]) => event === 'click')![2] as (event: MapMouseEvent) => void;
-  click({ features: ['first', 'second'].map((id) => ({ properties: { id } })) } as unknown as MapMouseEvent);
-  expect(onSelect).toHaveBeenCalledExactlyOnceWith('first');
+  click({ features: ['first', 'second', 'first'].map((id) => ({ properties: { id } })) } as unknown as MapMouseEvent);
+  expect(onSelect).toHaveBeenCalledExactlyOnceWith(['first', 'second']);
 });

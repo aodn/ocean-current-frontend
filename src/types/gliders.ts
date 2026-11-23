@@ -2,11 +2,13 @@ import type { BoundingBox } from '@/types/map';
 
 export type GliderDataMode = 'nrt' | 'delayed';
 
-/** One deployment rectangle on a published yearmap (`/resource/api/gliders/gliders-yearmaps.json`). */
+/** One deployment on a published yearmap (`/resource/api/gliders/gliders-yearmaps.json`). */
 export interface GliderDeployment {
   mission_name: string;
-  /** Selection rectangle on the source image: [left, top, right, bottom] in pixels. */
+  /** Map rectangle on the source image: [left, top, right, bottom] in pixels. */
   pixel_rect: [number, number, number, number];
+  /** Rectangles over the time plots in the same image coordinates. */
+  plot_pixel_rects?: GliderDeployment['pixel_rect'][];
   /** Geographic bounds as [west, south, east, north]; null when the bounds could not be verified. */
   bbox: BoundingBox | null;
   /** Legacy mission page path, relative to the resource server, e.g. `/gliders/<mission>_4d/latest.html`. */
@@ -21,6 +23,8 @@ export interface GliderYearmap {
   variable: string;
   window: string;
   is_nrt: boolean;
+  /** Original figure path on the resource server. Optional for older publications. */
+  image_url?: string | null;
   deployments: GliderDeployment[];
 }
 

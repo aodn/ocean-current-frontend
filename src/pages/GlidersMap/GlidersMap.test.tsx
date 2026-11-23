@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createMemoryRouter, RouterProvider } from 'react-router';
@@ -30,7 +30,7 @@ vi.mock('@/components/Map/layers/GlidersDeploymentLayer', () => ({
     selectedId,
   }: {
     data: { features: { id: string }[] };
-    onSelect: (id: string) => void;
+    onSelect: (ids: string[]) => void;
     selectedId?: string;
   }) => (
     <div
@@ -39,13 +39,18 @@ vi.mock('@/components/Map/layers/GlidersDeploymentLayer', () => ({
       data-selected={selectedId ?? ''}
     >
       {data.features.map(({ id }) => (
-        <button key={id} onClick={() => onSelect(id)}>
+        <button key={id} onClick={() => onSelect([id])}>
           {id}
         </button>
       ))}
     </div>
   ),
 }));
+
+async function clickMapDeployment(name: string) {
+  const layer = await screen.findByTestId('deployment-layer');
+  await userEvent.click(within(layer).getByRole('button', { name }));
+}
 
 async function selectDataMode(mode: 'NRT' | 'Delayed') {
   await userEvent.click(await screen.findByRole('button', { name: 'Data mode' }));
@@ -220,7 +225,7 @@ it.each(['04d', '12d', '30d'])(
     vi.mocked(source.fetchGliderYearmaps).mockResolvedValue([{ ...yearmap, window }]);
     vi.spyOn(source, 'fetchGliderMission').mockResolvedValue(mission);
     const router = setup();
-    await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
+    await clickMapDeployment(mission.mission_name);
     await screen.findByRole('region', { name: 'Glider mission image' });
     expect(router.state.location.search).toBe(
       `?missionId=TwoRocks20261028_nrt%405.&window=${window.replace(/^0+/, '')}`,
@@ -233,7 +238,7 @@ it.each(['04d', '12d', '30d'])(
 it('keeps the map usable if mission resolution fails', async () => {
   vi.spyOn(source, 'fetchGliderMission').mockRejectedValue(new Error('offline'));
   setup();
-  await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
+  await clickMapDeployment(mission.mission_name);
   await screen.findByRole('alert');
   expect(screen.getByTestId('interactive-map')).toBeInTheDocument();
 });
@@ -249,7 +254,7 @@ it('shows only the map in sidebar mode and selects the displayed mission yearmap
   );
   expect(screen.queryByRole('combobox', { name: 'Year' })).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: 'Glider type' })).not.toBeInTheDocument();
-  await userEvent.click(screen.getByRole('button', { name: 'Bicheno20100813' }));
+  await clickMapDeployment('Bicheno20100813');
   await waitFor(() => expect(router.state.location.pathname).toBe('/product/gliders'));
 });
 
@@ -261,7 +266,7 @@ it('ignores a pending mission when the yearmap changes', async () => {
     }),
   );
   const router = setup();
-  await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
+  await clickMapDeployment(mission.mission_name);
   await screen.findByText('Loading mission…');
   await userEvent.click(screen.getByRole('button', { name: 'Previous year' }));
   await act(async () => finish(mission));
@@ -284,8 +289,8 @@ it('only navigates for the most recently clicked deployment', async () => {
       }),
     );
   const router = setup();
-  await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
-  await userEvent.click(screen.getByRole('button', { name: 'Ceduna20260924_nrt' }));
+  await clickMapDeployment(mission.mission_name);
+  await clickMapDeployment('Ceduna20260924_nrt');
   await act(async () => finishFirst(mission));
   expect(router.state.location.pathname).toBe('/map/gliders');
   await act(async () => finishSecond({ ...mission, id: 'Ceduna20260924_nrt@5.' }));
@@ -300,7 +305,7 @@ it('preserves the active image window when selecting another mission from the mi
   ]);
   vi.spyOn(source, 'fetchGliderMission').mockResolvedValue(mission);
   const router = setup({ isMiniMap: true, missionName: mission.mission_name, window: '12d' });
-  await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
+  await clickMapDeployment(mission.mission_name);
   await screen.findByRole('region', { name: 'Glider mission image' });
   expect(router.state.location.search).toBe('?missionId=TwoRocks20261028_nrt%405.&window=12d');
 });
@@ -308,17 +313,17 @@ it('preserves the active image window when selecting another mission from the mi
 it('preserves the year and type across view switches and loads the catalogue only once', async () => {
   setup();
   await screen.findByTestId('interactive-map');
-  expect(screen.getByRole('switch', { name: 'Table view' })).toHaveAttribute('aria-checked', 'false');
+  expect(screen.getByRole('button', { name: 'Table' })).toHaveAttribute('aria-pressed', 'false');
   expect(source.fetchGliderMissions).not.toHaveBeenCalled();
   await selectDataMode('Delayed');
   await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Year' }), '2011');
-  await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Table' }));
   await screen.findByRole('table');
   expect(screen.getByRole('combobox', { name: 'Year' })).toHaveValue('2011');
   expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Seaglider');
-  await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Map' }));
   expect(screen.getByTestId('deployment-layer')).toHaveAttribute('data-ids', 'Bicheno20100813');
-  await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Table' }));
   expect(screen.getByRole('combobox', { name: 'Year' })).toHaveValue('2011');
   await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Year' }), '2008');
   expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Slocum');
@@ -336,7 +341,7 @@ it('includes deployments without bounds, deduplicates map variants and uses cata
   ]);
   setup();
   await selectDataMode('Delayed');
-  await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Table' }));
   await screen.findByText('02 Jan 2011 – —');
   expect(screen.getAllByRole('row')).toHaveLength(2);
   expect(screen.getAllByRole('button', { name: unbounded.mission_name })).toHaveLength(1);
@@ -351,7 +356,7 @@ it('opens an unbounded mission by keyboard and returns to the table with browser
   const router = setup();
   await selectDataMode('Delayed');
   await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Year' }), '2011');
-  await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Table' }));
   await screen.findByRole('table');
   await userEvent.click(screen.getByRole('button', { name: 'Browse deployments' }));
   await userEvent.click(screen.getByRole('menuitem', { name: 'Mission name (Z–A)' }));
@@ -363,7 +368,7 @@ it('opens an unbounded mission by keyboard and returns to the table with browser
   });
   await screen.findByRole('table');
   expect(router.state.location.pathname).toBe('/map/gliders');
-  expect(screen.getByRole('switch', { name: 'Table view' })).toHaveAttribute('aria-checked', 'true');
+  expect(screen.getByRole('button', { name: 'Table' })).toHaveAttribute('aria-pressed', 'true');
   expect(screen.getByRole('combobox', { name: 'Year' })).toHaveValue('2011');
   expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Seaglider');
   expect(screen.getByRole('button', { name: 'Browse deployments' })).toHaveTextContent('Mission name (Z–A)');
@@ -376,7 +381,7 @@ it('keeps the toolbar usable when all deployments lack bounds', async () => {
   setup();
   await screen.findByText('No deployment areas are available for this map.');
   await selectDataMode('Delayed');
-  await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Table' }));
   expect(await screen.findByRole('table')).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'PortStephens20081125' })).toBeInTheDocument();
 });
@@ -385,16 +390,16 @@ it('shows an empty table state and allows switching back to the map', async () =
   vi.mocked(source.fetchGliderYearmaps).mockResolvedValue([]);
   vi.mocked(source.fetchGliderMissions).mockResolvedValue([]);
   setup();
-  await userEvent.click(await screen.findByRole('switch', { name: 'Table view' }));
+  await userEvent.click(await screen.findByRole('button', { name: 'Table' }));
   await screen.findByText('No deployments are available for the selected year and glider type.');
-  await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Map' }));
   expect(screen.getByText('No deployment areas are available for this map.')).toBeInTheDocument();
 });
 
 it('supports retry when the catalogue fails to load', async () => {
   vi.mocked(source.fetchGliderMissions).mockRejectedValue(new Error('offline'));
   setup();
-  await userEvent.click(await screen.findByRole('switch', { name: 'Table view' }));
+  await userEvent.click(await screen.findByRole('button', { name: 'Table' }));
   await screen.findByText('Unable to load Gliders missions.');
   vi.mocked(source.fetchGliderMissions).mockResolvedValue(catalogueMissions);
   await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
@@ -416,14 +421,14 @@ it('includes catalogue missions absent from all yearmaps and preserves their fil
   const router = setup();
   await selectDataMode('NRT');
   await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Year' }), '2011');
-  await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Table' }));
   expect(await screen.findByRole('button', { name: 'OffMap' })).toBeInTheDocument();
   await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Year' }), '2012');
   expect(screen.getByRole('button', { name: 'OffMap' })).toBeInTheDocument();
-  await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Map' }));
   expect(screen.getByText('No deployment areas are available for this map.')).toBeInTheDocument();
   expect(screen.getByRole('combobox', { name: 'Year' })).toHaveValue('2012');
-  await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Table' }));
   expect(screen.getByRole('button', { name: 'OffMap' })).toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: 'OffMap' }));
   await screen.findByRole('region', { name: 'Glider mission image' });
@@ -437,7 +442,7 @@ it('includes catalogue missions absent from all yearmaps and preserves their fil
 it('reports catalogue missions whose missing year or platform cannot be resolved', async () => {
   vi.mocked(source.fetchGliderMissions).mockResolvedValue([{ ...mission, mission_name: 'Unknown', id: 'unknown' }]);
   setup();
-  await userEvent.click(await screen.findByRole('switch', { name: 'Table view' }));
+  await userEvent.click(await screen.findByRole('button', { name: 'Table' }));
   await screen.findByText(
     'Some catalogue missions have no year, glider type or data mode metadata and cannot be filtered.',
   );
@@ -448,7 +453,7 @@ it.each(['4', '12', '30'])(
   'passes the %s day Details window in the mission URL and preserves table state',
   async (label) => {
     const router = setup();
-    await userEvent.click(await screen.findByRole('switch', { name: 'Table view' }));
+    await userEvent.click(await screen.findByRole('button', { name: 'Table' }));
     await screen.findByRole('table');
     await userEvent.click(screen.getByRole('button', { name: 'Browse deployments' }));
     await userEvent.click(screen.getByRole('menuitem', { name: 'Mission name (A–Z)' }));
@@ -462,7 +467,7 @@ it.each(['4', '12', '30'])(
       await router.navigate(-1);
     });
     await screen.findByRole('table');
-    expect(screen.getByRole('switch', { name: 'Table view' })).toHaveAttribute('aria-checked', 'true');
+    expect(screen.getByRole('button', { name: 'Table' })).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByRole('button', { name: 'Browse deployments' })).toHaveTextContent('Mission name (A–Z)');
   },
 );
@@ -477,7 +482,7 @@ it('opens the selected mission T-S diagram and carries the table filters and sor
   vi.mocked(source.fetchGliderMissions).mockResolvedValue([withDiagram, ...catalogueMissions.slice(1)]);
   vi.mocked(source.fetchGliderMissionById).mockResolvedValue(withDiagram);
   const router = setup();
-  await userEvent.click(await screen.findByRole('switch', { name: 'Table view' }));
+  await userEvent.click(await screen.findByRole('button', { name: 'Table' }));
   await screen.findByRole('table');
   await userEvent.click(screen.getByRole('button', { name: 'Browse deployments' }));
   await userEvent.click(screen.getByRole('menuitem', { name: 'Oldest deployment' }));
@@ -509,6 +514,7 @@ it('preserves mobile initialization on a cached revisit', async () => {
 
 it('exposes mission names and geographic bounds outside the canvas', async () => {
   setup();
+  await userEvent.click(await screen.findByText('Deployment areas', { selector: 'summary' }));
   const list = await screen.findByRole('list', { name: 'Deployment bounds' });
   expect(list).toHaveTextContent('TwoRocks20261028_nrt');
   expect(list).toHaveTextContent(/west .*south .*east .*north/);
@@ -585,8 +591,8 @@ it('ignores a pending map lookup after switching to the table', async () => {
     }),
   );
   const router = setup();
-  await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
-  await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
+  await clickMapDeployment(mission.mission_name);
+  await userEvent.click(screen.getByRole('button', { name: 'Table' }));
   await screen.findByRole('table');
   await act(async () => finish(mission));
   expect(router.state.location.pathname).toBe('/map/gliders');
@@ -597,11 +603,11 @@ it('keeps table access available when yearmaps fail', async () => {
   vi.mocked(source.fetchGliderYearmaps).mockRejectedValue(new Error('offline'));
   setup();
   await screen.findByText('Unable to load Gliders deployments.');
-  await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Table' }));
   await screen.findByRole('table');
-  await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Map' }));
   await screen.findByText('Unable to load Gliders deployments.');
-  expect(screen.getByRole('switch', { name: 'Table view' })).toBeEnabled();
+  expect(screen.getByRole('button', { name: 'Table' })).toBeEnabled();
 });
 
 it('opens an available window when a table mission lacks the default image', async () => {
@@ -609,7 +615,7 @@ it('opens an available window when a table mission lacks the default image', asy
     { ...mission, visualisations: { latest_images: { '4d': null, '12d': '/gliders/twelve.gif' } } },
   ]);
   const router = setup();
-  await userEvent.click(await screen.findByRole('switch', { name: 'Table view' }));
+  await userEvent.click(await screen.findByRole('button', { name: 'Table' }));
   await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
   await waitFor(() => expect(new URLSearchParams(router.state.location.search).get('window')).toBe('12d'));
 });
@@ -617,9 +623,9 @@ it('opens an available window when a table mission lacks the default image', asy
 it('clears a map lookup error when switching views', async () => {
   vi.spyOn(source, 'fetchGliderMission').mockRejectedValue(new Error('offline'));
   setup();
-  await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
+  await clickMapDeployment(mission.mission_name);
   await screen.findByText('Unable to open this mission. Please select a deployment to try again.');
-  await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Table' }));
   await screen.findByRole('table');
   expect(
     screen.queryByText('Unable to open this mission. Please select a deployment to try again.'),
@@ -652,7 +658,7 @@ it('also selects an available history-only window from a table mission', async (
     },
   ]);
   const router = setup();
-  await userEvent.click(await screen.findByRole('switch', { name: 'Table view' }));
+  await userEvent.click(await screen.findByRole('button', { name: 'Table' }));
   await userEvent.click(await screen.findByRole('button', { name: mission.mission_name }));
   await waitFor(() => expect(new URLSearchParams(router.state.location.search).get('window')).toBe('12d'));
 });
@@ -686,7 +692,7 @@ it('keeps map and table in the same explicit mode and preserves it on return fro
   expect(screen.getByRole('combobox', { name: 'Year' })).toHaveValue('2026');
   expect(screen.getByTestId('deployment-layer').dataset.ids).toContain('BassStrait20260316');
   expect(screen.getByTestId('deployment-layer').dataset.ids).not.toContain(mission.mission_name);
-  await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Table' }));
   const delayedButton = await screen.findByRole('button', { name: delayed.mission_name });
   expect(screen.queryByRole('button', { name: mission.mission_name })).not.toBeInTheDocument();
   await userEvent.click(delayedButton);
@@ -706,7 +712,7 @@ it('restores the explicit type after a temporary fallback and a map/table switch
   await userEvent.selectOptions(await screen.findByRole('combobox', { name: 'Year' }), '2011');
   expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Seaglider');
   expect(new URLSearchParams(router.state.location.search).get('platform')).toBe('sl');
-  await userEvent.click(screen.getByRole('switch', { name: 'Table view' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Table' }));
   await screen.findByRole('table');
   await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Year' }), '2026');
   expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Slocum');

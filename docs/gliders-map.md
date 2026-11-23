@@ -1,15 +1,15 @@
 # Gliders deployment map
 
 `/map/gliders` shows glider deployment rectangles on the shared Mapbox map beside the product-navigation sidebar.
-The toolbar switches between Map view (default) and Table view while keeping the selected year and glider type.
+The toolbar switches between Map (default), Table and Annual plots while keeping the selected year and glider type.
 View and filter selections are stored in the URL (`view`, `year`, `platform`, `sort`).
 
 ## Data source
 
 Geometry comes from the published `/resource/api/gliders-yearmaps.json` (`schema_version: 1`), fetched once with
 `ec2ProxyClient` and cached with TanStack Query (`sharedQueryConfig`). Each entry in `maps` is one yearmap
-(`id`, `year`, `platform`, `variable`, `window`, `is_nrt`) with its `deployments`
-(`mission_name`, `pixel_rect`, `bbox`, `url`). No mission-endpoint or legacy HTML/image requests are made for geometry.
+(`id`, `year`, `platform`, `variable`, `window`, `is_nrt`, `image_url`) with its `deployments`
+(`mission_name`, `pixel_rect`, `plot_pixel_rects`, `bbox`, `url`). No mission-endpoint or legacy HTML/image requests are made for geometry.
 
 ## Map selection
 
@@ -22,14 +22,25 @@ maps for that year, then prefers the default variable and window in `src/configs
 Each deployment `bbox` (`[west, south, east, north]`) becomes a polygon via `convertAreaCoordsToGeoJsonCoordinates`.
 Deployments with `bbox: null` are skipped on the map. Selecting a polygon opens the existing mission image view.
 A map with no bounds shows an empty state; a failed request shows an error with a retry button.
-The map/table switch remains available while yearmaps load or fail.
-Mission names and geographic bounds also have a text alternative outside the canvas.
+The view selector remains available while yearmaps load or fail.
+The Deployment areas list below the map provides keyboard access to each polygon and its geographic bounds.
+Clicking or tapping an overlap opens a chooser for the missions at that point.
 The minimap falls back to a drawable map if a mission/window has no matching yearmap, and its loading/error
 feedback remains visible below the map. Mission request failures offer a retry in the main content.
 
 Unavailable URL years fall back after resolving the applicable metadata. Explicit map filters absent from
 yearmaps load the catalogue as well, preserving saved catalogue-only selections. Empty yearmaps cannot
 supply the default glider type. The mission name remains an h1 in the main content when the sidebar is collapsed.
+
+## Annual plots
+
+The original figure is loaded through the resource proxy. Its map, time plots,
+axes and legends are displayed together. The source `pixel_rect` and `plot_pixel_rects`
+coordinates position buttons over the map and plots relative to the original image dimensions, including
+after resizing or using Enlarge figure. Overlapping buttons open the same mission
+chooser as the interactive map. Annual plots retains the selected type when
+there is no figure for that year. The mode control appears when both NRT and
+Delayed figures exist for the selection.
 
 ## Table view
 

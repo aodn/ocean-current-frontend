@@ -115,16 +115,169 @@ test('returns from a map deployment to the same Gliders map selection', async ({
   await expect(productPage.backToDeployments).toHaveAttribute('href', mapUrl);
   await productPage.backToDeployments.click();
   await expect(page).toHaveURL(mapUrl);
+  await page.getByText('Deployment areas', { exact: true }).press('Enter');
+  await page
+    .getByRole('list', { name: 'Deployment bounds' })
+    .getByRole('button', { name: mission.mission_name })
+    .press('Enter');
+  await expect(page.getByRole('heading', { name: mission.mission_name, exact: true })).toBeVisible();
 });
 
-test('clears Gliders parameters when switching maps in the sidebar', async ({ page }) => {
+test.describe('Gliders annual figures and overlapping deployments', () => {
+  test.use({ hasTouch: true });
+
+  test('keeps the complete figure and its mission areas aligned when fitted and enlarged', async ({
+    page,
+    productPage,
+  }) => {
+    const data = JSON.parse(readFileSync(`${fixtureRoot}yearmaps.json`, 'utf8')) as GliderYearmapsResponse;
+    const slocum = data.maps.find(({ id }) => id === '2026_sl_temp_04d_nrt')!;
+    const delayed = data.maps.find(({ id }) => id === '2026_sl_temp_04d')!;
+    const seaglider = data.maps.find(({ id }) => id === '2011_sg_temp_04d')!;
+    slocum.image_url = '/gliders/yearmaps/2026_sl_temp_nrt.gif';
+    delayed.image_url = '/gliders/yearmaps/2026_sl_temp.gif';
+    seaglider.image_url = '/gliders/yearmaps/2011_sg_temp.gif';
+    const names = ['Bicheno20100813', 'Bicheno20110406'];
+    const [first, second] = names;
+    const missions = names.map((mission_name) => ({
+      id: `${mission_name}@5.01`,
+      mission_name,
+      visualisations: {},
+      start_date: '2011-04-06',
+      is_nrt: false,
+      glider_id: 'SG154',
+    }));
+    seaglider.deployments[0].plot_pixel_rects = [[60, 693, 69, 756]];
+    seaglider.deployments.push({
+      ...seaglider.deployments[0],
+      mission_name: second,
+      pixel_rect: [451, 343, 480, 378],
+      plot_pixel_rects: [[201, 693, 355, 757]],
+    });
+    await page.route('**/resource/api/gliders/gliders-yearmaps.json', (route) => route.fulfill({ json: data }));
+    await page.route('**/api/v1/gliders/missions?*', (route) => {
+      const name = new URL(route.request().url()).searchParams.get('q');
+      const matches = name ? missions.filter(({ mission_name }) => mission_name === name) : missions;
+      return route.fulfill({ json: { missions: matches, total: matches.length } });
+    });
+    await page.route('**/api/v1/gliders/missions/*', (route) =>
+      route.fulfill({ json: missions.find(({ id }) => route.request().url().endsWith(encodeURIComponent(id))) }),
+    );
+    await page.route('**/resource/gliders/yearmaps/*.gif', (route) => {
+      const sg = route.request().url().endsWith('2011_sg_temp.gif');
+      return route.fulfill({
+        contentType: 'image/svg+xml',
+        body: sg
+          ? '<svg xmlns="http://www.w3.org/2000/svg" width="650" height="900"><rect x="451" y="342" width="54" height="33" fill="red"/><rect x="60" y="693" width="9" height="63" fill="red"/></svg>'
+          : '<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="580"/>',
+      });
+    });
+    await page.setViewportSize({ width: 1280, height: 844 });
+    await page.goto('/map/gliders?year=2026&platform=sl');
+    await expect(page.getByRole('region', { name: 'Interactive Australia deployment map' })).toBeVisible();
+    await page.getByRole('button', { name: 'Annual plots', exact: true }).press('Enter');
+    const image = page.getByRole('img', { name: /Australia deployment map, annual time plots and legends/ });
+    const mode = page.getByRole('button', { name: 'Data mode' });
+    await expect(image).toHaveAttribute('src', `/resource${slocum.image_url}`);
+    await mode.click();
+    await page.getByRole('menuitemradio', { name: 'Delayed', exact: true }).click();
+    await expect(image).toHaveAttribute('src', `/resource${delayed.image_url}`);
+    const type = page.getByRole('button', { name: 'Glider type' });
+    await type.click();
+    await page.getByRole('menuitemradio', { name: 'Seaglider', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'Seaglider · 2026' })).toBeVisible();
+    await expect(page.getByText('No annual plot is available for this selection.')).toBeVisible();
+    await page.getByRole('combobox', { name: 'Year', exact: true }).selectOption('2011');
+    await expect(image).toHaveAttribute('src', `/resource${seaglider.image_url}`);
+    await expect(mode).toHaveCount(0);
+
+    const area = page.getByRole('button', { name: `Select deployment ${first}`, exact: true });
+    const plot = page.getByRole('button', { name: `Select plot for ${first}`, exact: true });
+    await expect(area).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Select deployment Perth20110626_1' })).toBeVisible();
+    const assertPosition = async () => {
+      const frame = (await image.boundingBox())!;
+      for (const [target, x, y, width] of [
+        [area, 451, 342, 54],
+        [plot, 60, 693, 9],
+      ] as const) {
+        const square = (await target.boundingBox())!;
+        expect(Math.abs(square.x - (frame.x + (x / 650) * frame.width))).toBeLessThan(1);
+        expect(Math.abs(square.y - (frame.y + (y / 900) * frame.height))).toBeLessThan(1);
+        expect(Math.abs(square.width - (width / 650) * frame.width)).toBeLessThan(1);
+      }
+      return frame.width;
+    };
+    const originalWidth = await assertPosition();
+    await page.setViewportSize({ width: 390, height: 844 });
+    const fittedWidth = await assertPosition();
+    expect(fittedWidth).toBeLessThan(originalWidth);
+    await page.getByRole('button', { name: 'Enlarge figure' }).press('Enter');
+    expect(await assertPosition()).toBeGreaterThan(originalWidth);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+    await area.scrollIntoViewIfNeeded();
+    const square = (await area.boundingBox())!;
+    await page.touchscreen.tap(square.x + 15, square.y + 15);
+    const chooser = page.getByRole('dialog', { name: 'Deployments in this area' });
+    await expect(chooser.getByRole('button', { name: first, exact: true })).toBeVisible();
+    await chooser.getByRole('button', { name: second, exact: true }).click();
+    await expect(page.getByRole('heading', { name: second, exact: true })).toBeVisible();
+    await productPage.backToDeployments.click();
+    await area.press('Enter');
+    await expect(page.getByRole('heading', { name: first, exact: true })).toBeVisible();
+    await productPage.backToDeployments.click();
+    await page.getByRole('button', { name: 'Enlarge figure' }).press('Enter');
+    await plot.tap();
+    await expect(page.getByRole('heading', { name: first, exact: true })).toBeVisible();
+    await productPage.backToDeployments.click();
+    await page.getByRole('button', { name: `Select plot for ${second}`, exact: true }).press('Enter');
+    await expect(page.getByRole('heading', { name: second, exact: true })).toBeVisible();
+    await productPage.backToDeployments.click();
+    await page.getByRole('button', { name: 'Table', exact: true }).click();
+    await expect(page.getByRole('table').getByRole('button', { name: first, exact: true })).toBeVisible();
+    await page.goto('/map/gliders?view=annual&year=2007&platform=sl');
+    await expect(page.getByRole('heading', { name: 'Slocum · 2007' })).toBeVisible();
+    await expect(page.getByText('No annual plot is available for this selection.')).toBeVisible();
+  });
+
+  test('offers every map deployment at an overlapping touch point', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 844 });
+    const data = JSON.parse(readFileSync(`${fixtureRoot}yearmaps.json`, 'utf8')) as GliderYearmapsResponse;
+    const map = data.maps.find(({ id }) => id === '2026_sl_temp_04d_nrt')!;
+    map.deployments = map.deployments.slice(0, 2).map((deployment) => ({ ...deployment, bbox: [137, -31, 143, -26] }));
+    await page.route('**/resource/api/gliders/gliders-yearmaps.json', (route) => route.fulfill({ json: data }));
+    await page.goto('/map/gliders');
+    const canvas = page.getByRole('region', { name: 'Interactive Australia deployment map' }).locator('canvas');
+    await expect
+      .poll(async () => {
+        await canvas.hover({ position: { x: 10, y: 10 } });
+        await canvas.hover();
+        return canvas.evaluate((element) => element.style.cursor);
+      })
+      .toBe('pointer');
+    await canvas.tap();
+    const chooser = page.getByRole('dialog', { name: 'Deployments in this area' });
+    for (const { mission_name } of map.deployments) {
+      await expect(chooser.getByRole('button', { name: mission_name, exact: true })).toBeVisible();
+    }
+    await page.keyboard.press('Escape');
+    await expect(chooser).toHaveCount(0);
+  });
+});
+
+test('keeps the sidebar width and clears Gliders parameters when switching maps', async ({ page }) => {
   await page.goto('/map/gliders?view=map&year=2011&platform=sg&sort=name-desc&missionId=test&window=12d');
   const menu = page.getByTestId('map-sidebar-menu');
+  await expect(menu).toBeVisible();
+  const { width } = (await menu.boundingBox())!;
   await menu.getByRole('menuitem').filter({ hasText: 'Argo' }).click();
   await expect(page).toHaveURL(/\/map\/argo$/);
+  await expect(page.getByRole('button', { name: 'Reset to latest date' })).toBeVisible();
+  expect((await menu.boundingBox())?.width).toBe(width);
   await menu.getByRole('menuitem').filter({ hasText: 'Gliders' }).click();
   await expect(page).toHaveURL(/\/map\/gliders/);
   await expect(page.getByRole('region', { name: 'Interactive Australia deployment map' })).toBeVisible();
+  expect((await menu.boundingBox())?.width).toBe(width);
 });
 
 for (const width of [1280, 390]) {
@@ -380,12 +533,9 @@ for (const width of [1280, 390]) {
     await page.getByRole('menuitemradio', { name: 'Delayed', exact: true }).click();
     const year = page.getByRole('combobox', { name: 'Year', exact: true });
     const type = page.getByRole('button', { name: 'Glider type', exact: true });
-    await expect(page.getByRole('switch', { name: 'Table view', exact: true })).toHaveAttribute(
-      'aria-checked',
-      'false',
-    );
+    await expect(page.getByRole('button', { name: 'Table', exact: true })).toHaveAttribute('aria-pressed', 'false');
     await year.selectOption('2011');
-    await page.getByRole('switch', { name: 'Table view', exact: true }).click();
+    await page.getByRole('button', { name: 'Table', exact: true }).click();
     const table = page.getByRole('table');
     await expect(table).toBeVisible();
     await expect(table.getByRole('row')).toHaveCount(4);
@@ -393,13 +543,13 @@ for (const width of [1280, 390]) {
     const initialCatalogueRequests = catalogueRequests;
     await expect(year).toHaveValue('2011');
     await expect(type).toHaveText('Seaglider');
-    await page.getByRole('switch', { name: 'Table view', exact: true }).click();
+    await page.getByRole('button', { name: 'Map', exact: true }).click();
     await expect(
       page.getByRole('region', { name: 'Interactive Australia deployment map' }),
     ).toHaveAccessibleDescription(/1 highlighted deployment areas/);
     await expect(year).toHaveValue('2011');
-    await page.getByRole('switch', { name: 'Table view', exact: true }).click();
-    for (const control of [year, type, page.getByRole('switch', { name: 'Table view', exact: true })]) {
+    await page.getByRole('button', { name: 'Table', exact: true }).click();
+    for (const control of [year, type, page.getByRole('button', { name: 'Table', exact: true })]) {
       await expect(control).toBeVisible();
       await control.scrollIntoViewIfNeeded();
       const bounds = (await control.boundingBox())!;
@@ -440,7 +590,7 @@ for (const width of [1280, 390]) {
     await expect(table).toBeVisible();
     await expect(year).toHaveValue('2011');
     await expect(type).toHaveText('Seaglider');
-    await expect(page.getByRole('switch', { name: 'Table view', exact: true })).toHaveAttribute('aria-checked', 'true');
+    await expect(page.getByRole('button', { name: 'Table', exact: true })).toHaveAttribute('aria-pressed', 'true');
     await expect(page.getByRole('button', { name: 'Browse deployments' })).toHaveText('Alongshore to Darwin');
     expect(catalogueRequests).toBe(initialCatalogueRequests);
     await expect(table.getByRole('row').nth(2)).toContainText('Bicheno20100813');
@@ -595,7 +745,7 @@ for (const width of [1280, 390]) {
     );
     await page.goto('/map/gliders');
     const mode = page.getByRole('button', { name: 'Data mode' });
-    const view = page.getByRole('switch', { name: 'Table view', exact: true });
+    const view = page.getByRole('button', { name: 'Table', exact: true });
     const map = page.getByRole('region', { name: 'Interactive Australia deployment map' });
     await expect(mode).toHaveText('NRT');
     await expect(map).toHaveAccessibleDescription(/12 highlighted deployment areas/);
@@ -788,6 +938,12 @@ for (const [width, view] of [
     const controls = page.getByRole('group', { name: 'Gliders controls' });
     const notes = controls.getByRole('link', { name: 'Notes & resources' });
     await expect(controls.getByRole('combobox', { name: 'Year' })).toBeVisible();
+    const previousYear = (await controls.getByRole('button', { name: 'Previous year' }).boundingBox())!;
+    const controlsBounds = (await controls.boundingBox())!;
+    const viewSelector = (await page.getByRole('group', { name: 'Deployment view' }).boundingBox())!;
+    expect(previousYear.x - controlsBounds.x).toBeLessThanOrEqual(5);
+    if (width === 1280) expect(previousYear.x).toBeLessThan(viewSelector.x);
+    else expect(previousYear.y).toBeLessThan(viewSelector.y);
     const sameRow = await controls.evaluate((bar) => {
       const centers = Array.from(bar.children, (child) => {
         const { top, height } = child.getBoundingClientRect();
@@ -829,8 +985,8 @@ for (const [width, view] of [
     await expect(page.getByRole('combobox', { name: 'Year' })).toHaveValue('2011');
     await expect(page.getByRole('button', { name: 'Glider type' })).toHaveText('Seaglider');
     await expect(page.getByRole('button', { name: 'Data mode' })).toHaveText('Delayed');
-    await expect(page.getByRole('switch', { name: 'Table view' })).toHaveAttribute(
-      'aria-checked',
+    await expect(page.getByRole('button', { name: 'Table', exact: true })).toHaveAttribute(
+      'aria-pressed',
       String(view === 'table'),
     );
   });
