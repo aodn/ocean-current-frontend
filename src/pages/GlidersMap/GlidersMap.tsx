@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useId, useMemo, useRef, useState } from 're
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router';
 import dayjs from 'dayjs';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { GLIDER_MODE_LABELS, GLIDER_PLATFORM_LABELS } from '@/configs/products/gliders-map';
 import { Button } from '@/components/Shared';
 import type { GliderMission, GliderYearmap } from '@/types/gliders';
 import { ArrowIcon, CalendarIcon, InfoIcon, ResetIcon } from '@/components/Shared/Icons';
@@ -388,9 +389,9 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
           <InfoIcon size="sm" color="imos-deep-blue" aria-hidden="true" className="mt-0.5 shrink-0" />
           <div>
             <p className="font-semibold">
-              Showing {activePlatform === 'sl' ? 'Slocum' : 'Seaglider'} for {year}
+              Showing {GLIDER_PLATFORM_LABELS[activePlatform]} for {year}
             </p>
-            <p>{platform === 'sl' ? 'Slocum' : 'Seaglider'} isn’t available for this year.</p>
+            <p>{GLIDER_PLATFORM_LABELS[platform]} isn’t available for this year.</p>
           </div>
         </div>
       )}
@@ -439,7 +440,7 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
         <GlidersAnnualPlot
           key={`${annualMap?.id}:${annualMap?.image_url}`}
           yearmap={annualMap}
-          title={year === undefined ? 'Annual plots' : `${activePlatform === 'sg' ? 'Seaglider' : 'Slocum'} · ${year}`}
+          title={year === undefined ? 'Annual plots' : `${GLIDER_PLATFORM_LABELS[activePlatform ?? 'sl']} · ${year}`}
           onSelect={selectAreas}
         />
       ) : !yearmap || deployments.features.length === 0 ? (
@@ -450,10 +451,11 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
             <ErrorContent
               title={
                 year !== undefined && activePlatform
-                  ? `No map areas for ${activePlatform === 'sl' ? 'Slocum' : 'Seaglider'} in ${year} (${mode === 'nrt' ? 'NRT' : 'Delayed'}).`
+                  ? `No map areas for ${GLIDER_PLATFORM_LABELS[activePlatform]} in ${year} (${GLIDER_MODE_LABELS[mode]}).`
                   : 'No deployment areas to show.'
               }
               description="Try changing the filters or open Table to browse deployments."
+              headingAs="h2"
               showHomeButton={false}
             />
           </div>

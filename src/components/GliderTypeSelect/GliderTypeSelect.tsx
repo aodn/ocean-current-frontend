@@ -1,3 +1,4 @@
+import { GLIDER_PLATFORM_LABELS } from '@/configs/products/gliders-map';
 import GliderFilterMenu from '@/components/GliderFilterMenu/GliderFilterMenu';
 import { GlidersIcon } from '@/components/Shared/Icons';
 import type { GliderYearmap } from '@/types/gliders';
@@ -16,7 +17,7 @@ const GliderTypeSelect = ({
   <GliderFilterMenu
     label="Glider type"
     icon={GlidersIcon}
-    elements={platforms.map((id) => ({ id, label: id === 'sl' ? 'Slocum' : 'Seaglider' }))}
+    elements={platforms.map((id) => ({ id, label: GLIDER_PLATFORM_LABELS[id] }))}
     value={value}
     onChange={onChange}
   />

@@ -1,10 +1,11 @@
+import { GLIDER_MODE_LABELS } from '@/configs/products/gliders-map';
 import GliderFilterMenu from '@/components/GliderFilterMenu/GliderFilterMenu';
 import { DataIcon } from '@/components/Shared/Icons';
 import type { GliderDataMode } from '@/types/gliders';
 
 const elements = [
-  { id: 'nrt', label: 'NRT' },
-  { id: 'delayed', label: 'Delayed' },
+  { id: 'nrt', label: GLIDER_MODE_LABELS.nrt },
+  { id: 'delayed', label: GLIDER_MODE_LABELS.delayed },
 ] as const;
 
 const GliderDataModeSelect = ({
