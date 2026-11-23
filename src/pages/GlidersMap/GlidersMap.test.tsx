@@ -107,8 +107,14 @@ it('shows an empty state when no yearmap has bounds', async () => {
     { ...maps[0], deployments: maps[0].deployments.map((deployment) => ({ ...deployment, bbox: null })) },
   ]);
   setup();
-  await screen.findByText('No deployment areas are available for this map.');
+  await screen.findByRole('heading', { name: 'No map areas for Slocum in 2008 (NRT).', level: 2 });
   expect(screen.queryByTestId('interactive-map')).not.toBeInTheDocument();
+});
+
+it('shows a compact empty message in the minimap', async () => {
+  vi.mocked(source.fetchGliderYearmaps).mockResolvedValue([]);
+  setup({ isMiniMap: true });
+  expect(await screen.findByRole('status')).toHaveTextContent(/^No deployment areas to show\.$/);
 });
 
 it('supports retry after the request fails', async () => {
@@ -145,7 +151,9 @@ it('switches types locally and selects an available type when changing years', a
   expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Seaglider');
   await userEvent.selectOptions(year, '2008');
   expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Seaglider');
-  expect(screen.getByText('No deployment areas are available for this map.')).toBeInTheDocument();
+  expect(
+    screen.getByRole('heading', { name: 'No map areas for Seaglider in 2008 (Delayed).', level: 2 }),
+  ).toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: 'Glider type' }));
   await userEvent.click(screen.getByRole('menuitemradio', { name: 'Slocum' }));
   expect(screen.getByTestId('deployment-layer')).toHaveAttribute(
@@ -379,7 +387,7 @@ it('keeps the toolbar usable when all deployments lack bounds', async () => {
     { ...maps[0], deployments: maps[0].deployments.map((deployment) => ({ ...deployment, bbox: null })) },
   ]);
   setup();
-  await screen.findByText('No deployment areas are available for this map.');
+  await screen.findByRole('heading', { name: 'No map areas for Slocum in 2008 (NRT).', level: 2 });
   await selectDataMode('Delayed');
   await userEvent.click(screen.getByRole('button', { name: 'Table' }));
   expect(await screen.findByRole('table')).toBeInTheDocument();
@@ -393,7 +401,7 @@ it('shows an empty table state and allows switching back to the map', async () =
   await userEvent.click(await screen.findByRole('button', { name: 'Table' }));
   await screen.findByText('No deployments are available for the selected year and glider type.');
   await userEvent.click(screen.getByRole('button', { name: 'Map' }));
-  expect(screen.getByText('No deployment areas are available for this map.')).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'No deployment areas to show.', level: 2 })).toBeInTheDocument();
 });
 
 it('supports retry when the catalogue fails to load', async () => {
@@ -426,7 +434,9 @@ it('includes catalogue missions absent from all yearmaps and preserves their fil
   await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Year' }), '2012');
   expect(screen.getByRole('button', { name: 'OffMap' })).toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: 'Map' }));
-  expect(screen.getByText('No deployment areas are available for this map.')).toBeInTheDocument();
+  expect(
+    screen.getByRole('heading', { name: 'No map areas for Seaglider in 2012 (NRT).', level: 2 }),
+  ).toBeInTheDocument();
   expect(screen.getByRole('combobox', { name: 'Year' })).toHaveValue('2012');
   await userEvent.click(screen.getByRole('button', { name: 'Table' }));
   expect(screen.getByRole('button', { name: 'OffMap' })).toBeInTheDocument();
@@ -558,7 +568,9 @@ it('resolves a saved catalogue-only map selection before falling back', async ()
   await act(async () => finish([{ ...mission, mission_name: 'OffMap', glider_id: 'SG152', start_date: '2012-01-01' }]));
   expect(await screen.findByRole('combobox', { name: 'Year' })).toHaveValue('2012');
   expect(screen.getByRole('button', { name: 'Glider type' })).toHaveTextContent('Seaglider');
-  expect(screen.getByText('No deployment areas are available for this map.')).toBeInTheDocument();
+  expect(
+    screen.getByRole('heading', { name: 'No map areas for Seaglider in 2012 (NRT).', level: 2 }),
+  ).toBeInTheDocument();
 });
 
 it('does not pick a platform whose yearmap is empty', async () => {
@@ -721,7 +733,8 @@ it('restores the explicit type after a temporary fallback and a map/table switch
 
 it('does not silently fall back to delayed data when NRT is empty', async () => {
   setup({}, false, '?year=2011');
-  await screen.findByText('No deployment areas are available for this map.');
+  await screen.findByRole('heading', { name: 'No map areas for Seaglider in 2011 (NRT).' });
+  expect(screen.getByText('Try changing the filters or open Table to browse deployments.')).toBeVisible();
   expect(screen.getByRole('button', { name: 'Data mode' })).toHaveTextContent('NRT');
   await selectDataMode('Delayed');
   expect(screen.getByTestId('deployment-layer').dataset.ids).toContain('Bicheno20100813');
