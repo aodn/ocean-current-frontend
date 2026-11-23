@@ -8,7 +8,7 @@ import type { BoundingBox } from '@/types/map';
 import { color } from '@/styles/colors';
 
 interface Props {
-  onSelect: (missionName: string) => void;
+  onSelect: (missionNames: string[]) => void;
   data: FeatureCollection<Polygon, GliderDeploymentProperties>;
   /** Mission whose deployment area is highlighted. */
   selectedId?: string;
@@ -42,8 +42,11 @@ const GlidersDeploymentLayer = ({ data, onSelect, selectedId, selectedBounds }: 
   useEffect(() => {
     if (!map) return;
     const handleClick = (event: MapMouseEvent) => {
-      const id = event.features?.[0]?.properties?.id;
-      if (typeof id === 'string') onSelect(id);
+      const ids = event.features?.flatMap(({ properties }) => {
+        const id: unknown = properties?.id;
+        return typeof id === 'string' ? [id] : [];
+      });
+      if (ids?.length) onSelect([...new Set(ids)]);
     };
     const enter = () => {
       const canvas = map.getCanvas();
