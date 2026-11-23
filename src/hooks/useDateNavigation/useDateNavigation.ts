@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useSearchParams } from 'react-router';
 import dayjs, { Dayjs } from 'dayjs';
 import { DateFormat, DateItem } from '@/types/date';
-import { ProductID } from '@/types/product';
+import { ProductID, isTidalCurrents } from '@/types/product';
 import { useArgoStore } from '@/stores/argo-store/argoStore';
 import { isHourlyFormat, findFirstDateTimeForSelectedDay } from '@/utils/date-utils/hourly';
 import { findClosestDateIndex, findNearestDateWithinWindow } from '@/utils/date-utils/date';
@@ -13,7 +13,7 @@ import { setIsDateResolving, setIsProductImageLoading } from '@/stores/product-s
 type NavigationMode = 'dateList' | 'dateRange';
 
 const isTidalMap = (productId: ProductID | undefined, format: DateFormat) =>
-  (productId === 'tidalCurrents-spd' || productId === 'tidalCurrents-sl') && format === DateFormat.MINUTE;
+  !!productId && isTidalCurrents(productId) && format === DateFormat.MINUTE;
 
 interface UseDateListNavigationProps {
   dateFormat: DateFormat;

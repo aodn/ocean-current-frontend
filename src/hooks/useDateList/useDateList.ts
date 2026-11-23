@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router';
 import dayjs from 'dayjs';
 import { getDateFormatByProductIdAndRegionScope } from '@/utils/date-utils/date';
-import { ProductID } from '@/types/product';
+import { ProductID, isTidalCurrents } from '@/types/product';
 import { API_IMAGE_LIST_ENABLED_PRODUCTS, FIXED_IMAGE_LIST_PRODUCTS } from '@/configs/products';
 import { fetchImageListByProductIdAndRegion, fetchTidalCurrentsMonthPlotsByPoint } from '@/services/imageList';
 import { ImageFile, ImageListResponse } from '@/types/imageList';
@@ -116,8 +116,7 @@ const useDateList = ({ productId, mode = 'list' }: UseDateListOptions) => {
   const metaData = useArgoStore((state) => state);
   const wmoId = metaData.selectedArgoParams.worldMeteorologicalOrgId;
   const { isTidalCurrentsPointSelected, selectedPoint } = useTidalCurrentPoint(productId);
-  const isTidalCurrentsMapProduct =
-    (productId === 'tidalCurrents-spd' || productId === 'tidalCurrents-sl') && !isTidalCurrentsPointSelected;
+  const isTidalCurrentsMapProduct = isTidalCurrents(productId) && !isTidalCurrentsPointSelected;
   // A regional link can change before the product store catches up. Resolve its date against its own index.
   const region = (isTidalCurrentsMapProduct && searchParams.get('region')) || regionCodeFromStore;
 
