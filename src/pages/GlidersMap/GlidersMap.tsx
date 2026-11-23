@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useId, useMemo, useRef, useState } from 're
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router';
 import dayjs from 'dayjs';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { GLIDER_MODE_LABELS, GLIDER_PLATFORM_LABELS } from '@/configs/products/gliders-map';
+import { GLIDER_MODE_LABELS, GLIDER_PLATFORM_LABELS, GLIDERS_DEFAULT_LAYER } from '@/configs/products/gliders-map';
 import { Button } from '@/components/Shared';
 import type { GliderMission, GliderYearmap } from '@/types/gliders';
 import { ArrowIcon, CalendarIcon, InfoIcon, ResetIcon } from '@/components/Shared/Icons';
@@ -17,7 +17,11 @@ import { fetchGliderMission, fetchGliderMissions, fetchGliderYearmaps } from '@/
 import { buildGliderDeployments, selectGliderYearmap } from '@/utils/gliders-map-utils/deployments';
 import GliderDataModeSelect from '@/components/GliderDataModeSelect/GliderDataModeSelect';
 import GliderTypeSelect from '@/components/GliderTypeSelect/GliderTypeSelect';
-import { getGliderMissionDataMode, getGliderMissionFilters } from '@/utils/gliders-map-utils/catalogue';
+import {
+  getGliderMissionDataMode,
+  getGliderMissionFilters,
+  resolveGliderResourceUrl,
+} from '@/utils/gliders-map-utils/catalogue';
 import { GLIDER_MISSION_WINDOWS, GLIDER_TS_VIEW } from '@/services/hooks/useGliderMission';
 import GlidersTable from './GlidersTable';
 import GlidersAnnualPlot from './GlidersAnnualPlot';
@@ -26,6 +30,21 @@ const views = [
   ['map', 'Map'],
   ['table', 'Table'],
   ['annual', 'Annual plots'],
+] as const;
+
+const annualVariables = [
+  ['temp', 'Temperature'],
+  ['tempa', 'Temperature anomaly'],
+  ['psal', 'Salinity'],
+  ['psala', 'Salinity anomaly'],
+  ['flu2', 'Fluorescence'],
+  ['doxy', 'Oxygen'],
+] as const;
+
+const annualWindows = [
+  ['04d', '4 days'],
+  ['12d', '12 days'],
+  ['30d', '30 days'],
 ] as const;
 
 interface Props {
@@ -177,12 +196,45 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
   );
   const annualMaps =
     view === 'annual'
-      ? (yearmaps ?? []).filter((map) => map.year === year && map.platform === activePlatform && map.image_url)
+      ? (yearmaps ?? []).filter(
+          (map) =>
+            map.year === year &&
+            map.platform === activePlatform &&
+            annualVariables.some(([variable]) => variable === map.variable) &&
+            annualWindows.some(([window]) => window === map.window) &&
+            resolveGliderResourceUrl(map.image_url),
+        )
       : [];
   const showAnnualMode = annualMaps.some(({ is_nrt }) => is_nrt) && annualMaps.some(({ is_nrt }) => !is_nrt);
-  const annualMap = selectGliderYearmap(
-    showAnnualMode ? annualMaps.filter(({ is_nrt }) => is_nrt === (mode === 'nrt')) : annualMaps,
+  const modeMaps = showAnnualMode ? annualMaps.filter(({ is_nrt }) => is_nrt === (mode === 'nrt')) : annualMaps;
+  const variables = annualVariables.filter(([variable]) => modeMaps.some((map) => map.variable === variable));
+  const variable =
+    variables.find(([variable]) => variable === params.get('var'))?.[0] ??
+    variables.find(([variable]) => variable === GLIDERS_DEFAULT_LAYER.variable)?.[0] ??
+    variables[0]?.[0];
+  const windows = annualWindows.filter(([window]) =>
+    modeMaps.some((map) => map.variable === variable && map.window === window),
   );
+  const annualWindow = windows.find(([window]) => window === params.get('window'))?.[0] ?? windows[0]?.[0];
+  const annualMap = modeMaps.find((map) => map.variable === variable && map.window === annualWindow);
+
+  const setAnnualSelection = (variable: string, preferredWindow: string) => {
+    const window =
+      modeMaps.find((map) => map.variable === variable && map.window === preferredWindow)?.window ??
+      annualWindows.find(([window]) => modeMaps.some((map) => map.variable === variable && map.window === window))?.[0];
+    if (!window || year === undefined || !activePlatform) return;
+    setParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        next.set('year', String(year));
+        next.set('platform', activePlatform);
+        next.set('var', variable);
+        next.set('window', window);
+        return next;
+      },
+      { replace: true },
+    );
+  };
   const displayedYearmap = view === 'annual' ? annualMap : yearmap;
   const mission = useMutation({
     mutationFn: async ({
@@ -212,6 +264,7 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
   returnParams.set('view', view);
   if (year !== undefined) returnParams.set('year', String(year));
   returnParams.set('mode', mode);
+  if (view === 'annual' && activePlatform) returnParams.set('platform', activePlatform);
   const glidersReturnTo = `/map/gliders?${returnParams}`;
 
   const selectMission = (missionName: string, catalogueMission?: GliderMission, selectedWindow?: string) => {
@@ -437,12 +490,46 @@ const GlidersMap = ({ isMiniMap = false, missionName, window }: Props) => {
       ) : resolvingSelection ? (
         <p role="status">Loading missions…</p>
       ) : view === 'annual' ? (
-        <GlidersAnnualPlot
-          key={`${annualMap?.id}:${annualMap?.image_url}`}
-          yearmap={annualMap}
-          title={year === undefined ? 'Annual plots' : `${GLIDER_PLATFORM_LABELS[activePlatform ?? 'sl']} · ${year}`}
-          onSelect={selectAreas}
-        />
+        <>
+          {annualMap && (
+            <div className="text-imos-dark-grey mb-3 flex flex-wrap gap-3 text-sm">
+              <label className="flex items-center gap-2">
+                Variable
+                <select
+                  className="border-imos-calypso-blue/50 min-h-11 rounded-md border bg-white px-2"
+                  value={annualMap.variable}
+                  onChange={(event) => setAnnualSelection(event.target.value, annualMap.window)}
+                >
+                  {variables.map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="flex items-center gap-2">
+                Time window
+                <select
+                  className="border-imos-calypso-blue/50 min-h-11 rounded-md border bg-white px-2"
+                  value={annualMap.window}
+                  onChange={(event) => setAnnualSelection(annualMap.variable, event.target.value)}
+                >
+                  {windows.map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          )}
+          <GlidersAnnualPlot
+            key={`${annualMap?.id}:${annualMap?.image_url}`}
+            yearmap={annualMap}
+            title={year === undefined ? 'Annual plots' : `${GLIDER_PLATFORM_LABELS[activePlatform ?? 'sl']} · ${year}`}
+            onSelect={selectAreas}
+          />
+        </>
       ) : !yearmap || deployments.features.length === 0 ? (
         isMiniMap ? (
           <p role="status">No deployment areas to show.</p>
