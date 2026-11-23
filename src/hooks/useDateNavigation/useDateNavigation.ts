@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useSearchParams } from 'react-router';
 import dayjs, { Dayjs } from 'dayjs';
 import { DateFormat, DateItem } from '@/types/date';
-import { ProductID } from '@/types/product';
+import { ProductID, isTidalCurrents } from '@/types/product';
 import { useArgoStore } from '@/stores/argo-store/argoStore';
 import { isHourlyFormat, findFirstDateTimeForSelectedDay } from '@/utils/date-utils/hourly';
 import { findClosestDateIndex, findNearestDateWithinWindow } from '@/utils/date-utils/date';
@@ -11,6 +11,9 @@ import { isCurrentYearOptionId } from '@/data/current-meter/sidebarOptions';
 import { setIsDateResolving, setIsProductImageLoading } from '@/stores/product-store/productStore';
 
 type NavigationMode = 'dateList' | 'dateRange';
+
+const isTidalMap = (productId: ProductID | undefined, format: DateFormat) =>
+  !!productId && isTidalCurrents(productId) && format === DateFormat.MINUTE;
 
 interface UseDateListNavigationProps {
   dateFormat: DateFormat;
@@ -96,6 +99,11 @@ const parseDateParamForList = (
   const isDateParamInTargetFormat = dayjs(dateParam, dateFormat, true).isValid();
   const formattedDate = date.format(dateFormat);
   const isDateInList = dates.includes(formattedDate);
+
+  if (isTidalMap(productId, dateFormat) && isDateParamInTargetFormat && !isDateInList && dates.length) {
+    const latest = dates[dates.length - 1];
+    return { date: dayjs(latest, dateFormat), resolvedDateParam: latest };
+  }
 
   // Nearest-date search is needed when either:
   // 1. A format transition occurred (e.g. DAY → HOUR switching from 6d SST to 4h SST), OR
@@ -208,7 +216,9 @@ export const useDateListNavigation = ({
     }
   }
 
-  const availableDatesKey = `${availableDates.length}-${availableDates[0]?.date}-${availableDates[availableDates.length - 1]?.date}`;
+  const availableDatesKey = isTidalMap(productId, dateFormat)
+    ? availableDates.map((item) => item.date).join(',')
+    : `${availableDates.length}-${availableDates[0]?.date}-${availableDates[availableDates.length - 1]?.date}`;
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const dates = useMemo(() => availableDates.map((item) => item.date).sort(), [availableDatesKey]);
@@ -295,6 +305,7 @@ export const useDateListNavigation = ({
         { replace: true },
       );
     } else if (!resolvedDateParam) {
+      resolvedDateRef.current = null;
       setIsDateResolving(false);
     }
   }, [resolvedDateParam, setSearchParams]);
@@ -570,7 +581,8 @@ export const useDateNavigation = ({
     dateRange: dateRange || { startDate: new Date(), endDate: new Date() },
   });
 
-  const navigationMode: NavigationMode = availableDates.length > 0 && !dateRange ? 'dateList' : 'dateRange';
+  const navigationMode: NavigationMode =
+    (availableDates.length > 0 || isTidalMap(productId, dateFormat)) && !dateRange ? 'dateList' : 'dateRange';
 
   return useMemo(() => {
     return {
