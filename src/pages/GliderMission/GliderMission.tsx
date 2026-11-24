@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router';
 import VideoToggleButton from '@/components/ProductMenuBar/components/VideoToggleButton';
 import { useGliderMission } from '@/services/hooks';
 import useGliderTs from '@/services/hooks/useGliderTs';
-import { TEMPERATURE_SALINITY_TITLE } from '@/services/hooks/useGliderMission';
+import { GLIDER_PROJECTION_HOURS, TEMPERATURE_SALINITY_TITLE } from '@/services/hooks/useGliderMission';
 import { ShareButton } from '@/components/Shared';
 import Loading from '@/components/Shared/Loading/Loading';
 import { apiConfig } from '@/configs/api';
@@ -18,8 +18,18 @@ const GliderMission = () => {
 const GliderMissionViewer = () => {
   const [params] = useSearchParams();
   const selection = useGliderMission();
-  const { missionId, validParams, mission, window, isTemperatureSalinity, isVideo, videoUrl, setView, selectedFrame } =
-    selection;
+  const {
+    missionId,
+    validParams,
+    mission,
+    window,
+    isTemperatureSalinity,
+    isVideo,
+    isProjectedTracks,
+    videoUrl,
+    setView,
+    selectedFrame,
+  } = selection;
   const ts = useGliderTs(isTemperatureSalinity);
   // Historical diagrams have no catalogue mission, so the T-S index is their only source.
   const indexOnly = isTemperatureSalinity && !missionId;
@@ -31,6 +41,8 @@ const GliderMissionViewer = () => {
   const imagePath = isTemperatureSalinity
     ? tsImage
     : (selectedFrame?.url ?? mission?.visualisations.latest_images?.[window]);
+  const projectionPath = selectedFrame?.projected_tracks_url;
+  const projectionLabel = `${GLIDER_PROJECTION_HOURS[window]}-hour projection`;
   const missionName = mission?.mission_name ?? ts.diagram?.id ?? missionId;
 
   return (
@@ -83,6 +95,20 @@ const GliderMissionViewer = () => {
               url={videoUrl}
               name={`${missionName} ${window} mission video`}
             />
+          ) : isProjectedTracks ? (
+            projectionPath ? (
+              <>
+                <h2 className="mb-2 font-semibold">{projectionLabel}</h2>
+                <GliderMissionImage
+                  key={projectionPath}
+                  path={projectionPath}
+                  alt={`${missionName} ${projectionLabel}`}
+                  unavailableText="Unable to load projected tracks"
+                />
+              </>
+            ) : (
+              <p role="status">Projected tracks unavailable for this date and window</p>
+            )
           ) : (
             <GliderMissionImage
               key={`${missionId}:${isTemperatureSalinity ? 'ts' : window}:${imagePath}`}

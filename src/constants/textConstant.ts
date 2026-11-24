@@ -25,6 +25,7 @@ export enum ProductSidebarText {
   QUARTER = 'Quarter',
   PAGE = 'Page',
   TIME_WINDOW = 'Time window',
+  PROJECTED_TRACKS = 'Projected tracks',
   VISUALISATION = 'Visualisation',
 }
 
