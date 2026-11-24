@@ -460,41 +460,57 @@ it('switches projection horizons, preserves the selected date and handles missin
     },
   });
   const router = setup(`missionId=${encodeURIComponent(mission.id)}&window=4d&date=2026100100`);
-  const toggle = await screen.findByRole('button', { name: 'Projected tracks' });
-  await userEvent.click(toggle);
+  const projectionControls = await screen.findByRole('group', { name: 'Projected tracks' });
+  expect(projectionControls.closest('[role="toolbar"]')).toBeNull();
+  await userEvent.click(windowButton('24 h'));
+  expect(windowButton('24 h')).toHaveAttribute('aria-pressed', 'true');
+  expect(screen.getByRole('group', { name: 'Time window' })).toBeVisible();
+  expect(windowButton('4 days')).toHaveAttribute('aria-pressed', 'false');
   expect(router.state.location.search).toContain('view=projected-tracks');
   expect(screen.getByRole('img', { name: /24-hour projection/ })).toHaveAttribute(
     'src',
     '/resource/gliders/nav-four.gif',
   );
 
-  await userEvent.click(windowButton('12 days'));
+  await userEvent.click(windowButton('48 h'));
   expect(screen.getByRole('img', { name: /48-hour projection/ })).toHaveAttribute(
     'src',
     '/resource/gliders/nav-twelve.gif',
   );
   await userEvent.click(windowButton('30 days'));
+  expect(screen.getByRole('img', { name: /30d mission profile/ })).toHaveAttribute(
+    'src',
+    '/resource/gliders/profile.gif',
+  );
+  expect(windowButton('30 days')).toHaveAttribute('aria-pressed', 'true');
+  expect(windowButton('72 h')).toHaveAttribute('aria-pressed', 'false');
+  expect(new URLSearchParams(router.state.location.search).has('view')).toBe(false);
+
+  await userEvent.click(windowButton('72 h'));
+  expect(windowButton('72 h')).toHaveAttribute('aria-pressed', 'true');
   const image = screen.getByRole('img', { name: /72-hour projection/ });
   expect(image).toHaveAttribute('src', '/resource/gliders/nav-thirty.gif');
   fireEvent.error(image);
   expect(screen.getByText('Unable to load projected tracks')).toHaveRole('status');
 
-  await userEvent.click(windowButton('4 days'));
+  await userEvent.click(windowButton('24 h'));
   await userEvent.click(screen.getByTestId('date-next-button'));
   expect(screen.getByText('Projected tracks unavailable for this date and window')).toHaveRole('status');
-  await userEvent.click(toggle);
+  expect(windowButton('48 h')).toBeDisabled();
+  await userEvent.click(windowButton('Mission profile'));
   expect(router.state.location.search).toContain('date=2026100112');
   expect(screen.getByRole('img', { name: /4d mission profile/ })).toHaveAttribute(
     'src',
     '/resource/gliders/profile-later.gif',
   );
-  expect(screen.queryByRole('button', { name: 'Projected tracks' })).not.toBeInTheDocument();
+  expect(windowButton('24 h')).toBeDisabled();
+  expect(screen.getByRole('group', { name: 'Time window' })).toBeInTheDocument();
 });
 
 it('opens a saved projected tracks URL and offers return to the profile when unavailable', async () => {
   setup(`missionId=${encodeURIComponent(mission.id)}&window=12d&view=projected-tracks`);
   expect(await screen.findByText('Projected tracks unavailable for this date and window')).toHaveRole('status');
-  await userEvent.click(screen.getByRole('button', { name: 'Projected tracks' }));
+  await userEvent.click(windowButton('Mission profile'));
   expect(screen.getByRole('img', { name: /12d mission profile/ })).toHaveAttribute(
     'src',
     '/resource/gliders/twelve.gif',

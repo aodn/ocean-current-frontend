@@ -6,7 +6,8 @@ import { sharedQueryConfig } from '@/configs/query';
 import { fetchGliderMissionById } from '@/services/gliders';
 import { resolveGliderResourceUrl } from '@/utils/gliders-map-utils/catalogue';
 
-export const GLIDER_MISSION_WINDOWS = ['4d', '12d', '30d'];
+export const GLIDER_PROJECTION_HOURS: Record<string, number> = { '4d': 24, '12d': 48, '30d': 72 };
+export const GLIDER_MISSION_WINDOWS = Object.keys(GLIDER_PROJECTION_HOURS);
 export const GLIDER_TS_VIEW = 'ts';
 export const GLIDER_PROJECTED_TRACKS_VIEW = 'projected-tracks';
 export const TEMPERATURE_SALINITY_TITLE = 'Temperature–salinity diagram';
@@ -76,7 +77,19 @@ const useGliderMission = () => {
     windows: GLIDER_MISSION_WINDOWS.filter(
       (key) => mission?.visualisations.latest_images?.[key] || mission?.image_history?.[key]?.length,
     ),
-    setView: (view: 'profile' | 'video' | typeof GLIDER_TS_VIEW | typeof GLIDER_PROJECTED_TRACKS_VIEW) =>
+    selectProjection: (window: string) =>
+      setParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+          next.set('view', GLIDER_PROJECTED_TRACKS_VIEW);
+          next.set('window', window);
+          next.delete('diagramId');
+          if (selectedFrame) next.set('date', dayjs(selectedFrame.date).format(DateFormat.HOUR));
+          return next;
+        },
+        { replace: true, state: location.state },
+      ),
+    setView: (view: 'profile' | 'video' | typeof GLIDER_TS_VIEW) =>
       setParams(
         (prev) => {
           const next = new URLSearchParams(prev);
@@ -101,6 +114,7 @@ const useGliderMission = () => {
         (prev) => {
           const next = new URLSearchParams(prev);
           next.set('window', window);
+          if (next.get('view') === GLIDER_PROJECTED_TRACKS_VIEW) next.delete('view');
           return next;
         },
         { replace: true, state: location.state },
