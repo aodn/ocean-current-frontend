@@ -4,6 +4,7 @@ import VideoToggleButton from '@/components/ProductMenuBar/components/VideoToggl
 import { useGliderMission } from '@/services/hooks';
 import useGliderTs from '@/services/hooks/useGliderTs';
 import { GLIDER_PROJECTION_HOURS, TEMPERATURE_SALINITY_TITLE } from '@/services/hooks/useGliderMission';
+import { ShareButton } from '@/components/Shared';
 import Loading from '@/components/Shared/Loading/Loading';
 import { apiConfig } from '@/configs/api';
 import GliderTsIndex, { GliderTsNavigation } from './GliderTs';
@@ -60,6 +61,11 @@ const GliderMissionViewer = () => {
             onClick={() => setView(isVideo ? 'profile' : 'video')}
           />
         </div>
+        {validParams && mission && (
+          <div className="h-11 grow md:grow-0">
+            <ShareButton />
+          </div>
+        )}
       </div>
       <section aria-label="Glider mission image" className="rounded-md bg-white p-4">
         <h1 className="mb-3 text-xl font-semibold break-all">{missionName || 'Glider mission'}</h1>

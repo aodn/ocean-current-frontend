@@ -86,6 +86,40 @@ test('keeps the deployment map usable on mobile', async ({ page }) => {
   await expect(page.getByRole('region', { name: 'Deployment calendar chart' })).toHaveCount(0);
 });
 
+test('shares the selected Gliders mission window and date', async ({ page, context }) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  const frame = { date: '2026-11-12T12:00:00', url: '/gliders/history/2026111212.gif' };
+  await page.route('**/api/v1/gliders/missions/*', (route) =>
+    route.fulfill({
+      json: {
+        id: 'TwoRocks20261028_nrt@5.',
+        mission_name: 'TwoRocks20261028_nrt',
+        visualisations: { latest_images: { '12d': frame.url } },
+        image_history: { '12d': [frame] },
+      },
+    }),
+  );
+  await page.route('**/resource/gliders/history/*.gif', (route) =>
+    route.fulfill({
+      body: Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64'),
+      contentType: 'image/gif',
+    }),
+  );
+
+  await page.goto('/product/gliders?missionId=TwoRocks20261028_nrt%405.&window=12d&date=2026111212');
+  await page.getByRole('button', { name: 'Share', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Copied!' })).toBeVisible();
+  await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(page.url());
+
+  const sharedUrl = await page.evaluate(() => navigator.clipboard.readText());
+  await page.goto(sharedUrl);
+  await expect(page.getByRole('img', { name: 'TwoRocks20261028_nrt 12d mission profile' })).toHaveAttribute(
+    'src',
+    `/resource${frame.url}`,
+  );
+  await expect(page.getByTestId('selected-date')).toHaveText('12 Nov 2026 12:00');
+});
+
 test('returns from a map deployment to the same Gliders map selection', async ({ page, productPage }) => {
   await page.setViewportSize({ width: 1280, height: 844 });
   const data = JSON.parse(readFileSync(`${fixtureRoot}yearmaps.json`, 'utf8')) as GliderYearmapsResponse;
