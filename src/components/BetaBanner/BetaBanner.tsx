@@ -10,7 +10,7 @@ const BetaBanner: React.FC = () => {
   return (
     <div className="bg-imos-pale-blue relative flex min-h-11 w-full items-center py-2 pr-6 pl-2 shadow-sm md:h-11 md:py-0">
       <p className="font-open-sans text-imos-dark-grey m-0 w-full text-left text-base md:text-center">
-        We&rsquo;re giving the site a fresh new look. We&rsquo;d greatly appreciate your feedback. {''}
+        We&rsquo;re giving the site a fresh new test look. We&rsquo;d greatly appreciate your feedback. {''}
         <a
           href={ExternalUrls.FEEDBACK_FORM}
           target="_blank"
