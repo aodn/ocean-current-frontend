@@ -39,7 +39,7 @@ const getTidalCurrentsTagsData = async (tagFileUrl: string) => {
     return createTagsObjArray(areaMatches);
   } catch (error) {
     console.error('Error fetching and parsing Tidal Currents TAG data - ', error);
-    throw new Error('Error fetching and parsing Tidal Currents TAG data');
+    throw new Error('Error fetching and parsing Tidal fsfsfsfsf Currents TAG data');
   }
 };
 
