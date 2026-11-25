@@ -23,7 +23,7 @@ const createTagsObjArray = (areaMatches: RegExpStringIterator<RegExpExecArray>) 
 
 const getTidalCurrentsTagsData = async (tagFileUrl: string) => {
   if (!tagFileUrl) {
-    console.error('The Tidal Currents TAG file url is required.');
+    console.error('The Tidal Currents TAG file url is required. Test');
     return [];
   }
 
